@@ -14,7 +14,7 @@ Trifolia template/profile editor and publication tool
 | DotNetOpenAuth.OAuth.Consumer | 4.0.3.12153 |  Improve usability, reliability, conversion rates and security simultaneously by simply asking the user for permission to access th... |
 | DotNetOpenAuth.OAuth.Core | 4.0.3.12153 |  This package contains shared code for other NuGet packages, and contains no public API in and of itself. |   
 | DotNetOpenAuth.OpenId.Core | 4.0.3.12153 |  This package contains shared code for other NuGet packages, and contains no public API in and of itself. |  
-| DotNetOpenAuth.OpenId.Relyi... 4.0.3.12153 |  Increase conversion rates to your web site by lowering the bar to create an account with your site,... |     
+| DotNetOpenAuth.OpenId.Relyi... | 4.0.3.12153 |  Increase conversion rates to your web site by lowering the bar to create an account with your site,... |     
 | DotNetZip | 1.9.1.8 | DotNetZip is an easy-to-use, FAST, FREE class library and toolset for manipulating zip files or folders. |
 | EnterpriseLibrary.Caching | 5.0.505.0 | The Enterprise Library Caching Application Block lets developers incorporate a local in-memory or persistent cache in their applic... |
 | EnterpriseLibrary.Common | 5.0.505.0 | The Enterprise Library Common assembly contains elements that are shared among multiple application blocks. By supplying a set of ... |
