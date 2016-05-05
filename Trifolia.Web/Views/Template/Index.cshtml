@@ -1,0 +1,75 @@
+﻿<script src="/Scripts/knockout-2.1.0.js"></script>
+<script src="/Scripts/jquery.blockUI.js"></script>
+<script src="/Scripts/knockout.programmatic.js"></script>
+
+<script src="/Scripts/jquery.clearsearch.js"></script>
+<script src="/Scripts/TemplateSearch.ko.extensions.js"></script>
+<script src="/Scripts/TeamplateLandingPageViewModel.js"></script>
+
+<link href="/Styles/easyui-themes/default/easyui.css" rel="stylesheet" type="text/css">
+<link href="/Styles/ui-lightness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" />
+<link href="~/Styles/Template-3.0.css" rel="stylesheet" />
+
+<div style="margin-bottom: 20px">
+    <a href="Account/Edit/ModifyTemplateSettings.aspx?Clean=true&EditMode=Schema">add new Template</a>
+</div>
+
+<div style="display: inline-block; width: 100%">
+    <h1 id="pageResultsHeader" style="display: inline-block"><span data-bind="text: headerText"></span></h1>
+    <span data-dropdown="#export-menu">
+        <img src="/images/disc.png" height="24" style="margin-left: 12px; vertical-align: middle" title="Export Search Results" /></span>
+</div>
+
+<ol id="templatesList" data-bind="foreach: templateModel.templates" 
+    data-controller-recent-templates-url="@Url.Action("GetRecentTemplates")" 
+    data-controller-find-template-url="@Url.Action("FindTemplate")"
+    data-controller-get-template-name-matches="@Url.Action("GetTemplateNameMatches")">
+    <li style="margin-top: 0; margin-bottom: 20px; list-style: none; line-height: 1.2;">
+        <div style="display: inline-block">
+            <h3>
+                <a class="search-result-header" data-bind="attr: {href: '/Account/Browse/EditTemplate.aspx?id=' + Id, title: 'View ' + TemplateName}, text: TemplateName" target="_blank"></a>
+                <img width="20px" title="Delete This Template" style="margin-left: 4px; margin-right: 4px" src="/images/trash.png" />
+            </h3>
+            <div style="display: block">
+                <div style="display: block; margin-bottom: 1px;">
+                    <cite>Bla bla implementation Guide</cite>
+                </div>
+                <span class="description">This is where the description for <em>Result</em> goes. It should probably be a few sentences long</span>
+            </div>
+        </div>
+    </li>
+</ol>
+
+<div id="navcnt">
+    <table id="nav" style="border-collapse: collapse; text-align: left; margin: 17px auto 0; direction: ltr">
+        <tbody>
+            <tr valign="top">
+                <td><a href="" style="text-decoration: none; text-align: left">
+                    <span style="background-position: -24px 0; width: 71px"></span><span style="display: block; margin-left: 53px; text-decoration: underline">Previous</span>
+                </a></td>
+                <td><span style="background-position: -53px 0; width: 20px"></span>1</td>
+                <td><a href=""><span style="background-position: -74px 0; width: 20px"></span>2</a></td>
+                <td><a href=""><span style="background-position: -74px 0; width: 20px"></span>3</a></td>
+                <td><a href=""><span style="background-position: -74px 0; width: 20px"></span>4</a></td>
+                <td><a href=""><span style="background-position: -74px 0; width: 20px"></span>5</a></td>
+                <td><a href=""><span style="background-position: -74px 0; width: 20px"></span>6</a></td>
+                <td><a href=""><span style="background-position: -74px 0; width: 20px"></span>7</a></td>
+                <td><a href=""><span style="background-position: -74px 0; width: 20px"></span>8</a></td>
+                <td><a href=""><span style="background-position: -74px 0; width: 20px"></span>9</a></td>
+                <td><a href=""><span style="background-position: -74px 0; width: 20px"></span>10</a></td>
+                <td><a href="" style="text-decoration: none; text-align: left">
+                    <span style="background-position: -96px 0; width: 71px"></span><span style="display: block; margin-left: 53px; text-decoration: underline">Next</span>
+                </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="export-menu" class="dropdown-menu has-tip">
+    <ul>
+        <li><a href="">Save as XLS</a></li>
+        <li><a href="">Save as PDF</a></li>
+        <li class="divider"></li>
+    </ul>
+</div>

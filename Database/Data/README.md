@@ -1,0 +1,1 @@
+This folder contains the files used to create data in the Trifolia database.  This folder runs after all scripts in the 'DDL' folder have run.

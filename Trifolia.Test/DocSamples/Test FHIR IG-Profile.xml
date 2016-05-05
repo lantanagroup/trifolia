@@ -1,0 +1,415 @@
+<feed xmlns="http://www.w3.org/2005/Atom">
+   <title type="text">Trifolia Profile Export</title>
+   <id>cid:d1e1</id>
+   <updated>2014-05-03T11:34:18.176-07:00</updated>
+   <entry>
+      <title type="text">Test Patient Resource</title>
+      <id>cid:d1e5</id>
+      <updated>2014-05-03T11:34:18.176-07:00</updated>
+      <content type="text/xml">
+         <Profile xmlns="http://hl7.org/fhir">
+            <text>
+               <status value="generated"/>
+               <xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+                  <xhtml:p>Test Patient Resource</xhtml:p>
+                  <xhtml:ol>
+                     <xhtml:li>
+                        <p xmlns="http://www.w3.org/1999/xhtml">MAY contain exactly one [1..1] name
+                           (CONF:8504).</p>
+                        <ol xmlns="http://www.w3.org/1999/xhtml">
+                           <li>
+                              <p>This name SHALL contain exactly one [1..1] family (CONF:8505).</p>
+                           </li>
+                        </ol>
+                        <ol xmlns="http://www.w3.org/1999/xhtml">
+                           <li>
+                              <p>This name MAY contain exactly one [1..1] given (CONF:8506).</p>
+                           </li>
+                        </ol>
+                     </xhtml:li>
+                     <xhtml:li>
+                        <p xmlns="http://www.w3.org/1999/xhtml">MAY contain zero or more [0..*]
+                           communication (CONF:8507).</p>
+                     </xhtml:li>
+                     <xhtml:li>
+                        <p xmlns="http://www.w3.org/1999/xhtml">SHALL contain exactly one [1..1]
+                           maritalStatus (CONF:8508).</p>
+                     </xhtml:li>
+                     <xhtml:li>
+                        <p xmlns="http://www.w3.org/1999/xhtml">SHALL contain exactly one [1..1]
+                           contact (CONF:8509).</p>
+                     </xhtml:li>
+                  </xhtml:ol>
+               </xhtml:div>
+            </text>
+            <identifier value="oid:FHIR_1.2.3.41"/>
+            <name value="Test Patient Resource"/>
+            <publisher value="LCG"/>
+            <description/>
+            <status value="draft"/>
+            <structure>
+               <type value="Patient"/>
+               <element>
+                  <path value="Patient.name"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="1"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d10e0"/>
+                        <name value="d10e0"/>
+                        <severity value="warning"/>
+                        <human value="MAY contain exactly one [1..1] name (CONF:8504)."/>
+                        <xpath value="Patient/name"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+               <element>
+                  <path value="Patient.name.family"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="1"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d13e0"/>
+                        <name value="d13e0"/>
+                        <severity value="error"/>
+                        <human
+                           value="This name SHALL contain exactly one [1..1] family (CONF:8505)."/>
+                        <xpath value="Patient/name/family"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+               <element>
+                  <path value="Patient.name.given"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="1"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d16e0"/>
+                        <name value="d16e0"/>
+                        <severity value="warning"/>
+                        <human value="This name MAY contain exactly one [1..1] given (CONF:8506)."/>
+                        <xpath value="Patient/name/given"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+               <element>
+                  <path value="Patient.communication"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="0"/>
+                     <max value="*"/>
+                     <constraint>
+                        <key value="d19e0"/>
+                        <name value="d19e0"/>
+                        <severity value="warning"/>
+                        <human value="MAY contain zero or more [0..*] communication (CONF:8507)."/>
+                        <xpath value="Patient/communication"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+               <element>
+                  <path value="Patient.maritalStatus"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="1"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d22e0"/>
+                        <name value="d22e0"/>
+                        <severity value="error"/>
+                        <human value="SHALL contain exactly one [1..1] maritalStatus (CONF:8508)."/>
+                        <xpath value="Patient/maritalStatus"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+               <element>
+                  <path value="Patient.contact"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="1"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d25e0"/>
+                        <name value="d25e0"/>
+                        <severity value="error"/>
+                        <human value="SHALL contain exactly one [1..1] contact (CONF:8509)."/>
+                        <xpath value="Patient/contact"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+            </structure>
+         </Profile>
+      </content>
+      <summary type="xhtml">
+         <xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+            <xhtml:p>Test Patient Resource</xhtml:p>
+            <xhtml:ol>
+               <xhtml:li>
+                  <p xmlns="http://www.w3.org/1999/xhtml">MAY contain exactly one [1..1] name
+                     (CONF:8504).</p>
+                  <ol xmlns="http://www.w3.org/1999/xhtml">
+                     <li>
+                        <p>This name SHALL contain exactly one [1..1] family (CONF:8505).</p>
+                     </li>
+                  </ol>
+                  <ol xmlns="http://www.w3.org/1999/xhtml">
+                     <li>
+                        <p>This name MAY contain exactly one [1..1] given (CONF:8506).</p>
+                     </li>
+                  </ol>
+               </xhtml:li>
+               <xhtml:li>
+                  <p xmlns="http://www.w3.org/1999/xhtml">MAY contain zero or more [0..*]
+                     communication (CONF:8507).</p>
+               </xhtml:li>
+               <xhtml:li>
+                  <p xmlns="http://www.w3.org/1999/xhtml">SHALL contain exactly one [1..1]
+                     maritalStatus (CONF:8508).</p>
+               </xhtml:li>
+               <xhtml:li>
+                  <p xmlns="http://www.w3.org/1999/xhtml">SHALL contain exactly one [1..1] contact
+                     (CONF:8509).</p>
+               </xhtml:li>
+            </xhtml:ol>
+         </xhtml:div>
+      </summary>
+   </entry>
+   <entry>
+      <title type="text">Test Composition Resource</title>
+      <id>cid:d1e44</id>
+      <updated>2014-05-03T11:34:18.176-07:00</updated>
+      <content type="text/xml">
+         <Profile xmlns="http://hl7.org/fhir">
+            <text>
+               <status value="generated"/>
+               <xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+                  <xhtml:p>Test Composition Resource</xhtml:p>
+                  <xhtml:ol>
+                     <xhtml:li>
+                        <p xmlns="http://www.w3.org/1999/xhtml">SHALL contain zero or one [0..1]
+                           language (CONF:8523).</p>
+                        <ol xmlns="http://www.w3.org/1999/xhtml">
+                           <li>
+                              <p>The language, if present, SHALL contain zero or one [0..1] @value
+                                 (CONF:8515).</p>
+                           </li>
+                        </ol>
+                     </xhtml:li>
+                     <xhtml:li>
+                        <p xmlns="http://www.w3.org/1999/xhtml">SHOULD contain exactly one [1..1]
+                           title (CONF:8520).</p>
+                     </xhtml:li>
+                     <xhtml:li>
+                        <p xmlns="http://www.w3.org/1999/xhtml">SHALL contain exactly one [1..1]
+                           type (CONF:8513).</p>
+                        <ol xmlns="http://www.w3.org/1999/xhtml">
+                           <li>
+                              <p>This type SHALL contain exactly one [1..1] coding (CONF:8514).</p>
+                              <ol>
+                                 <li>
+                                    <p>This coding SHALL contain exactly one [1..1] valueSet
+                                       (ValueSet: ProgressNoteDocumentTypeCode
+                                       2.16.840.1.113883.11.20.8.1) (CONF:8521).</p>
+                                 </li>
+                              </ol>
+                           </li>
+                        </ol>
+                     </xhtml:li>
+                     <xhtml:li>
+                        <p xmlns="http://www.w3.org/1999/xhtml">SHALL contain exactly one [1..1]
+                           Test Patient Resource (templateId:FHIR_1.2.3.41) (CONF:8510).</p>
+                     </xhtml:li>
+                  </xhtml:ol>
+               </xhtml:div>
+            </text>
+            <identifier value="oid:FHIR_1231.1.1.2.1.1"/>
+            <name value="Test Composition Resource"/>
+            <publisher value="LCG"/>
+            <description/>
+            <status value="draft"/>
+            <structure>
+               <type value="Composition"/>
+               <element>
+                  <path value="Composition.language"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="0"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d36e0"/>
+                        <name value="d36e0"/>
+                        <severity value="error"/>
+                        <human value="SHALL contain zero or one [0..1] language (CONF:8523)."/>
+                        <xpath value="Composition/language"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+               <element>
+                  <path value="Composition.language.@value"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="0"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d39e0"/>
+                        <name value="d39e0"/>
+                        <severity value="error"/>
+                        <human
+                           value="The language, if present, SHALL contain zero or one [0..1] @value (CONF:8515)."/>
+                        <xpath value="Composition/language/@value"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+               <element>
+                  <path value="Composition.title"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="1"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d42e0"/>
+                        <name value="d42e0"/>
+                        <severity value="warning"/>
+                        <human value="SHOULD contain exactly one [1..1] title (CONF:8520)."/>
+                        <xpath value="Composition/title"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+               <element>
+                  <path value="Composition.type"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="1"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d45e0"/>
+                        <name value="d45e0"/>
+                        <severity value="error"/>
+                        <human value="SHALL contain exactly one [1..1] type (CONF:8513)."/>
+                        <xpath value="Composition/type"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+               <element>
+                  <path value="Composition.type.coding"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="1"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d48e0"/>
+                        <name value="d48e0"/>
+                        <severity value="error"/>
+                        <human
+                           value="This type SHALL contain exactly one [1..1] coding (CONF:8514)."/>
+                        <xpath value="Composition/type/coding"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+               <element>
+                  <path value="Composition.type.coding.valueSet"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="1"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d51e0"/>
+                        <name value="d51e0"/>
+                        <severity value="error"/>
+                        <human
+                           value="This coding SHALL contain exactly one [1..1] valueSet (ValueSet: ProgressNoteDocumentTypeCode 2.16.840.1.113883.11.20.8.1) (CONF:8521)."/>
+                        <xpath value="Composition/type/coding/valueSet"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+               <element>
+                  <path value="Composition.subject"/>
+                  <definition>
+                     <short/>
+                     <formal/>
+                     <min value="1"/>
+                     <max value="1"/>
+                     <constraint>
+                        <key value="d54e0"/>
+                        <name value="d54e0"/>
+                        <severity value="error"/>
+                        <human
+                           value="SHALL contain exactly one [1..1] Test Patient Resource (templateId:FHIR_1.2.3.41) (CONF:8510)."/>
+                        <xpath value="Composition/subject"/>
+                     </constraint>
+                     <isModifier value="false"/>
+                  </definition>
+               </element>
+            </structure>
+         </Profile>
+      </content>
+      <summary type="xhtml">
+         <xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+            <xhtml:p>Test Composition Resource</xhtml:p>
+            <xhtml:ol>
+               <xhtml:li>
+                  <p xmlns="http://www.w3.org/1999/xhtml">SHALL contain zero or one [0..1] language
+                     (CONF:8523).</p>
+                  <ol xmlns="http://www.w3.org/1999/xhtml">
+                     <li>
+                        <p>The language, if present, SHALL contain zero or one [0..1] @value
+                           (CONF:8515).</p>
+                     </li>
+                  </ol>
+               </xhtml:li>
+               <xhtml:li>
+                  <p xmlns="http://www.w3.org/1999/xhtml">SHOULD contain exactly one [1..1] title
+                     (CONF:8520).</p>
+               </xhtml:li>
+               <xhtml:li>
+                  <p xmlns="http://www.w3.org/1999/xhtml">SHALL contain exactly one [1..1] type
+                     (CONF:8513).</p>
+                  <ol xmlns="http://www.w3.org/1999/xhtml">
+                     <li>
+                        <p>This type SHALL contain exactly one [1..1] coding (CONF:8514).</p>
+                        <ol>
+                           <li>
+                              <p>This coding SHALL contain exactly one [1..1] valueSet (ValueSet:
+                                 ProgressNoteDocumentTypeCode 2.16.840.1.113883.11.20.8.1)
+                                 (CONF:8521).</p>
+                           </li>
+                        </ol>
+                     </li>
+                  </ol>
+               </xhtml:li>
+               <xhtml:li>
+                  <p xmlns="http://www.w3.org/1999/xhtml">SHALL contain exactly one [1..1] Test
+                     Patient Resource (templateId:FHIR_1.2.3.41) (CONF:8510).</p>
+               </xhtml:li>
+            </xhtml:ol>
+         </xhtml:div>
+      </summary>
+   </entry>
+</feed>

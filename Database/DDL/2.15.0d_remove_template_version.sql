@@ -1,0 +1,9 @@
+BEGIN TRANSACTION
+GO
+ALTER TABLE dbo.template
+	DROP CONSTRAINT DF__template__versio__628FA481
+GO
+ALTER TABLE dbo.template
+	DROP COLUMN version
+GO
+COMMIT

@@ -1,0 +1,84 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Trifolia.Generation.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ConformanceVerbStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">keyword</Value>
+    </Setting>
+    <Setting Name="TemplateLocationStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">BracketData</Value>
+    </Setting>
+    <Setting Name="CardinalityStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">normal</Value>
+    </Setting>
+    <Setting Name="ConstraintContextStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">XMLnameBold</Value>
+    </Setting>
+    <Setting Name="NarrativeStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">normal</Value>
+    </Setting>
+    <Setting Name="VocabularyConstraintStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">XMLname</Value>
+    </Setting>
+    <Setting Name="LinkStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">HyperlinkCourierBold</Value>
+    </Setting>
+    <Setting Name="TableHeadingStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">TableHead</Value>
+    </Setting>
+    <Setting Name="TableContentStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">TableText</Value>
+    </Setting>
+    <Setting Name="TemplateDescriptionStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">BodyText</Value>
+    </Setting>
+    <Setting Name="TemplateHeaderStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Heading2nospace</Value>
+    </Setting>
+    <Setting Name="TemplateTypeHeadingStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Heading1</Value>
+    </Setting>
+    <Setting Name="TableLinkStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">HyperlinkText9pt</Value>
+    </Setting>
+    <Setting Name="TemplateTypeDetailsStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">BodyText</Value>
+    </Setting>
+    <Setting Name="TemplateOidStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">XMLname</Value>
+    </Setting>
+    <Setting Name="BlankLinkText" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">BodyText</Value>
+    </Setting>
+    <Setting Name="TemplateNotesStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">templatenotes</Value>
+    </Setting>
+    <Setting Name="TableCaptionStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Caption</Value>
+    </Setting>
+    <Setting Name="VocabularyServiceValueSetFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:52489/RestfulVocabulary.ashx?ValueSetOid={0}</Value>
+    </Setting>
+    <Setting Name="VocabularyServiceImplementationGuideFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:52489/RestfulVocabulary.ashx?ImplementationGuideId={0}</Value>
+    </Setting>
+    <Setting Name="VocabularyPrefix" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">voc</Value>
+    </Setting>
+    <Setting Name="TemplateHeaderSecondLevelStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Heading3nospace</Value>
+    </Setting>
+    <Setting Name="PropertiesHeadingStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Heading3nospace</Value>
+    </Setting>
+    <Setting Name="ConstraintHeadingStyle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Heading4nospace</Value>
+    </Setting>
+    <Setting Name="ExportXmlDisclaimer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">The export template XML file format definition is subject to change without notice, and continued
+availability should not be construed as a commitment by Lantana Consulting Group LLC. 
+Lantana Consulting Group LLC assumes no responsibility or liability including incomplete data,
+errors, or impacts caused by changes to this XML file format definition.</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

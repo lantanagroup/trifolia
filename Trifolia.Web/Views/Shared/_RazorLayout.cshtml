@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+
+@{
+                    //This is a layout (master) page for razor pages
+}
+<html>
+
+<script src="~/Scripts/jquery-1.8.3.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="~/Scripts/jquery.layout-latest.min.js"></script>
+<script src="~/Scripts/jquery.dropdown.js"></script>
+<script src="~/Scripts/jquery.datagrid.js"></script>
+<head>
+    <title>Welcome to the New Trifolia Workbench</title>
+
+    <link href="~/styles/jquery.dropdown.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/default/easyui.css">  
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">  
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/demo/demo.css">  
+
+
+    <style type="text/css">
+        .ui-layout-east
+        {
+            background: white;
+            border: 3px solid #9cc525;
+            padding: 10px;
+        }
+
+        .ui-layout-header {
+        }
+
+        .ui-layout-center {
+            background: white;
+            border: 8px solid gray;
+            height:100%;
+            margin:auto;
+            position: relative;
+        }
+
+        .ui-layout-toggler-east
+        {
+            border: 0px;
+        }
+        /*This fixed a bug where the help button on initial load is calculated to the wrong location*/
+        .ui-layout-toggler .content
+        {
+            margin-top: 0px !important;
+        }
+
+        .hdtb_msel_pre
+        {
+            color: #cc6600;
+            border-bottom: 3px solid #cc6600;
+            height: 30px;
+            padding: 0 8px;
+            margin: 2px 8px 0;
+            font-weight: bold;
+            font-family: arial;
+            font-size: small;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .hdtb_item
+        {
+            color: #666;
+            height: 30px;
+            padding: 0 8px;
+            margin: 2px 8px 0;
+            font-weight: bold;
+            font-family: arial;
+            font-size: small;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .domain_bar
+        {
+            border-bottom: 1px solid #9cc525;
+            border-top: 1px solid #9cc525;
+            height: 40px;
+            line-height: 36px;
+            padding: 0;
+            position: relative;
+        }
+
+        #hdtb_msb
+        {
+            display: inline-block;
+            float: left;
+            white-space: nowrap;
+            line-height: 36px;
+        }
+
+        #admin_button
+        {
+            background-color: #ddd;
+            width: 60px;
+            height: 27px;
+            float: right;
+            margin: 5px;
+            display: inline-block;
+            white-space: nowrap;
+            border: 1px solid darkgray;
+            border-radius: 2px;
+            vertical-align: middle;
+        }
+
+        body, html
+        {
+            height: 100%;
+            margin: 0px;
+        }
+
+        body {
+            background: gray; 
+            height:100%;
+            overflow:hidden
+        }
+
+        a
+        {
+            font: 13px/27px Arial,sans-serif;
+        }
+
+        .adv-search
+        {
+            color: #08C;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            background: #eee;
+            border-color: darkgray;
+            border-width: 1px;
+        }
+
+            .adv-search:after
+            {
+                font-family: Consolas, Courier New, Arial, sans-serif;
+                content: '↓';
+                margin-left: 6px;
+                color: #08C;
+            }
+
+        .copyright
+        {
+            font-family: Consolas, Courier New, Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        /*fix for dropdown to allow things other than UL*/
+        .dropdown-menu-innerbox {
+	        min-width: 160px;
+	        list-style: none;
+	        background: #FFF;
+	        border: solid 1px #DDD;
+	        border: solid 1px rgba(0, 0, 0, .2);
+	        border-radius: 6px;
+	        box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+	        overflow: visible;
+	        padding: 4px 0;
+	        margin: 0;
+        }
+
+        div#mainPageBody {
+            vertical-align: top;
+            display: block;
+            padding-bottom: 40px;
+            position: absolute;
+            bottom:50px;
+            top:117px;
+            width:100%;
+            overflow: auto;
+        }
+    </style>
+
+    <script>
+        var toggleButtons = '<img src="/Images/Help.png">';
+
+        $(document).ready(function () {
+            var myLayout = $('body').layout({
+                resizeWhileDragging: true
+		        , fxName: "slide"
+                , fxSpeed: "fast"
+		        , spacing_open: 40
+		        , spacing_closed: 40
+		        , north__spacing_open: 0
+		        , east__togglerLength_closed: 100
+		        , east__togglerLength_open: 100
+		        , east__togglerContent_closed: toggleButtons
+		        , east__togglerContent_open: toggleButtons
+                , east__togglerAlign_open: 5
+                , east__togglerAlign_closed: 5
+                , east__maxSize: 480
+
+
+            });
+
+            //this is a workaround, because initClosed option doesn't seem to work in this version of the script
+            myLayout.toggle("east");
+        });
+
+
+    </script>
+</head>
+
+<body>
+    <div class="ui-layout-center">
+
+        <div style="white-space: nowrap; display: inline-block; width:80%">
+            <div style="display: inline-block">
+                <img src="~/Images/TrifoliaLogo.png" width="180px" style="vertical-align: middle" />
+            </div>
+            <div style="display: inline-block">
+                <input id="searchBox" style="width: 300px; vertical-align: middle" />
+            </div>
+            <div style="display: inline-block">
+                <a href="#" class="adv-search open" data-dropdown="#dropdown-2"></a>
+            </div>
+
+            <img src="~/Images/Search.png" width="24px" id="searchButton" style="margin: 10px; vertical-align: middle" />
+        </div>
+
+        <div style="text-align: right; padding-right: 20px; white-space: nowrap; display: inline-block; vertical-align: middle; float: right; ">
+            <a href="/Account/Login.aspx">
+                @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    @Html.Raw(System.Web.HttpContext.Current.User.Identity.Name + " [Log out]");
+                }
+                else
+                {
+                    @Html.Raw("Log in");
+                }
+
+            </a>
+            <br />
+            <a href="/Home">Revert to old version</a>
+        </div>
+
+        <div class="domain_bar">
+            <div id="hdtb_msb">
+                <div id="templateNavItem" class="hdtb_msel_pre" style="margin-left: 180px">Templates</div>
+                <div id="igNavItem" class="hdtb_item">Implementation Guides</div>
+                <div class="hdtb_item">Value Sets</div>
+                <div class="hdtb_item">Green</div>
+            </div>
+            <div id="admin_button" data-dropdown="#dropdown-1">
+                <img width="25px" src="~/Images/monotone_cog_settings_gear.png" style="vertical-align: middle; margin-left: auto; margin-right: auto; display: block" />
+            </div>
+        </div>
+        
+        <div id="mainPageBody">
+            @RenderBody()
+        </div>
+
+        <div style="margin: 0px 0px 0px 10px; position: absolute; bottom: 5px; left: 10px">
+            @if (TemplateDatabase.Authentication.AuthHelper.GetAuthenticatedOrganizationName() == "HL7")
+            {
+                <img src="http://www.hl7.org/assets/systemimages/HL7logo.gif" width="38px" style="margin-right: 10px" />
+            }<a href="http://www.lantanaconsultinggroup.com"><img width="150" src="~/Images/Lantana2.png" /></a>
+        </div>
+        <div style="margin: 0px 0px 0px 10px; position: absolute; bottom: 5px; right: 10px">
+            <a href="http://www.lantanaconsultinggroup.com" class="copyright">Lantana Consulting Group</a><a class="copyright"> © @DateTime.Now.Year</a>
+        </div>
+    </div>
+
+    <!-Help goes here-->
+        <div class="ui-layout-east">
+            <a class="handle" href="http://link-for-non-js-users.html">Content Tree?</a>
+            <h3>Help</h3>
+            <p>
+                This is where the help text goes.
+            </p>
+        </div>
+
+
+    <div id="dropdown-1" class="dropdown-menu has-tip anchor-right">
+        <ul>
+            <li><a href="#1">Audit Logs</a></li>
+            <li class="divider"></li>
+            <li><a href="#2">Organizations</a></li>
+            <li><a href="#3">IG Types</a></li>
+            <li><a href="#3">Code Systems</a></li>
+            <li class="divider"></li>
+            <li>@{
+                //TODO: Do some security checking... we don't want to expose the server name to the world
+                var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["TemplateDatabaseDataSource"];
+
+                if (connectionString == null)
+                {
+                    throw new Exception("Could not find the connection string settings needed to run application!");
+                }
+
+                var serverRegex = new System.Text.RegularExpressions.Regex("data source=(.+?);");
+
+                if (!serverRegex.IsMatch(connectionString.ConnectionString))
+                {
+                    throw new Exception("Could not find server in connection string!");
+                }
+
+                string csDatasource = serverRegex.Match(connectionString.ConnectionString).Groups[1].Captures[0].Value;
+
+                // if (!TemplateDatabase.Authentication.AuthHelper.IsAuthenticated())
+                //     this.DatabaseLabel.Text = string.Empty; // " (Not logged in)"; AK- I removed this, because it doesn't make sense until after you log in, anyway (in other words it doesn't indicate this shows the database because the label doesn't appear until you log in)
+
+                if (TemplateDatabase.Authentication.AuthHelper.IsAuthenticationInternal())
+                {
+                @Html.Raw("<strong style=\"padding: 3px 15px\">Envornment: " + csDatasource + "</strong>");
+                }
+                //else
+                //    this.DatabaseLabel.Text = string.Empty;
+
+
+                            
+            }</li>
+            <li><strong style="padding: 3px 15px">Version: @System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()</strong></li>
+            <li><a href="https://wiki.lantanagroup.com/display/TDBMGMT/Release+History" target="_VersionHistory">History</a></li>
+        </ul>
+    </div>
+
+    <div id="dropdown-2" class="dropdown-menu">
+        <div class="dropdown-menu-innerbox" style="padding:8px">
+            <h1>Search Options</h1>
+            <table>
+                <tr>
+                    <td style="text-align:left">Edited On</td>
+                    <td style="text-align:left">
+                        <input type="datetime" /></td>
+                </tr>
+                <tr>
+                    <td style="text-align:left">State</td>
+                    <td style="text-align:left">
+                        <select>
+                            <option></option>
+                            <option>Draft</option>
+                            <option>Balloted</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:left">Implementation Guide</td>
+                    <td style="text-align:left"><input /></td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</body>
+</html>

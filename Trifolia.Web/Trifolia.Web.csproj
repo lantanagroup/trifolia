@@ -1,0 +1,1038 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6017497A-7603-4C00-9B39-D88AD6BF73C8}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Trifolia.Web</RootNamespace>
+    <AssemblyName>Trifolia.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>App_Data\Trifolia.Web.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DocumentFormat.OpenXml.1.0\lib\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Hl7.Fhir.Core, Version=0.11.5.28859, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.0.11.5\lib\net45\Hl7.Fhir.Core.dll</HintPath>
+      <Private>True</Private>
+      <Aliases>fhir_dstu1</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.DSTU2.Core, Version=0.90.2.33399, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.DSTU2.0.90.2\lib\net45\Hl7.Fhir.DSTU2.Core.dll</HintPath>
+      <Private>True</Private>
+      <Aliases>fhir_dstu2</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.DSTU2.Specification, Version=0.90.2.33406, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.Specification.DSTU2.0.90.2\lib\net45\Hl7.Fhir.DSTU2.Specification.dll</HintPath>
+      <Private>True</Private>
+      <Aliases>fhir_dstu2</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.Specification, Version=0.11.5.28861, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.Specification.0.11.5\lib\net45\Hl7.Fhir.Specification.dll</HintPath>
+      <Private>True</Private>
+      <Aliases>fhir_dstu1</Aliases>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.WebApi.MessageHandlers.Compression, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.MessageHandlers.Compression.1.3.0\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\Microsoft.AspNet.WebApi.MessageHandlers.Compression.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Recaptcha">
+      <HintPath>..\packages\recaptcha.1.0.5.0\lib\.NetFramework 4.0\Recaptcha.dll</HintPath>
+    </Reference>
+    <Reference Include="SanitizerProviders">
+      <HintPath>..\packages\AjaxControlToolkit.4.1.60623\lib\40\SanitizerProviders\SanitizerProviders.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpCompress, Version=0.10.3.0, Culture=neutral, PublicKeyToken=64eb6448c87dfed9, processorArchitecture=MSIL">
+      <HintPath>..\packages\p3-sharpcompress.0.10.5.2\lib\net40\SharpCompress.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.0.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.20710.0\lib\net40\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.2.0.20710.0\lib\net40\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.2.0.20710.0\lib\net40\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.AspNet, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.0.3.12153\lib\net40-full\DotNetOpenAuth.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.0.3.12153\lib\net40-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.1.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_GlobalResources\TrifoliaLang.es-ES.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrifoliaLang.es-ES.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\API\AdminController.cs" />
+    <Compile Include="Controllers\API\AuthController.cs" />
+    <Compile Include="Controllers\API\BulkCopyController.cs" />
+    <Compile Include="Controllers\API\HelpController.cs" />
+    <Compile Include="Controllers\API\ExportController.cs" />
+    <Compile Include="Controllers\API\FHIR\DSTU1\FHIRController.cs" />
+    <Compile Include="Controllers\API\FHIR\DSTU1\Shared.cs" />
+    <Compile Include="Controllers\API\FHIR\DSTU2\ConformanceController.cs" />
+    <Compile Include="Controllers\API\FHIR\DSTU2\Shared.cs" />
+    <Compile Include="Controllers\API\FHIR\DSTU2\StructureDefinitionController.cs" />
+    <Compile Include="Controllers\API\FHIR\DSTU2\ValueSetController.cs" />
+    <Compile Include="Controllers\API\FHIR\DSTU2\ImplementationGuideController.cs" />
+    <Compile Include="Controllers\API\GreenTemplateController.cs" />
+    <Compile Include="Controllers\API\ImplementationGuideController.cs" />
+    <Compile Include="Controllers\API\ImportController.cs" />
+    <Compile Include="Controllers\API\LocalizationController.cs" />
+    <Compile Include="Controllers\API\OrganizationController.cs" />
+    <Compile Include="Controllers\API\ReportController.cs" />
+    <Compile Include="Controllers\API\SchemaTypesController.cs" />
+    <Compile Include="Controllers\API\SecurityController.cs" />
+    <Compile Include="Controllers\API\TemplateController.cs" />
+    <Compile Include="Controllers\API\TemplateEditorController.cs" />
+    <Compile Include="Controllers\API\TerminologyController.cs" />
+    <Compile Include="Controllers\API\TrifoliaApiController.cs" />
+    <Compile Include="Controllers\API\TypeController.cs" />
+    <Compile Include="Controllers\API\ValidationController.cs" />
+    <Compile Include="Controllers\ExportController.cs" />
+    <Compile Include="Controllers\IGController.cs" />
+    <Compile Include="Controllers\IGManagementFilesController.cs" />
+    <Compile Include="Controllers\GreenController.cs" />
+    <Compile Include="Controllers\LocalizationController.cs" />
+    <Compile Include="Controllers\LookupController.cs" />
+    <Compile Include="Controllers\OrganizationController.cs" />
+    <Compile Include="Controllers\PermissionManagementController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Extensions\TemplateTypeExtension.cs" />
+    <Compile Include="Filters\FileDownloadAttribute.cs" />
+    <Compile Include="Formatters\FHIR\DSTU1\JSONFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\FHIR\DSTU1\XMLFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\FHIR\DSTU2\FhirMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\FHIR\DSTU2\GeneralFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Models\Account\HL7LoginModel.cs" />
+    <Compile Include="Models\Account\WhoAmIModel.cs" />
+    <Compile Include="Models\Account\LoginModel.cs" />
+    <Compile Include="Models\Account\NewProfileModel.cs" />
+    <Compile Include="Models\Account\UserProfile.cs" />
+    <Compile Include="Models\BulkCopy\CopyConfig.cs" />
+    <Compile Include="Models\BulkCopy\CopyModel.cs" />
+    <Compile Include="Models\BulkCopy\CopyModelJson.cs" />
+    <Compile Include="Models\BulkCopy\CopyResults.cs" />
+    <Compile Include="Models\BulkCopy\ExcelCell.cs" />
+    <Compile Include="Models\BulkCopy\ExcelColumn.cs" />
+    <Compile Include="Models\BulkCopy\ExcelRow.cs" />
+    <Compile Include="Models\BulkCopy\ExcelSheet.cs" />
+    <Compile Include="Models\BulkCopy\ExcelUpload.cs" />
+    <Compile Include="Models\BulkCopy\ExistingTemplateModel.cs" />
+    <Compile Include="Models\BulkCopy\Fields.cs" />
+    <Compile Include="Models\Export\GreenModel.cs" />
+    <Compile Include="Models\Export\GreenSettingsModel.cs" />
+    <Compile Include="Models\ConstraintDataTypeResolver.cs" />
+    <Compile Include="Models\Export\SchematronSettingsModel.cs" />
+    <Compile Include="Models\Export\SchematronModel.cs" />
+    <Compile Include="Models\Export\VocabularyItemModel.cs" />
+    <Compile Include="Models\Export\VocabularyModel.cs" />
+    <Compile Include="Models\Export\VocabularySettingsModel.cs" />
+    <Compile Include="Models\Export\XMLSettingsModel.cs" />
+    <Compile Include="Models\Export\MSWordModel.cs" />
+    <Compile Include="Models\Export\MSWordSettingsModel.cs" />
+    <Compile Include="Models\Export\XMLModel.cs" />
+    <Compile Include="Models\GreenManagement\AllShallConstraintsIncludedRule.cs" />
+    <Compile Include="Models\GreenManagement\ConstraintXpathBuilder.cs" />
+    <Compile Include="Models\GreenManagement\GreenDataTypeViewModel.cs" />
+    <Compile Include="Models\GreenManagement\GreenTemplateSaveResult.cs" />
+    <Compile Include="Models\GreenManagement\LeafLevelGreenConstraintsHaveDataType.cs" />
+    <Compile Include="Models\GreenManagement\TemplateConstraintMapper.cs" />
+    <Compile Include="Models\IGManagement\AuditEntryModel.cs" />
+    <Compile Include="Models\IGManagement\FileModel.cs" />
+    <Compile Include="Models\IGManagement\FilesModel.cs" />
+    <Compile Include="Models\IGManagement\FileVersionModel.cs" />
+    <Compile Include="Models\IGManagement\IGListItem.cs" />
+    <Compile Include="Models\IGManagement\IGListModes.cs" />
+    <Compile Include="Models\IGManagement\ImplementationGuideFileModel.cs" />
+    <Compile Include="Models\IGManagement\ImplementationGuideNoteModel.cs" />
+    <Compile Include="Models\IGManagement\ImplementationGuidePrimitiveModel.cs" />
+    <Compile Include="Models\IGManagement\TemplateTypeListItem.cs" />
+    <Compile Include="Models\GreenManagement\ConstraintViewModel.cs" />
+    <Compile Include="Models\GreenManagement\GreenTemplateViewModel.cs" />
+    <Compile Include="Models\IGManagement\ViewChangesModel.cs" />
+    <Compile Include="Models\IGManagement\ListItem.cs" />
+    <Compile Include="Models\IGManagement\ViewTemplateType.cs" />
+    <Compile Include="Models\IG\ViewDataModel.cs" />
+    <Compile Include="Models\LocalizationModel.cs" />
+    <Compile Include="Models\OrganizationManagement\OrganizationRole.cs" />
+    <Compile Include="Models\PermissionManagement\MyOrganizationInfo.cs" />
+    <Compile Include="Models\OrganizationManagement\OrganizationModel.cs" />
+    <Compile Include="Models\OrganizationManagement\OrganizationGroup.cs" />
+    <Compile Include="Models\OrganizationManagement\OrganizationUser.cs" />
+    <Compile Include="Models\Report\ExternalOrganizationDetail.cs" />
+    <Compile Include="Models\Report\OrganizationDetail.cs" />
+    <Compile Include="Models\Report\OrganizationUser.cs" />
+    <Compile Include="Models\Report\TemplateReviewFilter.cs" />
+    <Compile Include="Models\Report\TemplateReviewModel.cs" />
+    <Compile Include="Models\Report\TemplateReviewResultsModel.cs" />
+    <Compile Include="Models\Report\TemplateValidation.cs" />
+    <Compile Include="Models\SchemaModel\NodeItemModel.cs" />
+    <Compile Include="Models\TemplateEditing\ConstraintModel.cs" />
+    <Compile Include="Models\TemplateEditing\SaveModel.cs" />
+    <Compile Include="Models\TemplateEditing\SaveResponse.cs" />
+    <Compile Include="Models\TemplateEditing\SchemaNode.cs" />
+    <Compile Include="Models\TemplateEditing\TemplateItem.cs" />
+    <Compile Include="Models\TemplateEditing\TemplateMetaDataModel.cs" />
+    <Compile Include="Models\TemplateManagement\Constraint.cs" />
+    <Compile Include="Models\TemplateManagement\ConstraintSample.cs" />
+    <Compile Include="Models\TemplateManagement\CopyModel.cs" />
+    <Compile Include="Models\TemplateManagement\CopyRequestModel.cs" />
+    <Compile Include="Models\TemplateManagement\DifferenceModel.cs" />
+    <Compile Include="Models\TemplateManagement\EditModel.cs" />
+    <Compile Include="Models\TemplateManagement\BigListItem.cs" />
+    <Compile Include="Models\TemplateManagement\MoveCompleteModel.cs" />
+    <Compile Include="Models\TemplateManagement\MoveConstraint.cs" />
+    <Compile Include="Models\TemplateManagement\NumberReplacementTypes.cs" />
+    <Compile Include="Models\TemplateManagement\PublishConstraint.cs" />
+    <Compile Include="Models\TemplateManagement\PublishModel.cs" />
+    <Compile Include="Models\TemplateManagement\MoveModel.cs" />
+    <Compile Include="Models\TemplateManagement\PublishModelMapper.cs" />
+    <Compile Include="Models\TemplateManagement\SmallListItem.cs" />
+    <Compile Include="Models\TemplateManagement\TemplateUsageModel.cs" />
+    <Compile Include="Models\TemplateManagement\ViewModel.cs" />
+    <Compile Include="Models\TemplateManagement\XmlSample.cs" />
+    <Compile Include="Models\TerminologyManagement\CodeSystemItem.cs" />
+    <Compile Include="Models\TerminologyManagement\CodeSystemItems.cs" />
+    <Compile Include="Models\TerminologyManagement\ConceptItem.cs" />
+    <Compile Include="Models\TerminologyManagement\ConceptItems.cs" />
+    <Compile Include="Models\TerminologyManagement\BasicItem.cs" />
+    <Compile Include="Models\TerminologyManagement\Relationship.cs" />
+    <Compile Include="Models\TerminologyManagement\SaveValueSetConceptsModel.cs" />
+    <Compile Include="Models\TerminologyManagement\EditValueSetModel.cs" />
+    <Compile Include="Models\TerminologyManagement\ImportCheckRequest.cs" />
+    <Compile Include="Models\TerminologyManagement\ImportCheckResponse.cs" />
+    <Compile Include="Models\TerminologyManagement\ImportValueSetChange.cs" />
+    <Compile Include="Models\TerminologyManagement\SaveValueSetModel.cs" />
+    <Compile Include="Models\TerminologyManagement\ValueSetItems.cs" />
+    <Compile Include="Models\TerminologyManagement\ValueSetItem.cs" />
+    <Compile Include="Models\TerminologyManagement\ValueSetModel.cs" />
+    <Compile Include="Models\Type\ListItemModel.cs" />
+    <Compile Include="Models\Type\TypeModel.cs" />
+    <Compile Include="Models\Validation\IValidationRule.cs" />
+    <Compile Include="Models\Validation\RuleValidationResult.cs" />
+    <Compile Include="Models\Validation\ValidationResult.cs" />
+    <Compile Include="Models\Validation\ValidationRunner.cs" />
+    <Compile Include="PageExtensions.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SecurableForm.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IGManagementController.cs" />
+    <Compile Include="Controllers\IGTypeManagementController.cs" />
+    <Compile Include="Controllers\RoleManagementController.cs" />
+    <Compile Include="Controllers\SupportController.cs" />
+    <Compile Include="Controllers\TemplateManagementController.cs" />
+    <Compile Include="Controllers\TerminologyManagementController.cs" />
+    <Compile Include="Filters\SecurableAuthorizationFilter.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="GridViewExtensions.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="IRestrictedForm.cs" />
+    <Compile Include="Models\ActionItem.cs" />
+    <Compile Include="Models\BetaViewModel.cs" />
+    <Compile Include="Models\FilterItem.cs" />
+    <Compile Include="Models\HomeModel.cs" />
+    <Compile Include="Models\IGManagement\EditBookmarks.cs" />
+    <Compile Include="Models\IGManagement\EditModel.cs" />
+    <Compile Include="Models\IGManagement\ExportSQLModel.cs" />
+    <Compile Include="Models\IGManagement\ListModel.cs" />
+    <Compile Include="Models\IGManagement\ViewModel.cs" />
+    <Compile Include="Models\LandingPage\ConstraintViewModel.cs" />
+    <Compile Include="Models\LandingPage\GreenTemplateViewModel.cs" />
+    <Compile Include="Models\LandingPage\ValueSetSummaryViewModel.cs" />
+    <Compile Include="Models\LogInViewModel.cs" />
+    <Compile Include="Models\RoleManagement\RolesModel.cs" />
+    <Compile Include="Models\Shared\IGTypeComboModel.cs" />
+    <Compile Include="Models\Shared\ImplementationGuideComboModel.cs" />
+    <Compile Include="Models\Shared\OrganizationComboModel.cs" />
+    <Compile Include="Models\Shared\TemplateComboModel.cs" />
+    <Compile Include="Models\Shared\TemplateTypeComboModel.cs" />
+    <Compile Include="Models\Shared\ValueSetComboModel.cs" />
+    <Compile Include="Models\TemplateManagement\DeleteModel.cs" />
+    <Compile Include="Models\LandingPage\ImplementationGuideSummaryViewModel.cs" />
+    <Compile Include="Models\TemplateManagement\ListModel.cs" />
+    <Compile Include="Models\LandingPage\TemplateSummaryViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Session\SessionConstants.cs" />
+    <Compile Include="SimplifiedSchemaContext.cs" />
+    <Compile Include="TrifoliaJsonValueProviderFactory.cs" />
+    <Compile Include="App_GlobalResources\TrifoliaLang.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrifoliaLang.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Unauthorized.aspx.cs">
+      <DependentUpon>Unauthorized.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Unauthorized.aspx.designer.cs">
+      <DependentUpon>Unauthorized.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Home\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Home\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\Site.MVC.Master.cs">
+      <DependentUpon>Site.MVC.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Shared\Site.MVC.Master.designer.cs">
+      <DependentUpon>Site.MVC.Master</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\Trifolia.Authorization.XML" />
+    <Content Include="App_Data\Trifolia.Web.XML">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\FHIR\DSTU2\account.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\address.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\age.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\allergyintolerance.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\annotation.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\appointment.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\appointmentresponse.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\argonaut-careplan.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\attachment.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\auditevent.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\backboneelement.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\base64binary.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\basic.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\binary.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\bodysite.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\boolean.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\bundle.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\careplan.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\cholesterol.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\claim.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\claimresponse.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\clinicaldocument.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\clinicalimpression.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\code.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\codeableconcept.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\coding.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\communication.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\communicationrequest.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\composition.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\conceptmap.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\condition.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\conformance.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\consentdirective.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\contactpoint.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\contract.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\count.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\coverage.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\dataelement.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\date.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\datetime.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\decimal.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\detectedissue.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\device.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\devicecomponent.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\devicemetric.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\devicemetricobservation.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\deviceuserequest.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\deviceusestatement.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\diagnosticorder.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\diagnosticreport.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\distance.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\documentmanifest.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\documentreference.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\domainresource.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\duration.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\ehrsrle-auditevent.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\ehrsrle-provenance.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\element.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\elementdefinition-de.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\elementdefinition.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\eligibilityrequest.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\eligibilityresponse.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\encounter.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\enrollmentrequest.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\enrollmentresponse.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\episodeofcare.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\explanationofbenefit.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\extension.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\familymemberhistory-genetic.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\familymemberhistory.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\flag.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\genetics.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\goal.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\group.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\hdlcholesterol.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\healthcareservice.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\humanname.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\id.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\identifier.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\imagingobjectselection.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\imagingstudy.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\immunization.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\immunizationrecommendation.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\implementationguide.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\instant.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\integer.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\ldlcholesterol.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\lipidprofile.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\list.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\location.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\markdown.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\measurereport.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\media.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\medication.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\medicationadministration.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\medicationdispense.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\medicationorder.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\medicationstatement.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\messageheader.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\meta.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\money.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\namingsystem.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\narrative.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\nutritionorder.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\observation.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\oid.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\operationdefinition.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\operationoutcome.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\order.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\orderresponse.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\organization.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\parameters.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\patient.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\paymentnotice.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\paymentreconciliation.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\period.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\person.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\positiveint.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\practitioner.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\procedure.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\procedurerequest.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\processrequest.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\processresponse.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\provenance.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\quantity.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\questionnaire.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\questionnaireresponse.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\range.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\ratio.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\reference.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\referralrequest.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\relatedperson.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\resource.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\riskassessment.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\sampleddata.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\schedule.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\sdc-element.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\sdc-questionnaire.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\sdc-response.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\sdc-valueset.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\sdcde-dataelement.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\sdcde-valueset.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\searchparameter.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\shareablevalueset.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\signature.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\simplequantity.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\slot.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\specimen.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\string.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\structuredefinition.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\subscription.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\substance.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\supplydelivery.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\supplyrequest.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\testscript.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\time.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\timing.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\triglyceride.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\unsignedint.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\uri.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\uuid.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\valueset.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\visionprescription.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\xdsdocumentmanifest.profile.xml" />
+    <Content Include="App_Data\FHIR\DSTU2\xdsdocumentreference.profile.xml" />
+    <Content Include="favicon.ico" />
+    <Content Include="Fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="GenericError.html" />
+    <Content Include="Global.asax" />
+    <Content Include="Help\help.xml" />
+    <Content Include="Help\tooltip.xml" />
+    <Content Include="Images\AddNew.png" />
+    <Content Include="Images\anchor.png" />
+    <Content Include="Images\ClipboardEdit.gif" />
+    <Content Include="Images\copy.png" />
+    <Content Include="Images\customize.png" />
+    <Content Include="Images\disc.png" />
+    <Content Include="Images\DocumentDown.gif" />
+    <Content Include="Images\DocumentEdit.gif" />
+    <Content Include="Images\DocumentEdit2.gif" />
+    <Content Include="Images\DocumentRefresh.gif" />
+    <Content Include="Images\DocumentSearch.gif" />
+    <Content Include="Images\document_new.png" />
+    <Content Include="Images\document_text_add.png" />
+    <Content Include="Images\down_alt.png" />
+    <Content Include="Images\dropdown_arrow.png" />
+    <Content Include="Images\eraser.png" />
+    <Content Include="Images\Expand Vertical.png" />
+    <Content Include="Images\Expand.png" />
+    <Content Include="Images\export-csv.png" />
+    <Content Include="Images\export-pdf.png" />
+    <Content Include="Images\export-xls.png" />
+    <Content Include="Images\export-xlsx.png" />
+    <Content Include="Images\frown_face.png" />
+    <Content Include="Images\green_check.png" />
+    <Content Include="Images\question.png" />
+    <Content Include="Images\Help File.gif" />
+    <Content Include="Images\Help.png" />
+    <Content Include="Images\Home.gif" />
+    <Content Include="Images\Lantana.gif" />
+    <Content Include="Images\Lantana2.png" />
+    <Content Include="Images\monotone_cog_settings_gear.png" />
+    <Content Include="Images\NavigationDown24.gif" />
+    <Content Include="Images\NavigationUp24.gif" />
+    <Content Include="Images\rederror.gif" />
+    <Content Include="Images\Report.gif" />
+    <Content Include="Images\save.png" />
+    <Content Include="Images\Search.png" />
+    <Content Include="Images\spinner.gif" />
+    <Content Include="Images\success.png" />
+    <Content Include="Images\trash.png" />
+    <Content Include="Images\TrifoliaLogo.png" />
+    <Content Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Fonts\glyphicons-halflings-regular.woff" />
+    <None Include="Properties\PublishProfiles\DEV2 %28SHARE%29.pubxml" />
+    <None Include="Properties\PublishProfiles\Local.pubxml" />
+    <None Include="Properties\PublishProfiles\Production.pubxml" />
+    <Content Include="Scripts\Account\MyProfile.js" />
+    <Content Include="Scripts\Account\NewProfile.js" />
+    <Content Include="Scripts\angular\angular-highlight.min.js" />
+    <Content Include="Scripts\angular\angular-route.min.js" />
+    <Content Include="Scripts\angular\angular.min.js" />
+    <Content Include="Scripts\angular\highlight.min.js" />
+    <Content Include="Scripts\angular\ui-bootstrap-tpls-0.12.1.min.js" />
+    <Content Include="Scripts\Api\help.js" />
+    <Content Include="Scripts\Beta\Index.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-select.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-spinedit.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-treenav.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-treenav.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap.js" />
+    <Content Include="Scripts\Export\Green.js" />
+    <Content Include="Scripts\Export\Schematron.js" />
+    <Content Include="Scripts\Export\MSWord.js" />
+    <Content Include="Scripts\Export\Vocabulary.js" />
+    <Content Include="Scripts\Export\XML.js" />
+    <Content Include="Scripts\GreenManagement\GreenManagementViewModel.js" />
+    <Content Include="Scripts\GreenManagement\greenModels.js" />
+    <Content Include="Scripts\helpModel.js" />
+    <Content Include="Scripts\ContainerViewModel.js" />
+    <Content Include="Scripts\Home\LoggedIn.js" />
+    <Content Include="Scripts\IGManagement\Bookmarks.js" />
+    <Content Include="Scripts\IGManagement\Delete.js" />
+    <Content Include="Scripts\IGManagement\Edit.js" />
+    <Content Include="Scripts\IGManagement\Files.js" />
+    <Content Include="Scripts\IGManagement\List.js" />
+    <Content Include="Scripts\IGManagement\View.js" />
+    <Content Include="Scripts\IGManagement\ViewIgChanges.js" />
+    <Content Include="Scripts\IG\View.js" />
+    <Content Include="Scripts\joint.min.js" />
+    <Content Include="Scripts\jquery\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery\jquery-highlight-5.js" />
+    <Content Include="Scripts\jquery\jquery.ajax-progress.js" />
+    <Content Include="Scripts\jquery\jquery.highlight.js" />
+    <Content Include="Scripts\jquery\jquery.min.js" />
+    <Content Include="Scripts\jquery\jquery.scrollTo.min.js" />
+    <Content Include="Scripts\knockout\knockout-2.2.1.debug.js" />
+    <Content Include="Scripts\knockout\knockout.datagrid.js" />
+    <Content Include="Scripts\knockout\knockout.date.js" />
+    <Content Include="Scripts\knockout\knockout.file.js" />
+    <Content Include="Scripts\knockout\knockout.helpContext.js" />
+    <Content Include="Scripts\knockout\knockout.highlight.js" />
+    <Content Include="Scripts\knockout\knockout.hint.js" />
+    <Content Include="Scripts\knockout\knockout.localization.js" />
+    <Content Include="Scripts\knockout\knockout.sceditor.js" />
+    <Content Include="Scripts\knockout\knockout.tooltip.js" />
+    <Content Include="Scripts\knockout\knockout.validation.js" />
+    <Content Include="Scripts\knockout\knockout.validation.rules.js" />
+    <Content Include="Scripts\knockout\knockout.valuesetSelect.js" />
+    <Content Include="Scripts\Organization\Details.js" />
+    <Content Include="Scripts\Organization\List.js" />
+    <Content Include="Scripts\q\benchmark\compare-with-callbacks.js" />
+    <Content Include="Scripts\q\benchmark\scenarios.js" />
+    <Content Include="Scripts\q\design\q0.js" />
+    <Content Include="Scripts\q\design\q1.js" />
+    <Content Include="Scripts\q\design\q2.js" />
+    <Content Include="Scripts\q\design\q3.js" />
+    <Content Include="Scripts\q\design\q4.js" />
+    <Content Include="Scripts\q\design\q5.js" />
+    <Content Include="Scripts\q\design\q6.js" />
+    <Content Include="Scripts\q\design\q7.js" />
+    <Content Include="Scripts\q\design\README.js" />
+    <Content Include="Scripts\q\examples\all.js" />
+    <Content Include="Scripts\q\examples\async-generators\0.html" />
+    <Content Include="Scripts\q\examples\async-generators\1-return.js" />
+    <Content Include="Scripts\q\examples\async-generators\2-error-propagation.js" />
+    <Content Include="Scripts\q\examples\async-generators\3-spawn.js" />
+    <Content Include="Scripts\q\examples\async-generators\4-flow-control.js" />
+    <Content Include="Scripts\q\Gruntfile.js" />
+    <Content Include="Scripts\q\q.js" />
+    <Content Include="Scripts\q\q.png" />
+    <Content Include="Scripts\q\q.svg" />
+    <Content Include="Scripts\q\queue.js" />
+    <Content Include="Scripts\q\spec\aplus-adapter.js" />
+    <Content Include="Scripts\q\spec\lib\jasmine-1.2.0\jasmine-html.js" />
+    <Content Include="Scripts\q\spec\lib\jasmine-1.2.0\jasmine.css" />
+    <Content Include="Scripts\q\spec\lib\jasmine-1.2.0\jasmine.js" />
+    <Content Include="Scripts\q\spec\lib\jasmine-promise.js" />
+    <Content Include="Scripts\q\spec\q-spec.html" />
+    <Content Include="Scripts\q\spec\q-spec.js" />
+    <Content Include="Scripts\q\spec\queue-spec.js" />
+    <Content Include="Scripts\Report\Organizations.js" />
+    <Content Include="Scripts\Report\TemplateReview.js" />
+    <Content Include="Scripts\Report\TemplateUsage.js" />
+    <Content Include="Scripts\Report\TemplateValidation.js" />
+    <Content Include="Scripts\RoleManagement\Roles.js" />
+    <Content Include="Scripts\sceditor\jquery.sceditor.js" />
+    <Content Include="Scripts\sceditor\jquery.sceditor.min.js" />
+    <Content Include="Scripts\sceditor\jquery.sceditor.xhtml.js" />
+    <Content Include="Scripts\sceditor\jquery.sceditor.xhtml.min.js" />
+    <Content Include="Scripts\sceditor\sceditor.custom.js" />
+    <Content Include="Scripts\Schema\DataTypesViewModel.js" />
+    <Content Include="Scripts\Sha1.js" />
+    <Content Include="Scripts\TemplateEdit\templateEditGlobals.js" />
+    <Content Include="Scripts\TemplateEdit\templateEditModels.js" />
+    <Content Include="Scripts\TemplateEdit\TemplateEditViewModel.js" />
+    <Content Include="Scripts\TemplateManagement\BulkCopy.js" />
+    <Content Include="Scripts\TemplateManagement\constraintViewModel.js" />
+    <Content Include="Scripts\TemplateManagement\Delete.js" />
+    <Content Include="Scripts\TemplateManagement\List.js" />
+    <Content Include="Scripts\TemplateManagement\Move.js" />
+    <Content Include="Scripts\TemplateManagement\templateCopy.js" />
+    <Content Include="Scripts\TemplateManagement\publishModels.js" />
+    <Content Include="Scripts\TemplateManagement\templateView.js" />
+    <Content Include="Scripts\PermissionManagement.js" />
+    <Content Include="Scripts\jquery\jquery.hint.js" />
+    <Content Include="Scripts\jquery\jquery.fileDownload.js" />
+    <Content Include="Scripts\jquery\jquery.cookie.js" />
+    <Content Include="Scripts\jquery\jquery.clearsearch.js" />
+    <Content Include="Scripts\jquery\jquery.blockUI.js" />
+    <Content Include="Scripts\knockout\knockout-2.2.1.js" />
+    <Content Include="Scripts\knockout\knockout.dialog.js" />
+    <Content Include="Scripts\knockout\knockout.mapping.2.4.1.js" />
+    <Content Include="Scripts\knockout\knockout.mapping.debug.js" />
+    <Content Include="Scripts\knockout\knockout.programmatic.js" />
+    <Content Include="Scripts\Mvc\MicrosoftAjax.debug.js" />
+    <Content Include="Scripts\Mvc\MicrosoftAjax.js" />
+    <Content Include="Scripts\Mvc\MicrosoftMvcAjax.debug.js" />
+    <Content Include="Scripts\Mvc\MicrosoftMvcAjax.js" />
+    <Content Include="Scripts\Mvc\MicrosoftMvcValidation.debug.js" />
+    <Content Include="Scripts\Mvc\MicrosoftMvcValidation.js" />
+    <Content Include="Scripts\TemplateManagement\PublishSettingsViewModel.js" />
+    <Content Include="Scripts\SupportRequestHandler.js" />
+    <Content Include="Scripts\TerminologyManagement\Browse.js" />
+    <Content Include="Scripts\TerminologyManagement\EditValueSetConcepts.js" />
+    <Content Include="Scripts\TerminologyManagement\ImportExcel.js" />
+    <Content Include="Scripts\TerminologyManagement\ImportExternal.js" />
+    <Content Include="Scripts\TerminologyManagement\View.js" />
+    <Content Include="Scripts\Type\EditType.js" />
+    <Content Include="Scripts\Type\Types.js" />
+    <Content Include="Scripts\utils.js" />
+    <Content Include="Scripts\vkbeautify.0.99.00.beta.js" />
+    <Content Include="Scripts\knockout\knockout.templatewithoptions.js" />
+    <Content Include="Scripts\knockout\knockout.isdirty.js" />
+    <Content Include="Styles\bootstrap-select.min.css" />
+    <Content Include="Styles\bootstrap-spinedit.css" />
+    <Content Include="Styles\bootstrap-treenav.min.css" />
+    <Content Include="Styles\bootstrap.min.css" />
+    <Content Include="Styles\datepicker.css" />
+    <Content Include="Styles\default.min.css" />
+    <Content Include="Styles\famfamfam.png" />
+    <Content Include="Styles\highlight.css" />
+    <Content Include="Styles\font-awesome.min.css" />
+    <Content Include="Styles\IGView.css" />
+    <Content Include="Styles\joint.min.css" />
+    <Content Include="Styles\jquery.sceditor.default.min.css" />
+    <Content Include="Styles\Site.css" />
+    <Content Include="Styles\templateEditor.css" />
+    <Content Include="Unauthorized.aspx" />
+    <Content Include="Views\Account\Login.aspx" />
+    <Content Include="Views\Account\MyProfile.aspx" />
+    <Content Include="Views\Account\NewProfile.aspx" />
+    <Content Include="Views\Api\help.html" />
+    <Content Include="Views\Beta\Index.aspx" />
+    <Content Include="Views\Beta\SubmitCompleted.aspx" />
+    <Content Include="Views\Export\Green.aspx" />
+    <Content Include="Views\Export\Schematron.aspx" />
+    <Content Include="Views\Export\Vocabulary.aspx" />
+    <Content Include="Views\Export\XML.aspx" />
+    <Content Include="Views\Export\MSWord.aspx" />
+    <Content Include="Views\Home\Error.aspx" />
+    <Content Include="Views\IGManagementFiles\Files.aspx" />
+    <Content Include="Views\Green\Index.aspx" />
+    <Content Include="Views\Home\Index.aspx" />
+    <Content Include="Views\Home\LoggedInIndex.aspx" />
+    <Content Include="Views\IGManagement\Delete.aspx" />
+    <Content Include="Views\IGManagement\EditBookmarks.aspx" />
+    <Content Include="Views\IGManagement\ViewIgChanges.aspx" />
+    <Content Include="Views\IGManagement\ViewIgChangesPartial.ascx" />
+    <Content Include="Views\IGManagement\List.aspx" />
+    <Content Include="Views\IGManagement\Edit.aspx" />
+    <Content Include="Views\IGManagement\View.aspx" />
+    <Content Include="Views\IGTypeManagement\EditType.aspx" />
+    <Content Include="Views\IG\README.txt" />
+    <Content Include="Views\IG\View.aspx" />
+    <Content Include="Views\LocalizationDemo\Index.aspx" />
+    <Content Include="Views\Organization\Details.aspx" />
+    <Content Include="Views\Organization\List.aspx" />
+    <Content Include="Views\Report\Organizations.aspx" />
+    <Content Include="Views\Report\TemplateReview.aspx" />
+    <Content Include="Views\Report\TemplateUsage.aspx" />
+    <Content Include="Views\Report\TemplateValidation.aspx" />
+    <Content Include="Views\RoleManagement\Roles.aspx" />
+    <Content Include="Views\Shared\UserControls\Head.ascx" />
+    <Content Include="Views\Support\Index.aspx" />
+    <Content Include="Views\TemplateManagement\Delete.aspx" />
+    <Content Include="Views\TemplateManagement\Edit.aspx" />
+    <Content Include="Views\TemplateManagement\BulkCopy.aspx" />
+    <Content Include="Views\TemplateManagement\Copy.aspx" />
+    <Content Include="Views\TemplateManagement\List.aspx" />
+    <Content Include="Views\TemplateManagement\Move.aspx" />
+    <Content Include="Views\TemplateManagement\PublishSettings.aspx" />
+    <Content Include="Views\TemplateManagement\View.aspx" />
+    <Content Include="Views\TerminologyManagement\Browse.aspx" />
+    <Content Include="Views\IGTypeManagement\Types.aspx" />
+    <Content Include="Views\TerminologyManagement\EditValueSetConcepts.aspx" />
+    <Content Include="Views\TerminologyManagement\ImportExcel.aspx" />
+    <Content Include="Views\TerminologyManagement\ImportExternal.aspx" />
+    <Content Include="Views\TerminologyManagement\View.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Images\accent.png" />
+    <Content Include="Images\bullet.png" />
+    <Content Include="Images\heroAccent.png" />
+    <Content Include="Images\orderedList0.png" />
+    <Content Include="Images\orderedList1.png" />
+    <Content Include="Images\orderedList2.png" />
+    <Content Include="Images\orderedList3.png" />
+    <Content Include="Images\orderedList4.png" />
+    <Content Include="Images\orderedList5.png" />
+    <Content Include="Images\orderedList6.png" />
+    <Content Include="Images\orderedList7.png" />
+    <Content Include="Images\orderedList8.png" />
+    <Content Include="Images\orderedList9.png" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Shared\Site.MVC.Master" />
+    <Content Include="Scripts\knockout\knockout.combo.js" />
+    <Content Include="Scripts\knockout\knockout.templateSelect.js" />
+    <Content Include="Scripts\knockout\knockout.spinedit.js" />
+    <Content Include="Scripts\q\.coverignore" />
+    <Content Include="Scripts\q\.gitignore" />
+    <Content Include="Scripts\q\.jshintrc" />
+    <Content Include="Scripts\q\.mailmap" />
+    <Content Include="Scripts\q\.travis.yml" />
+    <Content Include="Scripts\q\CHANGES.md" />
+    <Content Include="Scripts\q\CONTRIBUTING.md" />
+    <Content Include="Scripts\q\examples\async-generators\README.md" />
+    <Content Include="Scripts\q\LICENSE" />
+    <Content Include="Scripts\q\package.json" />
+    <Content Include="Scripts\q\README.md" />
+    <Content Include="Scripts\q\ref_send.md" />
+    <Content Include="Scripts\q\spec\lib\jasmine-1.2.0\MIT.LICENSE" />
+    <Content Include="Scripts\q\VERSIONS.md" />
+    <Content Include="Trifolia.Generation.config" />
+    <None Include="Web.Install Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.Install Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Trifolia.Authentication\Trifolia.Authentication.csproj">
+      <Project>{fb7ff53b-df9f-437a-adba-ab0beb854243}</Project>
+      <Name>Trifolia.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Authorization\Trifolia.Authorization.csproj">
+      <Project>{d90e0eee-7ac3-4726-9a56-5b77632e9b3b}</Project>
+      <Name>Trifolia.Authorization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Config\Trifolia.Config.csproj">
+      <Project>{3fce87c4-71b6-4feb-a9ee-c6d64fdcc477}</Project>
+      <Name>Trifolia.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.DB\Trifolia.DB.csproj">
+      <Project>{3e3c8e62-b392-433d-8c18-a4cfc72b36ef}</Project>
+      <Name>Trifolia.DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Generation\Trifolia.Generation.csproj">
+      <Project>{6070b7b7-78be-44f7-9ebb-5ff0b944aaa3}</Project>
+      <Name>Trifolia.Generation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
+      <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>
+      <Name>Trifolia.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Shared\Trifolia.Shared.csproj">
+      <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>
+      <Name>Trifolia.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Terminology\Trifolia.Terminology.csproj">
+      <Project>{fdb22f8f-9677-471a-8929-b8dcb59e4c60}</Project>
+      <Name>Trifolia.Terminology</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App_GlobalResources\TrifoliaLang.es-ES.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>TrifoliaLang.es-ES.designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\TrifoliaLang.zh.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>TrifoliaLang.zh.designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="App_GlobalResources\TrifoliaLang.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TrifoliaLang.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Install Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Install Release|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>49366</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49319/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

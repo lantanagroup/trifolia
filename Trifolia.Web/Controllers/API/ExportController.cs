@@ -1,0 +1,549 @@
+﻿extern alias fhir_dstu1;
+extern alias fhir_dstu2;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.IO;
+using System.Xml;
+
+using ProprietaryTemplateExporter = Trifolia.Generation.XML.TemplateExporter;
+using DecorTemplateExporter = Trifolia.Generation.XML.DECOR.TemplateExporter;
+using Trifolia.Generation.XML;
+using Trifolia.Generation.XML.FHIR.DSTU1;
+using Trifolia.Generation.Schematron;
+using Trifolia.Generation.IG;
+using Trifolia.Generation.Green;
+using Trifolia.DB;
+using Trifolia.Authorization;
+using Trifolia.Web.Models.Export;
+using Trifolia.Shared;
+using Trifolia.Terminology;
+using ImplementationGuide = Trifolia.DB.ImplementationGuide;
+using Ionic.Zip;
+
+namespace Trifolia.Web.Controllers.API
+{
+    public class ExportController : ApiController
+    {
+        private IObjectRepository tdb;
+        private const string MSWordExportSettingsPropertyName = "MSWordExportSettingsJson";
+
+        #region CTOR
+
+        public ExportController()
+            : this(new TemplateDatabaseDataSource())
+        {
+
+        }
+
+        public ExportController(IObjectRepository tdb)
+        {
+            this.tdb = tdb;
+        }
+
+        #endregion
+
+        #region XML
+
+        [HttpGet, Route("api/Export/{implementationGuideId}/XML"), SecurableAction(SecurableNames.EXPORT_XML)]
+        public XMLModel Xml(int implementationGuideId, bool dy = false)
+        {
+            if (!CheckPoint.Instance.GrantViewImplementationGuide(implementationGuideId))
+                throw new AuthorizationException("You do not have permissions to this implementation guide.");
+
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
+
+            XMLModel model = new XMLModel()
+            {
+                ImplementationGuideId = implementationGuideId,
+                Name = ig.GetDisplayName(),
+                CancelUrl = GetCancelUrl(implementationGuideId),
+                ImplementationGuideType = ig.ImplementationGuideType.Name
+            };
+
+            // Get categories from the IG's settings
+            string categories = igSettings.GetSetting(IGSettingsManager.SettingProperty.Categories);
+            if (!string.IsNullOrEmpty(categories))
+            {
+                string[] categoriesSplit = categories.Split(',');
+
+                foreach (string category in categoriesSplit)
+                {
+                    model.Categories.Add(category.Replace("###", ","));
+                }
+            }
+
+            return model;
+        }
+
+        [HttpPost, Route("api/Export/XML"), SecurableAction(SecurableNames.EXPORT_XML)]
+        public HttpResponseMessage ExportXML(XMLSettingsModel model)
+        {
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == model.ImplementationGuideId);
+            List<Template> templates = this.tdb.Templates.Where(y => model.TemplateIds.Contains(y.Id)).ToList();
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, model.ImplementationGuideId);
+            string fileName = string.Format("{0}.xml", ig.GetDisplayName(true));
+            string export = string.Empty;
+
+            if (model.XmlType == XMLSettingsModel.ExportTypes.Proprietary)
+            {
+                ProprietaryTemplateExporter exporter = new ProprietaryTemplateExporter(this.tdb, templates, igSettings, categories: model.SelectedCategories);
+                export = exporter.GenerateExport();
+            }
+            else if (model.XmlType == XMLSettingsModel.ExportTypes.DSTU)
+            {
+                DecorTemplateExporter exporter = new DecorTemplateExporter(templates, this.tdb, model.ImplementationGuideId);
+                export = exporter.GenerateXML();
+            }
+            else if (model.XmlType == XMLSettingsModel.ExportTypes.FHIR)
+            {
+                FHIRExporter fhirExporter = new FHIRExporter(this.tdb, templates, igSettings, model.SelectedCategories);
+                export = fhirExporter.GenerateExport();
+
+                if (model.IncludeVocabulary == true)
+                {
+                    // Export the vocabulary for the implementation guide in SVS format
+                    VocabularyService vocService = new VocabularyService(this.tdb, false);
+                    string vocXml = vocService.GetImplementationGuideVocabulary(model.ImplementationGuideId, 1000, (int)VocabularySettingsModel.ExportFormatTypes.FHIR, "utf-8");
+
+                    // Merge the two ATOM exports together
+                    XmlDocument exportDoc = new XmlDocument();
+                    exportDoc.LoadXml(export);
+
+                    // Remove extra xmlns attributes from vocabulary xml
+                    System.Xml.Linq.XDocument doc = System.Xml.Linq.XDocument.Parse(vocXml);
+                    foreach (var descendant in doc.Root.Descendants())
+                    {
+                        var namespaceDeclarations = descendant.Attributes().Where(y => y.IsNamespaceDeclaration && y.Name.LocalName == "atom");
+                        foreach (var namespaceDeclaration in namespaceDeclarations)
+                        {
+                            namespaceDeclaration.Remove();
+                        }
+                    }
+                    vocXml = doc.ToString();
+
+                    XmlDocument vocDoc = new XmlDocument();
+                    vocDoc.LoadXml(vocXml);
+
+                    XmlNamespaceManager vocNsManager = new XmlNamespaceManager(vocDoc.NameTable);
+                    vocNsManager.AddNamespace("atom", "http://www.w3.org/2005/Atom");
+
+                    XmlNodeList vocEntryNodes = vocDoc.SelectNodes("/atom:feed/atom:entry", vocNsManager);
+
+                    foreach (XmlNode vocEntryNode in vocEntryNodes)
+                    {
+                        XmlNode clonedVocEntryNode = exportDoc.ImportNode(vocEntryNode, true);
+                        exportDoc.DocumentElement.AppendChild(clonedVocEntryNode);
+                    }
+
+                    // Format the XmlDocument and save it as a string
+                    using (StringWriter sw = new StringWriter())
+                    {
+                        XmlTextWriter xtw = new XmlTextWriter(sw);
+                        xtw.Formatting = Formatting.Indented;
+
+                        exportDoc.WriteContentTo(xtw);
+                        export = sw.ToString();
+                    }
+                }
+
+                if (Request.Headers.Accept.Count(y => y.MediaType == "application/json") == 1)
+                {
+                    fhir_dstu1.Hl7.Fhir.Model.Bundle bundle = fhir_dstu1.Hl7.Fhir.Serialization.FhirParser.ParseBundleFromXml(export);
+                    export = fhir_dstu1.Hl7.Fhir.Serialization.FhirSerializer.SerializeBundleToJson(bundle);
+                }
+            }
+            else if (model.XmlType == XMLSettingsModel.ExportTypes.FHIR2)
+            {
+                FHIR.DSTU2.FHIR2ImplementationGuideController controller = new FHIR.DSTU2.FHIR2ImplementationGuideController(this.tdb);
+                controller.RequestContext = this.RequestContext;
+                controller.Request = this.Request;
+                fhir_dstu2.Hl7.Fhir.Model.Bundle bundle = controller.GetImplementationGuides(null, "ImplementationGuide:resource", model.ImplementationGuideId, null);
+                export = fhir_dstu2.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToXml(bundle);
+            }
+            else if (model.XmlType == XMLSettingsModel.ExportTypes.JSON)
+            {
+                ImplementationGuideController ctrl = new ImplementationGuideController(this.tdb);
+                var dataModel = ctrl.GetViewData(model.ImplementationGuideId, null, null, true);
+
+                // Serialize the data to JSON
+                var jsonSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                jsonSerializer.MaxJsonLength = Int32.MaxValue;
+                export = jsonSerializer.Serialize(dataModel);
+
+                // Set the filename to JSON
+                fileName = string.Format("{0}.json", ig.GetDisplayName(true));
+            }
+
+            byte[] data = System.Text.ASCIIEncoding.UTF8.GetBytes(export);
+            return GetExportResponse(fileName, data);
+        }
+
+        #endregion
+
+        #region Vocabulary
+
+        [HttpGet, Route("api/Export/{implementationGuideId}/Vocabulary"), SecurableAction(SecurableNames.EXPORT_VOCAB)]
+        public VocabularyModel Vocabulary(int implementationGuideId)
+        {
+            var implementationGuide = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+
+            VocabularyModel model = new VocabularyModel()
+            {
+                ImplementationGuideId = implementationGuideId,
+                Name = implementationGuide.GetDisplayName(),
+                CancelUrl = GetCancelUrl(implementationGuideId)
+            };
+
+            return model;
+        }
+
+        [HttpPost, Route("api/Export/Vocabulary"), SecurableAction(SecurableNames.EXPORT_VOCAB)]
+        public HttpResponseMessage ExportVocabulary(VocabularySettingsModel model)
+        {
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == model.ImplementationGuideId);
+            byte[] data = new byte[0];
+            string fileType = string.Empty;
+            string contentType = string.Empty;
+
+            VocabularyService service = new VocabularyService(this.tdb, ig.ImplementationGuideType.SchemaURI == "urn:hl7-org:v3");
+
+            switch (model.ExportFormat)
+            {
+                case VocabularySettingsModel.ExportFormatTypes.Standard:
+                case VocabularySettingsModel.ExportFormatTypes.SVS:
+                case VocabularySettingsModel.ExportFormatTypes.FHIR:
+                    fileType = "xml";
+                    contentType = "text/xml";
+                    string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, model.MaximumMembers, (int)model.ExportFormat, model.Encoding);
+                    Encoding encoding = Encoding.GetEncoding(model.Encoding);
+                    data = encoding.GetBytes(vocXml);
+                    break;
+                case VocabularySettingsModel.ExportFormatTypes.Excel:
+                    fileType = "xlsx";
+                    contentType = "application/octet-stream";
+                    data = service.GetImplementationGuideVocabularySpreadsheet(model.ImplementationGuideId, model.MaximumMembers);
+                    break;
+            }
+
+            string fileName = string.Format("{0}.{1}", ig.GetDisplayName(true), fileType);
+
+            return GetExportResponse(fileName, data);
+        }
+
+        [HttpGet, Route("api/Export/{implementationGuideId}/ValueSet"), SecurableAction()]
+        public List<VocabularyItemModel> GetValueSets(int implementationGuideId, int? exportFormat = 0)
+        {
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+
+            switch (exportFormat)
+            {
+                case 0:
+                case 1:
+                case 2:
+                    return ConvertVocabularyItems(ig.GetValueSets(this.tdb, true));
+                default:
+                    return ConvertVocabularyItems(ig.GetValueSets(this.tdb));
+            }
+        }
+
+        private List<VocabularyItemModel> ConvertVocabularyItems(List<ImplementationGuideValueSet> valueSets)
+        {
+            List<VocabularyItemModel> ret = new List<VocabularyItemModel>();
+
+            foreach (var cValueSet in valueSets)
+            {
+                ret.Add(
+                    new VocabularyItemModel()
+                    {
+                        Id = cValueSet.ValueSet.Id,
+                        Name = cValueSet.ValueSet.Name,
+                        Oid = cValueSet.ValueSet.Oid,
+                        BindingDate = cValueSet.BindingDate != null ? cValueSet.BindingDate.Value.ToString("MM/dd/yyyy") : string.Empty
+                    });
+            }
+
+            return ret;
+        }
+
+        #endregion
+
+        #region Schematron
+
+        [HttpGet, Route("api/Export/{implementationGuideId}/Schematron"), SecurableAction(SecurableNames.EXPORT_SCHEMATRON)]
+        public SchematronModel Schematron(int implementationGuideId)
+        {
+            var implementationGuide = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
+
+            SchematronModel model = new SchematronModel()
+            {
+                ImplementationGuideId = implementationGuideId,
+                Name = implementationGuide.GetDisplayName(),
+                CancelUrl = GetCancelUrl(implementationGuideId)
+            };
+
+            // Get categories from the IG's settings
+            string categories = igSettings.GetSetting(IGSettingsManager.SettingProperty.Categories);
+            if (!string.IsNullOrEmpty(categories))
+            {
+                string[] categoriesSplit = categories.Split(',');
+
+                foreach (string category in categoriesSplit)
+                {
+                    model.Categories.Add(category.Replace("###", ","));
+                }
+            }
+
+            return model;
+        }
+
+        [HttpPost, Route("api/Export/Schematron"), SecurableAction(SecurableNames.EXPORT_SCHEMATRON)]
+        public HttpResponseMessage ExportSchematron(SchematronSettingsModel model)
+        {
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == model.ImplementationGuideId);
+            VocabularyOutputType vocOutputType = GetVocOutputType(model.ValueSetOutputFormat);
+
+            var templates = (from t in this.tdb.Templates
+                             where model.TemplateIds.Contains(t.Id)
+                             select t).ToList();
+
+            string schematronResult = SchematronGenerator.Generate(tdb, ig, model.IncludeCustomSchematron, vocOutputType, model.VocabularyFileName, templates, model.SelectedCategories, model.DefaultSchematron);
+            byte[] data = ASCIIEncoding.UTF8.GetBytes(schematronResult);
+            string fileName = string.Format("{0}.sch", ig.GetDisplayName(true));
+
+            return GetExportResponse(fileName, data);
+        }
+
+        #endregion
+
+        #region MS Word
+
+        /// <summary>
+        /// Gets default settings for the specified implementation guide
+        /// </summary>
+        /// <param name="implementationGuideId">The id of the implementation guide being exported</param>
+        /// <returns>Trifolia.Web.Models.Export.MSWordSettingsModel</returns>
+        /// <permission cref="Trifolia.Authorization.SecurableNames.EXPORT_WORD">User must have access to the EXPORT_WORD securable</permission>
+        [HttpGet, Route("api/Export/{implementationGuideId}/Settings"), SecurableAction(SecurableNames.EXPORT_WORD)]
+        public MSWordSettingsModel GetExportSettings(int implementationGuideId)
+        {
+            IGSettingsManager settingsManager = new IGSettingsManager(this.tdb, implementationGuideId);
+            var settingsJson = settingsManager.GetSetting(MSWordExportSettingsPropertyName);
+
+            if (!string.IsNullOrEmpty(settingsJson))
+            {
+                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                MSWordSettingsModel settings = serializer.Deserialize<MSWordSettingsModel>(settingsJson);
+                return settings;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets a model for displaying information about the implementation guide being exported
+        /// </summary>
+        /// <param name="implementationGuideId">The id of the implementation guide being exported</param>
+        /// <returns>Trifolia.Web.Models.Export.MSWordModel</returns>
+        [HttpGet, Route("api/Export/{implementationGuideId}/MSWord"), SecurableAction(SecurableNames.EXPORT_WORD)]
+        public MSWordModel MSWord(int implementationGuideId)
+        {
+            var ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
+            bool canEdit = CheckPoint.Instance.HasSecurables(SecurableNames.TEMPLATE_EDIT);
+            bool grantEdit = CheckPoint.Instance.GrantEditImplementationGuide(implementationGuideId);
+
+            MSWordModel model = new MSWordModel()
+            {
+                ImplementationGuideId = implementationGuideId,
+                Name = ig.GetDisplayName(),
+                CanEdit = canEdit && grantEdit
+            };
+
+            // Get categories from the IG's settings
+            string categories = igSettings.GetSetting(IGSettingsManager.SettingProperty.Categories);
+            if (!string.IsNullOrEmpty(categories))
+            {
+                string[] categoriesSplit = categories.Split(',');
+
+                foreach (string category in categoriesSplit)
+                {
+                    model.Categories.Add(category.Replace("###", ","));
+                }
+            }
+
+            return model;
+        }
+
+        /// <summary>
+        /// Exports an MS Word implementation guide with the specified settings.
+        /// </summary>
+        /// <param name="exportSettings">The settings for the export</param>
+        /// <returns>A file-download of the .docx MS Word implementation guide</returns>
+        [HttpPost, Route("api/Export/MSWord"), SecurableAction(SecurableNames.EXPORT_WORD)]
+        public HttpResponseMessage ExportMSWord(MSWordSettingsModel exportSettings)
+        {
+            if (exportSettings == null)
+                throw new ArgumentNullException("model");
+
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == exportSettings.ImplementationGuideId);
+            ImplementationGuideGenerator generator = new ImplementationGuideGenerator(this.tdb, exportSettings.ImplementationGuideId, exportSettings.TemplateIds);
+            string fileName = string.Format("{0}.docx", ig.GetDisplayName(true));
+
+            ExportSettings lConfig = new ExportSettings();
+            lConfig.Use(c =>
+            {
+                c.GenerateTemplateConstraintTable = exportSettings.TemplateTables == TemplateTableOptions.ConstraintOverview || exportSettings.TemplateTables == TemplateTableOptions.Both;
+                c.GenerateTemplateContextTable = exportSettings.TemplateTables == TemplateTableOptions.Context || exportSettings.TemplateTables == TemplateTableOptions.Both;
+                c.GenerateDocTemplateListTable = exportSettings.DocumentTables == DocumentTableOptions.List || exportSettings.DocumentTables == DocumentTableOptions.Both;
+                c.GenerateDocContainmentTable = exportSettings.DocumentTables == DocumentTableOptions.Containment || exportSettings.DocumentTables == DocumentTableOptions.Both;
+                c.AlphaHierarchicalOrder = exportSettings.TemplateSortOrder == TemplateSortOrderOptions.AlphaHierarchically;
+                c.DefaultValueSetMaxMembers = exportSettings.GenerateValuesets ? exportSettings.MaximumValuesetMembers : 0;
+                c.GenerateValueSetAppendix = exportSettings.ValuesetAppendix;
+                c.IncludeXmlSamples = exportSettings.IncludeXmlSample;
+                c.IncludeChangeList = exportSettings.IncludeChangeList;
+                c.IncludeTemplateStatus = exportSettings.IncludeTemplateStatus;
+                c.IncludeNotes = exportSettings.IncludeNotes;
+                c.SelectedCategories = exportSettings.SelectedCategories;
+            });
+            
+            if (exportSettings.ValueSetOid != null && exportSettings.ValueSetOid.Count > 0)
+            {
+                Dictionary<string, int> valueSetMemberMaximums = new Dictionary<string, int>();
+
+                for (int i = 0; i < exportSettings.ValueSetOid.Count; i++)
+                {
+                    if (valueSetMemberMaximums.ContainsKey(exportSettings.ValueSetOid[i]))
+                        continue;
+
+                    valueSetMemberMaximums.Add(exportSettings.ValueSetOid[i], exportSettings.ValueSetMaxMembers[i]);
+                }
+
+                lConfig.ValueSetMaxMembers = valueSetMemberMaximums;
+            }
+
+            // Save the export settings as the default settings
+            if (exportSettings.SaveAsDefaultSettings)
+            {
+                IGSettingsManager settingsManager = new IGSettingsManager(this.tdb, exportSettings.ImplementationGuideId);
+                var settingsJson = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(exportSettings);
+                settingsManager.SaveSetting(MSWordExportSettingsPropertyName, settingsJson);
+            }
+
+            generator.BuildImplementationGuide(lConfig);
+
+            byte[] data = generator.GetDocument();
+
+            return GetExportResponse(fileName, data);
+        }
+
+        #endregion
+
+        #region Green
+
+        [HttpGet, Route("api/Export/{implementationGuideId}/Green"), SecurableAction(SecurableNames.EXPORT_GREEN)]
+        public GreenModel Green(int implementationGuideId)
+        {
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+
+            GreenModel model = new GreenModel()
+            {
+                ImplementationGuideId = implementationGuideId,
+                Name = ig.GetDisplayName()
+            };
+
+            List<TemplateType> rootTemplateTypes = ig.ImplementationGuideType.GetRootTemplateTypes();
+            model.Templates = (from t in ig.ChildTemplates
+                               join rtt in rootTemplateTypes on t.TemplateTypeId equals rtt.Id
+                               where t.GreenTemplates.Count > 0
+                               select LookupTemplate.ConvertTemplate(t)).ToList();
+
+            return model;
+        }
+
+        [HttpPost, Route("api/Export/Green"), SecurableAction(SecurableNames.EXPORT_GREEN)]
+        public HttpResponseMessage ExportGreen(GreenSettingsModel model)
+        {
+            if (!CheckPoint.Instance.GrantViewImplementationGuide(model.ImplementationGuideId))
+                throw new AuthorizationException("You do not have permissions to this implementation guide.");
+
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == model.ImplementationGuideId);
+            Template rootTemplate = this.tdb.Templates.Single(y => y.Id == model.RootTemplateId);
+
+            // Generate the schema
+            GreenSchemaPackage package = GreenSchemaGenerator.Generate(this.tdb, rootTemplate, model.SeparateDataTypes);
+
+            using (ZipFile zip = new ZipFile())
+            {
+                byte[] schemaContentBytes = ASCIIEncoding.UTF8.GetBytes(package.GreenSchemaContent);
+                zip.AddEntry(package.GreenSchemaFileName, schemaContentBytes);
+
+                // If the datatypes were separated into another schema
+                if (!string.IsNullOrEmpty(package.DataTypesFileName))
+                {
+                    byte[] dataTypesContentBytes = ASCIIEncoding.UTF8.GetBytes(package.DataTypesContent);
+                    zip.AddEntry(package.DataTypesFileName, dataTypesContentBytes);
+                }
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    zip.Save(ms);
+
+                    string packageFileName = string.Format("{0}_green.zip", ig.GetDisplayName(true));
+                    byte[] data = ms.ToArray();
+
+                    return GetExportResponse(packageFileName, data);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private string GetCancelUrl(int implementationGuideId)
+        {
+            return "/IGManagement/View/" + implementationGuideId;
+        }
+
+        private static VocabularyOutputType GetVocOutputType(SchematronSettingsModel.ValueSetOutputFormats format)
+        {
+            switch (format)
+            {
+                case SchematronSettingsModel.ValueSetOutputFormats.Standard:
+                    return VocabularyOutputType.Default;
+                case SchematronSettingsModel.ValueSetOutputFormats.SVS_Multiple:
+                    return VocabularyOutputType.SVS;
+                case SchematronSettingsModel.ValueSetOutputFormats.SVS_Single:
+                    return VocabularyOutputType.SVS_SingleValueSet;
+            }
+
+            return VocabularyOutputType.Default;
+        }
+
+        private HttpResponseMessage GetExportResponse(string fileName, byte[] data) 
+        {
+            Array.ForEach(Path.GetInvalidFileNameChars(),
+                c => fileName = fileName.Replace(c.ToString(), String.Empty));
+            fileName = fileName
+                .Replace("—", string.Empty)
+                .Replace("®", string.Empty)
+                .Replace(",", string.Empty);
+
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StreamContent(new MemoryStream(data));
+            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            response.Content.Headers.ContentDisposition.FileName = fileName;
+            return response;
+        }
+
+        #endregion
+    }
+}

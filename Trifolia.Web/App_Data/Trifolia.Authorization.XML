@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Trifolia.Authorization</name>
+    </assembly>
+    <members>
+        <member name="T:Trifolia.Authorization.AuthorizationException">
+            <summary>
+            The exception that is thrown when a user is not authorized to access a securable
+            </summary>
+        </member>
+        <member name="T:Trifolia.Authorization.CheckPoint">
+            <summary>
+            Provides security authorization for securable items
+            </summary>
+        </member>
+        <member name="M:Trifolia.Authorization.CheckPoint.GetUser(Trifolia.DB.IObjectRepository)">
+            <summary>
+            Overloaded so that the returned User object can be from the same context that a reference is being saved to
+            </summary>
+        </member>
+        <member name="T:Trifolia.Authorization.SecurableNames">
+            <summary>
+            Defines the securables allowed to be associated with roles.
+            Securables are granular role-based permissions that indicate what actions a user can perform.
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.LANDING_PAGE">
+            <summary>
+            LandingPage
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.IMPLEMENTATIONGUIDE_LIST">
+            <summary>
+            IGManagementList
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.IMPLEMENTATIONGUIDE_EDIT">
+            <summary>
+            ImplementationGuideEdit
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.IMPLEMENTATIONGUIDE_EDIT_BOOKMARKS">
+            <summary>
+            ImplementationGuideEditBookmarks
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.IMPLEMENTATIONGUIDE_NOTES">
+            <summary>
+            ImplementationGuideNotes
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.IMPLEMENTATIONGUIDE_PRIMITIVES">
+            <summary>
+            ImplementationGuidePrimitives
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.IMPLEMENTATIONGUIDE_AUDIT_TRAIL">
+            <summary>
+            ImplementationGuideAuditTrail
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.IMPLEMENTATIONGUIDE_FILE_MANAGEMENT">
+            <summary>
+            IGFileManagement
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.IMPLEMENTATIONGUIDE_FILE_VIEW">
+            <summary>
+            IGFileView
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.VALUESET_LIST">
+            <summary>
+            ValueSetList
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.VALUESET_EDIT">
+            <summary>
+            ValueSetEdit
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.TERMINOLOGY_OVERRIDE">
+            <summary>
+            TerminologyOverride
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.CODESYSTEM_LIST">
+            <summary>
+            CodeSystemList
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.CODESYSTEM_EDIT">
+            <summary>
+            CodeSystemEdit
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.EXPORT_WORD">
+            <summary>
+            ExportWordDocuments
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.EXPORT_VOCAB">
+            <summary>
+            ExportVocabulary
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.EXPORT_SCHEMATRON">
+            <summary>
+            ExportSchematron
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.EXPORT_XML">
+            <summary>
+            ExportXML
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.EXPORT_GREEN">
+            <summary>
+            ExportGreen
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">
+            <summary>
+            TemplateList
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">
+            <summary>
+            TemplateEdit
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.TEMPLATE_COPY">
+            <summary>
+            TemplateCopy
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.TEMPLATE_DELETE">
+            <summary>
+            TemplateDelete
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.TEMPLATE_MOVE">
+            <summary>
+            TemplateMove
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.PUBLISH_SETTINGS">
+            <summary>
+            PublishSettings
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.REPORT_TEMPLATE_REVIEW">
+            <summary>
+            ReportTemplateReview
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.REPORT_TEMPLATE_COMPLIANCE">
+            <summary>
+            ReportTemplateCompliance
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.GREEN_MODEL">
+            <summary>
+            GreenModel
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.ADMIN">
+            <summary>
+            Admin
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.ORGANIZATION_LIST">
+            <summary>
+            OrganizationList
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.ORGANIZATION_DETAILS">
+            <summary>
+            OrganizationDetails
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.WEB_IG">
+            <summary>
+            WebIG
+            </summary>
+        </member>
+    </members>
+</doc>

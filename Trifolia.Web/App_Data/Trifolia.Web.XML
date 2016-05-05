@@ -1,0 +1,1235 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Trifolia.Web</name>
+    </assembly>
+    <members>
+        <member name="M:Trifolia.Web.Controllers.API.AdminController.GetRoles">
+            <summary>
+            Gets all roles in Trifolia
+            </summary>
+            <returns>Trifolia.Web.Models.RoleManagement.RolesModel</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.AdminController.AssignRoleSecurableAction(System.Int32,System.Int32)">
+            <summary>
+            Assgns the specified securable to the role
+            Both role and securable must exist.
+            </summary>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.AdminController.UnassignRoleSecurableAction(System.Int32,System.Int32)">
+            <summary>
+            Removes a securable from the specified role.
+            Both role and securable must exist.
+            </summary>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.AdminController.AddRole(System.String)">
+            <summary>
+            Adds a new role with the specified name.
+            </summary>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.AdminController.RemoveRole(System.Int32)">
+            <summary>
+            Removes the specified role
+            Expects that a valid role is specified.
+            </summary>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.AdminController.RestrictOrganizations(System.Int32,System.Int32)">
+            <summary>
+            Updates the organization restrictions for a given role.
+            Role must be specified.
+            Any organization passed in via the model is checked to determine if it should be added or removed as a restriction.
+            </summary>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.AdminController.UnrestrictOrganization(System.Int32,System.Int32)">
+            <summary>
+            Removes the restriction on the specified organization from the specified role
+            </summary>
+            <param name="roleId">The id of the role to remove the organization restriction from</param>
+            <param name="organizationId">The id of the organization</param>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.AdminController.UpdateDefaultRole(System.Nullable{System.Int32})">
+            <summary>
+            Set the default role to the role specified in the roleId parameter.
+            First removes the default flag from all roles, then sets the flag for the one specified (or none, if null is provided).
+            </summary>
+            <param name="roleId">If specified, the role to set as the new default.</param>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.HelpController.XmlDocumentationProvider.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Trifolia.Web.Controllers.API.HelpController.XmlDocumentationProvider"/> class.
+            </summary>
+            <param name="documentPath">The physical path to XML document.</param>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ExportController.GetExportSettings(System.Int32)">
+            <summary>
+            Gets default settings for the specified implementation guide
+            </summary>
+            <param name="implementationGuideId">The id of the implementation guide being exported</param>
+            <returns>Trifolia.Web.Models.Export.MSWordSettingsModel</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.EXPORT_WORD">User must have access to the EXPORT_WORD securable</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ExportController.MSWord(System.Int32)">
+            <summary>
+            Gets a model for displaying information about the implementation guide being exported
+            </summary>
+            <param name="implementationGuideId">The id of the implementation guide being exported</param>
+            <returns>Trifolia.Web.Models.Export.MSWordModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ExportController.ExportMSWord(Trifolia.Web.Models.Export.MSWordSettingsModel)">
+            <summary>
+            Exports an MS Word implementation guide with the specified settings.
+            </summary>
+            <param name="exportSettings">The settings for the export</param>
+            <returns>A file-download of the .docx MS Word implementation guide</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.ConformanceController.GetConformance(System.String)">
+            <summary>
+            Gets conformance information about the FHIR DSTU2 server.
+            </summary>
+            <param name="format">The format that the response should be returned in</param>
+            <seealso cref="!:http://test.com"/>
+            <returns>Resource&lt;Conformance&gt;</returns>
+        </member>
+        <member name="T:Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType">
+            <summary>
+            Enumeration that indicates what type of summary to respond with
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType.True">
+            <summary>
+            true
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType.False">
+            <summary>
+            false
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType.Text">
+            <summary>
+            text
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType.Data">
+            <summary>
+            data
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2StructureDefinitionController.GetTemplate(System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType})">
+            <summary>
+            Gets a specific profile and converts it to a StructureDefinition resource.
+            </summary>
+            <param name="templateId">The id of the profile/template to get</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <returns>Hl7.Fhir.Model.StructureDefinition</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2StructureDefinitionController.GetTemplates(System.Nullable{System.Int32},System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType})">
+            <summary>
+            Searches for profiles within Trifolia and returns them as StructureDefinition resources within a Bundle.
+            </summary>
+            <param name="templateId">The id of a template/profile to search for and return in the bundle</param>
+            <param name="name">The name of a template/profile to search for. Only templates/profiles that contain this specified name will be returned.</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <returns>Hl7.Fhir.Model.Bundle</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2StructureDefinitionController.CreateStructureDefinition(Hl7.Fhir.Model.StructureDefinition)">
+            <summary>
+            Creates a template/profile from the specified StructureDefinition
+            </summary>
+            <returns>Hl7.Fhir.Model.StructureDefinition</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2StructureDefinitionController.UpdateStructureDefinition(Hl7.Fhir.Model.StructureDefinition,System.Int32)">
+            <summary>
+            Updates an existing template/profile based on the specified StructureDefinition
+            </summary>
+            <param name="templateId"></param>
+            <returns>Hl7.Fhir.Model.StructureDefinition</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2StructureDefinitionController.DeleteStructureDefinition(System.Int32)">
+            <summary>
+            Deletes the specified profile/template. This is a permanent deletion, and cannot be restored via _history.
+            </summary>
+            <param name="templateId">The id of the profile/template to delete</param>
+            <returns>Hl7.Fhir.Model.OperationOutcome</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_DELETE">Only users with the ability to delete templates/profiles can execute this operation</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ValueSetController.GetValueSet(System.Int32,System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType})">
+            <summary>
+            Gets the specified value set from Trifolia, converts it to, and returns a ValueSet resource.
+            </summary>
+            <param name="valueSetId">The id of the value set to search for. If specified and found, only a single ValueSet resource is returned in the Bundle.</param>
+            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <returns>Hl7.Fhir.Model.ValueSet</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ValueSetController.GetValueSets(System.Nullable{System.Int32},System.String,System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType})">
+            <summary>
+            Searches value sets within Trifolia and returns them as ValueSet resources within a Bundle.
+            </summary>
+            <param name="valueSetId">The id of the value set to search for. If specified and found, only a single ValueSet resource is returned in the Bundle.</param>
+            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <returns>Hl7.Fhir.Model.Bundle&lt;Hl7.Fhir.Model.ValueSet&gt;</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController.GetImplementationGuide(System.Int32,System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType})">
+            <summary>
+            Get the specified implementation guide in FHIR DSTU2 format
+            </summary>
+            <param name="implementationGuideId">The id of the implementation guide</param>
+            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <returns>Hl7.Fhir.Model.ImplementationGuide</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController.GetImplementationGuides(System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType},System.String,System.Nullable{System.Int32},System.String)">
+            <summary>
+            Gets implementation guides in FHIR DSTU2 format. Can specify search information, such as the name of the implementation guide and the id of the implementation guide.
+            </summary>
+            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <param name="include">Indicate what additional information should be included with the implementation guide (such as "ImplementationGuide:resource")</param>
+            <param name="implementationGuideId">Specify the id of the implementation guide to search for.</param>
+            <param name="name">Specifies the name of the implementation guide to search for. Implementation guides whose name *contains* this value will be returned.</param>
+            <returns>Hl7.Fhir.Model.Bundle</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.GetImplementationGuideValueSets(System.Int32,System.Boolean)">
+            <summary>
+            Gets all value sets for the given implementation guide.
+            </summary>
+            <param name="implementationGuideId">The ID of the implementation guide</param>
+            <param name="onlyStatic">Defaults to true, if not specified. When true, returns ONLY value sets that are statically bound to constraints in the implementation guide. When false, returns all value sets regardless of the static binding.</param>
+            <returns>A list of all value sets, including id, name, oid, and binding date</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.UserHasPermissions(Trifolia.DB.User,System.Collections.Generic.List{Trifolia.Web.Models.IGManagement.EditModel.Permission})">
+            <summary>
+            Ensures that in the permissions list provided, the current user shows up as either a direct permissions to the user,
+            permitted via a group, or permitted via the entire organization.
+            </summary>
+            <exception cref="T:System.Exception">Throws an exception if the user is not part of the list, which is intended to be handled in the calling method.</exception>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.OrganizationController.GetOrganizations">
+            <summary>
+            Gets all organizations in Trifolia
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.SchemaTypesController.GetAll(System.Int32)">
+            <summary>
+            Gets all of the types in a schema regardless if they are prefered or not
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.SchemaTypesController.Get(System.Int32)">
+            <summary>
+            Gets all the prefered types in a schema
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TemplateController.GetTemplateConstraints(System.Int32)">
+            <summary>
+            Gets a hierarchy of all constraints for the specified template, including basic details for the constraint (such as id, context, conformance, cardinality, etc.)
+            </summary>
+            <param name="templateId">The id of the template</param>
+            <returns>System.Collections.Generic.IEnumerable&lt;Trifolia.Web.Models.TemplateManagement.Constraint&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TemplateController.FindId(System.String)">
+            <summary>
+            Finds the internal identifier of a template/profile by the identifier
+            </summary>
+            <param name="identifier">The identifier of the template/profile to search for</param>
+            <returns>System.Nullable&lt;System.Int32&gt;: Returns null/nothing if no template/profile is found. Otherwise, returns the internal Trifolia id (integer) of the template/profile.</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TemplateController.GetTemplates(System.Nullable{System.Int32},System.Int32,System.String,System.Boolean,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            Searches for templates and returns basic meta-data about the templates
+            </summary>
+            <param name="count">The number of templates to return per page</param>
+            <param name="page">The page number</param>
+            <param name="sortProperty">The property to sort the results by. Possible values are: "Name", "Oid", "Organization", "TemplateType", "ImplementationGuide"</param>
+            <param name="sortDescending">When true, sorts the results descending (z-a)</param>
+            <param name="queryText">String to search the entire template for (including constraint numbers). Searches template's description, name, bookmark, etc.</param>
+            <param name="filterName">Matches the string specified by filterName specifically to the name of the template. Only templates with a name containing this value will be returned.</param>
+            <param name="filterOid">Matches the string specified by filterOid specifically to the oid (identifier) of the template. Only templates with an oid (identifier) containing this value will be returned.</param>
+            <param name="filterImplementationGuideId">Matches the id of the implementation guide specifically to the implementation guide of the template. Only templates that are used by the specified implementation guide will be returned.</param>
+            <param name="filterTemplateTypeId">Matches the id of the template type specified specifically to the template type of the template. Only templates with a matching type will be returned.</param>
+            <param name="filterOrganizationId">Matches the id of the organization specified specifically to the organization of the template. Only templates with a matching organization will be returned.</param>
+            <param name="filterContextType">Matches the context specified specifically to the context of the template. Only templates whose context type contain the specified value will be returned.</param>
+            <returns>Trifolia.Web.Models.TemplateManagement.ListModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TemplateEditorController.GetAvailableExtensions(System.Int32)">
+            <summary>
+            Gets all extensions that the specified implementation guide can use
+            If the specified implementation guide is not a FHIR IG Type, an empty list is returned
+            </summary>
+            <param name="implementationGuideId">The id of the implementation guide</param>
+            <returns>System.Collections.Generic.IEnumerable&lt;Trifolia.Web.Models.TemplateEditing.TemplateItem&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TemplateEditorController.SaveTemplate(Trifolia.DB.IObjectRepository,Trifolia.Web.Models.TemplateEditing.TemplateMetaDataModel)">
+            <summary>
+            Converts the TemplateMetaDataModel into the Template (EF) model.
+            </summary>
+            <remarks>
+            Each property is checked to determine if it is different before updating the property, otherwise
+            it registers as a change event when auditing, regardless if the value is different.
+            </remarks>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TemplateEditorController.RemoveConstraints(Trifolia.DB.IObjectRepository,System.Collections.Generic.List{Trifolia.Web.Models.TemplateEditing.ConstraintModel})">
+            <summary>
+            Removes constraints from the database context
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TemplateEditorController.SaveConstraints(Trifolia.DB.IObjectRepository,Trifolia.DB.Template,System.Collections.Generic.List{Trifolia.Web.Models.TemplateEditing.ConstraintModel},Trifolia.DB.TemplateConstraint)">
+            <summary>
+            Converts ConstraintModel into TemplateConstraint (EF) models.
+            </summary>
+            <remarks>
+            Each property is checked to determine if it is different before updating the property, otherwise
+            it registers as a change event when auditing, regardless if the value is different.
+            </remarks>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.ExportController.BeforeExport(Trifolia.DB.ImplementationGuide,System.String)">
+            <summary>
+            Checks if the authenticated user is from the HL7 organization.
+            If yes, a redirect ActionResult is returned that forwards the user to the HL7 disclaimer page.
+            The action result includes a redirectUrl parameter that tells HL7 to redirect the user back to trifolia.
+            The redirectUrl parameter of the returned ActionResult includes the retAction passed to this method
+            and an implementationGuideId param for the ig. 
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Extensions.FileDownloadAttribute.CheckAndHandleFileResult(System.Web.Mvc.ActionExecutedContext)">
+            <summary>
+            If the current response is a FileResult (an MVC base class for files) then write a
+            cookie to inform jquery.fileDownload that a successful file download has occured
+            </summary>
+            <param name="filterContext"></param>
+        </member>
+        <member name="T:Trifolia.Web.Models.Export.MSWordSettingsModel">
+            <summary>
+            Models used to define settings for exporting to MS Word
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.TemplateIds">
+            <summary>
+            List of template ids included in the export
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.ImplementationGuideId">
+            <summary>
+            The id of the implementation guide being exported
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.TemplateSortOrder">
+            <summary>
+            Indicates the sort order of the templates exported
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.DocumentTables">
+            <summary>
+            Indicates what appendix tables should be included in the export
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.TemplateTables">
+            <summary>
+            Indicates what tables should be included for each template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.IncludeXmlSample">
+            <summary>
+            True to include samples in the export
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.IncludeChangeList">
+            <summary>
+            True if the export should include a table of changes. Only affects exports where the IG is a new version.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.IncludeTemplateStatus">
+            <summary>
+            True if the status of templates should be included in the export
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.GenerateValuesets">
+            <summary>
+            True if value sets should be included in the export
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.MaximumValuesetMembers">
+            <summary>
+            Default number of maximum members to be used for value set exports
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.ValuesetAppendix">
+            <summary>
+            True if value sets should be exported in an appendix
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.IncludeNotes">
+            <summary>
+            True if notes on templates and constraints should be included in the export
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.ValueSetOid">
+            <summary>
+            List of value set identifiers included in this IG. Primarily used for the ValueSetMaxMembers property's order.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.ValueSetMaxMembers">
+            <summary>
+            List of numbers representing the maximum number of members that should be exported for each value set. The order of this list matches the order of the ValueSetOid list.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.SaveAsDefaultSettings">
+            <summary>
+            Whether these settings should be remembered as default settings for future exports. Only editors of the IG can save default settings.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.ParentTemplateIds">
+            <summary>
+            List of parent template IDs used to filter templates. Only templates that are used by these selected parent templates are included in the export
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.Inferred">
+            <summary>
+            Indicates if inferred templates should be included
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.MSWordSettingsModel.SelectedCategories">
+            <summary>
+            Categories used to filter constraints exported in the ms word ig
+            </summary>
+        </member>
+        <member name="T:Trifolia.Web.Models.IGManagement.IGListModes">
+            <summary>
+            Defines what type of implementation guide list the requestor desires
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Models.IGManagement.IGListModes.Default">
+            <summary>
+            View and edit
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Models.IGManagement.IGListModes.Files">
+            <summary>
+            Edit implementation guide files
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Models.IGManagement.IGListModes.Test">
+            <summary>
+            Test the implementation guide
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Models.IGManagement.IGListModes.ExportMSWord">
+            <summary>
+            Export the IG to MS word
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Models.IGManagement.IGListModes.ExportXML">
+            <summary>
+            Export the IG to XML
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Models.IGManagement.IGListModes.ExportVocab">
+            <summary>
+            Export the IG to vocabulary formats
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Models.IGManagement.IGListModes.ExportSchematron">
+            <summary>
+            Export the schematron for the IG
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Models.IGManagement.IGListModes.ExportGreen">
+            <summary>
+            Export the green models for the implementation guide
+            </summary>
+            <remarks>Deprecated</remarks>
+        </member>
+        <member name="T:Trifolia.Web.Models.OrganizationManagement.OrganizationModel">
+            <summary>
+            Models a standard organization as a view model
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.OrganizationManagement.OrganizationModel.Id">
+            <summary>
+            Gets or sets the Organization ID
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.OrganizationManagement.OrganizationModel.Name">
+            <summary>
+            Gets or sets the organization name
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.OrganizationManagement.OrganizationModel.Groups">
+            <summary>
+            Gets all OrganizationGroups in the current collection, or adds the passed in groups to the collection
+            </summary>
+        </member>
+        <member name="T:Trifolia.Web.Models.OrganizationManagement.OrganizationGroup">
+            <summary>
+            Models a standard Group within an organization
+            </summary>
+        </member>
+        <member name="T:Trifolia.Web.Models.OrganizationManagement.OrganizationUser">
+            <summary>
+            Models a staqndard organization and user relationship as a view model
+            </summary>
+            <remarks>Although the underlying model allows us to link a user to many organizations, this view model represents 
+            a single organization, and therefore in this context, a user either belongs to the current organization
+            or not.</remarks>
+        </member>
+        <member name="T:Trifolia.Web.Models.TemplateManagement.BigListItem">
+            <summary>
+            Model that represents a template used by ListModel.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.Id">
+            <summary>
+            The id of the template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.Name">
+            <summary>
+            The name of the template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.Oid">
+            <summary>
+            The identifier of the template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.Open">
+            <summary>
+            Whether the template is open or closed ("Yes" or "No")
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.TemplateTypeId">
+            <summary>
+            The id of the template type
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.TemplateType">
+            <summary>
+            The name of the template type associated with the template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.ImplementationGuideId">
+            <summary>
+            The id of the implementation guide associated with the template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.ImplementationGuide">
+            <summary>
+            The name of the implementation guide associated with the template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.OrganizationId">
+            <summary>
+            The id of the organization associated with the template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.Organization">
+            <summary>
+            The name of the organization associated with the template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.ImpliedTemplateName">
+            <summary>
+            The name of the implied template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.ImpliedTemplateOid">
+            <summary>
+            The identifier of the implied template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.ConstraintCount">
+            <summary>
+            The number of constraints the template contains
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.Constraints">
+            <summary>
+            A comma-delimited list of constraint numbers in the template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.PublishDate">
+            <summary>
+            The publish date of the template (which is really the publish date of the implementation guide)
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.CanEdit">
+            <summary>
+            True if the user has the permissions to edit the template
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.HasGreenModel">
+            <summary>
+            True if the template has green models defined
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.BigListItem.Description">
+            <summary>
+            The description of the template
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.PageExtensions.ShowClientMessage(System.Web.UI.Page,System.String)">
+            <summary>
+            Shows the passed in message to the user as a client-side message
+            </summary>
+            <param name="aPage"></param>
+            <param name="aMessage"></param>
+        </member>
+        <member name="M:Trifolia.Web.SecurableForm.UserHasSecurable(System.String)">
+            <summary>
+            Overloaded version of UserHasSecurable(string[]) for checking a single securable
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.SecurableForm.UserHasSecurable(System.String[])">
+            <summary>
+            Determines if the authenticated user has a role associated with the named securable.
+            </summary>
+            <param name="securables">The name(s) of the securable to check.</param>
+            <returns>Returns false if a user is not logged in. Return true if the authenticated user has a role associated with the requested securable, otherwise returns false.</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.PermissionExtension.MemberType(Trifolia.DB.ImplementationGuidePermission)">
+            <summary>
+            Converts the "Type" property of ImplementationGuidePermission to the PermissionTypes enum used by the PermissionManagement model
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.PermissionExtension.PrimaryId(Trifolia.DB.ImplementationGuidePermission)">
+            <summary>
+            Returns a single Id based on the type of the permission.
+            </summary>
+            <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.PermissionExtension.MemberType(Trifolia.DB.OrganizationDefaultPermission)">
+            <summary>
+            Converts the "Type" property of ImplementationGuidePermission to the PermissionTypes enum used by the PermissionManagement model
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.PermissionExtension.PrimaryId(Trifolia.DB.OrganizationDefaultPermission)">
+            <summary>
+            Returns a single Id based on the type of the permission.
+            </summary>
+            <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.RoleManagementController.Roles">
+            <summary>
+            Prepares the model and returns the main Roles view
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.TemplateManagementController.ViewId(System.Int32)">
+            <summary>
+            View action for templates. Builds a model with all of the information necessary to display a template, including constraints and xml sample
+            </summary>
+            <param name="templateId">Required. The id of the template to view</param>
+            <returns>The "View" view from the TemplateManagement view set, and the prepared ViewModel model</returns>
+        </member>
+        <member name="M:Trifolia.Web.Filters.SecurableAuthorizationFilter.AuditLogin">
+            <summary>
+            Checks if the authenticated user has a "Login" audit within the last 24 hours. If not, creates a
+            Login audit.
+            </summary>
+            <remarks>
+            When user is logged in via "remember me", Login does not have to occur.
+            </remarks>
+        </member>
+        <member name="T:Trifolia.Web.Models.LogInViewModel">
+            <summary>
+            Provides data for the view that's when the user should log in
+            </summary>
+        </member>
+        <member name="T:Trifolia.Web.Models.RoleManagement.RolesModel">
+            <summary>
+            Model used by the REST API to return all roles and securables to the client
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.Roles">
+            <summary>
+            List of all roles in Trifolia
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.AllSecurables">
+            <summary>
+            List of all securables in Trifolia
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.DefaultRoleId">
+            <summary>
+            The default role to assign to new users
+            </summary>
+        </member>
+        <member name="T:Trifolia.Web.Models.RoleManagement.RolesModel.RoleItem">
+            <summary>
+            An individual role, including securables the role is assigned to and organizations
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.RoleItem.Id">
+            <summary>
+            The id of the role
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.RoleItem.Name">
+            <summary>
+            The name of the role
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.RoleItem.AssignedSecurables">
+            <summary>
+            All securables currently assigned to the role
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.RoleItem.Organizations">
+            <summary>
+            All organizations associated with the role
+            </summary>
+        </member>
+        <member name="T:Trifolia.Web.Models.RoleManagement.RolesModel.Organization">
+            <summary>
+            A model representing an organization and how it is used within a role
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.Organization.Id">
+            <summary>
+            The id of the organization
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.Organization.Name">
+            <summary>
+            The name of the organization
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.Organization.Restricted">
+            <summary>
+            Whether the organization is restricted from usign the role it is associated with
+            </summary>
+        </member>
+        <member name="T:Trifolia.Web.Models.RoleManagement.RolesModel.SecurableItem">
+            <summary>
+            A model representing an individual securable within Trifolia
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.SecurableItem.Id">
+            <summary>
+            The id of the securable
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.SecurableItem.Key">
+            <summary>
+            The key of the securable (must be unique)
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.SecurableItem.Name">
+            <summary>
+            The name of the securable
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.RoleManagement.RolesModel.SecurableItem.Description">
+            <summary>
+            The description of the securable
+            </summary>
+        </member>
+        <member name="T:Trifolia.Web.Models.TemplateManagement.ListModel">
+            <summary>
+            A model returned by the REST API to represent a list of templates
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.HideOrganization">
+            <summary>
+            Indicates if the organization should be hidden from the screen
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.CanView">
+            <summary>
+            Indicates if the user can (role-based) view templates
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.CanEdit">
+            <summary>
+            Indicates if the user can (role-based) edit templates
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.Items">
+            <summary>
+            A list of templates
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.TotalItems">
+            <summary>
+            The number of items included in the list
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel.#ctor">
+            <summary>
+            Hide the ctor so we can enforce usage of the factory method, so we can "fix up" the model as necessary
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel.AdaptFromTemplate(Trifolia.DB.Template)">
+            <summary>
+            Creates a new instance of <see cref="T:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel"/> from the passed in Template
+            </summary>
+            <param name="aTemplate"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Trifolia.Web.Session.SessionConstants">
+            <summary>
+            Defines a set of string constants for use when accessing the Session
+            </summary>
+        </member>
+        <member name="T:Trifolia.Web.App_GlobalResources.TrifoliaLang">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.AuthenticationInvalid">
+            <summary>
+              Looks up a localized string similar to Username and/or password are incorrect..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.CreateFHIR2TemplateFailedDuplicateId">
+            <summary>
+              Looks up a localized string similar to Cannot create a StructureDefinition that already has an id.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.ErrorSaving">
+            <summary>
+              Looks up a localized string similar to There was an error saving your changes, please submit a support ticket!.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.FHIRSearchCriteriaNotSupported">
+            <summary>
+              Looks up a localized string similar to The search requested includes sub-object criteria which is not yet supported by Trifolia.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.HL7AttemptInvalid">
+            <summary>
+              Looks up a localized string similar to Invalid attempt to login as HL7 user.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.HL7AuthTimeout">
+            <summary>
+              Looks up a localized string similar to Request to login took longer than 5 minutes to reach the server. Failed to login..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.PageIntro">
+            <summary>
+              Looks up a localized string similar to This page is used to create many wonderful things, it can even be used to take over the world, so be cautious!.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.PageTitle">
+            <summary>
+              Looks up a localized string similar to Our First Localized Page.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.RecaptchaInvalid">
+            <summary>
+              Looks up a localized string similar to The re-captcha response specified is not valid.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.RecaptchaNotSpecified">
+            <summary>
+              Looks up a localized string similar to You did not verify that you are human using the re-captcha..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorAddChildPrimitiveTooltip">
+            <summary>
+              Looks up a localized string similar to Add Child Primitive.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorAddTopLevelPrimitiveTooltip">
+            <summary>
+              Looks up a localized string similar to Add Top-level Primitive.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorAppliesToTooltip">
+            <summary>
+              Looks up a localized string similar to Indicates where in the base standard/schema this template/profile can be used. This field is defaulted based on the template/profile type selected, but can be customized by clicking the \&apos;...\&apos; button to the right..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorBookmarkTooltip">
+            <summary>
+              Looks up a localized string similar to The bookmark that is used during the export of a MS Word document. The bookmark must be unique, and not contain any special characters (including spaces, with the exception of underscores). The bookmark may not be greater than 40 characters (due to MS Word\&apos;s limitation in bookmark size)..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorBranchIdentifierHeading">
+            <summary>
+              Looks up a localized string similar to BI.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorBranchIdentifierHeadingTooltip">
+            <summary>
+              Looks up a localized string similar to Branch/slice identifier/descriminator?.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorBranchIdentifierOption">
+            <summary>
+              Looks up a localized string similar to Identifier/Discriminator.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorBranchingTitle">
+            <summary>
+              Looks up a localized string similar to Branch/Slice.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorBranchRootHeading">
+            <summary>
+              Looks up a localized string similar to BR.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorBranchRootHeadingTooltip">
+            <summary>
+              Looks up a localized string similar to Branch/slice root?.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorBranchRootOption">
+            <summary>
+              Looks up a localized string similar to Root.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorCardinalityHeading">
+            <summary>
+              Looks up a localized string similar to Card..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorCardinalityHeadingTooltip">
+            <summary>
+              Looks up a localized string similar to Cardinality.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConformanceHeadingTooltip">
+            <summary>
+              Looks up a localized string similar to Conformance.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorAutoGenerate">
+            <summary>
+              Looks up a localized string similar to Auto Generate:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorBinding">
+            <summary>
+              Looks up a localized string similar to Binding:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorBindingDate">
+            <summary>
+              Looks up a localized string similar to Binding Date:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorBindingTypeTooltip">
+            <summary>
+              Looks up a localized string similar to Select one of the pre-defined binding types from the drop-down to show the fields applicable. This field is not the same as the &quot;Binding&quot; (ie: STATIC vs. DYNAMIC)..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorCode">
+            <summary>
+              Looks up a localized string similar to Code:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorCodeSystem">
+            <summary>
+              Looks up a localized string similar to Code System:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorConformance">
+            <summary>
+              Looks up a localized string similar to Conformance:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorConformanceCardinality">
+            <summary>
+              Looks up a localized string similar to Conf/Card:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorDataType">
+            <summary>
+              Looks up a localized string similar to Data Type:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorDataTypeTooltip">
+            <summary>
+              Looks up a localized string similar to Options in the &quot;Data Type&quot; drop-down include derived types from the base data type allowed in the standard. Selecting a non-default data type will make different child nodes available to constrain..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorDescription">
+            <summary>
+              Looks up a localized string similar to Description:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorDescriptionTooltip">
+            <summary>
+              Looks up a localized string similar to Exported before constraint.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorInheritable">
+            <summary>
+              Looks up a localized string similar to Inheritable:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorLabel">
+            <summary>
+              Looks up a localized string similar to Label:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorLabelTooltip">
+            <summary>
+              Looks up a localized string similar to Exported at end of constraint.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorRooted">
+            <summary>
+              Looks up a localized string similar to Rooted:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorValueConformance">
+            <summary>
+              Looks up a localized string similar to Value Conf.:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintNumberHeadingTooltip">
+            <summary>
+              Looks up a localized string similar to Conformance Number.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorContextHeading">
+            <summary>
+              Looks up a localized string similar to Context.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorCreateComputableTooltip">
+            <summary>
+              Looks up a localized string similar to Create Computable.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorDataTypeHeading">
+            <summary>
+              Looks up a localized string similar to Data Type.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorDuplicateTooltip">
+            <summary>
+              Looks up a localized string similar to Duplicate.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorEditNoteTooltip">
+            <summary>
+              Looks up a localized string similar to Edit Note.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorExpandCollapseConstraintEditorTooltip">
+            <summary>
+              Looks up a localized string similar to Minimize/maximize constraint editor.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorExtensibilityTooltip">
+            <summary>
+              Looks up a localized string similar to Indicates if instances of the template/profile can have additional information (open), or if it can only contain explicitly what is defined in the template/profile (closed)..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorImplementationGuideTooltip">
+            <summary>
+              Looks up a localized string similar to Indicates the implementation guide that the template/profile belongs to. The template/profile may still be referenced by other implementation guides (via contained or implied relationships)..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataAppliesToField">
+            <summary>
+              Looks up a localized string similar to Applies To:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataAuthoredByField">
+            <summary>
+              Looks up a localized string similar to Authored By:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataBookmarkField">
+            <summary>
+              Looks up a localized string similar to Bookmark:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataDescriptionField">
+            <summary>
+              Looks up a localized string similar to Description.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataExtensibilityField">
+            <summary>
+              Looks up a localized string similar to Extensibility:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataImplementationGuideField">
+            <summary>
+              Looks up a localized string similar to Implementation Guide:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataNameField">
+            <summary>
+              Looks up a localized string similar to Name:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataNewVersionOfField">
+            <summary>
+              Looks up a localized string similar to New version of:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataNotesField">
+            <summary>
+              Looks up a localized string similar to Notes.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataOidField">
+            <summary>
+              Looks up a localized string similar to Identifier:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataOrganizationField">
+            <summary>
+              Looks up a localized string similar to Organization:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataStatusField">
+            <summary>
+              Looks up a localized string similar to Status:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataTemplateTypeField">
+            <summary>
+              Looks up a localized string similar to Type:.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorNotesTooltip">
+            <summary>
+              Looks up a localized string similar to Notes are only available for review by template/profile authors (they are not included in exports)..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorOidTooltip">
+            <summary>
+              Looks up a localized string similar to A unique identifier for the template/profile. Must be less than 255 characters..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorRemoveTooltip">
+            <summary>
+              Looks up a localized string similar to Remove.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorSearchConstraintTooltip">
+            <summary>
+              Looks up a localized string similar to Search the tree for a constraint by number. Press enter to search..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorTemplateTypeTooltip">
+            <summary>
+              Looks up a localized string similar to Indicates the type of template/profile (typically document vs. section vs. entry). The templates/profiles are organized by the template/profile type when exporting as an MS Word document. Pre-determined defaults are specified for the Applies To field when selecting a template/profile type..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorValidationErrors">
+            <summary>
+              Looks up a localized string similar to Errors.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorValidationNoMessages">
+            <summary>
+              Looks up a localized string similar to There are no validation errors/warnings..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorValidationWarnings">
+            <summary>
+              Looks up a localized string similar to Warnings.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorViewModeTooltip">
+            <summary>
+              Looks up a localized string similar to View mode changes between the Analyst, Editor and Engineer screens of the constraint editor..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditPermissionMessage">
+            <summary>
+              Looks up a localized string similar to You do not have permission to modify this template..
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateNotFHIRDSTU2">
+            <summary>
+              Looks up a localized string similar to This is not a FHIR DSTU2 template/profile.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateNotFoundMessageFormat">
+            <summary>
+              Looks up a localized string similar to Could not find the template/profile requested: {0}.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateViewPermissionMessage">
+            <summary>
+              Looks up a localized string similar to You do not have permission to view this template..
+            </summary>
+        </member>
+        <member name="F:Trifolia.Web.Views.Shared.SiteMVCMaster.Head">
+            <summary>
+            Head control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:Trifolia.Web.Views.Shared.SiteMVCMaster.HeadContent">
+            <summary>
+            HeadContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:Trifolia.Web.Views.Shared.SiteMVCMaster.mainBody">
+            <summary>
+            mainBody control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:Trifolia.Web.Views.Shared.SiteMVCMaster.MainContent">
+            <summary>
+            MainContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:Trifolia.Web.Views.Shared.SiteMVCMaster.KeyboardShortcuts">
+            <summary>
+            KeyboardShortcuts control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

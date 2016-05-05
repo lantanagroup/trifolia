@@ -1,0 +1,348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AuthenticationInvalid" xml:space="preserve">
+    <value>Username and/or password are incorrect.</value>
+  </data>
+  <data name="CreateFHIR2TemplateFailedDuplicateId" xml:space="preserve">
+    <value>Cannot create a StructureDefinition that already has an id</value>
+  </data>
+  <data name="ErrorSaving" xml:space="preserve">
+    <value>There was an error saving your changes, please submit a support ticket!</value>
+  </data>
+  <data name="FHIRSearchCriteriaNotSupported" xml:space="preserve">
+    <value>The search requested includes sub-object criteria which is not yet supported by Trifolia</value>
+  </data>
+  <data name="HL7AttemptInvalid" xml:space="preserve">
+    <value>Invalid attempt to login as HL7 user</value>
+  </data>
+  <data name="HL7AuthTimeout" xml:space="preserve">
+    <value>Request to login took longer than 5 minutes to reach the server. Failed to login.</value>
+  </data>
+  <data name="PageIntro" xml:space="preserve">
+    <value>This page is used to create many wonderful things, it can even be used to take over the world, so be cautious!</value>
+  </data>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Our First Localized Page</value>
+  </data>
+  <data name="RecaptchaInvalid" xml:space="preserve">
+    <value>The re-captcha response specified is not valid</value>
+  </data>
+  <data name="RecaptchaNotSpecified" xml:space="preserve">
+    <value>You did not verify that you are human using the re-captcha.</value>
+  </data>
+  <data name="TemplateEditorOidTooltip" xml:space="preserve">
+    <value>A unique identifier for the template/profile. Must be less than 255 characters.</value>
+  </data>
+  <data name="TemplateEditPermissionMessage" xml:space="preserve">
+    <value>You do not have permission to modify this template.</value>
+  </data>
+  <data name="TemplateNotFHIRDSTU2" xml:space="preserve">
+    <value>This is not a FHIR DSTU2 template/profile</value>
+  </data>
+  <data name="TemplateNotFoundMessageFormat" xml:space="preserve">
+    <value>Could not find the template/profile requested: {0}</value>
+  </data>
+  <data name="TemplateViewPermissionMessage" xml:space="preserve">
+    <value>You do not have permission to view this template.</value>
+  </data>
+  <data name="TemplateEditorBookmarkTooltip" xml:space="preserve">
+    <value>The bookmark that is used during the export of a MS Word document. The bookmark must be unique, and not contain any special characters (including spaces, with the exception of underscores). The bookmark may not be greater than 40 characters (due to MS Word\'s limitation in bookmark size).</value>
+  </data>
+  <data name="TemplateEditorBranchIdentifierOption" xml:space="preserve">
+    <value>Identifier/Discriminator</value>
+  </data>
+  <data name="TemplateEditorBranchingTitle" xml:space="preserve">
+    <value>Branch/Slice</value>
+  </data>
+  <data name="TemplateEditorBranchRootOption" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="TemplateEditorAppliesToTooltip" xml:space="preserve">
+    <value>Indicates where in the base standard/schema this template/profile can be used. This field is defaulted based on the template/profile type selected, but can be customized by clicking the \'...\' button to the right.</value>
+  </data>
+  <data name="TemplateEditorExtensibilityTooltip" xml:space="preserve">
+    <value>Indicates if instances of the template/profile can have additional information (open), or if it can only contain explicitly what is defined in the template/profile (closed).</value>
+  </data>
+  <data name="TemplateEditorImplementationGuideTooltip" xml:space="preserve">
+    <value>Indicates the implementation guide that the template/profile belongs to. The template/profile may still be referenced by other implementation guides (via contained or implied relationships).</value>
+  </data>
+  <data name="TemplateEditorMetaDataAppliesToField" xml:space="preserve">
+    <value>Applies To:</value>
+  </data>
+  <data name="TemplateEditorMetaDataDescriptionField" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="TemplateEditorMetaDataExtensibilityField" xml:space="preserve">
+    <value>Extensibility:</value>
+  </data>
+  <data name="TemplateEditorMetaDataImplementationGuideField" xml:space="preserve">
+    <value>Implementation Guide:</value>
+  </data>
+  <data name="TemplateEditorMetaDataNameField" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="TemplateEditorMetaDataNotesField" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="TemplateEditorMetaDataOidField" xml:space="preserve">
+    <value>Identifier:</value>
+  </data>
+  <data name="TemplateEditorMetaDataStatusField" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="TemplateEditorMetaDataTemplateTypeField" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="TemplateEditorNotesTooltip" xml:space="preserve">
+    <value>Notes are only available for review by template/profile authors (they are not included in exports).</value>
+  </data>
+  <data name="TemplateEditorTemplateTypeTooltip" xml:space="preserve">
+    <value>Indicates the type of template/profile (typically document vs. section vs. entry). The templates/profiles are organized by the template/profile type when exporting as an MS Word document. Pre-determined defaults are specified for the Applies To field when selecting a template/profile type.</value>
+  </data>
+  <data name="TemplateEditorAddChildPrimitiveTooltip" xml:space="preserve">
+    <value>Add Child Primitive</value>
+  </data>
+  <data name="TemplateEditorAddTopLevelPrimitiveTooltip" xml:space="preserve">
+    <value>Add Top-level Primitive</value>
+  </data>
+  <data name="TemplateEditorBranchIdentifierHeading" xml:space="preserve">
+    <value>BI</value>
+  </data>
+  <data name="TemplateEditorBranchIdentifierHeadingTooltip" xml:space="preserve">
+    <value>Branch/slice identifier/descriminator?</value>
+  </data>
+  <data name="TemplateEditorBranchRootHeading" xml:space="preserve">
+    <value>BR</value>
+  </data>
+  <data name="TemplateEditorBranchRootHeadingTooltip" xml:space="preserve">
+    <value>Branch/slice root?</value>
+  </data>
+  <data name="TemplateEditorCardinalityHeading" xml:space="preserve">
+    <value>Card.</value>
+  </data>
+  <data name="TemplateEditorCardinalityHeadingTooltip" xml:space="preserve">
+    <value>Cardinality</value>
+  </data>
+  <data name="TemplateEditorConformanceHeadingTooltip" xml:space="preserve">
+    <value>Conformance</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorAutoGenerate" xml:space="preserve">
+    <value>Auto Generate:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorBinding" xml:space="preserve">
+    <value>Binding:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorBindingDate" xml:space="preserve">
+    <value>Binding Date:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorBindingTypeTooltip" xml:space="preserve">
+    <value>Select one of the pre-defined binding types from the drop-down to show the fields applicable. This field is not the same as the "Binding" (ie: STATIC vs. DYNAMIC).</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorCode" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorCodeSystem" xml:space="preserve">
+    <value>Code System:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorConformance" xml:space="preserve">
+    <value>Conformance:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorConformanceCardinality" xml:space="preserve">
+    <value>Conf/Card:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorDataType" xml:space="preserve">
+    <value>Data Type:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorDataTypeTooltip" xml:space="preserve">
+    <value>Options in the "Data Type" drop-down include derived types from the base data type allowed in the standard. Selecting a non-default data type will make different child nodes available to constrain.</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorDescription" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorDescriptionTooltip" xml:space="preserve">
+    <value>Exported before constraint</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorInheritable" xml:space="preserve">
+    <value>Inheritable:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorLabel" xml:space="preserve">
+    <value>Label:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorLabelTooltip" xml:space="preserve">
+    <value>Exported at end of constraint</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorRooted" xml:space="preserve">
+    <value>Rooted:</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorValueConformance" xml:space="preserve">
+    <value>Value Conf.:</value>
+  </data>
+  <data name="TemplateEditorConstraintNumberHeadingTooltip" xml:space="preserve">
+    <value>Conformance Number</value>
+  </data>
+  <data name="TemplateEditorContextHeading" xml:space="preserve">
+    <value>Context</value>
+  </data>
+  <data name="TemplateEditorCreateComputableTooltip" xml:space="preserve">
+    <value>Create Computable</value>
+  </data>
+  <data name="TemplateEditorDataTypeHeading" xml:space="preserve">
+    <value>Data Type</value>
+  </data>
+  <data name="TemplateEditorDuplicateTooltip" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="TemplateEditorEditNoteTooltip" xml:space="preserve">
+    <value>Edit Note</value>
+  </data>
+  <data name="TemplateEditorExpandCollapseConstraintEditorTooltip" xml:space="preserve">
+    <value>Minimize/maximize constraint editor</value>
+  </data>
+  <data name="TemplateEditorMetaDataAuthoredByField" xml:space="preserve">
+    <value>Authored By:</value>
+  </data>
+  <data name="TemplateEditorMetaDataBookmarkField" xml:space="preserve">
+    <value>Bookmark:</value>
+  </data>
+  <data name="TemplateEditorMetaDataNewVersionOfField" xml:space="preserve">
+    <value>New version of:</value>
+  </data>
+  <data name="TemplateEditorMetaDataOrganizationField" xml:space="preserve">
+    <value>Organization:</value>
+  </data>
+  <data name="TemplateEditorRemoveTooltip" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="TemplateEditorSearchConstraintTooltip" xml:space="preserve">
+    <value>Search the tree for a constraint by number. Press enter to search.</value>
+  </data>
+  <data name="TemplateEditorValidationErrors" xml:space="preserve">
+    <value>Errors</value>
+  </data>
+  <data name="TemplateEditorValidationNoMessages" xml:space="preserve">
+    <value>There are no validation errors/warnings.</value>
+  </data>
+  <data name="TemplateEditorValidationWarnings" xml:space="preserve">
+    <value>Warnings</value>
+  </data>
+  <data name="TemplateEditorViewModeTooltip" xml:space="preserve">
+    <value>View mode changes between the Analyst, Editor and Engineer screens of the constraint editor.</value>
+  </data>
+</root>

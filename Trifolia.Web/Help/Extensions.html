@@ -1,0 +1,119 @@
+﻿<html>
+	
+<head>
+	<title>Extensions</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.8.0.849">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("Extensions");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Extensions</h1>
+				
+				<div id="topic_breadcrumb">
+					<a href="FHIR.html">FHIR</a> &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="FHIR.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="FHIR.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="PreviousVersions.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Re-usable Extensions</span></span></h2>
+<p class="rvps2"><span class="rvts6">Trifolia supports re-usable extensions for FHIR DSTU2 implementation guides and profiles.</span></p>
+<h3 class="rvps6"><span class="rvts0"><span class="rvts15">Creating a Re-usable Extension</span></span></h3>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">Create a new profile in a FHIR DSTU2 implementation guide.</span></li>
+<li value="2" class="rvps2"><span class="rvts6">Select FHIR DSTU2: Extension for the "type" of profile.</span></li>
+<ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">Note that the Applies To button is disabled for Extension profiles.</span></li>
+<li value="2" class="rvps2"><span class="rvts6">After selecting Extension as the type of profile, a constraint is automatically created by Trifolia for the "@url" attribute and matches the identifier specified for the extension. Any time the identifier is updated, the constraint will automatically be updated as well.</span></li>
+</ol>
+<li value="3" class="rvps2"><span class="rvts6">Define a constraint for the type of value your extension will require (such as "valueCodeableConcept").</span></li>
+<li value="4" class="rvps2"><span class="rvts6">Save the profile.</span></li>
+</ol>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">Trifolia treats all profiles that are of type FHIR DSTU2: Extension as re-usable extensions. The behavior of Trifolia's template/profile editor adjusts slightly (such as disabling the Applies To selection button, and automatically adding a @url constraint) to account for requirements in the core FHIR DSTU2 standard when editing extension profiles.</span></p>
+<h3 class="rvps6"><span class="rvts0"><span class="rvts15">Using a Pre-defined Extension</span></span></h3>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">Open any FHIR DSTU2 profile.</span></li>
+<li value="2" class="rvps2"><span class="rvts6">In the constraint editor, select an "extension" element that does NOT already have a constraint defined for it.</span></li>
+<li value="3" class="rvps2"><span class="rvts6">A drop-down list shows in the constraint editor panel that provides a list of all extensions for which you have permissions.</span></li>
+<li value="4" class="rvps2"><span class="rvts6">Select the extension you want to add to the profile and select the "+" (add) button.</span></li>
+<li value="5" class="rvps2"><span class="rvts6">The "extension" element is turned into a constraint, and automatically creates constraints for each of the constraints defined in the extension.</span></li>
+<li value="6" class="rvps2"><span class="rvts6">The "extension" element itself should be marked as a slice and the @url constraint within the extension should be marked as a descriminator. The conformance and cardinality is set to "SHALL 1..1" for the new extension constraint, as well as the @url descriminator.</span></li>
+</ol>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Profile Extensions</span></span></h2>
+<p class="rvps2"><span class="rvts6">The profile may define extensions in addition to the constraints. These are extensions that add information to the profile as a whole, but are not required to be implemented where the profile is used/asserted.</span></p>
+<p class="rvps2"><span class="rvts6">Both FHIR DSTU1 and FHIR DSTU2 profiles support extensions on the profile.</span></p>
+<h3 class="rvps6"><span class="rvts0"><span class="rvts15">Adding Extensions to a Profile</span></span></h3>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">Edit any FHIR profile.</span></li>
+<li value="2" class="rvps2"><span class="rvts6">The bottom entry in the Extensions panel of the Template/Profile tab always represents a "new" extension.</span></li>
+<li value="3" class="rvps2"><span class="rvts6">Fill in the identifier, type, and value of the extension (all three fields are required).</span></li>
+<li value="4" class="rvps2"><span class="rvts6">Select the Add button to the right of the fields.</span></li>
+<li value="5" class="rvps2"><span class="rvts6">The extension is now added to the profile, and the profile can be saved. The extension added may be edited, but the type of the extension may not be changed; only the identifier and the value may be changed after extension is added.</span></li>
+</ol>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">Note: A future version of Trifolia will incorporate re-usable extensions in the profile extensions.</span></p>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+

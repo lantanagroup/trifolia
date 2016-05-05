@@ -1,0 +1,100 @@
+﻿<html>
+	
+<head>
+	<title>User Profiles</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.8.0.849">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("UserProfiles");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">User Profiles</h1>
+				
+				<div id="topic_breadcrumb">
+					Getting Started &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="GettingStarted.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="Terminology.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="Security.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">My Profile</span></span></h2>
+<p class="rvps2"><span class="rvts6">The "My Profile" screen shows the data associated with your currently logged-in user account within Trifolia. This information is specific to Trifolia and is maintained separately from external accounts (such as an HL7 account). The information captured as part of a user profile is used in several ways:</span></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">To display a user's name as an author on templates/profiles</span></li>
+<li class="rvps2"><span class="rvts6">On the "Edit Implementation Guide" screen's permissions</span></li>
+<li class="rvps2"><span class="rvts6">By Lantana to determine who can be contacted with information relating to Trifolia news/announcements/inquiries</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6">The following fields are captured on the "My Profile" screen (* = required):</span></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">First Name*</span></li>
+<li class="rvps2"><span class="rvts6">Last Name*</span></li>
+<li class="rvps2"><span class="rvts6">Phone*</span></li>
+<li class="rvps2"><span class="rvts6">Email*</span></li>
+<li class="rvps2"><span class="rvts6">Organization</span></li>
+<li class="rvps2"><span class="rvts6">Organization Type</span></li>
+<li class="rvps2"><span class="rvts6">"It is OK to contact me" - This indicates if it is OK for Lantana to email or call a Trifolia user regarding Trifolia news/announcements/inquiries.</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6">Changes to the "My Profile" screen are not persisted until the "Save" button is selected.</span></p>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+

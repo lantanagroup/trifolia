@@ -1,0 +1,9 @@
+BEGIN TRANSACTION
+GO
+ALTER TABLE dbo.organization
+	DROP CONSTRAINT DF__organizat__isInt__5DCAEF64
+GO
+ALTER TABLE dbo.organization
+	DROP COLUMN isInternal
+GO
+COMMIT

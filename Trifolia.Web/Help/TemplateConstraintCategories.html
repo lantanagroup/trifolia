@@ -1,0 +1,101 @@
+﻿<html>
+	
+<head>
+	<title>Categories</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.8.0.849">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("TemplateConstraintCategories");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Categories</h1>
+				
+				<div id="topic_breadcrumb">
+					<a href="Authoring.html">Authoring</a> &rsaquo;&rsaquo; Templates/Profiles &rsaquo;&rsaquo; <a href="TemplateEditor.html">Editor</a> &rsaquo;&rsaquo; <a href="TemplateConstraints.html">Constraints</a> &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="TemplateConstraints.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="ConstraintBindings.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="TemplatePreview.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Associate One or More Categories to a Constraint</span></span></h2>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">Open the </span><span class="rvts18">Template Editor </span><span class="rvts6">for the desired template</span></li>
+</ol>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;"><ul style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><span class="rvts6">The implementation guide associated with the template/profile must have categories defined. See </span><a class="rvts11" href="ImplementationGuideCategories.html">Authoring &gt; Implementation Guide &gt; Categories</a><span class="rvts6"> for more info.</span></li>
+</ul></ul>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="2" class="rvps2"><span class="rvts6">Go to the </span><span class="rvts18">Constraints </span><span class="rvts6">tab</span></li>
+<li value="3" class="rvps2"><span class="rvts6">Select a constraint</span></li>
+<li value="4" class="rvps2"><span class="rvts6">In the Edit Constraint pop-up window, a multi-select list of categories will display, showing each of the categories associated with the implementation guide that the template/profile is associated with</span></li>
+<li value="5" class="rvps2"><span class="rvts6">Select on a category to assign it to the constraint</span></li>
+</ol>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;"><ul style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><span class="rvts6">Hold CTRL while selecting to select multiple categories for the constraint</span></li>
+</ul></ul>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="6" class="rvps2"><span class="rvts6">Save the template</span></li>
+</ol>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+

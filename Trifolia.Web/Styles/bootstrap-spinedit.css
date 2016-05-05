@@ -1,0 +1,21 @@
+﻿.input-group-addon.spinedit {
+    padding: 6px 0px;
+}
+div.spinedit .glyphicon-chevron-up,
+div.spinedit .glyphicon-chevron-down {
+    position: relative;
+    cursor: pointer;
+    width: 12px;
+    left: 8px;
+}
+div.spinedit .glyphicon-chevron-up {
+    top: -5px;
+    left: 6px;
+}
+div.spinedit .glyphicon-chevron-down {
+    top: 7px;
+    left: -7px;
+}
+.form-search div.spinedit, .form-inline div.spinedit, .form-horizontal div.spinedit {
+    top: 5px;
+}

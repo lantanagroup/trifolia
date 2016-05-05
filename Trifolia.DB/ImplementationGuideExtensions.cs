@@ -1,0 +1,202 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.ComponentModel;
+
+using Trifolia.Logging;
+
+namespace Trifolia.DB
+{
+    public partial class ImplementationGuide
+    {
+        #region Public Properties
+
+        public string NameWithVersion
+        {
+            get
+            {
+                if (this.Version > 1)
+                    return string.Format("{0} V{1}", this.Name, this.Version);
+
+                return this.Name;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Gets all value sets in the implementation guide.
+        /// Does this, by get all templates in the implementation guide, searching for constraints of those templates that have value sets.
+        /// If isStatic is null (default), returns all value sets, regardless of the constraint's static binding to the value set.
+        /// If isStatic is true, returns all value sets that are statically bound to the templates in the implementation guide.
+        /// If isStatic is false, returns all value sets that are dynamically bound
+        /// </summary>
+        /// <param name="tdb"></param>
+        /// <param name="isStatic"></param>
+        /// <returns></returns>
+        public List<ImplementationGuideValueSet> GetValueSets(IObjectRepository tdb, bool? isStatic = null)
+        {
+            var templateIds = tdb.GetImplementationGuideTemplates(this.Id, true, null);
+            List<ImplementationGuideValueSet> retValueSets = new List<ImplementationGuideValueSet>();
+
+            var valueSetConstraints = (from tid in templateIds
+                                       join tc in tdb.TemplateConstraints on tid equals tc.TemplateId
+                                       join vs in tdb.ValueSets on tc.ValueSetId equals vs.Id
+                                       where 
+                                         (isStatic == null) || 
+                                         (isStatic == true && (tc.IsStatic == null || tc.IsStatic == true)) || 
+                                         (isStatic == false && (tc.IsStatic == null || tc.IsStatic == false))
+                                       select new
+                                       {
+                                           Constraint = tc,
+                                           ValueSet = vs,
+                                           BindingDate = tc.ValueSetDate
+                                       })
+                                        .Distinct();
+
+            var groupedValueSetConstraints = valueSetConstraints.GroupBy(
+                y => y.ValueSet,
+                (key, g) => new { ValueSet = key, Constraints = g.OrderBy(y => y.BindingDate) });
+
+            foreach (var cGroupedValueSet in groupedValueSetConstraints)
+            {
+                if (cGroupedValueSet.Constraints.Count() > 1)
+                {
+                    string msg = string.Format("Vocabulary for IG \"{0}\" includes {1} valueset bindings with different binding dates. Using the latest binding date.",
+                        this.Name,
+                        cGroupedValueSet.Constraints.Count());
+                    Log.For(typeof(ValueSet)).Info(msg);
+                }
+
+                var maxBindingDate = cGroupedValueSet.Constraints.Max(y => y.BindingDate);
+
+                var cConstraint = cGroupedValueSet.Constraints.FirstOrDefault(y => y.BindingDate == maxBindingDate);
+
+                if (cConstraint == null)
+                    cConstraint = cGroupedValueSet.Constraints.Last();
+
+                // Use the binding date of the constraint, or if the constraint does not specify one, use the date that the implementation guide was published
+                DateTime? bindingDate = cConstraint.BindingDate != null ? cConstraint.BindingDate : this.PublishDate;
+
+                // If the constraint doesn't have a binding date for the valueset AND the implementation guide hasn't been published yet, use the current date
+                if (bindingDate == null)
+                    bindingDate = DateTime.Now;
+
+                retValueSets.Add(
+                    new ImplementationGuideValueSet()
+                    {
+                        ValueSet = cGroupedValueSet.ValueSet,
+                        BindingDate = bindingDate
+                    });
+            }
+
+            return retValueSets
+                .OrderBy(y => y.ValueSet.Name)
+                .ToList();
+        }
+
+        /// <summary>
+        /// Gets all templates associated to an implementation guide.
+        /// Starts out with all templates that are directly associated to an implementation guide via ownership.
+        /// Recursively looks at each directly associated template and gets all implied and contained templates, if the request for inferred templates is true.
+        /// </summary>
+        /// <param name="tdb"></param>
+        /// <returns></returns>
+        public List<Template> GetRecursiveTemplates(IObjectRepository tdb, List<int> parentTemplateIds = null, bool inferred = true, string[] categories = null)
+        {
+            // A list of templates that will be used by GetTemplateReferences() to determine
+            // if a template has already been checked, so that an endless loop does not occur
+            List<Template> checkedTemplates = new List<Template>();
+
+            if (parentTemplateIds != null && parentTemplateIds.Count > 0)
+            {
+                List<int> templateIds = new List<int>();
+
+                foreach (int parentTemplateId in parentTemplateIds)
+                {
+                    var cParentTemplateIds = (from igt in tdb.GetImplementationGuideTemplates(this.Id, inferred, parentTemplateId, categories)
+                                              select igt.Value);
+                    templateIds.AddRange(cParentTemplateIds);
+                }
+
+                var templates = (from tid in templateIds.Distinct()
+                                 join t in tdb.Templates on tid equals t.Id
+                                 select t).ToList();
+
+                return templates
+                    .Distinct()
+                    .ToList();
+            }
+            else
+            {
+                var templateIds = tdb.GetImplementationGuideTemplates(this.Id, inferred, null, categories);
+                var templates = (from tid in templateIds
+                                 join t in tdb.Templates on tid equals t.Id
+                                 select t).ToList();
+
+                return templates
+                    .Distinct()
+                    .OrderBy(y => y.TemplateType.Name)
+                    .ThenBy(y => y.Name).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Gets whether this Implementation Guide is published
+        /// </summary>
+        /// <returns></returns>
+        public bool IsPublished()
+        {
+            if (this.PublishStatus == null)
+                return false;
+
+            return this.PublishStatus.IsPublished;
+        }
+
+        public static List<ImplementationGuide> SearchImplementationGuides()
+        {
+            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            {
+                List<ImplementationGuide> retList = tdb.ImplementationGuides
+                    .OrderBy(y => y.Name)
+                    .ToList();
+                return retList;
+            }
+        }
+
+        #endregion
+
+        public void Delete(IObjectRepository tdb, int? replacementImplementationGuideId)
+        {
+            // Remove custom template types associated with the IG
+            this.TemplateTypes.ToList().ForEach(y => tdb.ImplementationGuideTemplateTypes.DeleteObject(y));
+
+            // Remove custom settings (such as cardinality settings) associated with the IG
+            this.Settings.ToList().ForEach(y => tdb.ImplementationGuideSettings.DeleteObject(y));
+
+            // Update the child templates of the IG to indicate the new replacing implementation guide
+            if (replacementImplementationGuideId != null)
+                this.ChildTemplates.ToList().ForEach(y => y.OwningImplementationGuideId = replacementImplementationGuideId.Value);
+            else
+                this.ChildTemplates.ToList().ForEach(t => t.Delete(tdb, null));
+
+            this.Files.ToList().ForEach(y => tdb.ImplementationGuideFiles.DeleteObject(y));
+
+            this.Permissions.ToList().ForEach(y => tdb.ImplementationGuidePermissions.DeleteObject(y));
+
+            this.SchematronPatterns.ToList().ForEach(y => tdb.ImplementationGuideSchematronPatterns.DeleteObject(y));
+
+            tdb.ImplementationGuides.DeleteObject(this);
+        }
+    }
+
+    [Serializable]
+    public class ImplementationGuideValueSet
+    {
+        public ValueSet ValueSet { get; set; }
+        public DateTime? BindingDate { get; set; }
+    }
+}

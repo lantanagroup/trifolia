@@ -1,0 +1,42 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Trifolia.Shared.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="LogInformation" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="CardinalityZeroToOne" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">zero or one [0..1]</Value>
+    </Setting>
+    <Setting Name="CardinalityOneToOne" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">exactly one [1..1]</Value>
+    </Setting>
+    <Setting Name="CardinalityAtLeastOne" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">at least one [1..*]</Value>
+    </Setting>
+    <Setting Name="CardinalityZeroOrMore" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">zero or more [0..*]</Value>
+    </Setting>
+    <Setting Name="CardinalityZero" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">[0..0]</Value>
+    </Setting>
+    <Setting Name="IGTypeSchemaLocation" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Schemas</Value>
+    </Setting>
+    <Setting Name="PhinVadsServiceUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://phinvads.cdc.gov/vocabService/v2</Value>
+    </Setting>
+    <Setting Name="DefaultJiraTaskType" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DefaultJiraProject" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DefaultJiraUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DefaultJiraPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="10.0" Name="TemplateDatabaseManagement">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="False">$(FxCopDir)\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded" NewOnly="False" />
+   <Report Status="Active" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+ </ProjectOptions>
+ <Targets>
+  <Target Name="$(ProjectDir)/TemplateDatabase.UI/bin/Debug/TemplateDatabase.UI.dll" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityTransparencyRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="10.0">
+  <Namespaces>
+   <Namespace Name="TemplateDatabase.UI">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Created="2012-07-02 18:24:29Z">
+      <Issue>
+       <Item>TemplateDatabase.UI</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="TemplateDatabase.UI.Pages">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Created="2012-07-02 18:24:29Z">
+      <Issue>
+       <Item>TemplateDatabase.UI.Pages</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="TemplateDatabase.UI.Pages.DataAdapters">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Created="2012-07-02 18:24:29Z">
+      <Issue>
+       <Item>TemplateDatabase.UI.Pages.DataAdapters</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+  </Namespaces>
+  <Targets>
+   <Target Name="$(ProjectDir)/TemplateDatabase.UI/bin/Debug/TemplateDatabase.UI.dll">
+    <Modules>
+     <Module Name="templatedatabase.ui.dll">
+      <Messages>
+       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Created="2012-07-02 18:24:29Z">
+        <Issue Name="NoStrongName">
+         <Item>'TemplateDatabase.UI.dll'</Item>
+        </Issue>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="TemplateDatabase.UI.Pages">
+        <Types>
+         <Type Name="IValueSetComparisonReportView">
+          <Members>
+           <Member Name="#firstOID">
+            <Messages>
+             <Message Id="OID" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>OID</Item>
+               <Item>'IValueSetComparisonReportView.firstOID'</Item>
+               <Item>Oid</Item>
+              </Issue>
+             </Message>
+             <Message Id="first" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>first</Item>
+               <Item>'IValueSetComparisonReportView.firstOID'</Item>
+               <Item>First</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#secondOID">
+            <Messages>
+             <Message Id="OID" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>OID</Item>
+               <Item>'IValueSetComparisonReportView.secondOID'</Item>
+               <Item>Oid</Item>
+              </Issue>
+             </Message>
+             <Message Id="second" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>second</Item>
+               <Item>'IValueSetComparisonReportView.secondOID'</Item>
+               <Item>Second</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="TemplateDatabase.UI.Pages.DataAdapters">
+        <Types>
+         <Type Name="IValueSetComparisonReportAdapter">
+          <Members>
+           <Member Name="#Initialize(System.String,System.String)">
+            <Messages>
+             <Message Id="OID" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-07-02 18:24:29Z">
+              <Issue Name="MemberParameter">
+               <Item>'IValueSetComparisonReportAdapter.Initialize(string, string)'</Item>
+               <Item>OID</Item>
+               <Item>'firstOID'</Item>
+               <Item>Oid</Item>
+              </Issue>
+              <Issue Name="MemberParameter">
+               <Item>'IValueSetComparisonReportAdapter.Initialize(string, string)'</Item>
+               <Item>OID</Item>
+               <Item>'secondOID'</Item>
+               <Item>Oid</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ValueSetComparisonReportAdapter">
+          <Members>
+           <Member Name="#Code_1">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.Code_1'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Code_2">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.Code_2'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CodeSystem_1">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.CodeSystem_1'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CodeSystem_2">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.CodeSystem_2'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#DisplayName_1">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.DisplayName_1'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#DisplayName_2">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.DisplayName_2'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetCurrent()">
+            <Messages>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2012-07-02 18:40:27Z">
+              <Issue>
+               <Item>'List&lt;ValueSetComparisonReportAdapter&gt;'</Item>
+               <Item>'ValueSetComparisonReportAdapter.GetCurrent()'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Created="2012-07-02 18:40:27Z">
+              <Issue Certainty="50">
+               <Item>'ValueSetComparisonReportAdapter.GetCurrent()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ObjectId_1">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.ObjectId_1'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ObjectId_2">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.ObjectId_2'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ValueSetDescription_1">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.ValueSetDescription_1'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ValueSetDescription_2">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.ValueSetDescription_2'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ValueSetName_1">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.ValueSetName_1'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ValueSetName_2">
+            <Messages>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2012-07-02 18:24:29Z">
+              <Issue Name="Member">
+               <Item>'ValueSetComparisonReportAdapter.ValueSetName_2'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Rules>
+   <Rule TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210">
+    <Resolution Name="NoStrongName">Sign {0} with a strong name key.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+    <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002">
+    <Resolution Name="Default">Change {0} in {1} to use Collection&lt;T&gt;, ReadOnlyCollection&lt;T&gt; or KeyedCollection&lt;K,V&gt;</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
+    <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
+    <Resolution Name="MemberParameter">In member {0}, correct the casing of '{1}' in parameter name {2} by changing it to '{3}'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707">
+    <Resolution Name="Member">Remove the underscores from member name {0}.</Resolution>
+   </Rule>
+   <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
+    <Resolution Name="Default">Change {0} to a property if appropriate.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>

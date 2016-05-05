@@ -1,0 +1,620 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<vocabularyModel xmlns="urn:hl7-org:v3/mif2">
+  <codeSystem name="ReligiousAffiliation" title="Religious Affiliation" codeSystemId="2.16.840.1.113883.5.1076">
+    <annotations>
+      <documentation>
+        <description>
+          <text>
+            <p>Assigment of spiritual faith affiliation</p>
+          </text>
+        </description>
+      </documentation>
+    </annotations>
+    <releasedVersion releaseDate="2012-08-02" publisherVersionId="124" hl7MaintainedIndicator="true" completeCodesIndicator="true" hl7ApprovedIndicator="true">
+      <supportedLanguage>en</supportedLanguage>
+      <supportedConceptRelationship relationshipKind="Specializes" name="Specializes" inverseName="Generalizes" isNavigable="true" reflexivity="irreflexive" symmetry="antisymmetric" transitivity="transitive">
+        <description>The child code is a more narrow version of the concept represented by the parent code.  I.e. Every child concept is also a valid parent concept.  Used to allow determination of subsumption.  Must be transitive, irreflexive, antisymmetric.</description>
+      </supportedConceptRelationship>
+      <supportedConceptRelationship relationshipKind="Generalizes" name="Generalizes" inverseName="Specializes" isNavigable="true" reflexivity="irreflexive" symmetry="antisymmetric" transitivity="transitive">
+        <description>Inverse of Specializes.  Only included as a derived relationship.</description>
+      </supportedConceptRelationship>
+      <supportedConceptProperty propertyName="internalId" type="Token" isMandatoryIndicator="false">
+        <description>The internal identifier for the concept in the HL7 Access database repository.</description>
+      </supportedConceptProperty>
+      <concept>
+        <conceptProperty name="internalId" value="19186"/>
+        <printName language="en" preferredForLanguage="true" text="Adventist"/>
+        <code code="1001" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19187"/>
+        <printName language="en" preferredForLanguage="true" text="African Religions"/>
+        <code code="1002" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19188"/>
+        <printName language="en" preferredForLanguage="true" text="Afro-Caribbean Religions"/>
+        <code code="1003" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19189"/>
+        <printName language="en" preferredForLanguage="true" text="Agnosticism"/>
+        <code code="1004" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19190"/>
+        <printName language="en" preferredForLanguage="true" text="Anglican"/>
+        <code code="1005" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19191"/>
+        <printName language="en" preferredForLanguage="true" text="Animism"/>
+        <code code="1006" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19192"/>
+        <printName language="en" preferredForLanguage="true" text="Atheism"/>
+        <code code="1007" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19193"/>
+        <printName language="en" preferredForLanguage="true" text="Babi &amp; Baha'I faiths"/>
+        <code code="1008" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19194"/>
+        <printName language="en" preferredForLanguage="true" text="Baptist"/>
+        <code code="1009" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19195"/>
+        <printName language="en" preferredForLanguage="true" text="Bon"/>
+        <code code="1010" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19196"/>
+        <printName language="en" preferredForLanguage="true" text="Cao Dai"/>
+        <code code="1011" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19197"/>
+        <printName language="en" preferredForLanguage="true" text="Celticism"/>
+        <code code="1012" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19198"/>
+        <printName language="en" preferredForLanguage="true" text="Christian (non-Catholic, non-specific)"/>
+        <code code="1013" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19199"/>
+        <printName language="en" preferredForLanguage="true" text="Confucianism"/>
+        <code code="1014" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19200"/>
+        <printName language="en" preferredForLanguage="true" text="Cyberculture Religions"/>
+        <code code="1015" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19201"/>
+        <printName language="en" preferredForLanguage="true" text="Divination"/>
+        <code code="1016" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19202"/>
+        <printName language="en" preferredForLanguage="true" text="Fourth Way"/>
+        <code code="1017" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19203"/>
+        <printName language="en" preferredForLanguage="true" text="Free Daism"/>
+        <code code="1018" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19204"/>
+        <printName language="en" preferredForLanguage="true" text="Gnosis"/>
+        <code code="1019" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19205"/>
+        <printName language="en" preferredForLanguage="true" text="Hinduism"/>
+        <code code="1020" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19206"/>
+        <printName language="en" preferredForLanguage="true" text="Humanism"/>
+        <code code="1021" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19207"/>
+        <printName language="en" preferredForLanguage="true" text="Independent"/>
+        <code code="1022" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19208"/>
+        <printName language="en" preferredForLanguage="true" text="Islam"/>
+        <code code="1023" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19209"/>
+        <printName language="en" preferredForLanguage="true" text="Jainism"/>
+        <code code="1024" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19210"/>
+        <printName language="en" preferredForLanguage="true" text="Jehovah's Witnesses"/>
+        <code code="1025" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19211"/>
+        <printName language="en" preferredForLanguage="true" text="Judaism"/>
+        <code code="1026" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19212"/>
+        <printName language="en" preferredForLanguage="true" text="Latter Day Saints"/>
+        <code code="1027" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19213"/>
+        <printName language="en" preferredForLanguage="true" text="Lutheran"/>
+        <code code="1028" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19214"/>
+        <printName language="en" preferredForLanguage="true" text="Mahayana"/>
+        <code code="1029" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19215"/>
+        <printName language="en" preferredForLanguage="true" text="Meditation"/>
+        <code code="1030" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19216"/>
+        <printName language="en" preferredForLanguage="true" text="Messianic Judaism"/>
+        <code code="1031" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19217"/>
+        <printName language="en" preferredForLanguage="true" text="Mitraism"/>
+        <code code="1032" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19218"/>
+        <printName language="en" preferredForLanguage="true" text="New Age"/>
+        <code code="1033" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19219"/>
+        <printName language="en" preferredForLanguage="true" text="non-Roman Catholic"/>
+        <code code="1034" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19220"/>
+        <printName language="en" preferredForLanguage="true" text="Occult"/>
+        <code code="1035" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19221"/>
+        <printName language="en" preferredForLanguage="true" text="Orthodox"/>
+        <code code="1036" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19222"/>
+        <printName language="en" preferredForLanguage="true" text="Paganism"/>
+        <code code="1037" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19223"/>
+        <printName language="en" preferredForLanguage="true" text="Pentecostal"/>
+        <code code="1038" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19224"/>
+        <printName language="en" preferredForLanguage="true" text="Process, The"/>
+        <code code="1039" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19225"/>
+        <printName language="en" preferredForLanguage="true" text="Reformed/Presbyterian"/>
+        <code code="1040" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19226"/>
+        <printName language="en" preferredForLanguage="true" text="Roman Catholic Church"/>
+        <code code="1041" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19227"/>
+        <printName language="en" preferredForLanguage="true" text="Satanism"/>
+        <code code="1042" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19228"/>
+        <printName language="en" preferredForLanguage="true" text="Scientology"/>
+        <code code="1043" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19229"/>
+        <printName language="en" preferredForLanguage="true" text="Shamanism"/>
+        <code code="1044" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19230"/>
+        <printName language="en" preferredForLanguage="true" text="Shiite (Islam)"/>
+        <code code="1045" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19231"/>
+        <printName language="en" preferredForLanguage="true" text="Shinto"/>
+        <code code="1046" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19232"/>
+        <printName language="en" preferredForLanguage="true" text="Sikism"/>
+        <code code="1047" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19233"/>
+        <printName language="en" preferredForLanguage="true" text="Spiritualism"/>
+        <code code="1048" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19234"/>
+        <printName language="en" preferredForLanguage="true" text="Sunni (Islam)"/>
+        <code code="1049" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19235"/>
+        <printName language="en" preferredForLanguage="true" text="Taoism"/>
+        <code code="1050" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19236"/>
+        <printName language="en" preferredForLanguage="true" text="Theravada"/>
+        <code code="1051" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19237"/>
+        <printName language="en" preferredForLanguage="true" text="Unitarian-Universalism"/>
+        <code code="1052" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19238"/>
+        <printName language="en" preferredForLanguage="true" text="Universal Life Church"/>
+        <code code="1053" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19239"/>
+        <printName language="en" preferredForLanguage="true" text="Vajrayana (Tibetan)"/>
+        <code code="1054" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19240"/>
+        <printName language="en" preferredForLanguage="true" text="Veda"/>
+        <code code="1055" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19241"/>
+        <printName language="en" preferredForLanguage="true" text="Voodoo"/>
+        <code code="1056" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19242"/>
+        <printName language="en" preferredForLanguage="true" text="Wicca"/>
+        <code code="1057" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19243"/>
+        <printName language="en" preferredForLanguage="true" text="Yaohushua"/>
+        <code code="1058" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19244"/>
+        <printName language="en" preferredForLanguage="true" text="Zen Buddhism"/>
+        <code code="1059" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="19245"/>
+        <printName language="en" preferredForLanguage="true" text="Zoroastrianism"/>
+        <code code="1060" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21466"/>
+        <printName language="en" preferredForLanguage="true" text="Assembly of God"/>
+        <code code="1061" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21467"/>
+        <printName language="en" preferredForLanguage="true" text="Brethren"/>
+        <code code="1062" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21468"/>
+        <printName language="en" preferredForLanguage="true" text="Christian Scientist"/>
+        <code code="1063" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21469"/>
+        <printName language="en" preferredForLanguage="true" text="Church of Christ"/>
+        <code code="1064" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21470"/>
+        <printName language="en" preferredForLanguage="true" text="Church of God"/>
+        <code code="1065" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21471"/>
+        <printName language="en" preferredForLanguage="true" text="Congregational"/>
+        <code code="1066" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21472"/>
+        <printName language="en" preferredForLanguage="true" text="Disciples of Christ"/>
+        <code code="1067" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21473"/>
+        <printName language="en" preferredForLanguage="true" text="Eastern Orthodox"/>
+        <code code="1068" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21474"/>
+        <printName language="en" preferredForLanguage="true" text="Episcopalian"/>
+        <code code="1069" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21475"/>
+        <printName language="en" preferredForLanguage="true" text="Evangelical Covenant"/>
+        <code code="1070" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21476"/>
+        <printName language="en" preferredForLanguage="true" text="Friends"/>
+        <code code="1071" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21477"/>
+        <printName language="en" preferredForLanguage="true" text="Full Gospel"/>
+        <code code="1072" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21478"/>
+        <printName language="en" preferredForLanguage="true" text="Methodist"/>
+        <code code="1073" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21479"/>
+        <printName language="en" preferredForLanguage="true" text="Native American"/>
+        <code code="1074" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21480"/>
+        <printName language="en" preferredForLanguage="true" text="Nazarene"/>
+        <code code="1075" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21481"/>
+        <printName language="en" preferredForLanguage="true" text="Presbyterian"/>
+        <code code="1076" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21482"/>
+        <printName language="en" preferredForLanguage="true" text="Protestant"/>
+        <code code="1077" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21483"/>
+        <printName language="en" preferredForLanguage="true" text="Protestant, No Denomination"/>
+        <code code="1078" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21484"/>
+        <printName language="en" preferredForLanguage="true" text="Reformed"/>
+        <code code="1079" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21485"/>
+        <printName language="en" preferredForLanguage="true" text="Salvation Army"/>
+        <code code="1080" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21486"/>
+        <printName language="en" preferredForLanguage="true" text="Unitarian Universalist"/>
+        <code code="1081" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="21487"/>
+        <printName language="en" preferredForLanguage="true" text="United Church of Christ"/>
+        <code code="1082" status="active"/>
+      </concept>
+    </releasedVersion>
+  </codeSystem>
+  <codeSystem name="LanguageAbilityProficiency" title="LanguageAbilityProficiency" codeSystemId="2.16.840.1.113883.5.61">
+    <header>
+      <legalese>
+        <notation>Is in UMLS.</notation>
+      </legalese>
+      <responsibleGroup organizationName="Health Level 7"/>
+      <contributor>
+        <role>Sponsor</role>
+        <name name="Health Level Seven"/>
+      </contributor>
+    </header>
+    <annotations>
+      <documentation>
+        <description>
+          <text>
+            <p>A value representing the level of proficiency in a language.</p>
+            <p>
+              <i>Example:</i>Excellent, good, fair, poor.
+            </p>
+            <p>
+              <i>OpenIssue: </i>Description copied from Concept Domain of same name.  Must be verified.
+            </p>
+          </text>
+        </description>
+      </documentation>
+    </annotations>
+    <releasedVersion releaseDate="2012-08-02" publisherVersionId="29" hl7MaintainedIndicator="true" completeCodesIndicator="true" hl7ApprovedIndicator="true">
+      <supportedLanguage>en</supportedLanguage>
+      <supportedConceptRelationship relationshipKind="Specializes" name="Specializes" inverseName="Generalizes" isNavigable="true" reflexivity="irreflexive" symmetry="antisymmetric" transitivity="transitive">
+        <description>The child code is a more narrow version of the concept represented by the parent code.  I.e. Every child concept is also a valid parent concept.  Used to allow determination of subsumption.  Must be transitive, irreflexive, antisymmetric.</description>
+      </supportedConceptRelationship>
+      <supportedConceptRelationship relationshipKind="Generalizes" name="Generalizes" inverseName="Specializes" isNavigable="true" reflexivity="irreflexive" symmetry="antisymmetric" transitivity="transitive">
+        <description>Inverse of Specializes.  Only included as a derived relationship.</description>
+      </supportedConceptRelationship>
+      <supportedConceptProperty propertyName="internalId" type="Token" isMandatoryIndicator="false">
+        <description>The internal identifier for the concept in the HL7 Access database repository.</description>
+      </supportedConceptProperty>
+      <concept>
+        <conceptProperty name="internalId" value="12200"/>
+        <printName language="en" preferredForLanguage="true" text="Excellent"/>
+        <code code="E" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="12202"/>
+        <printName language="en" preferredForLanguage="true" text="Fair"/>
+        <code code="F" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="12201"/>
+        <printName language="en" preferredForLanguage="true" text="Good"/>
+        <code code="G" status="active"/>
+      </concept>
+      <concept>
+        <conceptProperty name="internalId" value="12203"/>
+        <printName language="en" preferredForLanguage="true" text="Poor"/>
+        <code code="P" status="active"/>
+      </concept>
+    </releasedVersion>
+  </codeSystem>
+  <codeSystem name="ietf3066" title="Tags for the Identification of Languages" codeSystemId="2.16.840.1.113883.6.121">
+    <annotations>
+      <documentation>
+        <description>
+          <text>
+            <p>from OID registry</p>
+          </text>
+        </description>
+      </documentation>
+    </annotations>
+    <releasedVersion releaseDate="2012-08-02" hl7MaintainedIndicator="false" completeCodesIndicator="false" hl7ApprovedIndicator="false">
+      <supportedLanguage>en</supportedLanguage>
+    </releasedVersion>
+  </codeSystem>
+  <valueSet id="2.16.840.1.113883.1.11.19175" name="EducationLevel">
+    <version versionDate="2012-08-02">
+      <supportedCodeSystem>2.16.840.1.113883.5.1077</supportedCodeSystem>
+      <supportedLanguage>en</supportedLanguage>
+      <content codeSystem="2.16.840.1.113883.5.1077"/>
+    </version>
+  </valueSet>
+  <valueSet id="2.16.840.1.113883.1.11.19185" name="ReligiousAffiliation">
+    <annotations>
+      <documentation>
+        <description>
+          <text>
+            <p>Assigment of spiritual faith affiliation</p>
+          </text>
+        </description>
+      </documentation>
+    </annotations>
+    <version versionDate="2012-08-02">
+      <supportedCodeSystem>2.16.840.1.113883.5.1076</supportedCodeSystem>
+      <supportedLanguage>en</supportedLanguage>
+      <content>
+        <combinedContent>
+          <unionWithContent codeSystem="2.16.840.1.113883.5.1076"/>
+          <unionWithContent codeSystem="2.16.840.1.113883.5.1076">
+            <codeBasedContent code="1061"/>
+            <codeBasedContent code="1062"/>
+            <codeBasedContent code="1063"/>
+            <codeBasedContent code="1064"/>
+            <codeBasedContent code="1065"/>
+            <codeBasedContent code="1066"/>
+            <codeBasedContent code="1067"/>
+            <codeBasedContent code="1068"/>
+            <codeBasedContent code="1069"/>
+            <codeBasedContent code="1070"/>
+            <codeBasedContent code="1071"/>
+            <codeBasedContent code="1072"/>
+            <codeBasedContent code="1073"/>
+            <codeBasedContent code="1074"/>
+            <codeBasedContent code="1075"/>
+            <codeBasedContent code="1076"/>
+            <codeBasedContent code="1077"/>
+            <codeBasedContent code="1078"/>
+            <codeBasedContent code="1079"/>
+            <codeBasedContent code="1080"/>
+            <codeBasedContent code="1081"/>
+            <codeBasedContent code="1082"/>
+          </unionWithContent>
+        </combinedContent>
+      </content>
+    </version>
+  </valueSet>
+  <valueSet id="2.16.840.1.113883.1.11.16926" name="x_BasicConfidentialityKind">
+    <annotations>
+      <documentation>
+        <description>
+          <text>
+            <p>
+              <b>Description: </b>Used to enumerate the typical confidentiality constraints placed upon a clinical document.
+            </p>
+            <p>
+              <i>Usage Note:</i>x_BasicConfidentialityKind is a subset of Confidentiality codes that are used as metadata indicating the receiver responsibility to comply with normally applicable jurisdictional privacy law or disclosure authorization; that the receiver may not disclose this information except as directed by the information custodian, who may be the information subject; or that the receiver may not disclose this information except as directed by the information custodian, who may be the information subject.
+            </p>
+          </text>
+        </description>
+      </documentation>
+    </annotations>
+    <version versionDate="2012-08-02">
+      <supportedCodeSystem>2.16.840.1.113883.5.25</supportedCodeSystem>
+      <supportedLanguage>en</supportedLanguage>
+      <content codeSystem="2.16.840.1.113883.5.25">
+        <codeBasedContent code="N"/>
+        <codeBasedContent code="R"/>
+        <codeBasedContent code="V"/>
+      </content>
+    </version>
+  </valueSet>
+  <valueSet id="2.16.840.1.113883.1.11.12199" name="LanguageAbilityProficiency">
+    <annotations>
+      <documentation>
+        <description>
+          <text>
+            <p>A value representing the level of proficiency in a language.</p>
+            <p>
+              <i>Example:</i>Excellent, good, fair, poor.
+            </p>
+          </text>
+        </description>
+      </documentation>
+    </annotations>
+    <version versionDate="2012-08-02">
+      <supportedCodeSystem>2.16.840.1.113883.5.61</supportedCodeSystem>
+      <supportedLanguage>en</supportedLanguage>
+      <content codeSystem="2.16.840.1.113883.5.61"/>
+    </version>
+  </valueSet>
+  <valueSet id="2.16.840.1.113883.1.11.11526" name="HumanLanguage">
+    <annotations>
+      <documentation>
+        <description>
+          <text>
+            <p>Codes for the representation of the names of human languages.</p>
+          </text>
+        </description>
+      </documentation>
+    </annotations>
+    <version versionDate="2012-08-02">
+      <supportedCodeSystem>2.16.840.1.113883.6.121</supportedCodeSystem>
+      <supportedLanguage>en</supportedLanguage>
+      <content codeSystem="2.16.840.1.113883.6.121"/>
+    </version>
+  </valueSet>
+</vocabularyModel>

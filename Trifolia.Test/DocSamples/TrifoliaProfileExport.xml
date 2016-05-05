@@ -1,0 +1,3353 @@
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<title type="text">Trifolia Profile Export</title>
+	<id>cid:d1e1</id>
+	<updated>2014-05-04T14:42:26.04-04:00</updated>
+	<entry>
+		<title type="text">Test FHIR Composition</title>
+		<id>oid:FHIR_1.2.3.4</id>
+		<updated>2014-05-04T14:42:26.04-04:00</updated>
+		<content type="text/xml">
+			<Profile xmlns="http://hl7.org/fhir">
+				<text>
+					<status value="generated"/>
+					<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+						<xhtml:p>Test FHIR Composition</xhtml:p>
+						<xhtml:ol>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] id (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] extension (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] modifierExtension (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] language (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] text (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] contained (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] identifier (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] instant (CONF:1124-16).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] type, which SHALL be selected from ValueSet Race 2.16.840.1.113883.1.11.14914 STATIC (CONF:1124-5).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] class (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] title (CONF:1124-1).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] status (CONF:1124-17).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] confidentiality (CONF:1124-18).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] subject (CONF:1124-2).</p>
+								<ol>
+									<li>
+										<p>This subject SHALL contain exactly one [1..1] Sean's Test Patient (templateId:FHIR_4.3.2.1) (CONF:1124-15).</p>
+									</li>
+								</ol>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] author (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] attester (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] custodian (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] event (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] encounter (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] section (CONF:X-X).</p>
+							</li>
+						</xhtml:ol>
+					</xhtml:div>
+				</text>
+				<identifier value="oid:FHIR_1.2.3.4"/>
+				<name value="Test FHIR Composition"/>
+				<publisher value="LCG"/>
+				<description value="This is a test FHIR composition. "/>
+				<status value="draft"/>
+				<structure>
+					<type value="Composition"/>
+					<element>
+						<path value="Composition.id"/>
+						<definition>
+							<short value="id"/>
+							<formal value="id"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d9e0"/>
+								<name value="id"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] id (CONF:X-X)."/>
+								<xpath value="count(Composition/id)&gt;=0 and count(Composition/id)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.extension"/>
+						<definition>
+							<short value="extension"/>
+							<formal value="extension"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d12e0"/>
+								<name value="extension"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] extension (CONF:X-X)."/>
+								<xpath value="count(Composition/extension)&gt;=0 and count(Composition/extension)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.modifierExtension"/>
+						<definition>
+							<short value="modifierExtension"/>
+							<formal value="modifierExtension"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d15e0"/>
+								<name value="modifierExtension"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] modifierExtension (CONF:X-X)."/>
+								<xpath value="count(Composition/modifierExtension)&gt;=0 and count(Composition/modifierExtension)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.language"/>
+						<definition>
+							<short value="language"/>
+							<formal value="language"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d18e0"/>
+								<name value="language"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] language (CONF:X-X)."/>
+								<xpath value="count(Composition/language)&gt;=0 and count(Composition/language)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.text"/>
+						<definition>
+							<short value="text"/>
+							<formal value="text"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d21e0"/>
+								<name value="text"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] text (CONF:X-X)."/>
+								<xpath value="count(Composition/text)&gt;=0 and count(Composition/text)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.contained"/>
+						<definition>
+							<short value="contained"/>
+							<formal value="contained"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d24e0"/>
+								<name value="contained"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] contained (CONF:X-X)."/>
+								<xpath value="count(Composition/contained)&gt;=0 and count(Composition/contained)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.identifier"/>
+						<definition>
+							<short value="identifier"/>
+							<formal value="identifier"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d27e0"/>
+								<name value="identifier"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] identifier (CONF:X-X)."/>
+								<xpath value="count(Composition/identifier)&gt;=0 and count(Composition/identifier)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.instant"/>
+						<definition>
+							<short value="instant"/>
+							<formal value="instant"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-16"/>
+								<name value="instant"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] instant (CONF:1124-16)."/>
+								<xpath value="count(Composition/instant)&gt;=1 and count(Composition/instant)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.type"/>
+						<definition>
+							<short value="Document type code"/>
+							<formal value="type"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-5"/>
+								<name value="type"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] type, which SHALL be selected from ValueSet Race 2.16.840.1.113883.1.11.14914 STATIC (CONF:1124-5)."/>
+								<xpath value="count(Composition/type)&gt;=1 and count(Composition/type)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+							<binding>
+								<name value="Race"/>
+								<isExtensible value="false"/>
+								<description value="Concepts in the race value set include the 5 minimum categories for race specified by OMB  along with a more detailed set of race categories used by the Bureau of Census. "/>
+								<referenceUri value="oid:2.16.840.1.113883.1.11.14914"/>
+							</binding>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.class"/>
+						<definition>
+							<short value="class"/>
+							<formal value="class"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d38e0"/>
+								<name value="class"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] class (CONF:X-X)."/>
+								<xpath value="count(Composition/class)&gt;=0 and count(Composition/class)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.title"/>
+						<definition>
+							<short value="Human readable title for the document"/>
+							<formal value="title"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-1"/>
+								<name value="title"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] title (CONF:1124-1)."/>
+								<xpath value="count(Composition/title)&gt;=1 and count(Composition/title)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.status"/>
+						<definition>
+							<short value="status"/>
+							<formal value="status"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-17"/>
+								<name value="status"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] status (CONF:1124-17)."/>
+								<xpath value="count(Composition/status)&gt;=1 and count(Composition/status)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.confidentiality"/>
+						<definition>
+							<short value="confidentiality"/>
+							<formal value="confidentiality"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-18"/>
+								<name value="confidentiality"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] confidentiality (CONF:1124-18)."/>
+								<xpath value="count(Composition/confidentiality)&gt;=1 and count(Composition/confidentiality)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.subject"/>
+						<definition>
+							<short value="subject"/>
+							<formal value="subject"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-2"/>
+								<name value="subject"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] subject (CONF:1124-2)."/>
+								<xpath value="count(Composition/subject)&gt;=1 and count(Composition/subject)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.subject.reference"/>
+						<definition>
+							<short value="reference"/>
+							<formal value="reference"/>
+							<min value="1"/>
+							<max value="1"/>
+							<type>
+								<code value="Patient"/>
+								<profile value="oid:FHIR_4.3.2.1"/>
+							</type>
+							<constraint>
+								<key value="1124-15"/>
+								<name value="reference"/>
+								<severity value="error"/>
+								<human value="This subject SHALL contain exactly one [1..1] Sean's Test Patient (templateId:FHIR_4.3.2.1) (CONF:1124-15)."/>
+								<xpath value="count(Composition/subject/reference)&gt;=1 and count(Composition/subject/reference)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.author"/>
+						<definition>
+							<short value="author"/>
+							<formal value="author"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d56e0"/>
+								<name value="author"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] author (CONF:X-X)."/>
+								<xpath value="count(Composition/author)&gt;=0 and count(Composition/author)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.attester"/>
+						<definition>
+							<short value="attester"/>
+							<formal value="attester"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d59e0"/>
+								<name value="attester"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] attester (CONF:X-X)."/>
+								<xpath value="count(Composition/attester)&gt;=0 and count(Composition/attester)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.custodian"/>
+						<definition>
+							<short value="custodian"/>
+							<formal value="custodian"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d62e0"/>
+								<name value="custodian"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] custodian (CONF:X-X)."/>
+								<xpath value="count(Composition/custodian)&gt;=0 and count(Composition/custodian)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.event"/>
+						<definition>
+							<short value="event"/>
+							<formal value="event"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d65e0"/>
+								<name value="event"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] event (CONF:X-X)."/>
+								<xpath value="count(Composition/event)&gt;=0 and count(Composition/event)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.encounter"/>
+						<definition>
+							<short value="encounter"/>
+							<formal value="encounter"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d68e0"/>
+								<name value="encounter"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] encounter (CONF:X-X)."/>
+								<xpath value="count(Composition/encounter)&gt;=0 and count(Composition/encounter)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.section"/>
+						<definition>
+							<short value="section"/>
+							<formal value="section"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d71e0"/>
+								<name value="section"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] section (CONF:X-X)."/>
+								<xpath value="count(Composition/section)&gt;=0 and count(Composition/section)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+				</structure>
+			</Profile>
+		</content>
+		<summary type="xhtml">
+			<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+				<xhtml:p>Test FHIR Composition</xhtml:p>
+				<xhtml:ol>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] id (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] extension (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] modifierExtension (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] language (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] text (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] contained (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] identifier (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] instant (CONF:1124-16).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] type, which SHALL be selected from ValueSet Race 2.16.840.1.113883.1.11.14914 STATIC (CONF:1124-5).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] class (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] title (CONF:1124-1).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] status (CONF:1124-17).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] confidentiality (CONF:1124-18).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] subject (CONF:1124-2).</p>
+						<ol>
+							<li>
+								<p>This subject SHALL contain exactly one [1..1] Sean's Test Patient (templateId:FHIR_4.3.2.1) (CONF:1124-15).</p>
+							</li>
+						</ol>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] author (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] attester (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] custodian (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] event (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] encounter (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] section (CONF:X-X).</p>
+					</li>
+				</xhtml:ol>
+			</xhtml:div>
+		</summary>
+	</entry>
+	<entry>
+		<title type="text">Dales Patient</title>
+		<id>oid:1.2.3.4.5.6</id>
+		<updated>2014-05-04T14:42:26.04-04:00</updated>
+		<content type="text/xml">
+			<Profile xmlns="http://hl7.org/fhir">
+				<text>
+					<status value="generated"/>
+					<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+						<xhtml:p>Dales Patient</xhtml:p>
+						<xhtml:ol>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] id (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain [0..0] extension (CONF:1125-1).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] modifierExtension (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] language (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] text (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] contained (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] identifier (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] name (CONF:1125-3).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] telecom (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] gender (CodeSystem: AdministrativeGender 2.16.840.1.113883.5.1) (CONF:1125-4).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] birthDate (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] deceasedBoolean (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] deceasedDateTime (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] address (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] maritalStatus="M" Married (CodeSystem: HL7 V2.5 Route of Administration codes 2.16.840.1.113883.12.162) (CONF:1125-2).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] multipleBirthBoolean (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] multipleBirthInteger (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] photo (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] contact (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] animal (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>MAY contain zero or more [0..*] communication, which SHALL be selected from ValueSet White blood cell count 2.16.840.1.113883.11.20.5.6 STATIC 2014-05-02 (CONF:1125-6).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] careProvider (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] managingOrganization (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] link (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] active (CONF:X-X).</p>
+							</li>
+						</xhtml:ol>
+					</xhtml:div>
+				</text>
+				<identifier value="oid:1.2.3.4.5.6"/>
+				<name value="Dales Patient"/>
+				<publisher value="LCG"/>
+				<description/>
+				<status value="draft"/>
+				<structure>
+					<type value="Patient"/>
+					<element>
+						<path value="Patient.id"/>
+						<definition>
+							<short value="id"/>
+							<formal value="id"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d77e0"/>
+								<name value="id"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] id (CONF:X-X)."/>
+								<xpath value="count(Patient/id)&gt;=0 and count(Patient/id)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.extension"/>
+						<definition>
+							<short value="extension"/>
+							<formal value="extension"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="1125-1"/>
+								<name value="extension"/>
+								<severity value="error"/>
+								<human value="SHALL contain [0..0] extension (CONF:1125-1)."/>
+								<xpath value="count(Patient/extension)&gt;=0 and count(Patient/extension)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.modifierExtension"/>
+						<definition>
+							<short value="modifierExtension"/>
+							<formal value="modifierExtension"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d83e0"/>
+								<name value="modifierExtension"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] modifierExtension (CONF:X-X)."/>
+								<xpath value="count(Patient/modifierExtension)&gt;=0 and count(Patient/modifierExtension)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.language"/>
+						<definition>
+							<short value="language"/>
+							<formal value="language"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d86e0"/>
+								<name value="language"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] language (CONF:X-X)."/>
+								<xpath value="count(Patient/language)&gt;=0 and count(Patient/language)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.text"/>
+						<definition>
+							<short value="text"/>
+							<formal value="text"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d89e0"/>
+								<name value="text"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] text (CONF:X-X)."/>
+								<xpath value="count(Patient/text)&gt;=0 and count(Patient/text)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.contained"/>
+						<definition>
+							<short value="contained"/>
+							<formal value="contained"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d92e0"/>
+								<name value="contained"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] contained (CONF:X-X)."/>
+								<xpath value="count(Patient/contained)&gt;=0 and count(Patient/contained)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.identifier"/>
+						<definition>
+							<short value="identifier"/>
+							<formal value="identifier"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d95e0"/>
+								<name value="identifier"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] identifier (CONF:X-X)."/>
+								<xpath value="count(Patient/identifier)&gt;=0 and count(Patient/identifier)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.name"/>
+						<definition>
+							<short value="name"/>
+							<formal value="name"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1125-3"/>
+								<name value="name"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] name (CONF:1125-3)."/>
+								<xpath value="count(Patient/name)&gt;=1 and count(Patient/name)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.telecom"/>
+						<definition>
+							<short value="telecom"/>
+							<formal value="telecom"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d101e0"/>
+								<name value="telecom"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] telecom (CONF:X-X)."/>
+								<xpath value="count(Patient/telecom)&gt;=0 and count(Patient/telecom)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.gender"/>
+						<definition>
+							<short value="gender"/>
+							<formal value="gender"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1125-4"/>
+								<name value="gender"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] gender (CodeSystem: AdministrativeGender 2.16.840.1.113883.5.1) (CONF:1125-4)."/>
+								<xpath value="count(Patient/gender)&gt;=1 and count(Patient/gender)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.birthDate"/>
+						<definition>
+							<short value="birthDate"/>
+							<formal value="birthDate"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d107e0"/>
+								<name value="birthDate"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] birthDate (CONF:X-X)."/>
+								<xpath value="count(Patient/birthDate)&gt;=0 and count(Patient/birthDate)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.deceasedBoolean"/>
+						<definition>
+							<short value="deceasedBoolean"/>
+							<formal value="deceasedBoolean"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d110e0"/>
+								<name value="deceasedBoolean"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] deceasedBoolean (CONF:X-X)."/>
+								<xpath value="count(Patient/deceasedBoolean)&gt;=0 and count(Patient/deceasedBoolean)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.deceasedDateTime"/>
+						<definition>
+							<short value="deceasedDateTime"/>
+							<formal value="deceasedDateTime"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d113e0"/>
+								<name value="deceasedDateTime"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] deceasedDateTime (CONF:X-X)."/>
+								<xpath value="count(Patient/deceasedDateTime)&gt;=0 and count(Patient/deceasedDateTime)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.address"/>
+						<definition>
+							<short value="address"/>
+							<formal value="address"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d116e0"/>
+								<name value="address"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] address (CONF:X-X)."/>
+								<xpath value="count(Patient/address)&gt;=0 and count(Patient/address)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.maritalStatus"/>
+						<definition>
+							<short value="maritalStatus"/>
+							<formal value="maritalStatus"/>
+							<min value="1"/>
+							<max value="1"/>
+							<valueCodeableConcept>
+								<coding>
+									<system value="oid:2.16.840.1.113883.12.162"/>
+									<code value="M"/>
+									<display value="Married"/>
+								</coding>
+							</valueCodeableConcept>
+							<constraint>
+								<key value="1125-2"/>
+								<name value="maritalStatus"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] maritalStatus=&quot;M&quot; Married (CodeSystem: HL7 V2.5 Route of Administration codes 2.16.840.1.113883.12.162) (CONF:1125-2)."/>
+								<xpath value="count(Patient/maritalStatus)&gt;=1 and count(Patient/maritalStatus)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.multipleBirthBoolean"/>
+						<definition>
+							<short value="multipleBirthBoolean"/>
+							<formal value="multipleBirthBoolean"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d122e0"/>
+								<name value="multipleBirthBoolean"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] multipleBirthBoolean (CONF:X-X)."/>
+								<xpath value="count(Patient/multipleBirthBoolean)&gt;=0 and count(Patient/multipleBirthBoolean)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.multipleBirthInteger"/>
+						<definition>
+							<short value="multipleBirthInteger"/>
+							<formal value="multipleBirthInteger"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d125e0"/>
+								<name value="multipleBirthInteger"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] multipleBirthInteger (CONF:X-X)."/>
+								<xpath value="count(Patient/multipleBirthInteger)&gt;=0 and count(Patient/multipleBirthInteger)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.photo"/>
+						<definition>
+							<short value="photo"/>
+							<formal value="photo"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d128e0"/>
+								<name value="photo"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] photo (CONF:X-X)."/>
+								<xpath value="count(Patient/photo)&gt;=0 and count(Patient/photo)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.contact"/>
+						<definition>
+							<short value="contact"/>
+							<formal value="contact"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d131e0"/>
+								<name value="contact"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] contact (CONF:X-X)."/>
+								<xpath value="count(Patient/contact)&gt;=0 and count(Patient/contact)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.animal"/>
+						<definition>
+							<short value="animal"/>
+							<formal value="animal"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d134e0"/>
+								<name value="animal"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] animal (CONF:X-X)."/>
+								<xpath value="count(Patient/animal)&gt;=0 and count(Patient/animal)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.communication"/>
+						<definition>
+							<short value="communication"/>
+							<formal value="communication"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1125-6"/>
+								<name value="communication"/>
+								<severity value="warning"/>
+								<human value="MAY contain zero or more [0..*] communication, which SHALL be selected from ValueSet White blood cell count 2.16.840.1.113883.11.20.5.6 STATIC 2014-05-02 (CONF:1125-6)."/>
+								<xpath value="count(Patient/communication)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+							<binding>
+								<name value="White blood cell count"/>
+								<isExtensible value="false"/>
+								<description value="A valueSet of applicable lab LOINC white count codes"/>
+								<referenceUri value="oid:2.16.840.1.113883.11.20.5.6"/>
+							</binding>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.careProvider"/>
+						<definition>
+							<short value="careProvider"/>
+							<formal value="careProvider"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d142e0"/>
+								<name value="careProvider"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] careProvider (CONF:X-X)."/>
+								<xpath value="count(Patient/careProvider)&gt;=0 and count(Patient/careProvider)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.managingOrganization"/>
+						<definition>
+							<short value="managingOrganization"/>
+							<formal value="managingOrganization"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d145e0"/>
+								<name value="managingOrganization"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] managingOrganization (CONF:X-X)."/>
+								<xpath value="count(Patient/managingOrganization)&gt;=0 and count(Patient/managingOrganization)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.link"/>
+						<definition>
+							<short value="link"/>
+							<formal value="link"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d148e0"/>
+								<name value="link"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] link (CONF:X-X)."/>
+								<xpath value="count(Patient/link)&gt;=0 and count(Patient/link)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.active"/>
+						<definition>
+							<short value="active"/>
+							<formal value="active"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d151e0"/>
+								<name value="active"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] active (CONF:X-X)."/>
+								<xpath value="count(Patient/active)&gt;=0 and count(Patient/active)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+				</structure>
+			</Profile>
+		</content>
+		<summary type="xhtml">
+			<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+				<xhtml:p>Dales Patient</xhtml:p>
+				<xhtml:ol>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] id (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain [0..0] extension (CONF:1125-1).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] modifierExtension (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] language (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] text (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] contained (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] identifier (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] name (CONF:1125-3).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] telecom (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] gender (CodeSystem: AdministrativeGender 2.16.840.1.113883.5.1) (CONF:1125-4).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] birthDate (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] deceasedBoolean (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] deceasedDateTime (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] address (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] maritalStatus="M" Married (CodeSystem: HL7 V2.5 Route of Administration codes 2.16.840.1.113883.12.162) (CONF:1125-2).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] multipleBirthBoolean (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] multipleBirthInteger (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] photo (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] contact (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] animal (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>MAY contain zero or more [0..*] communication, which SHALL be selected from ValueSet White blood cell count 2.16.840.1.113883.11.20.5.6 STATIC 2014-05-02 (CONF:1125-6).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] careProvider (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] managingOrganization (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] link (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] active (CONF:X-X).</p>
+					</li>
+				</xhtml:ol>
+			</xhtml:div>
+		</summary>
+	</entry>
+	<entry>
+		<title type="text">Dale Composition</title>
+		<id>oid:1.2.3.4.5.6.7.8</id>
+		<updated>2014-05-04T14:42:26.04-04:00</updated>
+		<content type="text/xml">
+			<Profile xmlns="http://hl7.org/fhir">
+				<text>
+					<status value="generated"/>
+					<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+						<xhtml:p>Dale Composition</xhtml:p>
+						<xhtml:ol>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] id (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] extension (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] modifierExtension (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] language (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] text (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] contained (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] identifier (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] instant (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] type (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] class (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] title (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] status (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] confidentiality (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] Dales Patient (templateId:1.2.3.4.5.6) (CONF:1125-5).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] author (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] attester (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] custodian (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] event (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] encounter (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] section (CONF:X-X).</p>
+							</li>
+						</xhtml:ol>
+					</xhtml:div>
+				</text>
+				<identifier value="oid:1.2.3.4.5.6.7.8"/>
+				<name value="Dale Composition"/>
+				<publisher value="LCG"/>
+				<description/>
+				<status value="draft"/>
+				<structure>
+					<type value="Composition"/>
+					<element>
+						<path value="Composition.id"/>
+						<definition>
+							<short value="id"/>
+							<formal value="id"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d157e0"/>
+								<name value="id"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] id (CONF:X-X)."/>
+								<xpath value="count(Composition/id)&gt;=0 and count(Composition/id)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.extension"/>
+						<definition>
+							<short value="extension"/>
+							<formal value="extension"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d160e0"/>
+								<name value="extension"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] extension (CONF:X-X)."/>
+								<xpath value="count(Composition/extension)&gt;=0 and count(Composition/extension)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.modifierExtension"/>
+						<definition>
+							<short value="modifierExtension"/>
+							<formal value="modifierExtension"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d163e0"/>
+								<name value="modifierExtension"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] modifierExtension (CONF:X-X)."/>
+								<xpath value="count(Composition/modifierExtension)&gt;=0 and count(Composition/modifierExtension)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.language"/>
+						<definition>
+							<short value="language"/>
+							<formal value="language"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d166e0"/>
+								<name value="language"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] language (CONF:X-X)."/>
+								<xpath value="count(Composition/language)&gt;=0 and count(Composition/language)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.text"/>
+						<definition>
+							<short value="text"/>
+							<formal value="text"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d169e0"/>
+								<name value="text"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] text (CONF:X-X)."/>
+								<xpath value="count(Composition/text)&gt;=0 and count(Composition/text)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.contained"/>
+						<definition>
+							<short value="contained"/>
+							<formal value="contained"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d172e0"/>
+								<name value="contained"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] contained (CONF:X-X)."/>
+								<xpath value="count(Composition/contained)&gt;=0 and count(Composition/contained)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.identifier"/>
+						<definition>
+							<short value="identifier"/>
+							<formal value="identifier"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d175e0"/>
+								<name value="identifier"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] identifier (CONF:X-X)."/>
+								<xpath value="count(Composition/identifier)&gt;=0 and count(Composition/identifier)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.instant"/>
+						<definition>
+							<short value="instant"/>
+							<formal value="instant"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d178e0"/>
+								<name value="instant"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] instant (CONF:X-X)."/>
+								<xpath value="count(Composition/instant)&gt;=0 and count(Composition/instant)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.type"/>
+						<definition>
+							<short value="type"/>
+							<formal value="type"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d181e0"/>
+								<name value="type"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] type (CONF:X-X)."/>
+								<xpath value="count(Composition/type)&gt;=0 and count(Composition/type)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.class"/>
+						<definition>
+							<short value="class"/>
+							<formal value="class"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d184e0"/>
+								<name value="class"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] class (CONF:X-X)."/>
+								<xpath value="count(Composition/class)&gt;=0 and count(Composition/class)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.title"/>
+						<definition>
+							<short value="title"/>
+							<formal value="title"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d187e0"/>
+								<name value="title"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] title (CONF:X-X)."/>
+								<xpath value="count(Composition/title)&gt;=0 and count(Composition/title)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.status"/>
+						<definition>
+							<short value="status"/>
+							<formal value="status"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d190e0"/>
+								<name value="status"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] status (CONF:X-X)."/>
+								<xpath value="count(Composition/status)&gt;=0 and count(Composition/status)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.confidentiality"/>
+						<definition>
+							<short value="confidentiality"/>
+							<formal value="confidentiality"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d193e0"/>
+								<name value="confidentiality"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] confidentiality (CONF:X-X)."/>
+								<xpath value="count(Composition/confidentiality)&gt;=0 and count(Composition/confidentiality)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.subject"/>
+						<definition>
+							<short value="subject"/>
+							<formal value="subject"/>
+							<min value="1"/>
+							<max value="1"/>
+							<type>
+								<code value="Patient"/>
+								<profile value="oid:1.2.3.4.5.6"/>
+							</type>
+							<constraint>
+								<key value="1125-5"/>
+								<name value="subject"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] Dales Patient (templateId:1.2.3.4.5.6) (CONF:1125-5)."/>
+								<xpath value="count(Composition/subject)&gt;=1 and count(Composition/subject)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.author"/>
+						<definition>
+							<short value="author"/>
+							<formal value="author"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d199e0"/>
+								<name value="author"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] author (CONF:X-X)."/>
+								<xpath value="count(Composition/author)&gt;=0 and count(Composition/author)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.attester"/>
+						<definition>
+							<short value="attester"/>
+							<formal value="attester"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d202e0"/>
+								<name value="attester"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] attester (CONF:X-X)."/>
+								<xpath value="count(Composition/attester)&gt;=0 and count(Composition/attester)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.custodian"/>
+						<definition>
+							<short value="custodian"/>
+							<formal value="custodian"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d205e0"/>
+								<name value="custodian"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] custodian (CONF:X-X)."/>
+								<xpath value="count(Composition/custodian)&gt;=0 and count(Composition/custodian)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.event"/>
+						<definition>
+							<short value="event"/>
+							<formal value="event"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d208e0"/>
+								<name value="event"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] event (CONF:X-X)."/>
+								<xpath value="count(Composition/event)&gt;=0 and count(Composition/event)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.encounter"/>
+						<definition>
+							<short value="encounter"/>
+							<formal value="encounter"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d211e0"/>
+								<name value="encounter"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] encounter (CONF:X-X)."/>
+								<xpath value="count(Composition/encounter)&gt;=0 and count(Composition/encounter)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.section"/>
+						<definition>
+							<short value="section"/>
+							<formal value="section"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d214e0"/>
+								<name value="section"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] section (CONF:X-X)."/>
+								<xpath value="count(Composition/section)&gt;=0 and count(Composition/section)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+				</structure>
+			</Profile>
+		</content>
+		<summary type="xhtml">
+			<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+				<xhtml:p>Dale Composition</xhtml:p>
+				<xhtml:ol>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] id (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] extension (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] modifierExtension (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] language (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] text (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] contained (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] identifier (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] instant (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] type (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] class (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] title (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] status (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] confidentiality (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] Dales Patient (templateId:1.2.3.4.5.6) (CONF:1125-5).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] author (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] attester (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] custodian (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] event (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] encounter (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] section (CONF:X-X).</p>
+					</li>
+				</xhtml:ol>
+			</xhtml:div>
+		</summary>
+	</entry>
+	<entry>
+		<title type="text">Sean's Test Patient</title>
+		<id>oid:FHIR_4.3.2.1</id>
+		<updated>2014-05-04T14:42:26.04-04:00</updated>
+		<content type="text/xml">
+			<Profile xmlns="http://hl7.org/fhir">
+				<text>
+					<status value="generated"/>
+					<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+						<xhtml:p>Sean's Test Patient</xhtml:p>
+						<xhtml:ol>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] id (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] extension (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] modifierExtension (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] language (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] text (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] contained (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] identifier (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] name (CONF:1124-3).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] telecom (CONF:1124-4).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] gender (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] birthDate (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] deceasedBoolean (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] deceasedDateTime (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] address (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] maritalStatus (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] multipleBirthBoolean (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] multipleBirthInteger (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] photo (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] contact (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] animal (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] communication (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] careProvider (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] managingOrganization (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] link (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] active (CONF:X-X).</p>
+							</li>
+						</xhtml:ol>
+					</xhtml:div>
+				</text>
+				<identifier value="oid:FHIR_4.3.2.1"/>
+				<name value="Sean's Test Patient"/>
+				<publisher value="LCG"/>
+				<description/>
+				<status value="draft"/>
+				<structure>
+					<type value="Patient"/>
+					<element>
+						<path value="Patient.id"/>
+						<definition>
+							<short value="id"/>
+							<formal value="id"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d220e0"/>
+								<name value="id"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] id (CONF:X-X)."/>
+								<xpath value="count(Patient/id)&gt;=0 and count(Patient/id)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.extension"/>
+						<definition>
+							<short value="extension"/>
+							<formal value="extension"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d223e0"/>
+								<name value="extension"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] extension (CONF:X-X)."/>
+								<xpath value="count(Patient/extension)&gt;=0 and count(Patient/extension)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.modifierExtension"/>
+						<definition>
+							<short value="modifierExtension"/>
+							<formal value="modifierExtension"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d226e0"/>
+								<name value="modifierExtension"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] modifierExtension (CONF:X-X)."/>
+								<xpath value="count(Patient/modifierExtension)&gt;=0 and count(Patient/modifierExtension)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.language"/>
+						<definition>
+							<short value="language"/>
+							<formal value="language"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d229e0"/>
+								<name value="language"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] language (CONF:X-X)."/>
+								<xpath value="count(Patient/language)&gt;=0 and count(Patient/language)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.text"/>
+						<definition>
+							<short value="text"/>
+							<formal value="text"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d232e0"/>
+								<name value="text"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] text (CONF:X-X)."/>
+								<xpath value="count(Patient/text)&gt;=0 and count(Patient/text)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.contained"/>
+						<definition>
+							<short value="contained"/>
+							<formal value="contained"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d235e0"/>
+								<name value="contained"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] contained (CONF:X-X)."/>
+								<xpath value="count(Patient/contained)&gt;=0 and count(Patient/contained)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.identifier"/>
+						<definition>
+							<short value="identifier"/>
+							<formal value="identifier"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d238e0"/>
+								<name value="identifier"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] identifier (CONF:X-X)."/>
+								<xpath value="count(Patient/identifier)&gt;=0 and count(Patient/identifier)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.name"/>
+						<definition>
+							<short value="name"/>
+							<formal value="name"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-3"/>
+								<name value="name"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] name (CONF:1124-3)."/>
+								<xpath value="count(Patient/name)&gt;=1 and count(Patient/name)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.telecom"/>
+						<definition>
+							<short value="telecom"/>
+							<formal value="telecom"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-4"/>
+								<name value="telecom"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] telecom (CONF:1124-4)."/>
+								<xpath value="count(Patient/telecom)&gt;=1 and count(Patient/telecom)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.gender"/>
+						<definition>
+							<short value="gender"/>
+							<formal value="gender"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d247e0"/>
+								<name value="gender"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] gender (CONF:X-X)."/>
+								<xpath value="count(Patient/gender)&gt;=0 and count(Patient/gender)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.birthDate"/>
+						<definition>
+							<short value="birthDate"/>
+							<formal value="birthDate"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d250e0"/>
+								<name value="birthDate"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] birthDate (CONF:X-X)."/>
+								<xpath value="count(Patient/birthDate)&gt;=0 and count(Patient/birthDate)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.deceasedBoolean"/>
+						<definition>
+							<short value="deceasedBoolean"/>
+							<formal value="deceasedBoolean"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d253e0"/>
+								<name value="deceasedBoolean"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] deceasedBoolean (CONF:X-X)."/>
+								<xpath value="count(Patient/deceasedBoolean)&gt;=0 and count(Patient/deceasedBoolean)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.deceasedDateTime"/>
+						<definition>
+							<short value="deceasedDateTime"/>
+							<formal value="deceasedDateTime"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d256e0"/>
+								<name value="deceasedDateTime"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] deceasedDateTime (CONF:X-X)."/>
+								<xpath value="count(Patient/deceasedDateTime)&gt;=0 and count(Patient/deceasedDateTime)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.address"/>
+						<definition>
+							<short value="address"/>
+							<formal value="address"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d259e0"/>
+								<name value="address"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] address (CONF:X-X)."/>
+								<xpath value="count(Patient/address)&gt;=0 and count(Patient/address)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.maritalStatus"/>
+						<definition>
+							<short value="maritalStatus"/>
+							<formal value="maritalStatus"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d262e0"/>
+								<name value="maritalStatus"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] maritalStatus (CONF:X-X)."/>
+								<xpath value="count(Patient/maritalStatus)&gt;=0 and count(Patient/maritalStatus)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.multipleBirthBoolean"/>
+						<definition>
+							<short value="multipleBirthBoolean"/>
+							<formal value="multipleBirthBoolean"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d265e0"/>
+								<name value="multipleBirthBoolean"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] multipleBirthBoolean (CONF:X-X)."/>
+								<xpath value="count(Patient/multipleBirthBoolean)&gt;=0 and count(Patient/multipleBirthBoolean)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.multipleBirthInteger"/>
+						<definition>
+							<short value="multipleBirthInteger"/>
+							<formal value="multipleBirthInteger"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d268e0"/>
+								<name value="multipleBirthInteger"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] multipleBirthInteger (CONF:X-X)."/>
+								<xpath value="count(Patient/multipleBirthInteger)&gt;=0 and count(Patient/multipleBirthInteger)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.photo"/>
+						<definition>
+							<short value="photo"/>
+							<formal value="photo"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d271e0"/>
+								<name value="photo"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] photo (CONF:X-X)."/>
+								<xpath value="count(Patient/photo)&gt;=0 and count(Patient/photo)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.contact"/>
+						<definition>
+							<short value="contact"/>
+							<formal value="contact"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d274e0"/>
+								<name value="contact"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] contact (CONF:X-X)."/>
+								<xpath value="count(Patient/contact)&gt;=0 and count(Patient/contact)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.animal"/>
+						<definition>
+							<short value="animal"/>
+							<formal value="animal"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d277e0"/>
+								<name value="animal"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] animal (CONF:X-X)."/>
+								<xpath value="count(Patient/animal)&gt;=0 and count(Patient/animal)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.communication"/>
+						<definition>
+							<short value="communication"/>
+							<formal value="communication"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d280e0"/>
+								<name value="communication"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] communication (CONF:X-X)."/>
+								<xpath value="count(Patient/communication)&gt;=0 and count(Patient/communication)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.careProvider"/>
+						<definition>
+							<short value="careProvider"/>
+							<formal value="careProvider"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d283e0"/>
+								<name value="careProvider"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] careProvider (CONF:X-X)."/>
+								<xpath value="count(Patient/careProvider)&gt;=0 and count(Patient/careProvider)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.managingOrganization"/>
+						<definition>
+							<short value="managingOrganization"/>
+							<formal value="managingOrganization"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d286e0"/>
+								<name value="managingOrganization"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] managingOrganization (CONF:X-X)."/>
+								<xpath value="count(Patient/managingOrganization)&gt;=0 and count(Patient/managingOrganization)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.link"/>
+						<definition>
+							<short value="link"/>
+							<formal value="link"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d289e0"/>
+								<name value="link"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] link (CONF:X-X)."/>
+								<xpath value="count(Patient/link)&gt;=0 and count(Patient/link)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.active"/>
+						<definition>
+							<short value="active"/>
+							<formal value="active"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d292e0"/>
+								<name value="active"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] active (CONF:X-X)."/>
+								<xpath value="count(Patient/active)&gt;=0 and count(Patient/active)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+				</structure>
+			</Profile>
+		</content>
+		<summary type="xhtml">
+			<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+				<xhtml:p>Sean's Test Patient</xhtml:p>
+				<xhtml:ol>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] id (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] extension (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] modifierExtension (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] language (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] text (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] contained (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] identifier (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] name (CONF:1124-3).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] telecom (CONF:1124-4).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] gender (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] birthDate (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] deceasedBoolean (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] deceasedDateTime (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] address (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] maritalStatus (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] multipleBirthBoolean (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] multipleBirthInteger (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] photo (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] contact (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] animal (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] communication (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] careProvider (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] managingOrganization (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] link (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] active (CONF:X-X).</p>
+					</li>
+				</xhtml:ol>
+			</xhtml:div>
+		</summary>
+	</entry>
+	<entry>
+		<title type="text">Test FHIR Questionnaire</title>
+		<id>oid:BLAH.1.2.3</id>
+		<updated>2014-05-04T14:42:26.04-04:00</updated>
+		<content type="text/xml">
+			<Profile xmlns="http://hl7.org/fhir">
+				<text>
+					<status value="generated"/>
+					<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+						<xhtml:p>Test FHIR Questionnaire</xhtml:p>
+						<xhtml:ol>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>MAY contain zero or one [0..1] id (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>MAY contain zero or more [0..*] extension (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>MAY contain zero or more [0..*] modifierExtension (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>MAY contain zero or one [0..1] language (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] text (CONF:1124-12).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>MAY contain zero or more [0..*] contained (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] status (CONF:1124-6).</p>
+								<ol>
+									<li>
+										<p>This status SHALL contain exactly one [1..1] @value="published" (CONF:1124-7).</p>
+									</li>
+								</ol>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] authored (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] subject (CONF:1124-10).</p>
+								<ol>
+									<li>
+										<p>This subject SHALL contain exactly one [1..1] Dales Patient (templateId:1.2.3.4.5.6) (CONF:1124-19).</p>
+									</li>
+								</ol>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] author (CONF:1124-9).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>MAY contain zero or one [0..1] source (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHOULD contain zero or one [0..1] name (ValueSet: Questionnaire Assessment item identifiers 2.16.840.1.113883.11.20.10.18) (CONF:1124-8).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>MAY contain zero or more [0..*] identifier (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] encounter (CONF:1124-20).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] group (CONF:1124-11).</p>
+								<ol>
+									<li>
+										<p>This group SHALL contain [0..0] group (CONF:1124-13).</p>
+									</li>
+								</ol>
+								<ol>
+									<li>
+										<p>This group SHALL contain at least one [1..*] question (CONF:1124-14).</p>
+									</li>
+								</ol>
+							</li>
+						</xhtml:ol>
+					</xhtml:div>
+				</text>
+				<identifier value="oid:BLAH.1.2.3"/>
+				<name value="Test FHIR Questionnaire"/>
+				<publisher value="LCG"/>
+				<description value="A test questionnaire. "/>
+				<status value="draft"/>
+				<structure>
+					<type value="Questionnaire"/>
+					<element>
+						<path value="Questionnaire.id"/>
+						<definition>
+							<short value="id"/>
+							<formal value="id"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="d307e0"/>
+								<name value="id"/>
+								<severity value="warning"/>
+								<human value="MAY contain zero or one [0..1] id (CONF:X-X)."/>
+								<xpath value="count(Questionnaire/id)&gt;=0 and count(Questionnaire/id)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.extension"/>
+						<definition>
+							<short value="extension"/>
+							<formal value="extension"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="d310e0"/>
+								<name value="extension"/>
+								<severity value="warning"/>
+								<human value="MAY contain zero or more [0..*] extension (CONF:X-X)."/>
+								<xpath value="count(Questionnaire/extension)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.modifierExtension"/>
+						<definition>
+							<short value="modifierExtension"/>
+							<formal value="modifierExtension"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="d313e0"/>
+								<name value="modifierExtension"/>
+								<severity value="warning"/>
+								<human value="MAY contain zero or more [0..*] modifierExtension (CONF:X-X)."/>
+								<xpath value="count(Questionnaire/modifierExtension)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.language"/>
+						<definition>
+							<short value="language"/>
+							<formal value="language"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="d316e0"/>
+								<name value="language"/>
+								<severity value="warning"/>
+								<human value="MAY contain zero or one [0..1] language (CONF:X-X)."/>
+								<xpath value="count(Questionnaire/language)&gt;=0 and count(Questionnaire/language)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.text"/>
+						<definition>
+							<short value="text"/>
+							<formal value="text"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-12"/>
+								<name value="text"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] text (CONF:1124-12)."/>
+								<xpath value="count(Questionnaire/text)&gt;=1 and count(Questionnaire/text)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.contained"/>
+						<definition>
+							<short value="contained"/>
+							<formal value="contained"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="d322e0"/>
+								<name value="contained"/>
+								<severity value="warning"/>
+								<human value="MAY contain zero or more [0..*] contained (CONF:X-X)."/>
+								<xpath value="count(Questionnaire/contained)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.status"/>
+						<definition>
+							<short value="Require Status"/>
+							<formal value="status"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-6"/>
+								<name value="status"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] status (CONF:1124-6)."/>
+								<xpath value="count(Questionnaire/status)&gt;=1 and count(Questionnaire/status)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.status.@value"/>
+						<definition>
+							<short value="@value"/>
+							<formal value="@value"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-7"/>
+								<name value="@value"/>
+								<severity value="error"/>
+								<human value="This status SHALL contain exactly one [1..1] @value=&quot;published&quot; (CONF:1124-7)."/>
+								<xpath value="count(Questionnaire/status/@value)&gt;=1 and count(Questionnaire/status/@value)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.authored"/>
+						<definition>
+							<short value="authored"/>
+							<formal value="authored"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="d331e0"/>
+								<name value="authored"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] authored (CONF:X-X)."/>
+								<xpath value="count(Questionnaire/authored)&gt;=1 and count(Questionnaire/authored)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.subject"/>
+						<definition>
+							<short value="subject"/>
+							<formal value="subject"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-10"/>
+								<name value="subject"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] subject (CONF:1124-10)."/>
+								<xpath value="count(Questionnaire/subject)&gt;=1 and count(Questionnaire/subject)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.subject.reference"/>
+						<definition>
+							<short value="reference"/>
+							<formal value="reference"/>
+							<min value="1"/>
+							<max value="1"/>
+							<type>
+								<code value="Patient"/>
+								<profile value="oid:1.2.3.4.5.6"/>
+							</type>
+							<constraint>
+								<key value="1124-19"/>
+								<name value="reference"/>
+								<severity value="error"/>
+								<human value="This subject SHALL contain exactly one [1..1] Dales Patient (templateId:1.2.3.4.5.6) (CONF:1124-19)."/>
+								<xpath value="count(Questionnaire/subject/reference)&gt;=1 and count(Questionnaire/subject/reference)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.author"/>
+						<definition>
+							<short value="author"/>
+							<formal value="author"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-9"/>
+								<name value="author"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] author (CONF:1124-9)."/>
+								<xpath value="count(Questionnaire/author)&gt;=1 and count(Questionnaire/author)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.source"/>
+						<definition>
+							<short value="source"/>
+							<formal value="source"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="d343e0"/>
+								<name value="source"/>
+								<severity value="warning"/>
+								<human value="MAY contain zero or one [0..1] source (CONF:X-X)."/>
+								<xpath value="count(Questionnaire/source)&gt;=0 and count(Questionnaire/source)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.name"/>
+						<definition>
+							<short value="name"/>
+							<formal value="name"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-8"/>
+								<name value="name"/>
+								<severity value="warning"/>
+								<human value="SHOULD contain zero or one [0..1] name (ValueSet: Questionnaire Assessment item identifiers 2.16.840.1.113883.11.20.10.18) (CONF:1124-8)."/>
+								<xpath value="count(Questionnaire/name)&gt;=0 and count(Questionnaire/name)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+							<binding>
+								<name value="Questionnaire Assessment item identifiers"/>
+								<isExtensible value="true"/>
+								<description/>
+								<referenceUri value="oid:2.16.840.1.113883.11.20.10.18"/>
+							</binding>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.identifier"/>
+						<definition>
+							<short value="identifier"/>
+							<formal value="identifier"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="d351e0"/>
+								<name value="identifier"/>
+								<severity value="warning"/>
+								<human value="MAY contain zero or more [0..*] identifier (CONF:X-X)."/>
+								<xpath value="count(Questionnaire/identifier)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.encounter"/>
+						<definition>
+							<short value="encounter"/>
+							<formal value="encounter"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-20"/>
+								<name value="encounter"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] encounter (CONF:1124-20)."/>
+								<xpath value="count(Questionnaire/encounter)&gt;=1 and count(Questionnaire/encounter)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.group"/>
+						<definition>
+							<short value="group"/>
+							<formal value="group"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1124-11"/>
+								<name value="group"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] group (CONF:1124-11)."/>
+								<xpath value="count(Questionnaire/group)&gt;=1 and count(Questionnaire/group)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.group.group"/>
+						<definition>
+							<short value="group"/>
+							<formal value="group"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="1124-13"/>
+								<name value="group"/>
+								<severity value="error"/>
+								<human value="This group SHALL contain [0..0] group (CONF:1124-13)."/>
+								<xpath value="count(Questionnaire/group/group)&gt;=0 and count(Questionnaire/group/group)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Questionnaire.group.question"/>
+						<definition>
+							<short value="question"/>
+							<formal value="question"/>
+							<min value="1"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1124-14"/>
+								<name value="question"/>
+								<severity value="error"/>
+								<human value="This group SHALL contain at least one [1..*] question (CONF:1124-14)."/>
+								<xpath value="count(Questionnaire/group/question)&gt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+				</structure>
+			</Profile>
+		</content>
+		<summary type="xhtml">
+			<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+				<xhtml:p>Test FHIR Questionnaire</xhtml:p>
+				<xhtml:ol>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>MAY contain zero or one [0..1] id (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>MAY contain zero or more [0..*] extension (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>MAY contain zero or more [0..*] modifierExtension (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>MAY contain zero or one [0..1] language (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] text (CONF:1124-12).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>MAY contain zero or more [0..*] contained (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] status (CONF:1124-6).</p>
+						<ol>
+							<li>
+								<p>This status SHALL contain exactly one [1..1] @value="published" (CONF:1124-7).</p>
+							</li>
+						</ol>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] authored (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] subject (CONF:1124-10).</p>
+						<ol>
+							<li>
+								<p>This subject SHALL contain exactly one [1..1] Dales Patient (templateId:1.2.3.4.5.6) (CONF:1124-19).</p>
+							</li>
+						</ol>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] author (CONF:1124-9).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>MAY contain zero or one [0..1] source (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHOULD contain zero or one [0..1] name (ValueSet: Questionnaire Assessment item identifiers 2.16.840.1.113883.11.20.10.18) (CONF:1124-8).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>MAY contain zero or more [0..*] identifier (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] encounter (CONF:1124-20).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] group (CONF:1124-11).</p>
+						<ol>
+							<li>
+								<p>This group SHALL contain [0..0] group (CONF:1124-13).</p>
+							</li>
+						</ol>
+						<ol>
+							<li>
+								<p>This group SHALL contain at least one [1..*] question (CONF:1124-14).</p>
+							</li>
+						</ol>
+					</li>
+				</xhtml:ol>
+			</xhtml:div>
+		</summary>
+	</entry>
+	<entry>
+		<title type="text">adversereaction</title>
+		<id>oid:http://spark.furore.com/fhir/Profile/f1ea850e-363e-46bd-bd5c-ba07c7c49b4e</id>
+		<updated>2014-05-04T14:42:26.04-04:00</updated>
+		<content type="text/xml">
+			<Profile xmlns="http://hl7.org/fhir">
+				<text>
+					<status value="generated"/>
+					<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+						<xhtml:p>adversereaction</xhtml:p>
+						<xhtml:ol>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] id (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain zero or more [0..*] extension (CONF:1126-3).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain zero or more [0..*] modifierExtension (CONF:1126-4).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL NOT contain [0..0] language (CONF:X-X).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain zero or one [0..1] text (CONF:1126-5).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain zero or more [0..*] contained (CONF:1126-6).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain zero or more [0..*] identifier (CONF:1126-7).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain zero or one [0..1] date (CONF:1126-8).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] subject (CONF:1126-9).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] didNotOccurFlag (CONF:1126-10).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain zero or one [0..1] recorder (CONF:1126-11).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain zero or more [0..*] symptom (CONF:1126-1).</p>
+								<ol>
+									<li>
+										<p>The symptom, if present, SHALL contain zero or more [0..*] extension (CONF:1126-12).</p>
+									</li>
+								</ol>
+								<ol>
+									<li>
+										<p>The symptom, if present, SHALL contain zero or more [0..*] modifierExtension (CONF:1126-13).</p>
+									</li>
+								</ol>
+								<ol>
+									<li>
+										<p>The symptom, if present, SHALL contain exactly one [1..1] code (CONF:1126-14).</p>
+									</li>
+								</ol>
+								<ol>
+									<li>
+										<p>The symptom, if present, SHALL contain zero or one [0..1] severity (CONF:1126-15).</p>
+									</li>
+								</ol>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain zero or more [0..*] exposure (CONF:1126-2).</p>
+								<ol>
+									<li>
+										<p>The exposure, if present, SHALL contain zero or more [0..*] extension (CONF:1126-16).</p>
+									</li>
+								</ol>
+								<ol>
+									<li>
+										<p>The exposure, if present, SHALL contain zero or more [0..*] modifierExtension (CONF:1126-17).</p>
+									</li>
+								</ol>
+								<ol>
+									<li>
+										<p>The exposure, if present, SHALL contain zero or one [0..1] date (CONF:1126-18).</p>
+									</li>
+								</ol>
+								<ol>
+									<li>
+										<p>The exposure, if present, SHALL contain zero or one [0..1] type (CONF:1126-19).</p>
+									</li>
+								</ol>
+								<ol>
+									<li>
+										<p>The exposure, if present, SHALL contain zero or one [0..1] causalityExpectation (CONF:1126-20).</p>
+									</li>
+								</ol>
+								<ol>
+									<li>
+										<p>The exposure, if present, SHALL contain zero or one [0..1] substance (CONF:1126-21).</p>
+									</li>
+								</ol>
+							</li>
+						</xhtml:ol>
+					</xhtml:div>
+				</text>
+				<identifier value="oid:http://spark.furore.com/fhir/Profile/f1ea850e-363e-46bd-bd5c-ba07c7c49b4e"/>
+				<name value="adversereaction"/>
+				<publisher/>
+				<description/>
+				<status value="draft"/>
+				<structure>
+					<type value="AdverseReaction"/>
+					<element>
+						<path value="AdverseReaction.id"/>
+						<definition>
+							<short value="id"/>
+							<formal value="id"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d389e0"/>
+								<name value="id"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] id (CONF:X-X)."/>
+								<xpath value="count(AdverseReaction/id)&gt;=0 and count(AdverseReaction/id)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.extension"/>
+						<definition>
+							<short value="extension"/>
+							<formal value="extension"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1126-3"/>
+								<name value="extension"/>
+								<severity value="error"/>
+								<human value="SHALL contain zero or more [0..*] extension (CONF:1126-3)."/>
+								<xpath value="count(AdverseReaction/extension)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.modifierExtension"/>
+						<definition>
+							<short value="modifierExtension"/>
+							<formal value="modifierExtension"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1126-4"/>
+								<name value="modifierExtension"/>
+								<severity value="error"/>
+								<human value="SHALL contain zero or more [0..*] modifierExtension (CONF:1126-4)."/>
+								<xpath value="count(AdverseReaction/modifierExtension)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.language"/>
+						<definition>
+							<short value="language"/>
+							<formal value="language"/>
+							<min value="0"/>
+							<max value="0"/>
+							<constraint>
+								<key value="d398e0"/>
+								<name value="language"/>
+								<severity value="error"/>
+								<human value="SHALL NOT contain [0..0] language (CONF:X-X)."/>
+								<xpath value="count(AdverseReaction/language)&gt;=0 and count(AdverseReaction/language)&lt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.text"/>
+						<definition>
+							<short value="text"/>
+							<formal value="text"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1126-5"/>
+								<name value="text"/>
+								<severity value="error"/>
+								<human value="SHALL contain zero or one [0..1] text (CONF:1126-5)."/>
+								<xpath value="count(AdverseReaction/text)&gt;=0 and count(AdverseReaction/text)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.contained"/>
+						<definition>
+							<short value="contained"/>
+							<formal value="contained"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1126-6"/>
+								<name value="contained"/>
+								<severity value="error"/>
+								<human value="SHALL contain zero or more [0..*] contained (CONF:1126-6)."/>
+								<xpath value="count(AdverseReaction/contained)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.identifier"/>
+						<definition>
+							<short value="identifier"/>
+							<formal value="identifier"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1126-7"/>
+								<name value="identifier"/>
+								<severity value="error"/>
+								<human value="SHALL contain zero or more [0..*] identifier (CONF:1126-7)."/>
+								<xpath value="count(AdverseReaction/identifier)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.date"/>
+						<definition>
+							<short value="date"/>
+							<formal value="date"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1126-8"/>
+								<name value="date"/>
+								<severity value="error"/>
+								<human value="SHALL contain zero or one [0..1] date (CONF:1126-8)."/>
+								<xpath value="count(AdverseReaction/date)&gt;=0 and count(AdverseReaction/date)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.subject"/>
+						<definition>
+							<short value="subject"/>
+							<formal value="subject"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1126-9"/>
+								<name value="subject"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] subject (CONF:1126-9)."/>
+								<xpath value="count(AdverseReaction/subject)&gt;=1 and count(AdverseReaction/subject)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.didNotOccurFlag"/>
+						<definition>
+							<short value="didNotOccurFlag"/>
+							<formal value="didNotOccurFlag"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1126-10"/>
+								<name value="didNotOccurFlag"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] didNotOccurFlag (CONF:1126-10)."/>
+								<xpath value="count(AdverseReaction/didNotOccurFlag)&gt;=1 and count(AdverseReaction/didNotOccurFlag)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.recorder"/>
+						<definition>
+							<short value="recorder"/>
+							<formal value="recorder"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1126-11"/>
+								<name value="recorder"/>
+								<severity value="error"/>
+								<human value="SHALL contain zero or one [0..1] recorder (CONF:1126-11)."/>
+								<xpath value="count(AdverseReaction/recorder)&gt;=0 and count(AdverseReaction/recorder)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.symptom"/>
+						<definition>
+							<short value="symptom"/>
+							<formal value="symptom"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1126-1"/>
+								<name value="symptom"/>
+								<severity value="error"/>
+								<human value="SHALL contain zero or more [0..*] symptom (CONF:1126-1)."/>
+								<xpath value="count(AdverseReaction/symptom)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.symptom.extension"/>
+						<definition>
+							<short value="extension"/>
+							<formal value="extension"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1126-12"/>
+								<name value="extension"/>
+								<severity value="error"/>
+								<human value="The symptom, if present, SHALL contain zero or more [0..*] extension (CONF:1126-12)."/>
+								<xpath value="count(AdverseReaction/symptom/extension)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.symptom.modifierExtension"/>
+						<definition>
+							<short value="modifierExtension"/>
+							<formal value="modifierExtension"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1126-13"/>
+								<name value="modifierExtension"/>
+								<severity value="error"/>
+								<human value="The symptom, if present, SHALL contain zero or more [0..*] modifierExtension (CONF:1126-13)."/>
+								<xpath value="count(AdverseReaction/symptom/modifierExtension)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.symptom.code"/>
+						<definition>
+							<short value="code"/>
+							<formal value="code"/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1126-14"/>
+								<name value="code"/>
+								<severity value="error"/>
+								<human value="The symptom, if present, SHALL contain exactly one [1..1] code (CONF:1126-14)."/>
+								<xpath value="count(AdverseReaction/symptom/code)&gt;=1 and count(AdverseReaction/symptom/code)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.symptom.severity"/>
+						<definition>
+							<short value="severity"/>
+							<formal value="severity"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1126-15"/>
+								<name value="severity"/>
+								<severity value="error"/>
+								<human value="The symptom, if present, SHALL contain zero or one [0..1] severity (CONF:1126-15)."/>
+								<xpath value="count(AdverseReaction/symptom/severity)&gt;=0 and count(AdverseReaction/symptom/severity)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.exposure"/>
+						<definition>
+							<short value="exposure"/>
+							<formal value="exposure"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1126-2"/>
+								<name value="exposure"/>
+								<severity value="error"/>
+								<human value="SHALL contain zero or more [0..*] exposure (CONF:1126-2)."/>
+								<xpath value="count(AdverseReaction/exposure)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.exposure.extension"/>
+						<definition>
+							<short value="extension"/>
+							<formal value="extension"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1126-16"/>
+								<name value="extension"/>
+								<severity value="error"/>
+								<human value="The exposure, if present, SHALL contain zero or more [0..*] extension (CONF:1126-16)."/>
+								<xpath value="count(AdverseReaction/exposure/extension)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.exposure.modifierExtension"/>
+						<definition>
+							<short value="modifierExtension"/>
+							<formal value="modifierExtension"/>
+							<min value="0"/>
+							<max value="*"/>
+							<constraint>
+								<key value="1126-17"/>
+								<name value="modifierExtension"/>
+								<severity value="error"/>
+								<human value="The exposure, if present, SHALL contain zero or more [0..*] modifierExtension (CONF:1126-17)."/>
+								<xpath value="count(AdverseReaction/exposure/modifierExtension)&gt;=0"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.exposure.date"/>
+						<definition>
+							<short value="date"/>
+							<formal value="date"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1126-18"/>
+								<name value="date"/>
+								<severity value="error"/>
+								<human value="The exposure, if present, SHALL contain zero or one [0..1] date (CONF:1126-18)."/>
+								<xpath value="count(AdverseReaction/exposure/date)&gt;=0 and count(AdverseReaction/exposure/date)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.exposure.type"/>
+						<definition>
+							<short value="type"/>
+							<formal value="type"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1126-19"/>
+								<name value="type"/>
+								<severity value="error"/>
+								<human value="The exposure, if present, SHALL contain zero or one [0..1] type (CONF:1126-19)."/>
+								<xpath value="count(AdverseReaction/exposure/type)&gt;=0 and count(AdverseReaction/exposure/type)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.exposure.causalityExpectation"/>
+						<definition>
+							<short value="causalityExpectation"/>
+							<formal value="causalityExpectation"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1126-20"/>
+								<name value="causalityExpectation"/>
+								<severity value="error"/>
+								<human value="The exposure, if present, SHALL contain zero or one [0..1] causalityExpectation (CONF:1126-20)."/>
+								<xpath value="count(AdverseReaction/exposure/causalityExpectation)&gt;=0 and count(AdverseReaction/exposure/causalityExpectation)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="AdverseReaction.exposure.substance"/>
+						<definition>
+							<short value="substance"/>
+							<formal value="substance"/>
+							<min value="0"/>
+							<max value="1"/>
+							<constraint>
+								<key value="1126-21"/>
+								<name value="substance"/>
+								<severity value="error"/>
+								<human value="The exposure, if present, SHALL contain zero or one [0..1] substance (CONF:1126-21)."/>
+								<xpath value="count(AdverseReaction/exposure/substance)&gt;=0 and count(AdverseReaction/exposure/substance)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+				</structure>
+			</Profile>
+		</content>
+		<summary type="xhtml">
+			<xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+				<xhtml:p>adversereaction</xhtml:p>
+				<xhtml:ol>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] id (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain zero or more [0..*] extension (CONF:1126-3).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain zero or more [0..*] modifierExtension (CONF:1126-4).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL NOT contain [0..0] language (CONF:X-X).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain zero or one [0..1] text (CONF:1126-5).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain zero or more [0..*] contained (CONF:1126-6).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain zero or more [0..*] identifier (CONF:1126-7).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain zero or one [0..1] date (CONF:1126-8).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] subject (CONF:1126-9).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain exactly one [1..1] didNotOccurFlag (CONF:1126-10).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain zero or one [0..1] recorder (CONF:1126-11).</p>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain zero or more [0..*] symptom (CONF:1126-1).</p>
+						<ol>
+							<li>
+								<p>The symptom, if present, SHALL contain zero or more [0..*] extension (CONF:1126-12).</p>
+							</li>
+						</ol>
+						<ol>
+							<li>
+								<p>The symptom, if present, SHALL contain zero or more [0..*] modifierExtension (CONF:1126-13).</p>
+							</li>
+						</ol>
+						<ol>
+							<li>
+								<p>The symptom, if present, SHALL contain exactly one [1..1] code (CONF:1126-14).</p>
+							</li>
+						</ol>
+						<ol>
+							<li>
+								<p>The symptom, if present, SHALL contain zero or one [0..1] severity (CONF:1126-15).</p>
+							</li>
+						</ol>
+					</li>
+					<li xmlns="http://www.w3.org/1999/xhtml">
+						<p>SHALL contain zero or more [0..*] exposure (CONF:1126-2).</p>
+						<ol>
+							<li>
+								<p>The exposure, if present, SHALL contain zero or more [0..*] extension (CONF:1126-16).</p>
+							</li>
+						</ol>
+						<ol>
+							<li>
+								<p>The exposure, if present, SHALL contain zero or more [0..*] modifierExtension (CONF:1126-17).</p>
+							</li>
+						</ol>
+						<ol>
+							<li>
+								<p>The exposure, if present, SHALL contain zero or one [0..1] date (CONF:1126-18).</p>
+							</li>
+						</ol>
+						<ol>
+							<li>
+								<p>The exposure, if present, SHALL contain zero or one [0..1] type (CONF:1126-19).</p>
+							</li>
+						</ol>
+						<ol>
+							<li>
+								<p>The exposure, if present, SHALL contain zero or one [0..1] causalityExpectation (CONF:1126-20).</p>
+							</li>
+						</ol>
+						<ol>
+							<li>
+								<p>The exposure, if present, SHALL contain zero or one [0..1] substance (CONF:1126-21).</p>
+							</li>
+						</ol>
+					</li>
+				</xhtml:ol>
+			</xhtml:div>
+		</summary>
+	</entry>
+</feed>

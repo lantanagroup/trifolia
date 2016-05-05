@@ -1,0 +1,1005 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="22">
+	<resources/>
+	<component name="defaultmap1" blackbox="0" uid="1" editable="1">
+		<properties SelectedLanguage="xslt2"/>
+		<structure>
+			<children>
+				<component name="TemplateExport" library="xml" uid="3" kind="14">
+					<properties XSLTDefaultOutput="1"/>
+					<view ltx="922" rbx="1218" rby="420"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+									<namespace uid="http://www.altova.com/mapforce"/>
+								</namespaces>
+							</header>
+							<entry name="FileInstance" ns="1" expanded="1">
+								<entry name="document" ns="1" expanded="1" casttotargettypemode="cast-in-subtree">
+									<entry name="TemplateExport" inpkey="6" expanded="1">
+										<entry name="Template" inpkey="4"/>
+									</entry>
+								</entry>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" outputinstance="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xml" instanceroot="{http://www.lantanagroup.com}TemplateExport"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="TemplateExport" library="xml" uid="2" kind="14">
+					<properties XSLTTargetEncoding="UTF-8"/>
+					<view rbx="317" rby="420"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+									<namespace uid="http://www.altova.com/mapforce"/>
+								</namespaces>
+							</header>
+							<entry name="FileInstance" ns="1" expanded="1">
+								<entry name="document" ns="1" expanded="1" casttotargettypemode="cast-in-subtree">
+									<entry name="TemplateExport" outkey="5" expanded="1">
+										<entry name="Template" outkey="3" expanded="1"/>
+									</entry>
+								</entry>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" inputinstance="..\..\Trifolia.Test\DocSamples\Consolidation.xml" outputinstance="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xml" instanceroot="{http://www.lantanagroup.com}TemplateExport"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="mapCDAtoFHIR" library="user" blackbox="0" uid="11" kind="19" visible="0">
+					<view ltx="513" lty="118" rbx="813" rby="318"/>
+					<data>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+									<namespace/>
+								</namespaces>
+							</header>
+							<entry name="TemplateExport" ns="1" componentid="9" expanded="1">
+								<entry name="Template" inpkey="10"/>
+							</entry>
+						</root>
+						<root rootindex="1">
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+									<namespace/>
+								</namespaces>
+							</header>
+							<entry name="TemplateExport2" ns="1" componentid="10" expanded="1">
+								<entry name="Template" outkey="11"/>
+							</entry>
+						</root>
+					</data>
+				</component>
+			</children>
+			<graph directed="1">
+				<edges>
+					<edge edgekey="12">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="13">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+				</edges>
+				<vertices>
+					<vertex vertexkey="3">
+						<edges>
+							<edge vertexkey="10" edgekey="12"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="5">
+						<edges>
+							<edge vertexkey="6" edgekey="9"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="11">
+						<edges>
+							<edge vertexkey="4" edgekey="13"/>
+						</edges>
+					</vertex>
+				</vertices>
+			</graph>
+		</structure>
+	</component>
+	<component name="mapCDAtoFHIR" library="user" blackbox="0" uid="6" editable="1">
+		<properties/>
+		<description/>
+		<structure>
+			<children>
+				<component name="mapConstraints" library="user" blackbox="0" uid="22" kind="19" visible="0">
+					<view ltx="367" lty="332" rbx="605" rby="538"/>
+					<data>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+									<namespace/>
+								</namespaces>
+							</header>
+							<entry name="TemplateExport" ns="1" componentid="19" expanded="1">
+								<entry name="Constraint" inpkey="16"/>
+							</entry>
+						</root>
+						<root rootindex="1">
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+									<namespace/>
+								</namespaces>
+							</header>
+							<entry name="TemplateExport2" ns="1" componentid="20" expanded="1">
+								<entry name="Constraint" outkey="17"/>
+							</entry>
+						</root>
+					</data>
+				</component>
+				<component name="document" library="xml" uid="9" kind="14">
+					<properties/>
+					<view rbx="243" rby="289"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.lantanagroup.com"/>
+								</namespaces>
+							</header>
+							<entry name="Template" ns="1" outkey="3" expanded="1">
+								<entry name="identifier" type="attribute" outkey="49"/>
+								<entry name="implementationGuideType" type="attribute" outkey="50"/>
+								<entry name="templateType" type="attribute" outkey="51"/>
+								<entry name="title" type="attribute" outkey="52"/>
+								<entry name="bookmark" type="attribute" outkey="53"/>
+								<entry name="context" type="attribute" outkey="54"/>
+								<entry name="contextType" type="attribute" outkey="55"/>
+								<entry name="isOpen" type="attribute" outkey="56"/>
+								<entry name="impliedTemplateOid" type="attribute" outkey="57"/>
+								<entry name="owningImplementationGuideName" type="attribute" outkey="58"/>
+								<entry name="organizationName" type="attribute" outkey="59"/>
+								<entry name="publishStatus" type="attribute" outkey="60"/>
+								<entry name="PreviousVersion" ns="1" outkey="61"/>
+								<entry name="Description" ns="1" outkey="62"/>
+								<entry name="Notes" ns="1" outkey="63"/>
+								<entry name="Constraint" ns="1" outkey="10"/>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template"/>
+						<wsdl/>
+						<parameter usageKind="input" name="TemplateExport"/>
+					</data>
+				</component>
+				<component name="document" library="xml" uid="10" kind="14">
+					<properties/>
+					<view ltx="1089" rbx="1324" rby="409"/>
+					<data>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.lantanagroup.com"/>
+								</namespaces>
+							</header>
+							<entry name="Template" ns="1" inpkey="4" expanded="1">
+								<entry name="identifier" type="attribute" inpkey="34"/>
+								<entry name="implementationGuideType" type="attribute" inpkey="35"/>
+								<entry name="templateType" type="attribute" inpkey="36"/>
+								<entry name="title" type="attribute" inpkey="37"/>
+								<entry name="bookmark" type="attribute" inpkey="38"/>
+								<entry name="context" type="attribute" inpkey="39"/>
+								<entry name="contextType" type="attribute" inpkey="40"/>
+								<entry name="isOpen" type="attribute" inpkey="41"/>
+								<entry name="impliedTemplateOid" type="attribute" inpkey="42"/>
+								<entry name="owningImplementationGuideName" type="attribute" inpkey="43"/>
+								<entry name="organizationName" type="attribute" inpkey="44"/>
+								<entry name="publishStatus" type="attribute" inpkey="45"/>
+								<entry name="PreviousVersion" ns="1" inpkey="46"/>
+								<entry name="Description" ns="1" inpkey="47"/>
+								<entry name="Notes" ns="1" inpkey="48"/>
+								<entry name="Constraint" ns="1" inpkey="11"/>
+							</entry>
+							<entry name="Template" ns="1" expanded="1" clone="1"/>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template"/>
+						<wsdl/>
+						<parameter usageKind="output" name="TemplateExport2"/>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="52" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="92"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="93"/>
+					</targets>
+					<view ltx="576" lty="-18" rbx="653" rby="21"/>
+					<data>
+						<wsdl/>
+						<valuemap>
+							<valuemapTable>
+								<entry from="CDA" to="FHIR"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string"/>
+						</valuemap>
+					</data>
+				</component>
+			</children>
+			<graph directed="1">
+				<edges>
+					<edge edgekey="19">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="64">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="91">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+				</edges>
+				<vertices>
+					<vertex vertexkey="3">
+						<edges>
+							<edge vertexkey="4" edgekey="66"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="10">
+						<edges>
+							<edge vertexkey="16" edgekey="19"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="17">
+						<edges>
+							<edge vertexkey="11" edgekey="91"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="49">
+						<edges>
+							<edge vertexkey="34" edgekey="67"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="50">
+						<edges>
+							<edge vertexkey="92" edgekey="94"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="51">
+						<edges>
+							<edge vertexkey="36" edgekey="69"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="52">
+						<edges>
+							<edge vertexkey="37" edgekey="70"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="53">
+						<edges>
+							<edge vertexkey="38" edgekey="71"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="54">
+						<edges>
+							<edge vertexkey="39" edgekey="72"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="55">
+						<edges>
+							<edge vertexkey="40" edgekey="73"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="56">
+						<edges>
+							<edge vertexkey="41" edgekey="74"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="57">
+						<edges>
+							<edge vertexkey="42" edgekey="75"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="58">
+						<edges>
+							<edge vertexkey="43" edgekey="76"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="59">
+						<edges>
+							<edge vertexkey="44" edgekey="77"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="60">
+						<edges>
+							<edge vertexkey="45" edgekey="78"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="61">
+						<edges>
+							<edge vertexkey="46" edgekey="64"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="62">
+						<edges>
+							<edge vertexkey="47" edgekey="79"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="63">
+						<edges>
+							<edge vertexkey="48" edgekey="80"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="93">
+						<edges>
+							<edge vertexkey="35" edgekey="95"/>
+						</edges>
+					</vertex>
+				</vertices>
+			</graph>
+		</structure>
+	</component>
+	<component name="mapBasicTemplate" library="user" blackbox="0" uid="25" editable="1">
+		<properties/>
+		<description/>
+		<structure>
+			<children>
+				<component name="document" library="xml" uid="29" kind="14">
+					<properties/>
+					<view lty="337" rbx="183" rby="390"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+								</namespaces>
+							</header>
+							<entry name="Constraint" outkey="5"/>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template/{http://www.lantanagroup.com}Constraint"/>
+						<wsdl/>
+						<parameter usageKind="input" name="TemplateExport2" sequence="1"/>
+					</data>
+				</component>
+				<component name="document" library="xml" uid="28" kind="14">
+					<properties/>
+					<view rbx="183" rby="289"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.lantanagroup.com"/>
+								</namespaces>
+							</header>
+							<entry name="Template" ns="1" outkey="4" expanded="1">
+								<entry name="identifier" type="attribute" outkey="26"/>
+								<entry name="implementationGuideType" type="attribute" outkey="27"/>
+								<entry name="templateType" type="attribute" outkey="28"/>
+								<entry name="title" type="attribute" outkey="29"/>
+								<entry name="bookmark" type="attribute" outkey="30"/>
+								<entry name="context" type="attribute" outkey="31"/>
+								<entry name="contextType" type="attribute" outkey="32"/>
+								<entry name="isOpen" type="attribute" outkey="33"/>
+								<entry name="impliedTemplateOid" type="attribute" outkey="34"/>
+								<entry name="owningImplementationGuideName" type="attribute" outkey="35"/>
+								<entry name="organizationName" type="attribute" outkey="36"/>
+								<entry name="publishStatus" type="attribute" outkey="37"/>
+								<entry name="PreviousVersion" ns="1" outkey="38"/>
+								<entry name="Description" ns="1" outkey="39"/>
+								<entry name="Notes" ns="1" outkey="40"/>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template"/>
+						<wsdl/>
+						<parameter usageKind="input" name="TemplateExport"/>
+					</data>
+				</component>
+				<component name="document" library="xml" uid="30" kind="14">
+					<properties/>
+					<view ltx="1147" rbx="1390" rby="289"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.lantanagroup.com"/>
+								</namespaces>
+							</header>
+							<entry name="Template" ns="1" inpkey="6" expanded="1">
+								<entry name="identifier" type="attribute" inpkey="10"/>
+								<entry name="implementationGuideType" type="attribute" inpkey="11"/>
+								<entry name="templateType" type="attribute" inpkey="12"/>
+								<entry name="title" type="attribute" inpkey="13"/>
+								<entry name="bookmark" type="attribute" inpkey="14"/>
+								<entry name="context" type="attribute" inpkey="15"/>
+								<entry name="contextType" type="attribute" inpkey="16"/>
+								<entry name="isOpen" type="attribute" inpkey="17"/>
+								<entry name="impliedTemplateOid" type="attribute" inpkey="18"/>
+								<entry name="owningImplementationGuideName" type="attribute" inpkey="19"/>
+								<entry name="organizationName" type="attribute" inpkey="20"/>
+								<entry name="publishStatus" type="attribute" inpkey="21"/>
+								<entry name="PreviousVersion" ns="1" inpkey="22"/>
+								<entry name="Description" ns="1" inpkey="23"/>
+								<entry name="Notes" ns="1" inpkey="24"/>
+								<entry name="Constraint" ns="1" inpkey="25"/>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template"/>
+						<wsdl/>
+						<parameter usageKind="output" name="TemplateExport3"/>
+					</data>
+				</component>
+			</children>
+			<graph directed="1">
+				<edges>
+					<edge edgekey="41">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="42">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+				</edges>
+				<vertices>
+					<vertex vertexkey="4">
+						<edges>
+							<edge vertexkey="6" edgekey="43"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="5">
+						<edges>
+							<edge vertexkey="25" edgekey="41"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="26">
+						<edges>
+							<edge vertexkey="10" edgekey="44"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="27">
+						<edges>
+							<edge vertexkey="11" edgekey="45"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="28">
+						<edges>
+							<edge vertexkey="12" edgekey="46"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="29">
+						<edges>
+							<edge vertexkey="13" edgekey="47"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="30">
+						<edges>
+							<edge vertexkey="14" edgekey="48"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="31">
+						<edges>
+							<edge vertexkey="15" edgekey="49"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="32">
+						<edges>
+							<edge vertexkey="16" edgekey="50"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="33">
+						<edges>
+							<edge vertexkey="17" edgekey="51"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="34">
+						<edges>
+							<edge vertexkey="18" edgekey="52"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="35">
+						<edges>
+							<edge vertexkey="19" edgekey="53"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="36">
+						<edges>
+							<edge vertexkey="20" edgekey="54"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="37">
+						<edges>
+							<edge vertexkey="21" edgekey="55"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="38">
+						<edges>
+							<edge vertexkey="22" edgekey="42"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="39">
+						<edges>
+							<edge vertexkey="23" edgekey="56"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="40">
+						<edges>
+							<edge vertexkey="24" edgekey="57"/>
+						</edges>
+					</vertex>
+				</vertices>
+			</graph>
+		</structure>
+	</component>
+	<component name="removeUnneededConstraints" library="user" blackbox="0" uid="34" editable="1" inline="1">
+		<properties/>
+		<description/>
+		<structure>
+			<children>
+				<component name="lcg:Constraint" library="core" uid="35" kind="3">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="5"/>
+						<datapoint pos="1" key="2"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="4"/>
+						<datapoint/>
+					</targets>
+					<view ltx="509" rbx="612" rby="56"/>
+				</component>
+				<component name="document" library="xml" uid="37" kind="14">
+					<properties/>
+					<view rbx="183" rby="374"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.lantanagroup.com"/>
+								</namespaces>
+							</header>
+							<entry name="Constraint" ns="1" outkey="6" expanded="1">
+								<entry name="context" type="attribute" outkey="7"/>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template/{http://www.lantanagroup.com}Constraint"/>
+						<wsdl/>
+						<parameter usageKind="input" name="TemplateExport"/>
+					</data>
+				</component>
+				<component name="document" library="xml" uid="38" kind="14">
+					<properties/>
+					<view ltx="862" rbx="1045" rby="374"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+								</namespaces>
+							</header>
+							<entry name="Constraint" inpkey="8" expanded="1"/>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template/{http://www.lantanagroup.com}Constraint"/>
+						<wsdl/>
+						<parameter usageKind="output" name="TemplateExport2"/>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="36" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="3"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="1"/>
+					</targets>
+					<view ltx="337" lty="66" rbx="414" rby="105"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="@classCode" to="false"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="boolean" defaultValue="true"/>
+						</valuemap>
+					</data>
+				</component>
+			</children>
+			<graph directed="1">
+				<edges>
+					<edge edgekey="9">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="10">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+				</edges>
+				<vertices>
+					<vertex vertexkey="1">
+						<edges>
+							<edge vertexkey="2" edgekey="11"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="4">
+						<edges>
+							<edge vertexkey="8" edgekey="10"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="6">
+						<edges>
+							<edge vertexkey="5" edgekey="9"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="7">
+						<edges>
+							<edge vertexkey="3" edgekey="12"/>
+						</edges>
+					</vertex>
+				</vertices>
+			</graph>
+		</structure>
+	</component>
+	<component name="mapConstraints" library="user" blackbox="0" uid="15" editable="1">
+		<properties/>
+		<description/>
+		<structure>
+			<children>
+				<component name="document" library="xml" uid="19" kind="14">
+					<properties/>
+					<view rbx="183" rby="374"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.lantanagroup.com"/>
+								</namespaces>
+							</header>
+							<entry name="Constraint" ns="1" outkey="4" expanded="1">
+								<entry name="number" type="attribute" outkey="34"/>
+								<entry name="context" type="attribute" outkey="16"/>
+								<entry name="conformance" type="attribute" outkey="35"/>
+								<entry name="cardinality" type="attribute" outkey="36"/>
+								<entry name="dataType" type="attribute" outkey="37"/>
+								<entry name="containedTemplateOid" type="attribute" outkey="38"/>
+								<entry name="containedTemplateType" type="attribute" outkey="39"/>
+								<entry name="isBranch" type="attribute" outkey="40"/>
+								<entry name="isBranchIdentifier" type="attribute" outkey="41"/>
+								<entry name="isPrimitive" type="attribute" outkey="42"/>
+								<entry name="isStatic" type="attribute" outkey="43"/>
+								<entry name="isInheritable" type="attribute" outkey="44"/>
+								<entry name="isSchRooted" type="attribute" outkey="45"/>
+								<entry name="SingleValueCode" ns="1" outkey="46"/>
+								<entry name="ValueSet" ns="1" outkey="47"/>
+								<entry name="CodeSystem" ns="1" outkey="48"/>
+								<entry name="SchematronTest" ns="1" outkey="49"/>
+								<entry name="NarrativeText" ns="1" outkey="50"/>
+								<entry name="Description" ns="1" outkey="51"/>
+								<entry name="Label" ns="1" outkey="52"/>
+								<entry name="Constraint" ns="1" outkey="105"/>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template/{http://www.lantanagroup.com}Constraint"/>
+						<wsdl/>
+						<parameter usageKind="input" name="TemplateExport"/>
+					</data>
+				</component>
+				<component name="mapConstraints" library="user" blackbox="0" uid="45" kind="19" visible="0">
+					<view ltx="290" lty="471" rbx="598" rby="532"/>
+					<data>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+									<namespace/>
+								</namespaces>
+							</header>
+							<entry name="TemplateExport" ns="1" componentid="19" expanded="1">
+								<entry name="Constraint" inpkey="100"/>
+							</entry>
+						</root>
+						<root rootindex="1">
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+									<namespace/>
+								</namespaces>
+							</header>
+							<entry name="TemplateExport2" ns="1" componentid="20" expanded="1">
+								<entry name="Constraint" outkey="101"/>
+							</entry>
+						</root>
+					</data>
+				</component>
+				<component name="document" library="xml" uid="50" kind="14">
+					<properties/>
+					<view ltx="699" lty="-13" rbx="882" rby="380"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.lantanagroup.com"/>
+									<namespace uid="http://www.altova.com/mapforce"/>
+								</namespaces>
+							</header>
+							<entry name="document" ns="2" expanded="1" casttotargettypemode="cast-in-subtree">
+								<entry name="Constraint" ns="1" inpkey="155" outkey="156" expanded="1">
+									<entry name="number" type="attribute" inpkey="157"/>
+									<entry name="context" type="attribute" inpkey="158"/>
+									<entry name="conformance" type="attribute" inpkey="159"/>
+									<entry name="cardinality" type="attribute" inpkey="160"/>
+									<entry name="dataType" type="attribute" inpkey="161"/>
+									<entry name="containedTemplateOid" type="attribute" inpkey="162"/>
+									<entry name="containedTemplateType" type="attribute" inpkey="163"/>
+									<entry name="isBranch" type="attribute" inpkey="164"/>
+									<entry name="isBranchIdentifier" type="attribute" inpkey="165"/>
+									<entry name="isPrimitive" type="attribute" inpkey="166"/>
+									<entry name="isStatic" type="attribute" inpkey="167"/>
+									<entry name="isInheritable" type="attribute" inpkey="168"/>
+									<entry name="isSchRooted" type="attribute" inpkey="169"/>
+									<entry name="SingleValueCode" ns="1" inpkey="170"/>
+									<entry name="ValueSet" ns="1" inpkey="171"/>
+									<entry name="CodeSystem" ns="1" inpkey="172"/>
+									<entry name="SchematronTest" ns="1" inpkey="173"/>
+									<entry name="NarrativeText" ns="1" inpkey="174"/>
+									<entry name="Description" ns="1" inpkey="175"/>
+									<entry name="Label" ns="1" inpkey="176"/>
+									<entry name="Constraint" ns="1" inpkey="177"/>
+								</entry>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template/{http://www.lantanagroup.com}Constraint"/>
+						<wsdl/>
+						<parameter usageKind="variable" name="Constraint"/>
+					</data>
+				</component>
+				<component name="lcg:Constraint" library="core" uid="51" kind="3">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="178"/>
+						<datapoint pos="1" key="179"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="180"/>
+						<datapoint/>
+					</targets>
+					<view ltx="972" rbx="1075" rby="56"/>
+				</component>
+				<component name="document" library="xml" uid="20" kind="14">
+					<properties/>
+					<view ltx="1145" rbx="1328" rby="374"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+								</namespaces>
+							</header>
+							<entry name="Constraint" inpkey="5" expanded="1"/>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template/{http://www.lantanagroup.com}Constraint"/>
+						<wsdl/>
+						<parameter usageKind="output" name="TemplateExport2"/>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="49" kind="23">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="181"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="182"/>
+					</targets>
+					<view ltx="815" lty="-111" rbx="892" rby="-72"/>
+					<data>
+						<wsdl/>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="@classCode" to="false"/>
+								<entry from="@moodCode" to="false"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="boolean" defaultValue="true"/>
+						</valuemap>
+					</data>
+				</component>
+			</children>
+			<graph directed="1">
+				<edges>
+					<edge edgekey="108">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="183">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="184">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="185">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="186">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="187">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="188">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+				</edges>
+				<vertices>
+					<vertex vertexkey="4">
+						<edges>
+							<edge vertexkey="155" edgekey="189"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="16">
+						<edges>
+							<edge vertexkey="158" edgekey="190"/>
+							<edge vertexkey="181" edgekey="191"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="34">
+						<edges>
+							<edge vertexkey="157" edgekey="192"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="35">
+						<edges>
+							<edge vertexkey="159" edgekey="193"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="36">
+						<edges>
+							<edge vertexkey="160" edgekey="194"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="37">
+						<edges>
+							<edge vertexkey="161" edgekey="195"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="38">
+						<edges>
+							<edge vertexkey="162" edgekey="196"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="39">
+						<edges>
+							<edge vertexkey="163" edgekey="197"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="40">
+						<edges>
+							<edge vertexkey="164" edgekey="198"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="41">
+						<edges>
+							<edge vertexkey="165" edgekey="199"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="42">
+						<edges>
+							<edge vertexkey="166" edgekey="200"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="43">
+						<edges>
+							<edge vertexkey="167" edgekey="201"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="44">
+						<edges>
+							<edge vertexkey="168" edgekey="202"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="45">
+						<edges>
+							<edge vertexkey="169" edgekey="203"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="46">
+						<edges>
+							<edge vertexkey="170" edgekey="186"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="47">
+						<edges>
+							<edge vertexkey="171" edgekey="187"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="48">
+						<edges>
+							<edge vertexkey="172" edgekey="185"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="49">
+						<edges>
+							<edge vertexkey="173" edgekey="204"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="50">
+						<edges>
+							<edge vertexkey="174" edgekey="205"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="51">
+						<edges>
+							<edge vertexkey="175" edgekey="206"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="52">
+						<edges>
+							<edge vertexkey="176" edgekey="207"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="101">
+						<edges>
+							<edge vertexkey="177" edgekey="188"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="105">
+						<edges>
+							<edge vertexkey="100" edgekey="108"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="156">
+						<edges>
+							<edge vertexkey="178" edgekey="184"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="180">
+						<edges>
+							<edge vertexkey="5" edgekey="183"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="182">
+						<edges>
+							<edge vertexkey="179" edgekey="208"/>
+						</edges>
+					</vertex>
+				</vertices>
+			</graph>
+		</structure>
+	</component>
+</mapping>

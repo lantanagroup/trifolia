@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Trifolia.Terminology.VocabularyService" CodeBehind="VocabularyService.svc.cs" %>

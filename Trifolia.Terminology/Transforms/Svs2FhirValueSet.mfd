@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="22">
+	<resources/>
+	<component name="defaultmap1" blackbox="0" uid="1" editable="1">
+		<properties SelectedLanguage="xslt2"/>
+		<structure>
+			<children>
+				<component name="fhir-atom-single" library="xml" uid="3" kind="14">
+					<properties XSLTTargetEncoding="UTF-8" XSLTDefaultOutput="1"/>
+					<view ltx="1074" lty="13" rbx="1374" rby="358"/>
+					<data>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace uid="http://www.w3.org/2005/Atom"/>
+									<namespace uid="http://www.altova.com/mapforce"/>
+								</namespaces>
+							</header>
+							<entry name="FileInstance" ns="1" expanded="1">
+								<entry name="document" ns="1" expanded="1" casttotargettypemode="cast-in-subtree">
+									<entry name="feed" inpkey="6" expanded="1">
+										<entry name="entry" inpkey="47" expanded="1"/>
+									</entry>
+								</entry>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Generation\XML\fhir-all-xsd\fhir-atom-single.xsd" outputinstance="fhir-all-xsd\fhir-atom-single.xml" instanceroot="{http://www.w3.org/2005/Atom}feed"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="ESVS-20100726" library="xml" uid="2" kind="14">
+					<properties XSLTTargetEncoding="UTF-8"/>
+					<view ltx="4" lty="13" rbx="269" rby="371"/>
+					<data>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace uid="urn:ihe:iti:svs:2008"/>
+									<namespace uid="http://www.altova.com/mapforce"/>
+								</namespaces>
+							</header>
+							<entry name="FileInstance" ns="1" expanded="1">
+								<entry name="document" ns="1" expanded="1" casttotargettypemode="cast-in-subtree">
+									<entry name="RetrieveMultipleValueSetsResponse" outkey="42" expanded="1">
+										<entry name="DescribedValueSet" outkey="45" expanded="1"/>
+									</entry>
+								</entry>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Generation\XML\ihe-profiles\src\schema\IHE\ESVS-20100726.xsd" inputinstance="..\..\Trifolia.Test\DocSamples\SVS_Example.xml" outputinstance="ihe-profiles\src\schema\IHE\SVS.xml" instanceroot="{urn:ihe:iti:svs:2008}RetrieveMultipleValueSetsResponse"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="convertValueSet" library="user" blackbox="0" uid="16" kind="19" visible="0">
+					<view ltx="526" lty="185" rbx="851" rby="267"/>
+					<data>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace uid="urn:ihe:iti:svs:2008"/>
+									<namespace/>
+								</namespaces>
+							</header>
+							<entry name="DescribedValueSet" ns="1" componentid="17" expanded="1">
+								<entry name="DescribedValueSet" inpkey="44"/>
+							</entry>
+						</root>
+						<root rootindex="1">
+							<header>
+								<namespaces>
+									<namespace uid="http://www.w3.org/2005/Atom"/>
+									<namespace/>
+								</namespaces>
+							</header>
+							<entry name="fhiratomsingle" ns="1" componentid="15" expanded="1">
+								<entry name="EntryType" outkey="48"/>
+							</entry>
+						</root>
+					</data>
+				</component>
+			</children>
+			<graph directed="1">
+				<edges>
+					<edge edgekey="46">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+					<edge edgekey="49">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+				</edges>
+				<vertices>
+					<vertex vertexkey="42">
+						<edges>
+							<edge vertexkey="6" edgekey="43"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="45">
+						<edges>
+							<edge vertexkey="44" edgekey="46"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="48">
+						<edges>
+							<edge vertexkey="47" edgekey="49"/>
+						</edges>
+					</vertex>
+				</vertices>
+			</graph>
+		</structure>
+	</component>
+	<component name="convertValueSet" library="user" blackbox="0" uid="9" editable="1" inline="1">
+		<properties/>
+		<structure>
+			<children>
+				<component name="constant" library="core" uid="20" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="66"/>
+					</targets>
+					<view ltx="602" lty="421" rbx="671" rby="439"/>
+					<data>
+						<constant value="active" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="current-dateTime" library="xpath2" uid="23" kind="5">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="109"/>
+					</targets>
+					<view ltx="579" lty="173" rbx="688" rby="212"/>
+				</component>
+				<component name="document" library="xml" uid="21" kind="14">
+					<properties XSLTTargetEncoding="UTF-8"/>
+					<view ltx="814" lty="46" rbx="1114" rby="422"/>
+					<data>
+						<root scrollposition="137">
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://hl7.org/fhir"/>
+									<namespace uid="http://www.altova.com/mapforce"/>
+								</namespaces>
+							</header>
+							<entry name="document" ns="2" expanded="1" casttotargettypemode="cast-in-subtree">
+								<entry name="ValueSet" ns="1" inpkey="71" outkey="91" expanded="1">
+									<entry name="identifier" ns="1" expanded="1">
+										<entry name="value" type="attribute" inpkey="72"/>
+									</entry>
+									<entry name="version" ns="1" inpkey="73"/>
+									<entry name="name" ns="1">
+										<entry name="value" type="attribute" inpkey="74"/>
+									</entry>
+									<entry name="description" ns="1">
+										<entry name="value" type="attribute" inpkey="75"/>
+									</entry>
+									<entry name="status" ns="1">
+										<entry name="value" type="attribute" inpkey="76"/>
+									</entry>
+									<entry name="expansion" ns="1" inpkey="98" expanded="1">
+										<entry name="timestamp" ns="1" expanded="1">
+											<entry name="value" type="attribute" inpkey="108"/>
+										</entry>
+										<entry name="contains" ns="1" inpkey="99" expanded="1">
+											<entry name="system" ns="1" expanded="1">
+												<entry name="value" type="attribute" inpkey="100"/>
+											</entry>
+											<entry name="code" ns="1">
+												<entry name="value" type="attribute" inpkey="101"/>
+											</entry>
+											<entry name="display" ns="1" expanded="1">
+												<entry name="value" type="attribute" inpkey="102"/>
+											</entry>
+										</entry>
+									</entry>
+								</entry>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Generation\XML\fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://www.w3.org/2005/Atom}feed/{http://www.w3.org/2005/Atom}entry/{http://www.w3.org/2005/Atom}content/{http://hl7.org/fhir}ValueSet"/>
+						<wsdl/>
+						<parameter usageKind="variable" name="ValueSet"/>
+					</data>
+				</component>
+				<component name="document" library="xml" uid="17" kind="14">
+					<properties XSLTTargetEncoding="UTF-8"/>
+					<view ltx="62" rbx="274" rby="386"/>
+					<data>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="urn:ihe:iti:svs:2008"/>
+								</namespaces>
+							</header>
+							<entry name="DescribedValueSet" ns="1" outkey="68" expanded="1">
+								<entry name="ID" type="attribute" outkey="26"/>
+								<entry name="displayName" type="attribute" outkey="36"/>
+								<entry name="version" type="attribute" outkey="37"/>
+								<entry name="ConceptList" ns="1" outkey="38" expanded="1">
+									<entry name="Concept" ns="1" outkey="39" expanded="1">
+										<entry name="code" type="attribute" outkey="40"/>
+										<entry name="codeSystem" type="attribute" outkey="41"/>
+										<entry name="displayName" type="attribute" outkey="97"/>
+									</entry>
+								</entry>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Generation\XML\ihe-profiles\src\schema\IHE\ESVS-20100726.xsd" instanceroot="{urn:ihe:iti:svs:2008}RetrieveMultipleValueSetsResponse/{urn:ihe:iti:svs:2008}DescribedValueSet"/>
+						<wsdl/>
+						<parameter usageKind="input" name="DescribedValueSet"/>
+					</data>
+				</component>
+				<component name="document" library="xml" uid="15" kind="14">
+					<properties XSLTTargetEncoding="UTF-8"/>
+					<view ltx="1178" rbx="1478" rby="357"/>
+					<data>
+						<root scrollposition="52">
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://hl7.org/fhir"/>
+									<namespace uid="http://www.w3.org/2005/Atom"/>
+								</namespaces>
+							</header>
+							<entry name="EntryType" ns="2" inpkey="92" expanded="1">
+								<entry name="content" ns="2" expanded="1">
+									<entry name="type" type="attribute" inpkey="113"/>
+									<entry name="ValueSet" ns="1" inpkey="93" expanded="1"/>
+								</entry>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Generation\XML\fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://www.w3.org/2005/Atom}EntryType"/>
+						<wsdl/>
+						<parameter usageKind="output" name="fhiratomsingle"/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="24" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="114"/>
+					</targets>
+					<view ltx="715" lty="494" rbx="792" rby="512"/>
+					<data>
+						<constant value="text/xml" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+			</children>
+			<graph directed="1">
+				<edges>
+					<edge edgekey="94">
+						<data>
+							<dataconnection type="2"/>
+						</data>
+					</edge>
+				</edges>
+				<vertices>
+					<vertex vertexkey="26">
+						<edges>
+							<edge vertexkey="72" edgekey="111"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="36">
+						<edges>
+							<edge vertexkey="74" edgekey="83"/>
+							<edge vertexkey="75" edgekey="84"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="37">
+						<edges>
+							<edge vertexkey="73" edgekey="85"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="38">
+						<edges>
+							<edge vertexkey="98" edgekey="104"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="39">
+						<edges>
+							<edge vertexkey="99" edgekey="105"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="40">
+						<edges>
+							<edge vertexkey="101" edgekey="106"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="41">
+						<edges>
+							<edge vertexkey="100" edgekey="112"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="66">
+						<edges>
+							<edge vertexkey="76" edgekey="89"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="68">
+						<edges>
+							<edge vertexkey="71" edgekey="90"/>
+							<edge vertexkey="92" edgekey="96"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="91">
+						<edges>
+							<edge vertexkey="93" edgekey="94"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="97">
+						<edges>
+							<edge vertexkey="102" edgekey="107"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="109">
+						<edges>
+							<edge vertexkey="108" edgekey="110"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="114">
+						<edges>
+							<edge vertexkey="113" edgekey="115"/>
+						</edges>
+					</vertex>
+				</vertices>
+			</graph>
+		</structure>
+	</component>
+</mapping>

@@ -1,0 +1,76 @@
+<help rootLocation="/Help/">
+  <helpContexts>
+    <add key="view_template_sample" helpLocation="Default_CSH.htm#cshid=1021" />
+  </helpContexts>
+  <helpPages>
+    <!-- Home Page -->
+    <add route="/" helpLocation="Trifolia.html" windowType="NewWindow"/>
+    <add route="/Home/LoggedInIndex" helpLocation="Trifolia.html" windowType="NewWindow" />
+    
+    <!-- My Profile and Login -->
+    <add route="/Account/MyProfile" helpLocation="Trifolia.html?UserProfiles.html" windowType="NewWindow"/>
+    <add route="/Account/Login" helpLocation="Trifolia.html?Loggingin.html" windowType="NewWindow"/>
+
+    <!-- Implementation Guides: List and View -->
+    <add route="/IGManagement/List" helpLocation="Trifolia.html?BrowseImplementationGuides.html" windowType="NewWindow"/>
+    <add route="/IGManagement/View/*" helpLocation="Trifolia.html?BrowseImplementationGuides.html" windowType="NewWindow"/>
+
+    <!-- Implementation Guides: Editing -->
+    <add route="/IGManagement/Edit/*" helpLocation="Trifolia.html?AuthorImplementationGuides.html" windowType="NewWindow" />
+    <add route="/IGManagement/EditBookmarks" helpLocation="Trifolia.html?ImplementationGuideBookmarks.html" windowType="NewWindow" />
+    <add route="/IGManagement/Files" helpLocation="Trifolia.html?ImplementationGuideFiles.html" windowType="NewWindow" />
+    <add route="/IGManagement/Delete/*" helpLocation="Trifolia.html?AuthorImplementationGuides.html#delete" windowType="NewWindow" />
+
+    <!-- Templates: List and View -->
+    <add route="/TemplateManagement/List" helpLocation="Trifolia.html?BrowseTemplates.html" windowType="NewWindow" />
+    <add route="/TemplateManagement/View/*" helpLocation="Trifolia.html?BrowseTemplates.html" windowType="NewWindow" />
+
+    <!-- Templates: Editing -->
+    <add route="/TemplateManagement/Edit/*" helpLocation="Trifolia.html?TemplateEditor.html" windowType="NewWindow" />
+	  <add route="/TemplateManagement/PublishSettings" helpLocation="Trifolia.html?TemplatePublishSettings.html" windowType="NewWindow" />
+    <add route="/TemplateManagement/Copy" helpLocation="Trifolia.html?CopyingTemplates.html" windowType="NewWindow" />
+    <add route="/TemplateManagement/Delete/*" helpLocation="Trifolia.html?AuthorTemplates.html#delete" windowType="NewWindow" />
+    <add route="/TemplateManagement/Move/*" helpLocation="Trifolia.html?AuthorTemplates.html#move" windowType="NewWindow" />
+    <!-- <add route="/Green/Index" helpLocation="" /> -->
+
+    <!-- Terminology (value sets and code systems) -->
+    <add route="/TerminologyManagement/Browse" helpLocation="Trifolia.html?BrowseTerminology.html" windowType="NewWindow" />
+    <add route="/TerminologyManagement/ValueSet/View/*" helpLocation="Trifolia.html?BrowseTerminology.html" windowType="NewWindow" />
+    <add route="/TerminologyManagement/ValueSet/Edit/*/Concept" helpLocation="Trifolia.html?AuthorTerminology.html#edit_concepts" windowType="NewWindow" />
+
+    <!-- Export Menu -->
+    <add route="/IGManagement/List/ExportMSWord" helpLocation="Trifolia.html?ExportMSWord.html" windowType="NewWindow" />
+    <add route="/Export/MSWord/*" helpLocation="Trifolia.html?ExportMSWord.html" windowType="NewWindow" />
+    <add route="/IGManagement/List/ExportXML" helpLocation="Trifolia.html?ExportXML.html" windowType="NewWindow" />
+    <add route="/Export/Xml/*" helpLocation="Trifolia.html?ExportXML.html" windowType="NewWindow" />
+    <add route="/IGManagement/List/ExportSchematron" helpLocation="Trifolia.html?ExportSchematron.html" windowType="NewWindow" />
+    <add route="/Export/Schematron/*" helpLocation="Trifolia.html?ExportSchematron.html" windowType="NewWindow" />
+    <add route="/IGManagement/List/ExportVocab" helpLocation="Trifolia.html?ExportTerminology.html" windowType="NewWindow" />
+    <add route="/Export/Vocabulary/*" helpLocation="Trifolia.html?ExportTerminology.html" windowType="NewWindow" />
+    <!-- <add route="/IGManagement/List/ExportGreen" helpLocation="" /> -->
+
+    <!-- Reports -->
+    <add route="/Report/TemplateReview" helpLocation="Trifolia.html?Reports.html" windowType="NewWindow" />
+    <add route="/Report/TemplateValidation" helpLocation="Trifolia.html?Reports.html" windowType="NewWindow" />
+    <add route="/Report/Organizations" helpLocation="Trifolia.html?Reports.html" windowType="NewWindow" />
+
+    <!-- Admin > Import 
+    <add route="/TerminologyManagement/Import/Excel" helpLocation="ImportingValueSets.html"/>
+    <add route="/TerminologyManagement/Import/External" helpLocation="ImportingValueSets.html"/>
+    -->
+
+    <!-- Admin > IG Types 
+    <add route="/IGTypeManagement/List" helpLocation="IGDataTypes.html"/>
+    <add route="/IGTypeManagement/Edit/*" helpLocation="IGDataTypes.html"/>
+    -->
+
+    <!-- Organizations (includes "My Organization") 
+    <add route="/Organization/List" helpLocation="Organizations.html"/>
+    <add route="/Organization/Details/*" helpLocation="Organizations.html" />
+    -->
+
+    <!-- Roles 
+    <add route="/RoleManagement/Roles" helpLocation="RolesandPermissions.html"/>
+    -->
+  </helpPages>
+</help>

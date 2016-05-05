@@ -1,0 +1,101 @@
+﻿<html>
+	
+<head>
+	<title>Logging In</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.8.0.849">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("LoggingIn");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Logging In</h1>
+				
+				<div id="topic_breadcrumb">
+					Getting Started &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="GettingStarted.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="GettingStarted.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="Navigation.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<p class="rvps2"><span class="rvts6">To use the Trifolia Workbench, you need access credentials.</span></p>
+<p class="rvps2"><span class="rvts6">Once you log in to Trifolia Workbench, the functions you perform depend on the access permissions granted to your login credentials.</span></p>
+<p class="rvps2"><span class="rvts6">If it is the first time logging into Trifolia, you will be prompted to enter "My Profile" information. See My Profile for more information.</span></p>
+<p class="rvps2"><span class="rvts6">If you have logged into Trifolia before, you can modify your My Profile information from the menu in the top-right corner of Trifolia.</span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Log In as a Commercial User</span></span></h2>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">In the upper-right corner, select Log In and choose Login from the drop-down menu. The Log In page appears, as show above.</span></li>
+<li value="2" class="rvps2"><span class="rvts6">Enter your credentials and select the Login button. To log in automatically each time you visit Trifolia, select the Keep me logged in checkbox.</span></li>
+<li value="3" class="rvps2"><span class="rvts6">Confirm that you are a human (and not a robot) by completing the re-captcha verification</span></li>
+<ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">Re-captcha verification is performed by Google's re-captcha API. More information on Google's re-captcha can be found </span><a class="rvts11" href="http://www.google.com/recaptcha/" target="_blank">here</a><span class="rvts6">.</span></li>
+</ol></ol>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Log in as an HL7 User</span></span></h2>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">From either the Trifolia home page or the commercial account login page, select the "here" link at the end of the "HL7 Members can login and non-members can register to use Trifolia Workbench here." sentence</span></li>
+<li value="2" class="rvps2"><span class="rvts6">Trifolia will redirect you to the HL7 login page</span></li>
+<li value="3" class="rvps2"><span class="rvts6">Login to HL7 with your HL7 credentials</span></li>
+<li value="4" class="rvps2"><span class="rvts6">HL7's website will redirect you back to Trifolia, as a logged-in user</span></li>
+</ol>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+

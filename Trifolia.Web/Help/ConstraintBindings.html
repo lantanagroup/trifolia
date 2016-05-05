@@ -1,0 +1,95 @@
+﻿<html>
+	
+<head>
+	<title>Bindings</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.8.0.849">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("ConstraintBindings");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Bindings</h1>
+				
+				<div id="topic_breadcrumb">
+					<a href="Authoring.html">Authoring</a> &rsaquo;&rsaquo; Templates/Profiles &rsaquo;&rsaquo; <a href="TemplateEditor.html">Editor</a> &rsaquo;&rsaquo; <a href="TemplateConstraints.html">Constraints</a> &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="TemplateConstraints.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="ConstraintCardinality.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="TemplateConstraintCategories.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<p class="rvps2"><span class="rvts24">See </span><a class="rvts26" href="CDABestPractices.html">CDA Best Practices</a><span class="rvts24"> and </span><a class="rvts25" href="FHIRBestPractices.html">FHIR Best Practices</a><span class="rvts24"> for more information</span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Single-Value Binding</span></span></h2>
+<p class="rvps2"><span class="rvts6">A single-value binding is when you require that the element/attribute in the template/profile always have the same (pre-defined) value.</span></p>
+<p class="rvps2"><span class="rvts18">Example #1</span><span class="rvts6">: SHALL contain 1..1 statusCode="completed"</span></p>
+<p class="rvps2"><span class="rvts18">Example #2</span><span class="rvts6">: SHALL contain 1..1 code="42348-3" Advance Directives (CodeSystem: LOINC urn:oid:2.16.840.1.113883.6.1)</span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Value Set Binding</span></span></h2>
+<p class="rvps2"><span class="rvts6">A value set binding is when you associate an element/attribute with a (already-defined) value set. A value set specifies a set of codes drawn from one or more code systems.</span></p>
+<p class="rvps2"><span class="rvts6">Specifying a value set allows the implementer of the template/profile to choose a code within the value set that is appropriate for the scenario.</span></p>
+<p class="rvps2"><span class="rvts18">Example</span><span class="rvts6">: SHALL contain 1..1 code, which SHOULD be selected from ValueSet AdvanceDirectiveTypeCode urn:oid:2.16.840.1.113883.1.11.20.2 STATIC 2006-10-17</span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Code System Binding</span></span></h2>
+<p class="rvps2"><span class="rvts6">A code system binding is when you associate an element/attribute with a (already-defined) code system. A code system is external terminology or ontology such as LOINC , or SNOMED CT.</span></p>
+<p class="rvps2"><span class="rvts6">Specifying a code system allows the implementer of the template/profile to choose a code from the code system that is appropriate for the scenario; such as allowing the implementer to choose any code from LOINC.</span></p>
+<p class="rvps2"><span class="rvts18">Example</span><span class="rvts6">: SHALL contain 1..1 code, which SHOULD be selected from CodeSystem LOINC (urn:oid:2.16.840.1.113883.6.1)</span></p>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+

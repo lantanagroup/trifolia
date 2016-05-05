@@ -1,0 +1,74 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Trifolia.Web.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="HL7LoginUrlFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://hl7.amg-hq.net/tools/signup_redirect.cfm?apiKey={0}&amp;returnUrl={1}</Value>
+    </Setting>
+    <Setting Name="HL7RoseTreeLocation" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">c:\ProgramData\Trifolia\hl7_rim_repo.xml</Value>
+    </Setting>
+    <Setting Name="MailHost" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MailUser" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MailPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MailFromAddress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MailPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MailEnableSSL" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="WhatsNewItems" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;Users can requests permissions to implementation guides they don't have access to.&lt;/string&gt;
+  &lt;string&gt;Newly granted permissions have the option to send out notification emails directly from Trifolia.&lt;/string&gt;
+  &lt;string&gt;MS Word Export settings allow you to define individual value set member maximums for each value set.&lt;/string&gt;
+  &lt;string&gt;Implementation guide editors have the option to define default MS Word export settings.&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="DidYouKnowItems" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;Having trouble? Look for the ? bubble or try hovering your mouse over the link or header for a more detailed description.&lt;/string&gt;
+  &lt;string&gt;In most grids, the "Add" (or "New") button is in the header or footer of the grid.&lt;/string&gt;
+  &lt;string&gt;Changes are not persisted until the "Save", "Update" or "OK" button is pressed. For example, when editing a template any updated constraint is not saved permanently until you press the "Save" button at the bottom-left of the template editor.&lt;/string&gt;
+  &lt;string&gt;The template editor has three different constraint editor views (selected in the bottom-right of the editor): Analyst, Editor and Engineer.&lt;/string&gt;
+  &lt;string&gt;Template authors with the edit-access to an implementation guide can select "default settings" for an MS Word Export.&lt;/string&gt;
+  &lt;string&gt;Once an implementation guide has been published, value sets used by the implementation guide become locked and can only be modified by terminology admins.&lt;/string&gt;
+  &lt;string&gt;If you don't have access to an implementation guide, you may be able to "Request Access" to the implementation guide view the "Browse Implementation Guides" screen. Requesting access sends a notification email to the access manager of the implementation guide.&lt;/string&gt;
+  &lt;string&gt;OIDs are now considered "identifiers" in Trifolia. This change now treats identifiers more generically then OIDs. For templates, identifiers can be a single OID (ex: urn:oid:XXX), a versioned OID (ex: urn:hl7ii:OID:DATE) or an HTTP/S address. For value sets and code systems, identifiers can be a single OID or an HTTP identifier (to support FHIR).&lt;/string&gt;
+  &lt;string&gt;Trifolia's template editor is based on XML Schemas. Trifolia is not restricted to editing templates for just CDA, it can define templates for E-Measures and also define profiles for FHIR. Because Trifolia uses XML Schema, in theory, any schema can be loaded into Trifolia and used with the template editor; after the schema has been properly tested within Trifolia.&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="RecaptchaVerifyUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://www.google.com/recaptcha/api/siteverify</Value>
+    </Setting>
+    <Setting Name="RecaptchaVerifyMethod" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">POST</Value>
+    </Setting>
+    <Setting Name="RecaptchaSecret" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RecaptchaFormFieldName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">g-recaptcha-response</Value>
+    </Setting>
+    <Setting Name="RecaptchaAllowBypass" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SupportEmailTo" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EnableJiraSupport" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

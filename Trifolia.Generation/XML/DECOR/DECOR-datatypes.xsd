@@ -1,0 +1,976 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    
+    DECOR datatypes schema
+    Copyright (C) 2009-2015 Dr. Kai U. Heitmann
+    
+    This program is free software; you can redistribute it and/or modify it under the terms 
+    of the GNU General Public License as published by the Free Software Foundation; 
+    either version 3 of the License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+    See the GNU General Public License for more details.
+    
+    See http://www.gnu.org/licenses/gpl.html
+    
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" elementFormDefault="qualified">
+
+    <xs:simpleType name="AddressLineType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="phone">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <xforms:label xml:lang="nl-NL">Telefoon</xforms:label>
+                        <xforms:label xml:lang="en-US">Phone</xforms:label>
+                        <xforms:label xml:lang="de-DE">Fon</xforms:label>
+                    </xs:appinfo>
+                    <xs:documentation xml:lang="en-US">Rendering hint that addrLine is a phone number, e.g. +3170-1234567</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="fax">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <xforms:label xml:lang="nl-NL">Fax</xforms:label>
+                        <xforms:label xml:lang="en-US">Fax</xforms:label>
+                        <xforms:label xml:lang="de-DE">Fax</xforms:label>
+                    </xs:appinfo>
+                    <xs:documentation xml:lang="en-US">Rendering hint that addrLine is a fax number, e.g. +3170-1234567</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="email">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <xforms:label xml:lang="nl-NL">E-mail</xforms:label>
+                        <xforms:label xml:lang="en-US">Email</xforms:label>
+                        <xforms:label xml:lang="de-DE">Email</xforms:label>
+                    </xs:appinfo>
+                    <xs:documentation xml:lang="en-US">Rendering hint that addrLine is an email address, e.g. info@arg-decor.org</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="uri">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <xforms:label xml:lang="nl-NL">URI</xforms:label>
+                        <xforms:label xml:lang="en-US">URI</xforms:label>
+                        <xforms:label xml:lang="de-DE">URI</xforms:label>
+                    </xs:appinfo>
+                    <xs:documentation xml:lang="en-US">Rendering hint that addrLine is a URI, e.g. http://www.art-decor.org</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="twitter">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <xforms:label xml:lang="nl-NL">Twitter</xforms:label>
+                        <xforms:label xml:lang="en-US">Twitter</xforms:label>
+                        <xforms:label xml:lang="de-DE">Twitter</xforms:label>
+                    </xs:appinfo>
+                    <xs:documentation xml:lang="en-US">Rendering hint that addrLine is a Twitter account name, e.g. art-decor</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="linkedin">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <xforms:label xml:lang="nl-NL">LinkedIn</xforms:label>
+                        <xforms:label xml:lang="en-US">LinkedIn</xforms:label>
+                        <xforms:label xml:lang="de-DE">LinkedIn</xforms:label>
+                    </xs:appinfo>
+                    <xs:documentation xml:lang="en-US">Rendering hint that addrLine is a LinkedIn URI, e.g. http://www.linkedin.com/groups/Nictiz-72537</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="facebook">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <xforms:label xml:lang="nl-NL">Facebook</xforms:label>
+                        <xforms:label xml:lang="en-US">Facebook</xforms:label>
+                        <xforms:label xml:lang="de-DE">Facebook</xforms:label>
+                    </xs:appinfo>
+                    <xs:documentation xml:lang="en-US">Rendering hint that addrLine is a Facebook account name, e.g. art-decor</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TimeStampNoTimezone">
+        <xs:restriction base="xs:dateTime">
+            <xs:pattern value="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- following is borrowed from the mif-core-patterns.xsd and other mif schemas -->
+    <xs:simpleType name="Years">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">A list of years</xs:documentation>
+        </xs:annotation>
+        <xs:list itemType="Year"/>
+    </xs:simpleType>
+    <xs:simpleType name="Year">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">A year (restricted to 20th and 21st century)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="(19|20)\d{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="YearRanges">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">A list of year ranges</xs:documentation>
+        </xs:annotation>
+        <xs:list itemType="YearRange"/>
+    </xs:simpleType>
+    <xs:simpleType name="YearRange">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">A (range of) year(s) (restricted to 20th and 21st century)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(19|20)\d{2}(-(19|20)\d{2})?"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SingleNonNegativeInteger">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">An integer that is greater than or equal to zero, with a maximum length of 1 character</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:nonNegativeInteger">
+            <xs:maxExclusive value="10"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SmallNonNegativeInteger">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">An integer that is greater than or equal to zero, with a maximum length of 6 characters</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:nonNegativeInteger">
+            <xs:maxExclusive value="1000000"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SmallPositiveInteger">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">An integer that is greater than or equal to 1, with a maximum length of 6 characters</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:positiveInteger">
+            <xs:maxExclusive value="1000000"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PositiveDecimal">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">A real number greater than 0 that is restricted to a maximum of 10 characters, and may have no more than 3 decimal places.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:maxExclusive value="1000000"/>
+            <xs:minInclusive value=".001"/>
+            <xs:fractionDigits value="3"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NonNegativeDecimal">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">A real number that is restricted to a maximum of 10 characters, and may have no more than 3 decimal places.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:maxExclusive value="1000000"/>
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="3"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Decimal">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">A real number that is restricted to a maximum of 10 characters, and may have no more than 3 decimal places.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:maxExclusive value="1000000"/>
+            <xs:minInclusive value=".001"/>
+            <xs:fractionDigits value="3"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Simple types used in defining various attributes -->
+    <xs:simpleType name="Uuid">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Universal Unique Identifier (aka GUID). Used for identifiers</xs:documentation>
+            <xs:appinfo>
+                <sch:pattern>
+                    <sch:title>Validate Uuid type</sch:title>
+                    <!--<sch:rule context="mif:Uuid">-->
+                    <!-- Exclude guiids in graphicIds because these are referencing a guid elsewhere in the document 
+						<sch:report test="count(//attribute(*, mif:Uuid)[count(parent::element(*,mif:GraphicInformation))=0][.=current()]|//element(*, mif:Uuid)[.=current()])>1">
+							ERROR: UUIDs should never be duplicated within a document.</sch:report> -->
+                    <!--</sch:rule>-->
+                </sch:pattern>
+            </xs:appinfo>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:length value="36"/>
+            <xs:pattern value="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="HashCode">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Base64 representation of a SHA-256 hashcode</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([A-Za-z0-9/+]){27}="/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Oid">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">ISO Object Identifier. Used for identifiers</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:maxLength value="255"/>
+            <xs:pattern value="[1-9][0-9]*(\.[0-9]+)*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="OidChoiceList">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Choice list of Oids</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:maxLength value="1028"/>
+            <xs:pattern value="([1-9][0-9]*(\.[0-9]+)*)(\|[1-9][0-9]*(\.[0-9]+)*)*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="StaticFlexibility">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">As an expression of static flexibility this contains simply a valid date (without the prefix "static")</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="TimeStampNoTimezone"/>
+    </xs:simpleType>
+    <xs:simpleType name="DynamicFlexibility">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Fixed string "dynamic", means most recent version of the object</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="dynamic">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">dynamic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="StaticOrDynamicFlexibility">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Either the fixed string "dynamic" or a valid xs:date as an effective date of the version of the object</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="DynamicFlexibility StaticFlexibility"/>
+    </xs:simpleType>
+    <xs:simpleType name="BasicIdOrOid">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Either a string or an oid in order to identify the object</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="BasicId Oid"/>
+    </xs:simpleType>
+    <xs:simpleType name="DefinedContextKind">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Defines pre-defined 'contexts'. At present these consist primarily of realms.</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="AffiliateKind"/>
+    </xs:simpleType>
+    <xs:simpleType name="RealmKind">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Allows both pre-defined affiliates and other affiliate issued sub-realm identifiers</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="EnumerationToken DefinedContextKind"/>
+    </xs:simpleType>
+    <xs:simpleType name="RealmNamespaceKind">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Allows affiliate and free-form as well as OID-based namespaces to be identified for keeping content distinct</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="RealmKind Oid"/>
+    </xs:simpleType>
+    <xs:simpleType name="Uri">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for references to some external resource.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:anyURI">
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Url">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for hypertext references. (SHALL be prefixed by "http://")</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:anyURI">
+            <xs:maxLength value="255"/>
+            <xs:pattern value="http(s)?://.+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="EmailType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for email references. (SHALL be prefixed by "mailto:")</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="255"/>
+            <xs:pattern value="(mailto:)?\w+([-+._']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LocalFileReference">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for file references. (SHALL be prefixed by "file://")</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:anyURI">
+            <xs:maxLength value="255"/>
+            <xs:pattern value="(file://)?([A-Za-z0-9_\-\.]+/)*[A-Za-z0-9_\-\.]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NonEmptyString">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used as the base for most string datatypes. (Ensures that empty strings are not allowed.). Should never be implemented directly because it has no length
+                limits.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="CMETAttributionString">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Type for CMET attribution types. Basically a length-limited lowerCamelCase string that allows dashes and has a length limit.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:maxLength value="50"/>
+            <xs:pattern value="[a-z][a-z0-9A-Z\-]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LowerCamelCase">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Type for attribute and association type names. Should never be implemented directly because it has no length limits.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:pattern value="[a-z][a-z0-9]*([A-Z][a-z0-9]*)*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="UpperCamelCase">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Type for class and type names</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:pattern value="([A-Z][a-z0-9_\-]*)+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PrefixedUpperCamelCase">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for CMET type names. (Basically class names with a prefix separated by an underscore)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:maxLength value="50"/>
+            <xs:pattern value="[A-Z]+_([A-Z][a-z0-9_\-]*)+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BasicFormalName">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for formal names and short descriptions</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="NonEmptyString">
+            <xs:maxLength value="120"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FormalProperName">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for class and type names</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="UpperCamelCase">
+            <xs:maxLength value="60"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AllClassName">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Choice of a class name or a CMET name</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="FormalProperName PrefixedUpperCamelCase"/>
+    </xs:simpleType>
+    <xs:simpleType name="FormalPropertyName">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for attribute, association and property names</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="LowerCamelCase">
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ShortDescriptiveName">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used when descriptions are intended to be very short</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="NonEmptyString">
+            <xs:maxLength value="80"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ShortFormalName">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used when names are intended to be non-empty, short and without "weird" characters</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <!--
+            <xs:pattern value="[A-Za-z,0-9,ä,ö,ü,ß,Ä,Ö,Ü,ó,ï,é,\.,_,\-]{1,80}"/>
+            -->
+            <xs:pattern value="[A-Za-z]+([A-Za-z0-9,.,\-,_])*"/>
+            <xs:maxLength value="80"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LongDescriptiveName">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used when descriptions can be potentially quite long</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="NonEmptyString">
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="XDomainName">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for x-domains</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:maxLength value="50"/>
+            <xs:pattern value="(x_)?([A-Z][a-z0-9_]*)+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DatatypeName">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for datatype names</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:maxLength value="60"/>
+            <xs:pattern value="[A-Z_]+(.[A-Za-z]+)*(.diffType)?"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="MimeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used to filter MIME type names</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:maxLength value="40"/>
+            <xs:pattern value="[a-z]+/[a-z0-9\-]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Version">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for version numbers</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="16"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="HTMLColorName">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for indicating an HTML compatible color by name, by RGB-hex or RGB-decimal</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([A-Za-z]+)|(#[A-Fa-f0-9]{6})|(rgb\([0-9]{1,3},[0-9]{1,3},[0-9]{1,3}\))"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ShortString">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for very short strings</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="10"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="set_ShortString">
+        <xs:list itemType="ShortString"/>
+    </xs:simpleType>
+    <xs:simpleType name="CollapsedPackageId">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="([A-Za-z,0-9,_,\-]{1,80}=){0,7}[A-Za-z,0-9,_,\-,\.]{1,80}">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Allows between 1 and 7 strings of length 1 to 80 characters (uppercase alpha, digits, underscore and space) where strings are separated by
+                        "="</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TemplateId">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:pattern value="([A-Z0-9_\-]{1,80}=){0,6}[A-Z0-9_\-]{1,80}#([A-Z][a-z0-9_\-]*)+(\.[a-z][a-z0-9]*([A-Z][a-z0-9]*)*)?">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">TemplateId followed by "#" followed by a class name followed by an optional "." and attribute name</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BasicId">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used for generic identifiers</xs:documentation>
+        </xs:annotation>
+        <!-- Largest current valueSet name in HL7 V3 is 75 characters "RespiratoryAndOrRehabilitativeAndOrRestorativeSpecialistOrTechnologistHIPAA" -->
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="80"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:attributeGroup name="MultiplicityRangeRequired">
+        <xs:annotation>
+            <xs:appinfo>
+                <sch:pattern>
+                    <sch:title>Validate MultiplicityRange type</sch:title>
+                    <sch:rule abstract="true" id="MultiplicityRangeRequired">
+                        <sch:report role="warning" test="@maximumMultiplicity!='*' and number(@minimumMultiplicity)&gt;number(@maximumMultiplicity)"> ERROR: MinimumMultiplicity SHALL be less than or
+                            equal to maximumMultiplicity.</sch:report>
+                    </sch:rule>
+                </sch:pattern>
+            </xs:appinfo>
+            <xs:documentation xml:lang="en-US">Used to define multiplicty</xs:documentation>
+            <xs:documentation xml:lang="en-US">UML: Corresponds to UML type MultiplicityRange, with exception that upper boundary cannot be 0</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="minimumMultiplicity" type="SmallNonNegativeInteger" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en-US">Identifies the minimum number of repetitions of this element that may occur within the containing element.</xs:documentation>
+                <xs:documentation xml:lang="en-US">UML: multiplicity (lower-bound)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="maximumMultiplicity" type="UnlimitedInteger" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en-US">Identifies the maximum number of repetitions of this element that may occur within the containing element.</xs:documentation>
+                <xs:documentation xml:lang="en-US">UML: multiplicity (upper-bound)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="MultiplicityRangeOptional">
+        <xs:annotation>
+            <xs:appinfo>
+                <sch:pattern>
+                    <sch:title>Validate MultiplicityRange type</sch:title>
+                    <sch:rule abstract="true" id="MultiplicityRange">
+                        <sch:report role="warning" test="@maximumMultiplicity!='*' and number(@minimumMultiplicity)&gt;number(@maximumMultiplicity)"> ERROR: MinimumMultiplicity SHALL be less than or
+                            equal to maximumMultiplicity.</sch:report>
+                    </sch:rule>
+                </sch:pattern>
+            </xs:appinfo>
+            <xs:documentation xml:lang="en-US">Used to define multiplicity</xs:documentation>
+            <xs:documentation xml:lang="en-US">UML: Corresponds to UML type MultiplicityRange, with exception that upper boundary cannot be 0</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="minimumMultiplicity" type="SmallNonNegativeInteger" use="optional">
+            <xs:annotation>
+                <xs:documentation xml:lang="en-US">Identifies the minimum number of repetitions of this element that may occur within the containing element.</xs:documentation>
+                <xs:documentation xml:lang="en-US">UML: multiplicity (lower-bound)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="maximumMultiplicity" type="UnlimitedInteger" use="optional">
+            <xs:annotation>
+                <xs:documentation xml:lang="en-US">Identifies the maximum number of repetitions of this element that may occur within the containing element.</xs:documentation>
+                <xs:documentation xml:lang="en-US">UML: multiplicity (upper-bound)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:simpleType name="UnlimitedInteger">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">UML: Corresponds to UnlimitedInteger. (Only distinction is that this type does not allow 0 while UML does)</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="SmallPositiveInteger UnlimitedMultiplicity"/>
+    </xs:simpleType>
+    <xs:simpleType name="UnlimitedMultiplicity">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used as a 'part' of the UnlimitedInteger type</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="*">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Unlimited</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="EnumerationToken">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used as the base class for all 'codes' which qualify or SHALL be handled as NMTOKEN</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="EnumerationString">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Used as the base class for all 'codes' which cannot be handled as NMTOKEN</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <!-- 2014-11-04 AH: Updated to support SNOMED-CT post coordination expressions which are currently up to 89 characters long -->
+            <xs:maxLength value="128"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AffiliateKind">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">The list of HL7 affiliates.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="EnumerationToken">
+            <xs:enumeration value="AR">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Argentina</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AU">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Australia</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AT">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Austria</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BR">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Brazil</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CA">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Canada</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CL">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Chile</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CN">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">China</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HR">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Croatia</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CZ">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Czech Republic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DK">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Denmark</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FI">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Finland</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FR">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">France</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DE">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Germany</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GR">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Greece</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IN">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">India</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IE">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Ireland</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IT">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Italy</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="JP">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Japan</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="KR">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Korea</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LT">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Lithuania</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MX">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Mexico</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NL">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Netherlands</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NZ">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">New Zealand</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Romania</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SOA">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Southern Africa</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ES">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Spain</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SE">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Sweden</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CH">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Switzerland</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TW">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Taiwan</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TR">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Turkey</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UK">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">United Kingdom</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="US">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">United States</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UY">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Uruguay</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UV">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">Applies to all realms (unless there is a realm-specific override)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="FreeFormMarkupWithLanguage" mixed="true">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Allows unconstrained markup to identify the language in which it is expressed and when it was last translated</xs:documentation>
+            <xs:documentation xml:lang="en-US">UML: Handled as 'mixed text' stored as a string, but with parallel tags identifying language</xs:documentation>
+            <xs:appinfo>
+                <sch:pattern>
+                    <sch:title>Validate FreeFormMarkupWithLanguage type</sch:title>
+                    <sch:rule context="
+                        desc[not(ancestor::example)][not(ancestor::history)][not(ancestor::*/@statusCode=('deprecated','cancelled','inactive','rejected','retired','final','active'))] | 
+                        release/note[not(ancestor::example)][not(ancestor::history)][not(ancestor::*/@statusCode=('deprecated','cancelled','inactive','rejected','retired','final','active'))] | 
+                        concept/source[not(ancestor::example)][not(ancestor::history)][not(ancestor::*/@statusCode=('deprecated','cancelled','inactive','rejected','retired','final','active'))] | 
+                        concept/rationale[not(ancestor::example)][not(ancestor::history)][not(ancestor::*/@statusCode=('deprecated','cancelled','inactive','rejected','retired','final','active'))] | 
+                        concept/operationalization[not(ancestor::example)][not(ancestor::history)][not(ancestor::*/@statusCode=('deprecated','cancelled','inactive','rejected','retired','final','active'))] | 
+                        transaction/trigger[not(ancestor::example)][not(ancestor::history)][not(ancestor::*/@statusCode=('deprecated','cancelled','inactive','rejected','retired','final','active'))] | 
+                        transaction/condition[not(ancestor::example)][not(ancestor::history)][not(ancestor::*/@statusCode=('deprecated','cancelled','inactive','rejected','retired','final','active'))] | 
+                        transaction/dependencies[not(ancestor::example)][not(ancestor::history)][not(ancestor::*/@statusCode=('deprecated','cancelled','inactive','rejected','retired','final','active'))] | 
+                        transaction/constraint[not(ancestor::example)][not(ancestor::history)][not(ancestor::*/@statusCode=('deprecated','cancelled','inactive','rejected','retired','final','active'))]">
+                        <sch:assert role="error" test="not(preceding-sibling::*[name()=name(current())][@language=current()/@language])"
+                            >ERROR: Each repetition of <sch:name path=".."/>/<sch:name/> with language SHALL be a different language</sch:assert>
+                        <sch:assert role="warning" test="@language"
+                            >WARNING: Each repetition of <sch:name path=".."/>/<sch:name/> SHOULD be qualified with @language</sch:assert>
+                    </sch:rule>
+                    <!--sch:rule abstract="true" id="FreeFormMarkupWithLanguage">
+                        <sch:report role="warning"
+                            test="count(preceding-sibling::*[name(.)=name(current())][@language=current()/@language or ((@language='EN' or not(@language)) and (current()/@language='EN' or not(current()/@language)))])!=0"
+                            > ERROR: Each repetition of complex markup with language SHALL be a different language (no language is equivalent to 'EN').</sch:report>
+                    </sch:rule-->
+                </sch:pattern>
+            </xs:appinfo>
+        </xs:annotation>
+        <xs:complexContent mixed="true">
+            <xs:extension base="VariousMixedContent">
+                <xs:attribute name="language" type="LanguageCode" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en-US">Indicates the language in which the marked up text is expressed</xs:documentation>
+                        <xs:documentation xml:lang="en-US">UML: part of a complex stereotype tag</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="lastTranslated" type="TimeStampNoTimezone" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en-US">Indicates when this languages rendition was last translated from the original.</xs:documentation>
+                        <xs:documentation xml:lang="en-US">UML: part of a complex stereotype tag</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="mimeType" type="MimeType" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en-US">Indicates the mime type in which the data is expressed. If not specified, applications SHALL interpret the content based on other context or
+                            specific application rules. Applications that do not recognize content SHALL retain it unchanged.</xs:documentation>
+                        <xs:documentation xml:lang="en-US">UML: Part of a complex tag</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:simpleType name="LanguageCode">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">Allows both a choice out of the list of selected languages or a language patterend ss-CC</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="LanguageCodePattern LanguageCodeEnum"/>
+    </xs:simpleType>
+    <xs:simpleType name="LanguageCodeEnum">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">A list of some selected languages</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:language">
+            <xs:enumeration value="en-US">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">en-US</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="nl-NL">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">nl-NL</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="de-DE">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">de-DE</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LanguageCodePattern">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">A pattern for languages ss-CC</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:language">
+            <xs:pattern value="[a-z][a-z]-[A-Z][A-Z]">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en-US">other</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="BusinessNameWithLanguage" mixed="true">
+        <xs:annotation>
+            <xs:documentation>A name for the artifact that will be meaningful to business or domain experts. One artifact may have different business name translations for each realm and/or
+                language.</xs:documentation>
+            <xs:documentation>UML: tagged value on ModelElement</xs:documentation>
+            <xs:documentation>DublinCore: Maps to 'Alternative'</xs:documentation>
+            <xs:appinfo>
+                <sch:pattern>
+                    <sch:title>Validate BusinessNameWithLanguage type</sch:title>
+                    <sch:rule abstract="true" id="BusinessNameWithLanguage">
+                        <sch:report role="warning"
+                            test="count(preceding-sibling::*[name(.)=name(current())][@language=current()/@language or ((@language='EN' or not(@language)) and (current()/@language='EN' or not(current()/@language)))])!=0"
+                            > ERROR: Each repetition of complex markup with language SHALL be a different langage (no language is equivalent to 'EN').</sch:report>
+                    </sch:rule>
+                </sch:pattern>
+            </xs:appinfo>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="language" type="xs:language" use="optional" default="en-US">
+                    <xs:annotation>
+                        <xs:documentation>Indicates the language in which the business name is expressed</xs:documentation>
+                        <xs:documentation>UML: Part of a complex tag value</xs:documentation>
+                        <xs:documentation>DublinCore: Language</xs:documentation>
+                        <xs:documentation>Alpha</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="VariousMixedContent" mixed="true">
+        <xs:annotation>
+            <xs:documentation xml:lang="en-US">A type that allows unconstrained mixed-text markup</xs:documentation>
+        </xs:annotation>
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:any processContents="skip"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:annotation>
+        <xs:appinfo>
+            <sqf:fixes>
+                <sqf:fix id="replaceInheritWithIdOfOriginalConcept">
+                    <sqf:description xml:lang="en-US">
+                        <sqf:title>Fix inherit with original</sqf:title>
+                        <sqf:p>Replaces the current inherit/@ref and inherit/@effectiveDate with the @id/@effectiveDate of the original concept</sqf:p>
+                    </sqf:description>
+                    <sqf:replace match="inherit/@ref" target="ref" node-type="attribute">
+                        <sch:value-of select="$inhconcept/inherit/@ref"/>
+                    </sqf:replace>
+                    <sqf:replace match="inherit/@effectiveDate" target="effectiveDate" node-type="attribute">
+                        <sch:value-of select="$inhconcept/inherit/@effectiveDate"/>
+                    </sqf:replace>
+                </sqf:fix>
+                <sqf:fix id="addHyphenToPrefix">
+                    <sqf:description xml:lang="en-US">
+                        <sqf:title>Add Hyphen</sqf:title>
+                        <sqf:p>Adds a hyphen to the value in @prefix</sqf:p>
+                    </sqf:description>
+                    <sqf:replace match="@prefix" target="prefix" node-type="attribute">
+                        <sch:value-of select="concat(., '-')"/>
+                    </sqf:replace>
+                </sqf:fix>
+                <sqf:fix id="addHyphenToIdent">
+                    <sqf:description xml:lang="en-US">
+                        <sqf:title>Add Hyphen</sqf:title>
+                        <sqf:p>Adds a hyphen to the value in @ident</sqf:p>
+                    </sqf:description>
+                    <sqf:replace match="@ident" target="ident" node-type="attribute">
+                        <sch:value-of select="concat(., '-')"/>
+                    </sqf:replace>
+                </sqf:fix>
+                <sqf:fix id="addSlashToURL">
+                    <sqf:description xml:lang="en-US">
+                        <sqf:title>Add Slash</sqf:title>
+                        <sqf:p>Adds a slash to the value in @url</sqf:p>
+                    </sqf:description>
+                    <sqf:replace match="@url" target="url" node-type="attribute">
+                        <sch:value-of select="concat(., '/')"/>
+                    </sqf:replace>
+                </sqf:fix>
+                <sqf:fix id="addMissingBaseIds">
+                    <sqf:description xml:lang="en-US">
+                        <sqf:title>Add Missing BaseIds</sqf:title>
+                        <sqf:p>Adds missing baseId elements</sqf:p>
+                    </sqf:description>
+                    <sch:let name="bi" value="/decor/ids/baseId/@type"/>
+                    <sch:let name="b" value="/decor/project/@id"/>
+                    <sch:let name="p" value="/decor/project/@prefix"/>
+                    <sqf:add match="//ids" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:for-each select="$allTypes[not(.=$bi)]">
+                            <xsl:variable name="pos" select="index-of($allTypes,.)"/>
+                            <baseId id="{$b}.{$allExtensions[$pos]}" type="{.}" prefix="{$p}{lower-case(.)}-"/>
+                        </xsl:for-each>
+                    </sqf:add>
+                </sqf:fix>
+                <sqf:fix id="addMissingDefaultBaseIds">
+                    <sqf:description xml:lang="en-US">
+                        <sqf:title>Add Missing DefaultBaseIds</sqf:title>
+                        <sqf:p>Adds missing defaultBaseId elements</sqf:p>
+                    </sqf:description>
+                    <sch:let name="bi" value="/decor/ids/baseId/@type"/>
+                    <sch:let name="dbi" value="/decor/ids/defaultBaseId/@type"/>
+                    <sch:let name="b" value="/decor/project/@id"/>
+                    <sch:let name="p" value="/decor/project/@prefix"/>
+                    <sqf:add match="//ids/baseId[last()]" position="after" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:for-each select="$allTypes[not(.=$dbi)]">
+                            <xsl:variable name="type" select="."/>
+                            <xsl:variable name="pos" select="index-of($allTypes,$type)"/>
+                            <xsl:variable name="id" select="if ($type=$bi) then ($bi[.=$type]/../@id)[1] else (concat($b,'.',$allExtensions[$pos]))"/>
+                            <defaultBaseId id="{$id}" type="{.}"/>
+                        </xsl:for-each>
+                    </sqf:add>
+                </sqf:fix>
+            </sqf:fixes>
+        </xs:appinfo>
+    </xs:annotation>
+
+</xs:schema>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atom:feed xmlns:fhir="http://hl7.org/fhir" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:osr="http://a9.com/-/opensearch/extensions/relevance/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:at="http://purl.org/atompub/tombstones/1.0" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2005/Atom C:/Users/rickg/Documents/GitHub/trif/TemplateDatabase.Generation/XML/fhir-all-xsd/fhir-atom-single.xsd">
+	<atom:title>Trifolia Profile Export</atom:title>
+	<atom:updated>2014-05-03T20:12:05-04:00</atom:updated>
+	<atom:id>cid:idelem4x1</atom:id>
+	<atom:entry>
+		<atom:title>Test FHIR Composition</atom:title>
+		<atom:id>oid:FHIR_1.2.3.4</atom:id>
+		<atom:updated>2014-05-03T20:12:05-04:00</atom:updated>
+		<atom:content type="text/xml">
+			<fhir:Profile>
+				<text xmlns="http://hl7.org/fhir">
+					<status value="generated"/>
+					<xhtml:div>
+						<xhtml:p>Test FHIR Composition</xhtml:p>
+						<xhtml:ol>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] type, which SHALL be selected from ValueSet Race 2.16.840.1.113883.1.11.14914 STATIC (CONF:5).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] title (CONF:1).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] Sean's Test Patient (templateId:FHIR_4.3.2.1) (CONF:2).</p>
+							</li>
+						</xhtml:ol>
+					</xhtml:div>
+				</text>
+				<identifier xmlns="http://hl7.org/fhir" value="oid:FHIR_1.2.3.4"/>
+				<name xmlns="http://hl7.org/fhir" value="Test FHIR Composition"/>
+				<publisher xmlns="http://hl7.org/fhir" value="LCG"/>
+				<description xmlns="http://hl7.org/fhir"/>
+				<status xmlns="http://hl7.org/fhir" value="draft"/>
+				<structure xmlns="http://hl7.org/fhir">
+					<type value="Composition"/>
+					<element>
+						<path value="Composition.type"/>
+						<definition>
+							<short/>
+							<formal/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="idelem16777231x1"/>
+								<name value="idelem16777231x1"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] type, which SHALL be selected from ValueSet Race 2.16.840.1.113883.1.11.14914 STATIC (CONF:5)."/>
+								<xpath value="count(Composition/type)&gt;=1 and count(Composition/type)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+							<binding>
+								<name value="Race"/>
+								<isExtensible value="false"/>
+								<description value="Concepts in the race value set include the 5 minimum categories for race specified by OMB  along with a more detailed set of race categories used by the Bureau of Census. "/>
+								<referenceUri value="oid:2.16.840.1.113883.1.11.14914"/>
+							</binding>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.title"/>
+						<definition>
+							<short/>
+							<formal/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="idelem16777247x1"/>
+								<name value="idelem16777247x1"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] title (CONF:1)."/>
+								<xpath value="count(Composition/title)&gt;=1 and count(Composition/title)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Composition.subject"/>
+						<definition>
+							<short/>
+							<formal/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="idelem16777260x1"/>
+								<name value="idelem16777260x1"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] Sean's Test Patient (templateId:FHIR_4.3.2.1) (CONF:2)."/>
+								<xpath value="count(Composition/subject)&gt;=1 and count(Composition/subject)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+				</structure>
+			</fhir:Profile>
+		</atom:content>
+	</atom:entry>
+	<atom:entry>
+		<atom:title>Sean's Test Patient</atom:title>
+		<atom:id>oid:FHIR_4.3.2.1</atom:id>
+		<atom:updated>2014-05-03T20:12:05-04:00</atom:updated>
+		<atom:content type="text/xml">
+			<fhir:Profile>
+				<text xmlns="http://hl7.org/fhir">
+					<status value="generated"/>
+					<xhtml:div>
+						<xhtml:p>Sean's Test Patient</xhtml:p>
+						<xhtml:ol>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] name (CONF:3).</p>
+							</li>
+							<li xmlns="http://www.w3.org/1999/xhtml">
+								<p>SHALL contain exactly one [1..1] telecom (CONF:4).</p>
+							</li>
+						</xhtml:ol>
+					</xhtml:div>
+				</text>
+				<identifier xmlns="http://hl7.org/fhir" value="oid:FHIR_4.3.2.1"/>
+				<name xmlns="http://hl7.org/fhir" value="Sean's Test Patient"/>
+				<publisher xmlns="http://hl7.org/fhir" value="LCG"/>
+				<description xmlns="http://hl7.org/fhir"/>
+				<status xmlns="http://hl7.org/fhir" value="draft"/>
+				<structure xmlns="http://hl7.org/fhir">
+					<type value="Patient"/>
+					<element>
+						<path value="Patient.name"/>
+						<definition>
+							<short/>
+							<formal/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="idelem16777281x1"/>
+								<name value="idelem16777281x1"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] name (CONF:3)."/>
+								<xpath value="count(Patient/name)&gt;=1 and count(Patient/name)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+					<element>
+						<path value="Patient.telecom"/>
+						<definition>
+							<short/>
+							<formal/>
+							<min value="1"/>
+							<max value="1"/>
+							<constraint>
+								<key value="idelem16777294x1"/>
+								<name value="idelem16777294x1"/>
+								<severity value="error"/>
+								<human value="SHALL contain exactly one [1..1] telecom (CONF:4)."/>
+								<xpath value="count(Patient/telecom)&gt;=1 and count(Patient/telecom)&lt;=1"/>
+							</constraint>
+							<isModifier value="false"/>
+						</definition>
+					</element>
+				</structure>
+			</fhir:Profile>
+		</atom:content>
+	</atom:entry>
+	<atom:entry>
+		<atom:title>Test Questionnaire</atom:title>
+		<atom:id>oid:BLAH.1.2.3</atom:id>
+		<atom:updated>2014-05-03T20:12:05-04:00</atom:updated>
+		<atom:content type="text/xml">
+			<fhir:Profile>
+				<text xmlns="http://hl7.org/fhir">
+					<status value="generated"/>
+					<xhtml:div>
+						<xhtml:p>Test Questionnaire</xhtml:p>
+					</xhtml:div>
+				</text>
+				<identifier xmlns="http://hl7.org/fhir" value="oid:BLAH.1.2.3"/>
+				<name xmlns="http://hl7.org/fhir" value="Test Questionnaire"/>
+				<publisher xmlns="http://hl7.org/fhir" value="LCG"/>
+				<description xmlns="http://hl7.org/fhir" value="A test questionnaire. "/>
+				<status xmlns="http://hl7.org/fhir" value="draft"/>
+				<structure xmlns="http://hl7.org/fhir">
+					<type value="Questionnaire"/>
+				</structure>
+			</fhir:Profile>
+		</atom:content>
+	</atom:entry>
+</atom:feed>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Richard Geimer (private) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:lcg="http://www.lantanagroup.com"
+	targetNamespace="http://www.lantanagroup.com" elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<xs:element name="TemplateExport">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Template" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="PreviousVersion" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string"/>
+									<xs:attribute name="identifier" type="xs:string" use="required"
+									/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Description" type="xs:string" minOccurs="0"/>
+							<xs:element name="Notes" type="xs:string" minOccurs="0"/>
+							<xs:element name="Constraint" type="lcg:ConstraintType" minOccurs="0"
+								maxOccurs="unbounded"/>
+							<xs:element maxOccurs="unbounded" minOccurs="0" name="Extension">
+								<xs:complexType>
+									<xs:attribute name="identifier" use="required"/>
+									<xs:attribute name="type" use="required"/>
+									<xs:attribute name="value" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="identifier" type="xs:string" use="required"/>
+						<xs:attribute name="implementationGuideType" type="xs:string" use="required"/>
+						<xs:attribute name="templateType" type="xs:string" use="required"/>
+						<xs:attribute name="title" type="xs:string" use="required"/>
+						<xs:attribute name="bookmark" type="xs:string" use="required"/>
+						<xs:attribute name="context" type="xs:string" use="required"/>
+						<xs:attribute name="contextType" type="xs:string"/>
+						<xs:attribute name="isOpen" type="xs:boolean"/>
+						<xs:attribute name="impliedTemplateOid" type="xs:string"/>
+						<xs:attribute name="owningImplementationGuideName" type="xs:string"/>
+						<xs:attribute name="organizationName" type="xs:string"/>
+						<xs:attribute name="publishStatus" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ConstraintType">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element name="SingleValueCode">
+					<xs:complexType>
+						<xs:attribute name="code" type="xs:string" use="required"/>
+						<xs:attribute name="displayName" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ValueSet">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Description" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+						<xs:attribute name="oid" type="xs:string" use="required"/>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="isStatic" type="xs:boolean" use="required"/>
+						<xs:attribute name="date" type="xs:date"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="CodeSystem" minOccurs="0">
+				<xs:complexType>
+					<xs:attribute name="oid" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SchematronTest" type="xs:string" minOccurs="0"/>
+			<xs:element name="NarrativeText" type="xs:string" minOccurs="0"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="Label" type="xs:string" minOccurs="0"/>
+			<xs:element name="Constraint" type="lcg:ConstraintType" minOccurs="0"
+				maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="number" type="xs:int"/>
+		<xs:attribute name="context" type="xs:string" use="optional"/>
+		<xs:attribute name="conformance" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="SHALL"/>
+					<xs:enumeration value="SHALL NOT"/>
+					<xs:enumeration value="SHOULD"/>
+					<xs:enumeration value="SHOULD NOT"/>
+					<xs:enumeration value="MAY"/>
+					<xs:enumeration value="MAY NOT"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="cardinality" type="xs:string" use="optional"/>
+		<xs:attribute name="dataType" type="xs:string" use="optional"/>
+		<xs:attribute name="containedTemplateOid" type="xs:string" use="optional"/>
+		<xs:attribute name="containedTemplateType"/>
+		<xs:attribute name="isBranch" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="isBranchIdentifier" type="xs:boolean" default="false"/>
+		<xs:attribute name="isPrimitive" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="isStatic" type="xs:boolean" default="false"/>
+		<xs:attribute name="isInheritable" type="xs:boolean" default="true"/>
+		<xs:attribute name="isSchRooted" type="xs:boolean" default="false"/>
+		<xs:attribute name="isVerbose" type="xs:boolean" use="required">
+			<xs:annotation>
+				<xs:documentation>Verbose constraints are not explicitly defined constraints as part of the template. They are the result of a verbose output of the schema's elements/attributes. </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

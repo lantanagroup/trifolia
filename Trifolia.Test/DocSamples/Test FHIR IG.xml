@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TemplateExport xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.lantanagroup.com">
+  <!--
+          The export template XML file format definition is subject to change without notice, and continued
+          availability should not be construed as a commitment by Lantana Consulting Group LLC.
+          Lantana Consulting Group LLC assumes no responsibility or liability including incomplete data,
+          errors, or impacts caused by changes to this XML file format definition.
+        -->
+  <Template organizationName="LCG" owningImplementationGuideName="Test FHIR Profile" context="Composition" identifier="FHIR_1.2.3.4" bookmark="Test_FHIR_Composition" title="Test FHIR Composition" templateType="Composition" isOpen="false" contextType="Composition" implementationGuideType="FHIR">
+    <Description>This is a test FHIR composition. </Description>
+    <Constraint conformance="SHALL" cardinality="1..1" context="instant">
+      <NarrativeText>SHALL contain exactly one [1..1] instant (CONF:1124-16).</NarrativeText>
+    </Constraint>
+    <Constraint isStatic="true" conformance="SHALL" cardinality="1..1" context="type">
+      <ValueSet isStatic="true" oid="2.16.840.1.113883.1.11.14914" name="Race">
+        <Description>Concepts in the race value set include the 5 minimum categories for race specified by OMB  along with a more detailed set of race categories used by the Bureau of Census. </Description>
+      </ValueSet>
+      <NarrativeText>SHALL contain exactly one [1..1] type, which SHALL be selected from ValueSet Race 2.16.840.1.113883.1.11.14914 STATIC (CONF:1124-5).</NarrativeText>
+      <Label>Document type code</Label>
+    </Constraint>
+    <Constraint conformance="SHALL" cardinality="1..1" context="title">
+      <NarrativeText>SHALL contain exactly one [1..1] title (CONF:1124-1).</NarrativeText>
+      <Label>Human readable title for the document</Label>
+    </Constraint>
+    <Constraint conformance="SHALL" cardinality="1..1" context="status">
+      <NarrativeText>SHALL contain exactly one [1..1] status (CONF:1124-17).</NarrativeText>
+    </Constraint>
+    <Constraint conformance="SHALL" cardinality="1..1" context="confidentiality">
+      <NarrativeText>SHALL contain exactly one [1..1] confidentiality (CONF:1124-18).</NarrativeText>
+    </Constraint>
+    <Constraint conformance="SHALL" cardinality="1..1" context="subject">
+      <NarrativeText>SHALL contain exactly one [1..1] subject (CONF:1124-2).</NarrativeText>
+      <Constraint conformance="SHALL" cardinality="1..1" context="reference" containedTemplateType="Patient" containedTemplateOid="FHIR_4.3.2.1">
+        <NarrativeText>This subject SHALL contain exactly one [1..1] Sean's Test Patient (templateId:FHIR_4.3.2.1) (CONF:1124-15).</NarrativeText>
+      </Constraint>
+    </Constraint>
+  </Template>
+  <Template organizationName="LCG" owningImplementationGuideName="Test FHIR Profile" context="Patient" identifier="FHIR_4.3.2.1" bookmark="Seans_Test_Patient" title="Sean's Test Patient" templateType="Patient" isOpen="false" contextType="Patient" implementationGuideType="FHIR">
+    <Constraint conformance="SHALL" cardinality="1..1" context="name">
+      <NarrativeText>SHALL contain exactly one [1..1] name (CONF:1124-3).</NarrativeText>
+    </Constraint>
+    <Constraint conformance="SHALL" cardinality="1..1" context="telecom">
+      <NarrativeText>SHALL contain exactly one [1..1] telecom (CONF:1124-4).</NarrativeText>
+    </Constraint>
+  </Template>
+  <Template organizationName="LCG" owningImplementationGuideName="Test FHIR Profile" context="Questionnaire" identifier="BLAH.1.2.3" publishStatus="Draft" bookmark="Test_Questionnaire" title="Test FHIR Questionnaire" templateType="Questionnaire" isOpen="true" contextType="Questionnaire" implementationGuideType="FHIR">
+    <Description>A test questionnaire. </Description>
+    <Constraint conformance="SHALL" cardinality="1..1" context="text">
+      <NarrativeText>SHALL contain exactly one [1..1] text (CONF:1124-12).</NarrativeText>
+    </Constraint>
+    <Constraint conformance="SHALL" cardinality="1..1" context="status">
+      <NarrativeText>SHALL contain exactly one [1..1] status (CONF:1124-6).</NarrativeText>
+      <Label>Require Status</Label>
+      <Constraint conformance="SHALL" cardinality="1..1" context="@value">
+        <SingleValueCode code="published" />
+        <NarrativeText>This status SHALL contain exactly one [1..1] @value="published" (CONF:1124-7).</NarrativeText>
+      </Constraint>
+    </Constraint>
+    <Constraint conformance="SHOULD" cardinality="0..1" context="name">
+      <ValueSet isStatic="false" oid="2.16.840.1.113883.11.20.10.18" name="Questionnaire Assessment item identifiers" />
+      <NarrativeText>SHOULD contain zero or one [0..1] name (ValueSet: Questionnaire Assessment item identifiers 2.16.840.1.113883.11.20.10.18) (CONF:1124-8).</NarrativeText>
+    </Constraint>
+    <Constraint conformance="SHALL" cardinality="1..1" context="group">
+      <NarrativeText>SHALL contain exactly one [1..1] group (CONF:1124-11).</NarrativeText>
+      <Constraint conformance="SHALL" cardinality="0..0" context="group">
+        <NarrativeText>This group SHALL contain [0..0] group (CONF:1124-13).</NarrativeText>
+      </Constraint>
+      <Constraint conformance="SHALL" cardinality="1..*" context="question">
+        <NarrativeText>This group SHALL contain at least one [1..*] question (CONF:1124-14).</NarrativeText>
+      </Constraint>
+    </Constraint>
+    <Constraint conformance="SHALL" cardinality="1..1" context="author">
+      <NarrativeText>SHALL contain exactly one [1..1] author (CONF:1124-9).</NarrativeText>
+    </Constraint>
+    <Constraint conformance="SHALL" cardinality="1..1" context="subject">
+      <NarrativeText>SHALL contain exactly one [1..1] subject (CONF:1124-10).</NarrativeText>
+      <Constraint conformance="SHALL" cardinality="1..1" context="reference" containedTemplateType="Patient" containedTemplateOid="FHIR_4.3.2.1">
+        <NarrativeText>This subject SHALL contain exactly one [1..1] Sean's Test Patient (templateId:FHIR_4.3.2.1) (CONF:1124-19).</NarrativeText>
+      </Constraint>
+    </Constraint>
+  </Template>
+</TemplateExport>

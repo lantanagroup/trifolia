@@ -1,0 +1,475 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="~/Views/Shared/Site.MVC.Master.cs" Inherits="Trifolia.Web.Views.Shared.SiteMVCMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title>Trifolia Workbench</title>
+
+    <tdb:Head runat="server" ID="Head" />
+
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        .style1 {
+            width: 100%;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var supportViewModel;
+        var helpModel;
+        var containerViewModel;
+
+        $(document).ready(function () {
+            containerViewModel = new ContainerViewModel();
+        });
+    </script>
+</head>
+<body id="mainBody" runat="server">
+    <div id="appnav" class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Trifolia Workbench</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/"><i class="glyphicon glyphicon-home"></i> Home</a>
+                    </li>
+                    <!-- ko if: HasSecurable(['IGManagementList', 'TemplateList', 'ValueSetList', 'CodeSystemList']) -->
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-th-list"></i> Browse <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <!-- ko if: HasSecurable(['IGManagementList']) -->
+                            <li><a href="/IGManagement/List">Implementation Guides</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: HasSecurable(['TemplateList']) -->
+                            <li><a href="/TemplateManagement/List">Templates/Profiles</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: HasSecurable(['ValueSetList', 'CodeSystemList']) -->
+                            <li><a href="/TerminologyManagement/Browse">Terminology</a></li>
+                            <!-- /ko -->
+                        </ul>
+                    </li>
+                    <!-- /ko -->
+                    <!-- ko if: HasSecurable(['ExportGreen', 'ExportSchematron', 'ExportVocabulary', 'ExportWordDocuments', 'ExportXML']) -->
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-save"></i> Export <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <!-- ko if: HasSecurable(['ExportWordDocuments']) -->
+                            <li><a href="/IGManagement/List/ExportMSWord">Templates/Profiles to MS Word</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: HasSecurable(['ExportXML']) -->
+                            <li><a href="/IGManagement/List/ExportXML">Templates/Profiles to XML/JSON</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: HasSecurable(['ExportSchematron']) -->
+                            <li><a href="/IGManagement/List/ExportSchematron">Standard IG Schematron</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: HasSecurable(['ExportVocabulary']) -->
+                            <li><a href="/IGManagement/List/ExportVocab">Vocabulary</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: HasSecurable(['ExportGreen']) -->
+                            <li><a href="/IGManagement/List/ExportGreen">Green Models</a></li>
+                            <!-- /ko -->
+                        </ul>
+                    </li>
+                    <!-- /ko -->
+                    <!-- ko if: HasSecurable(['ReportTemplateReview', 'ReportTemplateCompliance', 'Admin']) -->
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-stats"></i> Reports <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <!-- ko if: HasSecurable(['ReportTemplateReview']) -->
+                            <li><a href="/Report/TemplateReview">Template/Profile Review</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: HasSecurable(['ReportTemplateCompliance']) -->
+                            <li><a href="/Report/TemplateValidation">Template/Profile Validation</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: HasSecurable(['Admin']) -->
+                            <li><a href="/Report/Organizations">Organizations</a></li>
+                            <!-- /ko -->
+                        </ul>
+                    </li>
+                    <!-- /ko -->
+                    <!-- ko if: HasSecurable(['OrganizationList', 'OrganizationDetails', 'Admin']) -->
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-cog"></i> Administration <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <!-- ko if: HasSecurable(['Admin']) -->
+                            <li><a href="/TerminologyManagement/Import/Excel">Import Value Sets</a></li>
+                            <li><a href="/TerminologyManagement/Import/External">Import External Value Sets</a></li>
+                            <li class="divider"></li>
+                            <!-- /ko -->
+                            <!-- ko if: HasSecurable(['OrganizationList']) -->
+                            <li><a href="/Organization/List">Organizations</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: HasSecurable(['OrganizationDetails']) -->
+                            <li><a href="/Organization/My">My Organization</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: HasSecurable(['Admin']) -->
+                            <li><a href="/RoleManagement/Roles">Roles</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/IGTypeManagement/List">Implementation Guide Types</a></li>
+                            <!-- /ko -->
+                        </ul>
+                    </li>
+                    <!-- /ko -->
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-question-sign"></i> Help <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" data-bind="click: function () { helpModel.showHelpMenu(); }">Documentation</a></li>
+                            <li><a href="#" data-bind="click: function () { supportViewModel.ShowSupportRequest(); }">Support</a></li>
+                            <li><a href="#" data-bind="click: function () { $('#keyboardShortcutsDialog').modal('show'); }">Keyboard Shortcuts</a></li>
+                            <% if (!string.IsNullOrEmpty(this.DatabaseLabel) || !string.IsNullOrEmpty(this.VersionLabel)) { %>
+                            <li class="divider"></li>
+                            <% } %>
+                            <% if (!string.IsNullOrEmpty(this.DatabaseLabel)) { %>
+                            <li><a href="#"><%= this.DatabaseLabel %></a></li>
+                            <% } %>
+                            <% if (!string.IsNullOrEmpty(this.VersionLabel)) { %>
+                            <li><a href="#"><%= this.VersionLabel %></a></li>
+                            <% } %>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-asterisk"></i> <span data-bind="text: DisplayName, attr: { title: DisplayToolTip }"></span> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <!-- ko if: Me() -->
+                            <li><a href="/Account/MyProfile">My Profile</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/Account/LogOff">Logout</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: !Me() -->
+                            <li><a href="/Account/Login">Login</a></li>
+                            <!-- /ko -->
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="main">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </div>
+
+    <div class="modal fade" id="keyboardShortcutsDialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Keyboard Shortcuts</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">Some keyboard shortcuts may not work, depending on which browser you are using.</div>
+
+                    <asp:ContentPlaceHolder ID="KeyboardShortcuts" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div id="supportPopup" class="modal fade" data-bind="validationOptions: { messagesOnModified: false }">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Request Support
+                </div>
+                <div class="modal-body">
+                    <!-- ko with: Request -->
+                    <div data-bind="if:showEmailName()">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" data-bind="value: Name"  />
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="text" class="form-control" data-bind="value: Email"  />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select class="form-control" data-bind="value: Priority" style="width: 100%;">
+                            <option>None</option>
+                            <option>Trivial</option>
+                            <option>Minor</option>
+                            <option>Medium</option>
+                            <option>Major</option>
+                            <option>Blocker</option>
+                            <option>Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select class="form-control" data-bind="value: Type" style="width: 100%;">
+                            <option>Question</option>
+                            <option>Bug/Defect</option>
+                            <option>Feature Request</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Summary</label>
+                        <input type="text" class="form-control" data-bind="value: Summary"  />
+                    </div>
+                    <div class="form-group">
+                        <label>Details</label>
+                        <textarea data-bind="value: Details" class="form-control" style="height: 50px;"></textarea>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bind="click: SubmitSupportRequest">OK</button>
+                    <button type="button" class="btn btn-primary" data-bind="click: CancelSupportRequest">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div id="helpPopup" class="modal fade" data-bind="validationOptions: { messagesOnModified: false }">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Help Documentation</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe id="helpFrame" style="width: 100%; min-height: 300px; height: 100%;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- Template Selector Knockout Template -->
+    <script type="text/html" id="selectTemplateDialogTemplate">
+        <div style="position: relative;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group" data-bind="css: { 'input-group-sm': IsSmall() }">
+                        <!-- ko if: Label() -->
+                        <span class="input-group-addon" data-bind="text: Label"></span>
+                        <!-- /ko -->
+                        <input type="text" class="form-control" data-bind="value: Display, valueUpdate: 'keyup', tooltip: Display, event: { keydown: DisplayKeyPress, blur: DisplayFocusLost }, attr: { 'readonly': !CanTypeAhead() }, disable: Disabled"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" data-bind="click: Clear, disable: Disabled""><i class="glyphicon glyphicon-remove"></i></button>
+                            <button class="btn btn-default" type="button" data-bind="click: Open, disable: Disabled" title="Select">...</button>
+                            <!-- ko foreach: Buttons -->
+                            <button class="btn btn-primary" type="button" data-bind="click: Handler, text: Text, disable: $parent.Disabled"></button>
+                            <!-- /ko -->
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+            <div data-bind="if: ShowTypeAheadResults()">
+                <div class="selectTypeAheadResults" data-bind="foreach: TypeAheadResults">
+                    <div class="row selectTypeAheadResult" data-bind="click: function() { $parent.SelectTypeAhead($index(), true); }, css: { selected: $index() == $parent.SelectedTypeAheadIndex() }">
+                        <div class="col-xs-6" data-bind="text: Name"></div>
+                        <div class="col-xs-6" data-bind="text: Oid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Select template/profile...</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" placeholder="Search..." data-bind="value: SearchQuery, valueUpdate: 'keyup'" />
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Identifier</th>
+                                    <th>Implementation Guide</th>
+                                </tr>
+                            </thead>
+                            <!-- ko with: SelectTemplates -->
+                            <tbody data-bind="highlight: $parent.SearchQuery">
+                                <!-- ko foreach: Items -->
+                                <tr style="cursor: pointer;" data-bind="click: function () { $parents[1].Select($data); }, css: { 'highlight': $parents[1].SelectedTemplate() == $data }">
+                                    <td>
+                                        <span data-bind="text: Name"></span>
+                                        <!-- ko if: Description() -->
+                                        <i class="glyphicon glyphicon-comment" data-bind="tooltip: Description"></i>
+                                        <!-- /ko -->
+                                    </td>
+                                    <td data-bind="text: Oid"></td>
+                                    <td data-bind="text: ImplementationGuide"></td>
+                                </tr>
+                                <!-- /ko -->
+                                <!-- ko if: $parent.IsSearching() -->
+                                <tr>
+                                    <td colspan="3">Searching...</td>
+                                </tr>
+                                <!-- /ko -->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">Showing <span data-bind="text: Items().length"></span> templates/profiles of <span data-bind="    text: TotalItems()"></span>. <a href="#" data-bind="if: TotalItems() > Items().length, click: $parent.SearchMoreResults">Show more...</a></td>
+                                </tr>
+                            </tfoot>
+                            <!-- /ko -->
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- ko if: FilterContextType() -->
+                        <div class="pull-left">
+                            <div class="label label-info">Only showing templates/profiles with a context type of <span data-bind="text: FilterContextType"></span></div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: FilterImplementationGuideId() -->
+                        <div class="pull-left">
+                            <div class="label label-info">Only showing templates/profiles within the selected implementation guide.</div>
+                        </div>
+                        <!-- /ko -->
+                        <button type="button" class="btn btn-primary" data-bind="click: OK">OK</button>
+                        <button type="button" class="btn btn-default" data-bind="click: Cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+        
+    <!-- Valueset Selector Knockout Template/Profile -->
+    <script type="text/html" id="selectValuesetDialogTemplate">
+        <div style="position: relative;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group" data-bind="css: { 'input-group-sm': IsSmall() }">
+                        <!-- ko if: Label() -->
+                        <span class="input-group-addon" data-bind="text: Label"></span>
+                        <!-- /ko -->
+                        <input type="text" class="form-control" data-bind="value: Display, valueUpdate: 'keyup', tooltip: Display, event: { keydown: DisplayKeyPress, blur: DisplayFocusLost }, attr: { 'readonly': !CanTypeAhead() }, disable: Disabled"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" data-bind="click: Clear, disable: Disabled""><i class="glyphicon glyphicon-remove"></i></button>
+                            <button class="btn btn-default" type="button" data-bind="click: Open, disable: Disabled" title="Select">...</button>
+                            <!-- ko foreach: Buttons -->
+                            <button class="btn btn-primary" type="button" data-bind="click: Handler, text: Text, disable: $parent.Disabled"></button>
+                            <!-- /ko -->
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div data-bind="if: ShowTypeAheadResults()">
+                <div class="selectTypeAheadResults" data-bind="foreach: TypeAheadResults">
+                    <div class="row selectTypeAheadResult" data-bind="click: function () { $parent.SelectTypeAhead($index(), true); }, css: { selected: $index() == $parent.SelectedTypeAheadIndex() }">
+                        <div class="col-xs-6" data-bind="text: Name"></div>
+                        <div class="col-xs-6" data-bind="text: Oid"></div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /input-group -->
+
+        <div class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Select value set...</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" placeholder="Search..." data-bind="value: SearchQuery, valueUpdate: 'keyup'" />
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Identifier</th>
+                                </tr>
+                            </thead>
+                            <!-- ko with: SelectValuesets -->
+                            <tbody data-bind="highlight: $parent.SearchQuery">
+                                <!-- ko foreach: Items -->
+                                <tr style="cursor: pointer;" data-bind="click: function () { $parents[1].Select($data); }, css: { 'highlight': $parents[1].SelectedValueset() == $data }">
+                                    <td>
+                                        <span data-bind="text: Name"></span>
+                                        <!-- ko if: Description() -->
+                                        <i class="glyphicon glyphicon-comment" data-bind="tooltip: Description"></i>
+                                        <!-- /ko -->
+                                    </td>
+                                    <td data-bind="text: Oid"></td>
+                                </tr>
+                                <!-- /ko -->
+                                <!-- ko if: $parent.IsSearching() -->
+                                <tr>
+                                    <td colspan="3">Searching...</td>
+                                </tr>
+                                <!-- /ko -->
+                            </tbody>
+                            <tfoot data-bind="if: TotalItems() > Items().length">
+                                <tr>
+                                    <td colspan="3">Showing <span data-bind="text: Items().length"></span> value sets of <span data-bind="    text: TotalItems()"></span>. <a href="#" data-bind="    if: TotalItems() > Items().length, click: $parent.SearchMoreResults">Show more...</a></td>
+                                </tr>
+                            </tfoot>
+                            <!-- /ko -->
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bind="click: OK">OK</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/javascript" src="/Scripts/ContainerViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            ko.applyBindings(containerViewModel, $('#appnav')[0]);
+
+            $(document).mousemove(function (e) {
+                window.mouseXPos = e.pageX;
+                window.mouseYPos = e.pageY;
+            });
+
+            var loadMessage = $("#messageText").text();
+            if (loadMessage != null && loadMessage != '')
+                showMessage(loadMessage);
+
+            supportViewModel = new SupportViewModel();
+            ko.applyBindings(supportViewModel, $('#supportPopup')[0]);
+
+            $("#supportPopup").modal({
+                show: false
+            });
+
+            $("#keyboardShortcutsDialog").modal({
+                show: false
+            });
+
+            $('#userNameHeader').tooltip({
+                content: function () {
+                    return $('<input type="button" value="My Profile" onclick="viewUserProfile()" />');
+                },
+                onShow: function () {
+                    var t = $(this);
+                    t.tooltip('tip').unbind().bind('mouseenter', function () {
+                        t.tooltip('show');
+                    }).bind('mouseleave', function () {
+                        t.tooltip('hide');
+                    });
+                }
+            });
+
+            $.get('/Help/help.xml', {}, function (xml) {
+                helpModel = new HelpModel(xml, $('#helpPopup'));
+            });
+        });
+    </script>
+</body>
+</html>

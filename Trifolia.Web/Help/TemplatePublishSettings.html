@@ -1,0 +1,113 @@
+﻿<html>
+	
+<head>
+	<title>Publish Settings</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.8.0.849">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("TemplatePublishSettings");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Publish Settings</h1>
+				
+				<div id="topic_breadcrumb">
+					<a href="Authoring.html">Authoring</a> &rsaquo;&rsaquo; Templates/Profiles &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="TemplatesProfiles1.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="FHIRBestPractices.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="AuthorTerminology.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<p class="rvps2"><span class="rvts6">Use the Publish Settings page to control the way a template/profile appears in an implementation guide.</span></p>
+<p class="rvps2"><span class="rvts6">You can control the following:</span></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Generate and customize code samples to associate with the template.</span></li>
+<li class="rvps2"><span class="rvts6">Control whether one or more constraints has its own heading in the implementation guide.</span></li>
+</ul>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">View the Publish Settings page</span></span></h2>
+<p class="rvps2"><span class="rvts6">Select Publish Settings from the Template Viewer's Quick Buttons.</span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Constraint Headings</span></span></h2>
+<p class="rvps2"><span class="rvts6">In some cases, a template/profile structure may be complicated enough that you want to document certain elements of the template/profile in greater detail.</span></p>
+<p class="rvps2"><span class="rvts6">Use the Constraints tab of the Publish Settings page to add headings to constraints that appear in an implementation guide. This allows complex templates to be broken into sections within the implementation guide.</span></p>
+<h3 class="rvps6"><span class="rvts0"><span class="rvts15">Add a Heading to a Constraint</span></span></h3>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">In the Constraints section of the Publish Settings page, select Edit for the constraint you want to edit.</span></li>
+<li value="2" class="rvps2"><span class="rvts6">To add to the constraint heading text, select the Heading check box. The Heading Description box appears.</span></li>
+<li value="3" class="rvps2"><span class="rvts6">Enter text in the Heading Description, Description, and Label boxes. The text appears as shown in the example below.</span></li>
+<li value="4" class="rvps2"><span class="rvts6">To add an inline code sample, select Add. The Edit Constraint Sample window appears. Enter a Name for the sample, and enter the sample code in the Sample Contents box, then select OK. The sample name appears in the sample list.</span></li>
+<li value="5" class="rvps2"><span class="rvts6">When finished, select OK. Heading text, Description text, Label text, and Sample Code are added to the selected constraint. The effect is shown below.</span></li>
+<li value="6" class="rvps2"><span class="rvts6">Remember to Save in the Edit Publish Settings page when finished.</span></li>
+</ol>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Samples</span></span></h2>
+<p class="rvps2"><span class="rvts6">Use the </span><span class="rvts18">Template Samples</span><span class="rvts6"> tab of the </span><span class="rvts18">Publish Settings</span><span class="rvts6"> page to generate, customize, and format code samples to associate with a particular template.</span></p>
+<h3 class="rvps6"><span class="rvts0"><span class="rvts15">Generate a Code Sample</span></span></h3>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">In the Template Samples tab, select Add. The Edit Sample page appears.</span></li>
+<li value="2" class="rvps2"><span class="rvts6">Enter a Name for the sample.</span></li>
+<li value="3" class="rvps2"><span class="rvts6">Enter or paste the text you want to use in the sample, or select Generate to create a code sample based on the template's constraints.</span></li>
+<li value="4" class="rvps2"><span class="rvts6">If you generated a sample, edit it as needed.</span></li>
+<li value="5" class="rvps2"><span class="rvts6">To format the sample automatically, applying standard indentation, Format and Indent.</span></li>
+<li value="6" class="rvps2"><span class="rvts6">When finished, select OK. The sample is saved, and is available for export with the implementation guide.</span></li>
+</ol>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+

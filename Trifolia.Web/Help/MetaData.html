@@ -1,0 +1,111 @@
+﻿<html>
+	
+<head>
+	<title>Meta-Data</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.8.0.849">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("MetaData");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Meta-Data</h1>
+				
+				<div id="topic_breadcrumb">
+					<a href="Authoring.html">Authoring</a> &rsaquo;&rsaquo; Templates/Profiles &rsaquo;&rsaquo; <a href="TemplateEditor.html">Editor</a> &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="TemplateEditor.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="TemplateEditor.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="TemplateConstraints.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Required Fields</span></span></h2>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts18">Name</span></li>
+<li class="rvps2"><span class="rvts18">Identifier</span><span class="rvts6"> - A unique identifier for the template. Must be less than 255 characters. See </span><a class="rvts11" href="MetaData.html#identifier_formats">Template/Profile Identifier Formats</a><span class="rvts6"> for more details.</span></li>
+<li class="rvps2"><span class="rvts18">Bookmark</span><span class="rvts6"> - A hyperlink anchor used in the MS Word document formatted export to allow cross-referencing. The bookmark must be unique, and must not contain any special characters (including spaces, with the exception of underscores). The bookmark may not be greater than 40 characters.</span></li>
+<li class="rvps2"><span class="rvts18">Implementation Guide</span><span class="rvts6"> - Choose from a drop-down list of implementation guides to assign the template/profile to a guide. The template/profile may also be referenced by other implementation guides (via contained or implied relationships).</span></li>
+<li class="rvps2"><span class="rvts18">Type</span><span class="rvts6"> - Choose from a list of available types (document, section, entry). Templates/profiles are organized by template type when an implementation guide is exported as an MS Word document. When you select a template type, the Applies To field is set. to a pre-determined default appropriate to that type.</span></li>
+<ul style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="Extensions.html">FHIR &gt; Extensions</a><span class="rvts6"> for information on building a FHIR extension profile.</span></li>
+</ul>
+<li class="rvps2"><span class="rvts18">Applies To</span><span class="rvts6"> - Choose the location in the base standard/schema where this template/profile can be used. The default is based on the selected template type, but can be customized by selecting the ellipsis (”...”) button to the right.</span></li>
+<li class="rvps2"><span class="rvts18">Extensibility</span><span class="rvts6"> - Choose whether instances of the template/profile can have additional information (open), or must contain only what is defined in the template/profile (closed).</span></li>
+</ul>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Optional Fields</span></span></h2>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts18">Implied Template</span><span class="rvts6"> - Choose a template/profile that supplies constraints implied in this template. Only those templates with the same Applies To values are available to select.</span></li>
+<li class="rvps2"><span class="rvts18">Extensibility</span><span class="rvts6"> - Choose whether the template/profile is Open or Closed.</span></li>
+<li class="rvps2"><span class="rvts18">Status</span><span class="rvts6"> - Choose the status of the template. Draft, Published, or Deprecated. Available options depend on the status of the implementation guide the template/profile is associated with.</span></li>
+<li class="rvps2"><span class="rvts18">Description</span><span class="rvts6"> - Enter a narrative description of the template. The text appears in an exported implementation guide. This field supports wiki formatting syntax.</span></li>
+<li class="rvps2"><span class="rvts18">Notes</span><span class="rvts6"> - Notes are available for review only by template/profile Analysts and Editors, and are not included in exports.</span></li>
+</ul>
+<h2 class="rvps5"><a name="identifier_formats"></a>
+<span class="rvts0"><span class="rvts14">Template Identifier Formats</span></span></h2>
+<p class="rvps2"><span class="rvts6">Template identifiers can be in one of the following formats:</span></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">urn:oid:XXXX</span><br/><span class="rvts6">Where XXXX is a valid OID (ex: 2.16.1.2.3.4)</span></li>
+<li class="rvps2"><span class="rvts6">urn:hl7ii:XXXX:YYYY-MM-DD</span><br/><span class="rvts6">Where XXXX is a valid OID</span></li>
+<li class="rvps2"><span class="rvts6">http(s)://XXXX</span><br/><span class="rvts6">Where XXXX is a web address representing the template</span></li>
+</ul>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+

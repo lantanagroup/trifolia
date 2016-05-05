@@ -1,0 +1,183 @@
+
+.constraintTree {
+    float: left;
+    display: table;
+    width: auto;
+}
+
+.constraintRow {
+    display: table-row;
+    cursor: pointer;
+}
+
+.constraintColumn {
+    float: left;
+    height: 20px;
+    padding-left: 5px;
+    padding-right: 10px;
+}
+        
+.constraintHeader {
+    font-weight: bold;
+    background-color: #e7e7e7;
+    height: 35px;
+    line-height: 35px;
+}
+
+.constraintContext {
+    min-width: 100px;
+}
+
+.constraintNumber {
+    min-width: 83px;
+}
+
+.constraintConformance {
+    width: 100px;
+}
+
+.constraintCardinality {
+    width: 50px;
+}
+
+.constraintDataType {
+    min-width: 150px;
+}
+
+.constraintBranch { 
+    width: 30px;
+}
+
+.constraintActions {
+    width: 100px;
+}
+
+.constraintValue {
+    min-width: 100px;
+}
+
+.constraintRow:not(.constraintHeader):not(.selected):nth-child(odd) { 
+    background-color:#f8f8f8;
+}
+
+.constraintRow:not(.constraintHeader):hover {
+    background-color: #e7e7e7
+}
+
+.constraintRow.selected {
+    background-color: #e7e7e7
+}
+
+.constrained {
+    font-weight: bold;
+}
+
+.primitive {
+    font-style: italic;
+    color: red;
+}
+
+.constraintEditor {
+    z-index: 1000;
+    min-height: 60px;
+    position: fixed;
+    top: 200px;
+    right: 15px;
+    max-height: 450px;
+    max-width: 450px;
+}
+
+.previewConstraint {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.previewConstraintHeading {
+    font-weight: bold;
+}
+
+.previewConstraintHeadingDescription {
+    white-space: pre;
+}
+
+.previewConstraintDescription {
+    white-space: pre;
+}
+
+.templateMetaDataError {
+    padding-left: 5px;
+    color: red;
+}
+
+span.spinner {
+    margin-top: -3px;
+}
+
+.searchConstraintText {
+    width: 50px;
+    border: 0px;
+    height: 31px;
+    margin-top: 2px;
+}
+
+#TemplateEditor > table > tbody > tr:nth-child(1) > td:nth-child(2) > span
+{
+    margin-top: -3px;
+}
+
+.templateEditorFooter {
+    position: fixed;
+    bottom: 0px;
+    background: rgba(211, 228, 166, .9);
+    width: 100%;
+    margin-left: -12px;
+    padding: 5px;
+}
+
+.page {
+    margin-bottom: 23px;
+}
+
+.constraintEditorSet .input-group {
+    width: 100%;
+}
+
+.constraintEditorSet .row {
+    padding-top: 3px;
+}
+
+.constraintEditorSet .input-group-addon:not(.cardinality) {
+    width: 131px;
+    text-align: left;
+}
+
+#template .input-group {
+    padding-top: 5px;
+    width: 100%;
+}
+
+#template .input-group-addon {
+    width: 185px;
+    text-align: left;
+}
+
+.constraintEditor .panel-heading td {
+    line-height: 30px;
+}
+
+.constraintEditorSet .input-group {
+    margin-top: 5px;
+}
+
+.constraintEditorSet .input-group.cardinality {
+    margin-top: auto;
+}
+
+.identifier-field .btn {
+    border-radius: 0px;
+}
+
+.input-group.branching,
+.input-group.branching .form-control {
+    height: 53px;
+}

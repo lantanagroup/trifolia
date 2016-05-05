@@ -1,0 +1,100 @@
+﻿<html>
+	
+<head>
+	<title>FHIR Best Practices</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.8.0.849">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("FHIRBestPractices");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">FHIR Best Practices</h1>
+				
+				<div id="topic_breadcrumb">
+					<a href="Authoring.html">Authoring</a> &rsaquo;&rsaquo; Templates/Profiles &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="TemplatesProfiles1.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="CDABestPractices.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="TemplatePublishSettings.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Bindings on Data-type Elements</span></span></h2>
+<p class="rvps2"><span class="rvts6">When binding terminology (single-value, value set or code system) to an element in a FHIR profile, it is preferred that the binding be applied to the data-type elements. Trifolia gives you the freedom to assign the binding to elements/attributes </span><span class="rvts20">within </span><span class="rvts6">data-types, but this is not preferred.</span></p>
+<p class="rvps2"><span class="rvts19">Bad Example #1</span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">SHALL contain 1..1 name</span></li>
+<ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" style="margin-left: 0px" class="rvps8"><span class="rvts6">SHALL contain 1..* coding</span></li>
+<li value="2" style="margin-left: 0px" class="rvps8"><span class="rvts6">SHALL contain 1..1 code, which SHOULD be selected from ValueSet AdvanceDirectiveTypeCode urn:oid:2.16.840.1.113883.1.11.20.2 STATIC 2006-10-17</span></li>
+</ol></ol>
+<p class="rvps2"><span class="rvts19">Bad Example #2</span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">SHALL contain 1..1 name</span></li>
+<li value="2" class="rvps2"><span class="rvts6">SHALL contain 1..* coding, which SHOULD be selected from ValueSet AdvanceDirectiveTypeCode urn:oid:2.16.840.1.113883.1.11.20.2 STATIC 2006-10-17</span></li>
+</ol>
+<p class="rvps2"><span class="rvts21">Good Example</span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">SHALL contain 1..1 name, which SHOULD be selected from ValueSet AdvanceDirectiveTypeCode urn:oid:2.16.840.1.113883.1.11.20.2 STATIC 2006-10-1</span></li>
+</ol>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+

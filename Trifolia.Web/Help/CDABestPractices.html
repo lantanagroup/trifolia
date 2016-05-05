@@ -1,0 +1,95 @@
+﻿<html>
+	
+<head>
+	<title>CDA Best Practices</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.8.0.849">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("CDABestPractices");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">CDA Best Practices</h1>
+				
+				<div id="topic_breadcrumb">
+					<a href="Authoring.html">Authoring</a> &rsaquo;&rsaquo; Templates/Profiles &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="TemplatesProfiles1.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="TemplateDesignPatterns.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="FHIRBestPractices.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Assert the Template Identifier as a Constraint(s)</span></span></h2>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">On every template, create a constraint for "templateId"</span></li>
+<ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" style="margin-left: 0px" class="rvps8"><span class="rvts6">Create a constraint for "@root" equal to the OID of the template's identifier</span></li>
+<li value="2" style="margin-left: 0px" class="rvps8"><span class="rvts6">Create a constraint for "@extension" equal to the extension of the template's identifier (if any)</span></li>
+</ol></ol>
+<p class="rvps2"><img width="800" height="239" alt="" style="padding : 1px;" src="lib/TemplateIdExample.jpg"></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Constraints with Data-type CS</span></span></h2>
+<p class="rvps9"><span class="rvts27">Coded Simple Value (CS)</span></p>
+<p class="rvps9"><span class="rvts27">Definition: Coded data in its simplest form, where only the code is not predetermined. The code system and code system version are fixed by the context in which the CS value occurs. CS is used for coded attributes that have a single HL7-defined value set.</span></p>
+<p class="rvps2"><span class="rvts6">This means that in Trifolia, you should only specify the "Code" attribute for a single-value binding. An example of where this is commonly the case is with the "statusCode" element.</span></p>
+<p class="rvps2"><img width="800" height="287" alt="" style="padding : 1px;" src="lib/statusCodeExample.jpg"></p>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+
