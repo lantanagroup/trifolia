@@ -10,6 +10,7 @@ using Trifolia.Logging;
 using Trifolia.Authentication;
 using Trifolia.DB;
 using System.Security.Principal;
+using System.Configuration;
 
 namespace Trifolia.Authorization
 {
@@ -25,6 +26,80 @@ namespace Trifolia.Authorization
         public const string HL7_ROLE_IS_COCHAIR = "iscochair";
         public const string HL7_ROLE_IS_STAFF = "isstaff";
         public const string HL7_ROLE_IS_BOARD = "isboardmember";
+
+        #region Configuration
+
+
+        private static string HL7DisclaimerUrl
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["HL7DisclaimerUrl"];
+            }
+        }
+
+        private static string HL7MemberRole
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["HL7MemberRole"];
+            }
+        }
+
+        private static string HL7OrganizationName
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["HL7OrganizationName"];
+            }
+        }
+
+        private static string HL7StaffRole
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["HL7StaffRole"];
+            }
+        }
+
+        private static string HL7BoardRole
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["HL7BoardRole"];
+            }
+        }
+
+        private static string HL7CoChairRole
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["HL7CoChairRole"];
+            }
+        }
+
+        private static string SharedSecret
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["SharedSecret"];
+            }
+        }
+
+        private static string[] TrustedServers
+        {
+            get
+            {
+                var value = ConfigurationManager.AppSettings["TrustedServers"];
+
+                if (string.IsNullOrEmpty(value))
+                    return new string[] { };
+
+                return value.Split(',');
+            }
+        }
+
+        #endregion
 
         #region Singleton
 
@@ -158,7 +233,7 @@ namespace Trifolia.Authorization
 
                 var remoteAddress = HttpContext.Current.Request.Params["REMOTE_ADDR"];
 
-                if (!string.IsNullOrEmpty(remoteAddress) && Properties.Settings.Default.TrustedServers.Contains(remoteAddress))
+                if (!string.IsNullOrEmpty(remoteAddress) && TrustedServers.Contains(remoteAddress))
                     return true;
 
                 return false;
@@ -196,7 +271,7 @@ namespace Trifolia.Authorization
                             return false;
 
                         var cryptoProvider = new System.Security.Cryptography.SHA1CryptoServiceProvider();
-                        var actualHashData = timestamp + "|" + salt + "|" + Properties.Settings.Default.SharedSecret;
+                        var actualHashData = timestamp + "|" + salt + "|" + SharedSecret;
                         var actualHashDataBytes = System.Text.Encoding.UTF8.GetBytes(actualHashData);
                         var actualHashBytes = cryptoProvider.ComputeHash(actualHashDataBytes);
                         var actualHash = System.Text.Encoding.UTF8.GetString(actualHashBytes);
@@ -358,7 +433,7 @@ namespace Trifolia.Authorization
                 return AuthorizationTypes.UserNonExistant;
 
             // When a user is an HL7 user, check that they have the appropriate roles associated
-            if (aOrganizationName == Properties.Settings.Default.HL7OrganizationName)
+            if (aOrganizationName == HL7OrganizationName)
             {
                 Dictionary<string, string> authData = GetAuthenticatedData();
 
@@ -450,11 +525,11 @@ namespace Trifolia.Authorization
 
             using (IObjectRepository tdb = DBContext.Create())
             {
-                User user = tdb.Users.SingleOrDefault(y => y.UserName == userName && y.Organization.Name == Properties.Settings.Default.HL7OrganizationName);
+                User user = tdb.Users.SingleOrDefault(y => y.UserName == userName && y.Organization.Name == HL7OrganizationName);
 
                 if (user == null || string.IsNullOrEmpty(hl7Roles))
                 {
-                    Log.For(this).Info("User not found with username \"{0}\" and organization \"{1}\"", userName, Properties.Settings.Default.HL7OrganizationName);
+                    Log.For(this).Info("User not found with username \"{0}\" and organization \"{1}\"", userName, HL7OrganizationName);
                     return;
                 }
 
@@ -467,16 +542,16 @@ namespace Trifolia.Authorization
                     switch (cHl7Role)
                     {
                         case HL7_ROLE_IS_MEMBER:
-                            this.EnsureUserHasRoles(tdb, user, Properties.Settings.Default.HL7MemberRole);
+                            this.EnsureUserHasRoles(tdb, user, HL7MemberRole);
                             break;
                         case HL7_ROLE_IS_BOARD:
-                            this.EnsureUserHasRoles(tdb, user, Properties.Settings.Default.HL7BoardRole);
+                            this.EnsureUserHasRoles(tdb, user, HL7BoardRole);
                             break;
                         case HL7_ROLE_IS_COCHAIR:
-                            this.EnsureUserHasRoles(tdb, user, Properties.Settings.Default.HL7CoChairRole);
+                            this.EnsureUserHasRoles(tdb, user, HL7CoChairRole);
                             break;
                         case HL7_ROLE_IS_STAFF:
-                            this.EnsureUserHasRoles(tdb, user, Properties.Settings.Default.HL7StaffRole);
+                            this.EnsureUserHasRoles(tdb, user, HL7StaffRole);
                             break;
                         default:
                             Log.For(this).Debug("Did not find matching role for flag sent from HL7: {0}", cHl7Role);

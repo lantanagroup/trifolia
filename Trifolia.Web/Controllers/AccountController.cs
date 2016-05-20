@@ -159,10 +159,10 @@ namespace Trifolia.Web.Controllers
             Organization org = this.tdb.Organizations.Single(y => y.Id == model.OrganizationId);
 
             // Run the re-captcha checks unless we allow re-captcha to be bypassed or the client has not specified debug mode
-            if (!Properties.Settings.Default.RecaptchaAllowBypass || !this.Request.Params.ToString().Split('&').Contains("debug"))
+            if (!AppSettings.RecaptchaAllowBypass || !this.Request.Params.ToString().Split('&').Contains("debug"))
             {
                 // Check that a captcha was entered
-                if (string.IsNullOrEmpty(this.Request.Form[Properties.Settings.Default.RecaptchaFormFieldName]))
+                if (string.IsNullOrEmpty(this.Request.Form[AppSettings.RecaptchaFormFieldName]))
                 {
                     LoginModel newModel = GetLoginModel(model, App_GlobalResources.TrifoliaLang.RecaptchaNotSpecified);
                     AuditEntryExtension.SaveAuditEntry("Login", "Failed - No re-captcha response was specified", model.Username, org.Name);
@@ -173,10 +173,10 @@ namespace Trifolia.Web.Controllers
                 using (WebClient client = new WebClient())
                 {
                     System.Collections.Specialized.NameValueCollection verifyParms = new System.Collections.Specialized.NameValueCollection();
-                    verifyParms.Add("secret", Properties.Settings.Default.RecaptchaSecret);
-                    verifyParms.Add("response", this.Request.Form[Properties.Settings.Default.RecaptchaFormFieldName]);
+                    verifyParms.Add("secret", AppSettings.RecaptchaSecret);
+                    verifyParms.Add("response", this.Request.Form[AppSettings.RecaptchaFormFieldName]);
 
-                    byte[] responsebytes = client.UploadValues(Properties.Settings.Default.RecaptchaVerifyUrl, Properties.Settings.Default.RecaptchaVerifyMethod, verifyParms);
+                    byte[] responsebytes = client.UploadValues(AppSettings.RecaptchaVerifyUrl, AppSettings.RecaptchaVerifyMethod, verifyParms);
                     string responsebody = System.Text.Encoding.UTF8.GetString(responsebytes);
 
                     dynamic verifyResponse = Newtonsoft.Json.JsonConvert.DeserializeObject(responsebody);
@@ -241,7 +241,7 @@ namespace Trifolia.Web.Controllers
                 Request.Url.Scheme,
                 Request.Url.Authority);
 
-            string url = string.Format(Properties.Settings.Default.HL7LoginUrlFormat,
+            string url = string.Format(AppSettings.HL7LoginUrlFormat,
                 HL7AuthHelper.API_KEY,
                 redirectUrl);
 
@@ -318,7 +318,7 @@ namespace Trifolia.Web.Controllers
                 OrganizationId = organizationId,
                 Message = message,
                 RememberMe = rememberMe,
-                RecaptchaAllowBypass = Properties.Settings.Default.RecaptchaAllowBypass
+                RecaptchaAllowBypass = AppSettings.RecaptchaAllowBypass
             };
 
             if (returnUrl == null)
@@ -339,7 +339,7 @@ namespace Trifolia.Web.Controllers
             }
 
             // Determine the HL7 login link
-            model.HL7LoginLink = string.Format(Properties.Settings.Default.HL7LoginUrlFormat,
+            model.HL7LoginLink = string.Format(AppSettings.HL7LoginUrlFormat,
                 HL7AuthHelper.API_KEY,
                 returnUrl);
 

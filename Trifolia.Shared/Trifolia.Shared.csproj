@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettings.cs" />
     <Compile Include="FilterOrganizationHelper.cs" />
     <Compile Include="HttpWebClient.cs" />
     <Compile Include="IdentifierHelper.cs" />
@@ -100,11 +101,6 @@
     <Compile Include="LookupTemplateType.cs" />
     <Compile Include="LookupValueSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="SimpleSchema.cs" />
     <Compile Include="TemplateConstraintExtensions.cs" />
     <Compile Include="TemplateExtensions.cs" />
@@ -119,10 +115,6 @@
     </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\TemplateDatabaseDataSource.datasource" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <None Include="ImportExport\Model\TemplateExport.xsd">
       <SubType>Designer</SubType>
     </None>

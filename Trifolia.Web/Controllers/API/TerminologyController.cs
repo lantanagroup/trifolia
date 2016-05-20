@@ -888,7 +888,7 @@ namespace Trifolia.Web.Controllers.API
         [HttpGet, Route("api/Terminology/Import/RoseTree/Search"), SecurableAction(SecurableNames.ADMIN)]
         public ImportValueSet SearchRoseTree(string oid)
         {
-            string roseTreeLocation = Properties.Settings.Default.HL7RoseTreeLocation;
+            string roseTreeLocation = AppSettings.HL7RoseTreeLocation;
             XmlDocument roseTreeDoc = new XmlDocument();
             roseTreeDoc.Load(roseTreeLocation);
 
@@ -910,7 +910,7 @@ namespace Trifolia.Web.Controllers.API
             }
             else if (valueSet.ImportSource == "HL7 RIM/RoseTree")
             {
-                string roseTreeLocation = Properties.Settings.Default.HL7RoseTreeLocation;
+                string roseTreeLocation = AppSettings.HL7RoseTreeLocation;
                 XmlDocument roseTreeDoc = new XmlDocument();
                 roseTreeDoc.Load(roseTreeLocation);
 

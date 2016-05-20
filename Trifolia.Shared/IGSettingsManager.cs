@@ -218,15 +218,15 @@ namespace Trifolia.Shared
             switch (property)
             {
                 case SettingProperty.CardinalityOneToOne:
-                    return Properties.Settings.Default.CardinalityOneToOne;
+                    return AppSettings.CardinalityOneToOne;
                 case SettingProperty.CardinalityZeroToOne:
-                    return Properties.Settings.Default.CardinalityZeroToOne;
+                    return AppSettings.CardinalityZeroToOne;
                 case SettingProperty.CardinalityAtLeastOne:
-                    return Properties.Settings.Default.CardinalityAtLeastOne;
+                    return AppSettings.CardinalityAtLeastOne;
                 case SettingProperty.CardinalityZeroOrMore:
-                    return Properties.Settings.Default.CardinalityZeroOrMore;
+                    return AppSettings.CardinalityZeroOrMore;
                 case SettingProperty.CardinalityZero:
-                    return Properties.Settings.Default.CardinalityZero;
+                    return AppSettings.CardinalityZero;
                 case SettingProperty.UseConsolidatedConstraintFormat:
                     return "true";
                 default:

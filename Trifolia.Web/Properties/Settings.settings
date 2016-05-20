@@ -2,30 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Trifolia.Web.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="HL7LoginUrlFormat" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://hl7.amg-hq.net/tools/signup_redirect.cfm?apiKey={0}&amp;returnUrl={1}</Value>
-    </Setting>
-    <Setting Name="HL7RoseTreeLocation" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">c:\ProgramData\Trifolia\hl7_rim_repo.xml</Value>
-    </Setting>
-    <Setting Name="MailHost" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="MailUser" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="MailPassword" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="MailFromAddress" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="MailPort" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="MailEnableSSL" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="WhatsNewItems" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
@@ -48,27 +24,6 @@
   &lt;string&gt;OIDs are now considered "identifiers" in Trifolia. This change now treats identifiers more generically then OIDs. For templates, identifiers can be a single OID (ex: urn:oid:XXX), a versioned OID (ex: urn:hl7ii:OID:DATE) or an HTTP/S address. For value sets and code systems, identifiers can be a single OID or an HTTP identifier (to support FHIR).&lt;/string&gt;
   &lt;string&gt;Trifolia's template editor is based on XML Schemas. Trifolia is not restricted to editing templates for just CDA, it can define templates for E-Measures and also define profiles for FHIR. Because Trifolia uses XML Schema, in theory, any schema can be loaded into Trifolia and used with the template editor; after the schema has been properly tested within Trifolia.&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
-    </Setting>
-    <Setting Name="RecaptchaVerifyUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://www.google.com/recaptcha/api/siteverify</Value>
-    </Setting>
-    <Setting Name="RecaptchaVerifyMethod" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">POST</Value>
-    </Setting>
-    <Setting Name="RecaptchaSecret" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="RecaptchaFormFieldName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">g-recaptcha-response</Value>
-    </Setting>
-    <Setting Name="RecaptchaAllowBypass" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="SupportEmailTo" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="EnableJiraSupport" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

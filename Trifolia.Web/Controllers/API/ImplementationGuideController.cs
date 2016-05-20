@@ -609,7 +609,7 @@ namespace Trifolia.Web.Controllers.API
 
             try
             {
-                MailMessage mailMessage = new MailMessage(Properties.Settings.Default.MailFromAddress, accessManager.Email);
+                MailMessage mailMessage = new MailMessage(AppSettings.MailFromAddress, accessManager.Email);
                 mailMessage.Subject = string.Format("Trifolia: Request to access " + ig.NameWithVersion);
                 mailMessage.Body = string.Format("User {0} {1} ({2}) from organization {3} has requested access to {4} on {5} @ {6}\nThe user has requested {7} permissions.\n\nMessage from user: {8}\n\nUse this link to add them to the implementation guide: {9}",
                     currentUser.FirstName,
@@ -623,9 +623,9 @@ namespace Trifolia.Web.Controllers.API
                     !string.IsNullOrEmpty(message) ? message : "None",
                     ig.GetEditUrl(true));
 
-                SmtpClient client = new SmtpClient(Properties.Settings.Default.MailHost, Properties.Settings.Default.MailPort);
-                client.EnableSsl = Properties.Settings.Default.MailEnableSSL;
-                client.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.MailUser, Properties.Settings.Default.MailPassword);
+                SmtpClient client = new SmtpClient(AppSettings.MailHost, AppSettings.MailPort);
+                client.EnableSsl = AppSettings.MailEnableSSL;
+                client.Credentials = new System.Net.NetworkCredential(AppSettings.MailUser, AppSettings.MailPassword);
                 client.Send(mailMessage);
             }
             catch (Exception ex)
@@ -1233,7 +1233,7 @@ namespace Trifolia.Web.Controllers.API
                 // Send an email to each user (separately) notifying them of their permission
                 foreach (var userEmail in userEmails)
                 {
-                    MailMessage mailMessage = new MailMessage(Properties.Settings.Default.MailFromAddress, userEmail.User.Email);
+                    MailMessage mailMessage = new MailMessage(AppSettings.MailFromAddress, userEmail.User.Email);
                     mailMessage.Subject = string.Format("Trifolia access granted to " + ig.NameWithVersion);
                     mailMessage.Body = string.Format("Hello {0} {1},\n\nYour user account {2} ({3}) has been granted {4} access to the \"{5}\" implementation guide.\n\nYou can {6} the implementation guide here: {7}\n\n-Trifolia",
                         userEmail.User.FirstName,
@@ -1247,9 +1247,9 @@ namespace Trifolia.Web.Controllers.API
 
                     try
                     {
-                        SmtpClient client = new SmtpClient(Properties.Settings.Default.MailHost, Properties.Settings.Default.MailPort);
-                        client.EnableSsl = Properties.Settings.Default.MailEnableSSL;
-                        client.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.MailUser, Properties.Settings.Default.MailPassword);
+                        SmtpClient client = new SmtpClient(AppSettings.MailHost, AppSettings.MailPort);
+                        client.EnableSsl = AppSettings.MailEnableSSL;
+                        client.Credentials = new System.Net.NetworkCredential(AppSettings.MailUser, AppSettings.MailPassword);
                         client.Send(mailMessage);
                     }
                     catch (Exception ex)

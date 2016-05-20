@@ -49,7 +49,7 @@ namespace Trifolia.Authentication
 
             return string.Format(
                 "{0}?userid={1}&returnURL={2}&signingURL={2}&signingDescription={3}&requestHash={4}&timestampUTCEpoch={5}&apiKey={6}",
-                Properties.Settings.Default.HL7DisclaimerUrl,
+                System.Configuration.ConfigurationManager.AppSettings["HL7DisclaimerUrl"],
                 username,
                 HttpUtility.UrlEncode(destination),
                 HttpUtility.UrlEncode(description),

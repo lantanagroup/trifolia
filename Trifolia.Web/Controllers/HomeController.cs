@@ -9,6 +9,7 @@ using Trifolia.Web.Models;
 using Trifolia.Authentication;
 using Trifolia.Config;
 using Trifolia.Authorization;
+using Trifolia.Shared;
 
 namespace Trifolia.Web.Controllers
 {
@@ -54,7 +55,7 @@ namespace Trifolia.Web.Controllers
             model.DisplayInternalTechSupportPanel = CheckPoint.Instance.IsDataAdmin;
 
             // Determine the HL7 login link
-            model.HL7LoginLink = string.Format(Properties.Settings.Default.HL7LoginUrlFormat,
+            model.HL7LoginLink = string.Format(AppSettings.HL7LoginUrlFormat,
                 HL7AuthHelper.API_KEY,
                 redirectUrl);
 

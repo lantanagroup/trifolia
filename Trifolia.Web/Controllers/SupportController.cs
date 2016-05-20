@@ -49,15 +49,15 @@ namespace Trifolia.Web.Controllers
         public void SubmitSupportRequest(string SupportName, string SupportEmail, string SupportSummary, string SupportType,
             string SupportPriority, string SupportDetails)
         {
-            if (CheckPoint.Instance.OrganizationName == "HL7" || !Properties.Settings.Default.EnableJiraSupport)
+            if (CheckPoint.Instance.OrganizationName == "HL7" || !AppSettings.EnableJiraSupport)
             {
-                string lSmtpServer = Properties.Settings.Default.MailHost;
+                string lSmtpServer = AppSettings.MailHost;
 
                 var client = new SmtpClient(lSmtpServer, 587)
                 {
-                    Credentials = new NetworkCredential(Properties.Settings.Default.MailUser, Properties.Settings.Default.MailPassword),
-                    Port = Properties.Settings.Default.MailPort,
-                    EnableSsl = Properties.Settings.Default.MailEnableSSL
+                    Credentials = new NetworkCredential(AppSettings.MailUser, AppSettings.MailPassword),
+                    Port = AppSettings.MailPort,
+                    EnableSsl = AppSettings.MailEnableSSL
                 };
 
                 string lBody = string.Format("Issue Type: {0}\nIssue Priority: {1}\nDetails: {2}\nSubmitted By: {3} ({4})", 
@@ -70,8 +70,8 @@ namespace Trifolia.Web.Controllers
                 string lSubject = string.Format("Trifolia Support: {0}", SupportSummary);
 
                 client.Send(
-                    ConfigurationManager.AppSettings[Properties.Settings.Default.MailFromAddress], 
-                    ConfigurationManager.AppSettings[Properties.Settings.Default.SupportEmailTo], 
+                    ConfigurationManager.AppSettings[AppSettings.MailFromAddress], 
+                    ConfigurationManager.AppSettings[AppSettings.SupportEmailTo], 
                     lSubject, 
                     lBody);
             }

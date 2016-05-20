@@ -28,10 +28,10 @@ namespace Trifolia.Shared
         public void SubmitSupportTicket(string aUserName, string aSupportSummaryText, string aSupportDetailsText, string aSupportPriority, string aIssueType = null)
         {
             if (aIssueType == null)
-                aIssueType = Properties.Settings.Default.DefaultJiraTaskType;
+                aIssueType = AppSettings.DefaultJiraTaskType;
 
             RemoteIssue lRemoteIssue = new RemoteIssue();
-            lRemoteIssue.project = Properties.Settings.Default.DefaultJiraProject;
+            lRemoteIssue.project = AppSettings.DefaultJiraProject;
             lRemoteIssue.type = aIssueType;
             lRemoteIssue.summary = aSupportSummaryText;
             lRemoteIssue.description = aSupportDetailsText;
@@ -50,12 +50,12 @@ namespace Trifolia.Shared
         {
             using (JiraSoapServiceClient client = new JiraSoapServiceClient())
             {
-                string jiraSession = client.login(Properties.Settings.Default.DefaultJiraUsername, Properties.Settings.Default.DefaultJiraPassword);
+                string jiraSession = client.login(AppSettings.DefaultJiraUsername, AppSettings.DefaultJiraPassword);
                 RemoteUser reporter = client.getUser(jiraSession, aRemoteIssue.reporter);
 
                 if (reporter == null)
                 {
-                    reporter = client.getUser(jiraSession, Properties.Settings.Default.DefaultJiraUsername);
+                    reporter = client.getUser(jiraSession, AppSettings.DefaultJiraUsername);
                     aRemoteIssue.description = string.Format("{0}\n\nSubmitted By: {1}", aRemoteIssue.description, aRemoteIssue.reporter);
                     aRemoteIssue.reporter = reporter.name;
                 }

@@ -20,7 +20,7 @@ namespace Trifolia.Shared.ImportExport
         protected override T BaseFindValueSet(IObjectRepository tdb, string oid)
         {
             hessiancsharp.client.CHessianProxyFactory factory = new hessiancsharp.client.CHessianProxyFactory();
-            VocabService vocabService = (VocabService)factory.Create(typeof(VocabService), Properties.Settings.Default.PhinVadsServiceUrl);
+            VocabService vocabService = (VocabService)factory.Create(typeof(VocabService), AppSettings.PhinVadsServiceUrl);
             ValueSetResultDto valueSetResults = null;
 
             try

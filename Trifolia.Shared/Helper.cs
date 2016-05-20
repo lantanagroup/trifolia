@@ -19,12 +19,12 @@ namespace Trifolia.Shared
         {
             string basePath = ".\\";
 
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.IGTypeSchemaLocation))
+            if (!string.IsNullOrEmpty(AppSettings.IGTypeSchemaLocation))
             {
-                if (Properties.Settings.Default.IGTypeSchemaLocation.StartsWith("~"))
-                    basePath = HttpContext.Current.ApplicationInstance.Server.MapPath(Properties.Settings.Default.IGTypeSchemaLocation);
+                if (AppSettings.IGTypeSchemaLocation.StartsWith("~"))
+                    basePath = HttpContext.Current.ApplicationInstance.Server.MapPath(AppSettings.IGTypeSchemaLocation);
                 else
-                    basePath = new FileInfo(Properties.Settings.Default.IGTypeSchemaLocation).FullName;
+                    basePath = new FileInfo(AppSettings.IGTypeSchemaLocation).FullName;
             }
 
             return GetSchemasDirectory(basePath, igTypeName);
