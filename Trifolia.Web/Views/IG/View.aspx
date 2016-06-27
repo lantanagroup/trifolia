@@ -16,14 +16,19 @@
     
     <!-- Any scripts added here must be added to IGController.Download/resourceMappings -->
     <script type="text/javascript" src="/Scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/Scripts/jquery/jquery-highlight-5.js"></script>
     <script type="text/javascript" src="/Scripts/bootstrap/bootstrap.js"></script>
     <script type="text/javascript" src="/Scripts/angular/angular.min.js"></script>
     <script type="text/javascript" src="/Scripts/angular/angular-route.min.js"></script>
     <script type="text/javascript" src="/Scripts/angular/ui-bootstrap-tpls-0.12.1.min.js"></script>
     <script type="text/javascript" src="/Scripts/angular/highlight.min.js"></script>
     <script type="text/javascript" src="/Scripts/angular/angular-highlight.min.js"></script>
+    <script type="text/javascript" src="/Scripts/lodash.min.js"></script>
+    <script type="text/javascript" src="/Scripts/backbone-min.js"></script>
     <script type="text/javascript" src="/Scripts/joint.min.js"></script>
-    <script type="text/javascript" src="/Scripts/jquery/jquery-highlight-5.js"></script>
+    <script type="text/javascript" src="/Scripts/graphlib.core.min.js"></script>
+    <script type="text/javascript" src="/Scripts/dagre.core.min.js"></script>
+    <script type="text/javascript" src="/Scripts/joint.layout.DirectedGraph.min.js"></script>
     
     <script type="text/javascript" src="/Scripts/IG/View.js"></script>
 

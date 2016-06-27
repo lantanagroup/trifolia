@@ -74,9 +74,16 @@ namespace Trifolia.Web.Controllers
                 { "/Scripts/angular/ui-bootstrap-tpls-0.12.1.min.js", "js\\ui-bootstrap-tpls-0.12.1.min.js" },
                 { "/Scripts/angular/highlight.min.js", "js\\highlight.min.js" },
                 { "/Scripts/angular/angular-highlight.min.js", "js\\angular-highlight.min.js" },
-                { "/Scripts/joint.min.js", "js\\joint.min.js" },
                 { "/Scripts/jquery/jquery-highlight-5.js", "js\\jquery-highlight-5.js" },
-                { "/Scripts/IG/View.js", "js\\IGView.js" }
+                { "/Scripts/IG/View.js", "js\\IGView.js" },
+
+                // Joint.JS for UML diagram
+                { "/Scripts/joint.min.js", "js\\joint.min.js" },
+                { "/Scripts/lodash.min.js", "js\\lodash.min.js" },
+                { "/Scripts/backbone-min.js", "js\\backbone-min.js" },
+                { "/Scripts/dagre.core.min.js", "js\\dagre.core.min.js" },
+                { "/Scripts/graphlib.core.min.js", "js\\graphlib.core.min.js" },
+                { "/Scripts/joint.layout.DirectedGraph.min.js", "js\\joint.layout.DirectedGraph.min.js" }
             };
 
             string viewContent;

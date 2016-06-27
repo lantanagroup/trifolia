@@ -687,6 +687,7 @@
     <Content Include="Scripts\angular\highlight.min.js" />
     <Content Include="Scripts\angular\ui-bootstrap-tpls-0.12.1.min.js" />
     <Content Include="Scripts\Api\help.js" />
+    <Content Include="Scripts\backbone-min.js" />
     <Content Include="Scripts\Beta\Index.js" />
     <Content Include="Scripts\bootstrap\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap\bootstrap-select.min.js" />
@@ -694,11 +695,13 @@
     <Content Include="Scripts\bootstrap\bootstrap-treenav.js" />
     <Content Include="Scripts\bootstrap\bootstrap-treenav.min.js" />
     <Content Include="Scripts\bootstrap\bootstrap.js" />
+    <Content Include="Scripts\dagre.core.min.js" />
     <Content Include="Scripts\Export\Green.js" />
     <Content Include="Scripts\Export\Schematron.js" />
     <Content Include="Scripts\Export\MSWord.js" />
     <Content Include="Scripts\Export\Vocabulary.js" />
     <Content Include="Scripts\Export\XML.js" />
+    <Content Include="Scripts\graphlib.core.min.js" />
     <Content Include="Scripts\GreenManagement\GreenManagementViewModel.js" />
     <Content Include="Scripts\GreenManagement\greenModels.js" />
     <Content Include="Scripts\helpModel.js" />
@@ -712,6 +715,7 @@
     <Content Include="Scripts\IGManagement\View.js" />
     <Content Include="Scripts\IGManagement\ViewIgChanges.js" />
     <Content Include="Scripts\IG\View.js" />
+    <Content Include="Scripts\joint.layout.DirectedGraph.min.js" />
     <Content Include="Scripts\joint.min.js" />
     <Content Include="Scripts\jquery\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery\jquery-1.10.2.min.js" />
@@ -733,6 +737,7 @@
     <Content Include="Scripts\knockout\knockout.validation.js" />
     <Content Include="Scripts\knockout\knockout.validation.rules.js" />
     <Content Include="Scripts\knockout\knockout.valuesetSelect.js" />
+    <Content Include="Scripts\lodash.min.js" />
     <Content Include="Scripts\Organization\Details.js" />
     <Content Include="Scripts\Organization\List.js" />
     <Content Include="Scripts\q\benchmark\compare-with-callbacks.js" />

@@ -271,18 +271,12 @@ igViewApp.directive('igDiagram', function ($location) {
 
                 paper.scale(0.8, 0.8);
 
-                var graphLayout = new joint.layout.ForceDirected({
-                    graph: graph,
-                    width: paperOptions.width, height: paperOptions.height,
-                    gravityCenter: { x: paperOptions.width / 2, y: paperOptions.height / 2 },
-                    charge: 10000,
-                    linkDistance: 300
+                var res = joint.layout.DirectedGraph.layout(graph, {
+                    nodeSep: 50,
+                    edgeSep: 80,
+                    rankDir: "TB"
                 });
-
-                graphLayout.start();
-                graphLayout.step();
-
-                //_.each(_.range(5), function () { graphLayout.step(); });
+                paper.setDimensions(res.width, res.height);
             };
 
             // This ensures the diagram is rendered after other angular events have processed
