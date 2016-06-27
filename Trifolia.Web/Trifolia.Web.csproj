@@ -862,7 +862,6 @@
     <Content Include="Views\IGManagement\Edit.aspx" />
     <Content Include="Views\IGManagement\View.aspx" />
     <Content Include="Views\IGTypeManagement\EditType.aspx" />
-    <Content Include="Views\IG\README.txt" />
     <Content Include="Views\IG\View.aspx" />
     <Content Include="Views\LocalizationDemo\Index.aspx" />
     <Content Include="Views\Organization\Details.aspx" />
@@ -930,6 +929,7 @@
     <Content Include="Scripts\q\spec\lib\jasmine-1.2.0\MIT.LICENSE" />
     <Content Include="Scripts\q\VERSIONS.md" />
     <Content Include="Trifolia.Generation.config" />
+    <Content Include="Views\IG\README.md" />
     <None Include="Web.Install Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
