@@ -216,7 +216,9 @@ namespace Trifolia.Web.Controllers
                 Organization = ig.Organization,
                 PreviousVersionImplementationGuideId = ig.Id,
                 PublishStatus = PublishStatus.GetDraftStatus(this.tdb),
-                Version = ig.Version + 1
+                Version = ig.Version + 1,
+                WebReadmeOverview = ig.WebReadmeOverview,
+                WebDescription = ig.WebDescription
             };
 
             // Copy permissions
@@ -256,6 +258,19 @@ namespace Trifolia.Web.Controllers
                 newIg.TemplateTypes.Add(newTemplateType);
             }
 
+            // Copy volume 1
+            foreach (var cSection in ig.Sections)
+            {
+                var newSection = new ImplementationGuideSection()
+                {
+                    Content = cSection.Content,
+                    Heading = cSection.Heading,
+                    Level = cSection.Level,
+                    Order = cSection.Order
+                };
+                newIg.Sections.Add(newSection);
+            }
+
             this.tdb.SaveChanges();
 
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
@@ -268,6 +283,7 @@ namespace Trifolia.Web.Controllers
             var cardinalityZeroToOne = igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZeroToOne);
             var categories = igSettings.GetSetting(IGSettingsManager.SettingProperty.Categories);
             var useConsolidationConstraintFormat = igSettings.GetBoolSetting(IGSettingsManager.SettingProperty.UseConsolidatedConstraintFormat);
+            var volume1Html = igSettings.GetSetting(IGSettingsManager.SettingProperty.Volume1Html);
 
             if (!string.IsNullOrEmpty(cardinalityAtLeastOne))
                 newIgSettings.SaveSetting(IGSettingsManager.SettingProperty.CardinalityAtLeastOne, cardinalityAtLeastOne);
@@ -283,6 +299,9 @@ namespace Trifolia.Web.Controllers
 
             if (!string.IsNullOrEmpty(categories))
                 newIgSettings.SaveSetting(IGSettingsManager.SettingProperty.Categories, categories);
+
+            if (!string.IsNullOrEmpty(volume1Html))
+                newIgSettings.SaveSetting(IGSettingsManager.SettingProperty.Volume1Html, volume1Html);
 
             newIgSettings.SaveBoolSetting(IGSettingsManager.SettingProperty.UseConsolidatedConstraintFormat, useConsolidationConstraintFormat);
 
