@@ -6,6 +6,7 @@ before_build:
 branches:
   except:
     - gh-pages
+    - data
     
 skip_tags: true
 
