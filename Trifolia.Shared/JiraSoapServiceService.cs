@@ -8403,7 +8403,7 @@ namespace Trifolia.Shared
 
         public JiraSoapServiceClient()
         {
-            this.ChannelFactory.Endpoint.Address = new System.ServiceModel.EndpointAddress(AppSettings.DefaultJiraEndpoint);
+            this.ChannelFactory.Endpoint.Address = new System.ServiceModel.EndpointAddress(Trifolia.Config.AppSettings.DefaultJiraEndpoint);
         }
 
         public JiraSoapServiceClient(string endpointConfigurationName) :

@@ -18,6 +18,7 @@ using Trifolia.Terminology;
 using Trifolia.Shared;
 using Trifolia.Shared.ImportExport;
 using Trifolia.Shared.ImportExport.Model;
+using Trifolia.Config;
 
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;

@@ -5,13 +5,12 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Web;
 
+using Trifolia.Config;
+
 namespace Trifolia.Authentication
 {
     public class HL7AuthHelper
     {
-        public const string API_KEY = ***REMOVED***;
-        public const string SHARED_KEY = ***REMOVED***;
-
         public static string GetEncrypted(string input, string key)
         {
             HMACSHA1 enc = new HMACSHA1(ASCIIEncoding.ASCII.GetBytes(key));
@@ -44,8 +43,8 @@ namespace Trifolia.Authentication
                 username,
                 destination,
                 timestamp,
-                API_KEY);
-            string requestHashEncrypted = GetEncrypted(requestHash, SHARED_KEY);
+                AppSettings.HL7ApiKey);
+            string requestHashEncrypted = GetEncrypted(requestHash, AppSettings.HL7SharedKey);
 
             return string.Format(
                 "{0}?userid={1}&returnURL={2}&signingURL={2}&signingDescription={3}&requestHash={4}&timestampUTCEpoch={5}&apiKey={6}",
@@ -55,7 +54,7 @@ namespace Trifolia.Authentication
                 HttpUtility.UrlEncode(description),
                 requestHashEncrypted,
                 timestamp,
-                API_KEY);
+                AppSettings.HL7ApiKey);
         }
     }
 }

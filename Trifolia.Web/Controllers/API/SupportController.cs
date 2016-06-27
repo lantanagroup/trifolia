@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Web;
 using System.Web.Http;
 using Trifolia.Authorization;
+using Trifolia.Config;
 using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Web.Models;

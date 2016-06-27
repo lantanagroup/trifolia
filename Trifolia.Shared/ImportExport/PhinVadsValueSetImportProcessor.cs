@@ -8,6 +8,7 @@ using Trifolia.Shared.ImportExport.Model;
 using Trifolia.DB;
 
 using VadsClient;
+using Trifolia.Config;
 
 namespace Trifolia.Shared.ImportExport
 {

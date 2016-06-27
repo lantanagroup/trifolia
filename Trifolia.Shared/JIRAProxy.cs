@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Trifolia.Config;
+
 namespace Trifolia.Shared
 {
     public class JIRAProxy

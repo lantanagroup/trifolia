@@ -18,6 +18,7 @@ using Trifolia.Authorization;
 using Trifolia.Web.Filters;
 using Trifolia.Web.Models.Account;
 using Trifolia.DB;
+using Trifolia.Config;
 
 namespace Trifolia.Web.Controllers
 {
@@ -242,7 +243,7 @@ namespace Trifolia.Web.Controllers
                 Request.Url.Authority);
 
             string url = string.Format(AppSettings.HL7LoginUrlFormat,
-                HL7AuthHelper.API_KEY,
+                AppSettings.HL7ApiKey,
                 redirectUrl);
 
             return Redirect(url);
@@ -251,8 +252,8 @@ namespace Trifolia.Web.Controllers
         [AllowAnonymous]
         public ActionResult DoHL7Login(HL7LoginModel model)
         {
-            string validateRequestHashFormat = string.Format("{0}|{1}|{2}", model.userid, model.timestampUTCEpoch, HL7AuthHelper.API_KEY);
-            string validateRequestHash = HL7AuthHelper.GetEncrypted(validateRequestHashFormat, HL7AuthHelper.SHARED_KEY);
+            string validateRequestHashFormat = string.Format("{0}|{1}|{2}", model.userid, model.timestampUTCEpoch, AppSettings.HL7ApiKey);
+            string validateRequestHash = HL7AuthHelper.GetEncrypted(validateRequestHashFormat, AppSettings.HL7SharedKey);
 
             // The hash does not match what we expect, this is an invalid request
             if (validateRequestHash != model.requestHash)
@@ -340,7 +341,7 @@ namespace Trifolia.Web.Controllers
 
             // Determine the HL7 login link
             model.HL7LoginLink = string.Format(AppSettings.HL7LoginUrlFormat,
-                HL7AuthHelper.API_KEY,
+                AppSettings.HL7ApiKey,
                 returnUrl);
 
             // Bypass the HL7 organization, since the app has a separate page just for logging in as HL7

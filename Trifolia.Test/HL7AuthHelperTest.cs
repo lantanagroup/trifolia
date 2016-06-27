@@ -103,16 +103,16 @@ namespace Trifolia.Test
                 username,
                 destination,
                 timestamp,
-                HL7AuthHelper.API_KEY);
+                Trifolia.Config.AppSettings.HL7ApiKey);
             string expected = string.Format(
                 "{0}?userid={1}&returnURL={2}&signingURL={2}&signingDescription={3}&requestHash={4}&timestampUTCEpoch={5}&apiKey={6}",
                 "http://hl7.amg-hq.net/temp/mike/webservices/compliance_redirect.cfm",
                 username,
                 destination,
                 "this+%26+is+a+test+description",
-                HL7AuthHelper.GetEncrypted(requestHash, HL7AuthHelper.SHARED_KEY),
+                HL7AuthHelper.GetEncrypted(requestHash, Trifolia.Config.AppSettings.HL7SharedKey),
                 timestamp,
-                HL7AuthHelper.API_KEY);
+                Trifolia.Config.AppSettings.HL7ApiKey);
             
             string actual = HL7AuthHelper.GetComplianceUrl(destination, username, description);
             Assert.AreEqual(expected, actual);

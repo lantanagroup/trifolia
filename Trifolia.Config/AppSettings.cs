@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 
-namespace Trifolia.Shared
+namespace Trifolia.Config
 {
     public static class AppSettings
     {
@@ -23,6 +23,22 @@ namespace Trifolia.Shared
             int intValue;
             Int32.TryParse(value, out intValue);
             return intValue;
+        }
+
+        public static string HL7ApiKey
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["HL7ApiKey"];
+            }
+        }
+
+        public static string HL7SharedKey
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["HL7SharedKey"];
+            }
         }
 
         public static bool LogInformation

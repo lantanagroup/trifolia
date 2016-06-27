@@ -56,7 +56,7 @@ namespace Trifolia.Web.Controllers
 
             // Determine the HL7 login link
             model.HL7LoginLink = string.Format(AppSettings.HL7LoginUrlFormat,
-                HL7AuthHelper.API_KEY,
+                AppSettings.HL7ApiKey,
                 redirectUrl);
 
             // Determine the did you know tip

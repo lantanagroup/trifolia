@@ -10,6 +10,7 @@ using System.Text;
 using System.Web;
 
 using Trifolia.DB;
+using Trifolia.Config;
 
 namespace Trifolia.Shared
 {

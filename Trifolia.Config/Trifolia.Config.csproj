@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettings.cs" />
     <Compile Include="BookmarkSection.cs" />
     <Compile Include="BookmarkTemplateTypeElement.cs" />
     <Compile Include="CodeSystemsSection.cs" />
