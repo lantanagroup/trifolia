@@ -243,6 +243,7 @@
     <Compile Include="Controllers\API\ReportController.cs" />
     <Compile Include="Controllers\API\SchemaTypesController.cs" />
     <Compile Include="Controllers\API\SecurityController.cs" />
+    <Compile Include="Controllers\API\SupportController.cs" />
     <Compile Include="Controllers\API\TemplateController.cs" />
     <Compile Include="Controllers\API\TemplateEditorController.cs" />
     <Compile Include="Controllers\API\TerminologyController.cs" />
@@ -328,6 +329,7 @@
     <Compile Include="Models\Report\TemplateReviewResultsModel.cs" />
     <Compile Include="Models\Report\TemplateValidation.cs" />
     <Compile Include="Models\SchemaModel\NodeItemModel.cs" />
+    <Compile Include="Models\SupportRequestModel.cs" />
     <Compile Include="Models\TemplateEditing\ConstraintModel.cs" />
     <Compile Include="Models\TemplateEditing\SaveModel.cs" />
     <Compile Include="Models\TemplateEditing\SaveResponse.cs" />
@@ -387,7 +389,6 @@
     <Compile Include="Controllers\IGManagementController.cs" />
     <Compile Include="Controllers\IGTypeManagementController.cs" />
     <Compile Include="Controllers\RoleManagementController.cs" />
-    <Compile Include="Controllers\SupportController.cs" />
     <Compile Include="Controllers\TemplateManagementController.cs" />
     <Compile Include="Controllers\TerminologyManagementController.cs" />
     <Compile Include="Filters\SecurableAuthorizationFilter.cs" />

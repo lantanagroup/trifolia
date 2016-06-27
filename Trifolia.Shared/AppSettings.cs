@@ -89,6 +89,14 @@ namespace Trifolia.Shared
             }
         }
 
+        public static string DefaultJiraEndpoint
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["DefaultJiraEndpoint"];
+            }
+        }
+
         public static string DefaultJiraTaskType
         {
             get

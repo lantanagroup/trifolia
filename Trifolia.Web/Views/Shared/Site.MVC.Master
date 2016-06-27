@@ -207,8 +207,8 @@
                             <option>Minor</option>
                             <option>Medium</option>
                             <option>Major</option>
-                            <option>Blocker</option>
                             <option>Critical</option>
+                            <option>Blocker</option>
                         </select>
                     </div>
                     <div class="form-group">

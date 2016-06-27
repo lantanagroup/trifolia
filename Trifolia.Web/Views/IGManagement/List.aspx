@@ -64,7 +64,7 @@
                         <!-- /ko -->
                     </th>
                     <!-- /ko -->
-                    <th>
+                    <th style="min-width: 181px;">
                         <div class="pull-right">
                             <!-- ko if: containerViewModel.HasSecurable(['ImplementationGuideEdit']) -->
                             <button type="button" class="btn btn-primary btn-sm" data-bind="click: $parent.Add" title="Add new implementation guide">Add</button>

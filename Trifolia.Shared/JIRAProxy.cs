@@ -25,7 +25,7 @@ namespace Trifolia.Shared
         /// <param name="aSupportSummaryText"></param>
         /// <param name="aSupportDetailsText"></param>
         /// <param name="aSupportPriority"></param>
-        public void SubmitSupportTicket(string aUserName, string aSupportSummaryText, string aSupportDetailsText, string aSupportPriority, string aIssueType = null)
+        public string SubmitSupportTicket(string aUserName, string aSupportSummaryText, string aSupportDetailsText, string aSupportPriority, string aIssueType = null)
         {
             if (aIssueType == null)
                 aIssueType = AppSettings.DefaultJiraTaskType;
@@ -39,14 +39,14 @@ namespace Trifolia.Shared
             lRemoteIssue.reporter = aUserName;
             lRemoteIssue.priority = aSupportPriority;
 
-            this.SubmitJIRAIssue(lRemoteIssue, TRIFOLIA_SUPPORT_LABEL);
+            return this.SubmitJIRAIssue(lRemoteIssue, TRIFOLIA_SUPPORT_LABEL);
         }
 
         #endregion
 
         #region Private Methods
 
-        private void SubmitJIRAIssue(RemoteIssue aRemoteIssue, string aIssueLabel)
+        private string SubmitJIRAIssue(RemoteIssue aRemoteIssue, string aIssueLabel)
         {
             using (JiraSoapServiceClient client = new JiraSoapServiceClient())
             {
@@ -70,6 +70,8 @@ namespace Trifolia.Shared
 
                 RemoteIssue lNewIssue = client.createIssue(jiraSession, aRemoteIssue);
                 client.updateIssue(jiraSession, lNewIssue.key, actionParams.ToArray());
+
+                return lNewIssue.key;
             }
         }
 

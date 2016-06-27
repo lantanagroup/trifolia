@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web;
-using System.Web.Mvc;
-using Trifolia.Shared;
-using Trifolia.Logging;
+using System.Web.Http;
 using Trifolia.Authorization;
+using Trifolia.Logging;
+using Trifolia.Shared;
+using Trifolia.Web.Models;
 
-namespace Trifolia.Web.Controllers
+namespace Trifolia.Web.Controllers.API
 {
-    //[Securable]
-    public class SupportController : Controller
+    public class SupportController : ApiController
     {
-        #region Issue Priority Map
-
         Dictionary<string, string> priorityMap = new Dictionary<string, string>(){
             {"None", "6"},
             {"Blocker", "1"},
@@ -34,23 +31,17 @@ namespace Trifolia.Web.Controllers
             {"Feature Request", "10"}
         };
 
-        #endregion
-
-        //
-        // GET: /Support/
-
-        public ActionResult Index()
-        {
-            return View();
-        }
-        
-        [HttpPost]
-        [AllowAnonymous]
-        public void SubmitSupportRequest(string SupportName, string SupportEmail, string SupportSummary, string SupportType,
-            string SupportPriority, string SupportDetails)
+        [HttpPost, Route("api/Support")]
+        public string SubmitSupportRequest(SupportRequestModel model)
         {
             if (CheckPoint.Instance.OrganizationName == "HL7" || !AppSettings.EnableJiraSupport)
             {
+                if (string.IsNullOrEmpty(AppSettings.MailFromAddress))
+                    throw new Exception("MailFromAddress is not configured.");
+
+                if (string.IsNullOrEmpty(AppSettings.SupportEmailTo))
+                    throw new Exception("SupportEmailTo is not configured");
+
                 string lSmtpServer = AppSettings.MailHost;
 
                 var client = new SmtpClient(lSmtpServer, 587)
@@ -60,20 +51,22 @@ namespace Trifolia.Web.Controllers
                     EnableSsl = AppSettings.MailEnableSSL
                 };
 
-                string lBody = string.Format("Issue Type: {0}\nIssue Priority: {1}\nDetails: {2}\nSubmitted By: {3} ({4})", 
-                    SupportType, 
-                    SupportPriority, 
-                    SupportDetails, 
+                string lBody = string.Format("Issue Type: {0}\nIssue Priority: {1}\nDetails: {2}\nSubmitted By: {3} ({4})",
+                    model.Type,
+                    model.Priority,
+                    model.Details,
                     CheckPoint.Instance.UserFullName,
                     CheckPoint.Instance.UserName);
 
-                string lSubject = string.Format("Trifolia Support: {0}", SupportSummary);
+                string lSubject = string.Format("Trifolia Support: {0}", model.Summary);
 
                 client.Send(
-                    ConfigurationManager.AppSettings[AppSettings.MailFromAddress], 
-                    ConfigurationManager.AppSettings[AppSettings.SupportEmailTo], 
-                    lSubject, 
+                    AppSettings.MailFromAddress,
+                    AppSettings.SupportEmailTo,
+                    lSubject,
                     lBody);
+
+                return "Email sent";
             }
             else
             {
@@ -86,12 +79,12 @@ namespace Trifolia.Web.Controllers
                 }
                 else
                 {
-                    lUserName = SupportName + "; " + SupportEmail;
+                    lUserName = model.Name + "; " + model.Email;
                 }
 
                 try
                 {
-                    lProxy.SubmitSupportTicket(lUserName, SupportSummary, SupportDetails, priorityMap[SupportPriority], _issueMap[SupportType]);
+                    return lProxy.SubmitSupportTicket(lUserName, model.Summary, model.Details, priorityMap[model.Priority], _issueMap[model.Type]);
                 }
                 catch (Exception submitException)
                 {

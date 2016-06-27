@@ -49,26 +49,30 @@ var SupportViewModel = function () {
         $("#supportPopup").block();
 
         var data = {
-            "SupportName": self.Request().Name(),
-            "SupportEmail": self.Request().Email(),
-            "SupportSummary": self.Request().Summary(),
-            "SupportType": self.Request().Type(),
-            "SupportPriority": self.Request().Priority(),
-            "SupportDetails": self.Request().Details()
+            "Name": self.Request().Name(),
+            "Email": self.Request().Email(),
+            "Summary": self.Request().Summary(),
+            "Type": self.Request().Type(),
+            "Priority": self.Request().Priority(),
+            "Details": self.Request().Details()
         };
 
         $.ajax({
             type: "POST",
-            url: "/Support/SubmitSupportRequest",
+            url: "/api/Support",
             data: data,
-            complete: function (jqXHR, textStatus) {
-                if (textStatus != 'success') {
-                    alert('There was an error submitting your support ticket');
+            success: function(data, textStatus, jqXHR) {
+                if (data == 'Email sent') {
+                    alert('JIRA Support Request email successfully sent.');
                 } else {
+                    alert('Successfully created JIRA support request: ' + data);
                     self.CancelSupportRequest();
-                    alert('Support Ticket Submitted Successfully');
                 }
-
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('There was an error submitting your support request: ' + errorThrown);
+            },
+            complete: function (jqXHR, textStatus) {
                 $("#supportPopup").unblock();
             }
         });
