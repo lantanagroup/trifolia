@@ -60,13 +60,21 @@ namespace Trifolia.Web.Controllers.API
 
                 string lSubject = string.Format("Trifolia Support: {0}", model.Summary);
 
-                client.Send(
-                    AppSettings.MailFromAddress,
-                    AppSettings.SupportEmailTo,
-                    lSubject,
-                    lBody);
+                try
+                {
+                    client.Send(
+                        AppSettings.MailFromAddress,
+                        AppSettings.SupportEmailTo,
+                        lSubject,
+                        lBody);
 
-                return "Email sent";
+                    return "Email sent";
+                }
+                catch (Exception ex)
+                {
+                    Log.For(this).Error("Error sending support request email", ex);
+                    throw ex;
+                }
             }
             else
             {
