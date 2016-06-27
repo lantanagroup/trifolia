@@ -114,7 +114,7 @@ namespace Trifolia.Test
                 timestamp,
                 Trifolia.Config.AppSettings.HL7ApiKey);
             
-            string actual = HL7AuthHelper.GetComplianceUrl(destination, username, description);
+            string actual = HL7AuthHelper.GetComplianceUrl(destination, username, description, timestamp);
             Assert.AreEqual(expected, actual);
         }
     }

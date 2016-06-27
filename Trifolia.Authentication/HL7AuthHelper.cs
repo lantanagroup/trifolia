@@ -36,9 +36,11 @@ namespace Trifolia.Authentication
             return timestamp;
         }
 
-        public static string GetComplianceUrl(string destination, string username, string description)
+        public static string GetComplianceUrl(string destination, string username, string description, int? timestamp = null)
         {
-            int timestamp = GetTimestamp();
+            if (timestamp == null)
+                timestamp = GetTimestamp();
+
             string requestHash = string.Format("{0}|{1}|{2}|{3}",
                 username,
                 destination,
