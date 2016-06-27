@@ -61,3 +61,4 @@ _ReSharper*/
 *.testsettings
 .vs/
 packages/
+Trifolia.Web/appSettings.user.config
