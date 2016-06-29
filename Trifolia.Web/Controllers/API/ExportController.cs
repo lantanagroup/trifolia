@@ -85,7 +85,17 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Export/XML"), SecurableAction(SecurableNames.EXPORT_XML)]
         public HttpResponseMessage ExportXML(XMLSettingsModel model)
         {
-            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == model.ImplementationGuideId);
+            if (model == null)
+                throw new ArgumentNullException("model");
+
+            if (model.ImplementationGuideId == 0)
+                throw new ArgumentNullException("model.ImplementationGuideId");
+
+            ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == model.ImplementationGuideId);
+
+            if (ig == null)
+                throw new Exception("Implementation guide with id " + model.ImplementationGuideId + " was not found");
+
             List<Template> templates = this.tdb.Templates.Where(y => model.TemplateIds.Contains(y.Id)).ToList();
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, model.ImplementationGuideId);
             string fileName = string.Format("{0}.xml", ig.GetDisplayName(true));
