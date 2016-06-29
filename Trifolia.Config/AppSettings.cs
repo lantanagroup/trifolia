@@ -25,6 +25,38 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string OAuth2AuthorizationEndpoint
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OAuth2AuthorizationEndpoint"];
+            }
+        }
+
+        public static string OAuth2TokenEndpoint
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OAuth2TokenEndpoint"];
+            }
+        }
+
+        public static string OAuth2ClientIdentifier
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OAuth2ClientIdentifier"];
+            }
+        }
+
+        public static string OAuth2ClientSecret
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OAuth2ClientSecret"];
+            }
+        }
+
         public static string HL7ApiKey
         {
             get

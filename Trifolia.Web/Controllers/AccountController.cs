@@ -20,17 +20,24 @@ using Trifolia.Web.Models.Account;
 using Trifolia.DB;
 using Trifolia.Config;
 
+using DotNetOpenAuth.AspNet;
+using DotNetOpenAuth.OAuth2;
+using DotNetOpenAuth.Messaging;
+using System.Reflection;
+
 namespace Trifolia.Web.Controllers
 {
     public class AccountController : Controller
     {
         private IObjectRepository tdb;
+        private WebServerClient authClient;
 
         #region Constructors 
 
         public AccountController()
+            : this(new TemplateDatabaseDataSource())
         {
-            this.tdb = new TemplateDatabaseDataSource();
+            this.authClient = CreateClient();
         }
 
         public AccountController(IObjectRepository tdb)
@@ -142,16 +149,130 @@ namespace Trifolia.Web.Controllers
 
         #endregion
 
+        #region OAuth2 Login
+
+
+        public static WebServerClient CreateClient()
+        {
+            if (string.IsNullOrEmpty(AppSettings.OAuth2ClientIdentifier))
+            {
+                Log.For(typeof(AccountController)).Error("OAuth2ClientIdentifier is not specified in configuration!");
+                throw new Exception("Authentication is incorrectly configured");
+            }
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2ClientSecret))
+            {
+                Log.For(typeof(AccountController)).Error("OAuth2ClientSecret is not specified in configuration!");
+                throw new Exception("Authentication is incorrectly configured");
+            }
+
+            var desc = GetAuthServerDescription();
+            var client = new WebServerClient(desc, clientIdentifier: AppSettings.OAuth2ClientIdentifier);
+            client.ClientCredentialApplicator = ClientCredentialApplicator.PostParameter(AppSettings.OAuth2ClientSecret);
+            return client;
+        }
+
+        public static AuthorizationServerDescription GetAuthServerDescription()
+        {
+            if (string.IsNullOrEmpty(AppSettings.OAuth2AuthorizationEndpoint))
+            {
+                Log.For(typeof(AccountController)).Error("OAuth2AuthorizationEndpoint is not specified in configuration!");
+                throw new Exception("Authentication is incorrectly configured");
+            }
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2TokenEndpoint))
+            {
+                Log.For(typeof(AccountController)).Error("OAuth2TokenEndpoint is not specified in configuration!");
+                throw new Exception("Authentication is incorrectly configured");
+            }
+
+            var authServerDescription = new AuthorizationServerDescription();
+            authServerDescription.AuthorizationEndpoint = new Uri(AppSettings.OAuth2AuthorizationEndpoint);
+            authServerDescription.TokenEndpoint = new Uri(AppSettings.OAuth2TokenEndpoint);
+            authServerDescription.ProtocolVersion = ProtocolVersion.V20;
+            return authServerDescription;
+        }
+
         [AllowAnonymous]
         public ActionResult Login(string ReturnUrl = null)
         {
-            if (CheckPoint.Instance.IsAuthenticated)
-                return RedirectToAction("LoggedInIndex", "Home");
-
-            LoginModel model = GetLoginModel(returnUrl: ReturnUrl);
-
-            return View("Login", model);
+            if (string.IsNullOrEmpty(Request.QueryString["code"]))
+            {
+                return InitAuth();
+            }
+            else
+            {
+                return OAuthCallback();
+            }
         }
+
+        private ActionResult InitAuth()
+        {
+            var state = new AuthorizationState();
+            var uri = Request.Url.AbsoluteUri;
+            uri = RemoveQueryStringFromUri(uri);
+            state.Callback = new Uri(uri);
+            state.Scope.Add("openid");
+
+            var r = this.authClient.PrepareRequestUserAuthorization(state);
+            return r.AsActionResult();
+        }
+
+        private static string RemoveQueryStringFromUri(string uri)
+        {
+            int index = uri.IndexOf('?');
+            if (index > -1)
+            {
+                uri = uri.Substring(0, index);
+            }
+            return uri;
+        }
+
+        private void RemoveQueryStringParam(string paramName)
+        {
+            // reflect to readonly property
+            PropertyInfo isreadonly = typeof(System.Collections.Specialized.NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            // make collection editable
+            isreadonly.SetValue(this.Request.QueryString, false, null);
+
+            // remove
+            this.Request.QueryString.Remove(paramName);
+
+            // make collection readonly again
+            isreadonly.SetValue(this.Request.QueryString, true, null);
+        }
+
+        private ActionResult OAuthCallback()
+        {
+            if (!string.IsNullOrEmpty(this.Request.QueryString["session_state"]))
+            {
+                var uri = new Uri(this.Request.Url.ToString());
+
+                // this gets all the query string key value pairs as a collection
+                var newQueryString = HttpUtility.ParseQueryString(uri.Query);
+
+                // this removes the key if exists
+                newQueryString.Remove("session_state");
+
+                // this gets the page path from root without QueryString
+                string pagePathWithoutQueryString = uri.GetLeftPart(UriPartial.Path);
+
+                var newUrl = newQueryString.Count > 0
+                    ? String.Format("{0}?{1}", pagePathWithoutQueryString, newQueryString)
+                    : pagePathWithoutQueryString;
+
+                return Redirect(newUrl);
+            }
+
+            var auth = this.authClient.ProcessUserAuthorization(this.Request);
+
+            FormsAuthentication.SetAuthCookie(auth.AccessToken, true);
+
+            return Redirect("/");
+        }
+
+        #endregion
 
         [AllowAnonymous]
         [HttpPost]
