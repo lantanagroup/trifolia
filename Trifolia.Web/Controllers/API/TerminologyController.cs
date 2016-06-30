@@ -101,6 +101,29 @@ namespace Trifolia.Web.Controllers.API
                     });
         }
 
+        [HttpGet, Route("api/Terminology/ValueSet/{valueSetId}/Concepts/{activeDate}"), SecurableAction(SecurableNames.VALUESET_LIST)]
+        public ConceptItems Concepts(int valueSetId, DateTime activeDate)
+        {
+            var valueSet = this.tdb.ValueSets.Single(y => y.Id == valueSetId);
+            var activeMembers = valueSet.GetActiveMembers(activeDate);
+            ConceptItems ci = new ConceptItems();
+            ci.rows = (from am in activeMembers
+                       select new ConceptItem()
+                       {
+                           Id = am.Id,
+                           Code = am.Code,
+                           DisplayName = am.DisplayName,
+                           CodeSystemId = am.CodeSystemId,
+                           CodeSystemName = am.CodeSystem.Name,
+                           CodeSystemOid = am.CodeSystem.Oid,
+                           Status = am.Status,
+                           StatusDate = am.StatusDate
+                       }).ToArray();
+            ci.total = ci.rows.Length;
+
+            return ci;
+        }
+
         [HttpGet, Route("api/Terminology/ValueSet/{valueSetId}/Concepts"), SecurableAction(SecurableNames.VALUESET_LIST)]
         public ConceptItems Concepts(int valueSetId, int? page = null, string query = null, int count = 20)
         {
