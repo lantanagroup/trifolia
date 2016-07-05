@@ -9,9 +9,7 @@ Trifolia template/profile editor, repository and publication tool
 
 - Visual Studio 2012 or 2015 (at least Express for Web)
 - SQL Server 2012 or newer
-- Create a SQL database named "templatedb" (or give it a custom name and update the web.config respectively)
-- Create a SQL server alias to your instance of SQL server called "MSQLSERVER" (or update the web.config to use your own instance name)
-- Run DB installation script (TODO: new installation script yet to be created)
+- Run DB installation script
 - Seed the database (TODO)
 - Restore all NuGet packages either manually using "nuget restore" or via Visual Studio
 - Build all projects in the solution
@@ -34,11 +32,59 @@ When running in debug mode, the default Web.config is used which has a custom au
 | student1 | student |
 | student2 - 20 | student |
 
+## Installation Scripts
+Two installation scripts are provided (\Install.ps1 and \Database\InstallDB.ps1). Both scripts are powershell scripts and can be run from the machine's command-prompt (ex: "powershell Install.ps1").
+
+### Application Install Script
+The Install.ps1 script is responsible for deploying the packaged files to an arbitrary location. Additionally, it updates the web.config to account for environment-specific settings such as database server, database name, etc. This install script is generally only used to install Trifolia in a non-developer environment (such as a production server).
+
+This script expects the files in the specified directory to be packaged by the "prepare_backage.bat" script. The prepare_package.bat script is responsible for creating a "Dist" directory and copying the appropriate files to their correct locations within the Dist directory. This script assumes the application has been built using Visual Studio or MSBuild with the /package flag.
+
+```
+code\root] powershell Install.ps1 -rootPath "Dist" -appServicePath "c:\destination\location\for\iis" -appServiceBaseUrl "https://trifolia.lantanagroup.com" -ADUsername "active_directory_user" -ADPassword "active_directory_pass" -DBHost MSSQLSERVER -DBName trifolia
+```
+
+**Options**
+
+| Param | Description | Default |
+| ----- | ----------- | ------- |
+| -rootPath | The path to the directory that contains the install files (equivilant to the Dist directory after having run prepare_package.bat | Dist |
+| -appServicePath | The destination directory to install the all of the application files to that IIS will host the application from. The directory must already exist. | c:\trifolia |
+| -appServiceBaseUrl | The URL that Trifolia will be hosted from | http://trifolia |
+| -ADConnection | The LDAP connection string for active directory authentications erver | TestADConnectionString |
+| -ADUsername | The username that can authentication against the directory to validate credentials provided to Trifolia | TestADUser |
+| -ADPassword | The password for the user that can authentication against the directory to validate credentials provided to Trifolia | TestADPass |
+| -DBHost | The hostname of the server that has the SQL Server database on it | MSSQLSERVER |
+| -DBName | The name of the database | trifolia |
+
+### Database Installation Script
+The database requires SQL Server 2012 or greater. If creating a brand new installation of Trifolia's database, the -new switch should be provided to the powershell script. The -new switch will trigger creating a fresh install of the database (using the scripts in the "Database\New" directory, as well as prompt the user running the install script to provide some additional information for administrative users and organizations. If the -new switch is omitted, then the "Upgrade" scripts will be executed for the version specified.
+
+**Example creating new database**
+```
+code\root] powershell Database\InstallDB.ps1 -databaseDirectory Database -appVersion 4.0.0 -databaseServer MSSQLSERVER -databaseName trifolia -new
+```
+
+**Example upgrading existing database**
+```
+code\root] powershell Database\InstallDB.ps1 -databaseDirectory Database -appVersion 4.1.0 -databaseServer MSSQLSERVER -databaseName trifolia
+```
+
+**Options**
+
+| Param | Description | Default |
+| ----- | ----------- | ------- |
+| -databaseDirectory | The directory in which the database scripts are stored (includes the "New" and "Upgrade" folders) | Database |
+| -appVersion | The version number of the application to install/upgrade the database for | |
+| -databaseServer | The host name of the server that SQL Server 2012+ is installed on | |
+| -databaseName | The name of the database to run the installation/upgrade scripts against. If a new database, will attempt to create the database if it is not already created. |
+| -new | Switch that indicates that the database should be installed as a new database, rather than upgrading an existing database | No/upgrade |
+
 ## Production Installation/Upgrade
 
-- Compile all projects (follow the "Developer Setup" steps above) in the solution
+- Compile all projects using Visual Studio's package feature, or with MSBuild using the /package:"Install Release" switch
 - Execute *prepare_package.bat . "Install Release"* from the SLN folder. This will place all files that need to be deployed in a "Dist" directory
-- Create and seed a database for production use
+- Create and seed a database for production use (see "Database Installation Script" above)
 - Create an IIS web site for the folder that uses a v4.5 app pool. Ensure that the app pool has permissions to the Trifolia directory and the directory where Trifolia data is stored
 - Extract/copy all files from the Dist directory to a temporary location on the destination computer
 - Execute "powershell.exe Install.ps1" from the temporary directory. Provide values for each of the parameters used by the script
@@ -54,16 +100,6 @@ After having acquired these keys, you can store them in your appSettings.user.co
 ## Application Setup
 
 Once the application is installed and running, you will need to perform (at least) a couple administrative tasks to make Trifolia functional/usable.
-
-### Grant permissions for the first administrative user
-
-1. Login with an account that you would like to make an administrative account.
-2. After the profile has been created in Trifolia for your account, update the database directly to grant administrative rights to the account.
-
-  ```
-  insert into user_role select top 1 [user].id, [role].id from [user], [role] where email = 'my.email@domain.com' and [role].name = 'Administrators'
-  ```
-3. Refreshing the browser after adding the "Administrators" role to your user will show additional menus that allow management of Trifolia within the application.
 
 ### Add implementation guide types (schemas)
 

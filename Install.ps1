@@ -2,14 +2,14 @@ Param(
     [Parameter(Mandatory=$True)]
     $rootPath='Dist',
     [Parameter(Mandatory=$True)]
-    $appServicePath='c:\\tdbmgmt\\app',
+    $appServicePath='c:\\trifolia',
     [Parameter(Mandatory=$True)]
-    $appServiceBaseUrl='http://tdbmgmt', 
+    $appServiceBaseUrl='http://trifolia', 
     $ADConnection='TestADConnectionString', 
     $ADUsername='TestADUser', 
     $ADPassword='TestADPass', 
     $DBHost='MSSQLSERVER', 
-    $DBName='templatedb', 
+    $DBName='trifolia', 
     $JavaLocation='c:\\Program Files\\Java\\jre6\\bin\\java.exe')
 
 $sourceAppWebConfigPath = "$rootPath\Trifolia.Web\Web.config"
