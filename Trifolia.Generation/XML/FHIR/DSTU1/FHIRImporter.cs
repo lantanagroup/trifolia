@@ -47,7 +47,7 @@ namespace Trifolia.Generation.XML.FHIR.DSTU1
         public void Import(string bundleXml)
         {
             string templatesXml = TransformBundle(bundleXml);
-            XmlSerializer serializer = new XmlSerializer(typeof(TemplateExport));
+            XmlSerializer serializer = new XmlSerializer(typeof(Trifolia.Shared.ImportExport.Model.Trifolia));
 
             List<Template> templates = this.importer.Import(templatesXml);
 

@@ -13,7 +13,7 @@ using Trifolia.Generation.Schematron.ConstraintToDocumentElementMap;
 using Trifolia.Shared;
 using Trifolia.Shared.ImportExport;
 using Trifolia.Shared.ImportExport.Model;
-using ImportTemplate = Trifolia.Shared.ImportExport.Model.TemplateExportTemplate;
+using ImportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using Template = Trifolia.DB.Template;
 using ValueSet = Trifolia.DB.ValueSet;
 using CodeSystem = Trifolia.DB.CodeSystem;

@@ -133,6 +133,7 @@
     <Compile Include="XML\FHIR\DSTU1\FHIRExporter.cs" />
     <Compile Include="XML\FHIR\DSTU1\FHIRImporter.cs" />
     <Compile Include="XML\FHIR\DSTU2\FHIRExporter.cs" />
+    <Compile Include="XML\ImplementationGuideExtension.cs" />
     <Compile Include="XML\TemplateConstraintExtension.cs" />
     <Compile Include="XML\TemplateExporter.cs" />
     <Compile Include="XML\TemplateExtension.cs" />

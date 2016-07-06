@@ -3,7 +3,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:lcg="http://www.lantanagroup.com"
 	targetNamespace="http://www.lantanagroup.com" elementFormDefault="qualified"
 	attributeFormDefault="unqualified">
-	<xs:element name="TemplateExport">
+	<xs:element name="Trifolia">
 		<xs:annotation>
 			<xs:documentation>Comment describing your root element</xs:documentation>
 		</xs:annotation>
@@ -12,6 +12,13 @@
 				<xs:element name="Template" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
+							<xs:element name="ImplementationGuide">
+								<xs:complexType>
+									<xs:attribute name="name" use="required"/>
+									<xs:attribute default="1" name="version" type="xs:int"
+										use="optional"/>
+								</xs:complexType>
+							</xs:element>
 							<xs:element name="PreviousVersion" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="name" type="xs:string"/>
@@ -40,9 +47,77 @@
 						<xs:attribute name="contextType" type="xs:string"/>
 						<xs:attribute name="isOpen" type="xs:boolean"/>
 						<xs:attribute name="impliedTemplateOid" type="xs:string"/>
-						<xs:attribute name="owningImplementationGuideName" type="xs:string"/>
 						<xs:attribute name="organizationName" type="xs:string"/>
 						<xs:attribute name="publishStatus" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element maxOccurs="unbounded" minOccurs="0" name="ImplementationGuide">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element minOccurs="0" name="WebDescription" type="xs:string"/>
+							<xs:element minOccurs="0" name="WebReadmeOverview" type="xs:string"/>
+							<xs:element minOccurs="0" name="PreviousVersion">
+								<xs:complexType>
+									<xs:attribute name="name" use="required"/>
+									<xs:attribute name="number" type="xs:int" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element maxOccurs="unbounded" minOccurs="0"
+								name="CustomTemplateType">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="CustomName" type="xs:string"/>
+										<xs:element minOccurs="0" name="Description"
+											type="xs:string"/>
+									</xs:sequence>
+									<xs:attribute name="templateTypeName"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element maxOccurs="5" minOccurs="0" name="CardinalityDisplay">
+								<xs:complexType>
+									<xs:attribute name="cardinality"/>
+									<xs:attribute name="display"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element maxOccurs="unbounded" minOccurs="0" name="CustomSchematron">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element minOccurs="0" name="Rule" type="xs:string"/>
+									</xs:sequence>
+									<xs:attribute name="phase" use="required"/>
+									<xs:attribute name="patternId" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element minOccurs="0" name="Volume1">
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="Html" type="xs:string"/>
+										<xs:sequence>
+											<xs:element maxOccurs="unbounded" minOccurs="0"
+												name="Section">
+												<xs:complexType>
+												<xs:sequence>
+												<xs:element minOccurs="1" name="Heading">
+												<xs:complexType>
+												<xs:sequence>
+												<xs:element name="Title" type="xs:string"/>
+												<xs:element name="Level" type="xs:int"/>
+												</xs:sequence>
+												</xs:complexType>
+												</xs:element>
+												<xs:element minOccurs="0" name="Content"
+												type="xs:string"/>
+												</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="name" use="required"/>
+						<xs:attribute name="displayName"/>
+						<xs:attribute name="webDisplayName"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

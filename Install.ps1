@@ -37,8 +37,6 @@ Write-Host ""
 
 Write-Host "Updating main app service's web.config with correct parameters at $destAppWebConfigPath."
 # Fix the web configs by replacing the keys with the proper values
-$appWebConfig = $appWebConfig -replace "%VOCABULARY_SERVICE_BASE_URL%", $vocabServiceBaseUrl
-$appWebConfig = $appWebConfig -replace "%VALIDATION_SERVICE_BASE_URL%", $validationServiceBaseUrl
 $appWebConfig = $appWebConfig -replace "%AD_CONNECTION_STRING%", $ADConnection
 $appWebConfig = $appWebConfig -replace "%AD_USERNAME%", $ADUsername
 $appWebConfig = $appWebConfig -replace "%AD_PASSWORD%", $ADPassword

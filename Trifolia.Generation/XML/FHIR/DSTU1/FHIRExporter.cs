@@ -37,7 +37,7 @@ namespace Trifolia.Generation.XML.FHIR.DSTU1
 
         public string GenerateExport()
         {
-            string templateExport = TemplateExporter.GenerateExport(this.tdb, this.templates, this.igSettings, true, this.categories);
+            string templateExport = TemplateExporter.GenerateXMLExport(this.tdb, this.templates, this.igSettings, true, this.categories);
             LantanaXmlResolver resolver = new LantanaXmlResolver();
             string stylesheetContent = string.Empty;
             

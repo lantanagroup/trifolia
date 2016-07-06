@@ -9,8 +9,8 @@ using Trifolia.DB;
 using Trifolia.Authorization;
 using TDBTemplate = Trifolia.DB.Template;
 using TDBTemplateConstraint = Trifolia.DB.TemplateConstraint;
-using ImportModel = Trifolia.Shared.ImportExport.Model.TemplateExport;
-using ImportTemplate = Trifolia.Shared.ImportExport.Model.TemplateExportTemplate;
+using ImportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
+using ImportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using ImportConstraint = Trifolia.Shared.ImportExport.Model.ConstraintType;
 using ImportSingleValueCode = Trifolia.Shared.ImportExport.Model.ConstraintTypeSingleValueCode;
 using ImportValueSet = Trifolia.Shared.ImportExport.Model.ConstraintTypeValueSet;
@@ -21,7 +21,7 @@ namespace Trifolia.Shared.ImportExport
     public class TemplateImporter
     {
         private IObjectRepository tdb = null;
-        private List<ImportTemplate> importTemplates = null;
+        private List<Trifolia.Shared.ImportExport.Model.TrifoliaTemplate> importTemplates = null;
         private List<string> errors = null;
         private List<TDBTemplate> newTemplates = null;
         private bool shouldUpdate = false;
@@ -43,7 +43,7 @@ namespace Trifolia.Shared.ImportExport
 
         public List<TDBTemplate> Import(string importXml)
         {
-            ImportModel import = null;
+            Trifolia.Shared.ImportExport.Model.Trifolia import = null;
 
             this.errors = new List<string>();
             this.newTemplates = new List<TDBTemplate>();
@@ -52,8 +52,8 @@ namespace Trifolia.Shared.ImportExport
             {
                 using (StringReader sr = new StringReader(importXml))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(ImportModel));
-                    import = (ImportModel)serializer.Deserialize(sr);
+                    XmlSerializer serializer = new XmlSerializer(typeof(Trifolia.Shared.ImportExport.Model.Trifolia));
+                    import = (Trifolia.Shared.ImportExport.Model.Trifolia)serializer.Deserialize(sr);
                 }
             }
             catch
@@ -61,7 +61,7 @@ namespace Trifolia.Shared.ImportExport
                 return this.newTemplates;
             }
 
-            this.importTemplates = new List<ImportTemplate>(import.Template);
+            this.importTemplates = new List<Trifolia.Shared.ImportExport.Model.TrifoliaTemplate>(import.Template);
 
             this.importTemplates.ForEach(y =>
             {
@@ -96,7 +96,7 @@ namespace Trifolia.Shared.ImportExport
             return false;
         }
 
-        private TDBTemplate AddImportTemplate(ImportTemplate importTemplate)
+        private TDBTemplate AddImportTemplate(Trifolia.Shared.ImportExport.Model.TrifoliaTemplate importTemplate)
         {
             var alreadyBuildTemplate = this.newTemplates.SingleOrDefault(y => y.Oid == importTemplate.identifier);
 
@@ -166,15 +166,20 @@ namespace Trifolia.Shared.ImportExport
             newTemplate.ImplementationGuideType = igType;
             newTemplate.ImplementationGuideTypeId = igType.Id;
 
-            if (!string.IsNullOrEmpty(importTemplate.owningImplementationGuideName))
+            if (!string.IsNullOrEmpty(importTemplate.ImplementationGuide.name))
             {
-                ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Name.ToLower() == importTemplate.owningImplementationGuideName.ToLower());
+                ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => 
+                    y.Name.ToLower() == importTemplate.ImplementationGuide.name.ToLower() &&
+                    (
+                        (y.Version == null && importTemplate.ImplementationGuide.version == 1) || 
+                        (y.Version != null && y.Version.Value == importTemplate.ImplementationGuide.version)
+                    ));
 
                 if (ig == null)
                 {
                     this.errors.Add(string.Format(
                         "Could not find implementation guide \"{0}\" for template with identifier \"{1}\"",
-                        importTemplate.owningImplementationGuideName,
+                        importTemplate.ImplementationGuide.name,
                         importTemplate.identifier));
                     return null;
                 }
@@ -182,7 +187,7 @@ namespace Trifolia.Shared.ImportExport
                 {
                     this.errors.Add(string.Format(
                         "The implementation guide type for the implementation guide \"{0}\" is not the same as the import.",
-                        importTemplate.owningImplementationGuideName));
+                        importTemplate.ImplementationGuide.name));
                     return null;
                 }
 
