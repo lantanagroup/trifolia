@@ -273,6 +273,8 @@ namespace Trifolia.Shared.ImportExport.Model
         public List<ConstraintType> Constraint { get; set; }
         [System.Xml.Serialization.XmlElementAttribute("Extension", Order = 5)]
         public List<TrifoliaTemplateExtension> Extension { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute("Sample", Order = 6)]
+        public List<TrifoliaTemplateSample> Sample { get; set; }
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string identifier { get; set; }
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -300,6 +302,7 @@ namespace Trifolia.Shared.ImportExport.Model
 
         public TrifoliaTemplate()
         {
+            this.Sample = new List<TrifoliaTemplateSample>();
             this.Extension = new List<TrifoliaTemplateExtension>();
             this.Constraint = new List<ConstraintType>();
             this.PreviousVersion = new TrifoliaTemplatePreviousVersion();
@@ -332,6 +335,14 @@ namespace Trifolia.Shared.ImportExport.Model
         public virtual bool ShouldSerializeExtension()
         {
             return Extension != null && Extension.Count > 0;
+        }
+
+        /// <summary>
+        /// Test whether Sample should be serialized
+        /// </summary>
+        public virtual bool ShouldSerializeSample()
+        {
+            return Sample != null && Sample.Count > 0;
         }
 
         /// <summary>
@@ -755,8 +766,6 @@ namespace Trifolia.Shared.ImportExport.Model
     public partial class ConstraintType
     {
 
-        private System.Nullable<ConstraintTypeConformance> _conformance;
-
         private static XmlSerializer serializer;
 
         [System.Xml.Serialization.XmlElementAttribute("SingleValueCode", typeof(ConstraintTypeSingleValueCode), Order = 0)]
@@ -771,8 +780,16 @@ namespace Trifolia.Shared.ImportExport.Model
         [System.Xml.Serialization.XmlElementAttribute(Order = 4)]
         public string Description { get; set; }
         [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
+        public string Notes { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
         public string Label { get; set; }
-        [System.Xml.Serialization.XmlElementAttribute("Constraint", Order = 6)]
+        [System.Xml.Serialization.XmlElementAttribute(Order = 7)]
+        public string HeadingDescription { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute("Category", Order = 8)]
+        public List<ConstraintTypeCategory> Category { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute("Sample", Order = 9)]
+        public List<ConstraintTypeSample> Sample { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute("Constraint", Order = 10)]
         public List<ConstraintType> Constraint { get; set; }
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int number { get; set; }
@@ -782,6 +799,8 @@ namespace Trifolia.Shared.ImportExport.Model
         public string displayNumber { get; set; }
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string context { get; set; }
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public ConstraintTypeConformance conformance { get; set; }
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string cardinality { get; set; }
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -817,10 +836,15 @@ namespace Trifolia.Shared.ImportExport.Model
         [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(false)]
         public bool isModifier { get; set; }
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool isHeading { get; set; }
 
         public ConstraintType()
         {
             this.Constraint = new List<ConstraintType>();
+            this.Sample = new List<ConstraintTypeSample>();
+            this.Category = new List<ConstraintTypeCategory>();
             this.CodeSystem = new ConstraintTypeCodeSystem();
             this.isBranch = false;
             this.isBranchIdentifier = false;
@@ -829,42 +853,7 @@ namespace Trifolia.Shared.ImportExport.Model
             this.isSchRooted = false;
             this.mustSupport = false;
             this.isModifier = false;
-        }
-
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ConstraintTypeConformance conformance
-        {
-            get
-            {
-                if (this._conformance.HasValue)
-                {
-                    return this._conformance.Value;
-                }
-                else
-                {
-                    return default(ConstraintTypeConformance);
-                }
-            }
-            set
-            {
-                this._conformance = value;
-            }
-        }
-
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool conformanceSpecified
-        {
-            get
-            {
-                return this._conformance.HasValue;
-            }
-            set
-            {
-                if (value == false)
-                {
-                    this._conformance = null;
-                }
-            }
+            this.isHeading = false;
         }
 
         private static XmlSerializer Serializer
@@ -877,6 +866,22 @@ namespace Trifolia.Shared.ImportExport.Model
                 }
                 return serializer;
             }
+        }
+
+        /// <summary>
+        /// Test whether Category should be serialized
+        /// </summary>
+        public virtual bool ShouldSerializeCategory()
+        {
+            return Category != null && Category.Count > 0;
+        }
+
+        /// <summary>
+        /// Test whether Sample should be serialized
+        /// </summary>
+        public virtual bool ShouldSerializeSample()
+        {
+            return Sample != null && Sample.Count > 0;
         }
 
         /// <summary>
@@ -1714,9 +1719,428 @@ namespace Trifolia.Shared.ImportExport.Model
 
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
     [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.lantanagroup.com")]
+    public partial class ConstraintTypeCategory
+    {
+
+        private static XmlSerializer serializer;
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string name { get; set; }
+
+        private static XmlSerializer Serializer
+        {
+            get
+            {
+                if ((serializer == null))
+                {
+                    serializer = new XmlSerializerFactory().CreateSerializer(typeof(ConstraintTypeCategory));
+                }
+                return serializer;
+            }
+        }
+
+        #region Serialize/Deserialize
+        /// <summary>
+        /// Serializes current ConstraintTypeCategory object into an XML string
+        /// </summary>
+        /// <returns>string XML value</returns>
+        public virtual string Serialize()
+        {
+            System.IO.StreamReader streamReader = null;
+            System.IO.MemoryStream memoryStream = null;
+            try
+            {
+                memoryStream = new System.IO.MemoryStream();
+                System.Xml.XmlWriterSettings xmlWriterSettings = new System.Xml.XmlWriterSettings();
+                xmlWriterSettings.Indent = false;
+                System.Xml.XmlWriter xmlWriter = XmlWriter.Create(memoryStream, xmlWriterSettings);
+                Serializer.Serialize(xmlWriter, this);
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
+                streamReader = new System.IO.StreamReader(memoryStream);
+                return streamReader.ReadToEnd();
+            }
+            finally
+            {
+                if ((streamReader != null))
+                {
+                    streamReader.Dispose();
+                }
+                if ((memoryStream != null))
+                {
+                    memoryStream.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deserializes workflow markup into an ConstraintTypeCategory object
+        /// </summary>
+        /// <param name="input">string workflow markup to deserialize</param>
+        /// <param name="obj">Output ConstraintTypeCategory object</param>
+        /// <param name="exception">output Exception value if deserialize failed</param>
+        /// <returns>true if this Serializer can deserialize the object; otherwise, false</returns>
+        public static bool Deserialize(string input, out ConstraintTypeCategory obj, out System.Exception exception)
+        {
+            exception = null;
+            obj = default(ConstraintTypeCategory);
+            try
+            {
+                obj = Deserialize(input);
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                exception = ex;
+                return false;
+            }
+        }
+
+        public static bool Deserialize(string input, out ConstraintTypeCategory obj)
+        {
+            System.Exception exception = null;
+            return Deserialize(input, out obj, out exception);
+        }
+
+        public static ConstraintTypeCategory Deserialize(string input)
+        {
+            System.IO.StringReader stringReader = null;
+            try
+            {
+                stringReader = new System.IO.StringReader(input);
+                return ((ConstraintTypeCategory)(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader))));
+            }
+            finally
+            {
+                if ((stringReader != null))
+                {
+                    stringReader.Dispose();
+                }
+            }
+        }
+
+        public static ConstraintTypeCategory Deserialize(System.IO.Stream s)
+        {
+            return ((ConstraintTypeCategory)(Serializer.Deserialize(s)));
+        }
+        #endregion
+
+        /// <summary>
+        /// Serializes current ConstraintTypeCategory object into file
+        /// </summary>
+        /// <param name="fileName">full path of outupt xml file</param>
+        /// <param name="exception">output Exception value if failed</param>
+        /// <returns>true if can serialize and save into file; otherwise, false</returns>
+        public virtual bool SaveToFile(string fileName, out System.Exception exception)
+        {
+            exception = null;
+            try
+            {
+                SaveToFile(fileName);
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                exception = e;
+                return false;
+            }
+        }
+
+        public virtual void SaveToFile(string fileName)
+        {
+            System.IO.StreamWriter streamWriter = null;
+            try
+            {
+                string xmlString = Serialize();
+                System.IO.FileInfo xmlFile = new System.IO.FileInfo(fileName);
+                streamWriter = xmlFile.CreateText();
+                streamWriter.WriteLine(xmlString);
+                streamWriter.Close();
+            }
+            finally
+            {
+                if ((streamWriter != null))
+                {
+                    streamWriter.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deserializes xml markup from file into an ConstraintTypeCategory object
+        /// </summary>
+        /// <param name="fileName">string xml file to load and deserialize</param>
+        /// <param name="obj">Output ConstraintTypeCategory object</param>
+        /// <param name="exception">output Exception value if deserialize failed</param>
+        /// <returns>true if this Serializer can deserialize the object; otherwise, false</returns>
+        public static bool LoadFromFile(string fileName, out ConstraintTypeCategory obj, out System.Exception exception)
+        {
+            exception = null;
+            obj = default(ConstraintTypeCategory);
+            try
+            {
+                obj = LoadFromFile(fileName);
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                exception = ex;
+                return false;
+            }
+        }
+
+        public static bool LoadFromFile(string fileName, out ConstraintTypeCategory obj)
+        {
+            System.Exception exception = null;
+            return LoadFromFile(fileName, out obj, out exception);
+        }
+
+        public static ConstraintTypeCategory LoadFromFile(string fileName)
+        {
+            System.IO.FileStream file = null;
+            System.IO.StreamReader sr = null;
+            try
+            {
+                file = new System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read);
+                sr = new System.IO.StreamReader(file);
+                string xmlString = sr.ReadToEnd();
+                sr.Close();
+                file.Close();
+                return Deserialize(xmlString);
+            }
+            finally
+            {
+                if ((file != null))
+                {
+                    file.Dispose();
+                }
+                if ((sr != null))
+                {
+                    sr.Dispose();
+                }
+            }
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.lantanagroup.com")]
+    public partial class ConstraintTypeSample
+    {
+
+        private static XmlSerializer serializer;
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string name { get; set; }
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public string Value { get; set; }
+
+        private static XmlSerializer Serializer
+        {
+            get
+            {
+                if ((serializer == null))
+                {
+                    serializer = new XmlSerializerFactory().CreateSerializer(typeof(ConstraintTypeSample));
+                }
+                return serializer;
+            }
+        }
+
+        #region Serialize/Deserialize
+        /// <summary>
+        /// Serializes current ConstraintTypeSample object into an XML string
+        /// </summary>
+        /// <returns>string XML value</returns>
+        public virtual string Serialize()
+        {
+            System.IO.StreamReader streamReader = null;
+            System.IO.MemoryStream memoryStream = null;
+            try
+            {
+                memoryStream = new System.IO.MemoryStream();
+                System.Xml.XmlWriterSettings xmlWriterSettings = new System.Xml.XmlWriterSettings();
+                xmlWriterSettings.Indent = false;
+                System.Xml.XmlWriter xmlWriter = XmlWriter.Create(memoryStream, xmlWriterSettings);
+                Serializer.Serialize(xmlWriter, this);
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
+                streamReader = new System.IO.StreamReader(memoryStream);
+                return streamReader.ReadToEnd();
+            }
+            finally
+            {
+                if ((streamReader != null))
+                {
+                    streamReader.Dispose();
+                }
+                if ((memoryStream != null))
+                {
+                    memoryStream.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deserializes workflow markup into an ConstraintTypeSample object
+        /// </summary>
+        /// <param name="input">string workflow markup to deserialize</param>
+        /// <param name="obj">Output ConstraintTypeSample object</param>
+        /// <param name="exception">output Exception value if deserialize failed</param>
+        /// <returns>true if this Serializer can deserialize the object; otherwise, false</returns>
+        public static bool Deserialize(string input, out ConstraintTypeSample obj, out System.Exception exception)
+        {
+            exception = null;
+            obj = default(ConstraintTypeSample);
+            try
+            {
+                obj = Deserialize(input);
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                exception = ex;
+                return false;
+            }
+        }
+
+        public static bool Deserialize(string input, out ConstraintTypeSample obj)
+        {
+            System.Exception exception = null;
+            return Deserialize(input, out obj, out exception);
+        }
+
+        public static ConstraintTypeSample Deserialize(string input)
+        {
+            System.IO.StringReader stringReader = null;
+            try
+            {
+                stringReader = new System.IO.StringReader(input);
+                return ((ConstraintTypeSample)(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader))));
+            }
+            finally
+            {
+                if ((stringReader != null))
+                {
+                    stringReader.Dispose();
+                }
+            }
+        }
+
+        public static ConstraintTypeSample Deserialize(System.IO.Stream s)
+        {
+            return ((ConstraintTypeSample)(Serializer.Deserialize(s)));
+        }
+        #endregion
+
+        /// <summary>
+        /// Serializes current ConstraintTypeSample object into file
+        /// </summary>
+        /// <param name="fileName">full path of outupt xml file</param>
+        /// <param name="exception">output Exception value if failed</param>
+        /// <returns>true if can serialize and save into file; otherwise, false</returns>
+        public virtual bool SaveToFile(string fileName, out System.Exception exception)
+        {
+            exception = null;
+            try
+            {
+                SaveToFile(fileName);
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                exception = e;
+                return false;
+            }
+        }
+
+        public virtual void SaveToFile(string fileName)
+        {
+            System.IO.StreamWriter streamWriter = null;
+            try
+            {
+                string xmlString = Serialize();
+                System.IO.FileInfo xmlFile = new System.IO.FileInfo(fileName);
+                streamWriter = xmlFile.CreateText();
+                streamWriter.WriteLine(xmlString);
+                streamWriter.Close();
+            }
+            finally
+            {
+                if ((streamWriter != null))
+                {
+                    streamWriter.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deserializes xml markup from file into an ConstraintTypeSample object
+        /// </summary>
+        /// <param name="fileName">string xml file to load and deserialize</param>
+        /// <param name="obj">Output ConstraintTypeSample object</param>
+        /// <param name="exception">output Exception value if deserialize failed</param>
+        /// <returns>true if this Serializer can deserialize the object; otherwise, false</returns>
+        public static bool LoadFromFile(string fileName, out ConstraintTypeSample obj, out System.Exception exception)
+        {
+            exception = null;
+            obj = default(ConstraintTypeSample);
+            try
+            {
+                obj = LoadFromFile(fileName);
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                exception = ex;
+                return false;
+            }
+        }
+
+        public static bool LoadFromFile(string fileName, out ConstraintTypeSample obj)
+        {
+            System.Exception exception = null;
+            return LoadFromFile(fileName, out obj, out exception);
+        }
+
+        public static ConstraintTypeSample LoadFromFile(string fileName)
+        {
+            System.IO.FileStream file = null;
+            System.IO.StreamReader sr = null;
+            try
+            {
+                file = new System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read);
+                sr = new System.IO.StreamReader(file);
+                string xmlString = sr.ReadToEnd();
+                sr.Close();
+                file.Close();
+                return Deserialize(xmlString);
+            }
+            finally
+            {
+                if ((file != null))
+                {
+                    file.Dispose();
+                }
+                if ((sr != null))
+                {
+                    sr.Dispose();
+                }
+            }
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.lantanagroup.com")]
     public enum ConstraintTypeConformance
     {
+
+        /// <remarks/>
+        NONE,
 
         /// <remarks/>
         SHALL,
@@ -2165,6 +2589,215 @@ namespace Trifolia.Shared.ImportExport.Model
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.lantanagroup.com")]
+    public partial class TrifoliaTemplateSample
+    {
+
+        private static XmlSerializer serializer;
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string name { get; set; }
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public string Value { get; set; }
+
+        private static XmlSerializer Serializer
+        {
+            get
+            {
+                if ((serializer == null))
+                {
+                    serializer = new XmlSerializerFactory().CreateSerializer(typeof(TrifoliaTemplateSample));
+                }
+                return serializer;
+            }
+        }
+
+        #region Serialize/Deserialize
+        /// <summary>
+        /// Serializes current TrifoliaTemplateSample object into an XML string
+        /// </summary>
+        /// <returns>string XML value</returns>
+        public virtual string Serialize()
+        {
+            System.IO.StreamReader streamReader = null;
+            System.IO.MemoryStream memoryStream = null;
+            try
+            {
+                memoryStream = new System.IO.MemoryStream();
+                System.Xml.XmlWriterSettings xmlWriterSettings = new System.Xml.XmlWriterSettings();
+                xmlWriterSettings.Indent = false;
+                System.Xml.XmlWriter xmlWriter = XmlWriter.Create(memoryStream, xmlWriterSettings);
+                Serializer.Serialize(xmlWriter, this);
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
+                streamReader = new System.IO.StreamReader(memoryStream);
+                return streamReader.ReadToEnd();
+            }
+            finally
+            {
+                if ((streamReader != null))
+                {
+                    streamReader.Dispose();
+                }
+                if ((memoryStream != null))
+                {
+                    memoryStream.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deserializes workflow markup into an TrifoliaTemplateSample object
+        /// </summary>
+        /// <param name="input">string workflow markup to deserialize</param>
+        /// <param name="obj">Output TrifoliaTemplateSample object</param>
+        /// <param name="exception">output Exception value if deserialize failed</param>
+        /// <returns>true if this Serializer can deserialize the object; otherwise, false</returns>
+        public static bool Deserialize(string input, out TrifoliaTemplateSample obj, out System.Exception exception)
+        {
+            exception = null;
+            obj = default(TrifoliaTemplateSample);
+            try
+            {
+                obj = Deserialize(input);
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                exception = ex;
+                return false;
+            }
+        }
+
+        public static bool Deserialize(string input, out TrifoliaTemplateSample obj)
+        {
+            System.Exception exception = null;
+            return Deserialize(input, out obj, out exception);
+        }
+
+        public static TrifoliaTemplateSample Deserialize(string input)
+        {
+            System.IO.StringReader stringReader = null;
+            try
+            {
+                stringReader = new System.IO.StringReader(input);
+                return ((TrifoliaTemplateSample)(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader))));
+            }
+            finally
+            {
+                if ((stringReader != null))
+                {
+                    stringReader.Dispose();
+                }
+            }
+        }
+
+        public static TrifoliaTemplateSample Deserialize(System.IO.Stream s)
+        {
+            return ((TrifoliaTemplateSample)(Serializer.Deserialize(s)));
+        }
+        #endregion
+
+        /// <summary>
+        /// Serializes current TrifoliaTemplateSample object into file
+        /// </summary>
+        /// <param name="fileName">full path of outupt xml file</param>
+        /// <param name="exception">output Exception value if failed</param>
+        /// <returns>true if can serialize and save into file; otherwise, false</returns>
+        public virtual bool SaveToFile(string fileName, out System.Exception exception)
+        {
+            exception = null;
+            try
+            {
+                SaveToFile(fileName);
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                exception = e;
+                return false;
+            }
+        }
+
+        public virtual void SaveToFile(string fileName)
+        {
+            System.IO.StreamWriter streamWriter = null;
+            try
+            {
+                string xmlString = Serialize();
+                System.IO.FileInfo xmlFile = new System.IO.FileInfo(fileName);
+                streamWriter = xmlFile.CreateText();
+                streamWriter.WriteLine(xmlString);
+                streamWriter.Close();
+            }
+            finally
+            {
+                if ((streamWriter != null))
+                {
+                    streamWriter.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deserializes xml markup from file into an TrifoliaTemplateSample object
+        /// </summary>
+        /// <param name="fileName">string xml file to load and deserialize</param>
+        /// <param name="obj">Output TrifoliaTemplateSample object</param>
+        /// <param name="exception">output Exception value if deserialize failed</param>
+        /// <returns>true if this Serializer can deserialize the object; otherwise, false</returns>
+        public static bool LoadFromFile(string fileName, out TrifoliaTemplateSample obj, out System.Exception exception)
+        {
+            exception = null;
+            obj = default(TrifoliaTemplateSample);
+            try
+            {
+                obj = LoadFromFile(fileName);
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                exception = ex;
+                return false;
+            }
+        }
+
+        public static bool LoadFromFile(string fileName, out TrifoliaTemplateSample obj)
+        {
+            System.Exception exception = null;
+            return LoadFromFile(fileName, out obj, out exception);
+        }
+
+        public static TrifoliaTemplateSample LoadFromFile(string fileName)
+        {
+            System.IO.FileStream file = null;
+            System.IO.StreamReader sr = null;
+            try
+            {
+                file = new System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read);
+                sr = new System.IO.StreamReader(file);
+                string xmlString = sr.ReadToEnd();
+                sr.Close();
+                file.Close();
+                return Deserialize(xmlString);
+            }
+            finally
+            {
+                if ((file != null))
+                {
+                    file.Dispose();
+                }
+                if ((sr != null))
+                {
+                    sr.Dispose();
+                }
+            }
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.lantanagroup.com")]
     public partial class TrifoliaImplementationGuide
     {
 
@@ -2182,7 +2815,9 @@ namespace Trifolia.Shared.ImportExport.Model
         public List<TrifoliaImplementationGuideCardinalityDisplay> CardinalityDisplay { get; set; }
         [System.Xml.Serialization.XmlElementAttribute("CustomSchematron", Order = 5)]
         public List<TrifoliaImplementationGuideCustomSchematron> CustomSchematron { get; set; }
-        [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
+        [System.Xml.Serialization.XmlElementAttribute("Category", Order = 6)]
+        public List<TrifoliaImplementationGuideCategory> Category { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute(Order = 7)]
         public TrifoliaImplementationGuideVolume1 Volume1 { get; set; }
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string name { get; set; }
@@ -2202,6 +2837,7 @@ namespace Trifolia.Shared.ImportExport.Model
         public TrifoliaImplementationGuide()
         {
             this.Volume1 = new TrifoliaImplementationGuideVolume1();
+            this.Category = new List<TrifoliaImplementationGuideCategory>();
             this.CustomSchematron = new List<TrifoliaImplementationGuideCustomSchematron>();
             this.CardinalityDisplay = new List<TrifoliaImplementationGuideCardinalityDisplay>();
             this.CustomTemplateType = new List<TrifoliaImplementationGuideCustomTemplateType>();
@@ -2244,6 +2880,14 @@ namespace Trifolia.Shared.ImportExport.Model
         public virtual bool ShouldSerializeCustomSchematron()
         {
             return CustomSchematron != null && CustomSchematron.Count > 0;
+        }
+
+        /// <summary>
+        /// Test whether Category should be serialized
+        /// </summary>
+        public virtual bool ShouldSerializeCategory()
+        {
+            return Category != null && Category.Count > 0;
         }
 
         /// <summary>
@@ -3316,6 +3960,213 @@ namespace Trifolia.Shared.ImportExport.Model
         }
 
         public static TrifoliaImplementationGuideCustomSchematron LoadFromFile(string fileName)
+        {
+            System.IO.FileStream file = null;
+            System.IO.StreamReader sr = null;
+            try
+            {
+                file = new System.IO.FileStream(fileName, FileMode.Open, FileAccess.Read);
+                sr = new System.IO.StreamReader(file);
+                string xmlString = sr.ReadToEnd();
+                sr.Close();
+                file.Close();
+                return Deserialize(xmlString);
+            }
+            finally
+            {
+                if ((file != null))
+                {
+                    file.Dispose();
+                }
+                if ((sr != null))
+                {
+                    sr.Dispose();
+                }
+            }
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.lantanagroup.com")]
+    public partial class TrifoliaImplementationGuideCategory
+    {
+
+        private static XmlSerializer serializer;
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string name { get; set; }
+
+        private static XmlSerializer Serializer
+        {
+            get
+            {
+                if ((serializer == null))
+                {
+                    serializer = new XmlSerializerFactory().CreateSerializer(typeof(TrifoliaImplementationGuideCategory));
+                }
+                return serializer;
+            }
+        }
+
+        #region Serialize/Deserialize
+        /// <summary>
+        /// Serializes current TrifoliaImplementationGuideCategory object into an XML string
+        /// </summary>
+        /// <returns>string XML value</returns>
+        public virtual string Serialize()
+        {
+            System.IO.StreamReader streamReader = null;
+            System.IO.MemoryStream memoryStream = null;
+            try
+            {
+                memoryStream = new System.IO.MemoryStream();
+                System.Xml.XmlWriterSettings xmlWriterSettings = new System.Xml.XmlWriterSettings();
+                xmlWriterSettings.Indent = false;
+                System.Xml.XmlWriter xmlWriter = XmlWriter.Create(memoryStream, xmlWriterSettings);
+                Serializer.Serialize(xmlWriter, this);
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
+                streamReader = new System.IO.StreamReader(memoryStream);
+                return streamReader.ReadToEnd();
+            }
+            finally
+            {
+                if ((streamReader != null))
+                {
+                    streamReader.Dispose();
+                }
+                if ((memoryStream != null))
+                {
+                    memoryStream.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deserializes workflow markup into an TrifoliaImplementationGuideCategory object
+        /// </summary>
+        /// <param name="input">string workflow markup to deserialize</param>
+        /// <param name="obj">Output TrifoliaImplementationGuideCategory object</param>
+        /// <param name="exception">output Exception value if deserialize failed</param>
+        /// <returns>true if this Serializer can deserialize the object; otherwise, false</returns>
+        public static bool Deserialize(string input, out TrifoliaImplementationGuideCategory obj, out System.Exception exception)
+        {
+            exception = null;
+            obj = default(TrifoliaImplementationGuideCategory);
+            try
+            {
+                obj = Deserialize(input);
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                exception = ex;
+                return false;
+            }
+        }
+
+        public static bool Deserialize(string input, out TrifoliaImplementationGuideCategory obj)
+        {
+            System.Exception exception = null;
+            return Deserialize(input, out obj, out exception);
+        }
+
+        public static TrifoliaImplementationGuideCategory Deserialize(string input)
+        {
+            System.IO.StringReader stringReader = null;
+            try
+            {
+                stringReader = new System.IO.StringReader(input);
+                return ((TrifoliaImplementationGuideCategory)(Serializer.Deserialize(System.Xml.XmlReader.Create(stringReader))));
+            }
+            finally
+            {
+                if ((stringReader != null))
+                {
+                    stringReader.Dispose();
+                }
+            }
+        }
+
+        public static TrifoliaImplementationGuideCategory Deserialize(System.IO.Stream s)
+        {
+            return ((TrifoliaImplementationGuideCategory)(Serializer.Deserialize(s)));
+        }
+        #endregion
+
+        /// <summary>
+        /// Serializes current TrifoliaImplementationGuideCategory object into file
+        /// </summary>
+        /// <param name="fileName">full path of outupt xml file</param>
+        /// <param name="exception">output Exception value if failed</param>
+        /// <returns>true if can serialize and save into file; otherwise, false</returns>
+        public virtual bool SaveToFile(string fileName, out System.Exception exception)
+        {
+            exception = null;
+            try
+            {
+                SaveToFile(fileName);
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                exception = e;
+                return false;
+            }
+        }
+
+        public virtual void SaveToFile(string fileName)
+        {
+            System.IO.StreamWriter streamWriter = null;
+            try
+            {
+                string xmlString = Serialize();
+                System.IO.FileInfo xmlFile = new System.IO.FileInfo(fileName);
+                streamWriter = xmlFile.CreateText();
+                streamWriter.WriteLine(xmlString);
+                streamWriter.Close();
+            }
+            finally
+            {
+                if ((streamWriter != null))
+                {
+                    streamWriter.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deserializes xml markup from file into an TrifoliaImplementationGuideCategory object
+        /// </summary>
+        /// <param name="fileName">string xml file to load and deserialize</param>
+        /// <param name="obj">Output TrifoliaImplementationGuideCategory object</param>
+        /// <param name="exception">output Exception value if deserialize failed</param>
+        /// <returns>true if this Serializer can deserialize the object; otherwise, false</returns>
+        public static bool LoadFromFile(string fileName, out TrifoliaImplementationGuideCategory obj, out System.Exception exception)
+        {
+            exception = null;
+            obj = default(TrifoliaImplementationGuideCategory);
+            try
+            {
+                obj = LoadFromFile(fileName);
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                exception = ex;
+                return false;
+            }
+        }
+
+        public static bool LoadFromFile(string fileName, out TrifoliaImplementationGuideCategory obj)
+        {
+            System.Exception exception = null;
+            return LoadFromFile(fileName, out obj, out exception);
+        }
+
+        public static TrifoliaImplementationGuideCategory LoadFromFile(string fileName)
         {
             System.IO.FileStream file = null;
             System.IO.StreamReader sr = null;

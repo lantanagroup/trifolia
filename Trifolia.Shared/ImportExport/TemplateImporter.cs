@@ -15,6 +15,7 @@ using ImportConstraint = Trifolia.Shared.ImportExport.Model.ConstraintType;
 using ImportSingleValueCode = Trifolia.Shared.ImportExport.Model.ConstraintTypeSingleValueCode;
 using ImportValueSet = Trifolia.Shared.ImportExport.Model.ConstraintTypeValueSet;
 using ImportCodeSystem = Trifolia.Shared.ImportExport.Model.ConstraintTypeCodeSystem;
+using ImportConstraintSample = Trifolia.Shared.ImportExport.Model.ConstraintTypeSample;
 
 namespace Trifolia.Shared.ImportExport
 {
@@ -124,6 +125,59 @@ namespace Trifolia.Shared.ImportExport
                 template.PrimaryContextType = importTemplate.contextType;
         }
 
+        private void UpdateTemplateSamples(Template template, ImportTemplate importTemplate)
+        {
+            var foundSamples = new List<TemplateSample>();
+
+            if (importTemplate.Sample != null && importTemplate.Sample.Count > 0)
+            {
+                foreach (var importSample in importTemplate.Sample)
+                {
+                    if (string.IsNullOrEmpty(importSample.name))
+                    {
+                        errors.Add("Template sample does not have a name");
+                        continue;
+                    }
+
+                    // Look for a match sample by both name and sample text. Maybe they changed the name, or maybe the change the sample text.
+                    // If they only changed one, then we should update the existing entry.
+                    // If they updated both, we won't find a match, and should add a new one. All non-matched samples will be deleted
+                    var foundSample = template.TemplateSamples.SingleOrDefault(y => y.Name.ToLower() == importSample.name.ToLower());
+
+                    if (foundSample == null && importSample.Value != null)
+                        foundSample = template.TemplateSamples.SingleOrDefault(y => y.XmlSample != null && y.XmlSample.ToLower().Replace("\r", "").Replace("\n", "") == importSample.Value.ToLower().Replace("\r", "").Replace("\n", ""));
+
+                    if (foundSample == null)
+                    {
+                        foundSample = new TemplateSample()
+                        {
+                            Template = template,
+                            Name = importSample.name,
+                            XmlSample = importSample.Value
+                        };
+                        this.tdb.TemplateSamples.AddObject(foundSample);
+                    }
+                    else
+                    {
+                        if (foundSample.Name != importSample.name)
+                            foundSample.Name = importSample.name;
+
+                        if (AreStringsDifferent(foundSample.XmlSample, importSample.Value))
+                            foundSample.XmlSample = importSample.Value;
+                    }
+
+                    foundSamples.Add(foundSample);
+                }
+            }
+
+            var deleteSamples = (from ts in template.TemplateSamples
+                                 where !foundSamples.Contains(ts)
+                                 select ts).ToList();
+
+            foreach (var deleteSample in deleteSamples)
+                this.tdb.TemplateSamples.DeleteObject(deleteSample);
+        }
+
         private TDBTemplate AddImportTemplate(Trifolia.Shared.ImportExport.Model.TrifoliaTemplate importTemplate)
         {
             var alreadyBuildTemplate = this.importedTemplates.SingleOrDefault(y => y.Oid == importTemplate.identifier);
@@ -168,6 +222,8 @@ namespace Trifolia.Shared.ImportExport
             }
 
             this.UpdateTemplateProperties(template, importTemplate);
+
+            this.UpdateTemplateSamples(template, importTemplate);
 
             // Find implementation guide type
             ImplementationGuideType igType = this.tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == importTemplate.implementationGuideType.ToLower());
@@ -276,7 +332,7 @@ namespace Trifolia.Shared.ImportExport
             foreach (var existingExtension in template.Extensions.ToList())
             {
                 if (importTemplate.Extension.Count(y => y.identifier == existingExtension.Identifier) == 0)
-                    template.Extensions.Remove(existingExtension);
+                    this.tdb.TemplateExtensions.DeleteObject(existingExtension);
             }
 
             foreach (var importExtension in importTemplate.Extension)
@@ -314,7 +370,14 @@ namespace Trifolia.Shared.ImportExport
             if (string.IsNullOrEmpty(value1) && string.IsNullOrEmpty(value2))
                 return false;
 
-            return value1 != value2;
+            var compareValue1 = value1 != null ?
+                value1.Replace("\n", "").Replace("\r", "") :
+                null;
+            var compareValue2 = value2 != null ?
+                value2.Replace("\n", "").Replace("\r", "") :
+                null;
+
+            return compareValue1 != compareValue2; 
         }
 
         private bool AreBooleansDifferent(bool? value1, bool value2, bool value2Specified)
@@ -325,13 +388,34 @@ namespace Trifolia.Shared.ImportExport
             return value1 != value2;
         }
 
+        private string GetImportConformance(Model.ConstraintTypeConformance importConformance)
+        {
+            switch (importConformance)
+            {
+                case Model.ConstraintTypeConformance.SHALL:
+                case Model.ConstraintTypeConformance.SHOULD:
+                case Model.ConstraintTypeConformance.MAY:
+                    return importConformance.ToString();
+                case Model.ConstraintTypeConformance.SHALLNOT:
+                    return "SHALL NOT";
+                case Model.ConstraintTypeConformance.SHOULDNOT:
+                    return "SHOULD NOT";
+                case Model.ConstraintTypeConformance.MAYNOT:
+                    return "MAY NOT";
+                default:
+                    return string.Empty;
+            }
+        }
+
         private void UpdateConstraintProperties(TemplateConstraint constraint, ImportConstraint importConstraint)
         {
+            var importConformance = GetImportConformance(importConstraint.conformance);
+
             if (constraint.Context != importConstraint.context)
                 constraint.Context = importConstraint.context;
 
-            if (constraint.Conformance != importConstraint.conformance.ToString())
-                constraint.Conformance = importConstraint.conformance.ToString();
+            if (AreStringsDifferent(constraint.Conformance, importConformance))
+                constraint.Conformance = importConformance;
 
             if (constraint.Cardinality != importConstraint.cardinality)
                 constraint.Cardinality = importConstraint.cardinality;
@@ -365,6 +449,71 @@ namespace Trifolia.Shared.ImportExport
 
             if (constraint.DisplayNumber != importConstraint.displayNumber)
                 constraint.DisplayNumber = importConstraint.displayNumber;
+
+            if (AreStringsDifferent(constraint.Notes, importConstraint.Notes))
+                constraint.Notes = importConstraint.Notes;
+
+            if (AreStringsDifferent(constraint.Label, importConstraint.Label))
+                constraint.Label = importConstraint.Label;
+
+            if (constraint.IsHeading != importConstraint.isHeading)
+                constraint.IsHeading = importConstraint.isHeading;
+
+            if (AreStringsDifferent(constraint.HeadingDescription, importConstraint.HeadingDescription))
+                constraint.HeadingDescription = importConstraint.HeadingDescription;
+        }
+
+        private void UpdateConstraintSamples(TemplateConstraint constraint, ImportConstraint importConstraint)
+        {
+            List<TemplateConstraintSample> foundSamples = new List<TemplateConstraintSample>();
+
+            if (importConstraint.Sample != null && importConstraint.Sample.Count > 0)
+            {
+                foreach (var importSample in importConstraint.Sample)
+                {
+                    if (string.IsNullOrEmpty(importSample.name))
+                    {
+                        errors.Add("Constraint sample does not have a name");
+                        continue;
+                    }
+
+                    // Look for a match sample by both name and sample text. Maybe they changed the name, or maybe the change the sample text.
+                    // If they only changed one, then we should update the existing entry.
+                    // If they updated both, we won't find a match, and should add a new one. All non-matched samples will be deleted
+                    var foundSample = constraint.Samples.SingleOrDefault(y => y.Name.ToLower() == importSample.name.ToLower());
+
+                    if (foundSample == null && !string.IsNullOrEmpty(importSample.Value))
+                        foundSample = constraint.Samples.SingleOrDefault(y => y.SampleText != null && y.SampleText.ToLower().Replace("\r", "").Replace("\n", "") == importSample.Value.ToLower().Replace("\r", "").Replace("\n", ""));
+
+                    if (foundSample == null)
+                    {
+                        var newSample = new TemplateConstraintSample()
+                        {
+                            Constraint = constraint,
+                            Name = importSample.name,
+                            SampleText = importSample.Value
+                        };
+                        this.tdb.TemplateConstraintSamples.AddObject(newSample);
+                    }
+                    else
+                    {
+                        if (foundSample.Name != importSample.name)
+                            foundSample.Name = importSample.name;
+
+                        if (AreStringsDifferent(foundSample.SampleText, importSample.Value))
+                            foundSample.SampleText = importSample.Value;
+                    }
+
+                    foundSamples.Add(foundSample);
+                }
+            }
+
+            var deleteSamples = (from cs in constraint.Samples
+                                 where !foundSamples.Contains(cs)
+                                 select cs).ToList();
+
+            foreach (var deleteSample in deleteSamples)
+                this.tdb.TemplateConstraintSamples.DeleteObject(deleteSample);
         }
 
         private void UpdateConstraintContainedTemplate(TemplateConstraint constraint, string containedTemplateOid)
@@ -415,12 +564,13 @@ namespace Trifolia.Shared.ImportExport
 
                 if (AreBooleansDifferent(constraint.IsStatic, importVs.isStatic, importVs.isStaticSpecified))
                     constraint.IsStatic = importVs.isStatic;
+                
+                // Old bug in Trifolia allowing the same value set identifier to be used more than once
+                var foundValueSets = this.tdb.ValueSets.Where(y => y.Oid.ToLower() == importVs.oid.ToLower()).ToList();
 
-                ValueSet foundValueSet = this.tdb.ValueSets.SingleOrDefault(y => y.Oid.ToLower() == importVs.oid.ToLower());
-
-                if (foundValueSet == null)
+                if (foundValueSets.Count == 0)
                 {
-                    foundValueSet = new ValueSet()
+                    var newValueSet = new ValueSet()
                     {
                         Oid = importVs.oid,
                         Name = importVs.oid + " incomplete",
@@ -428,11 +578,15 @@ namespace Trifolia.Shared.ImportExport
                         Description = "Automatically generated by template import",
                         LastUpdate = DateTime.Now
                     };
-                    this.tdb.ValueSets.AddObject(foundValueSet);
+                    this.tdb.ValueSets.AddObject(newValueSet);
+                    foundValueSets.Add(newValueSet);
                 }
 
-                if (constraint.ValueSet != foundValueSet)
-                    constraint.ValueSet = foundValueSet;
+                if (constraint.ValueSet != null && foundValueSets.Contains(constraint.ValueSet))
+                    return;
+
+                if (constraint.ValueSet != foundValueSets.First())
+                    constraint.ValueSet = foundValueSets.First();
             }
         }
 
@@ -441,7 +595,7 @@ namespace Trifolia.Shared.ImportExport
             if (importConstraint.CodeSystem != null && !string.IsNullOrEmpty(importConstraint.CodeSystem.oid))
             {
                 ImportCodeSystem importCs = importConstraint.CodeSystem;
-                CodeSystem foundCodeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid.ToLower() == importCs.oid.ToLower());
+                CodeSystem foundCodeSystem = this.tdb.CodeSystems.FirstOrDefault(y => y.Oid.ToLower() == importCs.oid.ToLower());
 
                 if (foundCodeSystem == null)
                 {
@@ -455,6 +609,22 @@ namespace Trifolia.Shared.ImportExport
 
                 constraint.CodeSystem = foundCodeSystem;
             }
+        }
+
+        private void UpdateConstraintCategories(TemplateConstraint constraint, ImportConstraint importConstraint)
+        {
+            if (importConstraint.Category == null || importConstraint.Category.Count == 0)
+            {
+                if (!string.IsNullOrEmpty(constraint.Category))
+                    constraint.Category = string.Empty;
+                return;
+            }
+
+            var categories = importConstraint.Category.Select(y => y.name.Replace(',', '-'));
+            var categoriesString = String.Join(",", categories);
+
+            if (AreStringsDifferent(constraint.Category, categoriesString))
+                constraint.Category = categoriesString;
         }
 
         private void AddImportConstraint(TDBTemplate template, TDBTemplateConstraint parentConstraint, ImportConstraint importConstraint)
@@ -488,6 +658,10 @@ namespace Trifolia.Shared.ImportExport
             this.UpdateConstraintBinding(constraint, importConstraint);
 
             this.UpdateConstraintCodeSystem(constraint, importConstraint);
+
+            this.UpdateConstraintCategories(constraint, importConstraint);
+
+            this.UpdateConstraintSamples(constraint, importConstraint);
 
             // Add each of the constraint's child constraints
             if (importConstraint.Constraint != null)

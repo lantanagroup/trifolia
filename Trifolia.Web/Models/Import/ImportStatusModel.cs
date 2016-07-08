@@ -11,14 +11,13 @@ namespace Trifolia.Web.Models.Import
     public class ImportStatusModel
     {
         private IObjectRepository tdb;
+        private Dictionary<Template, EntityState> ImportedTemplates { get; set; }
+        private Dictionary<ImplementationGuide, EntityState> ImportedImplementationGuides { get; set; }
+        private Dictionary<TemplateConstraint, EntityState> ImportedConstraints { get; set; }
+        private Dictionary<TemplateConstraintSample, EntityState> ImportedConstraintSamples { get; set; }
+        private Dictionary<TemplateSample, EntityState> ImportedTemplateSamples { get; set; }
 
         public List<string> Messages { get; set; }
-
-        [JsonIgnore]
-        public Dictionary<Template, EntityState> ImportedTemplates { get; set; }
-
-        [JsonIgnore]
-        public Dictionary<ImplementationGuide, EntityState> ImportedImplementationGuides { get; set; }
 
         public List<ImportedTemplate> Templates
         {
@@ -35,6 +34,38 @@ namespace Trifolia.Web.Models.Import
                         Name = importedTemplate.Key.Name,
                         Status = importedTemplate.Value.ToString()
                     };
+
+                    foreach (var constraint in importedTemplate.Key.ChildConstraints)
+                    {
+                        var constraintState = this.ImportedConstraints[constraint];
+                        var newConstraintStatus = new ImportedConstraint()
+                        {
+                            Number = constraint.GetFormattedNumber(),
+                            Status = constraintState.ToString()
+                        };
+
+                        foreach (var constraintSample in constraint.Samples)
+                        {
+                            var sampleState = this.ImportedConstraintSamples[constraintSample];
+                            newConstraintStatus.Samples.Add(new ImportedConstraintSample()
+                            {
+                                Name = constraintSample.Name,
+                                Status = sampleState.ToString()
+                            });
+                        }
+
+                        templateStatus.Constraints.Add(newConstraintStatus);
+                    }
+
+                    foreach (var sample in importedTemplate.Key.TemplateSamples)
+                    {
+                        var sampleStatus = this.ImportedTemplateSamples[sample];
+                        templateStatus.Samples.Add(new ImportedTemplateSample()
+                        {
+                            Name = sample.Name,
+                            Status = sampleStatus.ToString()
+                        });
+                    }
 
                     templateStatuses.Add(templateStatus);
                 }
@@ -70,12 +101,15 @@ namespace Trifolia.Web.Models.Import
             this.Messages = new List<string>();
             this.ImportedTemplates = new Dictionary<Template, EntityState>();
             this.ImportedImplementationGuides = new Dictionary<ImplementationGuide, EntityState>();
+            this.ImportedConstraints = new Dictionary<TemplateConstraint, EntityState>();
+            this.ImportedConstraintSamples = new Dictionary<TemplateConstraintSample, EntityState>();
+            this.ImportedTemplateSamples = new Dictionary<TemplateSample, EntityState>();
             this.tdb = tdb;
         }
 
         public void AddImportedImplementationGuide(ImplementationGuide implementationGuide)
         {
-            if (implementationGuide == null)
+            if (implementationGuide == null || this.ImportedImplementationGuides.ContainsKey(implementationGuide))
                 return;
 
             var dataSource = this.tdb as TemplateDatabaseDataSource;
@@ -97,16 +131,23 @@ namespace Trifolia.Web.Models.Import
             {
                 var state = dataSource.ObjectStateManager.GetObjectStateEntry(template).State;
 
-                if (state == EntityState.Unchanged)
+                foreach (var constraint in template.ChildConstraints)
                 {
-                    // Check the constraints of the template for changes if the template itself hasn't changed
-                    foreach (var constraint in template.ChildConstraints)
-                    {
-                        var constraintState = dataSource.ObjectStateManager.GetObjectStateEntry(constraint);
+                    var constraintState = dataSource.ObjectStateManager.GetObjectStateEntry(constraint);
+                    this.ImportedConstraints.Add(constraint, constraintState.State);
 
-                        if (constraintState.State != EntityState.Unchanged)
-                            state = EntityState.Modified;
+                    foreach (var constraintSample in constraint.Samples)
+                    {
+                        var constraintSampleState = dataSource.ObjectStateManager.GetObjectStateEntry(constraintState);
+                        this.ImportedConstraintSamples.Add(constraintSample, constraintSampleState.State);
                     }
+
+                }
+
+                foreach (var sample in template.TemplateSamples)
+                {
+                    var sampleState = dataSource.ObjectStateManager.GetObjectStateEntry(sample);
+                    this.ImportedTemplateSamples.Add(sample, sampleState.State);
                 }
 
                 this.ImportedTemplates.Add(template, state);
@@ -127,9 +168,44 @@ namespace Trifolia.Web.Models.Import
 
         public class ImportedTemplate
         {
+            public ImportedTemplate()
+            {
+                this.Samples = new List<ImportedTemplateSample>();
+                this.Constraints = new List<ImportedConstraint>();
+            }
+
             public int InternalId { get; set; }
             public string Name { get; set; }
             public string Identifier { get; set; }
+            public string Status { get; set; }
+            
+            public List<ImportedTemplateSample> Samples { get; set; }
+
+            public List<ImportedConstraint> Constraints { get; set; }
+        }
+
+        public class ImportedTemplateSample
+        {
+            public string Name { get; set; }
+            public string Status { get; set; }
+        }
+
+        public class ImportedConstraint
+        {
+            public ImportedConstraint()
+            {
+                this.Samples = new List<ImportedConstraintSample>();
+            }
+
+            public string Number { get; set; }
+            public string Status { get; set; }
+
+            public List<ImportedConstraintSample> Samples { get; set; }
+        }
+
+        public class ImportedConstraintSample
+        {
+            public string Name { get; set; }
             public string Status { get; set; }
         }
 

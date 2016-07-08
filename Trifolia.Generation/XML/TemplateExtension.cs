@@ -6,6 +6,7 @@ using System.Text;
 using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using ExportConstraint = Trifolia.Shared.ImportExport.Model.ConstraintType;
 using ExportPreviousVersion = Trifolia.Shared.ImportExport.Model.TrifoliaTemplatePreviousVersion;
+using ExportSample = Trifolia.Shared.ImportExport.Model.TrifoliaTemplateSample;
 using Trifolia.DB;
 using Trifolia.Shared.ImportExport.Model;
 using Trifolia.Shared;
@@ -58,6 +59,13 @@ namespace Trifolia.Generation.XML
                                             type = e.Type,
                                             value = e.Value
                                         }).ToList();
+
+            exportTemplate.Sample = (from s in template.TemplateSamples
+                                     select new ExportSample()
+                                     {
+                                         name = s.Name,
+                                         Value = s.XmlSample
+                                     }).ToList();
 
             // Get all root-level child constraints and build a new export-version of the constraint
             var childConstraints = template.ChildConstraints.Where(y => y.ParentConstraintId == null).OrderBy(y => y.Order);

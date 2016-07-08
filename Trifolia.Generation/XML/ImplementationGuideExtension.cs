@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Trifolia.DB;
 using Trifolia.Shared;
 using ExportImplementationGuide = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuide;
+using ExportImplementationGuideCategory = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuideCategory;
+using ExportImplementationGuideSection = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuideVolume1Section;
 
 namespace Trifolia.Generation.XML
 {
@@ -84,25 +86,21 @@ namespace Trifolia.Generation.XML
                 display = igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityAtLeastOne)
             });
 
-            foreach (var schematronPattern in ig.SchematronPatterns)
-            {
-                exportIg.CustomSchematron.Add(new Shared.ImportExport.Model.TrifoliaImplementationGuideCustomSchematron()
-                {
-                    phase = schematronPattern.Phase,
-                    patternId = schematronPattern.PatternId,
-                    Rule = schematronPattern.PatternContent
-                });
-            }
+            exportIg.CustomSchematron = (from p in ig.SchematronPatterns
+                                         select new Shared.ImportExport.Model.TrifoliaImplementationGuideCustomSchematron()
+                                         {
+                                             phase = p.Phase,
+                                             patternId = p.PatternId,
+                                             Rule = p.PatternContent                                             
+                                         }).ToList();
 
-            foreach (var igTemplateType in ig.TemplateTypes)
-            {
-                exportIg.CustomTemplateType.Add(new Shared.ImportExport.Model.TrifoliaImplementationGuideCustomTemplateType()
-                {
-                    templateTypeName = igTemplateType.TemplateType.Name,
-                    CustomName = igTemplateType.Name,
-                    Description = igTemplateType.DetailsText
-                });
-            }
+            exportIg.CustomTemplateType = (from t in ig.TemplateTypes
+                                           select new Shared.ImportExport.Model.TrifoliaImplementationGuideCustomTemplateType()
+                                           {
+                                               templateTypeName = t.TemplateType.Name,
+                                               CustomName = t.Name,
+                                               Description = t.DetailsText
+                                           }).ToList();
 
             var volume1Html = igSettings.GetSetting(IGSettingsManager.SettingProperty.Volume1Html);
 
@@ -114,19 +112,26 @@ namespace Trifolia.Generation.XML
 
             if (ig.Sections.Count > 0)
             {
-                foreach (var section in ig.Sections.OrderBy(y => y.Order))
-                {
-                    exportIg.Volume1.Items.Add(new Shared.ImportExport.Model.TrifoliaImplementationGuideVolume1Section()
-                    {
-                        Heading = new Shared.ImportExport.Model.TrifoliaImplementationGuideVolume1SectionHeading()
-                        {
-                            Title = section.Heading,
-                            Level = section.Level
-                        },
-                        Content = section.Content
-                    });
-                }
+                exportIg.Volume1.Items = (from s in ig.Sections.OrderBy(y => y.Order)
+                                          select new ExportImplementationGuideSection()
+                                          {
+                                              Heading = new Shared.ImportExport.Model.TrifoliaImplementationGuideVolume1SectionHeading()
+                                              {
+                                                  Title = s.Heading,
+                                                  Level = s.Level
+                                              },
+                                              Content = s.Content
+                                          }).ToList<object>();
             }
+
+            var categoriesString = igSettings.GetSetting(IGSettingsManager.SettingProperty.Categories);
+            var categories = categoriesString.Split(',');
+
+            exportIg.Category = (from c in categories
+                                 select new ExportImplementationGuideCategory()
+                                 {
+                                     name = c
+                                 }).ToList();
 
             return exportIg;
         }

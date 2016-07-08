@@ -37,6 +37,15 @@
 									<xs:attribute name="value" use="required"/>
 								</xs:complexType>
 							</xs:element>
+							<xs:element maxOccurs="unbounded" minOccurs="0" name="Sample">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="name" use="required"/>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
 						</xs:sequence>
 						<xs:attribute name="identifier" type="xs:string" use="required"/>
 						<xs:attribute name="implementationGuideType" type="xs:string" use="required"/>
@@ -86,6 +95,11 @@
 									</xs:sequence>
 									<xs:attribute name="phase" use="required"/>
 									<xs:attribute name="patternId" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element maxOccurs="unbounded" minOccurs="0" name="Category">
+								<xs:complexType>
+									<xs:attribute name="name" use="required"/>
 								</xs:complexType>
 							</xs:element>
 							<xs:element minOccurs="0" name="Volume1">
@@ -156,7 +170,23 @@
 			<xs:element name="SchematronTest" type="xs:string" minOccurs="0"/>
 			<xs:element name="NarrativeText" type="xs:string" minOccurs="0"/>
 			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element minOccurs="0" name="Notes" type="xs:string"/>
 			<xs:element name="Label" type="xs:string" minOccurs="0"/>
+			<xs:element minOccurs="0" name="HeadingDescription" type="xs:string"/>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="Category">
+				<xs:complexType>
+					<xs:attribute name="name" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="Sample">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="name" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="Constraint" type="lcg:ConstraintType" minOccurs="0"
 				maxOccurs="unbounded"/>
 		</xs:sequence>
@@ -173,9 +203,13 @@
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="context" type="xs:string" use="optional"/>
-		<xs:attribute name="conformance" use="optional">
+		<xs:attribute name="conformance" use="required">
+			<xs:annotation>
+				<xs:documentation>Conformance indicates whether or not the constraint produces errors or warnings. In legacy implementation guides, conformance was not used for primitive constraints (NONE). All constraints going forward must have a valid conformance verb (other than "NONE").</xs:documentation>
+			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction base="xs:string">
+					<xs:enumeration value="NONE"/>
 					<xs:enumeration value="SHALL"/>
 					<xs:enumeration value="SHALL NOT"/>
 					<xs:enumeration value="SHOULD"/>
@@ -210,6 +244,7 @@
 				<xs:documentation>FHIR isModifier flag. Only used in FHIR profile exports.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute default="false" name="isHeading" type="xs:boolean"/>
 	</xs:complexType>
 	<xs:simpleType name="ImplementationGuideStatus">
 		<xs:restriction base="xs:string">

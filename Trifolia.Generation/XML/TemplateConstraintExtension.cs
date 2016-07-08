@@ -9,6 +9,7 @@ using ExportSingleValueCode = Trifolia.Shared.ImportExport.Model.ConstraintTypeS
 using ExportValueSet = Trifolia.Shared.ImportExport.Model.ConstraintTypeValueSet;
 using ExportCodeSystem = Trifolia.Shared.ImportExport.Model.ConstraintTypeCodeSystem;
 using ExportConformanceTypes = Trifolia.Shared.ImportExport.Model.ConstraintTypeConformance;
+using ExportCategory = Trifolia.Shared.ImportExport.Model.ConstraintTypeCategory;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Shared;
 
@@ -18,19 +19,36 @@ namespace Trifolia.Generation.XML
     {
         #region Export XML
 
+        private static ExportConformanceTypes GetExportConformance(string conformance)
+        {
+            switch (conformance)
+            {
+                case "SHALL":
+                    return ExportConformanceTypes.SHALL;
+                case "SHALL NOT":
+                    return ExportConformanceTypes.SHALLNOT;
+                case "SHOULD":
+                    return ExportConformanceTypes.SHOULD;
+                case "SHOULD NOT":
+                    return ExportConformanceTypes.SHOULDNOT;
+                case "MAY":
+                    return ExportConformanceTypes.MAY;
+                case "MAY NOT":
+                    return ExportConformanceTypes.MAYNOT;
+                default:
+                    return ExportConformanceTypes.NONE;
+            }
+        }
+
         public static ExportConstraint Export(this TemplateConstraint constraint, IObjectRepository tdb, IGSettingsManager igSettings, bool isVerbose = false, List<string> categories = null)
         {
-            ExportConformanceTypes exportConformance = ExportConformanceTypes.MAY;
-            bool exportConformanceSpecified = Enum.TryParse<ExportConformanceTypes>(constraint.Conformance, out exportConformance);
-
             ExportConstraint exportConstraint = new ExportConstraint()
             {
                 number = constraint.Number != null ? constraint.Number.Value : 0,
                 numberSpecified = constraint.Number != null,
                 displayNumber = constraint.DisplayNumber,
                 context = constraint.Context,
-                conformance = exportConformance,
-                conformanceSpecified = exportConformanceSpecified,
+                conformance = GetExportConformance(constraint.Conformance),
                 cardinality = !string.IsNullOrEmpty(constraint.Cardinality) ? constraint.Cardinality : null,
                 dataType = !string.IsNullOrEmpty(constraint.DataType) ? constraint.DataType : null,
                 containedTemplateOid = constraint.ContainedTemplate != null ? constraint.ContainedTemplate.Oid : null,
@@ -45,8 +63,21 @@ namespace Trifolia.Generation.XML
                 SchematronTest = !string.IsNullOrEmpty(constraint.Schematron) ? constraint.Schematron : null,
                 isVerbose = isVerbose,
                 mustSupport = constraint.MustSupport,
-                isModifier = constraint.IsModifier
+                isModifier = constraint.IsModifier,
+                isHeading = constraint.IsHeading,
+                HeadingDescription = constraint.HeadingDescription,
+                Notes = constraint.Notes,
+                Label = constraint.Label
             };
+
+            if (!string.IsNullOrEmpty(constraint.Category))
+            {
+                exportConstraint.Category = (from c in constraint.Category.Split(',')
+                                             select new ExportCategory()
+                                             {
+                                                 name = c
+                                             }).ToList();
+            }
 
             if (!string.IsNullOrEmpty(constraint.Value))
             {

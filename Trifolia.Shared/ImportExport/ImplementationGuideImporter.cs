@@ -69,7 +69,7 @@ namespace Trifolia.Shared.ImportExport
         {
             if (importImplementationGuide.Volume1 == null)
             {
-                igSettings.SaveSetting(IGSettingsManager.SettingProperty.Volume1Html, null);
+                igSettings.SaveSetting(IGSettingsManager.SettingProperty.Volume1Html, string.Empty);
                 this.RemoveVolume1Sections(implementationGuide);
                 return;
             }
@@ -81,7 +81,7 @@ namespace Trifolia.Shared.ImportExport
             }
             else if (importImplementationGuide.Volume1.Items.Count > 0)
             {
-                igSettings.SaveSetting(IGSettingsManager.SettingProperty.Volume1Html, null);
+                igSettings.SaveSetting(IGSettingsManager.SettingProperty.Volume1Html, string.Empty);
 
                 foreach (ImportImplementationGuideSection importSection in importImplementationGuide.Volume1.Items)
                 {
@@ -197,6 +197,25 @@ namespace Trifolia.Shared.ImportExport
                 implementationGuide.PublishStatus = importIgStatus;
         }
 
+        private void UpdateCategories(ImplementationGuide implementationGuide, IGSettingsManager igSettings, ImportImplementationGuide importImplementationGuide)
+        {
+            var currentCategories = igSettings.GetSetting(IGSettingsManager.SettingProperty.Categories);
+
+            if (importImplementationGuide.Category == null || importImplementationGuide.Category.Count == 0)
+            {
+                if (!string.IsNullOrEmpty(currentCategories))
+                    igSettings.SaveSetting(IGSettingsManager.SettingProperty.Categories, string.Empty);
+
+                return;
+            }
+
+            var categories = importImplementationGuide.Category.Select(y => y.name.Replace(',', '-'));
+            var categoriesString = String.Join(",", categories);
+
+            if (currentCategories != categoriesString)
+                igSettings.SaveSetting(IGSettingsManager.SettingProperty.Categories, categoriesString);
+        }
+
         public ImplementationGuide Import(ImportImplementationGuide importImplementationGuide)
         {
             var implementationGuide = FindImplementationGuide(importImplementationGuide.name, importImplementationGuide.version);
@@ -250,6 +269,9 @@ namespace Trifolia.Shared.ImportExport
 
             // Update volume1 HTML and/or Sections
             this.UpdateVolume1(implementationGuide, igSettings, importImplementationGuide);
+
+            // Update categories
+            this.UpdateCategories(implementationGuide, igSettings, importImplementationGuide);
 
             // Make sure IG's previous version is set
             // May not have an "id" for the previous version, so using the entity model to ensure the reference saves

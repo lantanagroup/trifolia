@@ -51,7 +51,7 @@ namespace Trifolia.Web.Controllers.API
             importStatus.AddImportedTemplates(importedTemplates);
             importStatus.Messages.AddRange(templateImporter.Errors);
 
-            this.tdb.SaveChanges();
+            //this.tdb.SaveChanges();
 
             return importStatus;
         }
