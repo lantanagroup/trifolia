@@ -359,6 +359,36 @@ namespace Trifolia.Shared.ImportExport
             {
                 return null;
             }
+
+            // If the object is changed, make sure the user has permissions to the implementation guide
+            if (this.tdb is TemplateDatabaseDataSource)
+            {
+                var dataSource = this.tdb as TemplateDatabaseDataSource;
+                var templateState = dataSource.ObjectStateManager.GetObjectStateEntry(template).State;
+
+                if (templateState == System.Data.Entity.EntityState.Unchanged)
+                {
+                    var constraintStates = (from c in template.ChildConstraints
+                                            where dataSource.ObjectStateManager.GetObjectStateEntry(c).State != System.Data.Entity.EntityState.Unchanged
+                                            select c);
+                    var constraintSampleStates = (from c in template.ChildConstraints
+                                                  join cs in this.tdb.TemplateConstraintSamples on c equals cs.Constraint
+                                                  where dataSource.ObjectStateManager.GetObjectStateEntry(cs).State != System.Data.Entity.EntityState.Unchanged
+                                                  select cs);
+                    var templateSampleStates = (from s in template.TemplateSamples
+                                                where dataSource.ObjectStateManager.GetObjectStateEntry(s).State != System.Data.Entity.EntityState.Unchanged
+                                                select s);
+
+                    if (constraintStates.Count() > 0 || constraintSampleStates.Count() > 0 || templateSampleStates.Count() > 0)
+                        templateState = System.Data.Entity.EntityState.Modified;
+                }
+
+                if (templateState != System.Data.Entity.EntityState.Unchanged && !CheckPoint.Instance.GrantEditImplementationGuide(template.OwningImplementationGuide.Id) && !CheckPoint.Instance.IsDataAdmin)
+                {
+                    this.Errors.Add("You do not have permission to modify template \"" + template.Name + "\" with identifier " + template.Oid);
+                    return null;
+                }
+            }
             
             this.importedTemplates.Add(template);
 

@@ -32,7 +32,7 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
-        [HttpPost, Route("api/Import/Trifolia")]
+        [HttpPost, Route("api/Import/Trifolia"), SecurableAction(SecurableNames.IMPORT)]
         public ImportStatusModel ImportTrifoliaModel(ImportModel model)
         {
             ImportStatusModel importStatus = new ImportStatusModel(this.tdb);
@@ -51,7 +51,7 @@ namespace Trifolia.Web.Controllers.API
             importStatus.AddImportedTemplates(importedTemplates);
             importStatus.Messages.AddRange(templateImporter.Errors);
 
-            //this.tdb.SaveChanges();
+            this.tdb.SaveChanges();
 
             return importStatus;
         }

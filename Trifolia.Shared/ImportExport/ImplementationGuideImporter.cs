@@ -317,7 +317,7 @@ namespace Trifolia.Shared.ImportExport
             {
                 var igState = this.dataSource.ObjectStateManager.GetObjectStateEntry(implementationGuide);
 
-                if (igState.State == System.Data.Entity.EntityState.Modified && !CheckPoint.Instance.GrantEditImplementationGuide(implementationGuide.Id))
+                if (igState.State == System.Data.Entity.EntityState.Modified && !CheckPoint.Instance.GrantEditImplementationGuide(implementationGuide.Id) && !CheckPoint.Instance.IsDataAdmin)
                 {
                     this.Errors.Add("You do not have permission to modify implementation guide \"" + implementationGuide.Name + "\" version " + implementationGuide.Version);
                     return null;

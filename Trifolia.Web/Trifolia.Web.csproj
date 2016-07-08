@@ -254,6 +254,7 @@
     <Compile Include="Controllers\API\TrifoliaApiController.cs" />
     <Compile Include="Controllers\API\TypeController.cs" />
     <Compile Include="Controllers\API\ValidationController.cs" />
+    <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\IGController.cs" />
     <Compile Include="Controllers\IGManagementFilesController.cs" />
@@ -722,6 +723,7 @@
     <Content Include="Scripts\IGManagement\View.js" />
     <Content Include="Scripts\IGManagement\ViewIgChanges.js" />
     <Content Include="Scripts\IG\View.js" />
+    <Content Include="Scripts\Import\Import.js" />
     <Content Include="Scripts\joint.layout.DirectedGraph.min.js" />
     <Content Include="Scripts\joint.min.js" />
     <Content Include="Scripts\jquery\jquery-1.10.2.js" />
@@ -870,6 +872,7 @@
     <Content Include="Views\IGManagement\View.aspx" />
     <Content Include="Views\IGTypeManagement\EditType.aspx" />
     <Content Include="Views\IG\View.aspx" />
+    <Content Include="Views\Import\Index.aspx" />
     <Content Include="Views\LocalizationDemo\Index.aspx" />
     <Content Include="Views\Organization\Details.aspx" />
     <Content Include="Views\Organization\List.aspx" />
