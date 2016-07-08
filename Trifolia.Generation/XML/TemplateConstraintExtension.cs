@@ -26,6 +26,8 @@ namespace Trifolia.Generation.XML
             ExportConstraint exportConstraint = new ExportConstraint()
             {
                 number = constraint.Number != null ? constraint.Number.Value : 0,
+                numberSpecified = constraint.Number != null,
+                displayNumber = constraint.DisplayNumber,
                 context = constraint.Context,
                 conformance = exportConformance,
                 conformanceSpecified = exportConformanceSpecified,
@@ -38,9 +40,12 @@ namespace Trifolia.Generation.XML
                 isSchRooted = constraint.IsSchRooted,
                 isPrimitive = constraint.IsPrimitive,
                 isStatic = constraint.IsStatic == true,
+                isStaticSpecified = constraint.IsStatic != null,
                 isInheritable = constraint.IsInheritable,
                 SchematronTest = !string.IsNullOrEmpty(constraint.Schematron) ? constraint.Schematron : null,
-                isVerbose = isVerbose
+                isVerbose = isVerbose,
+                mustSupport = constraint.MustSupport,
+                isModifier = constraint.IsModifier
             };
 
             if (!string.IsNullOrEmpty(constraint.Value))
@@ -58,6 +63,7 @@ namespace Trifolia.Generation.XML
                 {
                     name = constraint.ValueSet.Name,
                     isStatic = constraint.IsStatic == true,
+                    isStaticSpecified = constraint.IsStatic != null,
                     oid = constraint.ValueSet.Oid
                 };
                 exportConstraint.Item = exportValueSet;

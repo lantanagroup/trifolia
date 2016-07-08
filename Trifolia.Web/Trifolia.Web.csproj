@@ -269,6 +269,7 @@
     <Compile Include="Formatters\FHIR\DSTU1\XMLFHIRMediaTypeFormatter.cs" />
     <Compile Include="Formatters\FHIR\DSTU2\FhirMediaTypeFormatter.cs" />
     <Compile Include="Formatters\FHIR\DSTU2\GeneralFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\TrifoliaXmlFormatter.cs" />
     <Compile Include="Models\Account\HL7LoginModel.cs" />
     <Compile Include="Models\Account\WhoAmIModel.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />
@@ -319,6 +320,7 @@
     <Compile Include="Models\IGManagement\ListItem.cs" />
     <Compile Include="Models\IGManagement\ViewTemplateType.cs" />
     <Compile Include="Models\IG\ViewDataModel.cs" />
+    <Compile Include="Models\Import\ImportStatusModel.cs" />
     <Compile Include="Models\LocalizationModel.cs" />
     <Compile Include="Models\OrganizationManagement\OrganizationRole.cs" />
     <Compile Include="Models\PermissionManagement\MyOrganizationInfo.cs" />

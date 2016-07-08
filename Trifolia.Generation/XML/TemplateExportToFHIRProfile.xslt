@@ -19,8 +19,8 @@ http://www.altova.com/mapforce
 		<xsl:param name="TemplateExport" select="()"/>
 		<xsl:variable name="var2_date" as="node()?" select="$TemplateExport/@date"/>
 		<xsl:variable name="var3_isStatic" as="node()?" select="$TemplateExport/@isStatic"/>
-		<xsl:variable name="var4_oid" as="node()?" select="$TemplateExport/@oid"/>
-		<xsl:variable name="var5_name" as="node()?" select="$TemplateExport/@name"/>
+		<xsl:variable name="var4_name" as="node()?" select="$TemplateExport/@name"/>
+		<xsl:variable name="var5_oid" as="node()?" select="$TemplateExport/@oid"/>
 		<binding xmlns="http://hl7.org/fhir" xmlns:osr="http://a9.com/-/opensearch/extensions/relevance/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:at="http://purl.org/atompub/tombstones/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:atom="http://www.w3.org/2005/Atom">
 			<xsl:if test="fn:exists($var2_date)">
 				<extension>
@@ -31,8 +31,8 @@ http://www.altova.com/mapforce
 				</extension>
 			</xsl:if>
 			<name>
-				<xsl:if test="fn:exists($var5_name)">
-					<xsl:attribute name="value" namespace="" select="fn:string($var5_name)"/>
+				<xsl:if test="fn:exists($var4_name)">
+					<xsl:attribute name="value" namespace="" select="fn:string($var4_name)"/>
 				</xsl:if>
 			</name>
 			<xsl:if test="fn:exists($var3_isStatic)">
@@ -53,8 +53,8 @@ http://www.altova.com/mapforce
 				</xsl:for-each>
 			</description>
 			<referenceUri>
-				<xsl:if test="fn:exists($var4_oid)">
-					<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI(fn:string($var4_oid)))"/>
+				<xsl:if test="fn:exists($var5_oid)">
+					<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI(fn:string($var5_oid)))"/>
 				</xsl:if>
 			</referenceUri>
 		</binding>
@@ -77,72 +77,73 @@ http://www.altova.com/mapforce
 	<xsl:template name="user:createDefinition">
 		<xsl:param name="Constraint" select="()"/>
 		<xsl:param name="contextPath" select="()"/>
-		<xsl:variable name="var18_CodeSystem" as="node()*" select="$Constraint/ns0:CodeSystem"/>
-		<xsl:variable name="var19_SchematronTest" as="node()*" select="$Constraint/ns0:SchematronTest"/>
-		<xsl:variable name="var20_Description" as="node()*" select="$Constraint/ns0:Description"/>
-		<xsl:variable name="var21_number" as="node()?" select="$Constraint/@number"/>
-		<xsl:variable name="var22_conformance" as="node()?" select="$Constraint/@conformance"/>
-		<xsl:variable name="var23_containedTemplateOid" as="node()?" select="$Constraint/@containedTemplateOid"/>
-		<xsl:variable name="var24_cardinality" as="node()?" select="$Constraint/@cardinality"/>
-		<xsl:variable name="var25_Label" as="node()*" select="$Constraint/ns0:Label"/>
-		<xsl:variable name="var26_isVerbose" as="node()?" select="$Constraint/@isVerbose"/>
-		<xsl:variable name="var27_context" as="node()?" select="$Constraint/@context"/>
+		<xsl:variable name="var17_isModifier" as="node()?" select="$Constraint/@isModifier"/>
+		<xsl:variable name="var18_conformance" as="node()?" select="$Constraint/@conformance"/>
+		<xsl:variable name="var19_containedTemplateOid" as="node()?" select="$Constraint/@containedTemplateOid"/>
+		<xsl:variable name="var20_CodeSystem" as="node()*" select="$Constraint/ns0:CodeSystem"/>
+		<xsl:variable name="var21_cardinality" as="node()?" select="$Constraint/@cardinality"/>
+		<xsl:variable name="var22_mustSupport" as="node()?" select="$Constraint/@mustSupport"/>
+		<xsl:variable name="var23_Label" as="node()*" select="$Constraint/ns0:Label"/>
+		<xsl:variable name="var24_context" as="node()?" select="$Constraint/@context"/>
+		<xsl:variable name="var25_number" as="node()?" select="$Constraint/@number"/>
+		<xsl:variable name="var26_Description" as="node()*" select="$Constraint/ns0:Description"/>
+		<xsl:variable name="var27_SchematronTest" as="node()*" select="$Constraint/ns0:SchematronTest"/>
 		<xsl:variable name="var28_SingleValueCode" as="node()*" select="$Constraint/ns0:SingleValueCode"/>
-		<xsl:variable name="var15_resultof_exists" as="xs:boolean" select="fn:exists($var27_context)"/>
-		<xsl:variable name="var16_resultof_exists" as="xs:boolean" select="fn:exists($var19_SchematronTest)"/>
-		<xsl:variable name="var17_resultof_exists" as="xs:boolean" select="fn:exists($var24_cardinality)"/>
-		<xsl:variable name="var14_resultof_filter" as="node()*" select="($var28_SingleValueCode)[fn:exists(@code)]"/>
-		<xsl:variable name="var13_resultof_any" as="xs:boolean" select="fn:exists(($var18_CodeSystem)[fn:exists(@oid)])"/>
-		<xsl:variable name="var11_let" as="xs:string*">
+		<xsl:variable name="var14_resultof_exists" as="xs:boolean" select="fn:exists($var21_cardinality)"/>
+		<xsl:variable name="var15_resultof_exists" as="xs:boolean" select="fn:exists($var24_context)"/>
+		<xsl:variable name="var16_resultof_exists" as="xs:boolean" select="fn:exists($var27_SchematronTest)"/>
+		<xsl:variable name="var13_resultof_filter" as="node()*" select="($var28_SingleValueCode)[fn:exists(@code)]"/>
+		<xsl:variable name="var12_resultof_any" as="xs:boolean" select="fn:exists(($var20_CodeSystem)[fn:exists(@oid)])"/>
+		<xsl:variable name="var10_let" as="xs:string*">
 			<xsl:choose>
-				<xsl:when test="fn:exists($var25_Label)">
-					<xsl:for-each select="$var25_Label">
+				<xsl:when test="fn:exists($var23_Label)">
+					<xsl:for-each select="$var23_Label">
 						<xsl:sequence select="fn:string(.)"/>
 					</xsl:for-each>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:if test="$var15_resultof_exists">
-						<xsl:sequence select="fn:string($var27_context)"/>
+						<xsl:sequence select="fn:string($var24_context)"/>
 					</xsl:if>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="var12_let" as="xs:string*">
+		<xsl:variable name="var11_let" as="xs:string*">
 			<xsl:choose>
-				<xsl:when test="fn:exists($var20_Description)">
-					<xsl:for-each select="$var20_Description">
+				<xsl:when test="fn:exists($var26_Description)">
+					<xsl:for-each select="$var26_Description">
 						<xsl:sequence select="fn:string(.)"/>
 					</xsl:for-each>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:if test="$var15_resultof_exists">
-						<xsl:sequence select="fn:string($var27_context)"/>
+						<xsl:sequence select="fn:string($var24_context)"/>
 					</xsl:if>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<definition xmlns="http://hl7.org/fhir" xmlns:osr="http://a9.com/-/opensearch/extensions/relevance/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:at="http://purl.org/atompub/tombstones/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:atom="http://www.w3.org/2005/Atom">
 			<short>
-				<xsl:if test="fn:exists($var11_let)">
-					<xsl:attribute name="value" namespace="" select="xs:string(fn:string-join(for $x in $var11_let return xs:string($x), ' '))"/>
+				<xsl:if test="fn:exists($var10_let)">
+					<xsl:attribute name="value" namespace="" select="xs:string(fn:string-join(for $x in $var10_let return xs:string($x), ' '))"/>
 				</xsl:if>
 			</short>
 			<formal>
-				<xsl:if test="fn:exists($var12_let)">
-					<xsl:attribute name="value" namespace="" select="xs:string(fn:string-join(for $x in $var12_let return xs:string($x), ' '))"/>
+				<xsl:if test="fn:exists($var11_let)">
+					<xsl:attribute name="value" namespace="" select="xs:string(fn:string-join(for $x in $var11_let return xs:string($x), ' '))"/>
 				</xsl:if>
 			</formal>
 			<min>
-				<xsl:if test="$var17_resultof_exists">
-					<xsl:attribute name="value" namespace="" select="xs:string(xs:integer(fn:substring-before(fn:string($var24_cardinality), '..')))"/>
+				<xsl:if test="$var14_resultof_exists">
+					<xsl:attribute name="value" namespace="" select="xs:string(xs:integer(fn:substring-before(fn:string($var21_cardinality), '..')))"/>
 				</xsl:if>
 			</min>
 			<max>
-				<xsl:if test="$var17_resultof_exists">
-					<xsl:attribute name="value" namespace="" select="fn:substring-after(fn:string($var24_cardinality), '..')"/>
+				<xsl:if test="$var14_resultof_exists">
+					<xsl:attribute name="value" namespace="" select="fn:substring-after(fn:string($var21_cardinality), '..')"/>
 				</xsl:if>
 			</max>
-			<xsl:if test="fn:exists($var23_containedTemplateOid)">
+			<xsl:if test="fn:exists($var19_containedTemplateOid)">
 				<xsl:variable name="var2_containedTemplateType" as="node()?" select="$Constraint/@containedTemplateType"/>
 				<xsl:variable name="var1_create_type" as="node()">
 					<type xmlns:osr="http://a9.com/-/opensearch/extensions/relevance/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:at="http://purl.org/atompub/tombstones/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -152,7 +153,7 @@ http://www.altova.com/mapforce
 							</xsl:if>
 						</code>
 						<profile>
-							<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI(fn:string($var23_containedTemplateOid)))"/>
+							<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI(fn:string($var19_containedTemplateOid)))"/>
 						</profile>
 					</type>
 				</xsl:variable>
@@ -160,22 +161,22 @@ http://www.altova.com/mapforce
 					<xsl:sequence select="($var1_create_type/@node(), $var1_create_type/node())"/>
 				</type>
 			</xsl:if>
-			<xsl:for-each select="($var14_resultof_filter)[fn:not((fn:true() and $var13_resultof_any))]">
+			<xsl:for-each select="($var13_resultof_filter)[fn:not((fn:true() and $var12_resultof_any))]">
 				<valueCode>
 					<xsl:attribute name="value" namespace="" select="fn:string(@code)"/>
 				</valueCode>
 			</xsl:for-each>
-			<xsl:if test="(fn:exists(($var28_SingleValueCode)[fn:exists(@code)]) and $var13_resultof_any)">
+			<xsl:if test="(fn:exists(($var28_SingleValueCode)[fn:exists(@code)]) and $var12_resultof_any)">
 				<xsl:variable name="var3_create_valueCodeableConcept" as="node()">
 					<valueCodeableConcept xmlns:osr="http://a9.com/-/opensearch/extensions/relevance/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:at="http://purl.org/atompub/tombstones/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:atom="http://www.w3.org/2005/Atom">
 						<coding>
 							<system>
-								<xsl:for-each select="($var18_CodeSystem)[fn:exists(@oid)]">
+								<xsl:for-each select="($var20_CodeSystem)[fn:exists(@oid)]">
 									<xsl:attribute name="value" namespace="" select="xs:string(xs:anyURI(fn:string(@oid)))"/>
 								</xsl:for-each>
 							</system>
 							<code>
-								<xsl:for-each select="$var14_resultof_filter">
+								<xsl:for-each select="$var13_resultof_filter">
 									<xsl:attribute name="value" namespace="" select="fn:string(@code)"/>
 								</xsl:for-each>
 							</code>
@@ -195,8 +196,8 @@ http://www.altova.com/mapforce
 				<key>
 					<xsl:attribute name="value" namespace="">
 						<xsl:choose>
-							<xsl:when test="fn:exists($var21_number)">
-								<xsl:sequence select="xs:string(xs:integer(fn:string($var21_number)))"/>
+							<xsl:when test="fn:exists($var25_number)">
+								<xsl:sequence select="xs:string(xs:integer(fn:string($var25_number)))"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:sequence select="generate-id($Constraint)"/>
@@ -206,14 +207,14 @@ http://www.altova.com/mapforce
 				</key>
 				<name>
 					<xsl:if test="$var15_resultof_exists">
-						<xsl:attribute name="value" namespace="" select="fn:string($var27_context)"/>
+						<xsl:attribute name="value" namespace="" select="fn:string($var24_context)"/>
 					</xsl:if>
 				</name>
 				<severity>
-					<xsl:if test="fn:exists($var22_conformance)">
+					<xsl:if test="fn:exists($var18_conformance)">
 						<xsl:attribute name="value" namespace="">
 							<xsl:call-template name="vmf:vmf2_inputtoresult">
-								<xsl:with-param name="input" select="fn:string($var22_conformance)" as="xs:string"/>
+								<xsl:with-param name="input" select="fn:string($var18_conformance)" as="xs:string"/>
 							</xsl:call-template>
 						</xsl:attribute>
 					</xsl:if>
@@ -226,15 +227,15 @@ http://www.altova.com/mapforce
 				<xsl:variable name="var5_result" as="xs:string*">
 					<xsl:choose>
 						<xsl:when test="$var16_resultof_exists">
-							<xsl:for-each select="$var19_SchematronTest">
+							<xsl:for-each select="$var27_SchematronTest">
 								<xsl:sequence select="fn:string(.)"/>
 							</xsl:for-each>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:if test="$var17_resultof_exists">
+							<xsl:if test="$var14_resultof_exists">
 								<xsl:variable name="var4_resultof_createXPath" as="xs:string?">
 									<xsl:call-template name="user:createXPath">
-										<xsl:with-param name="cardinality" select="fn:string($var24_cardinality)" as="xs:string"/>
+										<xsl:with-param name="cardinality" select="fn:string($var21_cardinality)" as="xs:string"/>
 										<xsl:with-param name="context" select="$contextPath" as="xs:string"/>
 									</xsl:call-template>
 								</xsl:variable>
@@ -250,15 +251,15 @@ http://www.altova.com/mapforce
 						<xsl:variable name="var7_result" as="xs:string*">
 							<xsl:choose>
 								<xsl:when test="$var16_resultof_exists">
-									<xsl:for-each select="$var19_SchematronTest">
+									<xsl:for-each select="$var27_SchematronTest">
 										<xsl:sequence select="fn:string(.)"/>
 									</xsl:for-each>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:if test="$var17_resultof_exists">
+									<xsl:if test="$var14_resultof_exists">
 										<xsl:variable name="var6_resultof_createXPath" as="xs:string?">
 											<xsl:call-template name="user:createXPath">
-												<xsl:with-param name="cardinality" select="fn:string($var24_cardinality)" as="xs:string"/>
+												<xsl:with-param name="cardinality" select="fn:string($var21_cardinality)" as="xs:string"/>
 												<xsl:with-param name="context" select="$contextPath" as="xs:string"/>
 											</xsl:call-template>
 										</xsl:variable>
@@ -275,27 +276,24 @@ http://www.altova.com/mapforce
 			</constraint>
 			<xsl:variable name="var8_result" as="xs:string">
 				<xsl:choose>
-					<xsl:when test="fn:exists($var26_isVerbose)">
-						<xsl:sequence select="xs:string(xs:boolean(fn:string($var26_isVerbose)))"/>
+					<xsl:when test="fn:exists($var22_mustSupport)">
+						<xsl:sequence select="xs:string(xs:boolean(fn:string($var22_mustSupport)))"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:sequence select="'false'"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			<xsl:variable name="var9_resultof_vmf__inputtoresult" as="xs:boolean">
-				<xsl:call-template name="vmf:vmf3_inputtoresult">
-					<xsl:with-param name="input" select="xs:boolean($var8_result)" as="xs:boolean"/>
-				</xsl:call-template>
-			</xsl:variable>
 			<mustSupport>
-				<xsl:attribute name="value" namespace="" select="xs:string($var9_resultof_vmf__inputtoresult)"/>
+				<xsl:attribute name="value" namespace="" select="xs:string(xs:boolean($var8_result))"/>
 			</mustSupport>
 			<isModifier>
-				<xsl:attribute name="value" namespace="" select="xs:string(fn:false())"/>
+				<xsl:if test="fn:exists($var17_isModifier)">
+					<xsl:attribute name="value" namespace="" select="xs:string(xs:boolean(fn:string($var17_isModifier)))"/>
+				</xsl:if>
 			</isModifier>
 			<xsl:for-each select="$Constraint/ns0:ValueSet">
-				<xsl:variable name="var10_resultof_createValueSetBinding" as="node()?">
+				<xsl:variable name="var9_resultof_createValueSetBinding" as="node()?">
 					<xsl:call-template name="user:createValueSetBinding">
 						<xsl:with-param name="TemplateExport" as="node()">
 							<ValueSet xmlns="http://www.lantanagroup.com">
@@ -304,7 +302,7 @@ http://www.altova.com/mapforce
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
-				<xsl:for-each select="$var10_resultof_createValueSetBinding">
+				<xsl:for-each select="$var9_resultof_createValueSetBinding">
 					<binding>
 						<xsl:sequence select="(./@node(), ./node())"/>
 					</binding>
@@ -338,16 +336,16 @@ http://www.altova.com/mapforce
 		<xsl:param name="parentContext" select="()"/>
 		<xsl:param name="Constraint" select="()"/>
 		<xsl:param name="sliceName" select="()"/>
-		<xsl:variable name="var19_Constraint" as="node()*" select="$Constraint/ns0:Constraint"/>
-		<xsl:variable name="var20_context" as="node()?" select="$Constraint/@context"/>
-		<xsl:variable name="var21_isBranch" as="node()?" select="$Constraint/@isBranch"/>
-		<xsl:variable name="var17_resultof_exists" as="xs:boolean" select="fn:exists($var21_isBranch)"/>
-		<xsl:variable name="var18_resultof_exists" as="xs:boolean" select="fn:exists($var20_context)"/>
-		<xsl:variable name="var16_let" as="xs:boolean" select="(($var17_resultof_exists and (xs:string(xs:boolean(fn:string($var21_isBranch))) = 'true')) or (fn:not($var17_resultof_exists) and fn:false()))"/>
+		<xsl:variable name="var19_context" as="node()?" select="$Constraint/@context"/>
+		<xsl:variable name="var20_isBranch" as="node()?" select="$Constraint/@isBranch"/>
+		<xsl:variable name="var21_Constraint" as="node()*" select="$Constraint/ns0:Constraint"/>
+		<xsl:variable name="var17_resultof_exists" as="xs:boolean" select="fn:exists($var19_context)"/>
+		<xsl:variable name="var18_resultof_exists" as="xs:boolean" select="fn:exists($var20_isBranch)"/>
+		<xsl:variable name="var16_let" as="xs:boolean" select="(($var18_resultof_exists and (xs:string(xs:boolean(fn:string($var20_isBranch))) = 'true')) or (fn:not($var18_resultof_exists) and fn:false()))"/>
 		<xsl:variable name="var15_let" as="xs:boolean" select="($var16_let or fn:exists($sliceName))"/>
 		<element xmlns="http://hl7.org/fhir" xmlns:osr="http://a9.com/-/opensearch/extensions/relevance/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:at="http://purl.org/atompub/tombstones/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:atom="http://www.w3.org/2005/Atom">
 			<path>
-				<xsl:if test="$var18_resultof_exists">
+				<xsl:if test="$var17_resultof_exists">
 					<xsl:variable name="var1_result" as="xs:string">
 						<xsl:choose>
 							<xsl:when test="fn:exists($parentContext)">
@@ -358,7 +356,7 @@ http://www.altova.com/mapforce
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-					<xsl:attribute name="value" namespace="" select="fn:translate(fn:concat($var1_result, fn:string($var20_context)), '/', '.')"/>
+					<xsl:attribute name="value" namespace="" select="fn:translate(fn:concat($var1_result, fn:string($var19_context)), '/', '.')"/>
 				</xsl:if>
 			</path>
 			<xsl:variable name="var3_result" as="xs:boolean?">
@@ -400,7 +398,7 @@ http://www.altova.com/mapforce
 			<xsl:variable name="var10_create_slicing" as="node()">
 				<slicing xmlns:osr="http://a9.com/-/opensearch/extensions/relevance/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:at="http://purl.org/atompub/tombstones/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:atom="http://www.w3.org/2005/Atom">
 					<xsl:variable name="var9_resultof_map" as="node()*">
-						<xsl:for-each select="$var19_Constraint">
+						<xsl:for-each select="$var21_Constraint">
 							<xsl:variable name="var8_resultof_getDiscriminator" as="node()?">
 								<xsl:call-template name="user:getDiscriminator">
 									<xsl:with-param name="TemplateExport" as="node()">
@@ -437,8 +435,8 @@ http://www.altova.com/mapforce
 				</slicing>
 			</xsl:variable>
 			<xsl:variable name="var5_result" as="xs:boolean?">
-				<xsl:if test="$var17_resultof_exists">
-					<xsl:sequence select="(xs:string(xs:boolean(fn:string($var21_isBranch))) = 'true')"/>
+				<xsl:if test="$var18_resultof_exists">
+					<xsl:sequence select="(xs:string(xs:boolean(fn:string($var20_isBranch))) = 'true')"/>
 				</xsl:if>
 			</xsl:variable>
 			<xsl:if test="fn:exists(($var5_result)[.])">
@@ -446,7 +444,7 @@ http://www.altova.com/mapforce
 					<xsl:sequence select="($var10_create_slicing/@node(), $var10_create_slicing/node())"/>
 				</slicing>
 			</xsl:if>
-			<xsl:if test="$var18_resultof_exists">
+			<xsl:if test="$var17_resultof_exists">
 				<xsl:variable name="var11_result" as="xs:string">
 					<xsl:choose>
 						<xsl:when test="fn:exists($parentContext)">
@@ -464,7 +462,7 @@ http://www.altova.com/mapforce
 								<xsl:sequence select="($Constraint/@node(), $Constraint/node())"/>
 							</Constraint>
 						</xsl:with-param>
-						<xsl:with-param name="contextPath" select="fn:concat($var11_result, fn:string($var20_context))" as="xs:string"/>
+						<xsl:with-param name="contextPath" select="fn:concat($var11_result, fn:string($var19_context))" as="xs:string"/>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:for-each select="$var12_resultof_createDefinition">
@@ -474,8 +472,8 @@ http://www.altova.com/mapforce
 				</xsl:for-each>
 			</xsl:if>
 		</element>
-		<xsl:if test="$var18_resultof_exists">
-			<xsl:for-each select="$var19_Constraint">
+		<xsl:if test="$var17_resultof_exists">
+			<xsl:for-each select="$var21_Constraint">
 				<xsl:variable name="var13_result" as="xs:string">
 					<xsl:choose>
 						<xsl:when test="fn:exists($parentContext)">
@@ -488,7 +486,7 @@ http://www.altova.com/mapforce
 				</xsl:variable>
 				<xsl:variable name="var14_resultof_flattenConstraints" as="node()*">
 					<xsl:call-template name="user:flattenConstraints">
-						<xsl:with-param name="parentContext" select="fn:concat(fn:concat($var13_result, fn:string($var20_context)), '/')" as="xs:string"/>
+						<xsl:with-param name="parentContext" select="fn:concat(fn:concat($var13_result, fn:string($var19_context)), '/')" as="xs:string"/>
 						<xsl:with-param name="Constraint" as="node()">
 							<Constraint xmlns="http://www.lantanagroup.com">
 								<xsl:sequence select="(./@node(), ./node())"/>
@@ -595,28 +593,28 @@ http://www.altova.com/mapforce
 	</xsl:template>
 	<xsl:template name="user:createProfile">
 		<xsl:param name="Template" select="()"/>
-		<xsl:variable name="var8_title" as="node()?" select="$Template/@title"/>
-		<xsl:variable name="var9_organizationName" as="node()?" select="$Template/@organizationName"/>
-		<xsl:variable name="var10_context" as="node()?" select="$Template/@context"/>
+		<xsl:variable name="var8_context" as="node()?" select="$Template/@context"/>
+		<xsl:variable name="var9_Constraint" as="node()*" select="$Template/ns0:Constraint"/>
+		<xsl:variable name="var10_identifier" as="node()?" select="$Template/@identifier"/>
 		<xsl:variable name="var11_publishStatus" as="node()?" select="$Template/@publishStatus"/>
-		<xsl:variable name="var12_templateType" as="node()?" select="$Template/@templateType"/>
-		<xsl:variable name="var13_identifier" as="node()?" select="$Template/@identifier"/>
-		<xsl:variable name="var14_Constraint" as="node()*" select="$Template/ns0:Constraint"/>
-		<xsl:variable name="var7_resultof_exists" as="xs:boolean" select="fn:exists($var8_title)"/>
+		<xsl:variable name="var12_title" as="node()?" select="$Template/@title"/>
+		<xsl:variable name="var13_templateType" as="node()?" select="$Template/@templateType"/>
+		<xsl:variable name="var14_organizationName" as="node()?" select="$Template/@organizationName"/>
+		<xsl:variable name="var7_resultof_exists" as="xs:boolean" select="fn:exists($var12_title)"/>
 		<Profile xmlns="http://hl7.org/fhir" xmlns:osr="http://a9.com/-/opensearch/extensions/relevance/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:at="http://purl.org/atompub/tombstones/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:atom="http://www.w3.org/2005/Atom">
 			<xsl:for-each select="$Template/ns0:ImplementationGuide">
-				<xsl:variable name="var2_impliedTemplateOid" as="node()?" select="$Template/@impliedTemplateOid"/>
-				<xsl:variable name="var3_name" as="node()?" select="@name"/>
+				<xsl:variable name="var2_name" as="node()?" select="@name"/>
+				<xsl:variable name="var3_impliedTemplateOid" as="node()?" select="$Template/@impliedTemplateOid"/>
 				<xsl:variable name="var1_resultof_addExtensions" as="node()*">
 					<xsl:call-template name="user:addExtensions">
 						<xsl:with-param name="ImplementationGuideName" as="xs:string?">
-							<xsl:if test="fn:exists($var3_name)">
-								<xsl:sequence select="fn:string($var3_name)"/>
+							<xsl:if test="fn:exists($var2_name)">
+								<xsl:sequence select="fn:string($var2_name)"/>
 							</xsl:if>
 						</xsl:with-param>
 						<xsl:with-param name="impliedTemplateOid" as="xs:string?">
-							<xsl:if test="fn:exists($var2_impliedTemplateOid)">
-								<xsl:sequence select="fn:string($var2_impliedTemplateOid)"/>
+							<xsl:if test="fn:exists($var3_impliedTemplateOid)">
+								<xsl:sequence select="fn:string($var3_impliedTemplateOid)"/>
 							</xsl:if>
 						</xsl:with-param>
 					</xsl:call-template>
@@ -634,7 +632,7 @@ http://www.altova.com/mapforce
 				<xhtml:div>
 					<xsl:if test="$var7_resultof_exists">
 						<xhtml:p>
-							<xsl:sequence select="fn:string($var8_title)"/>
+							<xsl:sequence select="fn:string($var12_title)"/>
 						</xhtml:p>
 					</xsl:if>
 					<xsl:variable name="var5_create_ol" as="node()">
@@ -642,7 +640,7 @@ http://www.altova.com/mapforce
 							<xsl:variable name="var4_resultof_constraintToListItem" as="node()*">
 								<xsl:call-template name="user:constraintToListItem">
 									<xsl:with-param name="ConstraintType" as="node()*">
-										<xsl:for-each select="$var14_Constraint">
+										<xsl:for-each select="$var9_Constraint">
 											<ConstraintType xmlns="http://www.lantanagroup.com">
 												<xsl:sequence select="(./@node(), ./node())"/>
 											</ConstraintType>
@@ -665,18 +663,18 @@ http://www.altova.com/mapforce
 				</xhtml:div>
 			</text>
 			<identifier>
-				<xsl:if test="fn:exists($var13_identifier)">
-					<xsl:attribute name="value" namespace="" select="fn:string($var13_identifier)"/>
+				<xsl:if test="fn:exists($var10_identifier)">
+					<xsl:attribute name="value" namespace="" select="fn:string($var10_identifier)"/>
 				</xsl:if>
 			</identifier>
 			<name>
 				<xsl:if test="$var7_resultof_exists">
-					<xsl:attribute name="value" namespace="" select="fn:string($var8_title)"/>
+					<xsl:attribute name="value" namespace="" select="fn:string($var12_title)"/>
 				</xsl:if>
 			</name>
 			<publisher>
-				<xsl:if test="fn:exists($var9_organizationName)">
-					<xsl:attribute name="value" namespace="" select="fn:string($var9_organizationName)"/>
+				<xsl:if test="fn:exists($var14_organizationName)">
+					<xsl:attribute name="value" namespace="" select="fn:string($var14_organizationName)"/>
 				</xsl:if>
 			</publisher>
 			<description>
@@ -688,7 +686,7 @@ http://www.altova.com/mapforce
 				<xsl:attribute name="value" namespace="">
 					<xsl:choose>
 						<xsl:when test="fn:exists($var11_publishStatus)">
-							<xsl:call-template name="vmf:vmf4_inputtoresult">
+							<xsl:call-template name="vmf:vmf3_inputtoresult">
 								<xsl:with-param name="input" select="fn:string($var11_publishStatus)" as="xs:string"/>
 							</xsl:call-template>
 						</xsl:when>
@@ -703,15 +701,15 @@ http://www.altova.com/mapforce
 			</fhirVersion>
 			<structure>
 				<type>
-					<xsl:if test="fn:exists($var12_templateType)">
-						<xsl:attribute name="value" namespace="" select="fn:string($var12_templateType)"/>
+					<xsl:if test="fn:exists($var13_templateType)">
+						<xsl:attribute name="value" namespace="" select="fn:string($var13_templateType)"/>
 					</xsl:if>
 				</type>
-				<xsl:if test="fn:exists($var10_context)">
-					<xsl:for-each select="$var14_Constraint">
+				<xsl:if test="fn:exists($var8_context)">
+					<xsl:for-each select="$var9_Constraint">
 						<xsl:variable name="var6_resultof_flattenConstraints" as="node()*">
 							<xsl:call-template name="user:flattenConstraints">
-								<xsl:with-param name="parentContext" select="fn:concat(fn:string($var10_context), '/')" as="xs:string"/>
+								<xsl:with-param name="parentContext" select="fn:concat(fn:string($var8_context), '/')" as="xs:string"/>
 								<xsl:with-param name="Constraint" as="node()">
 									<Constraint xmlns="http://www.lantanagroup.com">
 										<xsl:sequence select="(./@node(), ./node())"/>
@@ -767,20 +765,6 @@ http://www.altova.com/mapforce
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="vmf:vmf3_inputtoresult">
-		<xsl:param name="input" select="()"/>
-		<xsl:choose>
-			<xsl:when test="$input=true()">
-				<xsl:copy-of select="false()"/>
-			</xsl:when>
-			<xsl:when test="$input=false()">
-				<xsl:copy-of select="true()"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:copy-of select="true()"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	<xsl:template name="vmf:vmf4_inputtoresult">
 		<xsl:param name="input" select="()"/>
 		<xsl:choose>
 			<xsl:when test="$input='Draft'">

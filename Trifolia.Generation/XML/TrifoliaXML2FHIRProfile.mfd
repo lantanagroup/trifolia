@@ -340,47 +340,6 @@
 						</root>
 					</data>
 				</component>
-				<component name="document" library="xml" uid="18" kind="14">
-					<properties XSLTTargetEncoding="UTF-8"/>
-					<view ltx="1235" lty="35" rbx="1584" rby="484"/>
-					<data>
-						<root scrollposition="290">
-							<header>
-								<namespaces>
-									<namespace/>
-									<namespace uid="http://hl7.org/fhir"/>
-								</namespaces>
-							</header>
-							<entry name="element" ns="1" inpkey="4" expanded="1">
-								<entry name="path" ns="1">
-									<entry name="value" type="attribute" inpkey="6"/>
-								</entry>
-								<entry name="name" ns="1" inpkey="122"/>
-								<entry name="slicing" ns="1" inpkey="101"/>
-								<entry name="definition" ns="1" inpkey="92" expanded="1">
-									<entry name="type" ns="1" expanded="1">
-										<entry name="profile" ns="1" expanded="1"/>
-									</entry>
-									<entry name="constraint" ns="1">
-										<entry name="name" ns="1" expanded="1"/>
-										<entry name="human" ns="1" expanded="1"/>
-									</entry>
-								</entry>
-							</entry>
-							<entry name="element" ns="1" inpkey="10" clone="1">
-								<entry name="name" ns="1" expanded="1"/>
-							</entry>
-						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
-						<wsdl/>
-						<parameter usageKind="output" name="element" sequence="1">
-							<root>
-								<entry name="Profile.Structure" ns="http://hl7.org/fhir" type="xml-type"/>
-								<entry name="element" ns="http://hl7.org/fhir"/>
-							</root>
-						</parameter>
-					</data>
-				</component>
 				<component name="createSlice" library="user" uid="380" kind="19" visible="0" blackbox="0">
 					<view ltx="567" lty="137" rbx="861" rby="181"/>
 					<data>
@@ -432,6 +391,47 @@
 								<entry name="Trifolia" ns="http://www.lantanagroup.com"/>
 								<entry name="Template" ns="http://www.lantanagroup.com"/>
 								<entry name="Constraint" ns="http://www.lantanagroup.com"/>
+							</root>
+						</parameter>
+					</data>
+				</component>
+				<component name="document" library="xml" uid="18" kind="14">
+					<properties XSLTTargetEncoding="UTF-8"/>
+					<view ltx="1235" lty="35" rbx="1584" rby="484"/>
+					<data>
+						<root scrollposition="1116">
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://hl7.org/fhir"/>
+								</namespaces>
+							</header>
+							<entry name="element" ns="1" inpkey="4" expanded="1">
+								<entry name="path" ns="1">
+									<entry name="value" type="attribute" inpkey="6"/>
+								</entry>
+								<entry name="name" ns="1" inpkey="122"/>
+								<entry name="slicing" ns="1" inpkey="101"/>
+								<entry name="definition" ns="1" inpkey="92" expanded="1">
+									<entry name="type" ns="1" expanded="1">
+										<entry name="profile" ns="1" expanded="1"/>
+									</entry>
+									<entry name="constraint" ns="1">
+										<entry name="name" ns="1" expanded="1"/>
+										<entry name="human" ns="1" expanded="1"/>
+									</entry>
+								</entry>
+							</entry>
+							<entry name="element" ns="1" inpkey="10" clone="1">
+								<entry name="name" ns="1" expanded="1"/>
+							</entry>
+						</root>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
+						<wsdl/>
+						<parameter usageKind="output" name="element" sequence="1">
+							<root>
+								<entry name="Profile.Structure" ns="http://hl7.org/fhir" type="xml-type"/>
+								<entry name="element" ns="http://hl7.org/fhir"/>
 							</root>
 						</parameter>
 					</data>
@@ -1292,7 +1292,7 @@
 					<properties XSLTTargetEncoding="UTF-8"/>
 					<view ltx="950" lty="44" rbx="1293" rby="682"/>
 					<data>
-						<root scrollposition="671">
+						<root scrollposition="722">
 							<header>
 								<namespaces>
 									<namespace/>
@@ -1321,7 +1321,7 @@
 								<entry name="mustSupport" ns="1" expanded="1">
 									<entry name="value" type="attribute" inpkey="230"/>
 								</entry>
-								<entry name="isModifier" ns="1">
+								<entry name="isModifier" ns="1" expanded="1">
 									<entry name="value" type="attribute" inpkey="41"/>
 								</entry>
 								<entry name="binding" ns="1" inpkey="101">
@@ -1343,7 +1343,7 @@
 					<properties XSLTTargetEncoding="UTF-8"/>
 					<view ltx="17" lty="44" rbx="191" rby="401"/>
 					<data>
-						<root scrollposition="86">
+						<root scrollposition="35">
 							<header>
 								<namespaces>
 									<namespace/>
@@ -1355,7 +1355,8 @@
 								<entry name="cardinality" type="attribute" outkey="27"/>
 								<entry name="containedTemplateOid" type="attribute" outkey="194"/>
 								<entry name="containedTemplateType" type="attribute" outkey="206"/>
-								<entry name="isVerbose" type="attribute" outkey="231"/>
+								<entry name="mustSupport" type="attribute" outkey="253"/>
+								<entry name="isModifier" type="attribute" outkey="254"/>
 								<entry name="SingleValueCode" ns="1" expanded="1">
 									<entry name="code" type="attribute" outkey="153"/>
 									<entry name="displayName" type="attribute" outkey="154"/>
@@ -1379,47 +1380,26 @@
 						</parameter>
 					</data>
 				</component>
-				<component name="constant" library="core" uid="95" kind="2">
+				<component name="substitute-missing" library="core" uid="530" kind="5">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="257"/>
+						<datapoint pos="1" key="258"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="259"/>
+					</targets>
+					<view ltx="353" lty="414" rbx="467" rby="470"/>
+				</component>
+				<component name="constant" library="core" uid="531" kind="2">
 					<properties/>
 					<targets>
-						<datapoint pos="0" key="7"/>
+						<datapoint pos="0" key="260"/>
 					</targets>
-					<view ltx="597" lty="432" rbx="661" rby="450"/>
+					<view ltx="258" lty="442" rbx="322" rby="460"/>
 					<data>
 						<constant value="false" datatype="string"/>
 						<wsdl/>
-					</data>
-				</component>
-				<component name="substitute-missing" library="core" uid="539" kind="5">
-					<properties/>
-					<sources>
-						<datapoint pos="0" key="243"/>
-						<datapoint pos="1" key="246"/>
-					</sources>
-					<targets>
-						<datapoint pos="0" key="250"/>
-					</targets>
-					<view ltx="290" lty="293" rbx="404" rby="349"/>
-				</component>
-				<component name="value-map" library="core" uid="537" kind="23">
-					<properties/>
-					<sources>
-						<datapoint pos="0" key="251"/>
-					</sources>
-					<targets>
-						<datapoint pos="0" key="248"/>
-					</targets>
-					<view ltx="435" lty="432" rbx="512" rby="471"/>
-					<data>
-						<wsdl/>
-						<valuemap enableDefaultValue="1">
-							<valuemapTable>
-								<entry from="true" to="false"/>
-								<entry from="false" to="true"/>
-							</valuemapTable>
-							<input name="input" type="boolean"/>
-							<result name="result" type="boolean" defaultValue="true"/>
-						</valuemap>
 					</data>
 				</component>
 			</children>
@@ -1462,12 +1442,6 @@
 					</edge>
 				</edges>
 				<vertices>
-					<vertex vertexkey="7">
-						<edges>
-							<edge vertexkey="41" edgekey="43"/>
-							<edge vertexkey="246" edgekey="247"/>
-						</edges>
-					</vertex>
 					<vertex vertexkey="15">
 						<edges>
 							<edge vertexkey="24" edgekey="29"/>
@@ -1570,24 +1544,29 @@
 							<edge vertexkey="218" edgekey="229"/>
 						</edges>
 					</vertex>
-					<vertex vertexkey="231">
-						<edges>
-							<edge vertexkey="243" edgekey="245"/>
-						</edges>
-					</vertex>
 					<vertex vertexkey="240">
 						<edges>
 							<edge vertexkey="239" edgekey="241"/>
 						</edges>
 					</vertex>
-					<vertex vertexkey="248">
+					<vertex vertexkey="253">
 						<edges>
-							<edge vertexkey="230" edgekey="249"/>
+							<edge vertexkey="257" edgekey="261"/>
 						</edges>
 					</vertex>
-					<vertex vertexkey="250">
+					<vertex vertexkey="254">
 						<edges>
-							<edge vertexkey="251" edgekey="252"/>
+							<edge vertexkey="41" edgekey="256"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="259">
+						<edges>
+							<edge vertexkey="230" edgekey="262"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="260">
+						<edges>
+							<edge vertexkey="258" edgekey="263"/>
 						</edges>
 					</vertex>
 				</vertices>

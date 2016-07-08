@@ -135,7 +135,8 @@ namespace Trifolia.Web.Controllers.API
 
             if (model.XmlType == XMLSettingsModel.ExportTypes.Proprietary)
             {
-                ProprietaryTemplateExporter exporter = new ProprietaryTemplateExporter(this.tdb, templates, igSettings, categories: model.SelectedCategories);
+                bool isVerbose = ig.ImplementationGuideType.Name == ImplementationGuideType.FHIR_DSTU1_NAME || ig.ImplementationGuideType.Name == ImplementationGuideType.FHIR_DSTU2_NAME;
+                ProprietaryTemplateExporter exporter = new ProprietaryTemplateExporter(this.tdb, templates, igSettings, categories: model.SelectedCategories, verboseConstraints: isVerbose);
                 export = exporter.GenerateXMLExport();
             }
             else if (model.XmlType == XMLSettingsModel.ExportTypes.DSTU)

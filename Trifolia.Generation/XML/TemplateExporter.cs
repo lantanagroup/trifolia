@@ -118,15 +118,7 @@ namespace Trifolia.Generation.XML
         public string GenerateXMLExport()
         {
             var export = GenerateExport();
-            string serializeContent = string.Empty;
-
-            using (Utf8StringWriter sw = new Utf8StringWriter())
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(ExportModel));
-                serializer.Serialize(sw, export);
-
-                serializeContent = sw.ToString();
-            }
+            string serializeContent = export.Serialize();
 
             using (StringWriter sw = new StringWriter())
             {

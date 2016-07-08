@@ -75,7 +75,7 @@
 							</xs:element>
 							<xs:element maxOccurs="5" minOccurs="0" name="CardinalityDisplay">
 								<xs:complexType>
-									<xs:attribute name="cardinality"/>
+									<xs:attribute name="cardinality" type="lcg:CardinalityTypes"/>
 									<xs:attribute name="display"/>
 								</xs:complexType>
 							</xs:element>
@@ -116,6 +116,10 @@
 							</xs:element>
 						</xs:sequence>
 						<xs:attribute name="name" use="required"/>
+						<xs:attribute name="type" use="required"/>
+						<xs:attribute default="1" name="version" type="xs:int"/>
+						<xs:attribute default="Draft" name="status"
+							type="lcg:ImplementationGuideStatus" use="optional"/>
 						<xs:attribute name="displayName"/>
 						<xs:attribute name="webDisplayName"/>
 					</xs:complexType>
@@ -139,7 +143,7 @@
 						</xs:sequence>
 						<xs:attribute name="oid" type="xs:string" use="required"/>
 						<xs:attribute name="name" type="xs:string" use="required"/>
-						<xs:attribute name="isStatic" type="xs:boolean" use="required"/>
+						<xs:attribute name="isStatic" type="xs:boolean" use="optional"/>
 						<xs:attribute name="date" type="xs:date"/>
 					</xs:complexType>
 				</xs:element>
@@ -156,7 +160,18 @@
 			<xs:element name="Constraint" type="lcg:ConstraintType" minOccurs="0"
 				maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="number" type="xs:int"/>
+		<xs:attribute name="number" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>Represents the unique number of the constraint within the implementation guide.</xs:documentation>
+				<xs:documentation>If no number and no displayNumber is specified when using this structure to import into Trifolia, a new constraint will always be created.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="displayNumber">
+			<xs:annotation>
+				<xs:documentation>Used to indicate what the conformance number should display as in exports from Trifolia.</xs:documentation>
+				<xs:documentation>If no number and no displayNumber is specified when using this structure to import into Trifolia, a new constraint will always be created.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="context" type="xs:string" use="optional"/>
 		<xs:attribute name="conformance" use="optional">
 			<xs:simpleType>
@@ -177,7 +192,7 @@
 		<xs:attribute name="isBranch" type="xs:boolean" use="optional" default="false"/>
 		<xs:attribute name="isBranchIdentifier" type="xs:boolean" default="false"/>
 		<xs:attribute name="isPrimitive" type="xs:boolean" use="optional" default="false"/>
-		<xs:attribute name="isStatic" type="xs:boolean" default="false"/>
+		<xs:attribute name="isStatic" type="xs:boolean" use="optional"/>
 		<xs:attribute name="isInheritable" type="xs:boolean" default="true"/>
 		<xs:attribute name="isSchRooted" type="xs:boolean" default="false"/>
 		<xs:attribute name="isVerbose" type="xs:boolean" use="required">
@@ -185,5 +200,33 @@
 				<xs:documentation>Verbose constraints are not explicitly defined constraints as part of the template. They are the result of a verbose output of the schema's elements/attributes. </xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute default="false" name="mustSupport" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>FHIR mustSupport flag. Only used in FHIR profile exports.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute default="false" name="isModifier" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>FHIR isModifier flag. Only used in FHIR profile exports.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
+	<xs:simpleType name="ImplementationGuideStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Draft"/>
+			<xs:enumeration value="Ballot"/>
+			<xs:enumeration value="Published"/>
+			<xs:enumeration value="Deprecated"/>
+			<xs:enumeration value="Retired"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CardinalityTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Zero"/>
+			<xs:enumeration value="ZeroOrOne"/>
+			<xs:enumeration value="ZeroToMany"/>
+			<xs:enumeration value="One"/>
+			<xs:enumeration value="OneToMany"/>
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

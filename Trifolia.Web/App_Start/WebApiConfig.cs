@@ -7,6 +7,7 @@ using Microsoft.AspNet.WebApi.MessageHandlers.Compression;
 using Microsoft.AspNet.WebApi.MessageHandlers.Compression.Compressors;
 
 using Trifolia.Web.Filters;
+using Trifolia.Web.Formatters;
 using Trifolia.Web.Formatters.FHIR.DSTU2;
 
 namespace Trifolia.Web
@@ -15,10 +16,14 @@ namespace Trifolia.Web
     {
         public static void Register(HttpConfiguration config)
         {
+            config.Formatters.Insert(0, new TrifoliaXmlFormatter()); 
+
             GlobalConfiguration.Configuration.MessageHandlers.Insert(0,
                 new ServerCompressionHandler(
                     new GZipCompressor(),
                     new DeflateCompressor()));
+
+            //GlobalConfiguration.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 
             config.MapHttpAttributeRoutes();
 

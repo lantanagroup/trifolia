@@ -70,6 +70,7 @@
     <Compile Include="IGTypePlugin\RIMPlugin.cs" />
     <Compile Include="ImplementationGuideExtension.cs" />
     <Compile Include="ImplementationGuideTypeExtension.cs" />
+    <Compile Include="ImportExport\ImplementationGuideImporter.cs" />
     <Compile Include="ImportExport\Model\TemplateExport.Designer.cs" />
     <Compile Include="IWebClient.cs" />
     <Compile Include="JIRAProxy.cs" />
