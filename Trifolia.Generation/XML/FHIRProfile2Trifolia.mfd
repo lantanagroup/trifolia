@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="22">
+<!-- Edited with Altova MapForce 2016r2 -->
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="26">
 	<resources/>
-	<component name="defaultmap1" blackbox="0" uid="1" editable="1">
+	<component name="defaultmap1" uid="1" editable="1" blackbox="0">
 		<properties SelectedLanguage="xslt2"/>
 		<structure>
 			<children>
+				<component name="TemplateExport" library="xml" uid="3" kind="14">
+					<properties XSLTTargetEncoding="UTF-8" XSLTDefaultOutput="1"/>
+					<view ltx="1166" rbx="1602" rby="635"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace uid="http://www.lantanagroup.com"/>
+									<namespace uid="http://www.altova.com/mapforce"/>
+								</namespaces>
+							</header>
+							<entry name="FileInstance" ns="1" expanded="1">
+								<entry name="document" ns="1" expanded="1" casttotargettypemode="cast-in-subtree">
+									<entry name="Trifolia" inpkey="22" expanded="1">
+										<entry name="Template" inpkey="23"/>
+									</entry>
+								</entry>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" outputinstance="TestTrifConf.xml" instanceroot="{http://www.lantanagroup.com}Trifolia"/>
+						<wsdl/>
+					</data>
+				</component>
 				<component name="fhir-atom-single" library="xml" uid="2" kind="14">
 					<properties XSLTTargetEncoding="UTF-8"/>
 					<view rbx="535" rby="635"/>
 					<data>
-						<root scrollposition="1">
+						<root scrollposition="100">
 							<header>
 								<namespaces>
 									<namespace uid="http://www.w3.org/2005/Atom"/>
@@ -35,35 +59,77 @@
 						<wsdl/>
 					</data>
 				</component>
-				<component name="TemplateExport" library="xml" uid="3" kind="14">
-					<properties XSLTTargetEncoding="UTF-8" XSLTDefaultOutput="1"/>
-					<view ltx="1166" rbx="1602" rby="635"/>
+				<component name="implementationGuideTypeName" library="core" uid="180" kind="6">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="27"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="28"/>
+					</targets>
+					<view ltx="725" lty="149" rbx="898" rby="180"/>
 					<data>
-						<root scrollposition="1">
-							<header>
-								<namespaces>
-									<namespace uid="http://www.lantanagroup.com"/>
-									<namespace uid="http://www.altova.com/mapforce"/>
-								</namespaces>
-							</header>
-							<entry name="FileInstance" ns="1" expanded="1">
-								<entry name="document" ns="1" expanded="1" casttotargettypemode="cast-in-subtree">
-									<entry name="TemplateExport" inpkey="5" expanded="1">
-										<entry name="Template" inpkey="12" expanded="1">
-											<entry name="Constraint" expanded="1"/>
-										</entry>
-									</entry>
-								</entry>
-							</entry>
-						</root>
-						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" outputinstance="TestTrifConf.xml" instanceroot="{http://www.lantanagroup.com}TemplateExport"/>
+						<input datatype="string"/>
+						<wsdl/>
+						<parameter usageKind="input" name="implementationGuideTypeName" optional="1"/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="181" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="29"/>
+					</targets>
+					<view ltx="577" lty="169" rbx="664" rby="183"/>
+					<data>
+						<constant value="FHIR DSTU1" datatype="string"/>
 						<wsdl/>
 					</data>
 				</component>
-				<component name="CreateTemplate" library="user" blackbox="0" uid="7" kind="19" visible="0">
-					<view ltx="671" lty="273" rbx="1002" rby="319"/>
+				<component name="constant" library="core" uid="186" kind="2">
+					<properties/>
+					<targets>
+						<datapoint pos="0" key="38"/>
+					</targets>
+					<view ltx="565" lty="1" rbx="710" rby="15"/>
 					<data>
-						<root scrollposition="1">
+						<constant value="Unowned FHIR DSTU1 Profiles" datatype="string"/>
+						<wsdl/>
+					</data>
+				</component>
+				<component name="implementationGuideName" library="core" uid="184" kind="6">
+					<properties/>
+					<sources>
+						<datapoint pos="0" key="39"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="34"/>
+					</targets>
+					<view ltx="725" lty="55" rbx="877" rby="86"/>
+					<data>
+						<input datatype="string"/>
+						<wsdl/>
+						<parameter usageKind="input" name="implementationGuideName" optional="1"/>
+					</data>
+				</component>
+				<component name="implementationGuideVersion" library="core" uid="185" kind="6">
+					<properties/>
+					<sources>
+						<datapoint/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="35"/>
+					</targets>
+					<view ltx="725" lty="100" rbx="883" rby="131"/>
+					<data>
+						<input datatype="integer"/>
+						<wsdl/>
+						<parameter usageKind="input" name="implementationGuideVersion" optional="1"/>
+					</data>
+				</component>
+				<component name="CreateTemplate" library="user" uid="7" kind="19" visible="0" blackbox="0">
+					<view ltx="678" lty="232" rbx="1008" rby="366"/>
+					<data>
+						<root>
 							<header>
 								<namespaces>
 									<namespace/>
@@ -74,6 +140,9 @@
 							<entry name="Profile" componentid="8" expanded="1">
 								<entry name="Profile" ns="1" inpkey="15"/>
 							</entry>
+							<entry name="implementationGuideTypeName" inpkey="26" componentid="179"/>
+							<entry name="implementationGuideName" inpkey="32" componentid="182"/>
+							<entry name="implementationGuideVersion" inpkey="33" componentid="183"/>
 						</root>
 						<root rootindex="1">
 							<header>
@@ -91,12 +160,12 @@
 			</children>
 			<graph directed="1">
 				<edges>
-					<edge edgekey="13">
+					<edge edgekey="16">
 						<data>
 							<dataconnection type="2"/>
 						</data>
 					</edge>
-					<edge edgekey="16">
+					<edge edgekey="24">
 						<data>
 							<dataconnection type="2"/>
 						</data>
@@ -105,12 +174,12 @@
 				<vertices>
 					<vertex vertexkey="4">
 						<edges>
-							<edge vertexkey="5" edgekey="10"/>
+							<edge vertexkey="22" edgekey="25"/>
 						</edges>
 					</vertex>
 					<vertex vertexkey="11">
 						<edges>
-							<edge vertexkey="12" edgekey="13"/>
+							<edge vertexkey="23" edgekey="24"/>
 						</edges>
 					</vertex>
 					<vertex vertexkey="14">
@@ -123,11 +192,36 @@
 							<edge vertexkey="17" edgekey="21"/>
 						</edges>
 					</vertex>
+					<vertex vertexkey="28">
+						<edges>
+							<edge vertexkey="26" edgekey="30"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="29">
+						<edges>
+							<edge vertexkey="27" edgekey="31"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="34">
+						<edges>
+							<edge vertexkey="32" edgekey="36"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="35">
+						<edges>
+							<edge vertexkey="33" edgekey="37"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="38">
+						<edges>
+							<edge vertexkey="39" edgekey="40"/>
+						</edges>
+					</vertex>
 				</vertices>
 			</graph>
 		</structure>
 	</component>
-	<component name="CreateProfile" library="user" blackbox="0" uid="10" editable="1" inline="1">
+	<component name="CreateProfile" library="user" uid="10" editable="1" inline="1" blackbox="0">
 		<properties/>
 		<structure>
 			<children>
@@ -182,9 +276,13 @@
 								<entry name="Label" ns="1" inpkey="25"/>
 							</entry>
 						</root>
-						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}ConstraintType"/>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd"/>
 						<wsdl/>
-						<parameter usageKind="output" name="Constraint"/>
+						<parameter usageKind="output" name="Constraint">
+							<root>
+								<entry name="ConstraintType" ns="http://www.lantanagroup.com" type="xml-type"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
 				<component name="document" library="xml" uid="12" kind="14">
@@ -224,9 +322,13 @@
 								</entry>
 							</entry>
 						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://hl7.org/fhir}Profile"/>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
 						<wsdl/>
-						<parameter usageKind="input" name="Profile"/>
+						<parameter usageKind="input" name="Profile">
+							<root>
+								<entry name="Profile" ns="http://hl7.org/fhir"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
 			</children>
@@ -282,7 +384,7 @@
 			</graph>
 		</structure>
 	</component>
-	<component name="nestConstraints" library="user" blackbox="0" uid="26" editable="1">
+	<component name="nestConstraints" library="user" uid="26" editable="1" blackbox="0">
 		<properties/>
 		<structure>
 			<children>
@@ -317,9 +419,14 @@
 								</entry>
 							</entry>
 						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://hl7.org/fhir}Profile/{http://hl7.org/fhir}structure"/>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
 						<wsdl/>
-						<parameter usageKind="input" name="structure"/>
+						<parameter usageKind="input" name="structure">
+							<root>
+								<entry name="Profile" ns="http://hl7.org/fhir"/>
+								<entry name="structure" ns="http://hl7.org/fhir"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
 				<component name="document" library="xml" uid="29" kind="14">
@@ -336,12 +443,17 @@
 								<entry name="Constraint" expanded="1"/>
 							</entry>
 						</root>
-						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}ConstraintType/{http://www.lantanagroup.com}Constraint"/>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd"/>
 						<wsdl/>
-						<parameter usageKind="output" name="ConstraintType" sequence="1"/>
+						<parameter usageKind="output" name="ConstraintType" sequence="1">
+							<root>
+								<entry name="ConstraintType" ns="http://www.lantanagroup.com" type="xml-type"/>
+								<entry name="Constraint" ns="http://www.lantanagroup.com"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
-				<component name="filterChildren" library="user" blackbox="0" uid="139" kind="19" visible="0">
+				<component name="filterChildren" library="user" uid="139" kind="19" visible="0" blackbox="0">
 					<view ltx="691" lty="219" rbx="873" rby="275"/>
 					<data>
 						<root scrollposition="1">
@@ -390,12 +502,18 @@
 								</entry>
 							</entry>
 						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://hl7.org/fhir}Profile/{http://hl7.org/fhir}structure/{http://hl7.org/fhir}element"/>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
 						<wsdl/>
-						<parameter usageKind="input" name="element"/>
+						<parameter usageKind="input" name="element">
+							<root>
+								<entry name="Profile" ns="http://hl7.org/fhir"/>
+								<entry name="structure" ns="http://hl7.org/fhir"/>
+								<entry name="element" ns="http://hl7.org/fhir"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
-				<component name="filterElements" library="user" blackbox="0" uid="131" kind="19" visible="0">
+				<component name="filterElements" library="user" uid="131" kind="19" visible="0" blackbox="0">
 					<view ltx="355" lty="51" rbx="621" rby="128"/>
 					<data>
 						<root scrollposition="1">
@@ -426,7 +544,7 @@
 						</root>
 					</data>
 				</component>
-				<component name="element2constraint" library="user" blackbox="0" uid="111" kind="19" visible="0">
+				<component name="element2constraint" library="user" uid="111" kind="19" visible="0" blackbox="0">
 					<view ltx="959" lty="76" rbx="1261" rby="186"/>
 					<data>
 						<root scrollposition="1">
@@ -528,7 +646,7 @@
 			</graph>
 		</structure>
 	</component>
-	<component name="contextFromFhirPath" library="user" blackbox="0" uid="39" editable="1">
+	<component name="contextFromFhirPath" library="user" uid="39" editable="1" blackbox="0">
 		<properties/>
 		<structure>
 			<children>
@@ -640,7 +758,7 @@
 			</graph>
 		</structure>
 	</component>
-	<component name="CreateTemplate" library="user" blackbox="0" uid="4" editable="1" inline="1">
+	<component name="CreateTemplate" library="user" uid="4" editable="1" inline="1" blackbox="0">
 		<properties/>
 		<structure>
 			<children>
@@ -649,7 +767,7 @@
 					<targets>
 						<datapoint pos="0" key="78"/>
 					</targets>
-					<view ltx="761" lty="242" rbx="825" rby="260"/>
+					<view ltx="761" lty="242" rbx="813" rby="256"/>
 					<data>
 						<constant value="false" datatype="string"/>
 						<wsdl/>
@@ -663,47 +781,7 @@
 					<targets>
 						<datapoint pos="0" key="83"/>
 					</targets>
-					<view ltx="761" lty="180" rbx="843" rby="219"/>
-				</component>
-				<component name="constant" library="core" uid="170" kind="2">
-					<properties/>
-					<targets>
-						<datapoint pos="0" key="88"/>
-					</targets>
-					<view ltx="894" lty="97" rbx="956" rby="115"/>
-					<data>
-						<constant value="FHIR" datatype="string"/>
-						<wsdl/>
-					</data>
-				</component>
-				<component name="document" library="xml" uid="8" kind="14">
-					<properties XSLTTargetEncoding="UTF-8"/>
-					<view ltx="10" lty="-61" rbx="472" rby="439"/>
-					<data>
-						<root scrollposition="198">
-							<header>
-								<namespaces>
-									<namespace uid="http://hl7.org/fhir"/>
-									<namespace/>
-								</namespaces>
-							</header>
-							<entry name="Profile" outkey="20" expanded="1">
-								<entry name="identifier" expanded="1"/>
-								<entry name="name" expanded="1">
-									<entry name="value" ns="1" type="attribute" outkey="28"/>
-								</entry>
-								<entry name="structure" outkey="42" expanded="1">
-									<entry name="type" expanded="1">
-										<entry name="value" ns="1" type="attribute" outkey="29"/>
-									</entry>
-									<entry name="element" outkey="32"/>
-								</entry>
-							</entry>
-						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://hl7.org/fhir}Profile"/>
-						<wsdl/>
-						<parameter usageKind="input" name="Profile"/>
-					</data>
+					<view ltx="761" lty="180" rbx="829" rby="211"/>
 				</component>
 				<component name="AtomId" library="core" uid="171" kind="6">
 					<properties/>
@@ -713,45 +791,17 @@
 					<targets>
 						<datapoint pos="0" key="92"/>
 					</targets>
-					<view ltx="400" lty="-150" rbx="482" rby="-111"/>
+					<view ltx="400" lty="-150" rbx="470" rby="-119"/>
 					<data>
 						<input datatype="string"/>
 						<wsdl/>
 						<parameter usageKind="input" name="AtomId"/>
 					</data>
 				</component>
-				<component name="document" library="xml" uid="21" kind="14">
-					<properties XSLTTargetEncoding="UTF-8"/>
-					<view ltx="1021" lty="45" rbx="1278" rby="439"/>
-					<data>
-						<root>
-							<header>
-								<namespaces>
-									<namespace/>
-									<namespace uid="http://www.lantanagroup.com"/>
-								</namespaces>
-							</header>
-							<entry name="Template" ns="1" inpkey="13" expanded="1">
-								<entry name="identifier" type="attribute" inpkey="95"/>
-								<entry name="implementationGuideType" type="attribute" inpkey="87"/>
-								<entry name="templateType" type="attribute" inpkey="80"/>
-								<entry name="title" type="attribute" inpkey="22"/>
-								<entry name="bookmark" type="attribute" inpkey="81"/>
-								<entry name="context" type="attribute" inpkey="27"/>
-								<entry name="contextType" type="attribute" inpkey="90"/>
-								<entry name="isOpen" type="attribute" inpkey="77"/>
-								<entry name="Constraint" ns="1" inpkey="15"/>
-							</entry>
-						</root>
-						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template"/>
-						<wsdl/>
-						<parameter usageKind="output" name="Template"/>
-					</data>
-				</component>
-				<component name="nestConstraints" library="user" blackbox="0" uid="69" kind="19" visible="0">
+				<component name="nestConstraints" library="user" uid="69" kind="19" visible="0" blackbox="0">
 					<view ltx="638" lty="310" rbx="907" rby="376"/>
 					<data>
-						<root scrollposition="1">
+						<root>
 							<header>
 								<namespaces>
 									<namespace/>
@@ -777,6 +827,121 @@
 								<entry name="Constraint" outkey="48"/>
 							</entry>
 						</root>
+					</data>
+				</component>
+				<component name="document" library="xml" uid="8" kind="14">
+					<properties XSLTTargetEncoding="UTF-8"/>
+					<view ltx="10" lty="-61" rbx="472" rby="439"/>
+					<data>
+						<root scrollposition="125">
+							<header>
+								<namespaces>
+									<namespace uid="http://hl7.org/fhir"/>
+									<namespace/>
+								</namespaces>
+							</header>
+							<entry name="Profile" outkey="20" expanded="1">
+								<entry name="identifier" expanded="1"/>
+								<entry name="name" expanded="1">
+									<entry name="value" ns="1" type="attribute" outkey="28"/>
+								</entry>
+								<entry name="structure" outkey="42" expanded="1">
+									<entry name="type" expanded="1">
+										<entry name="value" ns="1" type="attribute" outkey="29"/>
+									</entry>
+									<entry name="element" outkey="32"/>
+								</entry>
+							</entry>
+						</root>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
+						<wsdl/>
+						<parameter usageKind="input" name="Profile">
+							<root>
+								<entry name="Profile" ns="http://hl7.org/fhir"/>
+							</root>
+						</parameter>
+					</data>
+				</component>
+				<component name="implementationGuideTypeName" library="core" uid="179" kind="6">
+					<properties/>
+					<sources>
+						<datapoint/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="98"/>
+					</targets>
+					<view ltx="638" lty="14" rbx="811" rby="45"/>
+					<data>
+						<input datatype="string"/>
+						<wsdl/>
+						<parameter usageKind="input" name="implementationGuideTypeName"/>
+					</data>
+				</component>
+				<component name="document" library="xml" uid="21" kind="14">
+					<properties XSLTTargetEncoding="UTF-8"/>
+					<view ltx="1021" lty="45" rbx="1278" rby="439"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.lantanagroup.com"/>
+								</namespaces>
+							</header>
+							<entry name="Template" ns="1" inpkey="13" expanded="1">
+								<entry name="identifier" type="attribute" inpkey="95"/>
+								<entry name="implementationGuideType" type="attribute" inpkey="87"/>
+								<entry name="templateType" type="attribute" inpkey="80"/>
+								<entry name="title" type="attribute" inpkey="22"/>
+								<entry name="bookmark" type="attribute" inpkey="81"/>
+								<entry name="context" type="attribute" inpkey="27"/>
+								<entry name="contextType" type="attribute" inpkey="90"/>
+								<entry name="isOpen" type="attribute" inpkey="77"/>
+								<entry name="ImplementationGuide" ns="1" expanded="1">
+									<entry name="name" type="attribute" inpkey="101"/>
+									<entry name="version" type="attribute" inpkey="102"/>
+								</entry>
+								<entry name="Constraint" ns="1" inpkey="15"/>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd"/>
+						<wsdl/>
+						<parameter usageKind="output" name="Template">
+							<root>
+								<entry name="Trifolia" ns="http://www.lantanagroup.com"/>
+								<entry name="Template" ns="http://www.lantanagroup.com"/>
+							</root>
+						</parameter>
+					</data>
+				</component>
+				<component name="implementationGuideName" library="core" uid="182" kind="6">
+					<properties/>
+					<sources>
+						<datapoint/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="103"/>
+					</targets>
+					<view ltx="639" lty="72" rbx="791" rby="103"/>
+					<data>
+						<input datatype="string"/>
+						<wsdl/>
+						<parameter usageKind="input" name="implementationGuideName"/>
+					</data>
+				</component>
+				<component name="implementationGuideVersion" library="core" uid="183" kind="6">
+					<properties/>
+					<sources>
+						<datapoint/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="104"/>
+					</targets>
+					<view ltx="639" lty="126" rbx="797" rby="157"/>
+					<data>
+						<input datatype="integer"/>
+						<wsdl/>
+						<parameter usageKind="input" name="implementationGuideVersion" optional="1"/>
 					</data>
 				</component>
 			</children>
@@ -843,21 +1008,31 @@
 							<edge vertexkey="81" edgekey="86"/>
 						</edges>
 					</vertex>
-					<vertex vertexkey="88">
-						<edges>
-							<edge vertexkey="87" edgekey="89"/>
-						</edges>
-					</vertex>
 					<vertex vertexkey="92">
 						<edges>
 							<edge vertexkey="95" edgekey="96"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="98">
+						<edges>
+							<edge vertexkey="87" edgekey="100"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="103">
+						<edges>
+							<edge vertexkey="101" edgekey="105"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="104">
+						<edges>
+							<edge vertexkey="102" edgekey="106"/>
 						</edges>
 					</vertex>
 				</vertices>
 			</graph>
 		</structure>
 	</component>
-	<component name="createConstraints" library="user" blackbox="0" uid="60" editable="1">
+	<component name="createConstraints" library="user" uid="60" editable="1" blackbox="0">
 		<properties/>
 		<structure>
 			<children>
@@ -876,9 +1051,14 @@
 								<entry name="element" outkey="6"/>
 							</entry>
 						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://hl7.org/fhir}Profile/{http://hl7.org/fhir}structure"/>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
 						<wsdl/>
-						<parameter usageKind="input" name="structure"/>
+						<parameter usageKind="input" name="structure">
+							<root>
+								<entry name="Profile" ns="http://hl7.org/fhir"/>
+								<entry name="structure" ns="http://hl7.org/fhir"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
 				<component name="document" library="xml" uid="63" kind="14">
@@ -893,12 +1073,16 @@
 							</header>
 							<entry name="ConstraintType" inpkey="1" expanded="1"/>
 						</root>
-						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}ConstraintType"/>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd"/>
 						<wsdl/>
-						<parameter usageKind="output" name="ConstraintType" sequence="1"/>
+						<parameter usageKind="output" name="ConstraintType" sequence="1">
+							<root>
+								<entry name="ConstraintType" ns="http://www.lantanagroup.com" type="xml-type"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
-				<component name="nestConstraints" library="user" blackbox="0" uid="65" kind="19" visible="0">
+				<component name="nestConstraints" library="user" uid="65" kind="19" visible="0" blackbox="0">
 					<view ltx="515" lty="199" rbx="848" rby="283"/>
 					<data>
 						<root scrollposition="1">
@@ -961,7 +1145,7 @@
 			</graph>
 		</structure>
 	</component>
-	<component name="isDirectChildOfContextNode" library="user" blackbox="0" uid="75" editable="1" inline="1">
+	<component name="isDirectChildOfContextNode" library="user" uid="75" editable="1" inline="1" blackbox="0">
 		<properties/>
 		<structure>
 			<children>
@@ -1073,7 +1257,7 @@
 						<wsdl/>
 					</data>
 				</component>
-				<component name="contextFromFhirPath" library="user" blackbox="0" uid="79" kind="19" visible="0">
+				<component name="contextFromFhirPath" library="user" uid="79" kind="19" visible="0" blackbox="0">
 					<view ltx="300" lty="208" rbx="458" rby="242"/>
 					<data>
 						<root scrollposition="1">
@@ -1167,7 +1351,7 @@
 			</graph>
 		</structure>
 	</component>
-	<component name="element2constraint" library="user" blackbox="0" uid="100" editable="1">
+	<component name="element2constraint" library="user" uid="100" editable="1" blackbox="0">
 		<properties/>
 		<structure>
 			<children>
@@ -1179,7 +1363,7 @@
 					<targets>
 						<datapoint pos="0" key="8"/>
 					</targets>
-					<view ltx="100" lty="-6" rbx="219" rby="33"/>
+					<view ltx="100" lty="-6" rbx="201" rby="25"/>
 					<data>
 						<input datatype="string"/>
 						<wsdl/>
@@ -1198,15 +1382,19 @@
 							</header>
 							<entry name="ConstraintType" outkey="16" expanded="1"/>
 						</root>
-						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}ConstraintType"/>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd"/>
 						<wsdl/>
-						<parameter usageKind="input" name="children" optional="1" sequence="1"/>
+						<parameter usageKind="input" name="children" optional="1" sequence="1">
+							<root>
+								<entry name="ConstraintType" ns="http://www.lantanagroup.com" type="xml-type"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
-				<component name="contextFromFhirPath" library="user" blackbox="0" uid="109" kind="19" visible="0">
-					<view ltx="605" lty="82" rbx="763" rby="116"/>
+				<component name="contextFromFhirPath" library="user" uid="109" kind="19" visible="0" blackbox="0">
+					<view ltx="605" lty="82" rbx="756" rby="114"/>
 					<data>
-						<root scrollposition="1">
+						<root>
 							<header>
 								<namespaces>
 									<namespace/>
@@ -1235,14 +1423,14 @@
 					<targets>
 						<datapoint pos="0" key="25"/>
 					</targets>
-					<view ltx="691" lty="153" rbx="776" rby="229"/>
+					<view ltx="691" lty="153" rbx="760" rby="210"/>
 				</component>
 				<component name="constant" library="core" uid="142" kind="2">
 					<properties/>
 					<targets>
 						<datapoint pos="0" key="19"/>
 					</targets>
-					<view ltx="605" lty="170" rbx="651" rby="188"/>
+					<view ltx="605" lty="170" rbx="642" rby="184"/>
 					<data>
 						<constant value=".." datatype="string"/>
 						<wsdl/>
@@ -1256,7 +1444,7 @@
 					<targets>
 						<datapoint pos="0" key="57"/>
 					</targets>
-					<view ltx="691" lty="241" rbx="768" rby="280"/>
+					<view ltx="691" lty="241" rbx="757" rby="272"/>
 					<data>
 						<wsdl/>
 						<valuemap>
@@ -1267,33 +1455,6 @@
 							<input name="input" type="string"/>
 							<result name="result" type="string"/>
 						</valuemap>
-					</data>
-				</component>
-				<component name="document" library="xml" uid="102" kind="14">
-					<properties XSLTTargetEncoding="UTF-8"/>
-					<view ltx="1051" lty="19" rbx="1292" rby="469"/>
-					<data>
-						<root>
-							<header>
-								<namespaces>
-									<namespace/>
-									<namespace uid="http://www.lantanagroup.com"/>
-								</namespaces>
-							</header>
-							<entry name="ConstraintType" ns="1" inpkey="1" expanded="1">
-								<entry name="context" type="attribute" inpkey="7"/>
-								<entry name="conformance" type="attribute" inpkey="50"/>
-								<entry name="cardinality" type="attribute" inpkey="18"/>
-								<entry name="SingleValueCode" ns="1" inpkey="66" expanded="1"/>
-								<entry name="CodeSystem" ns="1" inpkey="67"/>
-								<entry name="SchematronTest" ns="1" inpkey="62"/>
-								<entry name="NarrativeText" ns="1" inpkey="51"/>
-								<entry name="Constraint" ns="1" inpkey="4"/>
-							</entry>
-						</root>
-						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}ConstraintType"/>
-						<wsdl/>
-						<parameter usageKind="output" name="ConstraintType"/>
 					</data>
 				</component>
 				<component name="document" library="xml" uid="103" kind="14">
@@ -1336,15 +1497,52 @@
 								</entry>
 							</entry>
 						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://hl7.org/fhir}Profile/{http://hl7.org/fhir}structure/{http://hl7.org/fhir}element"/>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
 						<wsdl/>
-						<parameter usageKind="input" name="element"/>
+						<parameter usageKind="input" name="element">
+							<root>
+								<entry name="Profile" ns="http://hl7.org/fhir"/>
+								<entry name="structure" ns="http://hl7.org/fhir"/>
+								<entry name="element" ns="http://hl7.org/fhir"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
-				<component name="CreateLCGCoding" library="user" blackbox="0" uid="178" kind="19" visible="0">
+				<component name="document" library="xml" uid="102" kind="14">
+					<properties XSLTTargetEncoding="UTF-8"/>
+					<view ltx="1051" lty="19" rbx="1292" rby="469"/>
+					<data>
+						<root>
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.lantanagroup.com"/>
+								</namespaces>
+							</header>
+							<entry name="ConstraintType" ns="1" inpkey="1" expanded="1">
+								<entry name="context" type="attribute" inpkey="7"/>
+								<entry name="conformance" type="attribute" inpkey="50"/>
+								<entry name="cardinality" type="attribute" inpkey="18"/>
+								<entry name="SingleValueCode" ns="1" inpkey="66" expanded="1"/>
+								<entry name="CodeSystem" ns="1" inpkey="67"/>
+								<entry name="SchematronTest" ns="1" inpkey="62"/>
+								<entry name="NarrativeText" ns="1" inpkey="51"/>
+								<entry name="Constraint" ns="1" inpkey="4"/>
+							</entry>
+						</root>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd"/>
+						<wsdl/>
+						<parameter usageKind="output" name="ConstraintType">
+							<root>
+								<entry name="ConstraintType" ns="http://www.lantanagroup.com" type="xml-type"/>
+							</root>
+						</parameter>
+					</data>
+				</component>
+				<component name="CreateLCGCoding" library="user" uid="178" kind="19" visible="0" blackbox="0">
 					<view ltx="605" lty="291" rbx="900" rby="764"/>
 					<data>
-						<root scrollposition="1">
+						<root>
 							<header>
 								<namespaces>
 									<namespace uid="http://hl7.org/fhir"/>
@@ -1480,7 +1678,7 @@
 			</graph>
 		</structure>
 	</component>
-	<component name="filterElements" library="user" blackbox="0" uid="123" editable="1" inline="1">
+	<component name="filterElements" library="user" uid="123" editable="1" inline="1" blackbox="0">
 		<properties/>
 		<structure>
 			<children>
@@ -1508,7 +1706,7 @@
 						<parameter usageKind="output" name="parentFhirPath"/>
 					</data>
 				</component>
-				<component name="isDirectChildOfContextNode" library="user" blackbox="0" uid="125" kind="19" visible="0">
+				<component name="isDirectChildOfContextNode" library="user" uid="125" kind="19" visible="0" blackbox="0">
 					<view ltx="356" lty="154" rbx="501" rby="188"/>
 					<data>
 						<root scrollposition="1">
@@ -1557,9 +1755,15 @@
 							</header>
 							<entry name="element" inpkey="12" expanded="1"/>
 						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://hl7.org/fhir}Profile/{http://hl7.org/fhir}structure/{http://hl7.org/fhir}element"/>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
 						<wsdl/>
-						<parameter usageKind="output" name="fhiratomsingle2"/>
+						<parameter usageKind="output" name="fhiratomsingle2">
+							<root>
+								<entry name="Profile" ns="http://hl7.org/fhir"/>
+								<entry name="structure" ns="http://hl7.org/fhir"/>
+								<entry name="element" ns="http://hl7.org/fhir"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
 				<component name="document" library="xml" uid="126" kind="14">
@@ -1582,9 +1786,15 @@
 								</entry>
 							</entry>
 						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://hl7.org/fhir}Profile/{http://hl7.org/fhir}structure/{http://hl7.org/fhir}element"/>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
 						<wsdl/>
-						<parameter usageKind="variable" name="element"/>
+						<parameter usageKind="variable" name="element">
+							<root>
+								<entry name="Profile" ns="http://hl7.org/fhir"/>
+								<entry name="structure" ns="http://hl7.org/fhir"/>
+								<entry name="element" ns="http://hl7.org/fhir"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
 				<component name="document" library="xml" uid="127" kind="14">
@@ -1605,9 +1815,15 @@
 								<entry name="definition" ns="1" expanded="1"/>
 							</entry>
 						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://hl7.org/fhir}Profile/{http://hl7.org/fhir}structure/{http://hl7.org/fhir}element"/>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
 						<wsdl/>
-						<parameter usageKind="input" name="fhiratomsingle"/>
+						<parameter usageKind="input" name="fhiratomsingle">
+							<root>
+								<entry name="Profile" ns="http://hl7.org/fhir"/>
+								<entry name="structure" ns="http://hl7.org/fhir"/>
+								<entry name="element" ns="http://hl7.org/fhir"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
 			</children>
@@ -1669,7 +1885,7 @@
 			</graph>
 		</structure>
 	</component>
-	<component name="filterChildren" library="user" blackbox="0" uid="132" editable="1" inline="1">
+	<component name="filterChildren" library="user" uid="132" editable="1" inline="1" blackbox="0">
 		<properties/>
 		<structure>
 			<children>
@@ -1700,12 +1916,16 @@
 							</header>
 							<entry name="ConstraintType" inpkey="14"/>
 						</root>
-						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}ConstraintType"/>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd"/>
 						<wsdl/>
-						<parameter usageKind="output" name="TemplateExport"/>
+						<parameter usageKind="output" name="TemplateExport">
+							<root>
+								<entry name="ConstraintType" ns="http://www.lantanagroup.com" type="xml-type"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
-				<component name="isDirectChildOfContextNode" library="user" blackbox="0" uid="134" kind="19" visible="0">
+				<component name="isDirectChildOfContextNode" library="user" uid="134" kind="19" visible="0" blackbox="0">
 					<view ltx="433" lty="175" rbx="578" rby="209"/>
 					<data>
 						<root scrollposition="1">
@@ -1758,12 +1978,17 @@
 								</entry>
 							</entry>
 						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://hl7.org/fhir}Profile/{http://hl7.org/fhir}structure"/>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
 						<wsdl/>
-						<parameter usageKind="input" name="fhiratomsingle"/>
+						<parameter usageKind="input" name="fhiratomsingle">
+							<root>
+								<entry name="Profile" ns="http://hl7.org/fhir"/>
+								<entry name="structure" ns="http://hl7.org/fhir"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
-				<component name="nestConstraints" library="user" blackbox="0" uid="135" kind="19" visible="0">
+				<component name="nestConstraints" library="user" uid="135" kind="19" visible="0" blackbox="0">
 					<view ltx="825" lty="7" rbx="1036" rby="163"/>
 					<data>
 						<root scrollposition="1">
@@ -1859,7 +2084,7 @@
 			</graph>
 		</structure>
 	</component>
-	<component name="CreateLCGCoding" library="user" blackbox="0" uid="172" editable="1" inline="1">
+	<component name="CreateLCGCoding" library="user" uid="172" editable="1" inline="1" blackbox="0">
 		<properties/>
 		<structure>
 			<children>
@@ -1867,7 +2092,7 @@
 					<properties XSLTTargetEncoding="UTF-8"/>
 					<view ltx="33" lty="62" rbx="365" rby="436"/>
 					<data>
-						<root scrollposition="1">
+						<root>
 							<header>
 								<namespaces>
 									<namespace/>
@@ -1888,16 +2113,20 @@
 								</entry>
 							</entry>
 						</root>
-						<document schema="fhir-all-xsd\fhir-atom-single.xsd" instanceroot="{http://hl7.org/fhir}CodeableConcept"/>
+						<document schema="fhir-all-xsd\fhir-atom-single.xsd"/>
 						<wsdl/>
-						<parameter usageKind="input" name="Coding"/>
+						<parameter usageKind="input" name="Coding">
+							<root>
+								<entry name="CodeableConcept" ns="http://hl7.org/fhir" type="xml-type"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
 				<component name="document" library="xml" uid="176" kind="14">
 					<properties XSLTTargetEncoding="UTF-8"/>
 					<view ltx="808" lty="62" rbx="987" rby="458"/>
 					<data>
-						<root scrollposition="1">
+						<root>
 							<header>
 								<namespaces>
 									<namespace/>
@@ -1914,9 +2143,15 @@
 								</entry>
 							</entry>
 						</root>
-						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd" instanceroot="{http://www.lantanagroup.com}TemplateExport/{http://www.lantanagroup.com}Template/{http://www.lantanagroup.com}Constraint"/>
+						<document schema="..\..\Trifolia.Shared\ImportExport\Model\TemplateExport.xsd"/>
 						<wsdl/>
-						<parameter usageKind="output" name="CodingConstraint"/>
+						<parameter usageKind="output" name="CodingConstraint">
+							<root>
+								<entry name="Trifolia" ns="http://www.lantanagroup.com"/>
+								<entry name="Template" ns="http://www.lantanagroup.com"/>
+								<entry name="Constraint" ns="http://www.lantanagroup.com"/>
+							</root>
+						</parameter>
 					</data>
 				</component>
 			</children>

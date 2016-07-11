@@ -68,7 +68,11 @@ namespace Trifolia.Generation.XML.FHIR.DSTU1
                 stylesheetContent = stylesheetReader.ReadToEnd();
             }
 
-            return TransformFactory.Transform(bundle, stylesheetContent, StylesheetUri, resolver);
+            Dictionary<string, string> xsltParams = new Dictionary<string, string>();
+            xsltParams.Add("implementationGuideTypeName", "FHIR DSTU1");
+            xsltParams.Add("implementationGuideName", "Unowned FHIR DSTU1 Profiles");
+
+            return TransformFactory.Transform(bundle, stylesheetContent, StylesheetUri, resolver, xsltParams);
         }
     }
 }
