@@ -5,8 +5,6 @@ using System.Web.Mvc;
 using System.Data.Entity.Core.Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
-
 using Trifolia.Web.Controllers.API;
 using Trifolia.Web.Models.RoleManagement;
 using Trifolia.Shared;
