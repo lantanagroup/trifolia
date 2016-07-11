@@ -19,6 +19,7 @@ using Trifolia.Web.Filters;
 using Trifolia.Web.Models.Account;
 using Trifolia.DB;
 using Trifolia.Config;
+using BotDetect.Web.Mvc;
 
 namespace Trifolia.Web.Controllers
 {
@@ -153,6 +154,7 @@ namespace Trifolia.Web.Controllers
             return View("Login", model);
         }
 
+        [CaptchaValidation("CaptchaCode", "TrifoliaCaptcha", "Incorrect CAPTCHA code!")]
         [AllowAnonymous]
         [HttpPost]
         public ActionResult DoLogin(LoginModel model)
@@ -162,32 +164,11 @@ namespace Trifolia.Web.Controllers
             // Run the re-captcha checks unless we allow re-captcha to be bypassed or the client has not specified debug mode
             if (!AppSettings.RecaptchaAllowBypass || !this.Request.Params.ToString().Split('&').Contains("debug"))
             {
-                // Check that a captcha was entered
-                if (string.IsNullOrEmpty(this.Request.Form[AppSettings.RecaptchaFormFieldName]))
+                if (!ModelState.IsValid)
                 {
-                    LoginModel newModel = GetLoginModel(model, App_GlobalResources.TrifoliaLang.RecaptchaNotSpecified);
-                    AuditEntryExtension.SaveAuditEntry("Login", "Failed - No re-captcha response was specified", model.Username, org.Name);
+                    LoginModel newModel = GetLoginModel(model, App_GlobalResources.TrifoliaLang.RecaptchaInvalid);
+                    AuditEntryExtension.SaveAuditEntry("Login", "Failed - The re-captcha response specified is not valid", model.Username, org.Name);
                     return View("Login", newModel);
-                }
-
-                // Check that the response of the captcha was valid with google
-                using (WebClient client = new WebClient())
-                {
-                    System.Collections.Specialized.NameValueCollection verifyParms = new System.Collections.Specialized.NameValueCollection();
-                    verifyParms.Add("secret", AppSettings.RecaptchaSecret);
-                    verifyParms.Add("response", this.Request.Form[AppSettings.RecaptchaFormFieldName]);
-
-                    byte[] responsebytes = client.UploadValues(AppSettings.RecaptchaVerifyUrl, AppSettings.RecaptchaVerifyMethod, verifyParms);
-                    string responsebody = System.Text.Encoding.UTF8.GetString(responsebytes);
-
-                    dynamic verifyResponse = Newtonsoft.Json.JsonConvert.DeserializeObject(responsebody);
-
-                    if (verifyResponse.success != true)
-                    {
-                        LoginModel newModel = GetLoginModel(model, App_GlobalResources.TrifoliaLang.RecaptchaInvalid);
-                        AuditEntryExtension.SaveAuditEntry("Login", "Failed - The re-captcha response specified is not valid: " + responsebody, model.Username, org.Name);
-                        return View("Login", newModel);
-                    }
                 }
             }
 

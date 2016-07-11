@@ -21,6 +21,7 @@ namespace Trifolia.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{resource}.ashx/{*pathInfo}");
+            routes.IgnoreRoute("{*botdetect}", new { botdetect = @"(.*)BotDetectCaptcha\.ashx" });
             routes.IgnoreRoute("favicon.ico");
 
             routes.MapRoute(
