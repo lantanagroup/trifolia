@@ -203,6 +203,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// <summary>
         /// Searches value sets within Trifolia and returns them as ValueSet resources within a Bundle.
         /// </summary>
+        /// <param name="name">The name of the value set to search for</param>
         /// <param name="valueSetId">The id of the value set to search for. If specified and found, only a single ValueSet resource is returned in the Bundle.</param>
         /// <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
         /// <param name="summary">Optional. The type of summary to respond with.</param>

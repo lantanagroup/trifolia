@@ -1,19 +1,13 @@
-﻿using System;
-using System.IO;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Validation;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Validation;
-
-using Antlr.Runtime;
-using Antlr.Runtime.Tree;
-using ProjectBase.Tools.Wiki;
 using Trifolia.DB;
 
 namespace Trifolia.Generation.IG
@@ -48,8 +42,7 @@ namespace Trifolia.Generation.IG
             if (string.IsNullOrEmpty(wikiContent))
                 return string.Empty;
 
-            WikiConverter converter = new WikiConverter();
-            string htmlContent = string.Format(RootWrapperFormat, converter.ConvertToHtml(wikiContent));
+            string htmlContent = string.Format(RootWrapperFormat, WikiNetParser.WikiProvider.ConvertToHtml(wikiContent));
 
             XmlDocument htmlDoc = new XmlDocument();
             htmlDoc.LoadXml(htmlContent);
@@ -85,8 +78,7 @@ namespace Trifolia.Generation.IG
             if (string.IsNullOrEmpty(wikiContent))
                 return null;
 
-            WikiConverter converter = new WikiConverter();
-            string htmlContent = string.Format(RootWrapperFormat, converter.ConvertToHtml(wikiContent));
+            string htmlContent = string.Format(RootWrapperFormat, WikiNetParser.WikiProvider.ConvertToHtml(wikiContent));
             OpenXmlElement current = new Body();
 
             using (StringReader strReader = new StringReader(htmlContent))
@@ -155,7 +147,6 @@ namespace Trifolia.Generation.IG
                 foreach (var cRun in runs)
                 {
                     var cText = cRun.GetFirstChild<Text>();
-                    bool replace = false;
                     Regex regex = new Regex(" SHALL NOT | SHOULD NOT | MAY NOT | SHALL | SHOULD | MAY ");
                     MatchCollection matches = regex.Matches(cText.Text);
                     string[] split = regex.Split(cText.Text);

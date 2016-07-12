@@ -779,6 +779,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// Updates an existing template/profile based on the specified StructureDefinition
         /// </summary>
         /// <param name="templateId"></param>
+        /// <param name="strucDef"></param>
         /// <returns>Hl7.Fhir.Model.StructureDefinition</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
         [HttpPut]

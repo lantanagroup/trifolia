@@ -28,7 +28,6 @@ namespace Trifolia.Generation.IG
         private List<Template> templates;
         private TableCollection tables;
         private List<string> selectedCategories = null;
-        private bool includeCategory = false;
 
         #region Ctor
 

@@ -48,7 +48,6 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// Gets conformance information about the FHIR DSTU2 server.
         /// </summary>
         /// <param name="format">The format that the response should be returned in</param>
-        /// <seealso cref="http://test.com"/>
         /// <returns>Resource&lt;Conformance&gt;</returns>
         [HttpGet, Route("api/FHIR2/Conformance")]
         public HttpResponseMessage GetConformance([FromUri(Name = "_format")] string format = null)

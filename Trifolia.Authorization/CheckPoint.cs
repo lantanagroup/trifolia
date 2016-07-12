@@ -10,7 +10,6 @@ using Trifolia.Logging;
 using Trifolia.Authentication;
 using Trifolia.DB;
 using System.Security.Principal;
-using System.Configuration;
 
 namespace Trifolia.Authorization
 {

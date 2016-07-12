@@ -355,10 +355,7 @@ namespace Trifolia.ValidationService
                                XmlChunk = schvr.ContextContent
                            }).ToList();
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch { }
 
             return results;
         }

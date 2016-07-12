@@ -21,7 +21,6 @@ using Trifolia.Authorization;
 using Trifolia.Web.Models.BulkCopy;
 using Trifolia.DB;
 using Trifolia.Web.Extensions;
-using Trifolia.Authorization;
 using System.Web.Http.Description;
 
 namespace Trifolia.Web.Controllers.API
