@@ -61,7 +61,7 @@ namespace Trifolia.Config
 
         #region Public Methods
 
-        public new HelpPageElement this[int index]
+        public HelpPageElement this[int index]
         {
             get { return (HelpPageElement)this.BaseGet(index); }
         }

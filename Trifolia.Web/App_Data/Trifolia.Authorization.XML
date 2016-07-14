@@ -185,5 +185,10 @@
             WebIG
             </summary>
         </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.IMPORT">
+            <summary>
+            Import
+            </summary>
+        </member>
     </members>
 </doc>

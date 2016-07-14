@@ -70,8 +70,7 @@ namespace Trifolia.Authorization
                     }
 
                     string userName = authSplit[0];
-                    string organizationName = authSplit[1];
-                    User user = tdb.Users.SingleOrDefault(y => y.UserName == userName && y.Organization.Name == organizationName);
+                    User user = tdb.Users.SingleOrDefault(y => y.UserName == userName);
                     long timestamp = 0;
 
                     long.TryParse(authSplit[2], out timestamp);
@@ -87,7 +86,7 @@ namespace Trifolia.Authorization
                     }
 
                     var cryptoProvider = new System.Security.Cryptography.SHA1CryptoServiceProvider();
-                    var actualHashData = user.UserName + "|" + user.Organization.Name + "|" + timestamp + "|" + salt + "|" + user.ApiKey;
+                    var actualHashData = user.UserName + "|" + timestamp + "|" + salt + "|" + user.ApiKey;
                     var actualHashDataBytes = System.Text.Encoding.UTF8.GetBytes(actualHashData);
                     var actualHashBytes = cryptoProvider.ComputeHash(actualHashDataBytes);
                     var actualHash = System.Text.Encoding.UTF8.GetString(actualHashBytes);
@@ -98,7 +97,7 @@ namespace Trifolia.Authorization
                         return Task.FromResult(0);
                     }
 
-                    var identity = new TrifoliaApiIdentity(user.UserName, user.Organization.Name);
+                    var identity = new TrifoliaApiIdentity(user.UserName);
                     var currentPrincipal = new GenericPrincipal(identity, null);
                     context.Principal = currentPrincipal;
                     Thread.CurrentPrincipal = currentPrincipal;
@@ -217,17 +216,15 @@ namespace Trifolia.Authorization
     public class TrifoliaApiIdentity : MarshalByRefObject, IIdentity
     {
         private string userName;
-        private string organization;
 
         public TrifoliaApiIdentity()
         {
 
         }
 
-        public TrifoliaApiIdentity(string userName, string organization)
+        public TrifoliaApiIdentity(string userName)
         {
             this.userName = userName;
-            this.organization = organization;
         }
 
         public string AuthenticationType
@@ -243,11 +240,6 @@ namespace Trifolia.Authorization
         public string Name
         {
             get { return this.userName; }
-        }
-
-        public string OrganizationName
-        {
-            get { return this.organization; }
         }
     }
 }

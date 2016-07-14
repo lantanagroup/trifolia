@@ -367,7 +367,7 @@ namespace Trifolia.Web.Controllers
         {
             switch (type)
             {
-                case Models.PermissionManagement.PermissionTypes.EntireOrganization:
+                case Models.PermissionManagement.PermissionTypes.Everyone:
                     return organizationId;
                 case Models.PermissionManagement.PermissionTypes.Group:
                     return groupId;
@@ -383,7 +383,7 @@ namespace Trifolia.Web.Controllers
             switch (type)
             {
                 case "EntireOrganization":
-                    return Trifolia.Web.Models.PermissionManagement.PermissionTypes.EntireOrganization;
+                    return Trifolia.Web.Models.PermissionManagement.PermissionTypes.Everyone;
                 case "Group":
                     return Trifolia.Web.Models.PermissionManagement.PermissionTypes.Group;
                 case "User":

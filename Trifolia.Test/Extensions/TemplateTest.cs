@@ -79,7 +79,7 @@ namespace Trifolia.Test.Extensions
         public void CloneTemplateTest()
         {
             MockObjectRepository repo = TestDataGenerator.GenerateMockDataset1();
-            var user = repo.FindOrAddUser("test.user", repo.FindOrAddOrganization("LCG"));
+            var user = repo.FindOrAddUser("test.user");
             Template firstTemplate = repo.Templates.First();
 
             Template secondTemplate = firstTemplate.CloneTemplate(repo, user.Id);

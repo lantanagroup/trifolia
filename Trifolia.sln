@@ -12,7 +12,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{A5CE38B2-FD76-4AA8-AAB2-74A4B7D9F57A}"
 	ProjectSection(SolutionItems) = preProject
 		Database\InstallDB.ps1 = Database\InstallDB.ps1
-		Database\README.txt = Database\README.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Shared", "Trifolia.Shared\Trifolia.Shared.csproj", "{C44C370B-2BFE-4503-921F-8BA7674517AE}"
@@ -40,79 +39,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Authorization", "Trifolia.Authorization\Trifolia.Authorization.csproj", "{D90E0EEE-7AC3-4726-9A56-5B77632E9B3B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.DB", "Trifolia.DB\Trifolia.DB.csproj", "{3E3C8E62-B392-433D-8C18-A4CFC72B36EF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DDL", "DDL", "{7CA2BE09-80D9-4408-ABA6-DB81580FABD0}"
-	ProjectSection(SolutionItems) = preProject
-		Database\DDL\2.10.0a_create_publish_status_on_templates.sql = Database\DDL\2.10.0a_create_publish_status_on_templates.sql
-		Database\DDL\2.10.0b_update_vImplementationGuideTemplates.sql = Database\DDL\2.10.0b_update_vImplementationGuideTemplates.sql
-		Database\DDL\2.10.0c_implementationGuideFile_description.sql = Database\DDL\2.10.0c_implementationGuideFile_description.sql
-		Database\DDL\2.10.0d_vTemplateList_bug.sql = Database\DDL\2.10.0d_vTemplateList_bug.sql
-		Database\DDL\2.10.0e_audit_ip_length.sql = Database\DDL\2.10.0e_audit_ip_length.sql
-		Database\DDL\2.10.0f_set_cascade_delete_on_green_constraint.sql = Database\DDL\2.10.0f_set_cascade_delete_on_green_constraint.sql
-		Database\DDL\2.10.0g_set_cascade_delete_on_green_template.sql = Database\DDL\2.10.0g_set_cascade_delete_on_green_template.sql
-		Database\DDL\2.10.0h_add_xpath_to_green_constraint.sql = Database\DDL\2.10.0h_add_xpath_to_green_constraint.sql
-		Database\DDL\2.10.0i_add_datatype_green_constraint.sql = Database\DDL\2.10.0i_add_datatype_green_constraint.sql
-		Database\DDL\2.11.0a_v_igaudittrail_fix.sql = Database\DDL\2.11.0a_v_igaudittrail_fix.sql
-		Database\DDL\2.11.0b_extend_user_table_profile.sql = Database\DDL\2.11.0b_extend_user_table_profile.sql
-		Database\DDL\2.11.0c_add_search_valueset_proc.sql = Database\DDL\2.11.0c_add_search_valueset_proc.sql
-		Database\DDL\2.11.1a_varchar_to_nvarchar.sql = Database\DDL\2.11.1a_varchar_to_nvarchar.sql
-		Database\DDL\2.11.1b_modify_green_template_fk.sql = Database\DDL\2.11.1b_modify_green_template_fk.sql
-		Database\DDL\2.14.0a_sample_name_size.sql = Database\DDL\2.14.0a_sample_name_size.sql
-		Database\DDL\2.14.0b_alter_vTemplateList.sql = Database\DDL\2.14.0b_alter_vTemplateList.sql
-		Database\DDL\2.14.0c_alter_searchValueSet.sql = Database\DDL\2.14.0c_alter_searchValueSet.sql
-		Database\DDL\2.14.0d_drop_unused_tables.sql = Database\DDL\2.14.0d_drop_unused_tables.sql
-		Database\DDL\2.15.0a_role_admin.sql = Database\DDL\2.15.0a_role_admin.sql
-		Database\DDL\2.15.0b_remove_org_internal.sql = Database\DDL\2.15.0b_remove_org_internal.sql
-		Database\DDL\2.15.0c_vIgPermission_bugfix.sql = Database\DDL\2.15.0c_vIgPermission_bugfix.sql
-		Database\DDL\2.15.0d_remove_template_version.sql = Database\DDL\2.15.0d_remove_template_version.sql
-		Database\DDL\2.15.0e_ig_displayName.sql = Database\DDL\2.15.0e_ig_displayName.sql
-		Database\DDL\2.15.2a_SearchValueSet.sql = Database\DDL\2.15.2a_SearchValueSet.sql
-		Database\DDL\2.15.2b_ViewTemplateList.sql = Database\DDL\2.15.2b_ViewTemplateList.sql
-		Database\DDL\2.16.0a_retired_publish_status.sql = Database\DDL\2.16.0a_retired_publish_status.sql
-		Database\DDL\2.17.0a_implementationGuide.sql = Database\DDL\2.17.0a_implementationGuide.sql
-		Database\DDL\2.17.3a_igtemplates_sp.sql = Database\DDL\2.17.3a_igtemplates_sp.sql
-		Database\DDL\2.17.3b_search_templates_sp.sql = Database\DDL\2.17.3b_search_templates_sp.sql
-		Database\DDL\2.17.3c_vTemplateList.sql = Database\DDL\2.17.3c_vTemplateList.sql
-		Database\DDL\2.18.0a_constraint_category.sql = Database\DDL\2.18.0a_constraint_category.sql
-		Database\DDL\2.18.0b_categoryList_type.sql = Database\DDL\2.18.0b_categoryList_type.sql
-		Database\DDL\2.18.0c_getParentConstraintCategory.sql = Database\DDL\2.18.0c_getParentConstraintCategory.sql
-		Database\DDL\2.18.0d_getImplementationGuideTemplates.sql = Database\DDL\2.18.0d_getImplementationGuideTemplates.sql
-		Database\DDL\2.18.0e_displayNumber.sql = Database\DDL\2.18.0e_displayNumber.sql
-		Database\DDL\2.19.0a_ig_files_url.sql = Database\DDL\2.19.0a_ig_files_url.sql
-		Database\DDL\2.19.0b_ig_section.sql = Database\DDL\2.19.0b_ig_section.sql
-		Database\DDL\2.19.0c_web_ig_displayname.sql = Database\DDL\2.19.0c_web_ig_displayname.sql
-		Database\DDL\2.19.0d_web_ig_section_ordering.sql = Database\DDL\2.19.0d_web_ig_section_ordering.sql
-		Database\DDL\2.20.0a_user_apiKey.sql = Database\DDL\2.20.0a_user_apiKey.sql
-		Database\DDL\2.20.0b_implementationguide_webdescription.sql = Database\DDL\2.20.0b_implementationguide_webdescription.sql
-		Database\DDL\README.txt = Database\DDL\README.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{F54306DB-5D65-4574-B6B4-6F2E47587E18}"
-	ProjectSection(SolutionItems) = preProject
-		Database\Data\2.10.0a_create_export_xml_app_securable.sql = Database\Data\2.10.0a_create_export_xml_app_securable.sql
-		Database\Data\2.10.0b_create_deprecated_status.sql = Database\Data\2.10.0b_create_deprecated_status.sql
-		Database\Data\2.10.0c_update_ig_publish_status.sql = Database\Data\2.10.0c_update_ig_publish_status.sql
-		Database\Data\2.10.0d_fileManagement_securable.sql = Database\Data\2.10.0d_fileManagement_securable.sql
-		Database\Data\2.10.0e_fileView_securable.sql = Database\Data\2.10.0e_fileView_securable.sql
-		Database\Data\2.10.0f_fix_audit_conf_numbers.sql = Database\Data\2.10.0f_fix_audit_conf_numbers.sql
-		Database\Data\2.11.0a_create_export_green_securablesql.sql = Database\Data\2.11.0a_create_export_green_securablesql.sql
-		Database\Data\2.11.0b_create_terminology_override_securable.sql = Database\Data\2.11.0b_create_terminology_override_securable.sql
-		Database\Data\2.11.1a_create_green_model_securable.sql = Database\Data\2.11.1a_create_green_model_securable.sql
-		Database\Data\2.12.0a_create_template_move_securable.sql = Database\Data\2.12.0a_create_template_move_securable.sql
-		Database\Data\2.12.0b_update_green_model_securable.sql = Database\Data\2.12.0b_update_green_model_securable.sql
-		Database\Data\2.14.0a_cleanup_securables.sql = Database\Data\2.14.0a_cleanup_securables.sql
-		Database\Data\2.15.0a_update_oid.sql = Database\Data\2.15.0a_update_oid.sql
-		Database\Data\2.15.0b_role_admin.sql = Database\Data\2.15.0b_role_admin.sql
-		Database\Data\2.15.0c_analysts_group.sql = Database\Data\2.15.0c_analysts_group.sql
-		Database\Data\2.15.0d_templateId_constraints.sql = Database\Data\2.15.0d_templateId_constraints.sql
-		Database\Data\2.16.1a_update_oid.sql = Database\Data\2.16.1a_update_oid.sql
-		Database\Data\2.17.0a_update_valueset_oid.sql = Database\Data\2.17.0a_update_valueset_oid.sql
-		Database\Data\2.17.0b_update_codesystem_oid.sql = Database\Data\2.17.0b_update_codesystem_oid.sql
-		Database\Data\2.19.0a_web_ig_securable.sql = Database\Data\2.19.0a_web_ig_securable.sql
-		Database\Data\2.8.0a_update_templatetypes.sql = Database\Data\2.8.0a_update_templatetypes.sql
-		Database\Data\2.8.0b_CreatePublishSettingsSecurable.sql = Database\Data\2.8.0b_CreatePublishSettingsSecurable.sql
-		Database\Data\README.txt = Database\Data\README.txt
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Help and Tooltips", "Help and Tooltips", "{A22A62E4-E697-4618-94C9-B46626E4E6CF}"
 	ProjectSection(SolutionItems) = preProject
@@ -309,8 +235,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A5CE38B2-FD76-4AA8-AAB2-74A4B7D9F57A} = {C1DF6EA4-3295-4D10-B208-7FEE96746C15}
 		{A22A62E4-E697-4618-94C9-B46626E4E6CF} = {C1DF6EA4-3295-4D10-B208-7FEE96746C15}
-		{7CA2BE09-80D9-4408-ABA6-DB81580FABD0} = {A5CE38B2-FD76-4AA8-AAB2-74A4B7D9F57A}
-		{F54306DB-5D65-4574-B6B4-6F2E47587E18} = {A5CE38B2-FD76-4AA8-AAB2-74A4B7D9F57A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35

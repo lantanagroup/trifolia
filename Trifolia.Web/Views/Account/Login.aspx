@@ -1,12 +1,23 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.MVC.Master" Inherits="System.Web.Mvc.ViewPage<Trifolia.Web.Models.Account.LoginModel>" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
+    <link href="<%= BotDetect.Web.CaptchaUrls.Absolute.LayoutStyleSheetUrl %>" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
         function InitUsernameText(s, e) {
             s.Focus();
         }
     </script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
+    <style type="text/css">
+        .btn-login {
+            display: block;
+            margin-top: 10px;
+        }
+
+        #TrifoliaCaptcha {
+            margin-top: 5px;
+        }
+    </style>
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -56,11 +67,15 @@
             <input type="checkbox" name="RememberMe" value="true" checked="<%= Model.RememberMe %>" /> Remember Me
         </div>
 
-        <% if (!Model.RecaptchaAllowBypass || !Request.Params.ToString().Split('&').Contains("debug")) { %>
-        <div class="g-recaptcha" data-sitekey="6Lf_whcTAAAAANyxiUC0r_nYnpeIfxxINF91z5Yr"></div>
+        <% 
+            if (!Model.RecaptchaAllowBypass || !Request.Params.ToString().Split('&').Contains("debug")) { 
+            MvcCaptcha captcha = new MvcCaptcha("TrifoliaCaptcha");
+        %>
+        <%= Html.Captcha(captcha) %>
+        <%= Html.TextBox("CaptchaCode") %>
         <% } %>
 
-        <button type="submit" class="btn btn-default">Login</button>
+        <button type="submit" class="btn btn-default btn-login">Login</button>
     </form>
 
 </asp:Content>

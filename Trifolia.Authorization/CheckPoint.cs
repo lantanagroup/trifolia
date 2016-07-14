@@ -10,7 +10,6 @@ using Trifolia.Logging;
 using Trifolia.Authentication;
 using Trifolia.DB;
 using System.Security.Principal;
-using System.Configuration;
 
 namespace Trifolia.Authorization
 {
@@ -22,6 +21,7 @@ namespace Trifolia.Authorization
         public const string AUTH_DATA_ROLES = "Roles";
         public const string AUTH_DATA_USERID = "UserId";
         public const string AUTH_DATA_ORGANIZATION = "Organization";
+        public const string AUTH_DATA_OAUTH2_TOKEN = "OAuth2Token";
         public const string HL7_ROLE_IS_MEMBER = "ismember";
         public const string HL7_ROLE_IS_COCHAIR = "iscochair";
         public const string HL7_ROLE_IS_STAFF = "isstaff";
@@ -424,7 +424,7 @@ namespace Trifolia.Authorization
             string userName = GetPrincipal().Identity.Name.ToLower();
             string orgName = OrganizationName.ToLower();
 
-            return repo.Users.SingleOrDefault(y => y.UserName.ToLower() == userName && y.Organization.Name.ToLower() == orgName);
+            return repo.Users.SingleOrDefault(y => y.UserName.ToLower() == userName);
         }
 
         public AuthorizationTypes Authorize(string aUserName, string aOrganizationName, params string[] aSecurableNames)
@@ -432,34 +432,22 @@ namespace Trifolia.Authorization
             if (!IsAuthenticated || this.User == null)
                 return AuthorizationTypes.UserNonExistant;
 
-            // When a user is an HL7 user, check that they have the appropriate roles associated
-            if (aOrganizationName == HL7OrganizationName)
-            {
-                Dictionary<string, string> authData = GetAuthenticatedData();
-
-                if (authData.ContainsKey(AUTH_DATA_ROLES))
-                    this.CheckHL7Roles(aUserName, authData[AUTH_DATA_ROLES]);
-            }
-
             if (!HasSecurable(this.User, aSecurableNames))
                 return AuthorizationTypes.UserNotAuthorized;
 
             return AuthorizationTypes.AuthorizationSuccessful;
         }
 
-        public void CreateUserWithDefaultPermissions(string aUserName, string aOrganizationName, string aFirstName, string aLastName, string aEmail, string aPhone)
+        public void CreateUserWithDefaultPermissions(string aUserName, string aFirstName, string aLastName, string aEmail, string aPhone)
         {
             using (IObjectRepository tdb = DBContext.Create())
             {
-                Organization org = tdb.Organizations.Single(y => y.Name == aOrganizationName);
-
-                if (tdb.Users.Count(y => y.UserName.ToLower() == aUserName.ToLower() && y.OrganizationId == org.Id) > 0)
+                if (tdb.Users.Count(y => y.UserName.ToLower() == aUserName.ToLower()) > 0)
                     throw new Exception("A user with that username already exists in the organization.");
 
                 User newUser = new User()
                 {
                     UserName = aUserName,
-                    Organization = org,
                     FirstName = aFirstName,
                     LastName = aLastName,
                     Email = aEmail,
@@ -494,7 +482,7 @@ namespace Trifolia.Authorization
 
             if (apiIdentity != null)
             {
-                userData.Add("Organization", apiIdentity.OrganizationName);
+                // TODO?
             }
             else if (authCookie != null)
             {
@@ -517,50 +505,6 @@ namespace Trifolia.Authorization
 
         #endregion
 
-        #region Private Methods
-
-        public void CheckHL7Roles(string userName, string hl7Roles)
-        {
-            Log.For(this).Debug("Entering CheckHL7Roles");
-
-            using (IObjectRepository tdb = DBContext.Create())
-            {
-                User user = tdb.Users.SingleOrDefault(y => y.UserName == userName && y.Organization.Name == HL7OrganizationName);
-
-                if (user == null || string.IsNullOrEmpty(hl7Roles))
-                {
-                    Log.For(this).Info("User not found with username \"{0}\" and organization \"{1}\"", userName, HL7OrganizationName);
-                    return;
-                }
-
-                string[] hl7RolesSplit = hl7Roles.Split(',');
-
-                Log.For(this).Debug("Matching Trifolia roles to HL7 roles ({0})", hl7Roles);
-
-                foreach (string cHl7Role in hl7RolesSplit)
-                {
-                    switch (cHl7Role)
-                    {
-                        case HL7_ROLE_IS_MEMBER:
-                            this.EnsureUserHasRoles(tdb, user, HL7MemberRole);
-                            break;
-                        case HL7_ROLE_IS_BOARD:
-                            this.EnsureUserHasRoles(tdb, user, HL7BoardRole);
-                            break;
-                        case HL7_ROLE_IS_COCHAIR:
-                            this.EnsureUserHasRoles(tdb, user, HL7CoChairRole);
-                            break;
-                        case HL7_ROLE_IS_STAFF:
-                            this.EnsureUserHasRoles(tdb, user, HL7StaffRole);
-                            break;
-                        default:
-                            Log.For(this).Debug("Did not find matching role for flag sent from HL7: {0}", cHl7Role);
-                            break;
-                    }
-                }
-            }
-        }
-
         private void EnsureUserHasRoles(IObjectRepository tdb, User user, string roleName)
         {
             Log.For(this).Debug("Entering EnsureUserHasRole");
@@ -580,13 +524,12 @@ namespace Trifolia.Authorization
             }
 
             bool userHasRole = user.Roles.Count(y => y.Role == foundRole) > 0;
-            bool restrictedRole = foundRole.Restrictions.Count(y => y.OrganizationId == user.Organization.Id) > 0;
 
-            Log.For(this).Debug("User has role: {0}\nRole is restricted: {1}", userHasRole, restrictedRole);
+            Log.For(this).Debug("User has role: {0}", userHasRole);
 
-            if (!restrictedRole && !userHasRole)
+            if (!userHasRole)
             {
-                Log.For(this).Debug("Assigning role {0} to user {1} ({2})", foundRole.Name, user.UserName, user.Organization.Name);
+                Log.For(this).Debug("Assigning role {0} to user {1} ({2})", foundRole.Name, user.UserName, user.Email);
 
                 tdb.UserRoles.AddObject(new UserRole()
                 {
@@ -618,7 +561,5 @@ namespace Trifolia.Authorization
                 return true;
             }
         }
-
-        #endregion
     }
 }

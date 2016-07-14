@@ -168,7 +168,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
                     writer = XmlWriter.Create(sw);
                     FhirSerializer.SerializeBundle(profiles, writer);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     var response = new HttpResponseMessage(HttpStatusCode.ExpectationFailed);
                     response.Content = new StringContent("Failed to serialize request content");

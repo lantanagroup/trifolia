@@ -9,21 +9,22 @@ using Trifolia.DB;
 using Trifolia.Authorization;
 using TDBTemplate = Trifolia.DB.Template;
 using TDBTemplateConstraint = Trifolia.DB.TemplateConstraint;
-using ImportModel = Trifolia.Shared.ImportExport.Model.TemplateExport;
-using ImportTemplate = Trifolia.Shared.ImportExport.Model.TemplateExportTemplate;
+using ImportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
+using ImportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using ImportConstraint = Trifolia.Shared.ImportExport.Model.ConstraintType;
 using ImportSingleValueCode = Trifolia.Shared.ImportExport.Model.ConstraintTypeSingleValueCode;
 using ImportValueSet = Trifolia.Shared.ImportExport.Model.ConstraintTypeValueSet;
 using ImportCodeSystem = Trifolia.Shared.ImportExport.Model.ConstraintTypeCodeSystem;
+using ImportConstraintSample = Trifolia.Shared.ImportExport.Model.ConstraintTypeSample;
 
 namespace Trifolia.Shared.ImportExport
 {
     public class TemplateImporter
     {
         private IObjectRepository tdb = null;
-        private List<ImportTemplate> importTemplates = null;
+        private List<Trifolia.Shared.ImportExport.Model.TrifoliaTemplate> importTemplates = null;
         private List<string> errors = null;
-        private List<TDBTemplate> newTemplates = null;
+        private List<TDBTemplate> importedTemplates = null;
         private bool shouldUpdate = false;
 
         public ImplementationGuide DefaultImplementationGuide { get; set; }
@@ -41,12 +42,23 @@ namespace Trifolia.Shared.ImportExport
             this.shouldUpdate = shouldUpdate;
         }
 
+        public List<TDBTemplate> Import(List<ImportTemplate> importTemplates)
+        {
+            this.errors = new List<string>();
+            this.importedTemplates = new List<TDBTemplate>();
+            this.importTemplates = importTemplates;
+
+            this.importTemplates.ForEach(y =>
+            {
+                AddImportTemplate(y);
+            });
+
+            return this.importedTemplates;
+        }
+
         public List<TDBTemplate> Import(string importXml)
         {
             ImportModel import = null;
-
-            this.errors = new List<string>();
-            this.newTemplates = new List<TDBTemplate>();
 
             try
             {
@@ -58,17 +70,10 @@ namespace Trifolia.Shared.ImportExport
             }
             catch
             {
-                return this.newTemplates;
+                return this.importedTemplates;
             }
 
-            this.importTemplates = new List<ImportTemplate>(import.Template);
-
-            this.importTemplates.ForEach(y =>
-            {
-                AddImportTemplate(y);
-            });
-
-            return this.newTemplates;
+            return Import(import.Template);
         }
 
         private bool ImportConstraintExists(ImportTemplate importTemplate, int number)
@@ -96,32 +101,91 @@ namespace Trifolia.Shared.ImportExport
             return false;
         }
 
-        private TDBTemplate AddImportTemplate(ImportTemplate importTemplate)
+        private void UpdateTemplateProperties(Template template, ImportTemplate importTemplate)
         {
-            var alreadyBuildTemplate = this.newTemplates.SingleOrDefault(y => y.Oid == importTemplate.identifier);
+            if (template.Name != importTemplate.title)
+                template.Name = importTemplate.title;
+
+            if (template.Bookmark != importTemplate.bookmark)
+                template.Bookmark = importTemplate.bookmark;
+
+            if (template.IsOpen != importTemplate.isOpen)
+                template.IsOpen = importTemplate.isOpen;
+
+            if (AreStringsDifferent(template.Notes, importTemplate.Notes))
+                template.Notes = importTemplate.Notes;
+
+            if (AreStringsDifferent(template.Description, importTemplate.Description))
+                template.Description = importTemplate.Description;
+
+            if (template.PrimaryContext != importTemplate.context)
+                template.PrimaryContext = importTemplate.context;
+
+            if (template.PrimaryContextType != importTemplate.contextType)
+                template.PrimaryContextType = importTemplate.contextType;
+        }
+
+        private void UpdateTemplateSamples(Template template, ImportTemplate importTemplate)
+        {
+            var foundSamples = new List<TemplateSample>();
+
+            if (importTemplate.Sample != null && importTemplate.Sample.Count > 0)
+            {
+                foreach (var importSample in importTemplate.Sample)
+                {
+                    if (string.IsNullOrEmpty(importSample.name))
+                    {
+                        errors.Add("Template sample does not have a name");
+                        continue;
+                    }
+
+                    // Look for a match sample by both name and sample text. Maybe they changed the name, or maybe the change the sample text.
+                    // If they only changed one, then we should update the existing entry.
+                    // If they updated both, we won't find a match, and should add a new one. All non-matched samples will be deleted
+                    var foundSample = template.TemplateSamples.SingleOrDefault(y => y.Name.ToLower() == importSample.name.ToLower());
+
+                    if (foundSample == null && importSample.Value != null)
+                        foundSample = template.TemplateSamples.SingleOrDefault(y => y.XmlSample != null && y.XmlSample.ToLower().Replace("\r", "").Replace("\n", "") == importSample.Value.ToLower().Replace("\r", "").Replace("\n", ""));
+
+                    if (foundSample == null)
+                    {
+                        foundSample = new TemplateSample()
+                        {
+                            Template = template,
+                            Name = importSample.name,
+                            XmlSample = importSample.Value
+                        };
+                        this.tdb.TemplateSamples.AddObject(foundSample);
+                    }
+                    else
+                    {
+                        if (foundSample.Name != importSample.name)
+                            foundSample.Name = importSample.name;
+
+                        if (AreStringsDifferent(foundSample.XmlSample, importSample.Value))
+                            foundSample.XmlSample = importSample.Value;
+                    }
+
+                    foundSamples.Add(foundSample);
+                }
+            }
+
+            var deleteSamples = (from ts in template.TemplateSamples
+                                 where !foundSamples.Contains(ts)
+                                 select ts).ToList();
+
+            foreach (var deleteSample in deleteSamples)
+                this.tdb.TemplateSamples.DeleteObject(deleteSample);
+        }
+
+        private TDBTemplate AddImportTemplate(Trifolia.Shared.ImportExport.Model.TrifoliaTemplate importTemplate)
+        {
+            var alreadyBuildTemplate = this.importedTemplates.SingleOrDefault(y => y.Oid == importTemplate.identifier);
 
             if (alreadyBuildTemplate != null)
                 return alreadyBuildTemplate;
 
             TDBTemplate foundTemplate = this.tdb.Templates.SingleOrDefault(y => y.Oid == importTemplate.identifier);
-
-            if (foundTemplate != null)
-            {
-                // Only update templates when the user says to
-                if (!shouldUpdate)
-                    throw new Exception("Cannot create template that already exists: " + importTemplate.identifier);
-
-                if (!CheckPoint.Instance.IsDataAdmin && CheckPoint.Instance.GrantEditTemplate(foundTemplate.Id))
-                    throw new AuthorizationException("You do not have permission to edit template " + foundTemplate.Oid);
-
-                this.tdb.Templates.DeleteObject(foundTemplate);
-
-                var constraints = this.tdb.TemplateConstraints.Where(y => y.Template == foundTemplate).ToList();
-                foreach (var constraint in constraints)
-                {
-                    this.tdb.TemplateConstraints.DeleteObject(constraint);
-                }
-            }
 
             if (string.IsNullOrEmpty(importTemplate.identifier) || importTemplate.identifier.Length > 255)
             {
@@ -135,21 +199,31 @@ namespace Trifolia.Shared.ImportExport
                 return null;
             }
 
-            TDBTemplate newTemplate = new TDBTemplate()
-            {
-                Oid = importTemplate.identifier,
-                Name = importTemplate.title,
-                Bookmark = importTemplate.bookmark,
-                IsOpen = importTemplate.isOpen,
-                Notes = importTemplate.Notes,
-                Description = importTemplate.Description,
-                PrimaryContext = importTemplate.context,
-                PrimaryContextType = importTemplate.contextType,
-                Author = this.DefaultAuthorUser
-            };
+            var template = this.tdb.Templates.SingleOrDefault(y => y.Oid.ToLower() == importTemplate.identifier.ToLower());
 
-            this.newTemplates.Add(newTemplate);
-            this.tdb.Templates.AddObject(newTemplate);
+            if (!shouldUpdate && template != null)
+            {
+                errors.Add("Template already exists and should not be updating");
+                return template;
+            }
+
+            if (template == null)
+            {
+                template = new TDBTemplate();
+                template.Author = this.DefaultAuthorUser;
+                template.Oid = importTemplate.identifier;
+                
+                if (this.DefaultAuthorUser != null)
+                    template.Author = this.DefaultAuthorUser;
+                else 
+                    template.Author = CheckPoint.Instance.GetUser(this.tdb);
+
+                this.tdb.Templates.AddObject(template);
+            }
+
+            this.UpdateTemplateProperties(template, importTemplate);
+
+            this.UpdateTemplateSamples(template, importTemplate);
 
             // Find implementation guide type
             ImplementationGuideType igType = this.tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == importTemplate.implementationGuideType.ToLower());
@@ -163,18 +237,22 @@ namespace Trifolia.Shared.ImportExport
                 return null;
             }
 
-            newTemplate.ImplementationGuideType = igType;
-            newTemplate.ImplementationGuideTypeId = igType.Id;
+            template.ImplementationGuideType = igType;
 
-            if (!string.IsNullOrEmpty(importTemplate.owningImplementationGuideName))
+            if (importTemplate.ImplementationGuide != null && !string.IsNullOrEmpty(importTemplate.ImplementationGuide.name))
             {
-                ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Name.ToLower() == importTemplate.owningImplementationGuideName.ToLower());
+                ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => 
+                    y.Name.ToLower() == importTemplate.ImplementationGuide.name.ToLower() &&
+                    (
+                        (y.Version == null && importTemplate.ImplementationGuide.version == 1) || 
+                        (y.Version != null && y.Version.Value == importTemplate.ImplementationGuide.version)
+                    ));
 
                 if (ig == null)
                 {
                     this.errors.Add(string.Format(
                         "Could not find implementation guide \"{0}\" for template with identifier \"{1}\"",
-                        importTemplate.owningImplementationGuideName,
+                        importTemplate.ImplementationGuide.name,
                         importTemplate.identifier));
                     return null;
                 }
@@ -182,19 +260,24 @@ namespace Trifolia.Shared.ImportExport
                 {
                     this.errors.Add(string.Format(
                         "The implementation guide type for the implementation guide \"{0}\" is not the same as the import.",
-                        importTemplate.owningImplementationGuideName));
+                        importTemplate.ImplementationGuide.name));
                     return null;
                 }
 
-                newTemplate.OwningImplementationGuide = ig;
-                newTemplate.OwningImplementationGuideId = ig.Id;
+                if (template.OwningImplementationGuide != ig)
+                    template.OwningImplementationGuide = ig;
 
-                if (!ig.ChildTemplates.Contains(newTemplate))
-                    ig.ChildTemplates.Add(newTemplate);
+                if (!ig.ChildTemplates.Contains(template))
+                    ig.ChildTemplates.Add(template);
+            }
+            else if (this.DefaultImplementationGuide != null)
+            {
+                template.OwningImplementationGuide = this.DefaultImplementationGuide;
             }
             else
             {
-                newTemplate.OwningImplementationGuide = this.DefaultImplementationGuide;
+                errors.Add("No implementation guide specified for template/profile: " + importTemplate.identifier);
+                return null;
             }
 
             // Find the template type
@@ -208,10 +291,9 @@ namespace Trifolia.Shared.ImportExport
                     importTemplate.identifier));
                 return null;
             }
-            else
+            else if (template.TemplateType != templateType)
             {
-                newTemplate.TemplateType = templateType;
-                newTemplate.TemplateTypeId = templateType.Id;
+                template.TemplateType = templateType;
             }
 
             // Find or build the implied template
@@ -238,113 +320,287 @@ namespace Trifolia.Shared.ImportExport
                 }
                 else
                 {
-                    newTemplate.ImpliedTemplate = impliedTemplate;
-                    impliedTemplate.ImplyingTemplates.Add(newTemplate);
+                    if (template.ImpliedTemplate != impliedTemplate)
+                        template.ImpliedTemplate = impliedTemplate;
 
-                    if (newTemplate.EntityState == System.Data.Entity.EntityState.Modified || newTemplate.EntityState == System.Data.Entity.EntityState.Unchanged)
-                        newTemplate.ImpliedTemplateId = impliedTemplate.Id;
+                    if (!impliedTemplate.ImplyingTemplates.Contains(template))
+                        impliedTemplate.ImplyingTemplates.Add(template);
                 }
             }
 
             // Extensions
-            foreach (var existingExtension in newTemplate.Extensions.ToList())
+            foreach (var existingExtension in template.Extensions.ToList())
             {
                 if (importTemplate.Extension.Count(y => y.identifier == existingExtension.Identifier) == 0)
-                    newTemplate.Extensions.Remove(existingExtension);
+                    this.tdb.TemplateExtensions.DeleteObject(existingExtension);
             }
 
             foreach (var importExtension in importTemplate.Extension)
             {
-                var foundExtension = newTemplate.Extensions.SingleOrDefault(y => y.Identifier == importExtension.identifier);
+                var foundExtension = template.Extensions.SingleOrDefault(y => y.Identifier == importExtension.identifier);
 
                 if (foundExtension == null)
                 {
                     foundExtension = new TemplateExtension();
-                    newTemplate.Extensions.Add(foundExtension);
+                    template.Extensions.Add(foundExtension);
                 }
 
                 foundExtension.Type = importExtension.type;
                 foundExtension.Value = importExtension.value;
             }
 
-            // Add each of the template's constraints
-            if (importTemplate.Constraint != null)
-                importTemplate.Constraint.ToList().ForEach(y => AddImportConstraint(newTemplate, null, y));
+            try
+            {
+                // Add each of the template's constraints
+                if (importTemplate.Constraint != null)
+                    importTemplate.Constraint.ToList().ForEach(y => AddImportConstraint(template, null, y));
+            }
+            catch
+            {
+                return null;
+            }
 
-            return newTemplate;
+            // If the object is changed, make sure the user has permissions to the implementation guide
+            if (this.tdb is TemplateDatabaseDataSource)
+            {
+                var dataSource = this.tdb as TemplateDatabaseDataSource;
+                var templateState = dataSource.ObjectStateManager.GetObjectStateEntry(template).State;
+
+                if (templateState == System.Data.Entity.EntityState.Unchanged)
+                {
+                    var constraintStates = (from c in template.ChildConstraints
+                                            where dataSource.ObjectStateManager.GetObjectStateEntry(c).State != System.Data.Entity.EntityState.Unchanged
+                                            select c);
+                    var constraintSampleStates = (from c in template.ChildConstraints
+                                                  join cs in this.tdb.TemplateConstraintSamples on c equals cs.Constraint
+                                                  where dataSource.ObjectStateManager.GetObjectStateEntry(cs).State != System.Data.Entity.EntityState.Unchanged
+                                                  select cs);
+                    var templateSampleStates = (from s in template.TemplateSamples
+                                                where dataSource.ObjectStateManager.GetObjectStateEntry(s).State != System.Data.Entity.EntityState.Unchanged
+                                                select s);
+
+                    if (constraintStates.Count() > 0 || constraintSampleStates.Count() > 0 || templateSampleStates.Count() > 0)
+                        templateState = System.Data.Entity.EntityState.Modified;
+                }
+
+                if (templateState != System.Data.Entity.EntityState.Unchanged && !CheckPoint.Instance.GrantEditImplementationGuide(template.OwningImplementationGuide.Id) && !CheckPoint.Instance.IsDataAdmin)
+                {
+                    this.Errors.Add("You do not have permission to modify template \"" + template.Name + "\" with identifier " + template.Oid);
+                    return null;
+                }
+            }
+            
+            this.importedTemplates.Add(template);
+
+            return template;
         }
 
-        private void AddImportConstraint(TDBTemplate template, TDBTemplateConstraint parentConstraint, ImportConstraint importConstraint)
+        private bool AreStringsDifferent(string value1, string value2)
         {
-            if (importConstraint.isVerbose)
-                return;
+            if (string.IsNullOrEmpty(value1) && string.IsNullOrEmpty(value2))
+                return false;
 
-            TDBTemplateConstraint newConstraint = new TDBTemplateConstraint()
+            var compareValue1 = value1 != null ?
+                value1.Replace("\n", "").Replace("\r", "") :
+                null;
+            var compareValue2 = value2 != null ?
+                value2.Replace("\n", "").Replace("\r", "") :
+                null;
+
+            return compareValue1 != compareValue2; 
+        }
+
+        private bool AreBooleansDifferent(bool? value1, bool value2, bool value2Specified)
+        {
+            if (value1 == null && !value2Specified)
+                return false;
+
+            return value1 != value2;
+        }
+
+        private string GetImportConformance(Model.ConstraintTypeConformance importConformance)
+        {
+            switch (importConformance)
             {
-                // Ignoring ID because this is a new constraint
-                Template = template,
-                ParentConstraint = parentConstraint,
-                Context = importConstraint.context,
-                Conformance = importConstraint.conformance.ToString(),
-                Cardinality = importConstraint.cardinality,
-                DataType = importConstraint.dataType,
-                IsBranch = importConstraint.isBranch,
-                IsBranchIdentifier = importConstraint.isBranchIdentifier,
-                IsSchRooted = importConstraint.isSchRooted,
-                IsStatic = importConstraint.isStatic,
-                IsPrimitive = importConstraint.isPrimitive,
-                PrimitiveText = importConstraint.NarrativeText,
-                Schematron = importConstraint.SchematronTest,
-                Number = importConstraint.number
-            };
+                case Model.ConstraintTypeConformance.SHALL:
+                case Model.ConstraintTypeConformance.SHOULD:
+                case Model.ConstraintTypeConformance.MAY:
+                    return importConformance.ToString();
+                case Model.ConstraintTypeConformance.SHALLNOT:
+                    return "SHALL NOT";
+                case Model.ConstraintTypeConformance.SHOULDNOT:
+                    return "SHOULD NOT";
+                case Model.ConstraintTypeConformance.MAYNOT:
+                    return "MAY NOT";
+                default:
+                    return string.Empty;
+            }
+        }
 
+        private void UpdateConstraintProperties(TemplateConstraint constraint, ImportConstraint importConstraint)
+        {
+            var importConformance = GetImportConformance(importConstraint.conformance);
+
+            if (constraint.Context != importConstraint.context)
+                constraint.Context = importConstraint.context;
+
+            if (AreStringsDifferent(constraint.Conformance, importConformance))
+                constraint.Conformance = importConformance;
+
+            if (constraint.Cardinality != importConstraint.cardinality)
+                constraint.Cardinality = importConstraint.cardinality;
+
+            if (constraint.DataType != importConstraint.dataType)
+                constraint.DataType = importConstraint.dataType;
+
+            if (constraint.IsBranch != importConstraint.isBranch)
+                constraint.IsBranch = importConstraint.isBranch;
+
+            if (constraint.IsBranchIdentifier != importConstraint.isBranchIdentifier)
+                constraint.IsBranchIdentifier = importConstraint.isBranchIdentifier;
+
+            if (constraint.IsSchRooted != importConstraint.isSchRooted)
+                constraint.IsSchRooted = importConstraint.isSchRooted;
+
+            if (AreBooleansDifferent(constraint.IsStatic, importConstraint.isStatic, importConstraint.isStaticSpecified))
+                constraint.IsStatic = importConstraint.isStaticSpecified ? (bool?)importConstraint.isStatic : null;
+
+            if (constraint.IsPrimitive != importConstraint.isPrimitive)
+                constraint.IsPrimitive = importConstraint.isPrimitive;
+
+            if (constraint.IsPrimitive && AreStringsDifferent(constraint.PrimitiveText, importConstraint.NarrativeText))
+                constraint.PrimitiveText = importConstraint.NarrativeText;
+
+            if (AreStringsDifferent(constraint.Schematron, importConstraint.SchematronTest))
+                constraint.Schematron = importConstraint.SchematronTest;
+
+            if (constraint.Number != importConstraint.number)
+                constraint.Number = importConstraint.number;
+
+            if (constraint.DisplayNumber != importConstraint.displayNumber)
+                constraint.DisplayNumber = importConstraint.displayNumber;
+
+            if (AreStringsDifferent(constraint.Notes, importConstraint.Notes))
+                constraint.Notes = importConstraint.Notes;
+
+            if (AreStringsDifferent(constraint.Label, importConstraint.Label))
+                constraint.Label = importConstraint.Label;
+
+            if (constraint.IsHeading != importConstraint.isHeading)
+                constraint.IsHeading = importConstraint.isHeading;
+
+            if (AreStringsDifferent(constraint.HeadingDescription, importConstraint.HeadingDescription))
+                constraint.HeadingDescription = importConstraint.HeadingDescription;
+        }
+
+        private void UpdateConstraintSamples(TemplateConstraint constraint, ImportConstraint importConstraint)
+        {
+            List<TemplateConstraintSample> foundSamples = new List<TemplateConstraintSample>();
+
+            if (importConstraint.Sample != null && importConstraint.Sample.Count > 0)
+            {
+                foreach (var importSample in importConstraint.Sample)
+                {
+                    if (string.IsNullOrEmpty(importSample.name))
+                    {
+                        errors.Add("Constraint sample does not have a name");
+                        continue;
+                    }
+
+                    // Look for a match sample by both name and sample text. Maybe they changed the name, or maybe the change the sample text.
+                    // If they only changed one, then we should update the existing entry.
+                    // If they updated both, we won't find a match, and should add a new one. All non-matched samples will be deleted
+                    var foundSample = constraint.Samples.SingleOrDefault(y => y.Name.ToLower() == importSample.name.ToLower());
+
+                    if (foundSample == null && !string.IsNullOrEmpty(importSample.Value))
+                        foundSample = constraint.Samples.SingleOrDefault(y => y.SampleText != null && y.SampleText.ToLower().Replace("\r", "").Replace("\n", "") == importSample.Value.ToLower().Replace("\r", "").Replace("\n", ""));
+
+                    if (foundSample == null)
+                    {
+                        var newSample = new TemplateConstraintSample()
+                        {
+                            Constraint = constraint,
+                            Name = importSample.name,
+                            SampleText = importSample.Value
+                        };
+                        this.tdb.TemplateConstraintSamples.AddObject(newSample);
+                    }
+                    else
+                    {
+                        if (foundSample.Name != importSample.name)
+                            foundSample.Name = importSample.name;
+
+                        if (AreStringsDifferent(foundSample.SampleText, importSample.Value))
+                            foundSample.SampleText = importSample.Value;
+                    }
+
+                    foundSamples.Add(foundSample);
+                }
+            }
+
+            var deleteSamples = (from cs in constraint.Samples
+                                 where !foundSamples.Contains(cs)
+                                 select cs).ToList();
+
+            foreach (var deleteSample in deleteSamples)
+                this.tdb.TemplateConstraintSamples.DeleteObject(deleteSample);
+        }
+
+        private void UpdateConstraintContainedTemplate(TemplateConstraint constraint, string containedTemplateOid)
+        {
             // Find the contained template if one is specified
-            if (!string.IsNullOrEmpty(importConstraint.containedTemplateOid))
+            if (!string.IsNullOrEmpty(containedTemplateOid))
             {
-                if (importConstraint.containedTemplateOid.ToLower() == template.Oid.ToLower())
+                if (containedTemplateOid.ToLower() == constraint.Template.Oid.ToLower())
                 {
                     this.errors.Add(string.Format(
                         "Template with oid \"{0}\" has a constraint which contains the same template. Constraint cannot be imported.",
-                        template.Oid));
+                        constraint.Template.Oid));
                     throw new Exception("Constraint has an error.");
                 }
 
-                TDBTemplate containedTemplate = FindOrBuildTemplate(importConstraint.containedTemplateOid);
+                TDBTemplate containedTemplate = FindOrBuildTemplate(containedTemplateOid);
 
                 if (containedTemplate == null)
                 {
                     this.errors.Add(string.Format(
-                        "Could not find contained template \"{0}\" for constraint with id \"{1}\" in template with oid \"{2}\"",
-                        importConstraint.containedTemplateOid,
-                        importConstraint.number,
-                        template.Oid));
+                        "Could not find contained template \"{0}\" for constraint with number \"{1}\" in template with oid \"{2}\"",
+                        containedTemplateOid,
+                        constraint.Number,
+                        constraint.Template.Oid));
                     throw new Exception("Constraint has an error.");
                 }
 
-                if (containedTemplate.EntityState == System.Data.Entity.EntityState.Unchanged || containedTemplate.EntityState == System.Data.Entity.EntityState.Modified)
-                    newConstraint.ContainedTemplateId = containedTemplate.Id;
-                
-                newConstraint.ContainedTemplate = containedTemplate;
+                if (constraint.ContainedTemplate != containedTemplate)
+                    constraint.ContainedTemplate = containedTemplate;
             }
+        }
 
+        private void UpdateConstraintBinding(TemplateConstraint constraint, ImportConstraint importConstraint)
+        {
             if (importConstraint.Item is ImportSingleValueCode)
             {
                 ImportSingleValueCode importSvc = importConstraint.Item as ImportSingleValueCode;
 
-                newConstraint.Value = importSvc.code;
-                newConstraint.DisplayName = importSvc.displayName;
+                if (constraint.Value != importSvc.code)
+                    constraint.Value = importSvc.code;
+
+                if (constraint.DisplayName != importSvc.displayName)
+                    constraint.DisplayName = importSvc.displayName;
             }
             else if (importConstraint.Item is ImportValueSet)
             {
                 ImportValueSet importVs = importConstraint.Item as ImportValueSet;
 
-                newConstraint.IsStatic = importVs.isStatic;
+                if (AreBooleansDifferent(constraint.IsStatic, importVs.isStatic, importVs.isStaticSpecified))
+                    constraint.IsStatic = importVs.isStatic;
+                
+                // Old bug in Trifolia allowing the same value set identifier to be used more than once
+                var foundValueSets = this.tdb.ValueSets.Where(y => y.Oid.ToLower() == importVs.oid.ToLower()).ToList();
 
-                ValueSet foundValueSet = this.tdb.ValueSets.SingleOrDefault(y => y.Oid.ToLower() == importVs.oid.ToLower());
-
-                if (foundValueSet == null)
+                if (foundValueSets.Count == 0)
                 {
-                    foundValueSet = new ValueSet()
+                    var newValueSet = new ValueSet()
                     {
                         Oid = importVs.oid,
                         Name = importVs.oid + " incomplete",
@@ -352,38 +608,94 @@ namespace Trifolia.Shared.ImportExport
                         Description = "Automatically generated by template import",
                         LastUpdate = DateTime.Now
                     };
-                    this.tdb.ValueSets.AddObject(foundValueSet);
+                    this.tdb.ValueSets.AddObject(newValueSet);
+                    foundValueSets.Add(newValueSet);
                 }
 
-                newConstraint.ValueSet = foundValueSet;
+                if (constraint.ValueSet != null && foundValueSets.Contains(constraint.ValueSet))
+                    return;
+
+                if (constraint.ValueSet != foundValueSets.First())
+                    constraint.ValueSet = foundValueSets.First();
             }
-            
+        }
+
+        private void UpdateConstraintCodeSystem(TemplateConstraint constraint, ImportConstraint importConstraint)
+        {
             if (importConstraint.CodeSystem != null && !string.IsNullOrEmpty(importConstraint.CodeSystem.oid))
             {
                 ImportCodeSystem importCs = importConstraint.CodeSystem;
-                CodeSystem foundCodeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid.ToLower() == importCs.oid.ToLower());
+                CodeSystem foundCodeSystem = this.tdb.CodeSystems.FirstOrDefault(y => y.Oid.ToLower() == importCs.oid.ToLower());
 
                 if (foundCodeSystem == null)
                 {
                     this.errors.Add(string.Format(
-                        "Code System with oid \"{0}\" could not be found for constraint with id \"{1}\" in template with oid \"{2}\"",
+                        "Code System with oid \"{0}\" could not be found for constraint with number \"{1}\" in template with oid \"{2}\"",
                         importCs.oid,
                         importConstraint.number,
-                        template.Oid));
+                        constraint.Template.Oid));
                     throw new Exception("Constraint has an error.");
                 }
 
-                newConstraint.CodeSystem = foundCodeSystem;
-                newConstraint.CodeSystemId = foundCodeSystem.Id;
+                constraint.CodeSystem = foundCodeSystem;
+            }
+        }
+
+        private void UpdateConstraintCategories(TemplateConstraint constraint, ImportConstraint importConstraint)
+        {
+            if (importConstraint.Category == null || importConstraint.Category.Count == 0)
+            {
+                if (!string.IsNullOrEmpty(constraint.Category))
+                    constraint.Category = string.Empty;
+                return;
             }
 
-            // Add the constraint to the template
-            this.tdb.TemplateConstraints.AddObject(newConstraint);
-            template.ChildConstraints.Add(newConstraint);
+            var categories = importConstraint.Category.Select(y => y.name.Replace(',', '-'));
+            var categoriesString = String.Join(",", categories);
+
+            if (AreStringsDifferent(constraint.Category, categoriesString))
+                constraint.Category = categoriesString;
+        }
+
+        private void AddImportConstraint(TDBTemplate template, TDBTemplateConstraint parentConstraint, ImportConstraint importConstraint)
+        {
+            if (importConstraint.isVerbose)
+                return;
+
+            TDBTemplateConstraint constraint = null;
+
+            if (importConstraint.numberSpecified)
+                constraint = template.ChildConstraints.SingleOrDefault(y => y.ParentConstraint == parentConstraint && y.Number == importConstraint.number);
+            else if (!string.IsNullOrEmpty(importConstraint.displayNumber))
+                constraint = template.ChildConstraints.SingleOrDefault(y => y.ParentConstraint == parentConstraint && y.DisplayNumber == importConstraint.displayNumber);
+
+            if (constraint == null)
+            {
+                constraint = new TDBTemplateConstraint();
+                constraint.Number = importConstraint.number;
+                constraint.DisplayNumber = importConstraint.displayNumber;
+                constraint.Template = template;
+                constraint.ParentConstraint = parentConstraint;
+                this.tdb.TemplateConstraints.AddObject(constraint);
+
+                // TODO: Order the constraint? Or let the template re-order the constraints when it is edited?
+            }
+
+            this.UpdateConstraintProperties(constraint, importConstraint);
+
+            this.UpdateConstraintContainedTemplate(constraint, importConstraint.containedTemplateOid);
+
+            this.UpdateConstraintBinding(constraint, importConstraint);
+
+            this.UpdateConstraintCodeSystem(constraint, importConstraint);
+
+            this.UpdateConstraintCategories(constraint, importConstraint);
+
+            this.UpdateConstraintSamples(constraint, importConstraint);
 
             // Add each of the constraint's child constraints
             if (importConstraint.Constraint != null)
-                importConstraint.Constraint.ToList().ForEach(y => AddImportConstraint(template, newConstraint, y));
+                importConstraint.Constraint.ToList().ForEach(y => AddImportConstraint(template, constraint, y));
         }
 
         private TDBTemplate FindOrBuildTemplate(string identifier)
@@ -394,7 +706,7 @@ namespace Trifolia.Shared.ImportExport
             if (template == null)
             {
                 // Try to find if the template has already been built in the import
-                template = this.newTemplates.SingleOrDefault(y => y.Oid.ToLower() == identifier.ToLower());
+                template = this.importedTemplates.SingleOrDefault(y => y.Oid.ToLower() == identifier.ToLower());
 
                 // If it hasn't been built yet, then find the template in the import and build it
                 if (template == null)

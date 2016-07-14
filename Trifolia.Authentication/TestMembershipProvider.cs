@@ -182,8 +182,6 @@ namespace Trifolia.Authentication
 
             return users[username] == password;
 #endif
-
-            return false;
         }
     }
 }

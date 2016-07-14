@@ -60,7 +60,7 @@ namespace Trifolia.Config
             get { return (IGTypePluginElement)this.BaseGet(index); }
         }
 
-        public IGTypePluginElement this[string igTypeNamespace]
+        public new IGTypePluginElement this[string igTypeNamespace]
         {
             get { return (IGTypePluginElement)this.BaseGet(igTypeNamespace); }
         }

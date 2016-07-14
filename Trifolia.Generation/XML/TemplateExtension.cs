@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using ExportTemplate = Trifolia.Shared.ImportExport.Model.TemplateExportTemplate;
+using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using ExportConstraint = Trifolia.Shared.ImportExport.Model.ConstraintType;
-using ExportPreviousVersion = Trifolia.Shared.ImportExport.Model.TemplateExportTemplatePreviousVersion;
+using ExportPreviousVersion = Trifolia.Shared.ImportExport.Model.TrifoliaTemplatePreviousVersion;
+using ExportSample = Trifolia.Shared.ImportExport.Model.TrifoliaTemplateSample;
 using Trifolia.DB;
 using Trifolia.Shared.ImportExport.Model;
 using Trifolia.Shared;
@@ -33,9 +34,13 @@ namespace Trifolia.Generation.XML
                 Description = !string.IsNullOrEmpty(template.Description) ? template.Description : null,
                 Notes = !string.IsNullOrEmpty(template.Notes) ? template.Notes : null,
                 organizationName = template.Organization != null ? template.Organization.Name : null,
-                owningImplementationGuideName = template.OwningImplementationGuide.NameWithVersion,
                 publishStatus = template.Status != null ? template.Status.Status : null,
-                PreviousVersion = null
+                PreviousVersion = null,
+                ImplementationGuide = new TrifoliaTemplateImplementationGuide()
+                {
+                    name = template.OwningImplementationGuide.Name,
+                    version = template.OwningImplementationGuide.Version.HasValue ? template.OwningImplementationGuide.Version.Value : 1
+                },
             };
 
             if (template.PreviousVersion != null)
@@ -48,12 +53,19 @@ namespace Trifolia.Generation.XML
             }
 
             exportTemplate.Extension = (from e in template.Extensions
-                                        select new TemplateExportTemplateExtension()
+                                        select new TrifoliaTemplateExtension()
                                         {
                                             identifier = e.Identifier,
                                             type = e.Type,
                                             value = e.Value
                                         }).ToList();
+
+            exportTemplate.Sample = (from s in template.TemplateSamples
+                                     select new ExportSample()
+                                     {
+                                         name = s.Name,
+                                         Value = s.XmlSample
+                                     }).ToList();
 
             // Get all root-level child constraints and build a new export-version of the constraint
             var childConstraints = template.ChildConstraints.Where(y => y.ParentConstraintId == null).OrderBy(y => y.Order);

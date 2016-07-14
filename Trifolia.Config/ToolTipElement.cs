@@ -47,7 +47,7 @@ namespace Trifolia.Config
 
         #region Public Methods
 
-        public new ToolTipElement this[int index]
+        public ToolTipElement this[int index]
         {
             get { return (ToolTipElement)this.BaseGet(index); }
         }

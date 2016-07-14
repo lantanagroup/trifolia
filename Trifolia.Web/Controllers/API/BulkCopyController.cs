@@ -21,7 +21,6 @@ using Trifolia.Authorization;
 using Trifolia.Web.Models.BulkCopy;
 using Trifolia.DB;
 using Trifolia.Web.Extensions;
-using Trifolia.Authorization;
 using System.Web.Http.Description;
 
 namespace Trifolia.Web.Controllers.API
@@ -206,7 +205,6 @@ namespace Trifolia.Web.Controllers.API
                     ImpliedTemplate = baseTemplate.ImpliedTemplate,
                     IsOpen = baseTemplate.IsOpen,
                     Notes = baseTemplate.Notes,
-                    Organization = user.Organization,
                     OwningImplementationGuide = baseTemplate.OwningImplementationGuide,
                     Status = baseTemplate.Status,
                     TemplateType = baseTemplate.TemplateType

@@ -80,6 +80,11 @@
                         </ul>
                     </li>
                     <!-- /ko -->
+                    <!-- ko if: HasSecurable(['Import']) -->
+                    <li>
+                        <a href="/Import"><i class="glyphicon glyphicon-upload"></i> Import</a>
+                    </li>
+                    <!-- /ko -->
                     <!-- ko if: HasSecurable(['ReportTemplateReview', 'ReportTemplateCompliance', 'Admin']) -->
                     <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-stats"></i> Reports <b class="caret"></b></a>

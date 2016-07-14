@@ -7,7 +7,7 @@ namespace Trifolia.Web.Models.PermissionManagement
 {
     public enum PermissionTypes
     {
-        EntireOrganization = 0,
+        Everyone = 0,
         Group = 1,
         User = 2
     }

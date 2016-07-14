@@ -357,10 +357,6 @@
             <End Role="user" EntitySet="user" />
             <End Role="user_group" EntitySet="user_group" />
           </AssociationSet>
-          <AssociationSet Name="FK_user_organization" Association="Trifolia.Shared.Store.FK_user_organization">
-            <End Role="organization" EntitySet="organization" />
-            <End Role="user" EntitySet="user" />
-          </AssociationSet>
           <AssociationSet Name="FK_user_role_roles" Association="Trifolia.Shared.Store.FK_user_role_roles">
             <End Role="role" EntitySet="role" />
             <End Role="user_role" EntitySet="user_role" />
@@ -722,7 +718,6 @@
           </Key>
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="userName" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="organizationId" Type="int" Nullable="false" />
           <Property Name="firstName" Type="nvarchar" Nullable="false" MaxLength="125" />
           <Property Name="lastName" Type="nvarchar" Nullable="false" MaxLength="125" />
           <Property Name="email" Type="nvarchar" Nullable="false" MaxLength="255" />
@@ -782,18 +777,18 @@
           <Key>
             <PropertyRef Name="username" />
             <PropertyRef Name="auditDate" />
-            <PropertyRef Name="ip" />
             <PropertyRef Name="type" />
+            <PropertyRef Name="ip" />
           </Key>
-          <Property Name="username" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="username" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="auditDate" Type="datetime" Nullable="false" />
-          <Property Name="ip" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="type" Type="nvarchar" Nullable="false" MaxLength="128" />
-          <Property Name="note" Type="nvarchar(max)" />
+          <Property Name="ip" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="type" Type="varchar" Nullable="false" MaxLength="128" />
+          <Property Name="note" Type="varchar(max)" />
           <Property Name="implementationGuideId" Type="int" />
           <Property Name="templateId" Type="int" />
           <Property Name="templateConstraintId" Type="int" />
-          <Property Name="templateName" Type="nvarchar" MaxLength="255" />
+          <Property Name="templateName" Type="varchar" MaxLength="255" />
           <Property Name="conformanceNumber" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -812,14 +807,14 @@
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
-          <Property Name="fileName" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="mimeType" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="contentType" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="fileName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="mimeType" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="contentType" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="expectedErrorCount" Type="int" />
           <Property Name="data" Type="image" Nullable="false" />
           <Property Name="updatedDate" Type="datetime" Nullable="false" />
-          <Property Name="updatedBy" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="note" Type="nvarchar(max)" />
+          <Property Name="updatedBy" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="note" Type="varchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'templatedb.dbo.v_implementationGuidePermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -860,8 +855,8 @@
           <Property Name="implementationGuideFileId" Type="int" Nullable="false" />
           <Property Name="data" Type="image" Nullable="false" />
           <Property Name="updatedDate" Type="datetime" Nullable="false" />
-          <Property Name="updatedBy" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="note" Type="nvarchar(max)" />
+          <Property Name="updatedBy" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="note" Type="varchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'templatedb.dbo.v_template' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -878,20 +873,20 @@
             <PropertyRef Name="templateTypeDisplay" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="oid" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="oid" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="isOpen" Type="bit" Nullable="false" />
           <Property Name="owningImplementationGuideId" Type="int" />
-          <Property Name="owningImplementationGuideTitle" Type="nvarchar" MaxLength="255" />
-          <Property Name="implementationGuideTypeName" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="owningImplementationGuideTitle" Type="varchar" MaxLength="255" />
+          <Property Name="implementationGuideTypeName" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="templateTypeId" Type="int" Nullable="false" />
-          <Property Name="templateTypeName" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="primaryContext" Type="nvarchar" MaxLength="255" />
-          <Property Name="templateTypeDisplay" Type="nvarchar" Nullable="false" MaxLength="513" />
-          <Property Name="organizationName" Type="nvarchar" MaxLength="255" />
+          <Property Name="templateTypeName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="primaryContext" Type="varchar" MaxLength="255" />
+          <Property Name="templateTypeDisplay" Type="varchar" Nullable="false" MaxLength="513" />
+          <Property Name="organizationName" Type="varchar" MaxLength="255" />
           <Property Name="publishDate" Type="datetime" />
-          <Property Name="impliedTemplateOid" Type="nvarchar" MaxLength="255" />
-          <Property Name="impliedTemplateTitle" Type="nvarchar" MaxLength="255" />
+          <Property Name="impliedTemplateOid" Type="varchar" MaxLength="255" />
+          <Property Name="impliedTemplateTitle" Type="varchar" MaxLength="255" />
           <Property Name="constraintCount" Type="int" />
           <Property Name="containedTemplateCount" Type="int" />
           <Property Name="impliedTemplateCount" Type="int" />
@@ -936,7 +931,7 @@
           </Key>
           <Property Name="userId" Type="int" Nullable="false" />
           <Property Name="templateId" Type="int" Nullable="false" />
-          <Property Name="permission" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="permission" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'templatedb.dbo.v_templateusage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -949,9 +944,9 @@
             <PropertyRef Name="implementationGuideDisplay" />
           </Key>
           <Property Name="templateId" Type="int" Nullable="false" />
-          <Property Name="templateDisplay" Type="nvarchar" Nullable="false" MaxLength="513" />
+          <Property Name="templateDisplay" Type="varchar" Nullable="false" MaxLength="513" />
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
-          <Property Name="implementationGuideDisplay" Type="nvarchar" Nullable="false" MaxLength="513" />
+          <Property Name="implementationGuideDisplay" Type="varchar" Nullable="false" MaxLength="513" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'templatedb.dbo.v_userSecurables' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -962,7 +957,7 @@
             <PropertyRef Name="name" />
           </Key>
           <Property Name="userId" Type="int" Nullable="false" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <Association Name="FK_appsecurable_role_appsecurable">
           <End Role="app_securable" Type="Trifolia.Shared.Store.app_securable" Multiplicity="1" />
@@ -1582,18 +1577,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_user_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="1" />
-          <End Role="user" Type="Trifolia.Shared.Store.user" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="organization">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="user">
-              <PropertyRef Name="organizationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_user_role_roles">
           <End Role="role" Type="Trifolia.Shared.Store.role" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1646,11 +1629,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="GetImplementationGuideTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="implementationGuideId" Type="int" Mode="In" />
-          <Parameter Name="inferred" Type="bit" Mode="In" />
-          <Parameter Name="parentTemplateId" Type="int" Mode="In" />
-        </Function>
         <Function Name="SearchTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userId" Type="int" Mode="In" />
           <Parameter Name="filterImplementationGuideId" Type="int" Mode="In" />
@@ -1669,6 +1647,14 @@
           <Parameter Name="orderProperty" Type="varchar" Mode="In" />
           <Parameter Name="orderDesc" Type="bit" Mode="In" />
         </Function>
+        <!--Errors Found During Generation:
+      warning 6005: The function 'GetImplementationGuideTemplates' has a parameter 'categories' at parameter index 3 that has a data type 'table type' which is currently not supported for the target .NET Framework version. The function was excluded.
+      
+      <Function Name="GetImplementationGuideTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Parameter Name="implementationGuideId" Type="int" Mode="In" />
+        <Parameter Name="inferred" Type="bit" Mode="In" />
+        <Parameter Name="parentTemplateId" Type="int" Mode="In" />
+      </Function>-->
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -1845,10 +1831,6 @@
           <AssociationSet Name="FK_template_organization" Association="Trifolia.DB.FK_template_organization">
             <End Role="organization" EntitySet="Organizations" />
             <End Role="Template" EntitySet="Templates" />
-          </AssociationSet>
-          <AssociationSet Name="FK_user_organization" Association="Trifolia.DB.FK_user_organization">
-            <End Role="organization" EntitySet="Organizations" />
-            <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <EntitySet Name="OrganizationDefaultPermissions" EntityType="Trifolia.DB.OrganizationDefaultPermission" />
           <AssociationSet Name="FK_organization_defaultpermission_group" Association="Trifolia.DB.FK_organization_defaultpermission_group">
@@ -2214,8 +2196,8 @@
           <Property Name="ImplementationGuideFileId" Type="Int32" Nullable="false" />
           <Property Name="Data" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedBy" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="Note" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="UpdatedBy" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="Note" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
         </EntityType>
         <EntityType Name="ViewTemplate">
           <Key>
@@ -2229,20 +2211,20 @@
             <PropertyRef Name="TemplateTypeDisplay" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Oid" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Oid" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="IsOpen" Type="Boolean" Nullable="false" />
           <Property Name="OwningImplementationGuideId" Type="Int32" />
-          <Property Name="OwningImplementationGuideTitle" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="ImplementationGuideTypeName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="OwningImplementationGuideTitle" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="ImplementationGuideTypeName" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="TemplateTypeId" Type="Int32" Nullable="false" />
-          <Property Name="TemplateTypeName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="PrimaryContext" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="TemplateTypeDisplay" Type="String" Nullable="false" MaxLength="513" Unicode="true" FixedLength="false" />
-          <Property Name="OrganizationName" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="TemplateTypeName" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="PrimaryContext" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="TemplateTypeDisplay" Type="String" Nullable="false" MaxLength="513" Unicode="false" FixedLength="false" />
+          <Property Name="OrganizationName" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="PublishDate" Type="DateTime" Precision="3" />
-          <Property Name="ImpliedTemplateOid" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="ImpliedTemplateTitle" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="ImpliedTemplateOid" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="ImpliedTemplateTitle" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="ConstraintCount" Type="Int32" />
           <Property Name="ContainedTemplateCount" Type="Int32" />
           <Property Name="ImpliedTemplateCount" Type="Int32" />
@@ -2452,14 +2434,14 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="ImplementationGuideId" Nullable="false" />
-          <Property Type="String" Name="FileName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="MimeType" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ContentType" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FileName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MimeType" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ContentType" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="ExpectedErrorCount" />
           <Property Type="Binary" Name="Data" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Type="DateTime" Name="UpdatedDate" Nullable="false" Precision="3" />
-          <Property Type="String" Name="UpdatedBy" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Note" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="UpdatedBy" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Note" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ValueSet">
           <Key>
@@ -2536,9 +2518,9 @@
             <PropertyRef Name="ImplementationGuideDisplay" />
           </Key>
           <Property Type="Int32" Name="TemplateId" Nullable="false" />
-          <Property Type="String" Name="TemplateDisplay" Nullable="false" MaxLength="513" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="TemplateDisplay" Nullable="false" MaxLength="513" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="ImplementationGuideId" Nullable="false" />
-          <Property Type="String" Name="ImplementationGuideDisplay" Nullable="false" MaxLength="513" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImplementationGuideDisplay" Nullable="false" MaxLength="513" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ImplementationGuideSchematronPattern">
           <Key>
@@ -2558,15 +2540,15 @@
             <PropertyRef Name="IP" />
             <PropertyRef Name="Type" />
           </Key>
-          <Property Type="String" Name="Username" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="AuditDate" Nullable="false" Precision="3" />
-          <Property Type="String" Name="IP" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Type" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Note" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="IP" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Type" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Note" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="ImplementationGuideId" />
           <Property Type="Int32" Name="TemplateId" />
           <Property Type="Int32" Name="TemplateConstraintId" />
-          <Property Type="String" Name="TemplateName" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="TemplateName" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="conformanceNumber" />
         </EntityType>
         <EntityType Name="ViewTemplateList">
@@ -2682,7 +2664,6 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="OrganizationId" Nullable="false" />
           <Property Type="String" Name="FirstName" Nullable="false" MaxLength="125" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="LastName" Nullable="false" MaxLength="125" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -2691,7 +2672,6 @@
           <NavigationProperty Name="Groups" Relationship="Trifolia.DB.FK_user_group_user" FromRole="user" ToRole="user_group" />
           <NavigationProperty Name="Roles" Relationship="Trifolia.DB.FK_user_role_user" FromRole="user" ToRole="user_role" />
           <NavigationProperty Name="AuthoredTemplates" Relationship="Trifolia.DB.FK_template_user" FromRole="User" ToRole="Template" />
-          <NavigationProperty Name="Organization" Relationship="Trifolia.DB.FK_user_organization" FromRole="User" ToRole="organization" />
           <NavigationProperty Name="OrganizationDefaultPermission" Relationship="Trifolia.DB.FK_organization_defaultpermission_user" FromRole="User" ToRole="organization_defaultpermission" />
           <Property Type="Boolean" Name="OkayToContact" />
           <Property Type="String" Name="ExternalOrganizationName" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2857,7 +2837,7 @@
           </Key>
           <Property Type="Int32" Name="UserId" Nullable="false" />
           <Property Type="Int32" Name="TemplateId" Nullable="false" />
-          <Property Type="String" Name="Permission" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Permission" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewUserSecurable">
           <Key>
@@ -2865,7 +2845,7 @@
             <PropertyRef Name="SecurableName" />
           </Key>
           <Property Type="Int32" Name="UserId" Nullable="false" />
-          <Property Type="String" Name="SecurableName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecurableName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_template_user">
           <End Type="Trifolia.DB.User" Role="User" Multiplicity="1" />
@@ -2893,7 +2873,6 @@
           <NavigationProperty Name="ImplementationGuidePermissions" Relationship="Trifolia.DB.FK_implementationguide_permission_organization" FromRole="organization" ToRole="ImplementationGuidePermission" />
           <NavigationProperty Name="RoleRestrictions" Relationship="Trifolia.DB.FK_role_restriction_organization" FromRole="organization" ToRole="RoleRestriction" />
           <NavigationProperty Name="Templates" Relationship="Trifolia.DB.FK_template_organization" FromRole="organization" ToRole="Template" />
-          <NavigationProperty Name="Users" Relationship="Trifolia.DB.FK_user_organization" FromRole="organization" ToRole="User" />
           <NavigationProperty Name="DefaultPermissions" Relationship="Trifolia.DB.FK_organization_defaultpermission_organization" FromRole="Organization" ToRole="organization_defaultpermission" />
           <NavigationProperty Name="ImplementationGuides" Relationship="Trifolia.DB.FK_implementationguide_organization" FromRole="Organization" ToRole="implementationguide" />
           <Property Type="Boolean" Name="isInternal" Nullable="false" />
@@ -2942,18 +2921,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Template">
-              <PropertyRef Name="OrganizationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_user_organization">
-          <End Type="Trifolia.DB.Organization" Role="organization" Multiplicity="1" />
-          <End Type="Trifolia.DB.User" Role="User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="organization">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="User">
               <PropertyRef Name="OrganizationId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3759,7 +3726,6 @@
                 <ScalarProperty Name="Email" ColumnName="email" />
                 <ScalarProperty Name="LastName" ColumnName="lastName" />
                 <ScalarProperty Name="FirstName" ColumnName="firstName" />
-                <ScalarProperty Name="OrganizationId" ColumnName="organizationId" />
                 <ScalarProperty Name="UserName" ColumnName="userName" />
                 <ScalarProperty Name="Id" ColumnName="id" />
               </MappingFragment>
@@ -3912,7 +3878,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetImplementationGuideTemplates" FunctionName="Trifolia.Shared.Store.GetImplementationGuideTemplates" />
           <EntitySetMapping Name="TemplateExtensions">
             <EntityTypeMapping TypeName="Trifolia.DB.TemplateExtension">
               <MappingFragment StoreEntitySet="template_extension">
@@ -4114,7 +4079,6 @@
         <edmx:AssociationConnector Association="Trifolia.DB.FK_implementationguide_permission_organization" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_role_restriction_organization" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_template_organization" />
-        <edmx:AssociationConnector Association="Trifolia.DB.FK_user_organization" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.OrganizationDefaultPermission" Width="1.5" PointX="3" PointY="28.625" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_organization_defaultpermission_group" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_organization_defaultpermission_organization" />

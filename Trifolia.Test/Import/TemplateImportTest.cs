@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Trifolia.Shared;
 using Trifolia.Generation.XML;
 using Trifolia.Shared.ImportExport;
-using ExportTemplate = Trifolia.Shared.ImportExport.Model.TemplateExportTemplate;
+using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using ExportConformanceTypes = Trifolia.Shared.ImportExport.Model.ConstraintTypeConformance;
 using Trifolia.DB;
 
@@ -77,38 +77,43 @@ namespace Trifolia.Test.Import
             MockObjectRepository tdb = new MockObjectRepository();
             tdb.InitializeCDARepository();
 
+            var implementationGuide = tdb.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Test IG");
+
             string importXml =
                 "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
-                "<TemplateExport xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://www.lantanagroup.com\">" +
+                "<Trifolia xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://www.lantanagroup.com\">" +
                 "  <Template identifier=\"1.2.3.4.5\" implementationGuideType=\"CDA\" templateType=\"Document\" title=\"Test Template 1\" bookmark=\"D_Test_Template_1\" context=\"ClinicalDocument\">" +
+                "    <ImplementationGuide name=\"Test IG\" />" + 
                 "    <Description>Test Description 2</Description>" +
                 "    <Notes>Test Note 1</Notes>" +
-                "    <Constraint number=\"1000\" context=\"templateId\" conformance=\"SHALL\" cardinality=\"1..1\" />" +
-                "    <Constraint number=\"1001\" context=\"code\" conformance=\"SHALL\" cardinality=\"1..1\">" +
-                "      <Constraint number=\"1002\" context=\"@code\" conformance=\"SHALL\" cardinality=\"1..1\">" +
+                "    <Constraint isVerbose=\"false\" number=\"1000\" context=\"templateId\" conformance=\"SHALL\" cardinality=\"1..1\" />" +
+                "    <Constraint isVerbose=\"false\" number=\"1001\" context=\"code\" conformance=\"SHALL\" cardinality=\"1..1\">" +
+                "      <Constraint isVerbose=\"false\" number=\"1002\" context=\"@code\" conformance=\"SHALL\" cardinality=\"1..1\">" +
                 "        <SingleValueCode code=\"12345X\" displayName=\"Test Static Value\" />" +
                 "      </Constraint>" +
                 "    </Constraint>" +
-                "    <Constraint number=\"1003\" context=\"code\" conformance=\"SHALL\" cardinality=\"1..1\">" +
-                "      <Constraint number=\"1004\" context=\"@code\" conformance=\"SHALL\" cardinality=\"1..1\" dataType=\"CE\">" +
+                "    <Constraint isVerbose=\"false\" number=\"1003\" context=\"code\" conformance=\"SHALL\" cardinality=\"1..1\">" +
+                "      <Constraint isVerbose=\"false\" number=\"1004\" context=\"@code\" conformance=\"SHALL\" cardinality=\"1..1\" dataType=\"CE\">" +
                 "        <ValueSet oid=\"9.8.7.6.5.4.3.2.1\" isStatic=\"true\" />" +
                 "      </Constraint>" +
                 "    </Constraint>" +
                 "  </Template>" +
                 "  <Template identifier=\"1.2.3.4.5.6\" implementationGuideType=\"CDA\" templateType=\"Document\" title=\"Test Template 2\" bookmark=\"D_Test_Template_2\" impliedTemplateOid=\"1.2.3.4.5\" context=\"Document\">" +
+                "    <ImplementationGuide name=\"Test IG\" />" + 
                 "    <Description>Test Description 1</Description>" +
                 "    <Notes>Test Note 2</Notes>" +
-                "    <Constraint number=\"1005\" context=\"code\" conformance=\"SHALL\" cardinality=\"1..1\" />" +
+                "    <Constraint isVerbose=\"false\" number=\"1005\" context=\"code\" conformance=\"SHALL\" cardinality=\"1..1\" />" +
                 "  </Template>" +
                 "  <Template identifier=\"1.2.3.4.5.6.7\" implementationGuideType=\"CDA\" templateType=\"Document\" title=\"Test Template 3\" bookmark=\"D_Test_Template_3\" context=\"Document\">" +
+                "    <ImplementationGuide name=\"Test IG\" />" + 
                 "    <Description>Test Description 3</Description>" +
                 "    <Notes>Test Note 3</Notes>" +
-                "    <Constraint number=\"1006\" conformance=\"SHALL\" cardinality=\"1..1\" containedTemplateOid=\"1.2.3.4.5.6\" />" +
-                "    <Constraint number=\"1007\" context=\"entry\" conformance=\"SHALL\" cardinality=\"1..1\">" +
-                "      <Constraint number=\"1008\" context=\"observation\" conformance=\"SHALL\" cardinality=\"1..1\" containedTemplateOid=\"1.2.3.4.5.6\" />" +
+                "    <Constraint isVerbose=\"false\" number=\"1006\" conformance=\"SHALL\" cardinality=\"1..1\" containedTemplateOid=\"1.2.3.4.5.6\" />" +
+                "    <Constraint isVerbose=\"false\" number=\"1007\" context=\"entry\" conformance=\"SHALL\" cardinality=\"1..1\">" +
+                "      <Constraint isVerbose=\"false\" number=\"1008\" context=\"observation\" conformance=\"SHALL\" cardinality=\"1..1\" containedTemplateOid=\"1.2.3.4.5.6\" />" +
                 "    </Constraint>" +
                 "  </Template>" +
-                "</TemplateExport>";
+                "</Trifolia>";
             TemplateImporter importer = new TemplateImporter(tdb);
             List<Template> templates = importer.Import(importXml);
 

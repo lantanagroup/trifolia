@@ -16,11 +16,6 @@
         </div>
 
         <div class="form-group">
-            <label>Account Organization:</label>
-            <input type="text" class="form-control" data-bind="value: model.accountOrganization" readonly="readonly" />
-        </div>
-
-        <div class="form-group">
             <label>First Name</label>
             <input type="text" class="form-control" data-bind="value: model.firstName" />
         </div>

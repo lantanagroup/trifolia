@@ -100,7 +100,7 @@ namespace Trifolia.Test
         public void InitializeLCG()
         {
             var org = this.FindOrAddOrganization(DEFAULT_ORGANIZATION);
-            this.FindOrAddUser("admin", org);
+            this.FindOrAddUser("admin");
             this.AssociateUserWithRole("admin", org.Id, "admin");
         }
 
@@ -353,16 +353,6 @@ namespace Trifolia.Test
                                           Permission = igp.Permission,
                                           TemplateId = t.Id,
                                           UserId = ug.UserId
-                                      })
-                               .Union(from ig in this.ImplementationGuides
-                                      join igp in this.ImplementationGuidePermissions on ig.Id equals igp.ImplementationGuideId
-                                      join t in this.Templates on ig.Id equals t.OwningImplementationGuideId
-                                      join u in this.Users on igp.OrganizationId equals u.OrganizationId
-                                      select new ViewTemplatePermission()
-                                      {
-                                          Permission = igp.Permission,
-                                          TemplateId = t.Id,
-                                          UserId = u.Id
                                       });
 
                 return new MockDbSet<ViewTemplatePermission>(results);
@@ -373,7 +363,7 @@ namespace Trifolia.Test
         {
             get
             {
-                var results = (from igp in this.implementationGuidePermissions 
+                var results = (from igp in this.implementationGuidePermissions
                                join u in this.Users on igp.UserId equals u.Id
                                select new ViewImplementationGuidePermission()
                                {
@@ -388,14 +378,6 @@ namespace Trifolia.Test
                                           Permission = igp.Permission,
                                           ImplementationGuideId = igp.ImplementationGuideId,
                                           UserId = ug.UserId
-                                      })
-                               .Union(from igp in this.implementationGuidePermissions
-                                      join u in this.Users on igp.OrganizationId equals u.OrganizationId
-                                      select new ViewImplementationGuidePermission()
-                                      {
-                                          Permission = igp.Permission,
-                                          ImplementationGuideId = igp.ImplementationGuideId,
-                                          UserId = u.Id
                                       });
 
                 return new MockDbSet<ViewImplementationGuidePermission>(results);
@@ -1177,7 +1159,7 @@ namespace Trifolia.Test
             return igFileData;
         }
 
-        public User FindOrAddUser(string username, Organization organization)
+        public User FindOrAddUser(string username)
         {
             User foundUser = this.Users.SingleOrDefault(y => y.UserName.ToLower() == username.ToLower());
 
@@ -1187,9 +1169,7 @@ namespace Trifolia.Test
             User newUser = new User()
             {
                 Id = this.Users.DefaultIfEmpty().Max(y => y != null ? y.Id : 0) + 1,
-                UserName = username,
-                OrganizationId = organization.Id,
-                Organization = organization
+                UserName = username
             };
 
             this.Users.AddObject(newUser);
@@ -1271,7 +1251,7 @@ namespace Trifolia.Test
 
         public void AssociateUserWithRole(string userName, int organizationId, string roleName)
         {
-            User foundUser = this.Users.Single(y => y.UserName.ToLower() == userName.ToLower() && y.OrganizationId == organizationId);
+            User foundUser = this.Users.Single(y => y.UserName.ToLower() == userName.ToLower());
             Role foundRole = this.Roles.Single(y => y.Name.ToLower() == roleName.ToLower());
 
             if (foundUser.Roles.Count(y => y.RoleId == foundRole.Id) > 0)

@@ -60,7 +60,7 @@ namespace Trifolia.Config
             get { return (CodeSystemAlternativeElement)this.BaseGet(index); }
         }
 
-        public CodeSystemAlternativeElement this[string alternative]
+        public new CodeSystemAlternativeElement this[string alternative]
         {
             get { return (CodeSystemAlternativeElement)this.BaseGet(alternative); }
         }

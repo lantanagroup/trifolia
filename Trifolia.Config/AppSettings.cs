@@ -25,6 +25,14 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string OAuth2UserInfoEndpoint
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OAuth2UserInfoEndpoint"];
+            }
+        }
+
         public static string OAuth2AuthorizationEndpoint
         {
             get

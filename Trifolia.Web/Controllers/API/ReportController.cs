@@ -30,74 +30,63 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
-        [HttpGet, Route("api/Report/Organization")]
-        public List<TrifoliaOrganizationDetail> Organizations()
+        [HttpGet, Route("api/Report/User")]
+        public UserReportDetail Organizations()
         {
-            List<TrifoliaOrganizationDetail> ret = new List<TrifoliaOrganizationDetail>();
+            UserReportDetail userReportDetail = new UserReportDetail();
 
-            foreach (Organization currentOrg in this.tdb.Organizations)
+            var editingUserIds = (from u in this.tdb.Users
+                                  join ur in this.tdb.UserRoles on u.Id equals ur.UserId
+                                  join ras in this.tdb.RoleAppSecurables on ur.RoleId equals ras.RoleId
+                                  join ap in this.tdb.AppSecurables on ras.AppSecurableId equals ap.Id
+                                  where ap.Name == SecurableNames.TEMPLATE_EDIT
+                                  select u.Id).Distinct();
+
+            userReportDetail.TotalAuthoredTemplates = (from u in this.tdb.Users
+                                                join t in this.tdb.Templates on u.Id equals t.AuthorId
+                                                select t.Id).Count();
+            userReportDetail.TotalEditingUsers = editingUserIds.Count();
+            userReportDetail.TotalNonEditingUsers = this.tdb.Users.Where(y => !editingUserIds.Contains(y.Id)).Count();
+            userReportDetail.TotalUsers = this.tdb.Users.Count();
+
+            foreach (User currentUser in this.tdb.Users
+                .Where(y => y.ExternalOrganizationName != null && y.ExternalOrganizationName != "")
+                .OrderBy(y => y.ExternalOrganizationName))
             {
-                TrifoliaOrganizationDetail orgDetail = new TrifoliaOrganizationDetail()
+                ExternalOrganizationDetail extOrgDetail = new ExternalOrganizationDetail()
                 {
-                    Id = currentOrg.Id,
-                    Name = currentOrg.Name
+                    Name = currentUser.ExternalOrganizationName,
+                    Type = currentUser.ExternalOrganizationType,
+                    CanContact = currentUser.OkayToContact == true,
+                    ContactEmail = currentUser.Email,
+                    ContactName = string.Format("{0} {1}", currentUser.FirstName, currentUser.LastName),
+                    ContactPhone = currentUser.Phone
                 };
 
-                var editingUserIds = (from u in currentOrg.Users
-                                      join ur in this.tdb.UserRoles on u.Id equals ur.UserId
-                                      join ras in this.tdb.RoleAppSecurables on ur.RoleId equals ras.RoleId
-                                      join ap in this.tdb.AppSecurables on ras.AppSecurableId equals ap.Id
-                                      where ap.Name == SecurableNames.TEMPLATE_EDIT
-                                      select u.Id).Distinct();
+                extOrgDetail.CanUserEdit = (from ur in this.tdb.UserRoles
+                                            join ras in this.tdb.RoleAppSecurables on ur.RoleId equals ras.RoleId
+                                            join ap in this.tdb.AppSecurables on ras.AppSecurableId equals ap.Id
+                                            where ur.UserId == currentUser.Id && ap.Name == SecurableNames.TEMPLATE_EDIT
+                                            select ap.Id).Count() > 0;
 
-                orgDetail.TotalAuthoredTemplates = (from u in currentOrg.Users
-                                                    join t in this.tdb.Templates on u.Id equals t.AuthorId
-                                                    select t.Id).Count();
-                orgDetail.TotalEditingUsers = editingUserIds.Count();
-                orgDetail.TotalNonEditingUsers = currentOrg.Users.Where(y => !editingUserIds.Contains(y.Id)).Count();
-                orgDetail.TotalUsers = currentOrg.Users.Count;
-
-                foreach (User currentUser in currentOrg.Users
-                    .Where(y => y.ExternalOrganizationName != null && y.ExternalOrganizationName != "")
-                    .OrderBy(y => y.ExternalOrganizationName))
-                {
-                    ExternalOrganizationDetail extOrgDetail = new ExternalOrganizationDetail()
-                    {
-                        Name = currentUser.ExternalOrganizationName,
-                        Type = currentUser.ExternalOrganizationType,
-                        CanContact = currentUser.OkayToContact == true,
-                        ContactEmail = currentUser.Email,
-                        ContactName = string.Format("{0} {1}", currentUser.FirstName, currentUser.LastName),
-                        ContactPhone = currentUser.Phone
-                    };
-
-                    extOrgDetail.CanUserEdit = (from ur in this.tdb.UserRoles
-                                                join ras in this.tdb.RoleAppSecurables on ur.RoleId equals ras.RoleId
-                                                join ap in this.tdb.AppSecurables on ras.AppSecurableId equals ap.Id
-                                                where ur.UserId == currentUser.Id && ap.Name == SecurableNames.TEMPLATE_EDIT
-                                                select ap.Id).Count() > 0;
-
-                    orgDetail.ExternalOrganizations.Add(extOrgDetail);
-                }
-
-                orgDetail.Users = (from u in currentOrg.Users
-                                   select new OrganizationUser()
-                                   {
-                                       Email = u.Email,
-                                       FirstName = u.FirstName,
-                                       LastName = u.LastName,
-                                       OkayToContact = u.OkayToContact == true,
-                                       ExternalOrganizationName = u.ExternalOrganizationName,
-                                       ExternalOrganizationType = u.ExternalOrganizationType,
-                                       Phone = u.Phone
-                                   })
-                                   .OrderBy(y => y.LastName)
-                                   .ToList();
-
-                ret.Add(orgDetail);
+                userReportDetail.ExternalOrganizations.Add(extOrgDetail);
             }
 
-            return ret;
+            userReportDetail.Users = (from u in this.tdb.Users
+                               select new UserReportDetail.UserInfo()
+                               {
+                                   Email = u.Email,
+                                   FirstName = u.FirstName,
+                                   LastName = u.LastName,
+                                   OkayToContact = u.OkayToContact == true,
+                                   ExternalOrganizationName = u.ExternalOrganizationName,
+                                   ExternalOrganizationType = u.ExternalOrganizationType,
+                                   Phone = u.Phone
+                               })
+                               .OrderBy(y => y.LastName)
+                               .ToList();
+
+            return userReportDetail;
         }
 
         [HttpGet, Route("api/Report/ImplementationGuide/{implementationGuideId}/Validate")]

@@ -53,7 +53,6 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_implementationguide_permission_organization", "organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Trifolia.DB.Organization), "ImplementationGuidePermission", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.ImplementationGuidePermission), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_role_restriction_organization", "organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.Organization), "RoleRestriction", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.RoleRestriction), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_template_organization", "organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Trifolia.DB.Organization), "Template", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.Template), true)]
-[assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_user_organization", "organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.Organization), "User", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.User), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_organization_defaultpermission_group", "Group", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Trifolia.DB.Group), "organization_defaultpermission", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.OrganizationDefaultPermission), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_organization_defaultpermission_organization", "Organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.Organization), "organization_defaultpermission", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.OrganizationDefaultPermission), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_organization_defaultpermission_organization1", "Organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Trifolia.DB.Organization), "organization_defaultpermission", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.OrganizationDefaultPermission), true)]
@@ -6138,28 +6137,6 @@ namespace Trifolia.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("Trifolia.DB", "FK_user_organization", "User")]
-        public EntityCollection<User> Users
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<User>("Trifolia.DB.FK_user_organization", "User");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("Trifolia.DB.FK_user_organization", "User", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("Trifolia.DB", "FK_organization_defaultpermission_organization", "organization_defaultpermission")]
         public EntityCollection<OrganizationDefaultPermission> DefaultPermissions
         {
@@ -10209,17 +10186,15 @@ namespace Trifolia.DB
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="userName">Initial value of the UserName property.</param>
-        /// <param name="organizationId">Initial value of the OrganizationId property.</param>
         /// <param name="firstName">Initial value of the FirstName property.</param>
         /// <param name="lastName">Initial value of the LastName property.</param>
         /// <param name="email">Initial value of the Email property.</param>
         /// <param name="phone">Initial value of the Phone property.</param>
-        public static User CreateUser(global::System.Int32 id, global::System.String userName, global::System.Int32 organizationId, global::System.String firstName, global::System.String lastName, global::System.String email, global::System.String phone)
+        public static User CreateUser(global::System.Int32 id, global::System.String userName, global::System.String firstName, global::System.String lastName, global::System.String email, global::System.String phone)
         {
             User user = new User();
             user.Id = id;
             user.UserName = userName;
-            user.OrganizationId = organizationId;
             user.FirstName = firstName;
             user.LastName = lastName;
             user.Email = email;
@@ -10281,30 +10256,6 @@ namespace Trifolia.DB
         private global::System.String _UserName;
         partial void OnUserNameChanging(global::System.String value);
         partial void OnUserNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 OrganizationId
-        {
-            get
-            {
-                return _OrganizationId;
-            }
-            set
-            {
-                OnOrganizationIdChanging(value);
-                ReportPropertyChanging("OrganizationId");
-                _OrganizationId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OrganizationId");
-                OnOrganizationIdChanged();
-            }
-        }
-        private global::System.Int32 _OrganizationId;
-        partial void OnOrganizationIdChanging(global::System.Int32 value);
-        partial void OnOrganizationIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -10586,44 +10537,6 @@ namespace Trifolia.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Template>("Trifolia.DB.FK_template_user", "Template", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("Trifolia.DB", "FK_user_organization", "organization")]
-        public Organization Organization
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Organization>("Trifolia.DB.FK_user_organization", "organization").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Organization>("Trifolia.DB.FK_user_organization", "organization").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Organization> OrganizationReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Organization>("Trifolia.DB.FK_user_organization", "organization");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Organization>("Trifolia.DB.FK_user_organization", "organization", value);
                 }
             }
         }

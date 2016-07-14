@@ -143,8 +143,11 @@ namespace Trifolia.Shared
 
             if (setting.EntityState != System.Data.Entity.EntityState.Deleted)
             {
-                setting.PropertyName = property;
-                setting.PropertyValue = value;
+                if (setting.PropertyName != property)
+                    setting.PropertyName = property;
+
+                if (setting.PropertyValue != value)
+                    setting.PropertyValue = value;
             }
 
             this.tdb.SaveChanges();

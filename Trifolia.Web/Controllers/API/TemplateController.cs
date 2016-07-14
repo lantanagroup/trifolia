@@ -113,7 +113,7 @@ namespace Trifolia.Web.Controllers.API
             ViewModel model = new ViewModel()
             {
                 Id = template.Id,
-                Author = string.Format("{0} {1} ({2})", template.Author.FirstName, template.Author.LastName, template.Author.Organization.Name),
+                Author = string.Format("{0} {1} ({2})", template.Author.FirstName, template.Author.LastName, template.Author.Email),
                 Description = wikiParser.ParseAsHtml(template.Description),
                 Notes = wikiParser.ParseAsHtml(template.Notes),
                 ImplementationGuideId = template.OwningImplementationGuideId,

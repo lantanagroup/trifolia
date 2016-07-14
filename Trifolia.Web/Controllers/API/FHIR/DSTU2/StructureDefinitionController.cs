@@ -183,7 +183,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
                 {
                     OwningImplementationGuide = unassignedImplementationGuide,
                     ImplementationGuideType = this.tdb.ImplementationGuideTypes.Single(y => y.Name == ImplementationGuideType.FHIR_DSTU2_NAME),
-                    Author = this.tdb.Users.Single(y => y.UserName == Shared.DEFAULT_USER_NAME && y.Organization.Name == Shared.DEFAULT_ORG_NAME),
+                    Author = this.tdb.Users.Single(y => y.UserName == Shared.DEFAULT_USER_NAME),
                     Organization = this.tdb.Organizations.Single(y => y.Name == Shared.DEFAULT_ORG_NAME),
                     IsOpen = true
                 };
@@ -779,6 +779,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// Updates an existing template/profile based on the specified StructureDefinition
         /// </summary>
         /// <param name="templateId"></param>
+        /// <param name="strucDef"></param>
         /// <returns>Hl7.Fhir.Model.StructureDefinition</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
         [HttpPut]

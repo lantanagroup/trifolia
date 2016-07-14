@@ -47,7 +47,7 @@ namespace Trifolia.Generation.XML.FHIR.DSTU1
         public void Import(string bundleXml)
         {
             string templatesXml = TransformBundle(bundleXml);
-            XmlSerializer serializer = new XmlSerializer(typeof(TemplateExport));
+            XmlSerializer serializer = new XmlSerializer(typeof(Trifolia.Shared.ImportExport.Model.Trifolia));
 
             List<Template> templates = this.importer.Import(templatesXml);
 
@@ -68,7 +68,11 @@ namespace Trifolia.Generation.XML.FHIR.DSTU1
                 stylesheetContent = stylesheetReader.ReadToEnd();
             }
 
-            return TransformFactory.Transform(bundle, stylesheetContent, StylesheetUri, resolver);
+            Dictionary<string, string> xsltParams = new Dictionary<string, string>();
+            xsltParams.Add("implementationGuideTypeName", "FHIR DSTU1");
+            xsltParams.Add("implementationGuideName", "Unowned FHIR DSTU1 Profiles");
+
+            return TransformFactory.Transform(bundle, stylesheetContent, StylesheetUri, resolver, xsltParams);
         }
     }
 }

@@ -81,7 +81,6 @@ namespace Trifolia.Shared
 
         //this has been refactored to an instance method, because it's untestable (unmockable) with unit tests. the static method is 
         //still here to provide backwards compatibility. This is a prime example as to why static is generally a poor design.
-        [Obsolete("Static methods are untestable and therefore an indication of poor design.")]
         public static string GetIGSimplifiedSchemaLocation(ImplementationGuideType igType)
         {
             var instance = new Helper();

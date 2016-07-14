@@ -56,30 +56,16 @@ namespace Trifolia.Web.Controllers.API
                 Name = organization.Name
             };
 
-            model.Groups = (from g in organization.Groups
-                            select new OrganizationGroup()
-                            {
-                                Id = g.Id,
-                                Name = g.Name
-                            }).ToList();
-
-            foreach (var user in organization.Users)
-            {
-                var newUser = CreateOrganizationUser(user);
-                model.Users.Add(newUser);
-            }
-
             return model;
         }
 
         [HttpPost, Route("api/Organization/{organizationId}/User"), SecurableAction(SecurableNames.ORGANIZATION_DETAILS)]
-        public OrganizationUser SaveUser(int organizationId, OrganizationUser model)
+        public User SaveUser(int organizationId, OrganizationUser model)
         {
-            var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            User user = organization.Users.SingleOrDefault(y => y.Id == model.Id);
+            User user = this.tdb.Users.SingleOrDefault(y => y.Id == model.Id);
 
             // Check if the user's username is already in use by another user
-            var foundDuplicateUserNames = this.tdb.Users.Where(y => y.OrganizationId == organizationId && (model.Id == null || y.Id != model.Id) && y.UserName == model.UserName);
+            var foundDuplicateUserNames = this.tdb.Users.Where(y => (model.Id == null || y.Id != model.Id) && y.UserName == model.UserName);
 
             if (foundDuplicateUserNames.Count() > 0)
                 throw new Exception("This username is already in use!");
@@ -88,7 +74,6 @@ namespace Trifolia.Web.Controllers.API
             if (user == null)
             {
                 user = new User();
-                user.Organization = organization;
                 this.tdb.Users.AddObject(user);
 
                 // Assign the new user the default role
@@ -113,7 +98,7 @@ namespace Trifolia.Web.Controllers.API
 
             this.tdb.SaveChanges();
 
-            return CreateOrganizationUser(user);
+            return user;
         }
 
         [HttpPost, Route("api/Organization"), SecurableAction(SecurableNames.ORGANIZATION_LIST)]
@@ -138,7 +123,7 @@ namespace Trifolia.Web.Controllers.API
         public void DeleteUser(int organizationId, int userId)
         {
             var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            var user = organization.Users.Single(y => y.Id == userId);
+            var user = this.tdb.Users.Single(y => y.Id == userId);
 
             user.Roles.ToList().ForEach(y => { this.tdb.UserRoles.DeleteObject(y); });
             user.Groups.ToList().ForEach(y => { this.tdb.UserGroups.DeleteObject(y); });
@@ -172,7 +157,7 @@ namespace Trifolia.Web.Controllers.API
         public void AssignUserToGroup(int organizationId, int userId, int groupId)
         {
             var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            var user = organization.Users.Single(y => y.Id == userId);
+            var user = this.tdb.Users.Single(y => y.Id == userId);
             var group = organization.Groups.Single(y => y.Id == groupId);
 
             if (user.Groups.Count(y => y.Group == group) > 0)
@@ -204,7 +189,7 @@ namespace Trifolia.Web.Controllers.API
         public void AssignUserToRole(int organizationId, int userId, int roleId)
         {
             var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            var user = organization.Users.Single(y => y.Id == userId);
+            var user = this.tdb.Users.Single(y => y.Id == userId);
             var role = this.tdb.Roles.Single(y => y.Id == roleId);
 
             if (user.Roles.Count(y => y.Role == role) > 0)
@@ -271,9 +256,6 @@ namespace Trifolia.Web.Controllers.API
 
             organization.Groups.ToList().ForEach(y => this.tdb.Groups.DeleteObject(y));
 
-            // Delete users
-            organization.Users.ToList().ForEach(y => this.tdb.Users.DeleteObject(y));
-
             // Delete role restrictions associated with this org
             organization.RoleRestrictions.ToList().ForEach(y => this.tdb.RoleRestrictions.DeleteObject(y));
 
@@ -293,24 +275,6 @@ namespace Trifolia.Web.Controllers.API
                                                        Name = r.Name
                                                    });
             return roles;
-        }
-
-        private OrganizationUser CreateOrganizationUser(User user)
-        {
-            var newUser = new OrganizationUser()
-            {
-                Id = user.Id,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Phone = user.Phone,
-                UserName = user.UserName
-            };
-
-            newUser.Roles = user.Roles.Select(y => y.RoleId);
-            newUser.Groups = user.Groups.Select(y => y.GroupId);
-
-            return newUser;
         }
     }
 }

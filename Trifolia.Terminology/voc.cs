@@ -49,8 +49,6 @@ public partial class VocabularySystem {
     
     private VocabularyCode[] codeField;
     
-    private string[] textField;
-    
     private string valueSetOidField;
     
     private string valueSetNameField;

@@ -43,23 +43,6 @@ namespace Trifolia.Web.Controllers
             return View("List");
         }
 
-        [Securable(SecurableNames.ORGANIZATION_DETAILS)]
-        public ActionResult My()
-        {
-            int? lOrganizationId = null;
-            string lUserName = this.User.Identity.Name;
-            DB.User lCurrentUser = CheckPoint.Instance.GetUser(tdb);
-
-            if (lCurrentUser == null)
-            {
-                throw new KeyNotFoundException(string.Format("{0} was not found in the Trifolia database", lUserName));
-            }
-
-            lOrganizationId = lCurrentUser.OrganizationId;
-
-            return RedirectToAction("Details", new { id = lOrganizationId.Value });
-        }
-
         #endregion
     }
 }

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Trifolia.Shared;
 using Trifolia.Generation.XML;
 using Trifolia.Shared.ImportExport;
-using ExportTemplate = Trifolia.Shared.ImportExport.Model.TemplateExportTemplate;
+using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using ExportConformanceTypes = Trifolia.Shared.ImportExport.Model.ConstraintTypeConformance;
 using Trifolia.DB;
 
@@ -153,7 +153,7 @@ namespace Trifolia.Test.Generation.XML
             Assert.AreEqual(template.Description, export.Description);
             Assert.AreEqual(template.Notes, export.Notes);
             Assert.IsNull(export.organizationName);
-            Assert.AreEqual(template.OwningImplementationGuide.Name, export.owningImplementationGuideName);
+            Assert.AreEqual(template.OwningImplementationGuide.Name, export.ImplementationGuide.name);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Trifolia.Test.Generation.XML
             IGSettingsManager igSettings = new IGSettingsManager(tdb);
 
             TemplateExporter exporter = new TemplateExporter(tdb, templates, igSettings);
-            string actual = exporter.GenerateExport();
+            string actual = exporter.GenerateXMLExport();
 
             Assert.IsNotNull(actual, "Export should have produced content.");
             Assert.AreNotEqual(string.Empty, actual, "Export should have produced content.");

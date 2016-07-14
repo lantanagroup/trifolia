@@ -173,6 +173,11 @@ namespace Trifolia.Authorization
         /// </summary>
         public const string WEB_IG = "WebIG";
 
+        /// <summary>
+        /// Import
+        /// </summary>
+        public const string IMPORT = "Import";
+
         #endregion
     }
 }

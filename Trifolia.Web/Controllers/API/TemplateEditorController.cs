@@ -455,7 +455,6 @@ namespace Trifolia.Web.Controllers.API
             {
                 User currentUser = CheckPoint.Instance.GetUser(tdb);
                 template.AuthorId = currentUser.Id;
-                template.OrganizationId = currentUser.OrganizationId;
             }
 
             ImplementationGuide ig = tdb.ImplementationGuides.Single(y => y.Id == model.OwningImplementationGuideId);

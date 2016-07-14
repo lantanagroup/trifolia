@@ -53,6 +53,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var vm = new newProfileViewModel('<%= Model.RedirectUrl %>');
+            vm.Model.FirstName('<%= Model.FirstName %>');
+            vm.Model.LastName('<%= Model.LastName %>');
+            vm.Model.Email('<%= Model.Email %>');
+            vm.Model.Phone('<%= Model.Phone %>');
             ko.applyBindings(vm, $("#mainBody")[0]);
         });
     </script>

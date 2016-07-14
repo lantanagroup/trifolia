@@ -9,8 +9,9 @@ using System.Xml;
 using Trifolia.DB;
 using TDBTemplate = Trifolia.DB.Template;
 using TDBTemplateConstraint = Trifolia.DB.TemplateConstraint;
-using ExportModel = Trifolia.Shared.ImportExport.Model.TemplateExport;
-using ExportTemplate = Trifolia.Shared.ImportExport.Model.TemplateExportTemplate;
+using ExportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
+using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
+using ExportImplementationGuide = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuide;
 using Trifolia.Shared;
 
 namespace Trifolia.Generation.XML
@@ -36,15 +37,52 @@ namespace Trifolia.Generation.XML
                 this.schemas = new Dictionary<int, SimpleSchema>();
         }
 
-        public static string GenerateExport(IObjectRepository tdb, List<TDBTemplate> templates, IGSettingsManager igSettings, bool verboseConstraints = false, List<string> categories = null)
+        public static string GenerateXMLExport(IObjectRepository tdb, List<TDBTemplate> templates, IGSettingsManager igSettings, bool verboseConstraints = false, List<string> categories = null)
+        {
+            TemplateExporter exporter = new TemplateExporter(tdb, templates, igSettings, verboseConstraints, categories);
+            return exporter.GenerateXMLExport();
+        }
+
+        public static Trifolia.Shared.ImportExport.Model.Trifolia GenerateExport(IObjectRepository tdb, List<TDBTemplate> templates, IGSettingsManager igSettings, bool verboseConstraints = false, List<string> categories = null)
         {
             TemplateExporter exporter = new TemplateExporter(tdb, templates, igSettings, verboseConstraints, categories);
             return exporter.GenerateExport();
         }
 
-        public string GenerateExport()
+        private bool FindImplementationGuide(List<ExportImplementationGuide> exportIgs, ImplementationGuide current)
+        {
+            foreach (var exportImplementationGuide in exportIgs)
+            {
+                if (exportImplementationGuide.name != current.Name)
+                    continue;
+
+                if (current.PreviousVersion.Count != 0)
+                {
+                    if (exportImplementationGuide.PreviousVersion == null)
+                        continue;
+
+                    if (exportImplementationGuide.PreviousVersion.name != current.PreviousVersion.First().Name)
+                        continue;
+
+                    if (exportImplementationGuide.PreviousVersion.number != current.PreviousVersion.First().Version)
+                        continue;
+                }
+
+                return true;        // Everything needed matches
+            }
+
+            return false;
+        }
+
+        public ExportModel GenerateExport()
         {
             List<ExportTemplate> exportTemplates = new List<ExportTemplate>();
+            List<ExportImplementationGuide> exportImplementationGuides = new List<ExportImplementationGuide>();
+            ExportModel export = new ExportModel()
+            {
+                Template = exportTemplates,
+                ImplementationGuide = exportImplementationGuides
+            };
 
             this.templates.ForEach(y =>
             {
@@ -64,22 +102,23 @@ namespace Trifolia.Generation.XML
                 }
 
                 exportTemplates.Add(y.Export(this.tdb, this.igSettings, schema, categories));
+
+                bool foundImplementationGuide = FindImplementationGuide(exportImplementationGuides, y.OwningImplementationGuide);
+
+                if (!foundImplementationGuide)
+                {
+                    var exportImplementationGuide = y.OwningImplementationGuide.Export(this.tdb, this.igSettings);
+                    exportImplementationGuides.Add(exportImplementationGuide);
+                }
             });
 
-            ExportModel export = new ExportModel()
-            {
-                Template = exportTemplates.ToList()
-            };
+            return export;
+        }
 
-            string serializeContent = string.Empty;
-
-            using (Utf8StringWriter sw = new Utf8StringWriter())
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(ExportModel));
-                serializer.Serialize(sw, export);
-
-                serializeContent = sw.ToString();
-            }
+        public string GenerateXMLExport()
+        {
+            var export = GenerateExport();
+            string serializeContent = export.Serialize();
 
             using (StringWriter sw = new StringWriter())
             {

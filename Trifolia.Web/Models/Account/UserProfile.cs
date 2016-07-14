@@ -8,7 +8,6 @@ namespace Trifolia.Web.Models.Account
     public class UserProfile
     {
         public string userName { get; set; }
-        public string accountOrganization { get; set; }
 
         public string firstName { get; set; }
         public string lastName { get; set; }

@@ -3,7 +3,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:lcg="http://www.lantanagroup.com"
 	targetNamespace="http://www.lantanagroup.com" elementFormDefault="qualified"
 	attributeFormDefault="unqualified">
-	<xs:element name="TemplateExport">
+	<xs:element name="Trifolia">
 		<xs:annotation>
 			<xs:documentation>Comment describing your root element</xs:documentation>
 		</xs:annotation>
@@ -12,6 +12,13 @@
 				<xs:element name="Template" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
+							<xs:element name="ImplementationGuide">
+								<xs:complexType>
+									<xs:attribute name="name" use="required"/>
+									<xs:attribute default="1" name="version" type="xs:int"
+										use="optional"/>
+								</xs:complexType>
+							</xs:element>
 							<xs:element name="PreviousVersion" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="name" type="xs:string"/>
@@ -30,6 +37,15 @@
 									<xs:attribute name="value" use="required"/>
 								</xs:complexType>
 							</xs:element>
+							<xs:element maxOccurs="unbounded" minOccurs="0" name="Sample">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="name" use="required"/>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
 						</xs:sequence>
 						<xs:attribute name="identifier" type="xs:string" use="required"/>
 						<xs:attribute name="implementationGuideType" type="xs:string" use="required"/>
@@ -40,9 +56,86 @@
 						<xs:attribute name="contextType" type="xs:string"/>
 						<xs:attribute name="isOpen" type="xs:boolean"/>
 						<xs:attribute name="impliedTemplateOid" type="xs:string"/>
-						<xs:attribute name="owningImplementationGuideName" type="xs:string"/>
 						<xs:attribute name="organizationName" type="xs:string"/>
 						<xs:attribute name="publishStatus" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element maxOccurs="unbounded" minOccurs="0" name="ImplementationGuide">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element minOccurs="0" name="WebDescription" type="xs:string"/>
+							<xs:element minOccurs="0" name="WebReadmeOverview" type="xs:string"/>
+							<xs:element minOccurs="0" name="PreviousVersion">
+								<xs:complexType>
+									<xs:attribute name="name" use="required"/>
+									<xs:attribute name="number" type="xs:int" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element maxOccurs="unbounded" minOccurs="0"
+								name="CustomTemplateType">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="CustomName" type="xs:string"/>
+										<xs:element minOccurs="0" name="Description"
+											type="xs:string"/>
+									</xs:sequence>
+									<xs:attribute name="templateTypeName"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element maxOccurs="5" minOccurs="0" name="CardinalityDisplay">
+								<xs:complexType>
+									<xs:attribute name="cardinality" type="lcg:CardinalityTypes"/>
+									<xs:attribute name="display"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element maxOccurs="unbounded" minOccurs="0" name="CustomSchematron">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element minOccurs="0" name="Rule" type="xs:string"/>
+									</xs:sequence>
+									<xs:attribute name="phase" use="required"/>
+									<xs:attribute name="patternId" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element maxOccurs="unbounded" minOccurs="0" name="Category">
+								<xs:complexType>
+									<xs:attribute name="name" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element minOccurs="0" name="Volume1">
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="Html" type="xs:string"/>
+										<xs:sequence>
+											<xs:element maxOccurs="unbounded" minOccurs="0"
+												name="Section">
+												<xs:complexType>
+												<xs:sequence>
+												<xs:element minOccurs="1" name="Heading">
+												<xs:complexType>
+												<xs:sequence>
+												<xs:element name="Title" type="xs:string"/>
+												<xs:element name="Level" type="xs:int"/>
+												</xs:sequence>
+												</xs:complexType>
+												</xs:element>
+												<xs:element minOccurs="0" name="Content"
+												type="xs:string"/>
+												</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="name" use="required"/>
+						<xs:attribute name="type" use="required"/>
+						<xs:attribute default="1" name="version" type="xs:int"/>
+						<xs:attribute default="Draft" name="status"
+							type="lcg:ImplementationGuideStatus" use="optional"/>
+						<xs:attribute name="displayName"/>
+						<xs:attribute name="webDisplayName"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
@@ -64,7 +157,7 @@
 						</xs:sequence>
 						<xs:attribute name="oid" type="xs:string" use="required"/>
 						<xs:attribute name="name" type="xs:string" use="required"/>
-						<xs:attribute name="isStatic" type="xs:boolean" use="required"/>
+						<xs:attribute name="isStatic" type="xs:boolean" use="optional"/>
 						<xs:attribute name="date" type="xs:date"/>
 					</xs:complexType>
 				</xs:element>
@@ -77,15 +170,46 @@
 			<xs:element name="SchematronTest" type="xs:string" minOccurs="0"/>
 			<xs:element name="NarrativeText" type="xs:string" minOccurs="0"/>
 			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element minOccurs="0" name="Notes" type="xs:string"/>
 			<xs:element name="Label" type="xs:string" minOccurs="0"/>
+			<xs:element minOccurs="0" name="HeadingDescription" type="xs:string"/>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="Category">
+				<xs:complexType>
+					<xs:attribute name="name" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="Sample">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="name" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="Constraint" type="lcg:ConstraintType" minOccurs="0"
 				maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="number" type="xs:int"/>
+		<xs:attribute name="number" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>Represents the unique number of the constraint within the implementation guide.</xs:documentation>
+				<xs:documentation>If no number and no displayNumber is specified when using this structure to import into Trifolia, a new constraint will always be created.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="displayNumber">
+			<xs:annotation>
+				<xs:documentation>Used to indicate what the conformance number should display as in exports from Trifolia.</xs:documentation>
+				<xs:documentation>If no number and no displayNumber is specified when using this structure to import into Trifolia, a new constraint will always be created.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="context" type="xs:string" use="optional"/>
-		<xs:attribute name="conformance" use="optional">
+		<xs:attribute name="conformance" use="required">
+			<xs:annotation>
+				<xs:documentation>Conformance indicates whether or not the constraint produces errors or warnings. In legacy implementation guides, conformance was not used for primitive constraints (NONE). All constraints going forward must have a valid conformance verb (other than "NONE").</xs:documentation>
+			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction base="xs:string">
+					<xs:enumeration value="NONE"/>
 					<xs:enumeration value="SHALL"/>
 					<xs:enumeration value="SHALL NOT"/>
 					<xs:enumeration value="SHOULD"/>
@@ -102,7 +226,7 @@
 		<xs:attribute name="isBranch" type="xs:boolean" use="optional" default="false"/>
 		<xs:attribute name="isBranchIdentifier" type="xs:boolean" default="false"/>
 		<xs:attribute name="isPrimitive" type="xs:boolean" use="optional" default="false"/>
-		<xs:attribute name="isStatic" type="xs:boolean" default="false"/>
+		<xs:attribute name="isStatic" type="xs:boolean" use="optional"/>
 		<xs:attribute name="isInheritable" type="xs:boolean" default="true"/>
 		<xs:attribute name="isSchRooted" type="xs:boolean" default="false"/>
 		<xs:attribute name="isVerbose" type="xs:boolean" use="required">
@@ -110,5 +234,34 @@
 				<xs:documentation>Verbose constraints are not explicitly defined constraints as part of the template. They are the result of a verbose output of the schema's elements/attributes. </xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute default="false" name="mustSupport" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>FHIR mustSupport flag. Only used in FHIR profile exports.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute default="false" name="isModifier" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>FHIR isModifier flag. Only used in FHIR profile exports.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute default="false" name="isHeading" type="xs:boolean"/>
 	</xs:complexType>
+	<xs:simpleType name="ImplementationGuideStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Draft"/>
+			<xs:enumeration value="Ballot"/>
+			<xs:enumeration value="Published"/>
+			<xs:enumeration value="Deprecated"/>
+			<xs:enumeration value="Retired"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CardinalityTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Zero"/>
+			<xs:enumeration value="ZeroOrOne"/>
+			<xs:enumeration value="ZeroToMany"/>
+			<xs:enumeration value="One"/>
+			<xs:enumeration value="OneToMany"/>
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>
