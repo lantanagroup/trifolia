@@ -235,9 +235,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\API\AdminController.cs" />
+    <Compile Include="Controllers\API\RoleController.cs" />
     <Compile Include="Controllers\API\AuthController.cs" />
     <Compile Include="Controllers\API\BulkCopyController.cs" />
+    <Compile Include="Controllers\API\UserController.cs" />
+    <Compile Include="Controllers\API\GroupController.cs" />
     <Compile Include="Controllers\API\HelpController.cs" />
     <Compile Include="Controllers\API\ExportController.cs" />
     <Compile Include="Controllers\API\FHIR\DSTU1\FHIRController.cs" />
@@ -262,6 +264,7 @@
     <Compile Include="Controllers\API\TrifoliaApiController.cs" />
     <Compile Include="Controllers\API\TypeController.cs" />
     <Compile Include="Controllers\API\ValidationController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\IGController.cs" />
@@ -332,10 +335,10 @@
     <Compile Include="Models\Import\ImportStatusModel.cs" />
     <Compile Include="Models\LocalizationModel.cs" />
     <Compile Include="Models\OrganizationManagement\OrganizationRole.cs" />
-    <Compile Include="Models\PermissionManagement\MyOrganizationInfo.cs" />
+    <Compile Include="Models\PermissionManagement\PermissionsInfoModel.cs" />
     <Compile Include="Models\OrganizationManagement\OrganizationModel.cs" />
-    <Compile Include="Models\OrganizationManagement\OrganizationGroup.cs" />
-    <Compile Include="Models\OrganizationManagement\OrganizationUser.cs" />
+    <Compile Include="Models\Group\GroupModel.cs" />
+    <Compile Include="Models\User\UserModel.cs" />
     <Compile Include="Models\Report\ExternalOrganizationDetail.cs" />
     <Compile Include="Models\Report\UserReportDetail.cs" />
     <Compile Include="Models\Report\TemplateReviewFilter.cs" />
@@ -402,7 +405,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IGManagementController.cs" />
     <Compile Include="Controllers\IGTypeManagementController.cs" />
-    <Compile Include="Controllers\RoleManagementController.cs" />
     <Compile Include="Controllers\TemplateManagementController.cs" />
     <Compile Include="Controllers\TerminologyManagementController.cs" />
     <Compile Include="Filters\SecurableAuthorizationFilter.cs" />
@@ -696,6 +698,8 @@
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <Content Include="Scripts\Account\MyProfile.js" />
     <Content Include="Scripts\Account\NewProfile.js" />
+    <Content Include="Scripts\Admin\Groups.js" />
+    <Content Include="Scripts\Admin\Users.js" />
     <Content Include="Scripts\angular\angular-highlight.min.js" />
     <Content Include="Scripts\angular\angular-route.min.js" />
     <Content Include="Scripts\angular\angular.min.js" />
@@ -754,8 +758,8 @@
     <Content Include="Scripts\knockout\knockout.validation.rules.js" />
     <Content Include="Scripts\knockout\knockout.valuesetSelect.js" />
     <Content Include="Scripts\lodash.min.js" />
-    <Content Include="Scripts\Organization\Details.js" />
-    <Content Include="Scripts\Organization\List.js" />
+    <Content Include="Scripts\Admin\Details.js" />
+    <Content Include="Scripts\Admin\Organizations.js" />
     <Content Include="Scripts\q\benchmark\compare-with-callbacks.js" />
     <Content Include="Scripts\q\benchmark\scenarios.js" />
     <Content Include="Scripts\q\design\q0.js" />
@@ -790,7 +794,7 @@
     <Content Include="Scripts\Report\TemplateReview.js" />
     <Content Include="Scripts\Report\TemplateUsage.js" />
     <Content Include="Scripts\Report\TemplateValidation.js" />
-    <Content Include="Scripts\RoleManagement\Roles.js" />
+    <Content Include="Scripts\Admin\Roles.js" />
     <Content Include="Scripts\sceditor\jquery.sceditor.js" />
     <Content Include="Scripts\sceditor\jquery.sceditor.min.js" />
     <Content Include="Scripts\sceditor\jquery.sceditor.xhtml.js" />
@@ -857,6 +861,8 @@
     <Content Include="Views\Account\Login.aspx" />
     <Content Include="Views\Account\MyProfile.aspx" />
     <Content Include="Views\Account\NewProfile.aspx" />
+    <Content Include="Views\Admin\Groups.aspx" />
+    <Content Include="Views\Admin\Users.aspx" />
     <Content Include="Views\Api\help.html" />
     <Content Include="Views\Beta\Index.aspx" />
     <Content Include="Views\Beta\SubmitCompleted.aspx" />
@@ -881,13 +887,13 @@
     <Content Include="Views\IG\View.aspx" />
     <Content Include="Views\Import\Index.aspx" />
     <Content Include="Views\LocalizationDemo\Index.aspx" />
-    <Content Include="Views\Organization\Details.aspx" />
-    <Content Include="Views\Organization\List.aspx" />
+    <Content Include="Views\Admin\OrganizationDetails.aspx" />
+    <Content Include="Views\Admin\Organizations.aspx" />
     <Content Include="Views\Report\Organizations.aspx" />
     <Content Include="Views\Report\TemplateReview.aspx" />
     <Content Include="Views\Report\TemplateUsage.aspx" />
     <Content Include="Views\Report\TemplateValidation.aspx" />
-    <Content Include="Views\RoleManagement\Roles.aspx" />
+    <Content Include="Views\Admin\Roles.aspx" />
     <Content Include="Views\Shared\UserControls\Head.ascx" />
     <Content Include="Views\Support\Index.aspx" />
     <Content Include="Views\TemplateManagement\Delete.aspx" />

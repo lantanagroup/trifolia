@@ -1,0 +1,1 @@
+update implementationguide_permission set [type] = 'Everyone' where [type] = 'EntireOrganization'

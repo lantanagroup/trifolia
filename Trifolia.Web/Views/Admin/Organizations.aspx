@@ -59,7 +59,7 @@
         <!-- /.modal -->
     </div>
 
-    <script type="text/javascript" src="/Scripts/Organization/List.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+    <script type="text/javascript" src="/Scripts/Admin/Organizations.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript">
         var viewModel = null;
         $(document).ready(function () {

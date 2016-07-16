@@ -13,6 +13,7 @@
           <EntitySet Name="green_constraint" EntityType="Trifolia.Shared.Store.green_constraint" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="green_template" EntityType="Trifolia.Shared.Store.green_template" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="group" EntityType="Trifolia.Shared.Store.group" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="group_manager" EntityType="Trifolia.Shared.Store.group_manager" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="implementationguide" EntityType="Trifolia.Shared.Store.implementationguide" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="implementationguide_file" EntityType="Trifolia.Shared.Store.implementationguide_file" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="implementationguide_filedata" EntityType="Trifolia.Shared.Store.implementationguide_filedata" store:Type="Tables" Schema="dbo" />
@@ -185,9 +186,13 @@
             <End Role="template" EntitySet="template" />
             <End Role="green_template" EntitySet="green_template" />
           </AssociationSet>
-          <AssociationSet Name="FK_group_organization" Association="Trifolia.Shared.Store.FK_group_organization">
-            <End Role="organization" EntitySet="organization" />
+          <AssociationSet Name="FK_group_manager_group" Association="Trifolia.Shared.Store.FK_group_manager_group">
             <End Role="group" EntitySet="group" />
+            <End Role="group_manager" EntitySet="group_manager" />
+          </AssociationSet>
+          <AssociationSet Name="FK_group_manager_user" Association="Trifolia.Shared.Store.FK_group_manager_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="group_manager" EntitySet="group_manager" />
           </AssociationSet>
           <AssociationSet Name="FK_ig_igPreviousVersion" Association="Trifolia.Shared.Store.FK_ig_igPreviousVersion">
             <End Role="implementationguide" EntitySet="implementationguide" />
@@ -215,10 +220,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_implementationguide_permission_implementationguide" Association="Trifolia.Shared.Store.FK_implementationguide_permission_implementationguide">
             <End Role="implementationguide" EntitySet="implementationguide" />
-            <End Role="implementationguide_permission" EntitySet="implementationguide_permission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_permission_organization" Association="Trifolia.Shared.Store.FK_implementationguide_permission_organization">
-            <End Role="organization" EntitySet="organization" />
             <End Role="implementationguide_permission" EntitySet="implementationguide_permission" />
           </AssociationSet>
           <AssociationSet Name="FK_implementationguide_permission_user" Association="Trifolia.Shared.Store.FK_implementationguide_permission_user">
@@ -447,7 +448,14 @@
           </Key>
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="organizationId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="group_manager">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="groupId" Type="int" Nullable="false" />
+          <Property Name="userId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="implementationguide">
           <Key>
@@ -500,7 +508,6 @@
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
           <Property Name="permission" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="type" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="organizationId" Type="int" />
           <Property Name="groupId" Type="int" />
           <Property Name="userId" Type="int" />
         </EntityType>
@@ -1059,15 +1066,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_group_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="1" />
-          <End Role="group" Type="Trifolia.Shared.Store.group" Multiplicity="*" />
+        <Association Name="FK_group_manager_group">
+          <End Role="group" Type="Trifolia.Shared.Store.group" Multiplicity="1" />
+          <End Role="group_manager" Type="Trifolia.Shared.Store.group_manager" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="organization">
+            <Principal Role="group">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="group">
-              <PropertyRef Name="organizationId" />
+            <Dependent Role="group_manager">
+              <PropertyRef Name="groupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_group_manager_user">
+          <End Role="user" Type="Trifolia.Shared.Store.user" Multiplicity="1" />
+          <End Role="group_manager" Type="Trifolia.Shared.Store.group_manager" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="group_manager">
+              <PropertyRef Name="userId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1152,18 +1171,6 @@
             </Principal>
             <Dependent Role="implementationguide_permission">
               <PropertyRef Name="implementationGuideId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_implementationguide_permission_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="0..1" />
-          <End Role="implementationguide_permission" Type="Trifolia.Shared.Store.implementationguide_permission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="organization">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="implementationguide_permission">
-              <PropertyRef Name="organizationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1629,6 +1636,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetImplementationGuideTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="implementationGuideId" Type="int" Mode="In" />
+          <Parameter Name="inferred" Type="bit" Mode="In" />
+          <Parameter Name="parentTemplateId" Type="int" Mode="In" />
+        </Function>
         <Function Name="SearchTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userId" Type="int" Mode="In" />
           <Parameter Name="filterImplementationGuideId" Type="int" Mode="In" />
@@ -1647,14 +1659,6 @@
           <Parameter Name="orderProperty" Type="varchar" Mode="In" />
           <Parameter Name="orderDesc" Type="bit" Mode="In" />
         </Function>
-        <!--Errors Found During Generation:
-      warning 6005: The function 'GetImplementationGuideTemplates' has a parameter 'categories' at parameter index 3 that has a data type 'table type' which is currently not supported for the target .NET Framework version. The function was excluded.
-      
-      <Function Name="GetImplementationGuideTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-        <Parameter Name="implementationGuideId" Type="int" Mode="In" />
-        <Parameter Name="inferred" Type="bit" Mode="In" />
-        <Parameter Name="parentTemplateId" Type="int" Mode="In" />
-      </Function>-->
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -1816,14 +1820,6 @@
             <End Role="Template" EntitySet="Templates" />
           </AssociationSet>
           <EntitySet Name="Organizations" EntityType="Trifolia.DB.Organization" />
-          <AssociationSet Name="FK_group_organization" Association="Trifolia.DB.FK_group_organization">
-            <End Role="organization" EntitySet="Organizations" />
-            <End Role="Group" EntitySet="Groups" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_permission_organization" Association="Trifolia.DB.FK_implementationguide_permission_organization">
-            <End Role="organization" EntitySet="Organizations" />
-            <End Role="ImplementationGuidePermission" EntitySet="ImplementationGuidePermissions" />
-          </AssociationSet>
           <AssociationSet Name="FK_role_restriction_organization" Association="Trifolia.DB.FK_role_restriction_organization">
             <End Role="organization" EntitySet="Organizations" />
             <End Role="RoleRestriction" EntitySet="RoleRestrictions" />
@@ -1949,6 +1945,15 @@
           <AssociationSet Name="FK_template_extension_template" Association="Trifolia.DB.FK_template_extension_template">
             <End Role="Template" EntitySet="Templates" />
             <End Role="template_extension" EntitySet="TemplateExtensions" />
+          </AssociationSet>
+          <EntitySet Name="GroupManagers" EntityType="Trifolia.DB.GroupManager" />
+          <AssociationSet Name="FK_group_manager_group" Association="Trifolia.DB.FK_group_manager_group">
+            <End Role="Group" EntitySet="Groups" />
+            <End Role="group_manager" EntitySet="GroupManagers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_group_manager_user" Association="Trifolia.DB.FK_group_manager_user">
+            <End Role="User" EntitySet="Users" />
+            <End Role="group_manager" EntitySet="GroupManagers" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="AuditEntry">
@@ -2613,11 +2618,10 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="OrganizationId" Nullable="false" />
           <NavigationProperty Name="ImplementationGuidePermissions" Relationship="Trifolia.DB.FK_implementationguide_permission_group" FromRole="group" ToRole="implementationguide_permission" />
           <NavigationProperty Name="Users" Relationship="Trifolia.DB.FK_user_group_group" FromRole="group" ToRole="user_group" />
-          <NavigationProperty Name="Organization" Relationship="Trifolia.DB.FK_group_organization" FromRole="Group" ToRole="organization" />
           <NavigationProperty Name="DefaultPermissions" Relationship="Trifolia.DB.FK_organization_defaultpermission_group" FromRole="Group" ToRole="organization_defaultpermission" />
+          <NavigationProperty Name="Managers" Relationship="Trifolia.DB.FK_group_manager_group" FromRole="Group" ToRole="group_manager" />
         </EntityType>
         <EntityType Name="ImplementationGuidePermission">
           <Key>
@@ -2627,12 +2631,10 @@
           <Property Type="Int32" Name="ImplementationGuideId" Nullable="false" />
           <Property Type="String" Name="Permission" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Type" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="OrganizationId" />
           <Property Type="Int32" Name="GroupId" />
           <Property Type="Int32" Name="UserId" />
           <NavigationProperty Name="Group" Relationship="Trifolia.DB.FK_implementationguide_permission_group" FromRole="implementationguide_permission" ToRole="group" />
           <NavigationProperty Name="User" Relationship="Trifolia.DB.FK_implementationguide_permission_user" FromRole="implementationguide_permission" ToRole="user" />
-          <NavigationProperty Name="Organization" Relationship="Trifolia.DB.FK_implementationguide_permission_organization" FromRole="ImplementationGuidePermission" ToRole="organization" />
           <NavigationProperty Name="ImplementationGuide" Relationship="Trifolia.DB.FK_implementationguide_permission_implementationguide" FromRole="ImplementationGuidePermission" ToRole="implementationguide" />
         </EntityType>
         <EntityType Name="Role">
@@ -2678,6 +2680,7 @@
           <Property Type="String" Name="ExternalOrganizationType" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ImplementationGuides" Relationship="Trifolia.DB.FK_implementationguide_user" FromRole="User" ToRole="ImplementationGuide" />
           <Property Type="String" Name="ApiKey" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ManagingGroups" Relationship="Trifolia.DB.FK_group_manager_user" FromRole="User" ToRole="group_manager" />
         </EntityType>
         <EntityType Name="UserGroup">
           <Key>
@@ -2869,38 +2872,12 @@
           <Property Type="String" Name="ContactEmail" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ContactPhone" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="AuthProvider" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Groups" Relationship="Trifolia.DB.FK_group_organization" FromRole="organization" ToRole="Group" />
-          <NavigationProperty Name="ImplementationGuidePermissions" Relationship="Trifolia.DB.FK_implementationguide_permission_organization" FromRole="organization" ToRole="ImplementationGuidePermission" />
           <NavigationProperty Name="RoleRestrictions" Relationship="Trifolia.DB.FK_role_restriction_organization" FromRole="organization" ToRole="RoleRestriction" />
           <NavigationProperty Name="Templates" Relationship="Trifolia.DB.FK_template_organization" FromRole="organization" ToRole="Template" />
           <NavigationProperty Name="DefaultPermissions" Relationship="Trifolia.DB.FK_organization_defaultpermission_organization" FromRole="Organization" ToRole="organization_defaultpermission" />
           <NavigationProperty Name="ImplementationGuides" Relationship="Trifolia.DB.FK_implementationguide_organization" FromRole="Organization" ToRole="implementationguide" />
-          <Property Type="Boolean" Name="isInternal" Nullable="false" />
+          <Property Type="Boolean" Name="IsInternal" Nullable="false" />
         </EntityType>
-        <Association Name="FK_group_organization">
-          <End Type="Trifolia.DB.Organization" Role="organization" Multiplicity="1" />
-          <End Type="Trifolia.DB.Group" Role="Group" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="organization">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Group">
-              <PropertyRef Name="OrganizationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_implementationguide_permission_organization">
-          <End Type="Trifolia.DB.Organization" Role="organization" Multiplicity="0..1" />
-          <End Type="Trifolia.DB.ImplementationGuidePermission" Role="ImplementationGuidePermission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="organization">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ImplementationGuidePermission">
-              <PropertyRef Name="OrganizationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_role_restriction_organization">
           <End Type="Trifolia.DB.Organization" Role="organization" Multiplicity="1" />
           <End Type="Trifolia.DB.RoleRestriction" Role="RoleRestriction" Multiplicity="*" />
@@ -3301,6 +3278,40 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="GroupManager">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="GroupId" Nullable="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <NavigationProperty Name="Group" Relationship="Trifolia.DB.FK_group_manager_group" FromRole="group_manager" ToRole="Group" />
+          <NavigationProperty Name="User" Relationship="Trifolia.DB.FK_group_manager_user" FromRole="group_manager" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_group_manager_group">
+          <End Type="Trifolia.DB.Group" Role="Group" Multiplicity="1" />
+          <End Type="Trifolia.DB.GroupManager" Role="group_manager" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="group_manager">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_group_manager_user">
+          <End Type="Trifolia.DB.User" Role="User" Multiplicity="1" />
+          <End Type="Trifolia.DB.GroupManager" Role="group_manager" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="group_manager">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3675,7 +3686,6 @@
           <EntitySetMapping Name="Groups">
             <EntityTypeMapping TypeName="Trifolia.DB.Group">
               <MappingFragment StoreEntitySet="group">
-                <ScalarProperty Name="OrganizationId" ColumnName="organizationId" />
                 <ScalarProperty Name="Name" ColumnName="name" />
                 <ScalarProperty Name="Id" ColumnName="id" />
               </MappingFragment>
@@ -3686,7 +3696,6 @@
               <MappingFragment StoreEntitySet="implementationguide_permission">
                 <ScalarProperty Name="UserId" ColumnName="userId" />
                 <ScalarProperty Name="GroupId" ColumnName="groupId" />
-                <ScalarProperty Name="OrganizationId" ColumnName="organizationId" />
                 <ScalarProperty Name="Type" ColumnName="type" />
                 <ScalarProperty Name="Permission" ColumnName="permission" />
                 <ScalarProperty Name="ImplementationGuideId" ColumnName="implementationGuideId" />
@@ -3778,7 +3787,7 @@
           <EntitySetMapping Name="Organizations">
             <EntityTypeMapping TypeName="Trifolia.DB.Organization">
               <MappingFragment StoreEntitySet="organization">
-                <ScalarProperty Name="isInternal" ColumnName="isInternal" />
+                <ScalarProperty Name="IsInternal" ColumnName="isInternal" />
                 <ScalarProperty Name="AuthProvider" ColumnName="authProvider" />
                 <ScalarProperty Name="ContactPhone" ColumnName="contactPhone" />
                 <ScalarProperty Name="ContactEmail" ColumnName="contactEmail" />
@@ -3878,6 +3887,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetImplementationGuideTemplates" FunctionName="Trifolia.Shared.Store.GetImplementationGuideTemplates" />
           <EntitySetMapping Name="TemplateExtensions">
             <EntityTypeMapping TypeName="Trifolia.DB.TemplateExtension">
               <MappingFragment StoreEntitySet="template_extension">
@@ -3885,6 +3895,15 @@
                 <ScalarProperty Name="Type" ColumnName="type" />
                 <ScalarProperty Name="Identifier" ColumnName="identifier" />
                 <ScalarProperty Name="TemplateId" ColumnName="templateId" />
+                <ScalarProperty Name="Id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GroupManagers">
+            <EntityTypeMapping TypeName="Trifolia.DB.GroupManager">
+              <MappingFragment StoreEntitySet="group_manager">
+                <ScalarProperty Name="UserId" ColumnName="userId" />
+                <ScalarProperty Name="GroupId" ColumnName="groupId" />
                 <ScalarProperty Name="Id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4053,7 +4072,7 @@
         <edmx:EntityTypeShape EntityType="Trifolia.DB.RoleRestriction" Width="1.5" PointX="6.5" PointY="15.375" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.AppSecurable" Width="1.5" PointX="8" PointY="22.125" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.RoleAppSecurable" Width="1.5" PointX="7.625" PointY="18.5" />
-        <edmx:EntityTypeShape EntityType="Trifolia.DB.Group" Width="1.5" PointX="0.5" PointY="24.5" />
+        <edmx:EntityTypeShape EntityType="Trifolia.DB.Group" Width="1.5" PointX="0.5" PointY="24.625" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.ImplementationGuidePermission" Width="2.125" PointX="1" PointY="15.875" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.Role" Width="1.5" PointX="10.25" PointY="19" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.TemplateSample" Width="1.5" PointX="13" PointY="13.5" />
@@ -4075,8 +4094,6 @@
         <edmx:EntityTypeShape EntityType="Trifolia.DB.ViewUserSecurable" Width="1.5" PointX="15.75" PointY="25.625" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_template_user" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.Organization" Width="1.5" PointX="2.375" PointY="20.875" />
-        <edmx:AssociationConnector Association="Trifolia.DB.FK_group_organization" />
-        <edmx:AssociationConnector Association="Trifolia.DB.FK_implementationguide_permission_organization" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_role_restriction_organization" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_template_organization" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.OrganizationDefaultPermission" Width="1.5" PointX="3" PointY="28.625" />
@@ -4099,7 +4116,7 @@
         <edmx:AssociationConnector Association="Trifolia.DB.ViewImplementationGuideTemplatesTemplate" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.TemplateConstraintSample" Width="1.5" PointX="14.875" PointY="13.125" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_template_constraint_sample_template_constraint" />
-        <edmx:EntityTypeShape EntityType="Trifolia.DB.PublishStatus" Width="1.5" PointX="0.875" PointY="0.5" />
+        <edmx:EntityTypeShape EntityType="Trifolia.DB.PublishStatus" Width="1.5" PointX="1.25" PointY="0.625" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_implementationguide_publish_status" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_template_status" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_green_constraint_igtype_datatype" />
@@ -4108,6 +4125,13 @@
         <edmx:AssociationConnector Association="Trifolia.DB.FK_implementationguide_section_implementationguide" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.TemplateExtension" Width="1.5" PointX="10.125" PointY="7.875" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_template_extension_template" />
+        <edmx:EntityTypeShape EntityType="Trifolia.DB.GroupManager" Width="1.5" PointX="6.375" PointY="27.875" />
+        <edmx:AssociationConnector Association="Trifolia.DB.FK_group_manager_group" />
+        <edmx:AssociationConnector Association="Trifolia.DB.FK_group_manager_user" ManuallyRouted="true" >
+          <edmx:ConnectorPoint PointX="5.9843775" PointY="26.537903645833335" />
+          <edmx:ConnectorPoint PointX="5.9843775" PointY="29.068270729166656" />
+          <edmx:ConnectorPoint PointX="6.375" PointY="29.068270729166656" />
+        </edmx:AssociationConnector>
         </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

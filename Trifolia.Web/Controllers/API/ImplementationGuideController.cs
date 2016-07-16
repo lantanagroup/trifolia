@@ -688,6 +688,7 @@ namespace Trifolia.Web.Controllers.API
             if (implementationGuideId != null && !CheckPoint.Instance.GrantEditImplementationGuide(implementationGuideId.Value))
                 throw new AuthorizationException("You do not have permissions to edit this implementation guide!");
 
+            ImplementationGuide implementationGuide = implementationGuideId != null ? this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId) : null;
             EditModel model = new EditModel();
 
             if (implementationGuideId != null)
@@ -726,10 +727,11 @@ namespace Trifolia.Web.Controllers.API
             }
 
             // Always load default permissions for both pre-existing implementation guides and new IGs
-            Organization org = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId).Organization;
 
-            if (org != null)
+            if (implementationGuide != null && implementationGuide.Organization != null)
             {
+                var org = implementationGuide.Organization;
+
                 foreach (OrganizationDefaultPermission cDefaultPerm in org.DefaultPermissions)
                 {
                     EditModel.Permission newDefaultPermission = new EditModel.Permission()
@@ -741,7 +743,7 @@ namespace Trifolia.Web.Controllers.API
                     if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.Everyone)
                         newDefaultPermission.Name = string.Format("Entire Organization ({0})", cDefaultPerm.Organization.Name);
                     else if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.Group)
-                        newDefaultPermission.Name = string.Format("{0} ({1})", cDefaultPerm.Group.Name, cDefaultPerm.Group.Organization.Name);
+                        newDefaultPermission.Name = string.Format("{0}", cDefaultPerm.Group.Name);
                     else if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.User)
                         newDefaultPermission.Name = string.Format("{0} {1} ({2})", cDefaultPerm.User.FirstName, cDefaultPerm.User.LastName, cDefaultPerm.User.Email);
 
@@ -909,12 +911,12 @@ namespace Trifolia.Web.Controllers.API
                 switch (cPermission.MemberType())
                 {
                     case Models.PermissionManagement.PermissionTypes.Everyone:
-                        newPermission.Id = cPermission.OrganizationId.Value;
-                        newPermission.Name = "Entire Organization (" + cPermission.Organization.Name + ")";
+                        newPermission.Id = 0;
+                        newPermission.Name = "Everyone";
                         break;
                     case Models.PermissionManagement.PermissionTypes.Group:
                         newPermission.Id = cPermission.GroupId.Value;
-                        newPermission.Name = cPermission.Group.Name + " (" + cPermission.Group.Organization.Name + ")";
+                        newPermission.Name = cPermission.Group.Name;
                         break;
                     case Models.PermissionManagement.PermissionTypes.User:
                         newPermission.Id = cPermission.UserId.Value;
@@ -1263,9 +1265,7 @@ namespace Trifolia.Web.Controllers.API
                 ImplementationGuide = ig
             };
 
-            if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.Everyone)
-                permission.OrganizationId = permissionModel.Id;
-            else if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.Group)
+            if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.Group)
                 permission.GroupId = permissionModel.Id;
             else if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.User)
                 permission.UserId = permissionModel.Id;
@@ -1273,54 +1273,12 @@ namespace Trifolia.Web.Controllers.API
             return permission;
         }
 
-        [HttpGet, Route("api/ImplementationGuide/Edit/User"), SecurableAction()]
-        public MyOrganizationInfo GetMyOrganizationInfo(bool includeGroups = true)
-        {
-            string organizationName = CheckPoint.Instance.OrganizationName;
-            Organization organization = this.tdb.Organizations.Single(y => y.Name == organizationName);
-
-            MyOrganizationInfo model = new MyOrganizationInfo()
-            {
-                MyOrganizationId = organization.Id
-            };
-
-            model.MyGroups.Add(new MyOrganizationInfo.MemberEntry()
-            {
-                Id = model.MyOrganizationId,
-                Name = string.Format("Entire Organization ({0})", organization.Name),
-                Type = PermissionTypes.Everyone
-            });
-
-            if (includeGroups)
-            {
-                foreach (var cGroup in organization.Groups)
-                {
-                    model.MyGroups.Add(new MyOrganizationInfo.MemberEntry()
-                    {
-                        Id = cGroup.Id,
-                        Type = PermissionTypes.Group,
-                        Name = string.Format("{0} ({1})", cGroup.Name, organization.Name)
-                    });
-                }
-            }
-
-            model.OtherOrganizations = (from o in this.tdb.Organizations
-                                        where o.Id != organization.Id
-                                        select new MyOrganizationInfo.OrganizationEntry()
-                                        {
-                                            Id = o.Id,
-                                            Name = o.Name
-                                        }).ToList();
-
-            return model;
-        }
-
-        [HttpGet, Route("api/ImplementationGuide/Edit/User/Search"), SecurableAction()]
-        public IEnumerable<MyOrganizationInfo.MemberEntry> SearchUsers(string searchText, bool includeGroups)
+        [HttpGet, Route("api/ImplementationGuide/Edit/Permission/Search"), SecurableAction()]
+        public IEnumerable<PermissionsInfoModel.MemberEntry> SearchUsers(string searchText, bool includeGroups)
         {
             searchText = searchText.ToLower();
 
-            List<MyOrganizationInfo.MemberEntry> matches = new List<MyOrganizationInfo.MemberEntry>();
+            List<PermissionsInfoModel.MemberEntry> matches = new List<PermissionsInfoModel.MemberEntry>();
 
             if (!string.IsNullOrEmpty(searchText))
             {
@@ -1330,7 +1288,7 @@ namespace Trifolia.Web.Controllers.API
                         (u.FirstName + " " + u.LastName).ToLower().Contains(searchText) ||
                         u.Email.Contains(searchText) ||
                         u.UserName.ToLower().Contains(searchText)
-                    select new MyOrganizationInfo.MemberEntry()
+                    select new PermissionsInfoModel.MemberEntry()
                     {
                         Type = PermissionTypes.User,
                         Id = u.Id,
@@ -1341,7 +1299,7 @@ namespace Trifolia.Web.Controllers.API
             // Only add groups if allowGroupSelection and the requested organization is not "my organization"
             if (includeGroups)
             {
-                matches.Insert(0, new MyOrganizationInfo.MemberEntry()
+                matches.Insert(0, new PermissionsInfoModel.MemberEntry()
                 {
                     Id = 0,
                     Name = string.Format("Everyone"),
@@ -1354,10 +1312,10 @@ namespace Trifolia.Web.Controllers.API
                     matches.AddRange(
                         from g in this.tdb.Groups
                         where g.Name.ToLower().Contains(searchText)
-                        select new MyOrganizationInfo.MemberEntry()
+                        select new PermissionsInfoModel.MemberEntry()
                         {
                             Id = g.Id,
-                            Name = g.Name + " (" + g.Organization.Name + ")",
+                            Name = g.Name,
                             Type = PermissionTypes.Group
                         });
                 }

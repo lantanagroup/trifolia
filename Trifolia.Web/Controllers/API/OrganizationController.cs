@@ -34,7 +34,7 @@ namespace Trifolia.Web.Controllers.API
         /// <summary>
         /// Gets all organizations in Trifolia
         /// </summary>
-        [HttpGet, Route("api/Organization"), SecurableAction(SecurableNames.ORGANIZATION_LIST)]
+        [HttpGet, Route("api/Organization"), SecurableAction]
         public IEnumerable<OrganizationModel> GetOrganizations()
         {
             return (from o in this.tdb.Organizations
@@ -59,48 +59,6 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
-        [HttpPost, Route("api/Organization/{organizationId}/User"), SecurableAction(SecurableNames.ORGANIZATION_DETAILS)]
-        public User SaveUser(int organizationId, OrganizationUser model)
-        {
-            User user = this.tdb.Users.SingleOrDefault(y => y.Id == model.Id);
-
-            // Check if the user's username is already in use by another user
-            var foundDuplicateUserNames = this.tdb.Users.Where(y => (model.Id == null || y.Id != model.Id) && y.UserName == model.UserName);
-
-            if (foundDuplicateUserNames.Count() > 0)
-                throw new Exception("This username is already in use!");
-
-            // If no user was found in the DB by the user's id, then create a new one
-            if (user == null)
-            {
-                user = new User();
-                this.tdb.Users.AddObject(user);
-
-                // Assign the new user the default role
-                Role defaultRole = this.tdb.Roles.SingleOrDefault(y => y.IsDefault);
-
-                if (defaultRole != null)
-                {
-                    UserRole userRole = new UserRole()
-                    {
-                        User = user,
-                        Role = defaultRole
-                    };
-                    this.tdb.UserRoles.AddObject(userRole);
-                }
-            }
-
-            user.UserName = model.UserName;
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.Email = model.Email;
-            user.Phone = model.Phone;
-
-            this.tdb.SaveChanges();
-
-            return user;
-        }
-
         [HttpPost, Route("api/Organization"), SecurableAction(SecurableNames.ORGANIZATION_LIST)]
         public int SaveOrganization(OrganizationModel model)
         {
@@ -119,142 +77,10 @@ namespace Trifolia.Web.Controllers.API
             return organization.Id;
         }
 
-        [HttpDelete, Route("api/Organization/{organizationId}/User/{userId}"), SecurableAction(SecurableNames.ORGANIZATION_DETAILS)]
-        public void DeleteUser(int organizationId, int userId)
-        {
-            var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            var user = this.tdb.Users.Single(y => y.Id == userId);
-
-            user.Roles.ToList().ForEach(y => { this.tdb.UserRoles.DeleteObject(y); });
-            user.Groups.ToList().ForEach(y => { this.tdb.UserGroups.DeleteObject(y); });
-
-            this.tdb.Users.DeleteObject(user);
-
-            this.tdb.SaveChanges();
-        }
-
-        [HttpPost, Route("api/Organization/{organizationId}/Group"), SecurableAction(SecurableNames.ORGANIZATION_DETAILS)]
-        public int SaveGroup(int organizationId, OrganizationGroup model)
-        {
-            var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            Group group = organization.Groups.SingleOrDefault(y => y.Id == model.Id);
-
-            if (group == null)
-            {
-                group = new Group();
-                group.Organization = organization;
-                this.tdb.Groups.AddObject(group);
-            }
-
-            group.Name = model.Name;
-
-            this.tdb.SaveChanges();
-
-            return group.Id;
-        }
-
-        [HttpPost, Route("api/Organization/{organizationId}/User/{userId}/Group/{groupId}"), SecurableAction(SecurableNames.ORGANIZATION_DETAILS)]
-        public void AssignUserToGroup(int organizationId, int userId, int groupId)
-        {
-            var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            var user = this.tdb.Users.Single(y => y.Id == userId);
-            var group = organization.Groups.Single(y => y.Id == groupId);
-
-            if (user.Groups.Count(y => y.Group == group) > 0)
-                return;
-
-            UserGroup userGroup = new UserGroup();
-            userGroup.User = user;
-            userGroup.Group = group;
-            this.tdb.UserGroups.AddObject(userGroup);
-
-            this.tdb.SaveChanges();
-        }
-
-        [HttpDelete, Route("api/Organization/{organizationId}/User/{userId}/Group/{groupId}"), SecurableAction(SecurableNames.ORGANIZATION_DETAILS)]
-        public void UnassignUserFromGroup(int organizationId, int userId, int groupId)
-        {
-            var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            var userGroup = this.tdb.UserGroups.SingleOrDefault(y => y.UserId == userId && y.GroupId == groupId);
-
-            if (userGroup != null)
-            {
-                this.tdb.UserGroups.DeleteObject(userGroup);
-
-                this.tdb.SaveChanges();
-            }
-        }
-
-        [HttpPost, Route("api/Organization/{organizationId}/User/{userId}/Role/{roleId}"), SecurableAction(SecurableNames.ORGANIZATION_DETAILS)]
-        public void AssignUserToRole(int organizationId, int userId, int roleId)
-        {
-            var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            var user = this.tdb.Users.Single(y => y.Id == userId);
-            var role = this.tdb.Roles.Single(y => y.Id == roleId);
-
-            if (user.Roles.Count(y => y.Role == role) > 0)
-                return;
-
-            UserRole userRole = new UserRole();
-            userRole.User = user;
-            userRole.Role = role;
-            this.tdb.UserRoles.AddObject(userRole);
-
-            this.tdb.SaveChanges();
-        }
-
-        [HttpDelete, Route("api/Organization/{organizationId}/User/{userId}/Role/{roleId}"), SecurableAction(SecurableNames.ORGANIZATION_DETAILS)]
-        public void UnassignUserFromRole(int organizationId, int userId, int roleId)
-        {
-            var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            var userRole = this.tdb.UserRoles.SingleOrDefault(y => y.UserId == userId && y.RoleId == roleId);
-
-            if (userRole != null)
-            {
-                this.tdb.UserRoles.DeleteObject(userRole);
-
-                this.tdb.SaveChanges();
-            }
-        }
-
-        [HttpDelete, Route("api/Organization/{organizationId}/Group/{groupId}"), SecurableAction(SecurableNames.ORGANIZATION_DETAILS)]
-        public void DeleteGroup(int organizationId, int groupId)
-        {
-            var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            var group = organization.Groups.Single(y => y.Id == groupId);
-
-            group.Users.ToList().ForEach(y =>
-            {
-                this.tdb.UserGroups.DeleteObject(y);
-            });
-
-            group.ImplementationGuidePermissions.ToList().ForEach(y =>
-            {
-                this.tdb.ImplementationGuidePermissions.DeleteObject(y);
-            });
-
-            group.DefaultPermissions.ToList().ForEach(y =>
-            {
-                this.tdb.OrganizationDefaultPermissions.DeleteObject(y);
-            });
-
-            this.tdb.Groups.DeleteObject(group);
-
-            this.tdb.SaveChanges();
-        }
-
         [HttpDelete, Route("api/Organization/{organizationId}"), SecurableAction(SecurableNames.ADMIN)]
         public void DeleteOrganization(int organizationId)
         {
             var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-
-            // Delete groups
-            foreach (var cGroup in organization.Groups)
-            {
-                cGroup.Users.ToList().ForEach(y => this.tdb.UserGroups.DeleteObject(y));
-            }
-
-            organization.Groups.ToList().ForEach(y => this.tdb.Groups.DeleteObject(y));
 
             // Delete role restrictions associated with this org
             organization.RoleRestrictions.ToList().ForEach(y => this.tdb.RoleRestrictions.DeleteObject(y));

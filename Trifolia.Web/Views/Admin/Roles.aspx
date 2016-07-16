@@ -168,7 +168,7 @@
         <!-- /.modal -->
     </div>
 
-    <script type="text/javascript" src="/Scripts/RoleManagement/Roles.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+    <script type="text/javascript" src="/Scripts/Admin/Roles.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript">
         var viewModel = null;
         $(document).ready(function () {

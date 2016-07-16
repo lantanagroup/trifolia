@@ -15,7 +15,7 @@
     self.RestrictOrganization = function(organization) {
         $.ajax({
             method: 'POST',
-            url: '/api/Admin/Role/' + self.CurrentRole().Id() + '/Restrict/' + organization.Id(),
+            url: '/api/Role/' + self.CurrentRole().Id() + '/Restrict/' + organization.Id(),
             success: function() {
                 organization.Restricted(true);
             },
@@ -29,7 +29,7 @@
     self.UnrestrictOrganization = function (organization) {
         $.ajax({
             method: 'POST',
-            url: '/api/Admin/Role/' + self.CurrentRole().Id() + '/Unrestrict/' + organization.Id(),
+            url: '/api/Role/' + self.CurrentRole().Id() + '/Unrestrict/' + organization.Id(),
             success: function () {
                 organization.Restricted(false);
             },
@@ -43,7 +43,7 @@
     self.AssignSecurable = function (securable) {
         $.ajax({
             method: 'POST',
-            url: '/api/Admin/Role/' + self.CurrentRole().Id() + '/Assign/' + securable.Id(),
+            url: '/api/Role/' + self.CurrentRole().Id() + '/Assign/' + securable.Id(),
             success: function () {
                 var newSecurable = new SecurableModel(ko.mapping.toJS(securable));
                 self.CurrentRole().AssignedSecurables.push(newSecurable);
@@ -54,7 +54,7 @@
     self.UnassignSecurable = function (securable) {
         $.ajax({
             method: 'POST',
-            url: '/api/Admin/Role/' + self.CurrentRole().Id() + '/Unassign/' + securable.Id(),
+            url: '/api/Role/' + self.CurrentRole().Id() + '/Unassign/' + securable.Id(),
             success: function () {
                 self.CurrentRole().AssignedSecurables.remove(securable);
             }
@@ -115,7 +115,7 @@
     self.AddRole = function () {
         $.ajax({
             method: 'POST',
-            url: '/api/Admin/Role/Add?roleName=' + encodeURIComponent(self.AddRoleName()),
+            url: '/api/Role/Add?roleName=' + encodeURIComponent(self.AddRoleName()),
             success: function (results) {
                 var model = new RoleItemModel(results);
 
@@ -146,7 +146,7 @@
     self.DefaultRoleChanged = function (newRoleId) {
         $.ajax({
             method: 'POST',
-            url: '/api/Admin/Role/' + newRoleId + '/SetDefault',
+            url: '/api/Role/' + newRoleId + '/SetDefault',
             error: function (ex) {
                 console.log(ex);
                 alert("An error occurred while updating the default role");
@@ -161,7 +161,7 @@
 
         $.ajax({
             method: 'DELETE',
-            url: '/api/Admin/Role/' + role.Id(),
+            url: '/api/Role/' + role.Id(),
             success: function () {
                 self.Model().Roles.remove(role);
             },
@@ -182,7 +182,7 @@
         });
 
         $.ajax({
-            url: '/api/Admin/Role',
+            url: '/api/Role',
             cache: false,
             success: function (results) {
                 var model = new RolesModel(results);

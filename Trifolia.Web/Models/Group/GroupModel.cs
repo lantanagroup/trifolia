@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Trifolia.Web.Models.OrganizationManagement
+namespace Trifolia.Web.Models.Group
 {
     /// <summary>
-    /// Models a standard Group within an organization
+    /// Models a group as a view model
     /// </summary>
-    public class OrganizationGroup
+    public class GroupModel
     {
         #region Properties
 

@@ -226,7 +226,6 @@ namespace Trifolia.Web.Controllers
             {
                 ImplementationGuidePermission newPermission = new ImplementationGuidePermission()
                 {
-                    OrganizationId = cPermission.OrganizationId,
                     GroupId = cPermission.GroupId,
                     UserId = cPermission.UserId,
                     Type = cPermission.Type,
@@ -341,7 +340,7 @@ namespace Trifolia.Web.Controllers
         /// <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
         public static int PrimaryId(this ImplementationGuidePermission igp)
         {
-            int? id = ConvertId(igp.MemberType(), igp.OrganizationId, igp.GroupId, igp.UserId);
+            int? id = ConvertId(igp.MemberType(), igp.GroupId, igp.UserId);
             return id != null ? id.Value : -1;
         }
 
@@ -359,16 +358,16 @@ namespace Trifolia.Web.Controllers
         /// <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
         public static int PrimaryId(this OrganizationDefaultPermission odp)
         {
-            int? id = ConvertId(odp.MemberType(), odp.EntireOrganizationId, odp.GroupId, odp.UserId);
+            int? id = ConvertId(odp.MemberType(), odp.GroupId, odp.UserId);
             return id != null ? id.Value : -1;
         }
 
-        private static int? ConvertId(Trifolia.Web.Models.PermissionManagement.PermissionTypes type, int? organizationId, int? groupId, int? userId)
+        private static int? ConvertId(Trifolia.Web.Models.PermissionManagement.PermissionTypes type, int? groupId, int? userId)
         {
             switch (type)
             {
                 case Models.PermissionManagement.PermissionTypes.Everyone:
-                    return organizationId;
+                    return 0;
                 case Models.PermissionManagement.PermissionTypes.Group:
                     return groupId;
                 case Models.PermissionManagement.PermissionTypes.User:

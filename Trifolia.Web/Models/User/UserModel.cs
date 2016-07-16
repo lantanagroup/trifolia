@@ -5,19 +5,19 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 
-namespace Trifolia.Web.Models.OrganizationManagement
+namespace Trifolia.Web.Models.User
 {
     /// <summary>
-    /// Models a staqndard organization and user relationship as a view model
+    /// Models a user as a view model
     /// </summary>
     /// <remarks>Although the underlying model allows us to link a user to many organizations, this view model represents 
     /// a single organization, and therefore in this context, a user either belongs to the current organization
     /// or not.</remarks>
-    public class OrganizationUser
+    public class UserModel
     {
         #region Ctor
 
-        public OrganizationUser()
+        public UserModel()
         {
             this.Roles = new List<int>();
             this.Groups = new List<int>();

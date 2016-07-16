@@ -109,15 +109,10 @@
                             <li><a href="/TerminologyManagement/Import/Excel">Import Value Sets</a></li>
                             <li><a href="/TerminologyManagement/Import/External">Import External Value Sets</a></li>
                             <li class="divider"></li>
-                            <!-- /ko -->
-                            <!-- ko if: HasSecurable(['OrganizationList']) -->
-                            <li><a href="/Organization/List">Organizations</a></li>
-                            <!-- /ko -->
-                            <!-- ko if: HasSecurable(['OrganizationDetails']) -->
-                            <li><a href="/Organization/My">My Organization</a></li>
-                            <!-- /ko -->
-                            <!-- ko if: HasSecurable(['Admin']) -->
-                            <li><a href="/RoleManagement/Roles">Roles</a></li>
+                            <li><a href="/Admin/Role">Roles</a></li>
+                            <li><a href="/Admin/Group">Groups</a></li>
+                            <li><a href="/Admin/User">Users</a></li>
+                            <li><a href="/Admin/Organization">Organizations</a></li>
                             <li class="divider"></li>
                             <li><a href="/IGTypeManagement/List">Implementation Guide Types</a></li>
                             <!-- /ko -->

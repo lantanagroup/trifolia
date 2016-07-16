@@ -11,18 +11,18 @@ using Trifolia.Authorization;
 
 namespace Trifolia.Web.Controllers.API
 {
-    public class AdminController : ApiController
+    public class RoleController : ApiController
     {
         private IObjectRepository tdb;
 
         #region Constructors
 
-        public AdminController(IObjectRepository tdb)
+        public RoleController(IObjectRepository tdb)
         {
             this.tdb = tdb;
         }
 
-        public AdminController()
+        public RoleController()
             : this(new TemplateDatabaseDataSource())
         {
 
@@ -37,7 +37,7 @@ namespace Trifolia.Web.Controllers.API
         /// </summary>
         /// <returns>Trifolia.Web.Models.RoleManagement.RolesModel</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
-        [HttpGet, Route("api/Admin/Role"), SecurableAction(SecurableNames.ADMIN)]
+        [HttpGet, Route("api/Role"), SecurableAction()]
         public RolesModel GetRoles()
         {
             RolesModel model = new RolesModel();
@@ -105,7 +105,7 @@ namespace Trifolia.Web.Controllers.API
         /// Both role and securable must exist.
         /// </summary>
         /// <permission cref="Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
-        [HttpPost, Route("api/Admin/Role/{roleId}/Assign/{securableId}"), SecurableAction(SecurableNames.ADMIN)]
+        [HttpPost, Route("api/Role/{roleId}/Assign/{securableId}"), SecurableAction(SecurableNames.ADMIN)]
         public void AssignRoleSecurableAction(int roleId, int securableId)
         {
             RoleAppSecurable newRoleAppSecurable = new RoleAppSecurable()
@@ -124,7 +124,7 @@ namespace Trifolia.Web.Controllers.API
         /// Both role and securable must exist.
         /// </summary>
         /// <permission cref="Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
-        [HttpPost, Route("api/Admin/Role/{roleId}/Unassign/{securableId}"), SecurableAction(SecurableNames.ADMIN)]
+        [HttpPost, Route("api/Role/{roleId}/Unassign/{securableId}"), SecurableAction(SecurableNames.ADMIN)]
         public void UnassignRoleSecurableAction(int roleId, int securableId)
         {
             RoleAppSecurable foundRoleAppSecurable =
@@ -143,7 +143,7 @@ namespace Trifolia.Web.Controllers.API
         /// Adds a new role with the specified name.
         /// </summary>
         /// <permission cref="Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
-        [HttpPost, Route("api/Admin/Role/Add"), SecurableAction(SecurableNames.ADMIN)]
+        [HttpPost, Route("api/Role"), SecurableAction(SecurableNames.ADMIN)]
         public RolesModel.RoleItem AddRole(string roleName)
         {
             Role newRole = new Role()
@@ -169,7 +169,7 @@ namespace Trifolia.Web.Controllers.API
         /// Expects that a valid role is specified.
         /// </summary>
         /// <permission cref="Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
-        [HttpDelete, Route("api/Admin/Role/{roleId}"), SecurableAction(SecurableNames.ADMIN)]
+        [HttpDelete, Route("api/Role/{roleId}"), SecurableAction(SecurableNames.ADMIN)]
         public void RemoveRole(int roleId)
         {
             Role foundRole = this.tdb.Roles.Single(y => y.Id == roleId);
@@ -189,7 +189,7 @@ namespace Trifolia.Web.Controllers.API
         /// Any organization passed in via the model is checked to determine if it should be added or removed as a restriction.
         /// </summary>
         /// <permission cref="Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
-        [HttpPost, Route("api/Admin/Role/{roleId}/Restrict/{organizationId}"), SecurableAction(SecurableNames.ADMIN)]
+        [HttpPost, Route("api/Role/{roleId}/Restrict/{organizationId}"), SecurableAction(SecurableNames.ADMIN)]
         public void RestrictOrganizations(int roleId, int organizationId)
         {
             Role role = this.tdb.Roles.Single(y => y.Id == roleId);
@@ -212,7 +212,7 @@ namespace Trifolia.Web.Controllers.API
         /// <param name="roleId">The id of the role to remove the organization restriction from</param>
         /// <param name="organizationId">The id of the organization</param>
         /// <permission cref="Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
-        [HttpPost, Route("api/Admin/Role/{roleId}/Unrestrict/{organizationId}"), SecurableAction(SecurableNames.ADMIN)]
+        [HttpPost, Route("api/Role/{roleId}/Unrestrict/{organizationId}"), SecurableAction(SecurableNames.ADMIN)]
         public void UnrestrictOrganization(int roleId, int organizationId)
         {
             Role role = this.tdb.Roles.Single(y => y.Id == roleId);
@@ -230,7 +230,7 @@ namespace Trifolia.Web.Controllers.API
         /// </summary>
         /// <param name="roleId">If specified, the role to set as the new default.</param>
         /// <permission cref="Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
-        [HttpPost, Route("api/Admin/Role/{roleId}/SetDefault"), SecurableAction(SecurableNames.ADMIN)]
+        [HttpPost, Route("api/Role/{roleId}/SetDefault"), SecurableAction(SecurableNames.ADMIN)]
         public void UpdateDefaultRole(int? roleId)
         {
             // Find the role that is requested to be the default

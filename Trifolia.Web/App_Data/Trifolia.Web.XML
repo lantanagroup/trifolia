@@ -4,41 +4,41 @@
         <name>Trifolia.Web</name>
     </assembly>
     <members>
-        <member name="M:Trifolia.Web.Controllers.API.AdminController.GetRoles">
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.GetRoles">
             <summary>
             Gets all roles in Trifolia
             </summary>
             <returns>Trifolia.Web.Models.RoleManagement.RolesModel</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.AdminController.AssignRoleSecurableAction(System.Int32,System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.AssignRoleSecurableAction(System.Int32,System.Int32)">
             <summary>
             Assgns the specified securable to the role
             Both role and securable must exist.
             </summary>
             <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.AdminController.UnassignRoleSecurableAction(System.Int32,System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.UnassignRoleSecurableAction(System.Int32,System.Int32)">
             <summary>
             Removes a securable from the specified role.
             Both role and securable must exist.
             </summary>
             <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.AdminController.AddRole(System.String)">
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.AddRole(System.String)">
             <summary>
             Adds a new role with the specified name.
             </summary>
             <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.AdminController.RemoveRole(System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.RemoveRole(System.Int32)">
             <summary>
             Removes the specified role
             Expects that a valid role is specified.
             </summary>
             <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.AdminController.RestrictOrganizations(System.Int32,System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.RestrictOrganizations(System.Int32,System.Int32)">
             <summary>
             Updates the organization restrictions for a given role.
             Role must be specified.
@@ -46,7 +46,7 @@
             </summary>
             <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.AdminController.UnrestrictOrganization(System.Int32,System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.UnrestrictOrganization(System.Int32,System.Int32)">
             <summary>
             Removes the restriction on the specified organization from the specified role
             </summary>
@@ -54,7 +54,7 @@
             <param name="organizationId">The id of the organization</param>
             <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.AdminController.UpdateDefaultRole(System.Nullable{System.Int32})">
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.UpdateDefaultRole(System.Nullable{System.Int32})">
             <summary>
             Set the default role to the role specified in the roleId parameter.
             First removes the default flag from all roles, then sets the flag for the one specified (or none, if null is provided).
@@ -302,6 +302,26 @@
             it registers as a change event when auditing, regardless if the value is different.
             </remarks>
         </member>
+        <member name="M:Trifolia.Web.Controllers.AdminController.Role">
+            <summary>
+            Prepares the model and returns the main Roles view
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.AdminController.Group">
+            <summary>
+            Prepares the model and returns the main Roles view
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.AdminController.User">
+            <summary>
+            Prepares the model and returns the main Roles view
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.AdminController.Organization">
+            <summary>
+            Prepares the model and returns the main Roles view
+            </summary>
+        </member>
         <member name="M:Trifolia.Web.Controllers.ExportController.BeforeExport(Trifolia.DB.ImplementationGuide,System.String)">
             <summary>
             Checks if the authenticated user is from the HL7 organization.
@@ -474,19 +494,14 @@
             Gets or sets the organization name
             </summary>
         </member>
-        <member name="P:Trifolia.Web.Models.OrganizationManagement.OrganizationModel.Groups">
+        <member name="T:Trifolia.Web.Models.Group.GroupModel">
             <summary>
-            Gets all OrganizationGroups in the current collection, or adds the passed in groups to the collection
+            Models a group as a view model
             </summary>
         </member>
-        <member name="T:Trifolia.Web.Models.OrganizationManagement.OrganizationGroup">
+        <member name="T:Trifolia.Web.Models.User.UserModel">
             <summary>
-            Models a standard Group within an organization
-            </summary>
-        </member>
-        <member name="T:Trifolia.Web.Models.OrganizationManagement.OrganizationUser">
-            <summary>
-            Models a staqndard organization and user relationship as a view model
+            Models a user as a view model
             </summary>
             <remarks>Although the underlying model allows us to link a user to many organizations, this view model represents 
             a single organization, and therefore in this context, a user either belongs to the current organization
@@ -627,11 +642,6 @@
             Returns a single Id based on the type of the permission.
             </summary>
             <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.RoleManagementController.Roles">
-            <summary>
-            Prepares the model and returns the main Roles view
-            </summary>
         </member>
         <member name="M:Trifolia.Web.Controllers.TemplateManagementController.ViewId(System.Int32)">
             <summary>

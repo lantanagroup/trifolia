@@ -16,7 +16,7 @@ namespace Trifolia.Test.Controllers.RoleManagement
     public class RoleManagementControllerTest
     {
         MockObjectRepository mockRepo = new MockObjectRepository();
-        AdminController controller = null;
+        RoleController controller = null;
 
         private int roleUserId = 0;
         private int roleAdminId = 0;
@@ -24,7 +24,7 @@ namespace Trifolia.Test.Controllers.RoleManagement
         [TestInitialize]
         public void Setup()
         {
-            this.controller = new AdminController(mockRepo);
+            this.controller = new RoleController(mockRepo);
 
             // Setup test data
             roleUserId = mockRepo.FindOrAddRole("user").Id;

@@ -20,7 +20,6 @@ using Trifolia.Web.Models.Account;
 using Trifolia.DB;
 using Trifolia.Config;
 
-using DotNetOpenAuth.AspNet;
 using DotNetOpenAuth.OAuth2;
 using DotNetOpenAuth.Messaging;
 using System.Reflection;
