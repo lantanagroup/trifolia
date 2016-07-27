@@ -15,13 +15,14 @@ using Trifolia.Authorization;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using ValueSet = Trifolia.DB.ValueSet;
 using Trifolia.Web.Formatters.FHIR.DSTU2;
-using Trifolia.Generation.XML.FHIR.DSTU2;
 
 using fhir_dstu2.Hl7.Fhir.Model;
 using FhirImplementationGuide = fhir_dstu2.Hl7.Fhir.Model.ImplementationGuide;
 using FhirValueSet = fhir_dstu2.Hl7.Fhir.Model.ValueSet;
 using FhirConformance = fhir_dstu2.Hl7.Fhir.Model.Conformance;
 using fhir_dstu2.Hl7.Fhir.Serialization;
+using Trifolia.Plugins.FHIR.DSTU2;
+using Trifolia.Shared.FHIR;
 
 namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 {
@@ -45,139 +46,6 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 
         #endregion
 
-        private FhirValueSet Convert(ValueSet valueSet, SummaryType? summaryType = null)
-        {
-            var implementationGuides = (from tc in valueSet.Constraints
-                                        join t in this.tdb.Templates on tc.TemplateId equals t.Id
-                                        select t.OwningImplementationGuide);
-            bool usedByPublishedIgs = implementationGuides.Count(y => y.PublishStatus.IsPublished) > 0;
-
-            FhirValueSet fhirValueSet = new FhirValueSet()
-            {
-                Id = valueSet.Id.ToString(),
-                Name = valueSet.Name,
-                Status = usedByPublishedIgs ? ConformanceResourceStatus.Active : ConformanceResourceStatus.Draft,
-                Description = valueSet.Description,
-                Url = valueSet.Oid
-            };
-
-            if (summaryType == null || summaryType == SummaryType.Data)
-            {
-                var activeMembers = valueSet.GetActiveMembers(DateTime.Now);
-
-                if (activeMembers.Count > 0)
-                {
-                    // Compose
-                    var compose = new FhirValueSet.ValueSetComposeComponent();
-                    fhirValueSet.Compose = compose;
-
-                    foreach (var groupedMember in activeMembers.GroupBy(y => y.CodeSystem, y => y))
-                    {
-                        var include = new FhirValueSet.ConceptSetComponent();
-                        compose.Include.Add(include);
-
-                        include.System = groupedMember.Key.Oid;
-
-                        foreach (var member in groupedMember)
-                        {
-                            include.Concept.Add(new FhirValueSet.ConceptReferenceComponent()
-                            {
-                                Code = member.Code,
-                                Display = member.DisplayName
-                            });
-                        }
-                    }
-                    
-                    // Expansion
-                    var expansion = new FhirValueSet.ValueSetExpansionComponent();
-                    expansion.Identifier = string.Format("urn:uuid:{0}", Guid.NewGuid());
-                    expansion.Timestamp = FhirDateTime.Now().ToString();
-                    fhirValueSet.Expansion = expansion;
-
-                    foreach (ValueSetMember vsMember in activeMembers)
-                    {
-                        var fhirMember = new FhirValueSet.ValueSetExpansionContainsComponent()
-                        {
-                            System = Shared.FormatIdentifier(vsMember.CodeSystem.Oid),
-                            Code = vsMember.Code,
-                            Display = vsMember.DisplayName
-                        };
-
-                        expansion.Contains.Add(fhirMember);
-                    }
-                }
-            }
-
-            return fhirValueSet;
-        }
-
-        private ValueSet Convert(FhirValueSet fhirValueSet, ValueSet valueSet = null)
-        {
-            if (valueSet == null)
-                valueSet = new ValueSet();
-
-            if (valueSet.Name != fhirValueSet.Name)
-                valueSet.Name = fhirValueSet.Name;
-
-            if (valueSet.Description != fhirValueSet.Description)
-                valueSet.Description = fhirValueSet.Description;
-
-            if (fhirValueSet.Identifier == null)
-                throw new Exception("ValueSet.identifier.value is required");
-
-            if (valueSet.Oid != fhirValueSet.Identifier.Value)
-                valueSet.Oid = fhirValueSet.Identifier.Value;
-
-            if (fhirValueSet.Expansion != null)
-            {
-                foreach (var expContains in fhirValueSet.Expansion.Contains)
-                {
-                    // Skip members that don't have a code or a code system
-                    if (string.IsNullOrEmpty(expContains.Code) || string.IsNullOrEmpty(expContains.System))
-                        continue;
-
-                    CodeSystem codeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid == expContains.System);
-
-                    if (codeSystem == null)
-                    {
-                        codeSystem = new CodeSystem()
-                        {
-                            Oid = expContains.System,
-                            Name = expContains.System
-                        };
-                        this.tdb.CodeSystems.AddObject(codeSystem);
-                    }
-
-                    ValueSetMember newMember = valueSet.Members.SingleOrDefault(y => y.CodeSystem == codeSystem && y.Code == expContains.Code);
-
-                    if (newMember == null)
-                        newMember = new ValueSetMember()
-                        {
-                            CodeSystem = codeSystem,
-                            Code = expContains.Code
-                        };
-
-                    if (newMember.DisplayName != expContains.Display)
-                        newMember.DisplayName = expContains.Display;
-
-                    DateTime versionDateVal = DateTime.MinValue;
-                    if (!DateTime.TryParse(fhirValueSet.Version, out versionDateVal))
-                        DateTime.TryParse(fhirValueSet.Date, out versionDateVal);
-                    DateTime? versionDate = versionDateVal != DateTime.MinValue ? (DateTime?)versionDateVal : null;
-
-                    if (newMember.StatusDate != versionDate)
-                        newMember.StatusDate = versionDate;
-
-                    if (newMember.StatusDate != null && newMember.Status != "active")
-                        newMember.Status = "active";
-
-                    valueSet.Members.Add(newMember);
-                }
-            }
-
-            return valueSet;
-        }
-
         /// <summary>
         /// Gets the specified value set from Trifolia, converts it to, and returns a ValueSet resource.
         /// </summary>
@@ -195,7 +63,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             [FromUri(Name = "_summary")] SummaryType? summary = null)
         {
             ValueSet valueSet = this.tdb.ValueSets.Single(y => y.Id == valueSetId);
-            FhirValueSet fhirValueSet = Convert(valueSet, summary);
+            ValueSetExporter exporter = new ValueSetExporter(this.tdb);
+            FhirValueSet fhirValueSet = exporter.Convert(valueSet, summary);
 
             return Shared.GetResponseMessage(this.Request, format, fhirValueSet);
         }
@@ -220,6 +89,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             [FromUri(Name = "_summary")] SummaryType? summary = null)
         {
             var valueSets = this.tdb.ValueSets.Where(y => y.Id >= 0);
+            ValueSetExporter exporter = new ValueSetExporter(this.tdb);
 
             if (valueSetId != null)
                 valueSets = valueSets.Where(y => y.Id == valueSetId);
@@ -234,7 +104,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 
             foreach (var valueSet in valueSets)
             {
-                var fhirValueSet = Convert(valueSet, summary);
+                var fhirValueSet = exporter.Convert(valueSet, summary);
                 var fullUrl = string.Format("{0}://{1}/api/FHIR2/{2}",
                     this.Request.RequestUri.Scheme,
                     this.Request.RequestUri.Authority,
@@ -256,7 +126,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             if (fhirValueSet.Identifier != null && this.tdb.ValueSets.Count(y => y.Oid == fhirValueSet.Identifier.Value) > 0)
                 throw new Exception("ValueSet already exists with this identifier. Use a PUT instead");
 
-            ValueSet valueSet = Convert(fhirValueSet);
+            ValueSetExporter exporter = new ValueSetExporter(this.tdb);
+            ValueSet valueSet = exporter.Convert(fhirValueSet);
 
             if (valueSet.Oid == null)
                 valueSet.Oid = string.Empty;
@@ -275,7 +146,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Location", location);
 
-            FhirValueSet createdFhirValueSet = Convert(valueSet);
+            FhirValueSet createdFhirValueSet = exporter.Convert(valueSet);
             return Shared.GetResponseMessage(this.Request, format, createdFhirValueSet, statusCode: 201, headers: headers);
         }
 
@@ -287,8 +158,9 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             [FromUri] int valueSetId,
             [FromUri(Name = "_format")] string format = null)
         {
+            ValueSetExporter exporter = new ValueSetExporter(this.tdb);
             ValueSet originalValueSet = this.tdb.ValueSets.Single(y => y.Id == valueSetId);
-            ValueSet newValueSet = Convert(fhirValueSet, valueSet: originalValueSet);
+            ValueSet newValueSet = exporter.Convert(fhirValueSet, valueSet: originalValueSet);
 
             if (originalValueSet == null)
                 this.tdb.ValueSets.AddObject(newValueSet);
@@ -303,7 +175,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Location", location);
 
-            FhirValueSet updatedFhirValueSet = Convert(newValueSet);
+            FhirValueSet updatedFhirValueSet = exporter.Convert(newValueSet);
             return Shared.GetResponseMessage(this.Request, format, updatedFhirValueSet, originalValueSet != null ? 200 : 201, headers);
         }
     }

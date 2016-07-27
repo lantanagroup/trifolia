@@ -176,12 +176,8 @@ var templateEditViewModel = function (templateId, defaults) {
             return templateType.Id == self.Template().TemplateTypeId();
         });
 
-        var regex = /^(FHIR DSTU[1|2])\:.+/gi;
-        var isFhir = regex.test(foundTemplateType.FullName);
-        self.IsFhir(isFhir);
-
-        var isFhirExtension = foundTemplateType.FullName == 'FHIR DSTU2: Extension';
-        self.IsFhirExtension(isFhirExtension);
+        self.IsFhir(trifoliaConfig.FhirIgTypes[foundTemplateType.ImplementationGuideType] > 0);
+        self.IsFhirExtension(self.IsFhir() && foundTemplateType.RootContextType == 'Extension');
     };
 
     self.TemplateTypeChanged = function () {

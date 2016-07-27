@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-
+using Trifolia.DB;
 using Trifolia.Generation.Schematron.ConstraintToDocumentElementMap;
 using Trifolia.Generation.Schematron.Model;
 using Trifolia.Shared;
-using Trifolia.Shared.IGTypePlugin;
-using Trifolia.DB;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.Schematron
 {

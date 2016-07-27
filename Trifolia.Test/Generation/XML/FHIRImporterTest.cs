@@ -1,6 +1,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trifolia.Generation.XML.FHIR.DSTU1;
+using Trifolia.Import.FHIR.DSTU1;
 
 namespace Trifolia.Test.Generation.XML
 {

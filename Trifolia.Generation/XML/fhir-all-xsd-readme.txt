@@ -1,1 +1,0 @@
-Rick: I left fhir-all-xsd since I didn't know if it was used by anything else. For the sake of sanity I am not putting all schemas in the fhir-schemas folder in separate folders for each release of FHIR. 

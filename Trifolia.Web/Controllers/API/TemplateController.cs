@@ -16,6 +16,8 @@ using Trifolia.Web.Models.TemplateManagement;
 using Trifolia.Web.Extensions;
 using Trifolia.DB;
 using Trifolia.Logging;
+using Trifolia.Plugins;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -933,10 +935,9 @@ namespace Trifolia.Web.Controllers.API
                 throw new AuthorizationException("You do not have permission to view this template");
 
             Template lTemplate = tdb.Templates.Single(t => t.Id == templateId);
-            TemplateSampleGenerator tsg =
-                TemplateSampleGenerator.CreateTemplateSampleGenerator(this.tdb, lTemplate);
 
-            return tsg.GenerateSample();
+            var igTypePlugin = IGTypePluginFactory.GetPlugin(lTemplate.ImplementationGuideType);
+            return igTypePlugin.GenerateSample(this.tdb, lTemplate);
         }
 
         [HttpGet, Route("api/Template/{templateId}/PublishSettings"), SecurableAction(SecurableNames.PUBLISH_SETTINGS)]

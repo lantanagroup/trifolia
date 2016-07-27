@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Trifolia.DB;
 using Trifolia.Shared;
-using Trifolia.Generation.XML.DECOR;
+using Trifolia.Export.DECOR;
 
 namespace Trifolia.Test.Shared
 {

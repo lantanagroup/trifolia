@@ -62,6 +62,11 @@
             <param name="roleId">If specified, the role to set as the new default.</param>
             <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.AdminController.GetClientConfig(System.Boolean)">
+            <summary>
+            Gets configuration information used by the client-side application
+            </summary>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.HelpController.XmlDocumentationProvider.#ctor(System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:Trifolia.Web.Controllers.API.HelpController.XmlDocumentationProvider"/> class.
@@ -97,32 +102,7 @@
             <param name="format">The format that the response should be returned in</param>
             <returns>Resource&lt;Conformance&gt;</returns>
         </member>
-        <member name="T:Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType">
-            <summary>
-            Enumeration that indicates what type of summary to respond with
-            </summary>
-        </member>
-        <member name="F:Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType.True">
-            <summary>
-            true
-            </summary>
-        </member>
-        <member name="F:Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType.False">
-            <summary>
-            false
-            </summary>
-        </member>
-        <member name="F:Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType.Text">
-            <summary>
-            text
-            </summary>
-        </member>
-        <member name="F:Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType.Data">
-            <summary>
-            data
-            </summary>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2StructureDefinitionController.GetTemplate(System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType})">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2StructureDefinitionController.GetTemplate(System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
             Gets a specific profile and converts it to a StructureDefinition resource.
             </summary>
@@ -131,7 +111,7 @@
             <returns>Hl7.Fhir.Model.StructureDefinition</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2StructureDefinitionController.GetTemplates(System.Nullable{System.Int32},System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType})">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2StructureDefinitionController.GetTemplates(System.Nullable{System.Int32},System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
             Searches for profiles within Trifolia and returns them as StructureDefinition resources within a Bundle.
             </summary>
@@ -165,7 +145,7 @@
             <returns>Hl7.Fhir.Model.OperationOutcome</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_DELETE">Only users with the ability to delete templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ValueSetController.GetValueSet(System.Int32,System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType})">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ValueSetController.GetValueSet(System.Int32,System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
             Gets the specified value set from Trifolia, converts it to, and returns a ValueSet resource.
             </summary>
@@ -175,7 +155,7 @@
             <returns>Hl7.Fhir.Model.ValueSet</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ValueSetController.GetValueSets(System.Nullable{System.Int32},System.String,System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType})">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ValueSetController.GetValueSets(System.Nullable{System.Int32},System.String,System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
             Searches value sets within Trifolia and returns them as ValueSet resources within a Bundle.
             </summary>
@@ -186,7 +166,7 @@
             <returns>Hl7.Fhir.Model.Bundle&lt;Hl7.Fhir.Model.ValueSet&gt;</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController.GetImplementationGuide(System.Int32,System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType})">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController.GetImplementationGuide(System.Int32,System.String,System.Nullable{Hl7.Fhir.Rest.SummaryType})">
             <summary>
             Get the specified implementation guide in FHIR DSTU2 format
             </summary>
@@ -195,7 +175,7 @@
             <param name="summary">Optional. The type of summary to respond with.</param>
             <returns>Hl7.Fhir.Model.ImplementationGuide</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController.GetImplementationGuides(System.String,System.Nullable{Trifolia.Web.Controllers.API.FHIR.DSTU2.SummaryType},System.String,System.Nullable{System.Int32},System.String)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController.GetImplementationGuides(System.String,System.Nullable{Hl7.Fhir.Rest.SummaryType},System.String,System.Nullable{System.Int32},System.String)">
             <summary>
             Gets implementation guides in FHIR DSTU2 format. Can specify search information, such as the name of the implementation guide and the id of the implementation guide.
             </summary>

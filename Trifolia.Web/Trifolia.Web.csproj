@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Trifolia.Web</RootNamespace>
     <AssemblyName>Trifolia.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -266,12 +267,14 @@
     <Compile Include="Formatters\FHIR\DSTU1\XMLFHIRMediaTypeFormatter.cs" />
     <Compile Include="Formatters\FHIR\DSTU2\FhirMediaTypeFormatter.cs" />
     <Compile Include="Formatters\FHIR\DSTU2\GeneralFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\JavaScriptFormatter.cs" />
     <Compile Include="Formatters\TrifoliaXmlFormatter.cs" />
     <Compile Include="Models\Account\HL7LoginModel.cs" />
     <Compile Include="Models\Account\WhoAmIModel.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />
     <Compile Include="Models\Account\NewProfileModel.cs" />
     <Compile Include="Models\Account\UserProfile.cs" />
+    <Compile Include="Models\Admin\ClientConfigModel.cs" />
     <Compile Include="Models\BulkCopy\CopyConfig.cs" />
     <Compile Include="Models\BulkCopy\CopyModel.cs" />
     <Compile Include="Models\BulkCopy\CopyModelJson.cs" />
@@ -968,13 +971,25 @@
       <Project>{3e3c8e62-b392-433d-8c18-a4cfc72b36ef}</Project>
       <Name>Trifolia.DB</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Export\Trifolia.Export.csproj">
+      <Project>{6be1523e-6d37-4bf2-9564-19170a7341e3}</Project>
+      <Name>Trifolia.Export</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trifolia.Generation\Trifolia.Generation.csproj">
       <Project>{6070b7b7-78be-44f7-9ebb-5ff0b944aaa3}</Project>
       <Name>Trifolia.Generation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Import\Trifolia.Import.csproj">
+      <Project>{71345c54-70ca-43c9-92ad-afc064521e43}</Project>
+      <Name>Trifolia.Import</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
       <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>
       <Name>Trifolia.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Plugins\Trifolia.Plugins.csproj">
+      <Project>{d723dc35-997a-4bf3-bc7c-a22cb63c3892}</Project>
+      <Name>Trifolia.Plugins</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trifolia.Shared\Trifolia.Shared.csproj">
       <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>

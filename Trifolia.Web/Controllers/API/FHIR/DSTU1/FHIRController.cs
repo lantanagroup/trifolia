@@ -16,9 +16,10 @@ using fhir_dstu1.Hl7.Fhir.Serialization;
 using Trifolia.Shared;
 using Trifolia.DB;
 using TDBOrganization = Trifolia.DB.Organization;
-using Trifolia.Generation.XML.FHIR.DSTU1;
 using Trifolia.Web.Formatters.FHIR.DSTU1;
 using Trifolia.Authorization;
+using Trifolia.Export.FHIR.DSTU1;
+using Trifolia.Import.FHIR.DSTU1;
 
 namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
 {
@@ -73,8 +74,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
 
             try
             {
-                FHIRExporter exporter = new FHIRExporter(this.tdb, fhirTemplates, new IGSettingsManager(this.tdb));
-                fhirTemplatesExportString = exporter.GenerateExport();
+                fhirTemplatesExportString = FHIRExporter.GenerateExport(this.tdb, fhirTemplates, new IGSettingsManager(this.tdb));
             }
             catch (Exception ex)
             {
@@ -121,8 +121,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
 
             try
             {
-                FHIRExporter exporter = new FHIRExporter(this.tdb, fhirTemplates, new IGSettingsManager(this.tdb));
-                fhirTemplatesExportString = exporter.GenerateExport();
+                fhirTemplatesExportString = FHIRExporter.GenerateExport(this.tdb, fhirTemplates, new IGSettingsManager(this.tdb));
             }
             catch (Exception ex)
             {

@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Trifolia.Test</RootNamespace>
     <AssemblyName>Trifolia.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile />
@@ -123,7 +123,6 @@
     <Compile Include="AssertXML.cs" />
     <Compile Include="Controllers\API\BulkCopyControllerTest.cs" />
     <Compile Include="Accounts\HL7Accounts.cs" />
-    <Compile Include="Controllers\API\FHIR\DSTU2\SharedTest.cs" />
     <Compile Include="Controllers\API\FHIR\DSTU2\StructureDefinitionControllerTest.cs" />
     <Compile Include="Controllers\API\TerminologyControllerTest.cs" />
     <Compile Include="DB\ImplementationGuideExtensionsTest.cs" />
@@ -188,13 +187,25 @@
       <Project>{3e3c8e62-b392-433d-8c18-a4cfc72b36ef}</Project>
       <Name>Trifolia.DB</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Export\Trifolia.Export.csproj">
+      <Project>{6be1523e-6d37-4bf2-9564-19170a7341e3}</Project>
+      <Name>Trifolia.Export</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trifolia.Generation\Trifolia.Generation.csproj">
       <Project>{6070b7b7-78be-44f7-9ebb-5ff0b944aaa3}</Project>
       <Name>Trifolia.Generation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Import\Trifolia.Import.csproj">
+      <Project>{71345c54-70ca-43c9-92ad-afc064521e43}</Project>
+      <Name>Trifolia.Import</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
       <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>
       <Name>Trifolia.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Plugins\Trifolia.Plugins.csproj">
+      <Project>{d723dc35-997a-4bf3-bc7c-a22cb63c3892}</Project>
+      <Name>Trifolia.Plugins</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trifolia.Shared\Trifolia.Shared.csproj">
       <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>

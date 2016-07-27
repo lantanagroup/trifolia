@@ -74,11 +74,5 @@
     <Setting Name="ConstraintHeadingStyle" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Heading4nospace</Value>
     </Setting>
-    <Setting Name="ExportXmlDisclaimer" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">The export template XML file format definition is subject to change without notice, and continued
-availability should not be construed as a commitment by Lantana Consulting Group LLC. 
-Lantana Consulting Group LLC assumes no responsibility or liability including incomplete data,
-errors, or impacts caused by changes to this XML file format definition.</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

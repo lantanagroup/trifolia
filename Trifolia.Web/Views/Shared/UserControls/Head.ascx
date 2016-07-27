@@ -55,3 +55,6 @@
 
 <!-- Localization -->
 <script type="text/javascript" src="/api/Localization?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+
+<!-- Config -->
+<script type="text/javascript" src="/api/Admin/Config?isRef=True&<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>

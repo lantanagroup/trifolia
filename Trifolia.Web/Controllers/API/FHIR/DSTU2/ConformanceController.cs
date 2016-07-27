@@ -14,7 +14,6 @@ using Trifolia.DB;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using ValueSet = Trifolia.DB.ValueSet;
 using Trifolia.Web.Formatters.FHIR.DSTU2;
-using Trifolia.Generation.XML.FHIR.DSTU2;
 
 using fhir_dstu2.Hl7.Fhir.Model;
 using FhirImplementationGuide = fhir_dstu2.Hl7.Fhir.Model.ImplementationGuide;

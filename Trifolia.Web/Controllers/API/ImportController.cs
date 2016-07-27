@@ -10,6 +10,7 @@ using ImportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
 using Trifolia.Shared.ImportExport;
 using System.Data.Entity.Core.Objects;
 using Trifolia.Web.Models.Import;
+using Trifolia.Import.Native;
 
 namespace Trifolia.Web.Controllers.API
 {

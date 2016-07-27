@@ -61,13 +61,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FHIR\SummaryType.cs" />
     <Compile Include="FilterOrganizationHelper.cs" />
     <Compile Include="HttpWebClient.cs" />
     <Compile Include="IdentifierHelper.cs" />
-    <Compile Include="IGTypePlugin\HQMFPlugin.cs" />
-    <Compile Include="IGTypePlugin\IGTypePluginFactory.cs" />
-    <Compile Include="IGTypePlugin\IIGTypePlugin.cs" />
-    <Compile Include="IGTypePlugin\RIMPlugin.cs" />
+    <Compile Include="Plugins\IGTypePluginFactory.cs" />
+    <Compile Include="Plugins\IIGTypePlugin.cs" />
     <Compile Include="ImplementationGuideExtension.cs" />
     <Compile Include="ImplementationGuideTypeExtension.cs" />
     <Compile Include="ImportExport\ImplementationGuideImporter.cs" />
@@ -89,7 +88,6 @@
     <Compile Include="ImportExport\Model\ImportValueSetMember.cs" />
     <Compile Include="ImportExport\PhinVadsValueSetImportProcessor.cs" />
     <Compile Include="ImportExport\TrifoliaExport.cs" />
-    <Compile Include="ImportExport\TemplateImporter.cs" />
     <Compile Include="LookupGreenTemplate.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="IGSettingsManager.cs" />
