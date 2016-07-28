@@ -16,8 +16,6 @@ namespace Trifolia.Web
     {
         public static void Register(HttpConfiguration config)
         {
-            config.EnableSystemDiagnosticsTracing();
-
             config.Formatters.Insert(0, new TrifoliaXmlFormatter()); 
 
             GlobalConfiguration.Configuration.MessageHandlers.Insert(0,
