@@ -85,7 +85,7 @@ namespace Trifolia.Export.FHIR.STU3
                 var packageResources = (from t in templates
                                         select new FhirImplementationGuide.ResourceComponent()
                                         {
-                                            
+                                            Example = false,
                                             Source = new ResourceReference()
                                             {
                                                 Reference = string.Format("StructureDefinition/{0}", t.Id),
