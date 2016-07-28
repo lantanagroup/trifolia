@@ -175,9 +175,12 @@ var templateEditViewModel = function (templateId, defaults) {
         var foundTemplateType = ko.utils.arrayFirst(self.TemplateTypes(), function (templateType) {
             return templateType.Id == self.Template().TemplateTypeId();
         });
+        var isFhir = _.some(trifoliaConfig.FhirIgTypes, function (fhirIgType) {
+            return fhirIgType.Name == foundTemplateType.ImplementationGuideType;
+        });
 
-        self.IsFhir(trifoliaConfig.FhirIgTypes[foundTemplateType.ImplementationGuideType] > 0);
-        self.IsFhirExtension(self.IsFhir() && foundTemplateType.RootContextType == 'Extension');
+        self.IsFhir(isFhir);
+        self.IsFhirExtension(isFhir && foundTemplateType.RootContextType == 'Extension');
     };
 
     self.TemplateTypeChanged = function () {

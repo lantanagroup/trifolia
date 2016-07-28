@@ -22,6 +22,8 @@ namespace Trifolia.Web.Models.TemplateManagement
         public string Author { get; set; }
         public string Name { get; set; }
         public string Oid { get; set; }
+        public int ImplementationGuideTypeId { get; set; }
+        public string ImplementationGuideType { get; set; }
         public string ImpliedTemplate { get; set; }
         public int? ImpliedTemplateId { get; set; }
         public string ImpliedTemplateOid { get; set; }

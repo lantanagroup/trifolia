@@ -48,8 +48,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
         #endregion
 
         [HttpGet, 
-        Route("api/FHIR/Profile"),
-        Route("api/FHIR/Profile/_search"),
+        Route("api/FHIR1/Profile"),
+        Route("api/FHIR1/Profile/_search"),
         SecurableAction()]
         public HttpResponseMessage GetProfiles(string _format = "")
         {
@@ -93,14 +93,18 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
         }
 
         [HttpGet,
-        Route("api/FHIR/Profile/{templateOid}"),
+        Route("api/FHIR1/Profile/{templateOid}"),
         SecurableAction()]
         public HttpResponseMessage GetProfile(string templateOid, string _format = "")
         {
             string fhirTemplatesExportString = string.Empty;
             ImplementationGuideType igType = GetFHIRIGType();
             User currentUser = CheckPoint.Instance.GetUser();
-            var fhirTemplatesQuery = this.tdb.Templates.Where(y => y.Oid == templateOid && y.ImplementationGuideTypeId == igType.Id);
+            int templateId = 0;
+
+            Int32.TryParse(templateOid, out templateId);
+
+            var fhirTemplatesQuery = this.tdb.Templates.Where(y => (y.Id == templateId || y.Oid == templateOid) && y.ImplementationGuideTypeId == igType.Id);
             List<Template> fhirTemplates;
 
             if (!CheckPoint.Instance.IsDataAdmin)
@@ -140,7 +144,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
         }
 
         [HttpPost,
-        Route("api/FHIR/Profile"),
+        Route("api/FHIR1/Profile"),
         SecurableAction()]
         public HttpResponseMessage ImportNewProfiles(Bundle profiles)
         {
@@ -148,7 +152,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
         }
 
         [HttpPut,
-        Route("api/FHIR/Profile"),
+        Route("api/FHIR1/Profile"),
         SecurableAction()]
         public HttpResponseMessage ImportExistingProfiles(Bundle profiles)
         {

@@ -1,32 +1,21 @@
 ﻿extern alias fhir_dstu2;
-
+using fhir_dstu2.Hl7.Fhir.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Net.Http.Formatting;
-using System.Runtime.Serialization;
-
-using Trifolia.Shared;
-using Trifolia.DB;
 using Trifolia.Authorization;
-using ImplementationGuide = Trifolia.DB.ImplementationGuide;
-using ValueSet = Trifolia.DB.ValueSet;
-using Trifolia.Web.Formatters.FHIR.DSTU2;
-
-using fhir_dstu2.Hl7.Fhir.Model;
-using FhirImplementationGuide = fhir_dstu2.Hl7.Fhir.Model.ImplementationGuide;
-using FhirValueSet = fhir_dstu2.Hl7.Fhir.Model.ValueSet;
-using FhirConformance = fhir_dstu2.Hl7.Fhir.Model.Conformance;
-using fhir_dstu2.Hl7.Fhir.Serialization;
-using Trifolia.Plugins.FHIR.DSTU2;
+using Trifolia.DB;
+using Trifolia.Export.FHIR.DSTU2;
 using Trifolia.Shared.FHIR;
+using FhirValueSet = fhir_dstu2.Hl7.Fhir.Model.ValueSet;
+using ValueSet = Trifolia.DB.ValueSet;
 
 namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 {
     [DSTU2Config]
+    [RoutePrefix("api/FHIR2")]
     public class FHIR2ValueSetController : ApiController
     {
         private IObjectRepository tdb;
@@ -55,7 +44,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// <returns>Hl7.Fhir.Model.ValueSet</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         [HttpGet]
-        [Route("api/FHIR2/ValueSet/{valueSetId}")]
+        [Route("ValueSet/{valueSetId}")]
         [SecurableAction(SecurableNames.VALUESET_LIST)]
         public HttpResponseMessage GetValueSet(
             [FromUri] int valueSetId,
@@ -79,8 +68,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// <returns>Hl7.Fhir.Model.Bundle&lt;Hl7.Fhir.Model.ValueSet&gt;</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         [HttpGet]
-        [Route("api/FHIR2/ValueSet")]
-        [Route("api/FHIR2/ValueSet/_search")]
+        [Route("ValueSet")]
+        [Route("ValueSet/_search")]
         [SecurableAction]
         public HttpResponseMessage GetValueSets(
             [FromUri(Name = "_id")] int? valueSetId = null,
@@ -117,7 +106,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         }
 
         [HttpPost]
-        [Route("api/FHIR2/ValueSet")]
+        [Route("ValueSet")]
         [SecurableAction(SecurableNames.VALUESET_EDIT)]
         public HttpResponseMessage CreateValueSet(
             [FromBody] FhirValueSet fhirValueSet,
@@ -151,7 +140,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         }
 
         [HttpPut]
-        [Route("api/FHIR2/ValueSet/{valueSetId}")]
+        [Route("ValueSet/{valueSetId}")]
         [SecurableAction(SecurableNames.VALUESET_EDIT)]
         public HttpResponseMessage UpdateValueSet(
             [FromBody] FhirValueSet fhirValueSet,

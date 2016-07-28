@@ -66,7 +66,7 @@ namespace Trifolia.Web.Formatters.FHIR.DSTU2
         {
             get
             {
-                if (HttpContext.Current == null || HttpContext.Current.Request.AcceptTypes.Length == 0)
+                if (HttpContext.Current == null || HttpContext.Current.Request.AcceptTypes == null || HttpContext.Current.Request.AcceptTypes.Length == 0)
                     return false;
 
                 foreach (var acceptType in HttpContext.Current.Request.AcceptTypes)
@@ -83,7 +83,7 @@ namespace Trifolia.Web.Formatters.FHIR.DSTU2
         {
             get
             {
-                if (HttpContext.Current == null || HttpContext.Current.Request.AcceptTypes.Length == 0)
+                if (HttpContext.Current == null || HttpContext.Current.Request.AcceptTypes == null || HttpContext.Current.Request.AcceptTypes.Length == 0)
                     return false;
 
                 foreach (var acceptType in HttpContext.Current.Request.AcceptTypes)
@@ -104,7 +104,7 @@ namespace Trifolia.Web.Formatters.FHIR.DSTU2
             bool acceptJson = AcceptContainsJson;
 
             // If the Accept header was not specified by the client
-            if (HttpContext.Current == null || HttpContext.Current.Request.AcceptTypes.Contains("*/*"))
+            if (HttpContext.Current == null || HttpContext.Current.Request.AcceptTypes == null || HttpContext.Current.Request.AcceptTypes.Contains("*/*"))
             {
                 // If the request's Content-Type was specified and it is either XML or JSON
                 if (!string.IsNullOrEmpty(RequestContentType) && (ContentType.XML_CONTENT_HEADERS.Contains(RequestContentType) || ContentType.JSON_CONTENT_HEADERS.Contains(RequestContentType)))

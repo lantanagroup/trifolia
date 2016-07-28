@@ -9,9 +9,17 @@ namespace Trifolia.Web.Models.Admin
     {
         public ClientConfigModel()
         {
-            this.FhirIgTypes = new Dictionary<string, int>();
+            this.FhirIgTypes = new List<FhirIgType>();
         }
 
-        public Dictionary<string, int> FhirIgTypes { get; set; }
+        public List<FhirIgType> FhirIgTypes { get; set; }
+
+        public class FhirIgType
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Version { get; set; }
+            public string BaseUrl { get; set; }
+        }
     }
 }

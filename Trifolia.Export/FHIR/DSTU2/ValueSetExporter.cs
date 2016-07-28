@@ -7,7 +7,7 @@ using FhirValueSet = fhir_dstu2.Hl7.Fhir.Model.ValueSet;
 using ValueSet = Trifolia.DB.ValueSet;
 using Trifolia.Shared.FHIR;
 
-namespace Trifolia.Plugins.FHIR.DSTU2
+namespace Trifolia.Export.FHIR.DSTU2
 {
     public class ValueSetExporter
     {

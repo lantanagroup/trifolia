@@ -1,39 +1,29 @@
 ﻿extern alias fhir_dstu2;
-
+using fhir_dstu2.Hl7.Fhir.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
-using System.Net.Http.Formatting;
-using System.Runtime.Serialization;
-
-using Trifolia.Shared;
-using Trifolia.DB;
-using Trifolia.Authorization;
-using ImplementationGuide = Trifolia.DB.ImplementationGuide;
-using ValueSet = Trifolia.DB.ValueSet;
-using Trifolia.Web.Formatters.FHIR.DSTU2;
-using Trifolia.Generation.IG.ConstraintGeneration;
-
-using fhir_dstu2.Hl7.Fhir.Model;
-using FhirImplementationGuide = fhir_dstu2.Hl7.Fhir.Model.ImplementationGuide;
-using FhirValueSet = fhir_dstu2.Hl7.Fhir.Model.ValueSet;
-using FhirConformance = fhir_dstu2.Hl7.Fhir.Model.Conformance;
-using fhir_dstu2.Hl7.Fhir.Serialization;
-using fhir_dstu2.Hl7.Fhir.Specification.Navigation;
 using System.Web;
+using System.Web.Http;
+using Trifolia.Authorization;
+using Trifolia.DB;
+using Trifolia.Export.FHIR.DSTU2;
+using Trifolia.Shared;
 using Trifolia.Shared.FHIR;
-using Trifolia.Plugins.FHIR.DSTU2;
 
 namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 {
     [DSTU2Config]
+    [RoutePrefix("api/FHIR2")]
     public class FHIR2StructureDefinitionController : TrifoliaApiController
     {
-        private IObjectRepository tdb;
+        private const string VERSION_NAME = "DSTU2";
         private const string DEFAULT_IG_NAME = "Unowned FHIR DSTU2 Profiles";
+
+        private IObjectRepository tdb;
+        private ImplementationGuideType implementationGuideType;
 
         #region Constructors
 
@@ -44,6 +34,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             // NOTE: This is for unit testing only
             if (request != null)
                 this.Request = request;
+
+            this.implementationGuideType = Trifolia.Export.FHIR.DSTU2.Shared.GetImplementationGuideType(this.tdb, true);
         }
 
         public FHIR2StructureDefinitionController()
@@ -62,7 +54,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// <returns>Hl7.Fhir.Model.StructureDefinition</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         [HttpGet]
-        [Route("api/FHIR2/StructureDefinition/{templateId}")]
+        [Route("StructureDefinition/{templateId}")]
         [SecurableAction(SecurableNames.TEMPLATE_LIST)]
         public IHttpActionResult GetTemplate(
             [FromUri] string templateId,
@@ -99,8 +91,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
                 return Content<OperationOutcome>(HttpStatusCode.Redirect, redirectOutcome, headers);
             }
 
-            if (template.TemplateType.ImplementationGuideType.Name != ImplementationGuideType.FHIR_DSTU2_NAME)
-                throw new FormatException(App_GlobalResources.TrifoliaLang.TemplateNotFHIRDSTU2);
+            if (template.TemplateType.ImplementationGuideType != this.implementationGuideType)
+                throw new FormatException(App_GlobalResources.TrifoliaLang.TemplateNotFHIRSTU3);
 
             if (!CheckPoint.Instance.GrantViewTemplate(template.Id))
                 throw new UnauthorizedAccessException();
@@ -123,15 +115,15 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// <returns>Hl7.Fhir.Model.Bundle</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         [HttpGet]
-        [Route("api/FHIR2/StructureDefinition")]
-        [Route("api/FHIR2/StructureDefinition/_search")]
+        [Route("StructureDefinition")]
+        [Route("StructureDefinition/_search")]
         [SecurableAction(SecurableNames.TEMPLATE_LIST)]
         public IHttpActionResult GetTemplates(
             [FromUri(Name = "_id")] int? templateId = null,
             [FromUri(Name = "name")] string name = null,
             [FromUri(Name = "_summary")] SummaryType? summary = null)
         {
-            var templates = this.tdb.Templates.Where(y => y.TemplateType.ImplementationGuideType.Name == ImplementationGuideType.FHIR_DSTU2_NAME);
+            var templates = this.tdb.Templates.Where(y => y.TemplateType.ImplementationGuideType == this.implementationGuideType);
             string baseProfilePath = HttpContext.Current.Server.MapPath("~/App_Data/FHIR/DSTU2/");
             StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, baseProfilePath, Request.RequestUri.Scheme, Request.RequestUri.Authority);
 
@@ -210,7 +202,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// <returns>Hl7.Fhir.Model.StructureDefinition</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
         [HttpPost]
-        [Route("api/FHIR2/StructureDefinition")]
+        [Route("StructureDefinition")]
         [SecurableAction(SecurableNames.TEMPLATE_EDIT)]
         public IHttpActionResult CreateStructureDefinition(
             [FromBody] StructureDefinition strucDef)
@@ -254,7 +246,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// <returns>Hl7.Fhir.Model.StructureDefinition</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
         [HttpPut]
-        [Route("api/FHIR2/StructureDefinition/{templateId}")]
+        [Route("StructureDefinition/{templateId}")]
         [SecurableAction(SecurableNames.TEMPLATE_EDIT)]
         public IHttpActionResult UpdateStructureDefinition(
             [FromBody] StructureDefinition strucDef,
@@ -297,7 +289,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// <returns>Hl7.Fhir.Model.OperationOutcome</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_DELETE">Only users with the ability to delete templates/profiles can execute this operation</permission>
         [HttpDelete]
-        [Route("api/FHIR2/StructureDefinition/{templateId}")]
+        [Route("StructureDefinition/{templateId}")]
         [SecurableAction(SecurableNames.TEMPLATE_DELETE)]
         public IHttpActionResult DeleteStructureDefinition(
             [FromUri] int templateId)

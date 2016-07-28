@@ -116,6 +116,8 @@ namespace Trifolia.Web.Controllers.API
             {
                 Id = template.Id,
                 Author = string.Format("{0} {1} ({2})", template.Author.FirstName, template.Author.LastName, template.Author.Organization.Name),
+                ImplementationGuideType = template.ImplementationGuideType.Name,
+                ImplementationGuideTypeId = template.ImplementationGuideType.Id,
                 Description = wikiParser.ParseAsHtml(template.Description),
                 Notes = wikiParser.ParseAsHtml(template.Notes),
                 ImplementationGuideId = template.OwningImplementationGuideId,

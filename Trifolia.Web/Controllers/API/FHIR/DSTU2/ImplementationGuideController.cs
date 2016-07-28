@@ -13,35 +13,36 @@ using Trifolia.Shared;
 using fhir_dstu2.Hl7.Fhir.Model;
 using FhirImplementationGuide = fhir_dstu2.Hl7.Fhir.Model.ImplementationGuide;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
-using Trifolia.Plugins.FHIR.DSTU2;
+using Trifolia.Export.FHIR.DSTU2;
 using System.Web;
+using Trifolia.Config;
+using Trifolia.Logging;
 
 namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 {
     [DSTU2Config]
+    [RoutePrefix("api/FHIR2")]
     public class FHIR2ImplementationGuideController : ApiController
     {
+        private const string VERSION_NAME = "DSTU2";
+
         private IObjectRepository tdb;
+        private ImplementationGuideType implementationGuideType;
+        private string baseProfilePath;
 
         #region Constructors
 
         public FHIR2ImplementationGuideController(IObjectRepository tdb)
         {
             this.tdb = tdb;
+            this.implementationGuideType = Trifolia.Export.FHIR.DSTU2.Shared.GetImplementationGuideType(this.tdb, true);
+            this.baseProfilePath = HttpContext.Current.Server.MapPath("~/App_Data/FHIR/DSTU2/");
         }
 
         public FHIR2ImplementationGuideController()
             : this(new TemplateDatabaseDataSource())
         {
 
-        }
-
-        private string BaseProfilePath
-        {
-            get
-            {
-                return HttpContext.Current.Server.MapPath("~/App_Data/FHIR/DSTU2/");
-            }
         }
 
         #endregion
@@ -54,7 +55,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// <param name="summary">Optional. The type of summary to respond with.</param>
         /// <returns>Hl7.Fhir.Model.ImplementationGuide</returns>
         [HttpGet]
-        [Route("api/FHIR2/ImplementationGuide/{implementationGuideId}")]
+        [Route("ImplementationGuide/{implementationGuideId}")]
         [SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_LIST)]
         public HttpResponseMessage GetImplementationGuide(
             int implementationGuideId,
@@ -63,7 +64,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         {
             var implementationGuide = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
             SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, implementationGuide.ImplementationGuideType);
-            ImplementationGuideExporter exporter = new ImplementationGuideExporter(this.tdb, schema, this.BaseProfilePath, this.Request.RequestUri.Scheme, this.Request.RequestUri.Authority);
+            ImplementationGuideExporter exporter = new ImplementationGuideExporter(this.tdb, schema, this.baseProfilePath, this.Request.RequestUri.Scheme, this.Request.RequestUri.Authority);
             FhirImplementationGuide response = exporter.Convert(implementationGuide, summary);
             return Shared.GetResponseMessage(this.Request, format, response);
         }
@@ -78,8 +79,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// <param name="name">Specifies the name of the implementation guide to search for. Implementation guides whose name *contains* this value will be returned.</param>
         /// <returns>Hl7.Fhir.Model.Bundle</returns>
         [HttpGet]
-        [Route("api/FHIR2/ImplementationGuide")]
-        [Route("api/FHIR2/ImplementationGuide/_search")]
+        [Route("ImplementationGuide")]
+        [Route("ImplementationGuide/_search")]
         [SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_LIST)]
         public HttpResponseMessage GetImplementationGuides(
             [FromUri(Name = "_format")] string format = null,
@@ -88,15 +89,14 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             [FromUri(Name = "_id")] int? implementationGuideId = null,
             [FromUri(Name = "name")] string name = null)
         {
-            var dstu2IgType = this.tdb.ImplementationGuideTypes.Single(y => y.Name == ImplementationGuideType.FHIR_DSTU2_NAME);
-            SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, dstu2IgType);
-            ImplementationGuideExporter exporter = new ImplementationGuideExporter(this.tdb, schema, this.BaseProfilePath, this.Request.RequestUri.Scheme, this.Request.RequestUri.Authority);
+            SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, this.implementationGuideType);
+            ImplementationGuideExporter exporter = new ImplementationGuideExporter(this.tdb, schema, this.baseProfilePath, this.Request.RequestUri.Scheme, this.Request.RequestUri.Authority);
             var bundle = exporter.GetImplementationGuides(summary, include, implementationGuideId, name);
             return Shared.GetResponseMessage(this.Request, format, bundle);
         }
 
         [HttpPost]
-        [Route("api/FHIR2/ImplementationGuide")]
+        [Route("ImplementationGuide")]
         [SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
         public HttpResponseMessage CreateImplementationGuide(
             [FromBody] FhirImplementationGuide implementationGuide,
@@ -106,7 +106,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         }
 
         [HttpPut]
-        [Route("api/FHIR2/ImplementationGuide/{implementationGuideId}")]
+        [Route("ImplementationGuide/{implementationGuideId}")]
         [SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
         public HttpResponseMessage UpdateImplementationGuide(
             [FromUri] int implementationGuideId,
@@ -116,7 +116,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         }
 
         [HttpDelete]
-        [Route("api/FHIR2/ImplementationGuide/{implementationGuideId}")]
+        [Route("ImplementationGuide/{implementationGuideId}")]
         [SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
         public HttpResponseMessage DeleteImplementationGuide([FromUri] int implementationGuideId)
         {

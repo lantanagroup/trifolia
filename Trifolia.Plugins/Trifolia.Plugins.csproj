@@ -58,6 +58,16 @@
       <Private>True</Private>
       <Aliases>fhir_dstu1</Aliases>
     </Reference>
+    <Reference Include="Hl7.Fhir.STU3.Core, Version=0.90.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\Hl7.Fhir.STU3.Core.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.STU3.Specification, Version=0.90.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\Hl7.Fhir.STU3.Specification.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
     <Reference Include="LantanaGroup.ValidationUtility">
       <HintPath>..\libraries\LantanaGroup.ValidationUtility.dll</HintPath>
     </Reference>
@@ -81,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FHIR\STU3Plugin.cs" />
     <Compile Include="FHIR\DSTU2Plugin.cs" />
     <Compile Include="FHIR\DefaultPlugin.cs" />
     <Compile Include="FHIR\DSTU1Plugin.cs" />

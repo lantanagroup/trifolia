@@ -40,7 +40,7 @@
                         <label>Type</label>
                         <select class="form-control" name="XmlType" data-bind="value: XmlType">
                             <option value="Proprietary">Trifolia XML</option>
-                            <!-- ko if: trifoliaConfig.FhirIgTypes[ImplementationGuideType()] >= 0 -->
+                            <!-- ko if: IsFhir() -->
                             <option value="FHIR">FHIR XML</option>
                             <!-- /ko -->
                             <option value="JSON">Data Snapshot (JSON)</option>

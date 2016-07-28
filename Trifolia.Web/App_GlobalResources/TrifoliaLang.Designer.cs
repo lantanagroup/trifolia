@@ -718,11 +718,20 @@ namespace Trifolia.Web.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is not a FHIR DSTU2 template/profile.
+        ///   Looks up a localized string similar to This is not a FHIR DSTU2 profile.
         /// </summary>
         public static string TemplateNotFHIRDSTU2 {
             get {
                 return ResourceManager.GetString("TemplateNotFHIRDSTU2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is not a FHIR STU3 profile!.
+        /// </summary>
+        public static string TemplateNotFHIRSTU3 {
+            get {
+                return ResourceManager.GetString("TemplateNotFHIRSTU3", resourceCulture);
             }
         }
         

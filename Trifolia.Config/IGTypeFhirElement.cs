@@ -11,6 +11,7 @@ namespace Trifolia.Config
         #region Private Constants
 
         private const string IMPLEMENTATION_GUIDE_TYPE_PROPERTY_NAME = "igTypeName";
+        private const string VERSION_PROPERTY_NAME = "version";
 
         #endregion
 
@@ -21,6 +22,13 @@ namespace Trifolia.Config
         {
             get { return (string)this[IMPLEMENTATION_GUIDE_TYPE_PROPERTY_NAME]; }
             set { this[IMPLEMENTATION_GUIDE_TYPE_PROPERTY_NAME] = value; }
+        }
+
+        [ConfigurationProperty(VERSION_PROPERTY_NAME, IsRequired = true)]
+        public string Version
+        {
+            get { return (string)this[VERSION_PROPERTY_NAME]; }
+            set { this[VERSION_PROPERTY_NAME] = value; }
         }
 
         #endregion

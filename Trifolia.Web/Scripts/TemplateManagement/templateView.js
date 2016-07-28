@@ -26,6 +26,8 @@
     self.Author = ko.observable();
     self.Name = ko.observable();
     self.Oid = ko.observable();
+    self.ImplementationGuideType = ko.observable();
+    self.ImplementationGuideTypeId = ko.observable();
     self.ImpliedTemplate = ko.observable();
     self.ImpliedTemplateId = ko.observable();
     self.ImpliedTemplateOid = ko.observable();
@@ -107,6 +109,33 @@
                 ko.mapping.fromJS(template, mapping, self);
                 self.Initialized(true);
                 fireTrifoliaEvent('templateLoaded');
+
+                var fhirIgType = _.find(trifoliaConfig.FhirIgTypes, function (fhirIgType) {
+                    return fhirIgType.Id == self.ImplementationGuideTypeId();
+                });
+
+                if (fhirIgType) {
+                    var url = fhirIgType.BaseUrl + 'StructureDefinition/' + templateId;
+                    
+                    $.ajax({
+                        url: url,
+                        success: function (results) {
+                            self.StructureDefinitionJSON(JSON.stringify(results, null, '\t'));
+                        }
+                    });
+
+                    $.ajax({
+                        url: url,
+                        dataType: 'text',
+                        headers: {
+                            'Accept': 'application/xml'
+                        },
+                        success: function (results) {
+                            var prettyXml = vkbeautify.xml(results)
+                            self.StructureDefinitionXML(prettyXml);
+                        }
+                    });
+                }
             }
         });
 
@@ -116,25 +145,6 @@
                 if (results) {
                     ko.mapping.fromJS({ Changes: results }, {}, self);
                 }
-            }
-        });
-
-        $.ajax({
-            url: '/api/FHIR2/StructureDefinition/' + templateId,
-            success: function (results) {
-                self.StructureDefinitionJSON(JSON.stringify(results, null, '\t'));
-            }
-        });
-
-        $.ajax({
-            url: '/api/FHIR2/StructureDefinition/' + templateId,
-            dataType: 'text',
-            headers: {
-                'Accept': 'application/xml'
-            },
-            success: function (results) {
-                var prettyXml = vkbeautify.xml(results)
-                self.StructureDefinitionXML(prettyXml);
             }
         });
     };

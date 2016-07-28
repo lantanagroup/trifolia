@@ -20,6 +20,7 @@ namespace Trifolia.Test
         public const string DEFAULT_ORGANIZATION = "LCG";
         public const string DEFAULT_FHIR_DSTU1_IG_TYPE_NAME = "FHIR DSTU1";
         public const string DEFAULT_FHIR_DSTU2_IG_TYPE_NAME = "FHIR DSTU2";
+        public const string DEFAULT_FHIR_STU3_IG_TYPE_NAME = "FHIR Latest";
         public const string DEFAULT_CDA_IG_TYPE_NAME = "CDA";
         public const string DEFAULT_HQMF_R2_IG_TYPE_NAME = "HQMF R2";
 
@@ -95,6 +96,21 @@ namespace Trifolia.Test
             this.FindOrCreateTemplateType(fhirType, "ValueSet", "ValueSet", "ValueSet", 6);
 
             this.FindOrAddImplementationGuide(fhirType, "Unowned FHIR DSTU2 Profiles");
+        }
+
+        public void InitializeFHIR3Repository()
+        {
+            ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(DEFAULT_FHIR_STU3_IG_TYPE_NAME, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
+
+            this.FindOrCreateTemplateType(fhirType, "Composition", "Composition", "Composition", 1);
+            this.FindOrCreateTemplateType(fhirType, "Patient", "Patient", "Patient", 2);
+            this.FindOrCreateTemplateType(fhirType, "Practitioner", "Practitioner", "Practitioner", 3);
+            this.FindOrCreateTemplateType(fhirType, "StructureDefinition", "StructureDefinition", "StructureDefinition", 4);
+            this.FindOrCreateTemplateType(fhirType, "ImplementationGuide", "ImplementationGuide", "ImplementationGuide", 5);
+            this.FindOrCreateTemplateType(fhirType, "ValueSet", "ValueSet", "ValueSet", 6);
+            this.FindOrCreateTemplateType(fhirType, "Questionnaire", "Questionnaire", "Questionnaire", 6);
+
+            this.FindOrAddImplementationGuide(fhirType, "Unowned FHIR STU3 Profiles");
         }
 
         public void InitializeLCG()

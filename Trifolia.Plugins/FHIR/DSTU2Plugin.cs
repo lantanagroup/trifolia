@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
-using Trifolia.Plugins.FHIR.DSTU2;
+using Trifolia.Export.FHIR.DSTU2;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
 using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;

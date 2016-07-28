@@ -5,22 +5,27 @@ using fhir_dstu2.Hl7.Fhir.Specification.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.FHIR;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 
-namespace Trifolia.Plugins.FHIR.DSTU2
+namespace Trifolia.Export.FHIR.DSTU2
 {
     public class StructureDefinitionExporter
     {
+        private const string VERSION_NAME = "DSTU2";
+
         private IObjectRepository tdb;
         private string scheme;
         private string authority;
         private string baseProfilePath;
         private Dictionary<ImplementationGuide, IGSettingsManager> allIgSettings = new Dictionary<ImplementationGuide, IGSettingsManager>();
         private Dictionary<string, StructureDefinition> baseProfiles = new Dictionary<string, StructureDefinition>();
+        private ImplementationGuideType implementationGuideType;
 
         public StructureDefinitionExporter(IObjectRepository tdb, string baseProfilePath, string scheme, string authority)
         {
@@ -28,6 +33,7 @@ namespace Trifolia.Plugins.FHIR.DSTU2
             this.baseProfilePath = baseProfilePath;
             this.scheme = scheme;
             this.authority = authority;
+            this.implementationGuideType = Shared.GetImplementationGuideType(this.tdb, true);
         }
 
         public void CreateTemplateConstraint(ElementDefinition elementDef, Template template, TemplateConstraint parentConstraint = null)
@@ -141,14 +147,14 @@ namespace Trifolia.Plugins.FHIR.DSTU2
             {
                 ImplementationGuide unassignedImplementationGuide = this.tdb.ImplementationGuides.SingleOrDefault(y =>
                     y.Name == Shared.DEFAULT_IG_NAME &&
-                    y.ImplementationGuideType.Name == ImplementationGuideType.FHIR_DSTU2_NAME);
+                    y.ImplementationGuideTypeId == this.implementationGuideType.Id);
 
                 if (unassignedImplementationGuide == null)
                 {
                     unassignedImplementationGuide = new ImplementationGuide()
                     {
                         Name = Shared.DEFAULT_IG_NAME,
-                        ImplementationGuideType = this.tdb.ImplementationGuideTypes.Single(y => y.Name == ImplementationGuideType.FHIR_DSTU2_NAME),
+                        ImplementationGuideType = this.implementationGuideType,
                         Organization = this.tdb.Organizations.Single(y => y.Name == Shared.DEFAULT_ORG_NAME)
                     };
                     this.tdb.ImplementationGuides.AddObject(unassignedImplementationGuide);
@@ -157,7 +163,7 @@ namespace Trifolia.Plugins.FHIR.DSTU2
                 template = new Template()
                 {
                     OwningImplementationGuide = unassignedImplementationGuide,
-                    ImplementationGuideType = this.tdb.ImplementationGuideTypes.Single(y => y.Name == ImplementationGuideType.FHIR_DSTU2_NAME),
+                    ImplementationGuideType = this.implementationGuideType,
                     Author = this.tdb.Users.Single(y => y.UserName == Shared.DEFAULT_USER_NAME && y.Organization.Name == Shared.DEFAULT_ORG_NAME),
                     Organization = this.tdb.Organizations.Single(y => y.Name == Shared.DEFAULT_ORG_NAME),
                     IsOpen = true
@@ -183,7 +189,7 @@ namespace Trifolia.Plugins.FHIR.DSTU2
 
             // ConstrainedType -> Template Type
             TemplateType templateType = this.tdb.TemplateTypes.SingleOrDefault(y =>
-                y.ImplementationGuideType.Name == ImplementationGuideType.FHIR_DSTU2_NAME &&
+                y.ImplementationGuideTypeId == this.implementationGuideType.Id &&
                 y.RootContextType == strucDef.ConstrainedType);
 
             if (templateType == null)

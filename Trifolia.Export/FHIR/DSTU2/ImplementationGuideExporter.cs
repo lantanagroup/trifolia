@@ -10,18 +10,23 @@ using System.Threading.Tasks;
 using Trifolia.DB;
 using Trifolia.Shared;
 using Trifolia.Authorization;
+using Trifolia.Config;
+using Trifolia.Logging;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using FhirImplementationGuide = fhir_dstu2.Hl7.Fhir.Model.ImplementationGuide;
 
-namespace Trifolia.Plugins.FHIR.DSTU2
+namespace Trifolia.Export.FHIR.DSTU2
 {
     public class ImplementationGuideExporter
     {
+        private const string VERSION_NAME = "DSTU2";
+
         private IObjectRepository tdb;
         private string scheme;
         private string authority;
         private SimpleSchema schema;
         private string baseProfilePath;
+        private ImplementationGuideType implementationGuideType;
 
         /// <summary>
         /// Initializes a new instance of ImplementationGuideExporter
@@ -36,6 +41,7 @@ namespace Trifolia.Plugins.FHIR.DSTU2
             this.authority = authority;
             this.schema = schema;
             this.baseProfilePath = baseProfilePath;
+            this.implementationGuideType = Shared.GetImplementationGuideType(this.tdb, true);
         }
 
         private string GetFullUrl(ImplementationGuide implementationGuide)
@@ -109,7 +115,7 @@ namespace Trifolia.Plugins.FHIR.DSTU2
             if (implementationGuide == null)
                 implementationGuide = new ImplementationGuide()
                 {
-                    ImplementationGuideType = this.tdb.ImplementationGuideTypes.Single(y => y.Name == ImplementationGuideType.FHIR_DSTU2_NAME)
+                    ImplementationGuideType = this.implementationGuideType
                 };
 
             if (implementationGuide.Name != fhirImplementationGuide.Name)
@@ -139,7 +145,7 @@ namespace Trifolia.Plugins.FHIR.DSTU2
         public Bundle GetImplementationGuides(SummaryType? summary = null, string include = null, int? implementationGuideId = null, string name = null)
         {
             // TODO: Should not be using constant string for IG type name to find templates... Not sure how else to identify FHIR DSTU1 templates though
-            var implementationGuides = this.tdb.ImplementationGuides.Where(y => y.ImplementationGuideType.Name == ImplementationGuideType.FHIR_DSTU2_NAME);
+            var implementationGuides = this.tdb.ImplementationGuides.Where(y => y.ImplementationGuideTypeId == this.implementationGuideType.Id);
 
             if (!CheckPoint.Instance.IsDataAdmin)
             {

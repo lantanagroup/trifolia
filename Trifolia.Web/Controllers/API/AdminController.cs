@@ -265,7 +265,28 @@ namespace Trifolia.Web.Controllers.API
             foreach (IGTypeFhirElement fit in IGTypeSection.GetSection().FhirIgTypes)
             {
                 ImplementationGuideType igType = this.tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == fit.ImplementationGuideTypeName.ToLower());
-                clientConfig.FhirIgTypes.Add(igType.Name, igType.Id);
+
+                var fhirIgType = new ClientConfigModel.FhirIgType()
+                {
+                    Id = igType.Id,
+                    Name = igType.Name,
+                    Version = fit.Version
+                };
+
+                switch (fhirIgType.Version)
+                {
+                    case "DSTU1":
+                        fhirIgType.BaseUrl = "/api/FHIR1/";
+                        break;
+                    case "DSTU2":
+                        fhirIgType.BaseUrl = "/api/FHIR2/";
+                        break;
+                    case "STU3":
+                        fhirIgType.BaseUrl = "/api/FHIR3/";
+                        break;
+                }
+
+                clientConfig.FhirIgTypes.Add(fhirIgType);
             }
 
             if (isRef)

@@ -32,29 +32,6 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 
     public class Shared
     {
-        public const string DEFAULT_USER_NAME = "admin";
-        public const string DEFAULT_ORG_NAME = "LCG";
-
-        public static FHIRUrlStructure GetStructureFromReferenceUrl(string reference)
-        {
-            Regex regex = new Regex("((http|https):\\/\\/([A-Za-z0-9\\\\\\/\\.\\:\\%\\$])*)?(Account|AllergyIntolerance|Appointment|AppointmentResponse|AuditEvent|Basic|Binary|BodySite|Bundle|CarePlan|Claim|ClaimResponse|ClinicalImpression|Communication|CommunicationRequest|Composition|ConceptMap|Condition|Conformance|Contract|Coverage|DataElement|DetectedIssue|Device|DeviceComponent|DeviceMetric|DeviceUseRequest|DeviceUseStatement|DiagnosticOrder|DiagnosticReport|DocumentManifest|DocumentReference|EligibilityRequest|EligibilityResponse|Encounter|EnrollmentRequest|EnrollmentResponse|EpisodeOfCare|ExplanationOfBenefit|FamilyMemberHistory|Flag|Goal|Group|HealthcareService|ImagingObjectSelection|ImagingStudy|Immunization|ImmunizationRecommendation|ImplementationGuide|List|Location|Media|Medication|MedicationAdministration|MedicationDispense|MedicationOrder|MedicationStatement|MessageHeader|NamingSystem|NutritionOrder|Observation|OperationDefinition|OperationOutcome|Order|OrderResponse|Organization|Patient|PaymentNotice|PaymentReconciliation|Person|Practitioner|Procedure|ProcedureRequest|ProcessRequest|ProcessResponse|Provenance|Questionnaire|QuestionnaireResponse|ReferralRequest|RelatedPerson|RiskAssessment|Schedule|SearchParameter|Slot|Specimen|StructureDefinition|Subscription|Substance|SupplyDelivery|SupplyRequest|TestScript|ValueSet|VisionPrescription)\\/([A-Za-z0-9\\-\\.]{1,64})(\\/_history\\/([A-Za-z0-9\\-\\.]{1,64}))?");
-
-            if (!regex.IsMatch(reference))
-                throw new Exception("Unexpected format for resource reference found: " + reference);
-
-            Match match = regex.Match(reference);
-            FHIRUrlStructure urlStruct = new FHIRUrlStructure()
-            {
-                FullUrl = reference,
-                Base = match.Groups[1].Value,
-                Identifier = match.Groups[5].Value,
-                ResourceType = match.Groups[4].Value,
-                Version = match.Groups[7].Value
-            };
-
-            return urlStruct;
-        }
-
         public static HttpResponseMessage GetResponseMessage(HttpRequestMessage request, string format, object ret, int statusCode = 200, Dictionary<string, string> headers = null)
         {
             MediaTypeFormatter formatter = new GeneralFHIRMediaTypeFormatter();

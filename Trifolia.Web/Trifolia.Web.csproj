@@ -99,6 +99,16 @@
       <Private>True</Private>
       <Aliases>fhir_dstu1</Aliases>
     </Reference>
+    <Reference Include="Hl7.Fhir.STU3.Core, Version=0.90.5.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\Hl7.Fhir.STU3.Core.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.STU3.Specification, Version=0.90.5.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\Hl7.Fhir.STU3.Specification.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
     </Reference>
@@ -227,6 +237,21 @@
     <Compile Include="Controllers\API\AdminController.cs" />
     <Compile Include="Controllers\API\AuthController.cs" />
     <Compile Include="Controllers\API\BulkCopyController.cs" />
+    <Compile Include="Controllers\API\FHIR\STU3\ConformanceController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\FHIR\STU3\ImplementationGuideController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\FHIR\STU3\Shared.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\FHIR\STU3\StructureDefinitionController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\FHIR\STU3\ValueSetController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\API\HelpController.cs" />
     <Compile Include="Controllers\API\ExportController.cs" />
     <Compile Include="Controllers\API\FHIR\DSTU1\FHIRController.cs" />
@@ -263,10 +288,12 @@
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Extensions\TemplateTypeExtension.cs" />
     <Compile Include="Filters\FileDownloadAttribute.cs" />
-    <Compile Include="Formatters\FHIR\DSTU1\JSONFHIRMediaTypeFormatter.cs" />
-    <Compile Include="Formatters\FHIR\DSTU1\XMLFHIRMediaTypeFormatter.cs" />
     <Compile Include="Formatters\FHIR\DSTU2\FhirMediaTypeFormatter.cs" />
     <Compile Include="Formatters\FHIR\DSTU2\GeneralFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\FHIR\DSTU1\JSONFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\FHIR\DSTU1\XMLFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\FHIR\STU3\FhirMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\FHIR\STU3\GeneralFHIRMediaTypeFormatter.cs" />
     <Compile Include="Formatters\JavaScriptFormatter.cs" />
     <Compile Include="Formatters\TrifoliaXmlFormatter.cs" />
     <Compile Include="Models\Account\HL7LoginModel.cs" />
@@ -460,6 +487,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\FHIR\STU3\conceptmaps.xml" />
+    <Content Include="App_Data\FHIR\STU3\dataelements.xml" />
+    <Content Include="App_Data\FHIR\STU3\extension-definitions.xml" />
+    <Content Include="App_Data\FHIR\STU3\profiles-others.xml" />
+    <Content Include="App_Data\FHIR\STU3\profiles-resources.xml" />
+    <Content Include="App_Data\FHIR\STU3\profiles-types.xml" />
+    <Content Include="App_Data\FHIR\STU3\search-parameters.xml" />
+    <Content Include="App_Data\FHIR\STU3\v2-tables.xml" />
+    <Content Include="App_Data\FHIR\STU3\v3-codesystems.xml" />
+    <Content Include="App_Data\FHIR\STU3\valuesets.xml" />
     <Content Include="App_Data\Trifolia.Authorization.XML" />
     <Content Include="App_Data\Trifolia.Web.XML">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -939,6 +976,9 @@
     <Content Include="Scripts\q\VERSIONS.md" />
     <Content Include="Trifolia.Generation.config" />
     <Content Include="Views\IG\README.md" />
+    <Content Include="validation.xml.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Web.Install Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -13,7 +13,7 @@ using Trifolia.DB;
 using Trifolia.Test;
 using Trifolia.Web.Controllers.API;
 using Trifolia.Web.Controllers.API.FHIR.DSTU2;
-using Trifolia.Plugins.FHIR.DSTU2;
+using Trifolia.Export.FHIR.DSTU2;
 using Trifolia.Shared;
 
 namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
@@ -79,7 +79,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
                 Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                     new ImplementationGuideType()
                     {
-                        Name = "FHIR DSTU2",
+                        Name = MockObjectRepository.DEFAULT_FHIR_DSTU2_IG_TYPE_NAME,
                         SchemaLocation = "fhir-all.xsd"
                     }));
             
@@ -182,7 +182,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             mockRepo.InitializeFHIR2Repository();
             mockRepo.InitializeLCGAndLogin();
 
-            var ig = mockRepo.FindOrAddImplementationGuide(ImplementationGuideType.FHIR_DSTU2_NAME, "Test IG");
+            var ig = mockRepo.FindOrAddImplementationGuide("FHIR DSTU2", "Test IG");
             var template = mockRepo.GenerateTemplate("http://test.com/profile1", "Composition", "Test Composition", ig);
 
             HttpRequestMessage request = new HttpRequestMessage()
