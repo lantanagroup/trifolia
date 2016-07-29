@@ -33,7 +33,7 @@ namespace Trifolia.Export.FHIR.STU3
             this.tdb = tdb;
             this.scheme = scheme;
             this.authority = authority;
-            this.implementationGuideType = DSTU2Helper.GetImplementationGuideType(this.tdb, true);
+            this.implementationGuideType = STU3Helper.GetImplementationGuideType(this.tdb, true);
             this.profileBundle = ProfileHelper.GetProfileBundle();
         }
 

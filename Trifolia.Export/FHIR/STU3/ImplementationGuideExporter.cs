@@ -36,7 +36,7 @@ namespace Trifolia.Export.FHIR.STU3
             this.scheme = scheme;
             this.authority = authority;
             this.schema = schema;
-            this.implementationGuideType = DSTU2Helper.GetImplementationGuideType(this.tdb, true);
+            this.implementationGuideType = STU3Helper.GetImplementationGuideType(this.tdb, true);
         }
 
         private string GetFullUrl(ImplementationGuide implementationGuide)
