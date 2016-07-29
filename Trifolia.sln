@@ -52,6 +52,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Import", "Trifolia
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Export", "Trifolia.Export\Trifolia.Export.csproj", "{6BE1523E-6D37-4BF2-9564-19170A7341E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Powershell", "Trifolia.Powershell\Trifolia.Powershell.csproj", "{644D3935-88AF-40E5-933A-D6E457A3DF42}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = TemplateDatabaseManagement.vsmdi
@@ -352,6 +354,26 @@ Global
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Release|x86.ActiveCfg = Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|Any CPU.Build.0 = Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|x86.ActiveCfg = Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|Any CPU.ActiveCfg = Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|Any CPU.Build.0 = Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|x86.ActiveCfg = Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

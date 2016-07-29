@@ -71,7 +71,7 @@ namespace Trifolia.Export.FHIR.DSTU2
                     {
                         var fhirMember = new FhirValueSet.ValueSetExpansionContainsComponent()
                         {
-                            System = Shared.FormatIdentifier(vsMember.CodeSystem.Oid),
+                            System = DSTU2Helper.FormatIdentifier(vsMember.CodeSystem.Oid),
                             Code = vsMember.Code,
                             Display = vsMember.DisplayName
                         };

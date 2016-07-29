@@ -74,7 +74,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
                 Value = "test"
             });
 
-            StructureDefinitionExporter exporter = new StructureDefinitionExporter(mockRepo, "test", "http", "test.com");
+            StructureDefinitionExporter exporter = new StructureDefinitionExporter(mockRepo, "http", "test.com");
             SimpleSchema schema = SimpleSchema.CreateSimpleSchema(
                 Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                     new ImplementationGuideType()

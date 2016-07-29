@@ -333,5 +333,13 @@ namespace Trifolia.Config
                 return value.Split(',');
             }
         }
+
+        public static string DefaultBaseUrl
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["DefaultBaseUrl"];
+            }
+        }
     }
 }

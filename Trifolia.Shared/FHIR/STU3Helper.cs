@@ -4,11 +4,11 @@ using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Logging;
 
-namespace Trifolia.Export.FHIR.STU3
+namespace Trifolia.Shared.FHIR
 {
-    public class Shared
+    public class STU3Helper
     {
-        private const string VERSION_NAME = "STU3";
+        public const string VERSION_NAME = "STU3";
 
         public const string DEFAULT_IG_NAME = "Unowned FHIR STU3 Profiles";
         public const string DEFAULT_USER_NAME = "admin";
@@ -39,32 +39,11 @@ namespace Trifolia.Export.FHIR.STU3
             if (found == null && throwError)
             {
                 string errorMsg = "No STU3 FHIR IG Type is defined/configured";
-                Log.For(typeof(Shared)).Error(errorMsg);
+                Log.For(typeof(STU3Helper)).Error(errorMsg);
                 throw new Exception(errorMsg);
             }
 
             return found;
-        }
-    }
-
-    public static class TemplateConstraintExtensions
-    {
-        public static string GetElementPath(this TemplateConstraint constraint, string resourceType)
-        {
-            string elementPath = "";
-
-            // Element path
-            var current = constraint;
-            while (current != null)
-            {
-                if (!string.IsNullOrEmpty(elementPath))
-                    elementPath = "." + elementPath;
-
-                elementPath = current.Context.Replace("@", "") + elementPath;
-                current = current.ParentConstraint;
-            }
-
-            return (string.IsNullOrEmpty(resourceType) ? "Resource" : resourceType) + "." + elementPath;
         }
     }
 }

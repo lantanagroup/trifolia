@@ -5,10 +5,13 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using Trifolia.Authorization;
+using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3;
 using Trifolia.Shared;
+using Trifolia.Shared.FHIR;
 using FhirImplementationGuide = fhir_stu3.Hl7.Fhir.Model.ImplementationGuide;
+using SummaryType = fhir_stu3.Hl7.Fhir.Rest.SummaryType;
 
 namespace Trifolia.Web.Controllers.API.FHIR.STU3
 {
@@ -24,21 +27,13 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         public FHIR3ImplementationGuideController(IObjectRepository tdb)
         {
             this.tdb = tdb;
-            this.implementationGuideType = Trifolia.Export.FHIR.STU3.Shared.GetImplementationGuideType(this.tdb, true);
+            this.implementationGuideType = STU3Helper.GetImplementationGuideType(this.tdb, true);
         }
 
         public FHIR3ImplementationGuideController()
             : this(new TemplateDatabaseDataSource())
         {
 
-        }
-
-        private string BaseProfilePath
-        {
-            get
-            {
-                return HttpContext.Current.Server.MapPath("~/App_Data/FHIR/DSTU2/");
-            }
         }
 
         #endregion
@@ -58,9 +53,10 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             [FromUri(Name = "_format")] string format = null,
             [FromUri(Name = "_summary")] fhir_stu3.Hl7.Fhir.Rest.SummaryType? summary = null)
         {
+            var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
             var implementationGuide = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
             SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, implementationGuide.ImplementationGuideType);
-            ImplementationGuideExporter exporter = new ImplementationGuideExporter(this.tdb, schema, this.BaseProfilePath, this.Request.RequestUri.Scheme, this.Request.RequestUri.Authority);
+            ImplementationGuideExporter exporter = new ImplementationGuideExporter(this.tdb, schema, uri.Scheme, uri.Authority);
             FhirImplementationGuide response = exporter.Convert(implementationGuide, summary);
             return Shared.GetResponseMessage(this.Request, format, response);
         }
@@ -85,8 +81,9 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             [FromUri(Name = "_id")] int? implementationGuideId = null,
             [FromUri(Name = "name")] string name = null)
         {
+            var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
             SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, this.implementationGuideType);
-            ImplementationGuideExporter exporter = new ImplementationGuideExporter(this.tdb, schema, this.BaseProfilePath, this.Request.RequestUri.Scheme, this.Request.RequestUri.Authority);
+            ImplementationGuideExporter exporter = new ImplementationGuideExporter(this.tdb, schema, uri.Scheme, uri.Authority);
             var bundle = exporter.GetImplementationGuides(summary, include, implementationGuideId, name);
             return Shared.GetResponseMessage(this.Request, format, bundle);
         }

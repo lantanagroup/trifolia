@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -107,12 +107,10 @@
     </Compile>
     <Compile Include="DECOR\TemplateExporter.cs" />
     <Compile Include="FHIR\STU3\ImplementationGuideExporter.cs" />
-    <Compile Include="FHIR\STU3\Shared.cs" />
     <Compile Include="FHIR\STU3\StructureDefinitionExporter.cs" />
     <Compile Include="FHIR\STU3\ValueSetExporter.cs" />
     <Compile Include="FHIR\DSTU1\FHIRExporter.cs" />
     <Compile Include="FHIR\DSTU2\ImplementationGuideExporter.cs" />
-    <Compile Include="FHIR\DSTU2\Shared.cs" />
     <Compile Include="FHIR\DSTU2\StructureDefinitionExporter.cs" />
     <Compile Include="FHIR\DSTU2\ValueSetExporter.cs" />
     <Compile Include="Native\ImplementationGuideExtension.cs" />

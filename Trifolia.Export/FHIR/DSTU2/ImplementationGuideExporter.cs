@@ -9,23 +9,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Trifolia.DB;
 using Trifolia.Shared;
+using Trifolia.Shared.FHIR;
 using Trifolia.Authorization;
 using Trifolia.Config;
 using Trifolia.Logging;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using FhirImplementationGuide = fhir_dstu2.Hl7.Fhir.Model.ImplementationGuide;
+using SummaryType = fhir_dstu2.Hl7.Fhir.Rest.SummaryType;
 
 namespace Trifolia.Export.FHIR.DSTU2
 {
     public class ImplementationGuideExporter
     {
-        private const string VERSION_NAME = "DSTU2";
-
         private IObjectRepository tdb;
         private string scheme;
         private string authority;
         private SimpleSchema schema;
-        private string baseProfilePath;
         private ImplementationGuideType implementationGuideType;
 
         /// <summary>
@@ -34,14 +33,13 @@ namespace Trifolia.Export.FHIR.DSTU2
         /// <param name="tdb">Reference to the database</param>
         /// <param name="scheme">The server url's scheme</param>
         /// <param name="authority">The server url's authority</param>
-        public ImplementationGuideExporter(IObjectRepository tdb, SimpleSchema schema, string baseProfilePath, string scheme, string authority)
+        public ImplementationGuideExporter(IObjectRepository tdb, SimpleSchema schema, string scheme, string authority)
         {
             this.tdb = tdb;
             this.scheme = scheme;
             this.authority = authority;
             this.schema = schema;
-            this.baseProfilePath = baseProfilePath;
-            this.implementationGuideType = Shared.GetImplementationGuideType(this.tdb, true);
+            this.implementationGuideType = DSTU2Helper.GetImplementationGuideType(this.tdb, true);
         }
 
         private string GetFullUrl(ImplementationGuide implementationGuide)
@@ -110,38 +108,6 @@ namespace Trifolia.Export.FHIR.DSTU2
             return fhirImplementationGuide;
         }
 
-        public ImplementationGuide Convert(FhirImplementationGuide fhirImplementationGuide, ImplementationGuide implementationGuide)
-        {
-            if (implementationGuide == null)
-                implementationGuide = new ImplementationGuide()
-                {
-                    ImplementationGuideType = this.implementationGuideType
-                };
-
-            if (implementationGuide.Name != fhirImplementationGuide.Name)
-                implementationGuide.Name = fhirImplementationGuide.Name;
-
-            if (fhirImplementationGuide.Package != null)
-            {
-                foreach (var package in fhirImplementationGuide.Package)
-                {
-                    foreach (var resource in package.Resource)
-                    {
-                        if (resource.Source is ResourceReference)
-                        {
-
-                        }
-                        else
-                        {
-                            throw new Exception("Only resource references are supported by ImplementationGuide.resource");
-                        }
-                    }
-                }
-            }
-
-            return implementationGuide;
-        }
-
         public Bundle GetImplementationGuides(SummaryType? summary = null, string include = null, int? implementationGuideId = null, string name = null)
         {
             // TODO: Should not be using constant string for IG type name to find templates... Not sure how else to identify FHIR DSTU1 templates though
@@ -194,7 +160,7 @@ namespace Trifolia.Export.FHIR.DSTU2
                     bundle.Entry.AddRange(templateEntries);
                     */
 
-                    StructureDefinitionExporter strucDefExporter = new StructureDefinitionExporter(this.tdb, baseProfilePath, this.scheme, this.authority);
+                    StructureDefinitionExporter strucDefExporter = new StructureDefinitionExporter(this.tdb, this.scheme, this.authority);
                     foreach (var template in templates)
                     {
                         var templateSchema = this.schema.GetSchemaFromContext(template.PrimaryContextType);

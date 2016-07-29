@@ -8,8 +8,10 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using Trifolia.Authorization;
+using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3;
+using Trifolia.Import.FHIR.STU3;
 using Trifolia.Shared;
 using Trifolia.Shared.FHIR;
 
@@ -21,7 +23,6 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
     {
         private IObjectRepository tdb;
         private ImplementationGuideType implementationGuideType;
-        string baseProfilePath;
 
         #region Constructors
 
@@ -33,8 +34,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             if (request != null)
                 this.Request = request;
 
-            this.implementationGuideType = Trifolia.Export.FHIR.STU3.Shared.GetImplementationGuideType(this.tdb, true);
-            this.baseProfilePath = HttpContext.Current.Server.MapPath("~/App_Data/FHIR/STU3/");
+            this.implementationGuideType = STU3Helper.GetImplementationGuideType(this.tdb, true);
         }
 
         public FHIR3StructureDefinitionController()
@@ -96,7 +96,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             if (!CheckPoint.Instance.GrantViewTemplate(template.Id))
                 throw new UnauthorizedAccessException();
 
-            StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, this.baseProfilePath, Request.RequestUri.Scheme, Request.RequestUri.Authority);
+            var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
+            StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, uri.Scheme, uri.Authority);
             SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current, template.ImplementationGuideType);
             schema = schema.GetSchemaFromContext(template.PrimaryContextType);
 
@@ -121,8 +122,9 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             [FromUri(Name = "name")] string name = null,
             [FromUri(Name = "_summary")] SummaryType? summary = null)
         {
+            var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
             var templates = this.tdb.Templates.Where(y => y.TemplateType.ImplementationGuideType == this.implementationGuideType);
-            StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, this.baseProfilePath, Request.RequestUri.Scheme, Request.RequestUri.Authority);
+            StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, uri.Scheme, uri.Authority);
 
             if (!CheckPoint.Instance.IsDataAdmin)
             {
@@ -186,8 +188,9 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
 
         public Template CreateTemplate(StructureDefinition strucDef)
         {
-            StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, this.baseProfilePath, Request.RequestUri.Scheme, Request.RequestUri.Authority);
-            Template template = exporter.Convert(strucDef);
+            var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
+            StructureDefinitionImporter importer = new StructureDefinitionImporter(this.tdb, uri.Scheme, uri.Authority);
+            Template template = importer.Convert(strucDef);
             this.tdb.Templates.AddObject(template);
             return template;
         }
@@ -225,7 +228,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Location", location);
 
-            StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, this.baseProfilePath, Request.RequestUri.Scheme, Request.RequestUri.Authority);
+            var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
+            StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, uri.Scheme, uri.Authority);
             SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current, template.ImplementationGuideType);
             schema = schema.GetSchemaFromContext(template.PrimaryContextType);
 
@@ -252,9 +256,11 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             if (!CheckPoint.Instance.GrantEditTemplate(templateId))
                 throw new UnauthorizedAccessException();
 
-            StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, this.baseProfilePath, Request.RequestUri.Scheme, Request.RequestUri.Authority);
+            var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
+            StructureDefinitionImporter importer = new StructureDefinitionImporter(this.tdb, uri.Scheme, uri.Authority);
+            StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, uri.Scheme, uri.Authority);
 
-            Template updatedTemplate = exporter.Convert(strucDef, existingTemplate);
+            Template updatedTemplate = importer.Convert(strucDef, existingTemplate);
 
             if (existingTemplate == null)
                 this.tdb.Templates.AddObject(updatedTemplate);

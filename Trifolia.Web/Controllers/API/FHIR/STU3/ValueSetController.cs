@@ -8,6 +8,7 @@ using System.Web.Http;
 using Trifolia.Authorization;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3;
+using Trifolia.Import.FHIR.STU3;
 using Trifolia.Shared.FHIR;
 using FhirValueSet = fhir_stu3.Hl7.Fhir.Model.ValueSet;
 using ValueSet = Trifolia.DB.ValueSet;
@@ -118,8 +119,9 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             if (fhirValueSet.Identifier != null && this.tdb.ValueSets.Count(y => y.Oid == fhirIdentifierValue) > 0)
                 throw new Exception("ValueSet already exists with this identifier. Use a PUT instead");
 
+            ValueSetImporter importer = new ValueSetImporter(this.tdb);
             ValueSetExporter exporter = new ValueSetExporter(this.tdb);
-            ValueSet valueSet = exporter.Convert(fhirValueSet);
+            ValueSet valueSet = importer.Convert(fhirValueSet);
 
             if (valueSet.Oid == null)
                 valueSet.Oid = string.Empty;
@@ -151,8 +153,9 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             [FromUri(Name = "_format")] string format = null)
         {
             ValueSetExporter exporter = new ValueSetExporter(this.tdb);
+            ValueSetImporter importer = new ValueSetImporter(this.tdb);
             ValueSet originalValueSet = this.tdb.ValueSets.Single(y => y.Id == valueSetId);
-            ValueSet newValueSet = exporter.Convert(fhirValueSet, valueSet: originalValueSet);
+            ValueSet newValueSet = importer.Convert(fhirValueSet, valueSet: originalValueSet);
 
             if (originalValueSet == null)
                 this.tdb.ValueSets.AddObject(newValueSet);

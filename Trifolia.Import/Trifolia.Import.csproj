@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -50,18 +50,31 @@
     <Reference Include="Hl7.Fhir.Core, Version=0.11.5.28859, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
       <HintPath>..\packages\Hl7.Fhir.0.11.5\lib\net45\Hl7.Fhir.Core.dll</HintPath>
       <Private>True</Private>
+      <Aliases>fhir_dstu1</Aliases>
     </Reference>
     <Reference Include="Hl7.Fhir.DSTU2.Core, Version=0.90.2.33399, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
       <HintPath>..\packages\Hl7.Fhir.DSTU2.0.90.2\lib\net45\Hl7.Fhir.DSTU2.Core.dll</HintPath>
       <Private>True</Private>
+      <Aliases>fhir_dstu2</Aliases>
     </Reference>
     <Reference Include="Hl7.Fhir.DSTU2.Specification, Version=0.90.2.33406, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
       <HintPath>..\packages\Hl7.Fhir.Specification.DSTU2.0.90.2\lib\net45\Hl7.Fhir.DSTU2.Specification.dll</HintPath>
       <Private>True</Private>
+      <Aliases>fhir_dstu2</Aliases>
     </Reference>
     <Reference Include="Hl7.Fhir.Specification, Version=0.11.5.28861, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
       <HintPath>..\packages\Hl7.Fhir.Specification.0.11.5\lib\net45\Hl7.Fhir.Specification.dll</HintPath>
       <Private>True</Private>
+      <Aliases>fhir_dstu1</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.STU3.Core, Version=0.90.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\Hl7.Fhir.STU3.Core.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.STU3.Specification">
+      <HintPath>..\libraries\Hl7.Fhir.STU3.Specification.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
     </Reference>
     <Reference Include="LantanaGroup.ValidationUtility">
       <HintPath>..\libraries\LantanaGroup.ValidationUtility.dll</HintPath>
@@ -85,15 +98,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FHIR\DSTU1\FHIRImporter.cs" />
+    <Compile Include="FHIR\DSTU2\ImplementationGuideImporter.cs" />
+    <Compile Include="FHIR\DSTU2\StructureDefinitionImporter.cs" />
+    <Compile Include="FHIR\DSTU2\ValueSetImporter.cs" />
+    <Compile Include="FHIR\STU3\ImplementationGuideImporter.cs" />
+    <Compile Include="FHIR\STU3\StructureDefinitionImporter.cs" />
+    <Compile Include="FHIR\STU3\ValueSetImporter.cs" />
     <Compile Include="Native\TemplateImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FHIR\DSTU1\FHIRProfile2Trifolia.xslt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FHIR\DSTU2\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Trifolia.Authorization\Trifolia.Authorization.csproj">
       <Project>{d90e0eee-7ac3-4726-9a56-5b77632e9b3b}</Project>
