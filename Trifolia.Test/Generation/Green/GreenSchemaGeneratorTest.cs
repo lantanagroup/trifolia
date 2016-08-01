@@ -10,6 +10,7 @@ using Trifolia.DB;
 using Trifolia.Shared;
 using Trifolia.Shared.ImportExport;
 using Trifolia.Generation.Green;
+using Trifolia.Import.Native;
 
 namespace Trifolia.Test.Generation.Green
 {

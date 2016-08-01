@@ -49,13 +49,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libraries\LantanaGroup.ValidationUtility.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WikiNetParser">
@@ -87,14 +84,12 @@
     <Compile Include="IG\TemplateConstraintTable.cs" />
     <Compile Include="IG\TemplateContextTable.cs" />
     <Compile Include="IG\DocHelper.cs" />
-    <Compile Include="IG\Exceptions\SampleGenerationException.cs" />
     <Compile Include="IG\GenerationConstants.cs" />
     <Compile Include="IG\IConstraintGenerator.cs" />
     <Compile Include="IG\IGDifferenceViewModel.cs" />
     <Compile Include="IG\ImplementationGuideGenerator.cs" />
     <Compile Include="IG\TableCollection.cs" />
     <Compile Include="IG\TemplateContainmentGenerator.cs" />
-    <Compile Include="IG\TemplateSampleGenerator.cs" />
     <Compile Include="IG\TemplateSchematronGenerator.cs" />
     <Compile Include="IG\ValueSetsExport.cs" />
     <Compile Include="IG\WIKIParser.cs" />
@@ -125,20 +120,12 @@
     <Compile Include="Schematron\Utilities\TemplateUtil.cs" />
     <Compile Include="Versioning\ComparisonResult.cs" />
     <Compile Include="Versioning\VersionComparer.cs" />
-    <Compile Include="XML\DECOR\ConstraintExporter.cs" />
-    <Compile Include="XML\DECOR\DECOR.cs">
-      <DependentUpon>DECOR.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="XML\DECOR\TemplateExporter.cs" />
-    <Compile Include="XML\FHIR\DSTU1\FHIRExporter.cs" />
-    <Compile Include="XML\FHIR\DSTU1\FHIRImporter.cs" />
-    <Compile Include="XML\FHIR\DSTU2\FHIRExporter.cs" />
-    <Compile Include="XML\ImplementationGuideExtension.cs" />
-    <Compile Include="XML\TemplateConstraintExtension.cs" />
-    <Compile Include="XML\TemplateExporter.cs" />
-    <Compile Include="XML\TemplateExtension.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Trifolia.Authorization\Trifolia.Authorization.csproj">
+      <Project>{d90e0eee-7ac3-4726-9a56-5b77632e9b3b}</Project>
+      <Name>Trifolia.Authorization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trifolia.DB\Trifolia.DB.csproj">
       <Project>{3e3c8e62-b392-433d-8c18-a4cfc72b36ef}</Project>
       <Name>Trifolia.DB</Name>
@@ -150,6 +137,10 @@
     <ProjectReference Include="..\Trifolia.Shared\Trifolia.Shared.csproj">
       <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>
       <Name>Trifolia.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Terminology\Trifolia.Terminology.csproj">
+      <Project>{fdb22f8f-9677-471a-8929-b8dcb59e4c60}</Project>
+      <Name>Trifolia.Terminology</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -194,24 +185,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="XML\DECOR\DECOR-datatypes.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="XML\DECOR\DECOR.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\TemplateExportToFHIRProfile.xslt">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XML\FHIRProfile2Trifolia.xslt" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <EmbeddedResource Include="XML\TrifoliaXML-to-FHIR-DSTU-2-Profile.xslt" />
+    <Folder Include="IG\Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

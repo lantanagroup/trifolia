@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Trifolia.Shared;
-using Trifolia.Shared.IGTypePlugin;
+using Trifolia.Shared.Plugins;
 using Trifolia.Generation.Schematron.Model;
 using Trifolia.Generation.Schematron.ConstraintToDocumentElementMap;
 using Trifolia.DB;

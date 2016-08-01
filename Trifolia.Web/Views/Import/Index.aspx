@@ -112,7 +112,6 @@
         <!-- /ko -->
     </div>
     
-    <script type="text/javascript" src="/Scripts/lodash.min.js"></script>
     <script type="text/javascript" src="/Scripts/Import/Import.js"></script>
     <script type="text/javascript">
         var viewModel = new ImportViewModel();

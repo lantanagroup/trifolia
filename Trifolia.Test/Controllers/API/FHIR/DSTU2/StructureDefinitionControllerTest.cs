@@ -13,6 +13,8 @@ using Trifolia.DB;
 using Trifolia.Test;
 using Trifolia.Web.Controllers.API;
 using Trifolia.Web.Controllers.API.FHIR.DSTU2;
+using Trifolia.Export.FHIR.DSTU2;
+using Trifolia.Shared;
 
 namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
 {
@@ -20,6 +22,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
     public class StructureDefinitionControllerTest
     {
         [TestMethod]
+        [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestConvertExtension()
         {
             MockObjectRepository mockRepo = new MockObjectRepository();
@@ -71,8 +74,16 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
                 Value = "test"
             });
 
-            FHIR2StructureDefinitionController controller = new FHIR2StructureDefinitionController(mockRepo);
-            StructureDefinition strucDef = controller.Convert(template);
+            StructureDefinitionExporter exporter = new StructureDefinitionExporter(mockRepo, "http", "test.com");
+            SimpleSchema schema = SimpleSchema.CreateSimpleSchema(
+                Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
+                    new ImplementationGuideType()
+                    {
+                        Name = MockObjectRepository.DEFAULT_FHIR_DSTU2_IG_TYPE_NAME,
+                        SchemaLocation = "fhir-all.xsd"
+                    }));
+            
+            StructureDefinition strucDef = exporter.Convert(template, schema);
 
             Assert.IsNotNull(strucDef);
             Assert.IsNotNull(strucDef.Extension);
@@ -121,7 +132,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             HttpRequest contextRequest = new HttpRequest(null, "http://localhost:8080/api/FHIR2/StructureDefinition", null);
             HttpResponse contextResponse = new HttpResponse(new StringWriter());
             HttpContext.Current = new HttpContext(contextRequest, contextResponse);
-
+            
             FHIR2StructureDefinitionController controller = new FHIR2StructureDefinitionController(mockRepo, request);
             var response = controller.CreateStructureDefinition(strucDef);
             var result = AssertHelper.IsType<TrifoliaApiController.CustomHeadersWithContentResult<StructureDefinition>>(response);
@@ -171,7 +182,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             mockRepo.InitializeFHIR2Repository();
             mockRepo.InitializeLCGAndLogin();
 
-            var ig = mockRepo.FindOrAddImplementationGuide(ImplementationGuideType.FHIR_DSTU2_NAME, "Test IG");
+            var ig = mockRepo.FindOrAddImplementationGuide("FHIR DSTU2", "Test IG");
             var template = mockRepo.GenerateTemplate("http://test.com/profile1", "Composition", "Test Composition", ig);
 
             HttpRequestMessage request = new HttpRequestMessage()

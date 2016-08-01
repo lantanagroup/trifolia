@@ -5,11 +5,11 @@ using System.Linq;
 using System.Collections.Generic;
 
 using Trifolia.Shared;
-using Trifolia.Generation.XML;
 using Trifolia.Shared.ImportExport;
 using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using ExportConformanceTypes = Trifolia.Shared.ImportExport.Model.ConstraintTypeConformance;
 using Trifolia.DB;
+using Trifolia.Import.Native;
 
 namespace Trifolia.Test.Import
 {

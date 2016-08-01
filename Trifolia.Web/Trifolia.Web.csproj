@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Trifolia.Web</RootNamespace>
     <AssemblyName>Trifolia.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -109,6 +110,16 @@
       <HintPath>..\packages\Hl7.Fhir.Specification.0.11.5\lib\net45\Hl7.Fhir.Specification.dll</HintPath>
       <Private>True</Private>
       <Aliases>fhir_dstu1</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.STU3.Core, Version=0.90.5.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\Hl7.Fhir.STU3.Core.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.STU3.Specification, Version=0.90.5.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\Hl7.Fhir.STU3.Specification.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
@@ -240,6 +251,21 @@
     <Compile Include="Controllers\API\BulkCopyController.cs" />
     <Compile Include="Controllers\API\UserController.cs" />
     <Compile Include="Controllers\API\GroupController.cs" />
+    <Compile Include="Controllers\API\FHIR\STU3\ConformanceController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\FHIR\STU3\ImplementationGuideController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\FHIR\STU3\Shared.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\FHIR\STU3\StructureDefinitionController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\FHIR\STU3\ValueSetController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\API\HelpController.cs" />
     <Compile Include="Controllers\API\ExportController.cs" />
     <Compile Include="Controllers\API\FHIR\DSTU1\FHIRController.cs" />
@@ -277,16 +303,20 @@
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Extensions\TemplateTypeExtension.cs" />
     <Compile Include="Filters\FileDownloadAttribute.cs" />
-    <Compile Include="Formatters\FHIR\DSTU1\JSONFHIRMediaTypeFormatter.cs" />
-    <Compile Include="Formatters\FHIR\DSTU1\XMLFHIRMediaTypeFormatter.cs" />
     <Compile Include="Formatters\FHIR\DSTU2\FhirMediaTypeFormatter.cs" />
     <Compile Include="Formatters\FHIR\DSTU2\GeneralFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\FHIR\DSTU1\JSONFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\FHIR\DSTU1\XMLFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\FHIR\STU3\FhirMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\FHIR\STU3\GeneralFHIRMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\JavaScriptFormatter.cs" />
     <Compile Include="Formatters\TrifoliaXmlFormatter.cs" />
     <Compile Include="Models\Account\HL7LoginModel.cs" />
     <Compile Include="Models\Account\WhoAmIModel.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />
     <Compile Include="Models\Account\NewProfileModel.cs" />
     <Compile Include="Models\Account\UserProfile.cs" />
+    <Compile Include="Models\Admin\ClientConfigModel.cs" />
     <Compile Include="Models\BulkCopy\CopyConfig.cs" />
     <Compile Include="Models\BulkCopy\CopyModel.cs" />
     <Compile Include="Models\BulkCopy\CopyModelJson.cs" />
@@ -474,171 +504,6 @@
     <Content Include="App_Data\Trifolia.Web.XML">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\FHIR\DSTU2\account.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\address.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\age.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\allergyintolerance.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\annotation.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\appointment.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\appointmentresponse.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\argonaut-careplan.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\attachment.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\auditevent.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\backboneelement.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\base64binary.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\basic.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\binary.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\bodysite.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\boolean.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\bundle.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\careplan.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\cholesterol.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\claim.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\claimresponse.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\clinicaldocument.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\clinicalimpression.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\code.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\codeableconcept.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\coding.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\communication.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\communicationrequest.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\composition.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\conceptmap.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\condition.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\conformance.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\consentdirective.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\contactpoint.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\contract.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\count.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\coverage.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\dataelement.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\date.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\datetime.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\decimal.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\detectedissue.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\device.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\devicecomponent.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\devicemetric.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\devicemetricobservation.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\deviceuserequest.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\deviceusestatement.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\diagnosticorder.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\diagnosticreport.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\distance.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\documentmanifest.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\documentreference.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\domainresource.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\duration.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\ehrsrle-auditevent.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\ehrsrle-provenance.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\element.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\elementdefinition-de.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\elementdefinition.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\eligibilityrequest.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\eligibilityresponse.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\encounter.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\enrollmentrequest.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\enrollmentresponse.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\episodeofcare.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\explanationofbenefit.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\extension.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\familymemberhistory-genetic.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\familymemberhistory.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\flag.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\genetics.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\goal.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\group.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\hdlcholesterol.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\healthcareservice.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\humanname.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\id.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\identifier.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\imagingobjectselection.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\imagingstudy.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\immunization.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\immunizationrecommendation.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\implementationguide.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\instant.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\integer.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\ldlcholesterol.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\lipidprofile.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\list.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\location.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\markdown.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\measurereport.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\media.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\medication.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\medicationadministration.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\medicationdispense.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\medicationorder.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\medicationstatement.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\messageheader.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\meta.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\money.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\namingsystem.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\narrative.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\nutritionorder.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\observation.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\oid.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\operationdefinition.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\operationoutcome.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\order.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\orderresponse.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\organization.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\parameters.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\patient.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\paymentnotice.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\paymentreconciliation.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\period.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\person.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\positiveint.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\practitioner.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\procedure.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\procedurerequest.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\processrequest.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\processresponse.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\provenance.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\quantity.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\questionnaire.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\questionnaireresponse.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\range.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\ratio.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\reference.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\referralrequest.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\relatedperson.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\resource.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\riskassessment.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\sampleddata.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\schedule.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\sdc-element.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\sdc-questionnaire.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\sdc-response.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\sdc-valueset.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\sdcde-dataelement.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\sdcde-valueset.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\searchparameter.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\shareablevalueset.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\signature.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\simplequantity.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\slot.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\specimen.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\string.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\structuredefinition.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\subscription.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\substance.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\supplydelivery.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\supplyrequest.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\testscript.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\time.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\timing.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\triglyceride.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\unsignedint.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\uri.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\uuid.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\valueset.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\visionprescription.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\xdsdocumentmanifest.profile.xml" />
-    <Content Include="App_Data\FHIR\DSTU2\xdsdocumentreference.profile.xml" />
     <Content Include="favicon.ico" />
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="GenericError.html" />
@@ -953,6 +818,9 @@
     <Content Include="Scripts\q\VERSIONS.md" />
     <Content Include="Trifolia.Generation.config" />
     <Content Include="Views\IG\README.md" />
+    <Content Include="validation.xml.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Web.Install Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -985,13 +853,25 @@
       <Project>{3e3c8e62-b392-433d-8c18-a4cfc72b36ef}</Project>
       <Name>Trifolia.DB</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Export\Trifolia.Export.csproj">
+      <Project>{6be1523e-6d37-4bf2-9564-19170a7341e3}</Project>
+      <Name>Trifolia.Export</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trifolia.Generation\Trifolia.Generation.csproj">
       <Project>{6070b7b7-78be-44f7-9ebb-5ff0b944aaa3}</Project>
       <Name>Trifolia.Generation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Import\Trifolia.Import.csproj">
+      <Project>{71345c54-70ca-43c9-92ad-afc064521e43}</Project>
+      <Name>Trifolia.Import</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
       <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>
       <Name>Trifolia.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Plugins\Trifolia.Plugins.csproj">
+      <Project>{d723dc35-997a-4bf3-bc7c-a22cb63c3892}</Project>
+      <Name>Trifolia.Plugins</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trifolia.Shared\Trifolia.Shared.csproj">
       <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>

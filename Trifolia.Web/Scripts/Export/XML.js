@@ -13,6 +13,12 @@
     self.SelectedCategories = ko.observableArray([]);
     self.XmlType = ko.observable('Proprietary');
 
+    self.IsFhir = ko.computed(function () {
+        return _.some(trifoliaConfig.FhirIgTypes, function (fhirIgType) {
+            return fhirIgType.Name == self.ImplementationGuideType();
+        });
+    });
+
     var templatesLoaded = false;
 
     self.RefreshTemplates = function () {

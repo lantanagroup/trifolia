@@ -21,6 +21,7 @@
 <script type="text/javascript" src="/Scripts/bootstrap/bootstrap-spinedit.js"></script>
 <script type="text/javascript" src="/Scripts/bootstrap/bootstrap-datepicker.js"></script>
 
+<script type="text/javascript" src="/Scripts/lodash.min.js"></script>
 <script type="text/javascript" src="/Scripts/Mvc/MicrosoftAjax.js"></script>
 <script type="text/javascript" src="/Scripts/Mvc/MicrosoftMvcAjax.js"></script>
 <script type="text/javascript" src="/Scripts/Mvc/MicrosoftMvcValidation.js"></script>
@@ -55,3 +56,6 @@
 
 <!-- Localization -->
 <script type="text/javascript" src="/api/Localization?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+
+<!-- Config -->
+<script type="text/javascript" src="/api/Admin/Config?isRef=True&<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>

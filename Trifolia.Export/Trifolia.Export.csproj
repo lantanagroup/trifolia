@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6BE1523E-6D37-4BF2-9564-19170A7341E3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Trifolia.Export</RootNamespace>
+    <AssemblyName>Trifolia.Export</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Install Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Install Release|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hl7.Fhir.Core, Version=0.11.5.28859, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.0.11.5\lib\net45\Hl7.Fhir.Core.dll</HintPath>
+      <Private>True</Private>
+      <Aliases>fhir_dstu1</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.DSTU2.Core, Version=0.90.2.33399, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.DSTU2.0.90.2\lib\net45\Hl7.Fhir.DSTU2.Core.dll</HintPath>
+      <Private>True</Private>
+      <Aliases>fhir_dstu2</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.DSTU2.Specification, Version=0.90.2.33406, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.Specification.DSTU2.0.90.2\lib\net45\Hl7.Fhir.DSTU2.Specification.dll</HintPath>
+      <Private>True</Private>
+      <Aliases>fhir_dstu2</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.Specification, Version=0.11.5.28861, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.Specification.0.11.5\lib\net45\Hl7.Fhir.Specification.dll</HintPath>
+      <Private>True</Private>
+      <Aliases>fhir_dstu1</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.STU3.Core, Version=0.90.5.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\Hl7.Fhir.STU3.Core.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.STU3.Specification, Version=0.90.5.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\Hl7.Fhir.STU3.Specification.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
+    <Reference Include="LantanaGroup.ValidationUtility">
+      <HintPath>..\libraries\LantanaGroup.ValidationUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpCompress, Version=0.10.3.0, Culture=neutral, PublicKeyToken=64eb6448c87dfed9, processorArchitecture=MSIL">
+      <HintPath>..\packages\p3-sharpcompress.0.10.5.2\lib\net40\SharpCompress.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DECOR\ConstraintExporter.cs" />
+    <Compile Include="DECOR\DECOR.cs">
+      <DependentUpon>DECOR.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DECOR\TemplateExporter.cs" />
+    <Compile Include="FHIR\STU3\ImplementationGuideExporter.cs" />
+    <Compile Include="FHIR\STU3\StructureDefinitionExporter.cs" />
+    <Compile Include="FHIR\STU3\ValueSetExporter.cs" />
+    <Compile Include="FHIR\DSTU1\FHIRExporter.cs" />
+    <Compile Include="FHIR\DSTU2\ImplementationGuideExporter.cs" />
+    <Compile Include="FHIR\DSTU2\StructureDefinitionExporter.cs" />
+    <Compile Include="FHIR\DSTU2\ValueSetExporter.cs" />
+    <Compile Include="Native\ImplementationGuideExtension.cs" />
+    <Compile Include="Native\TemplateConstraintExtension.cs" />
+    <Compile Include="Native\TemplateExporter.cs" />
+    <Compile Include="Native\TemplateExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FHIR\DSTU1\TemplateExportToFHIRProfile.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DECOR\DECOR-datatypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DECOR\DECOR.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="validation.xml.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="validation.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Trifolia.Authorization\Trifolia.Authorization.csproj">
+      <Project>{d90e0eee-7ac3-4726-9a56-5b77632e9b3b}</Project>
+      <Name>Trifolia.Authorization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Config\Trifolia.Config.csproj">
+      <Project>{3fce87c4-71b6-4feb-a9ee-c6d64fdcc477}</Project>
+      <Name>Trifolia.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.DB\Trifolia.DB.csproj">
+      <Project>{3e3c8e62-b392-433d-8c18-a4cfc72b36ef}</Project>
+      <Name>Trifolia.DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Generation\Trifolia.Generation.csproj">
+      <Project>{6070b7b7-78be-44f7-9ebb-5ff0b944aaa3}</Project>
+      <Name>Trifolia.Generation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
+      <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>
+      <Name>Trifolia.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Shared\Trifolia.Shared.csproj">
+      <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>
+      <Name>Trifolia.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Terminology\Trifolia.Terminology.csproj">
+      <Project>{fdb22f8f-9677-471a-8929-b8dcb59e4c60}</Project>
+      <Name>Trifolia.Terminology</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Validation\Trifolia.Validation.csproj">
+      <Project>{02f2ab9f-856b-4a0c-be81-2dfa26b602b6}</Project>
+      <Name>Trifolia.Validation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

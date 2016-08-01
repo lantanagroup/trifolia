@@ -1,0 +1,1863 @@
+﻿{
+  "resourceType": "StructureDefinition",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">to do</div>"
+  },
+  "url": "http://hl7.org/fhir/StructureDefinition/cqif-questionnaire",
+  "name": "CQIF-Questionnaire",
+  "status": "draft",
+  "publisher": "Health Level Seven, Inc. - CDS WG",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "http://hl7.org/special/committees/dss"
+        }
+      ]
+    }
+  ],
+  "date": "2015-05-30",
+  "description": "A questionnaire with the ability to specify behavior associated with questions or groups of questions",
+  "fhirVersion": "1.5.0",
+  "mapping": [
+    {
+      "identity": "rim",
+      "uri": "http://hl7.org/v3",
+      "name": "RIM Mapping"
+    },
+    {
+      "identity": "w5",
+      "uri": "http://hl7.org/fhir/w5",
+      "name": "W5 Mapping"
+    },
+    {
+      "identity": "v2",
+      "uri": "http://hl7.org/v2",
+      "name": "HL7 v2 Mapping"
+    }
+  ],
+  "kind": "resource",
+  "abstract": false,
+  "type": "Questionnaire",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Questionnaire",
+  "derivation": "constraint",
+  "snapshot": {
+    "element": [
+      {
+        "id": "Questionnaire:cqif-questionnaire",
+        "path": "Questionnaire",
+        "name": "CQIF-Questionnaire",
+        "short": "A questionnaire with the ability to specify behavior associated with questions or groups of questions",
+        "definition": "A CQIF questionnaire is a questionnaire with the added ability to describe behavior associated with questions. For example, whether or not to display a particular question or group of questions, or automatically calculating the value of an answer based on the answers to previous questions.",
+        "alias": [
+          "Form",
+          "CRF",
+          "Survey"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Questionnaire",
+          "min": 0,
+          "max": "*"
+        },
+        "constraint": [
+          {
+            "key": "dom-2",
+            "severity": "error",
+            "human": "If the resource is contained in another resource, it SHALL NOT contain nested Resources",
+            "expression": "contained.contained.empty()",
+            "xpath": "not(parent::f:contained and f:contained)"
+          },
+          {
+            "key": "dom-1",
+            "severity": "error",
+            "human": "If the resource is contained in another resource, it SHALL NOT contain any narrative",
+            "expression": "contained.text.empty()",
+            "xpath": "not(parent::f:contained and f:text)"
+          },
+          {
+            "key": "dom-4",
+            "severity": "error",
+            "human": "If a resource is contained in another resource, it SHALL NOT have a meta.versionId or a meta.lastUpdated",
+            "expression": "contained.meta.versionId.empty() and contained.meta.lastUpdated.empty()",
+            "xpath": "not(exists(f:contained/*/f:meta/f:versionId)) and not(exists(f:contained/*/f:meta/f:lastUpdated))"
+          },
+          {
+            "key": "dom-3",
+            "severity": "error",
+            "human": "If the resource is contained in another resource, it SHALL be referred to from elsewhere in the resource",
+            "expression": "contained.where(('#'+id in %resource.descendents().reference).not()).empty()",
+            "xpath": "not(exists(for $id in f:contained/*/@id return $id[not(ancestor::f:contained/parent::*/descendant::f:reference/@value=concat('#', $id))]))"
+          },
+          {
+            "key": "que-2",
+            "severity": "error",
+            "human": "The link ids for groups and questions must be unique within the questionnaire",
+            "expression": "descendents().linkId.isDistinct()",
+            "xpath": "count(descendant::f:linkId/@value)=count(distinct-values(descendant::f:linkId/@value))"
+          }
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "Entity. Role, or Act"
+          },
+          {
+            "identity": "rim",
+            "map": "Observation[moodCode=DEF]"
+          },
+          {
+            "identity": "w5",
+            "map": "infrastructure.information"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.id",
+        "path": "Questionnaire.id",
+        "short": "Logical id of this artifact",
+        "definition": "The logical id of the resource, as used in the URL for the resource. Once assigned, this value never changes.",
+        "comments": "The only time that a resource does not have an id is when it is being submitted to the server using a create operation.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Resource.id",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "id"
+          }
+        ],
+        "isSummary": true
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.meta",
+        "path": "Questionnaire.meta",
+        "short": "Metadata about the resource",
+        "definition": "The metadata about the resource. This is content that is maintained by the infrastructure. Changes to the content may not always be associated with version changes to the resource.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Resource.meta",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Meta"
+          }
+        ],
+        "isSummary": true
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.implicitRules",
+        "path": "Questionnaire.implicitRules",
+        "short": "A set of rules under which this content was created",
+        "definition": "A reference to a set of rules that were followed when the resource was constructed, and which must be understood when processing the content.",
+        "comments": "Asserting this rule set restricts the content to be only understood by a limited set of trading partners. This inherently limits the usefulness of the data in the long term. However, the existing health eco-system is highly fractured, and not yet ready to define, collect, and exchange data in a generally computable sense. Wherever possible, implementers and/or specification writers should avoid using this element as much as possible.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Resource.implicitRules",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "isModifier": true,
+        "isSummary": true
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.language",
+        "path": "Questionnaire.language",
+        "short": "Language of the resource content",
+        "definition": "The base language in which the resource is written.",
+        "comments": "Language is provided to support indexing and accessibility (typically, services such as text to speech use the language tag). The html language tag in the narrative applies  to the narrative. The language tag on the resource may be used to specify the language of other presentations generated from the data in the resource  Not all the content has to be in the base language. The Resource.language should not be assumed to apply to the narrative automatically. If a language is specified, it should it also be specified on the div element in the html (see rules in HTML5 for information about the relationship between xml:lang and the html lang attribute).",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Resource.language",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet",
+              "valueReference": {
+                "reference": "http://hl7.org/fhir/ValueSet/all-languages"
+              }
+            }
+          ],
+          "strength": "extensible",
+          "description": "A human language.",
+          "valueSetReference": {
+            "reference": "http://hl7.org/fhir/ValueSet/languages"
+          }
+        }
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.text",
+        "path": "Questionnaire.text",
+        "short": "Text summary of the resource, for human interpretation",
+        "definition": "A human-readable narrative that contains a summary of the resource, and may be used to represent the content of the resource to a human. The narrative need not encode all the structured data, but is required to contain sufficient detail to make it \"clinically safe\" for a human to just read the narrative. Resource definitions may define what content should be represented in the narrative to ensure clinical safety.",
+        "comments": "Contained resources do not have narrative. Resources that are not contained SHOULD have a narrative. In some cases, a resource may only have text with little or no additional discrete data (as long as all minOccurs=1 elements are satisfied).  This may be necessary for data from legacy systems where information is captured as a \"text blob\" or where text is additionally entered raw or narrated and encoded in formation is added later.",
+        "alias": [
+          "narrative",
+          "html",
+          "xhtml",
+          "display"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "DomainResource.text",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Narrative"
+          }
+        ],
+        "condition": [
+          "dom-1"
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "Act.text?"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.contained",
+        "path": "Questionnaire.contained",
+        "short": "Contained, inline Resources",
+        "definition": "These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, and nor can they have their own independent transaction scope.",
+        "comments": "This should never be done when the content can be identified properly, as once identification is lost, it is extremely difficult (and context dependent) to restore it again.",
+        "alias": [
+          "inline resources",
+          "anonymous resources",
+          "contained resources"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "DomainResource.contained",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Resource"
+          }
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.extension:library$cqif-basic-library",
+        "path": "Questionnaire.extension",
+        "name": "library",
+        "short": "A library containing logic referenced by the questionnaire",
+        "definition": "A CQL or ELM library containing any logic referenced by the questionnaire.",
+        "alias": [
+          "library"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "DomainResource.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension",
+            "profile": "http://hl7.org/fhir/StructureDefinition/cqif-basic-library"
+          }
+        ],
+        "condition": [
+          "ele-1"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "All FHIR elements must have a @value or children",
+            "expression": "children().count() > id.count()",
+            "xpath": "@value|f:*|h:div"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), 'value')])"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.modifierExtension",
+        "path": "Questionnaire.modifierExtension",
+        "short": "Extensions that cannot be ignored",
+        "definition": "May be used to represent additional information that is not part of the basic definition of the resource, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.",
+        "comments": "There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "DomainResource.modifierExtension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "isModifier": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.url",
+        "path": "Questionnaire.url",
+        "short": "Globally unique logical identifier for  questionnaire",
+        "definition": "An absolute URL that is used to identify this questionnaire when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this questionnaire is (or will be) published.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.url",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".id[use=BUSN, reliability=ISS, extension is a URI]"
+          },
+          {
+            "identity": "w5",
+            "map": "id"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.identifier",
+        "path": "Questionnaire.identifier",
+        "short": "External identifiers for this questionnaire",
+        "definition": "This records identifiers associated with this question set that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).",
+        "requirements": "Need to allow connection to a wider workflow.",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Questionnaire.identifier",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Identifier"
+          }
+        ],
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".id[use=BUSN]"
+          },
+          {
+            "identity": "w5",
+            "map": "id"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.version",
+        "path": "Questionnaire.version",
+        "short": "Logical identifier for this version of Questionnaire",
+        "definition": "The version number assigned by the publisher for business reasons.  It may remain the same when the resource is updated.",
+        "requirements": "In some cases, separate resource instances might be created for each version (if an older version can be maintained once a new version exists).",
+        "alias": [
+          "N/A - MIF rather than RIM level"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.version",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".id[use=VER]"
+          },
+          {
+            "identity": "w5",
+            "map": "id.version"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.status",
+        "path": "Questionnaire.status",
+        "short": "draft | published | retired",
+        "definition": "The lifecycle status of the questionnaire as a whole.",
+        "min": 1,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.status",
+          "min": 1,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "isModifier": true,
+        "isSummary": true,
+        "binding": {
+          "strength": "required",
+          "description": "Lifecycle status of the questionnaire.",
+          "valueSetReference": {
+            "reference": "http://hl7.org/fhir/ValueSet/questionnaire-status"
+          }
+        },
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".statusCode (also whether there's a revisionControlAct - and possibly mood to distinguish \"in-progress\" from \"published)"
+          },
+          {
+            "identity": "w5",
+            "map": "status"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.date",
+        "path": "Questionnaire.date",
+        "short": "Date this version was authored",
+        "definition": "The date that this questionnaire was last changed.",
+        "alias": [
+          "Date created",
+          "Date published",
+          "Date issued",
+          "Date updated"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.date",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "dateTime"
+          }
+        ],
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".participation[typeCode=AUT].time"
+          },
+          {
+            "identity": "w5",
+            "map": "when.recorded"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.publisher",
+        "path": "Questionnaire.publisher",
+        "short": "Organization/individual who designed the questionnaire",
+        "definition": "Organization or person responsible for developing and maintaining the questionnaire.",
+        "requirements": "Conveys responsibility for the questions and their organization and also helps evaluate the questionnaire's \"authority\".",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.publisher",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".participation[typeCode=AUT].role"
+          },
+          {
+            "identity": "w5",
+            "map": "who.witness"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.telecom",
+        "path": "Questionnaire.telecom",
+        "short": "Contact information of the publisher",
+        "definition": "Contact details to assist a user in finding and communicating with the publisher.",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Questionnaire.telecom",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "ContactPoint"
+          }
+        ],
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".participation[typeCode=AUT].role.telecom"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.useContext",
+        "path": "Questionnaire.useContext",
+        "short": "Questionnaire intends to support these contexts",
+        "definition": "A code that identifies the questionnaire as falling into a particular group of like questionnaires; e.g. \"Pediatric\", \"Admissions\", \"Research\", \"Demographic\", \"Opinion Survey\", etc.",
+        "requirements": "Allows discovery of questionnaires.  Also allows organization of lists of questionnaires into groups for presentation.",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Questionnaire.useContext",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "CodeableConcept"
+          }
+        ],
+        "isSummary": true,
+        "binding": {
+          "strength": "extensible",
+          "description": "Indicates the countries, regions, disciplines and other aspects of use within which this artifact is targeted for use.",
+          "valueSetReference": {
+            "reference": "http://hl7.org/fhir/ValueSet/use-context"
+          }
+        }
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.title",
+        "path": "Questionnaire.title",
+        "short": "Name for the questionnaire",
+        "definition": "The name or label associated with this questionnaire.",
+        "requirements": "Used for display, searching.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.title",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".title"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.concept",
+        "path": "Questionnaire.concept",
+        "short": "Concept that represents the overall questionnaire",
+        "definition": "Identifies a how this question or group of questions is known in a particular terminology such as LOINC.",
+        "requirements": "Allows linking of the complete Questionnaire resources to formal terminologies.  It's common for \"pannels\" of questions to be identified by a code.",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Questionnaire.concept",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Coding"
+          }
+        ],
+        "isSummary": true,
+        "binding": {
+          "strength": "example",
+          "description": "Codes for questionnaires, groups and individual questions",
+          "valueSetReference": {
+            "reference": "http://hl7.org/fhir/ValueSet/questionnaire-questions"
+          }
+        },
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".code"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.subjectType",
+        "path": "Questionnaire.subjectType",
+        "short": "Resource that can be subject of QuestionnaireResponse",
+        "definition": "Identifies the types of subjects that can be the subject of the questionnaire.",
+        "comments": "If none are specified, then the subject is unlimited.",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Questionnaire.subjectType",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "isSummary": true,
+        "binding": {
+          "strength": "required",
+          "description": "One of the resource types defined as part of FHIR.",
+          "valueSetReference": {
+            "reference": "http://hl7.org/fhir/ValueSet/resource-types"
+          }
+        },
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".outboundRelationship[typeCode=META].target[classCode=OBS, moodCode=DEFN, isCriterion=true].participation.role.classCode"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item",
+        "path": "Questionnaire.item",
+        "short": "Questions and sections within the Questionnaire",
+        "definition": "The questions and groupings of questions that make up the questionnaire.",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Questionnaire.item",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ],
+        "condition": [
+          "que-3"
+        ],
+        "constraint": [
+          {
+            "key": "que-9",
+            "severity": "error",
+            "human": "Read-only can't be specified for \"display\" items",
+            "expression": "type!='display' or readOnly.empty()",
+            "xpath": "not(f:type/@value='display' and f:readOnly)"
+          },
+          {
+            "key": "que-8",
+            "severity": "error",
+            "human": "Default values can't be specified for groups or display items",
+            "expression": "(type!='group' and type!='display') or initial.empty()",
+            "xpath": "not(f:type/@value=('group', 'display') and f:*[starts-with(local-name(.), 'initial')])"
+          },
+          {
+            "key": "que-6",
+            "severity": "error",
+            "human": "Required and repeat aren't permitted for display items",
+            "expression": "type!='display' or (required.empty() and repeats.empty())",
+            "xpath": "not(f:type/@value='display' and (f:required or f:repeats))"
+          },
+          {
+            "key": "que-5",
+            "severity": "error",
+            "human": "Only 'choice' items can have options",
+            "expression": "(type ='choice' or type = 'open-choice') or (options.empty() and option.empty())",
+            "xpath": "f:type/@value=('choice','open-choice') or not(f:option or f:options)"
+          },
+          {
+            "key": "que-4",
+            "severity": "error",
+            "human": "A question cannot have both option and options",
+            "expression": "option.empty() or options.empty()",
+            "xpath": "not(f:options and f:option)"
+          },
+          {
+            "key": "que-3",
+            "severity": "error",
+            "human": "Display items cannot have a \"concept\" asserted",
+            "expression": "type!='display' or concept.empty()",
+            "xpath": "not(f:type/@value='display' and f:concept)"
+          },
+          {
+            "key": "que-10",
+            "severity": "error",
+            "human": "Maximum length can only be declared for simple question types",
+            "expression": "(type in ('boolean' | 'decimal' | 'integer' | 'string' | 'text' | 'url')) or maxLength.empty()",
+            "xpath": "f:type/@value=('boolean', 'decimal', 'integer', 'open-choice', 'string', 'text', 'url') or not(f:maxLength)"
+          },
+          {
+            "key": "que-1",
+            "severity": "error",
+            "human": "Group items must have nested items, display items cannot have nested items",
+            "expression": "(type='group' implies item.empty().not()) and (type.trace('type')='display' implies item.trace('item').empty())",
+            "xpath": "not((f:type/@value='group' and not(f:item)) or (f:type/@value='display' and f:item))"
+          }
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".outboundRelationship[typeCode=COMP].target[classCode=OBS, moodCode=DEF]"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.id",
+        "path": "Questionnaire.item.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "xml:id (or equivalent in JSON)",
+        "definition": "unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.extension",
+        "path": "Questionnaire.item.extension",
+        "slicing": {
+          "id": "96",
+          "discriminator": [
+            "url"
+          ],
+          "ordered": false,
+          "rules": "open"
+        },
+        "short": "Extension",
+        "definition": "An Extension",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.extension:condition$cqif-basic-condition",
+        "path": "Questionnaire.item.extension",
+        "name": "condition",
+        "short": "A condition that determines whether or not the group is applicable",
+        "definition": "The name of an expression that determines whether the group on which it appears is applicable. The expression is evaluated within the current context. If the result of evaluating the expression is true, the group is applicable. The expression has access to the current value of answered questions by the linkId of the question.",
+        "comments": "Note that per Lloyd this extension may not be necessary, it may be able to specified structurally using the elements already available within Questionnaire.",
+        "alias": [
+          "condition"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension",
+            "profile": "http://hl7.org/fhir/StructureDefinition/cqif-basic-condition"
+          }
+        ],
+        "condition": [
+          "ele-1"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "All FHIR elements must have a @value or children",
+            "expression": "children().count() > id.count()",
+            "xpath": "@value|f:*|h:div"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), 'value')])"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.extension:initialvalue$cqif-basic-initialValue",
+        "path": "Questionnaire.item.extension",
+        "name": "initialValue",
+        "short": "An expression that provides the initial value for the answer to the question",
+        "definition": "The name of an expression that determines the initial value for the answer to the question. This expression is evaluated once as part of displaying the form, and does not have access to the answers to other questions.",
+        "alias": [
+          "initialValue"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension",
+            "profile": "http://hl7.org/fhir/StructureDefinition/cqif-basic-initialValue"
+          }
+        ],
+        "condition": [
+          "ele-1"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "All FHIR elements must have a @value or children",
+            "expression": "children().count() > id.count()",
+            "xpath": "@value|f:*|h:div"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), 'value')])"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.extension:calculatedvalue$cqif-basic-calculatedValue",
+        "path": "Questionnaire.item.extension",
+        "name": "calculatedValue",
+        "short": "An expression that provides a calculated value for the answer to the question",
+        "definition": "The name of an expression that determines a calculated value for the answer to the question. The expression is evaluated as necessary and has access to the answers to other questions by the linkId of the question.",
+        "alias": [
+          "calculatedValue"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension",
+            "profile": "http://hl7.org/fhir/StructureDefinition/cqif-basic-calculatedValue"
+          }
+        ],
+        "condition": [
+          "ele-1"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "All FHIR elements must have a @value or children",
+            "expression": "children().count() > id.count()",
+            "xpath": "@value|f:*|h:div"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), 'value')])"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.modifierExtension",
+        "path": "Questionnaire.item.modifierExtension",
+        "short": "Extensions that cannot be ignored",
+        "definition": "May be used to represent additional information that is not part of the basic definition of the element, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.",
+        "comments": "There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content",
+          "modifiers"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "BackboneElement.modifierExtension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "isModifier": true,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.linkId",
+        "path": "Questionnaire.item.linkId",
+        "short": "To link questionnaire with questionnaire response",
+        "definition": "An identifier that is unique within the Questionnaire allowing linkage to the equivalent item in a QuestionnaireResponse resource.",
+        "comments": "May be omitted if there is no expectation to link answers back to a Questionnaire.  This ''can'' be a meaningful identifier (e.g. a LOINC code) but is not intended to have any meaning.  GUIDs or sequential numbers are appropriate here.",
+        "requirements": "[[[QuestionnaireResponse]]] does not require omitted items to be included and may have some items that repeat, so linkage based on position alone is not sufficient.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.linkId",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".id"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.concept",
+        "path": "Questionnaire.item.concept",
+        "short": "Concept that represents this item within in a questionnaire",
+        "definition": "Identifies a how this group of questions is known in a particular terminology such as LOINC.",
+        "comments": "The code(s) for the \"root\" group apply to the questionnaire as a whole.",
+        "requirements": "Allows linking of groups of questions (and complete Questionnaire resources) to formal terminologies.",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Questionnaire.item.concept",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Coding"
+          }
+        ],
+        "condition": [
+          "que-3"
+        ],
+        "isSummary": true,
+        "binding": {
+          "strength": "example",
+          "description": "Codes for questionnaires, groups and individual questions",
+          "valueSetReference": {
+            "reference": "http://hl7.org/fhir/ValueSet/questionnaire-questions"
+          }
+        },
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".code"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.prefix",
+        "path": "Questionnaire.item.prefix",
+        "short": "E.g. \"1(a)\", \"2.5.3\"",
+        "definition": "A short label for a particular group, question or set of display text within the questionnaire.",
+        "comments": "These are generally unique within a questionnaire, though this is not guaranteed. Some questionnaires may have multiple questions with the same label with logic to control which gets exposed.\n\nTypically these won't be used for \"text\" items, though such use is not prohibited.\n\nSystems SHOULD NOT generate their own prefixes if prefixes are defined for any items within a Questionnaire.",
+        "requirements": "Separating the label from the question text allows improved rendering.  Also, instructions will often refer to specific prefixes, so there's a need for the questionnaire design to have control over what labels are used.",
+        "alias": [
+          "label"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.prefix",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "Not supported"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.text",
+        "path": "Questionnaire.item.text",
+        "short": "Primary text for the item",
+        "definition": "The name of a section, the text of a question or text content for a text item.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.text",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".text"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.type",
+        "path": "Questionnaire.item.type",
+        "short": "group | display | question | boolean | decimal | integer | date | dateTime +",
+        "definition": "Identifies the type of questionnaire item this is - whether text for display, a grouping of other items or a particular type of data to be captured (string, integer, coded choice, etc.).",
+        "comments": "Additional constraints on the type of answer can be conveyed by extensions.",
+        "requirements": "Defines the format in which the user is to be prompted for the answer.",
+        "min": 1,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.type",
+          "min": 1,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "binding": {
+          "strength": "required",
+          "description": "Distinguishes groups from questions and display text and indicates data type for questions",
+          "valueSetReference": {
+            "reference": "http://hl7.org/fhir/ValueSet/item-type"
+          }
+        },
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.enableWhen",
+        "path": "Questionnaire.item.enableWhen",
+        "short": "Only allow data when:",
+        "definition": "If present, indicates that this item should only be enabled (displayed/allow answers to be captured) when the specified condition is true.",
+        "comments": "If multiple repetitions of this extension are present, the item should be enabled when the condition for *any* of the repetitions is true.  I.e. Treat \"enableWhen\"s as being joined by an \"or\" clause.\n\nIf enableWhen is present for an item, \"required\" is ignored unless one of the enableWhen conditions is met.",
+        "requirements": "Allows questionnaires to adapt based on answers to other questions; e.g. If physical gender is specified as a male, no need to capture pregnancy history.  Also allows conditional display of instructions or groups of questions.",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Questionnaire.item.enableWhen",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "que-7",
+            "severity": "error",
+            "human": "enableWhen must contain either an 'answer' or an 'answered' element",
+            "expression": "hasAnswer.exists() xor answer.exists()",
+            "xpath": "count(*[starts-with(local-name(.), 'answer')]|answered) = 1"
+          }
+        ],
+        "isModifier": true,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.enableWhen.id",
+        "path": "Questionnaire.item.enableWhen.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "xml:id (or equivalent in JSON)",
+        "definition": "unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.enableWhen.extension",
+        "path": "Questionnaire.item.enableWhen.extension",
+        "short": "Additional Content defined by implementations",
+        "definition": "May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.",
+        "comments": "There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.enableWhen.modifierExtension",
+        "path": "Questionnaire.item.enableWhen.modifierExtension",
+        "short": "Extensions that cannot be ignored",
+        "definition": "May be used to represent additional information that is not part of the basic definition of the element, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.",
+        "comments": "There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content",
+          "modifiers"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "BackboneElement.modifierExtension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "isModifier": true,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.enableWhen.question",
+        "path": "Questionnaire.item.enableWhen.question",
+        "short": "Question that determines whether item is enabled",
+        "definition": "The linkId for the question whose answer (or lack of answer) governs whether this item is enabled.",
+        "comments": "If multiple question occurrences are present for the same question (same linkId), then this refers to the nearest question occurrence reachable by tracing first the \"ancestor\" axis and then the \"preceding\" axis and then the \"following\" axis.",
+        "min": 1,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.enableWhen.question",
+          "min": 1,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.enableWhen.hasAnswer",
+        "path": "Questionnaire.item.enableWhen.hasAnswer",
+        "short": "Enable when answered or not",
+        "definition": "If present, indicates that this item should be enabled only if the specified question is answered or not answered.",
+        "comments": "If answered=false and answer values are also provided, then they are treated as \"or\".  I.e. \"Enable if the question is unanswered or the answer is one of the specified values\".  If answered=true and answers are present, one of the specified answers must be met. (So there's little reason to specify answered=true if answers are present.).",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.enableWhen.hasAnswer",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "boolean"
+          }
+        ],
+        "condition": [
+          "que-7"
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.enableWhen.answer[x]",
+        "path": "Questionnaire.item.enableWhen.answer[x]",
+        "short": "Value question must have",
+        "definition": "If present, then the answer for the referenced question must match this answer for all components present in the enableWhen.answer.",
+        "comments": "Components not specified in the answer do not need to match.  For example, if enableWhen specifies code + system for a Coding, it's ok if the answer has a \"display\" element.\n\nThe dataType of this element must be the same as the data type of the question being referenced.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.enableWhen.answer[x]",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "boolean"
+          },
+          {
+            "code": "decimal"
+          },
+          {
+            "code": "integer"
+          },
+          {
+            "code": "date"
+          },
+          {
+            "code": "dateTime"
+          },
+          {
+            "code": "instant"
+          },
+          {
+            "code": "time"
+          },
+          {
+            "code": "string"
+          },
+          {
+            "code": "uri"
+          },
+          {
+            "code": "Attachment"
+          },
+          {
+            "code": "Coding"
+          },
+          {
+            "code": "Quantity"
+          },
+          {
+            "code": "Reference",
+            "profile": "http://hl7.org/fhir/StructureDefinition/Resource"
+          }
+        ],
+        "condition": [
+          "que-7"
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.required",
+        "path": "Questionnaire.item.required",
+        "short": "Whether the item must be included in data results",
+        "definition": "If true, indicates that the item must be present in a \"completed\" QuestionnaireResponse.  If false, the item may be skipped when answering the questionnaire.",
+        "comments": "If an item that contains other items is marked as required, that does not automatically make the contained elements required (though required groups must contain at least one child element).",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.required",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "boolean"
+          }
+        ],
+        "defaultValueBoolean": false,
+        "condition": [
+          "que-6"
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.repeats",
+        "path": "Questionnaire.item.repeats",
+        "short": "Whether the item may repeat",
+        "definition": "Whether the item may occur multiple times in the instance, containing multiple sets of answers.",
+        "requirements": "Items may be used to create set of (related) questions that can be repeated to give multiple answers to such a set.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.repeats",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "boolean"
+          }
+        ],
+        "defaultValueBoolean": false,
+        "condition": [
+          "que-6"
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.readOnly",
+        "path": "Questionnaire.item.readOnly",
+        "short": "Don't allow human editing",
+        "definition": "If true, the value cannot be changed by a human respondent to the Questionnaire.",
+        "comments": "The value of readOnly elements can be established by asserting  extensions for defaultValues, linkages that support pre-population and/or extensions that support calculation based on other answers.",
+        "requirements": "Allows certain information to be phrased (and rendered) as a question and an answer, while keeping users from changing it.  May also be useful for preventing changes to pre-populated portions of a questionnaire, for calculated values, etc.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.readOnly",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "boolean"
+          }
+        ],
+        "condition": [
+          "que-9"
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.maxLength",
+        "path": "Questionnaire.item.maxLength",
+        "short": "No more than this many characters",
+        "definition": "The maximum number of characters that are permitted in the answer to be considered a \"valid\" QuestionnaireResponse.",
+        "comments": "For base64binary, reflects the number of characters representing the encoded data, not the number of bytes of the binary data.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.maxLength",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "integer"
+          }
+        ],
+        "condition": [
+          "que-10"
+        ],
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "N/A"
+          },
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.options",
+        "path": "Questionnaire.item.options",
+        "short": "Valueset containing permitted answers",
+        "definition": "Reference to a value set containing a list of codes representing permitted answers for the question.",
+        "comments": "LOINC defines many useful value sets for questionnaire response. See [LOINC Answer Lists](loinc.html#alist).",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.options",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Reference",
+            "profile": "http://hl7.org/fhir/StructureDefinition/ValueSet"
+          }
+        ],
+        "condition": [
+          "que-4",
+          "que-5"
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.option",
+        "path": "Questionnaire.item.option",
+        "short": "Permitted answer",
+        "definition": "For a \"choice\" question, identifies one of the permitted answers for the question.",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Questionnaire.item.option",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ],
+        "condition": [
+          "que-4",
+          "que-5"
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.option.id",
+        "path": "Questionnaire.item.option.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "xml:id (or equivalent in JSON)",
+        "definition": "unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.option.extension",
+        "path": "Questionnaire.item.option.extension",
+        "short": "Additional Content defined by implementations",
+        "definition": "May be used to represent additional information that is not part of the basic definition of the element. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.",
+        "comments": "There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.option.modifierExtension",
+        "path": "Questionnaire.item.option.modifierExtension",
+        "short": "Extensions that cannot be ignored",
+        "definition": "May be used to represent additional information that is not part of the basic definition of the element, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.",
+        "comments": "There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content",
+          "modifiers"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "BackboneElement.modifierExtension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "isModifier": true,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.option.value[x]",
+        "path": "Questionnaire.item.option.value[x]",
+        "short": "Answer value",
+        "definition": "Identifies a specific answer that's allowed as the answer to a question.",
+        "min": 1,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.option.value[x]",
+          "min": 1,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "integer"
+          },
+          {
+            "code": "date"
+          },
+          {
+            "code": "time"
+          },
+          {
+            "code": "string"
+          },
+          {
+            "code": "Coding"
+          }
+        ],
+        "binding": {
+          "strength": "example",
+          "description": "Allowed values to answer questions.",
+          "valueSetReference": {
+            "reference": "http://hl7.org/fhir/ValueSet/questionnaire-answers"
+          }
+        },
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.initial[x]",
+        "path": "Questionnaire.item.initial[x]",
+        "short": "Initial presumed answer for question",
+        "definition": "The value that should be pre-populated when rendering the questionnaire for user input.",
+        "requirements": "In some workflows, having defaults saves time.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Questionnaire.item.initial[x]",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "boolean"
+          },
+          {
+            "code": "decimal"
+          },
+          {
+            "code": "integer"
+          },
+          {
+            "code": "date"
+          },
+          {
+            "code": "dateTime"
+          },
+          {
+            "code": "instant"
+          },
+          {
+            "code": "time"
+          },
+          {
+            "code": "string"
+          },
+          {
+            "code": "uri"
+          },
+          {
+            "code": "Attachment"
+          },
+          {
+            "code": "Coding"
+          },
+          {
+            "code": "Quantity"
+          },
+          {
+            "code": "Reference",
+            "profile": "http://hl7.org/fhir/StructureDefinition/Resource"
+          }
+        ],
+        "condition": [
+          "que-8"
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A - MIF rather than RIM level"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.item",
+        "path": "Questionnaire.item.item",
+        "short": "Nested questionnaire items",
+        "definition": "Allows text, questions and other groups to be nested beneath a question or group.",
+        "requirements": "Reports can consist of complex nested groups.",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Questionnaire.item.item",
+          "min": 0,
+          "max": "*"
+        },
+        "contentReference": "#Questionnaire:cqif-questionnaire.item",
+        "condition": [
+          "que-1"
+        ],
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".outboundRelationship[typeCode=COMP].target"
+          }
+        ]
+      }
+    ]
+  },
+  "differential": {
+    "element": [
+      {
+        "id": "Questionnaire:cqif-questionnaire",
+        "path": "Questionnaire",
+        "name": "CQIF-Questionnaire",
+        "short": "A questionnaire with the ability to specify behavior associated with questions or groups of questions",
+        "definition": "A CQIF questionnaire is a questionnaire with the added ability to describe behavior associated with questions. For example, whether or not to display a particular question or group of questions, or automatically calculating the value of an answer based on the answers to previous questions.",
+        "min": 0,
+        "max": "*"
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.extension:library$cqif-basic-library",
+        "path": "Questionnaire.extension",
+        "name": "library",
+        "short": "A library containing logic referenced by the questionnaire",
+        "definition": "A CQL or ELM library containing any logic referenced by the questionnaire.",
+        "alias": [
+          "library"
+        ],
+        "type": [
+          {
+            "code": "Extension",
+            "profile": "http://hl7.org/fhir/StructureDefinition/cqif-basic-library"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item",
+        "path": "Questionnaire.item"
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.extension:condition$cqif-basic-condition",
+        "path": "Questionnaire.item.extension",
+        "name": "condition",
+        "short": "A condition that determines whether or not the group is applicable",
+        "definition": "The name of an expression that determines whether the group on which it appears is applicable. The expression is evaluated within the current context. If the result of evaluating the expression is true, the group is applicable. The expression has access to the current value of answered questions by the linkId of the question.",
+        "comments": "Note that per Lloyd this extension may not be necessary, it may be able to specified structurally using the elements already available within Questionnaire.",
+        "alias": [
+          "condition"
+        ],
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": "http://hl7.org/fhir/StructureDefinition/cqif-basic-condition"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.extension:initialvalue$cqif-basic-initialValue",
+        "path": "Questionnaire.item.extension",
+        "name": "initialValue",
+        "short": "An expression that provides the initial value for the answer to the question",
+        "definition": "The name of an expression that determines the initial value for the answer to the question. This expression is evaluated once as part of displaying the form, and does not have access to the answers to other questions.",
+        "alias": [
+          "initialValue"
+        ],
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": "http://hl7.org/fhir/StructureDefinition/cqif-basic-initialValue"
+          }
+        ]
+      },
+      {
+        "id": "Questionnaire:cqif-questionnaire.item.extension:calculatedvalue$cqif-basic-calculatedValue",
+        "path": "Questionnaire.item.extension",
+        "name": "calculatedValue",
+        "short": "An expression that provides a calculated value for the answer to the question",
+        "definition": "The name of an expression that determines a calculated value for the answer to the question. The expression is evaluated as necessary and has access to the answers to other questions by the linkId of the question.",
+        "alias": [
+          "calculatedValue"
+        ],
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": "http://hl7.org/fhir/StructureDefinition/cqif-basic-calculatedValue"
+          }
+        ]
+      }
+    ]
+  }
+}

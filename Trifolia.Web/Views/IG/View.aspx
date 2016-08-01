@@ -23,7 +23,6 @@
     <script type="text/javascript" src="/Scripts/angular/ui-bootstrap-tpls-0.12.1.min.js"></script>
     <script type="text/javascript" src="/Scripts/angular/highlight.min.js"></script>
     <script type="text/javascript" src="/Scripts/angular/angular-highlight.min.js"></script>
-    <script type="text/javascript" src="/Scripts/lodash.min.js"></script>
     <script type="text/javascript" src="/Scripts/backbone-min.js"></script>
     <script type="text/javascript" src="/Scripts/joint.min.js"></script>
     <script type="text/javascript" src="/Scripts/graphlib.core.min.js"></script>

@@ -154,7 +154,7 @@
     <value>You do not have permission to modify this template.</value>
   </data>
   <data name="TemplateNotFHIRDSTU2" xml:space="preserve">
-    <value>This is not a FHIR DSTU2 template/profile</value>
+    <value>This is not a FHIR DSTU2 profile</value>
   </data>
   <data name="TemplateNotFoundMessageFormat" xml:space="preserve">
     <value>Could not find the template/profile requested: {0}</value>
@@ -344,5 +344,8 @@
   </data>
   <data name="TemplateEditorViewModeTooltip" xml:space="preserve">
     <value>View mode changes between the Analyst, Editor and Engineer screens of the constraint editor.</value>
+  </data>
+  <data name="TemplateNotFHIRSTU3" xml:space="preserve">
+    <value>This is not a FHIR STU3 profile!</value>
   </data>
 </root>

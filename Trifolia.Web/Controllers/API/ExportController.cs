@@ -11,11 +11,9 @@ using System.Web.Http;
 using System.IO;
 using System.Xml;
 
-using ProprietaryTemplateExporter = Trifolia.Generation.XML.TemplateExporter;
-using DecorTemplateExporter = Trifolia.Generation.XML.DECOR.TemplateExporter;
+using NativeExporter = Trifolia.Export.Native.TemplateExporter;
+using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
 using Trifolia.Logging;
-using Trifolia.Generation.XML;
-using Trifolia.Generation.XML.FHIR.DSTU1;
 using Trifolia.Generation.Schematron;
 using Trifolia.Generation.IG;
 using Trifolia.Generation.Green;
@@ -26,6 +24,8 @@ using Trifolia.Shared;
 using Trifolia.Terminology;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using Ionic.Zip;
+using Trifolia.Shared.Plugins;
+using System.Web;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -104,7 +104,7 @@ namespace Trifolia.Web.Controllers.API
 
             try
             {
-                ProprietaryTemplateExporter exporter = new ProprietaryTemplateExporter(this.tdb, templates, igSettings, categories: model.SelectedCategories);
+                NativeExporter exporter = new NativeExporter(this.tdb, templates, igSettings, categories: model.SelectedCategories);
                 return exporter.GenerateExport();
             }
             catch (Exception ex)
@@ -132,83 +132,22 @@ namespace Trifolia.Web.Controllers.API
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, model.ImplementationGuideId);
             string fileName = string.Format("{0}.xml", ig.GetDisplayName(true));
             string export = string.Empty;
+            bool returnJson = Request.Headers.Accept.Count(y => y.MediaType == "application/json") == 1;
+            bool includeVocabulary = model.IncludeVocabulary == true;
+            var igTypePlugin = IGTypePluginFactory.GetPlugin(ig.ImplementationGuideType);
+            var schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, ig.ImplementationGuideType);
 
             if (model.XmlType == XMLSettingsModel.ExportTypes.Proprietary)
             {
-                bool isVerbose = ig.ImplementationGuideType.Name == ImplementationGuideType.FHIR_DSTU1_NAME || ig.ImplementationGuideType.Name == ImplementationGuideType.FHIR_DSTU2_NAME;
-                ProprietaryTemplateExporter exporter = new ProprietaryTemplateExporter(this.tdb, templates, igSettings, categories: model.SelectedCategories, verboseConstraints: isVerbose);
-                export = exporter.GenerateXMLExport();
+                export = igTypePlugin.Export(tdb, schema, ExportFormats.Proprietary, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
             }
             else if (model.XmlType == XMLSettingsModel.ExportTypes.DSTU)
             {
-                DecorTemplateExporter exporter = new DecorTemplateExporter(templates, this.tdb, model.ImplementationGuideId);
-                export = exporter.GenerateXML();
+                export = igTypePlugin.Export(tdb, schema, ExportFormats.TemplatesDSTU, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
             }
             else if (model.XmlType == XMLSettingsModel.ExportTypes.FHIR)
             {
-                FHIRExporter fhirExporter = new FHIRExporter(this.tdb, templates, igSettings, model.SelectedCategories);
-                export = fhirExporter.GenerateExport();
-
-                if (model.IncludeVocabulary == true)
-                {
-                    // Export the vocabulary for the implementation guide in SVS format
-                    VocabularyService vocService = new VocabularyService(this.tdb, false);
-                    string vocXml = vocService.GetImplementationGuideVocabulary(model.ImplementationGuideId, 1000, (int)VocabularySettingsModel.ExportFormatTypes.FHIR, "utf-8");
-
-                    // Merge the two ATOM exports together
-                    XmlDocument exportDoc = new XmlDocument();
-                    exportDoc.LoadXml(export);
-
-                    // Remove extra xmlns attributes from vocabulary xml
-                    System.Xml.Linq.XDocument doc = System.Xml.Linq.XDocument.Parse(vocXml);
-                    foreach (var descendant in doc.Root.Descendants())
-                    {
-                        var namespaceDeclarations = descendant.Attributes().Where(y => y.IsNamespaceDeclaration && y.Name.LocalName == "atom");
-                        foreach (var namespaceDeclaration in namespaceDeclarations)
-                        {
-                            namespaceDeclaration.Remove();
-                        }
-                    }
-                    vocXml = doc.ToString();
-
-                    XmlDocument vocDoc = new XmlDocument();
-                    vocDoc.LoadXml(vocXml);
-
-                    XmlNamespaceManager vocNsManager = new XmlNamespaceManager(vocDoc.NameTable);
-                    vocNsManager.AddNamespace("atom", "http://www.w3.org/2005/Atom");
-
-                    XmlNodeList vocEntryNodes = vocDoc.SelectNodes("/atom:feed/atom:entry", vocNsManager);
-
-                    foreach (XmlNode vocEntryNode in vocEntryNodes)
-                    {
-                        XmlNode clonedVocEntryNode = exportDoc.ImportNode(vocEntryNode, true);
-                        exportDoc.DocumentElement.AppendChild(clonedVocEntryNode);
-                    }
-
-                    // Format the XmlDocument and save it as a string
-                    using (StringWriter sw = new StringWriter())
-                    {
-                        XmlTextWriter xtw = new XmlTextWriter(sw);
-                        xtw.Formatting = Formatting.Indented;
-
-                        exportDoc.WriteContentTo(xtw);
-                        export = sw.ToString();
-                    }
-                }
-
-                if (Request.Headers.Accept.Count(y => y.MediaType == "application/json") == 1)
-                {
-                    fhir_dstu1.Hl7.Fhir.Model.Bundle bundle = fhir_dstu1.Hl7.Fhir.Serialization.FhirParser.ParseBundleFromXml(export);
-                    export = fhir_dstu1.Hl7.Fhir.Serialization.FhirSerializer.SerializeBundleToJson(bundle);
-                }
-            }
-            else if (model.XmlType == XMLSettingsModel.ExportTypes.FHIR2)
-            {
-                FHIR.DSTU2.FHIR2ImplementationGuideController controller = new FHIR.DSTU2.FHIR2ImplementationGuideController(this.tdb);
-                controller.RequestContext = this.RequestContext;
-                controller.Request = this.Request;
-                fhir_dstu2.Hl7.Fhir.Model.Bundle bundle = controller.GetImplementationGuides(null, "ImplementationGuide:resource", model.ImplementationGuideId, null);
-                export = fhir_dstu2.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToXml(bundle);
+                export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIR, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
             }
             else if (model.XmlType == XMLSettingsModel.ExportTypes.JSON)
             {

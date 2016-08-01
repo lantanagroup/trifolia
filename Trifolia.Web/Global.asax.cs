@@ -12,6 +12,7 @@ using System.Security;
 using Trifolia.Authentication;
 using Trifolia.Logging;
 using Trifolia.Web.Filters;
+using Trifolia.Shared.FHIR.Profiles.STU3;
 
 namespace Trifolia.Web
 {
@@ -241,6 +242,8 @@ namespace Trifolia.Web
 
             ValueProviderFactories.Factories.Remove(ValueProviderFactories.Factories.OfType<System.Web.Mvc.JsonValueProviderFactory>().FirstOrDefault());
             ValueProviderFactories.Factories.Add(new TrifoliaJsonValueProviderFactory());
+
+            ProfileHelper.LoadProfileBundle();
         }
 
         void Application_End(object sender, EventArgs e)

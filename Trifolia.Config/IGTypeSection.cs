@@ -9,6 +9,7 @@ namespace Trifolia.Config
     public class IGTypeSection : ConfigurationSection
     {
         private const string PLUGINS_PROP = "plugins";
+        private const string FHIR_IG_TYPES_PROP = "fhirIgTypes";
         private const string CONFIG_SECTION_NAME = "igTypes";
 
         private static IGTypeSection _configSection;
@@ -22,6 +23,12 @@ namespace Trifolia.Config
         public IGTypePluginCollection Plugins
         {
             get { return (IGTypePluginCollection)base[PLUGINS_PROP]; }
+        }
+
+        [ConfigurationProperty(FHIR_IG_TYPES_PROP, IsDefaultCollection = true)]
+        public IGTypeFhirCollection FhirIgTypes
+        {
+            get { return (IGTypeFhirCollection)base[FHIR_IG_TYPES_PROP]; }
         }
     }
 }

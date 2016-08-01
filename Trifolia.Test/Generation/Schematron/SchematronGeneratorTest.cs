@@ -19,6 +19,7 @@ using ValueSet = Trifolia.DB.ValueSet;
 using CodeSystem = Trifolia.DB.CodeSystem;
 using Trifolia.DB;
 using Trifolia.Generation.Schematron.Utilities;
+using Trifolia.Import.Native;
 
 namespace Trifolia.Test.Generation.Schematron
 {

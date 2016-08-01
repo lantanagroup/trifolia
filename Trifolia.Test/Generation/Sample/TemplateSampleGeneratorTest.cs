@@ -4,6 +4,7 @@ using System;
 
 using Trifolia.Generation.IG;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
 using Trifolia.DB;
 
 namespace Trifolia.Test.Generation.Sample
@@ -78,11 +79,11 @@ namespace Trifolia.Test.Generation.Sample
             MockObjectRepository lRepository = new MockObjectRepository();
 
             Template lMockTemplate = TestDataGenerator.GenerateTemplate();
-            TemplateSampleGenerator target = TemplateSampleGenerator.CreateTemplateSampleGenerator(lRepository, lMockTemplate);
-            string sampleXml = target.GenerateSample();
+
+            var plugin = lMockTemplate.ImplementationGuideType.GetPlugin();
+            string sampleXml = plugin.GenerateSample(lRepository, lMockTemplate);
 
             Assert.IsNotNull(sampleXml, "Sample XML was not created");
-            Assert.IsTrue(target.IsSchemaValid, "Target schema was not valid");
 
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(sampleXml);

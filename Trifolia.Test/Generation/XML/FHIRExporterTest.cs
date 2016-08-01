@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Trifolia.Generation.XML.FHIR.DSTU1;
 using Trifolia.DB;
+using Trifolia.Export.FHIR.DSTU1;
 
 namespace Trifolia.Test.Generation.XML
 {
@@ -26,8 +25,7 @@ namespace Trifolia.Test.Generation.XML
             List<Template> templates = new List<Template>();
             templates.Add(t);
 
-            FHIRExporter exporter = new FHIRExporter(tdb, templates, new Trifolia.Shared.IGSettingsManager(tdb));
-            string export = exporter.GenerateExport();
+            string export = FHIRExporter.GenerateExport(tdb, templates, new Trifolia.Shared.IGSettingsManager(tdb));
 
             Assert.IsNotNull(export, "Expected generated export not to be null");
             Assert.AreNotEqual(0, export.Length, "Expected generated export not to be empty");

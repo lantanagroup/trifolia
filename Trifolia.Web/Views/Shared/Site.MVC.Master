@@ -14,15 +14,9 @@
             width: 100%;
         }
     </style>
-
+    <script type="text/javascript" src="/Scripts/ContainerViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript">
-        var supportViewModel;
-        var helpModel;
-        var containerViewModel;
-
-        $(document).ready(function () {
-            containerViewModel = new ContainerViewModel();
-        });
+        var containerViewModel = new ContainerViewModel();
     </script>
 </head>
 <body id="mainBody" runat="server">
@@ -427,10 +421,16 @@
         </div>
     </script>
 
-    <script type="text/javascript" src="/Scripts/ContainerViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript">
+        var supportViewModel;
+        var helpModel;
+        var containerViewModel;
+        var trifoliaConfig;
+
         $(document).ready(function () {
-            ko.applyBindings(containerViewModel, $('#appnav')[0]);
+            $(document).ready(function () {
+                ko.applyBindings(containerViewModel, $('#appnav')[0]);
+            });
 
             $(document).mousemove(function (e) {
                 window.mouseXPos = e.pageX;

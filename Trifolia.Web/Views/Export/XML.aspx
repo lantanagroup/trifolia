@@ -40,11 +40,8 @@
                         <label>Type</label>
                         <select class="form-control" name="XmlType" data-bind="value: XmlType">
                             <option value="Proprietary">Trifolia XML</option>
-                            <!-- ko if: ImplementationGuideType() == 'FHIR DSTU1' -->
+                            <!-- ko if: IsFhir() -->
                             <option value="FHIR">FHIR XML</option>
-                            <!-- /ko -->
-                            <!-- ko if: ImplementationGuideType() == 'FHIR DSTU2' -->
-                            <option value="FHIR2">FHIR XML</option>
                             <!-- /ko -->
                             <option value="JSON">Data Snapshot (JSON)</option>
                             <!-- ko if: ImplementationGuideType() == 'CDA' -->

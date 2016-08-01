@@ -6,8 +6,10 @@ using System.Net.Http;
 using System.Web.Http;
 
 using Trifolia.DB;
+using Trifolia.Config;
 using Trifolia.Web.Models.RoleManagement;
 using Trifolia.Authorization;
+using Trifolia.Web.Models.Admin;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -246,6 +248,54 @@ namespace Trifolia.Web.Controllers.API
                 foundRole.IsDefault = true;
 
             this.tdb.SaveChanges();
+        }
+
+        #endregion
+
+        #region Client Config
+
+        /// <summary>
+        /// Gets configuration information used by the client-side application
+        /// </summary>
+        [HttpGet, Route("api/Admin/Config")]
+        public IHttpActionResult GetClientConfig(bool isRef = false)
+        {
+            var clientConfig = new ClientConfigModel();
+
+            foreach (IGTypeFhirElement fit in IGTypeSection.GetSection().FhirIgTypes)
+            {
+                ImplementationGuideType igType = this.tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == fit.ImplementationGuideTypeName.ToLower());
+
+                var fhirIgType = new ClientConfigModel.FhirIgType()
+                {
+                    Id = igType.Id,
+                    Name = igType.Name,
+                    Version = fit.Version
+                };
+
+                switch (fhirIgType.Version)
+                {
+                    case "DSTU1":
+                        fhirIgType.BaseUrl = "/api/FHIR1/";
+                        break;
+                    case "DSTU2":
+                        fhirIgType.BaseUrl = "/api/FHIR2/";
+                        break;
+                    case "STU3":
+                        fhirIgType.BaseUrl = "/api/FHIR3/";
+                        break;
+                }
+
+                clientConfig.FhirIgTypes.Add(fhirIgType);
+            }
+
+            if (isRef)
+            {
+                var clientConfigJson = Newtonsoft.Json.JsonConvert.SerializeObject(clientConfig);
+                return Content<string>(HttpStatusCode.OK, "var trifoliaConfig = " + clientConfigJson + ";", new Formatters.JavaScriptFormatter(), "text/javascript");
+            }
+
+            return Content<ClientConfigModel>(HttpStatusCode.OK, clientConfig);
         }
 
         #endregion
