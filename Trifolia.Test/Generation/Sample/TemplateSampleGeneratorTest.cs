@@ -16,6 +16,8 @@ namespace Trifolia.Test.Generation.Sample
     ///to contain all TemplateSampleGeneratorTest Unit Tests
     ///</summary>
     [TestClass()]
+    [DeploymentItem("Trifolia.Plugins.dll")]
+    [DeploymentItem("Schemas\\", "Schemas\\")]
     public class TemplateSampleGeneratorTest
     {
 
@@ -73,8 +75,6 @@ namespace Trifolia.Test.Generation.Sample
         ///A test for GenerateSample
         ///</summary>
         [TestMethod()]
-        [DeploymentItem("Schemas\\", "Schemas\\")]
-        [DeploymentItem("Trifolia.Plugins.dll")]
         public void GenerateSampleTest()
         {
             MockObjectRepository lRepository = new MockObjectRepository();

@@ -11,7 +11,8 @@ using Trifolia.DB;
 
 namespace Trifolia.Test.Generation.Schematron
 {
-	[TestClass]
+    [TestClass]
+    [DeploymentItem("Trifolia.Plugins.dll")]
 	public class SchematronAssertionGeneratorTest
     {
         private static MockObjectRepository ruleRepo = new MockObjectRepository();
