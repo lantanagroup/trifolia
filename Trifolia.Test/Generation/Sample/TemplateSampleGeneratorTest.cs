@@ -74,6 +74,7 @@ namespace Trifolia.Test.Generation.Sample
         ///</summary>
         [TestMethod()]
         [DeploymentItem("Schemas\\", "Schemas\\")]
+        [DeploymentItem("Trifolia.Plugins.dll")]
         public void GenerateSampleTest()
         {
             MockObjectRepository lRepository = new MockObjectRepository();
