@@ -487,16 +487,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\FHIR\STU3\conceptmaps.xml" />
-    <Content Include="App_Data\FHIR\STU3\dataelements.xml" />
-    <Content Include="App_Data\FHIR\STU3\extension-definitions.xml" />
-    <Content Include="App_Data\FHIR\STU3\profiles-others.xml" />
-    <Content Include="App_Data\FHIR\STU3\profiles-resources.xml" />
-    <Content Include="App_Data\FHIR\STU3\profiles-types.xml" />
-    <Content Include="App_Data\FHIR\STU3\search-parameters.xml" />
-    <Content Include="App_Data\FHIR\STU3\v2-tables.xml" />
-    <Content Include="App_Data\FHIR\STU3\v3-codesystems.xml" />
-    <Content Include="App_Data\FHIR\STU3\valuesets.xml" />
     <Content Include="App_Data\Trifolia.Authorization.XML" />
     <Content Include="App_Data\Trifolia.Web.XML">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
