@@ -485,7 +485,7 @@ namespace Trifolia.Generation.Schematron
                         elementAssert = elementAssert + string.Format(format, this.GetFormattedPrefix(), root, extension);
                     }
                 }
-                else if (IdentifierHelper.GetIdentifierURI(_containedTemplateOid, out urn))
+                else if (IdentifierHelper.GetIdentifierURL(_containedTemplateOid, out urn))
                 {
                     string format = "[" + this._templateIdentifierXpath + "]";
                     elementAssert = elementAssert + string.Format(format, this.GetFormattedPrefix(), urn);

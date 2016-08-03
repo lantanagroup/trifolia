@@ -18,6 +18,7 @@ namespace Trifolia.Web.Models.Import
         private Dictionary<TemplateSample, EntityState> ImportedTemplateSamples { get; set; }
 
         public List<string> Messages { get; set; }
+        public bool Success { get; set; }
 
         public List<ImportedTemplate> Templates
         {

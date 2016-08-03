@@ -11,6 +11,7 @@ namespace Trifolia.Shared
     {
         private const string OID_REGEX = "^urn:oid:(.+)";
         private const string II_REGEX = "^urn:hl7ii:(.+)?:(.+)?";
+        private const string URL_REGEX = "^http[s]?://(.+)";
         private const string URI_REGEX = "^uri:(.+)";
 
         /// <summary>
@@ -66,6 +67,30 @@ namespace Trifolia.Shared
 
             root = extension = null;
             return false;
+        }
+
+        /// <summary>
+        /// Determines if the identifier for the template is a "uri:" identifier
+        /// </summary>
+        public static bool IsIdentifierURL(string templateIdentifier)
+        {
+            if (templateIdentifier == null)
+                return false;
+
+            Regex regex = new Regex(URL_REGEX, RegexOptions.Multiline);
+            return regex.IsMatch(templateIdentifier);
+        }
+
+        public static bool GetIdentifierURL(string templateIdentifier, out string url)
+        {
+            if (!IsIdentifierURL(templateIdentifier))
+            {
+                url = null;
+                return false;
+            }
+
+            url = templateIdentifier;
+            return true;
         }
 
         /// <summary>

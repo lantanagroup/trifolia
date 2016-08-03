@@ -1457,6 +1457,9 @@
     <Folder Include="Controllers\Schema\" />
     <Folder Include="Controllers\TemplateManagement\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DocSamples\FHIR\DSTU1\bundle.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

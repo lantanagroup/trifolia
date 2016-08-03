@@ -199,7 +199,7 @@ namespace Trifolia.Import.Native
                 return null;
             }
 
-            var template = this.tdb.Templates.SingleOrDefault(y => y.Oid.ToLower() == importTemplate.identifier.ToLower());
+            var template = this.tdb.Templates.SingleOrDefaultInclAdded(y => y.Oid.ToLower() == importTemplate.identifier.ToLower());
 
             if (!shouldUpdate && template != null)
             {
@@ -210,8 +210,13 @@ namespace Trifolia.Import.Native
             if (template == null)
             {
                 template = new TDBTemplate();
-                template.Author = this.DefaultAuthorUser;
                 template.Oid = importTemplate.identifier;
+
+                if (!template.IsIdentifierII() && !template.IsIdentifierOID() && !template.IsIdentifierURL())
+                {
+                    errors.Add("Template identifier " + template.Oid + " is not properly formatted. Must be urn:hl7ii:XXX:YYY or urn:oid:XXX or http(s)://XXX");
+                    return null;
+                }
                 
                 if (this.DefaultAuthorUser != null)
                     template.Author = this.DefaultAuthorUser;
@@ -220,10 +225,6 @@ namespace Trifolia.Import.Native
 
                 this.tdb.Templates.AddObject(template);
             }
-
-            this.UpdateTemplateProperties(template, importTemplate);
-
-            this.UpdateTemplateSamples(template, importTemplate);
 
             // Find implementation guide type
             ImplementationGuideType igType = this.tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == importTemplate.implementationGuideType.ToLower());
@@ -241,7 +242,7 @@ namespace Trifolia.Import.Native
 
             if (importTemplate.ImplementationGuide != null && !string.IsNullOrEmpty(importTemplate.ImplementationGuide.name))
             {
-                ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => 
+                ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefaultInclAdded(y => 
                     y.Name.ToLower() == importTemplate.ImplementationGuide.name.ToLower() &&
                     (
                         (y.Version == null && importTemplate.ImplementationGuide.version == 1) || 
@@ -327,6 +328,10 @@ namespace Trifolia.Import.Native
                         impliedTemplate.ImplyingTemplates.Add(template);
                 }
             }
+
+            this.UpdateTemplateProperties(template, importTemplate);
+
+            this.UpdateTemplateSamples(template, importTemplate);
 
             // Extensions
             foreach (var existingExtension in template.Extensions.ToList())
@@ -700,7 +705,7 @@ namespace Trifolia.Import.Native
 
         private TDBTemplate FindOrBuildTemplate(string identifier)
         {
-            TDBTemplate template = this.tdb.Templates.SingleOrDefault(y => y.Oid.ToLower() == identifier.ToLower());
+            TDBTemplate template = this.tdb.Templates.SingleOrDefaultInclAdded(y => y.Oid.ToLower() == identifier.ToLower());
 
             // If we didn't find the implied template in the database, check our import
             if (template == null)

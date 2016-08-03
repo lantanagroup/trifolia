@@ -95,7 +95,7 @@ namespace Trifolia.Plugins
                 searchXpath = string.Format("templateId[@root='{0}']", oid);
             else if (template.GetIdentifierII(out root, out extension))
                 searchXpath = string.Format("templateId[@root='{0}'][@extension='{1}']", root, extension);
-            else if (template.GetIdentifierURI(out uri))
+            else if (template.GetIdentifierURL(out uri))
                 searchXpath = string.Format("templateId[@root='{0}']", uri);
             else
                 throw new Exception("Unexpected identifier format!");
@@ -127,7 +127,7 @@ namespace Trifolia.Plugins
                     extensionAttr.Value = extension;
                     identifierNode.Attributes.Append(extensionAttr);
                 }
-                else if (template.GetIdentifierURI(out uri))
+                else if (template.GetIdentifierURL(out uri))
                 {
                     XmlAttribute rootAttr = templateElement.OwnerDocument.CreateAttribute("root");
                     rootAttr.Value = uri;

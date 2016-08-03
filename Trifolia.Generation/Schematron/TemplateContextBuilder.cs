@@ -47,7 +47,7 @@ namespace Trifolia.Generation.Schematron
                 else
                     context.Append(string.Format(versionIdentifierFormat, schemaPrefix, root, extension));
             }
-            else if (IdentifierHelper.GetIdentifierURI(aTemplate.Oid, out urn))
+            else if (IdentifierHelper.GetIdentifierURL(aTemplate.Oid, out urn))
             {
                 context.Append(string.Format(identifierFormat, schemaPrefix, urn));
             }

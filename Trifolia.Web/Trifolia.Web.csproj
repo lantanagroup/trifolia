@@ -249,6 +249,7 @@
     <Compile Include="Controllers\API\FHIR\STU3\StructureDefinitionController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\API\FHIR\STU3\ValidationController.cs" />
     <Compile Include="Controllers\API\FHIR\STU3\ValueSetController.cs">
       <SubType>Code</SubType>
     </Compile>

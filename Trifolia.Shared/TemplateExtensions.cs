@@ -203,14 +203,14 @@ namespace Trifolia.DB
         /// <summary>
         /// Determines if the identifier for the template is a "urn:" identifier
         /// </summary>
-        public static bool IsIdentifierURI(this Template template)
+        public static bool IsIdentifierURL(this Template template)
         {
-            return IdentifierHelper.IsIdentifierURI(template.Oid);
+            return IdentifierHelper.IsIdentifierURL(template.Oid);
         }
 
-        public static bool GetIdentifierURI(this Template template, out string uri)
+        public static bool GetIdentifierURL(this Template template, out string uri)
         {
-            return IdentifierHelper.GetIdentifierURI(template.Oid, out uri);
+            return IdentifierHelper.GetIdentifierURL(template.Oid, out uri);
         }
 
         public static string GetViewUrl(this Template template, string linkBase = null)
@@ -228,7 +228,7 @@ namespace Trifolia.DB
             {
                 return string.Format("{0}/TemplateManagement/View/II/{1}/{2}", linkBase, root, extension);
             }
-            else if (template.GetIdentifierURI(out uri))
+            else if (template.GetIdentifierURL(out uri))
             {
                 if (uri.IndexOf(':') < 0 && uri.IndexOf('/') < 0 || uri.IndexOf('.') != uri.Length - 1)
                     return string.Format("{0}/TemplateManagement/View/URI/{1}", linkBase, uri);
@@ -252,7 +252,7 @@ namespace Trifolia.DB
             {
                 return string.Format("/TemplateManagement/Edit/II/{0}/{1}", root, extension);
             }
-            else if (template.GetIdentifierURI(out uri))
+            else if (template.GetIdentifierURL(out uri))
             {
                 if (uri.IndexOf(':') < 0 && uri.IndexOf('/') < 0 || uri.IndexOf('.') != uri.Length - 1)
                     return string.Format("/TemplateManagement/Edit/URI/{0}", uri);
@@ -276,7 +276,7 @@ namespace Trifolia.DB
             {
                 return string.Format("/TemplateManagement/Move/II/{0}/{1}", root, extension);
             }
-            else if (template.GetIdentifierURI(out uri))
+            else if (template.GetIdentifierURL(out uri))
             {
                 if (uri.IndexOf(':') < 0 && uri.IndexOf('/') < 0 || uri.IndexOf('.') != uri.Length - 1)
                     return string.Format("/TemplateManagement/Move/URI/{0}", uri);

@@ -172,6 +172,9 @@ namespace Trifolia.Shared.ImportExport
         {
             var importIgStatus = GetImportStatus(importImplementationGuide);
 
+            if (implementationGuide.Organization == null)
+                implementationGuide.Organization = CheckPoint.Instance.GetUser(this.tdb).Organization;
+
             if (implementationGuide.Name != importImplementationGuide.name)
                 implementationGuide.Name = importImplementationGuide.name;
 
