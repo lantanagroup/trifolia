@@ -6,10 +6,13 @@ using System.Collections.Generic;
 
 using Trifolia.Shared;
 using Trifolia.Shared.ImportExport;
+using Trifolia.Shared.ImportExport.Model;
+using ExportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
 using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using ExportConformanceTypes = Trifolia.Shared.ImportExport.Model.ConstraintTypeConformance;
 using Trifolia.DB;
 using Trifolia.Import.Native;
+using Trifolia.Web.Controllers.API;
 
 namespace Trifolia.Test.Import
 {
@@ -18,7 +21,7 @@ namespace Trifolia.Test.Import
     ///to contain all TemplateExportFactoryTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class TemplateImportTest
+    public class ImportTest
     {
         private TestContext testContextInstance;
 
@@ -68,6 +71,28 @@ namespace Trifolia.Test.Import
         //
         #endregion
 
+        [TestMethod]
+        public void TestImportController()
+        {
+            MockObjectRepository tdb = new MockObjectRepository();
+            tdb.InitializeCDARepository();
+            tdb.InitializeLCG();
+            
+            string importXml = Helper.GetSampleContents("Trifolia.Test.DocSamples.ccda1-native.xml");
+            ExportModel model = ExportModel.Deserialize(importXml);
+
+            Helper.AuthLogin(tdb, MockObjectRepository.DEFAULT_USERNAME, MockObjectRepository.DEFAULT_ORGANIZATION);
+
+            ImportController controller = new ImportController(tdb);
+            var importResponse = controller.ImportTrifoliaModel(model);
+
+            Assert.IsTrue(importResponse.Success, "Expected import to succeed");
+
+            importResponse = controller.ImportTrifoliaModel(model);
+
+            Assert.IsTrue(importResponse.Success, "Expected import to succeed for a second time");
+        }
+
         /// <summary>
         ///A test for ImportTemplates
         ///</summary>
@@ -94,7 +119,7 @@ namespace Trifolia.Test.Import
                 "    </Constraint>" +
                 "    <Constraint isVerbose=\"false\" number=\"1003\" context=\"code\" conformance=\"SHALL\" cardinality=\"1..1\">" +
                 "      <Constraint isVerbose=\"false\" number=\"1004\" context=\"@code\" conformance=\"SHALL\" cardinality=\"1..1\" dataType=\"CE\">" +
-                "        <ValueSet oid=\"9.8.7.6.5.4.3.2.1\" isStatic=\"true\" />" +
+                "        <ValueSet identifier=\"9.8.7.6.5.4.3.2.1\" isStatic=\"true\" />" +
                 "      </Constraint>" +
                 "    </Constraint>" +
                 "  </Template>" +

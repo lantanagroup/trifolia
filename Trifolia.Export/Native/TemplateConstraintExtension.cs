@@ -95,7 +95,7 @@ namespace Trifolia.Export.Native
                     name = constraint.ValueSet.Name,
                     isStatic = constraint.IsStatic == true,
                     isStaticSpecified = constraint.IsStatic != null,
-                    oid = constraint.ValueSet.Oid
+                    identifier = constraint.ValueSet.Oid
                 };
                 exportConstraint.Item = exportValueSet;
             }
@@ -104,7 +104,8 @@ namespace Trifolia.Export.Native
             {
                 exportConstraint.CodeSystem = new ExportCodeSystem()
                 {
-                    oid = constraint.CodeSystem.Oid
+                    identifier = constraint.CodeSystem.Oid,
+                    name = constraint.CodeSystem.Name
                 };
             }
             else

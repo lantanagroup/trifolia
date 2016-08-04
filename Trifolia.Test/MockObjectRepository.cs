@@ -23,6 +23,7 @@ namespace Trifolia.Test
         public const string DEFAULT_FHIR_STU3_IG_TYPE_NAME = "FHIR Latest";
         public const string DEFAULT_CDA_IG_TYPE_NAME = "CDA";
         public const string DEFAULT_HQMF_R2_IG_TYPE_NAME = "HQMF R2";
+        public const string DEFAULT_USERNAME = "admin";
 
         public MockObjectRepository()
         {
@@ -73,6 +74,8 @@ namespace Trifolia.Test
             this.FindOrCreateTemplateType(cdaType, "Document", "ClinicalDocument", "ClinicalDocument", 1);
             this.FindOrCreateTemplateType(cdaType, "Section", "section", "Section", 2);
             this.FindOrCreateTemplateType(cdaType, "Entry", "entry", "Entry", 3);
+            this.FindOrCreateTemplateType(cdaType, "Subentry", "entry", "Entry", 4);
+            this.FindOrCreateTemplateType(cdaType, "Unspecified", "", "", 4);
         }
 
         public void InitializeFHIRRepository()
@@ -116,14 +119,14 @@ namespace Trifolia.Test
         public void InitializeLCG()
         {
             var org = this.FindOrAddOrganization(DEFAULT_ORGANIZATION);
-            this.FindOrAddUser("admin", org);
-            this.AssociateUserWithRole("admin", org.Id, "admin");
+            this.FindOrAddUser(DEFAULT_USERNAME, org);
+            this.AssociateUserWithRole(DEFAULT_USERNAME, org.Id, "admin");
         }
 
         public void InitializeLCGAndLogin()
         {
             this.InitializeLCG();
-            Helper.AuthLogin(this, "admin", DEFAULT_ORGANIZATION);
+            Helper.AuthLogin(this, DEFAULT_USERNAME, DEFAULT_ORGANIZATION);
         }
 
         #region IObjectRepository
