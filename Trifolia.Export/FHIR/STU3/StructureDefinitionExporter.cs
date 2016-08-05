@@ -121,6 +121,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             ElementDefinition newElementDef = new ElementDefinition()
             {
+                ElementId = constraint.Id.ToString(),
                 Short = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : constraint.Context,
                 Label = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : null,
                 Comments = !string.IsNullOrEmpty(constraint.Notes) ? constraint.Notes : null,
@@ -244,8 +245,14 @@ namespace Trifolia.Export.FHIR.STU3
 
         public StructureDefinition Convert(Template template, SimpleSchema schema, SummaryType? summaryType = null)
         {
+            string id = template.Id.ToString();
+
+            if (template.Oid.StartsWith("http://") || template.Oid.StartsWith("https://"))
+                id = template.Oid.Substring(template.Oid.LastIndexOf("/") + 1);
+
             var fhirStructureDef = new fhir_stu3.Hl7.Fhir.Model.StructureDefinition()
             {
+                Id = id,
                 Name = template.Name,
                 Description = !string.IsNullOrEmpty(template.Description) ? new Markdown(template.Description) : null,
                 Kind = StructureDefinition.StructureDefinitionKind.Resource,
@@ -310,7 +317,8 @@ namespace Trifolia.Export.FHIR.STU3
                 // Add base element for resource
                 differential.Element.Add(new ElementDefinition()
                 {
-                    Path = template.TemplateType.RootContextType
+                    ElementId = string.Format("{0}-00001", template.Id.ToString()),
+                    Path = template.PrimaryContextType
                 });
 
                 foreach (var constraint in template.ChildConstraints.Where(y => y.ParentConstraint == null).OrderBy(y => y.Order))
@@ -322,15 +330,21 @@ namespace Trifolia.Export.FHIR.STU3
                 // Slices
                 var slices = template.ChildConstraints.Where(y => y.IsBranch);
                 var sliceGroups = slices.GroupBy(y => y.GetElementPath(template.TemplateType.RootContextType));
+                int currentSliceGroupCount = 2;
 
                 foreach (var sliceGroup in sliceGroups)
                 {
                     ElementDefinition newElementDef = new ElementDefinition();
+                    newElementDef.ElementId = string.Format("{0}-{1}", template.Id, currentSliceGroupCount.ToString("00000"));
                     newElementDef.Path = sliceGroup.Key;
 
                     foreach (var branchConstraint in sliceGroup)
                     {
+                        var igSettings = GetIGSettings(branchConstraint);
+                        var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, branchConstraint);
                         var branchIdentifiers = branchConstraint.ChildConstraints.Where(y => y.IsBranchIdentifier);
+
+                        newElementDef.Definition = constraintFormatter.GetPlainText(false, false, false);
                         newElementDef.Slicing = new ElementDefinition.SlicingComponent()
                         {
                             Discriminator = (from bi in branchIdentifiers
@@ -341,9 +355,18 @@ namespace Trifolia.Export.FHIR.STU3
                         // If no discriminators are specified, assume the child SHALL constraints are discriminators
                         if (newElementDef.Slicing.Discriminator.Count() == 0)
                         {
-                            newElementDef.Slicing.Discriminator = (from cc in branchConstraint.ChildConstraints
-                                                                   where cc.Conformance == "SHALL"
-                                                                   select cc.GetElementPath(template.TemplateType.RootContextType));
+                            var discriminatorConstraints = branchConstraint.ChildConstraints.Where(y => y.Conformance == "SHALL");
+
+                            // If the slice referencing a contained template, use the constraints of the contained template instead of the 
+                            // direct constraints of the branch
+                            if (branchConstraint.ContainedTemplate != null)
+                                discriminatorConstraints = branchConstraint.ContainedTemplate.ChildConstraints.Where(y => y.ParentConstraint == null & y.Conformance == "SHALL");
+
+                            // If there are constraints that have specific single-value bindings, prefer those
+                            if (discriminatorConstraints.Count(y => !string.IsNullOrEmpty(y.Value)) != discriminatorConstraints.Count())
+                                discriminatorConstraints = discriminatorConstraints.Where(y => !string.IsNullOrEmpty(y.Value)).ToList();
+
+                            newElementDef.Slicing.Discriminator = discriminatorConstraints.Select(y => y.GetElementPath(template.PrimaryContextType));
                         }
                     }
 
