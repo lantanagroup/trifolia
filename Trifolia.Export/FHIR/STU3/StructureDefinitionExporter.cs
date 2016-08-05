@@ -258,7 +258,8 @@ namespace Trifolia.Export.FHIR.STU3
                 Kind = StructureDefinition.StructureDefinitionKind.Resource,
                 Url = template.Oid,
                 Type = template.PrimaryContextType,
-                Abstract = false
+                Abstract = false,
+                Derivation = StructureDefinition.TypeDerivationRule.Constraint
             };
 
             // Extensions
