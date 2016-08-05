@@ -348,7 +348,6 @@
     <Compile Include="Models\IGManagement\ListItem.cs" />
     <Compile Include="Models\IGManagement\ViewTemplateType.cs" />
     <Compile Include="Models\IG\ViewDataModel.cs" />
-    <Compile Include="Models\Import\ImportStatusModel.cs" />
     <Compile Include="Models\LocalizationModel.cs" />
     <Compile Include="Models\OrganizationManagement\OrganizationRole.cs" />
     <Compile Include="Models\PermissionManagement\MyOrganizationInfo.cs" />

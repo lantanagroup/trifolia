@@ -362,9 +362,11 @@ namespace Trifolia.Export.FHIR.STU3
                             if (branchConstraint.ContainedTemplate != null)
                                 discriminatorConstraints = branchConstraint.ContainedTemplate.ChildConstraints.Where(y => y.ParentConstraint == null & y.Conformance == "SHALL");
 
+                            var singleValueDiscriminators = discriminatorConstraints.Where(y => !string.IsNullOrEmpty(y.Value));
+
                             // If there are constraints that have specific single-value bindings, prefer those
-                            if (discriminatorConstraints.Count(y => !string.IsNullOrEmpty(y.Value)) != discriminatorConstraints.Count())
-                                discriminatorConstraints = discriminatorConstraints.Where(y => !string.IsNullOrEmpty(y.Value)).ToList();
+                            if (singleValueDiscriminators.Count() > 0 && singleValueDiscriminators.Count() != discriminatorConstraints.Count())
+                                discriminatorConstraints = singleValueDiscriminators;
 
                             newElementDef.Slicing.Discriminator = discriminatorConstraints.Select(y => y.GetElementPath(template.PrimaryContextType));
                         }

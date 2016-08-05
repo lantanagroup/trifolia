@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using Trifolia.DB;
 
-namespace Trifolia.Web.Models.Import
+namespace Trifolia.Import.Models
 {
     public class ImportStatusModel
     {

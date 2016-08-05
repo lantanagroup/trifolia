@@ -39,6 +39,9 @@
     <Reference Include="LantanaGroup.Schematron">
       <HintPath>..\libraries\LantanaGroup.Schematron.dll</HintPath>
     </Reference>
+    <Reference Include="LantanaGroup.ValidationUtility">
+      <HintPath>..\libraries\LantanaGroup.ValidationUtility.dll</HintPath>
+    </Reference>
     <Reference Include="saxon9he-api, Version=9.4.0.6, Culture=neutral, PublicKeyToken=e1fdd002d5083fe6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Saxon-HE.9.4.0.6\lib\net35\saxon9he-api.dll</HintPath>

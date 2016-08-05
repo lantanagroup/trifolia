@@ -104,7 +104,10 @@
     <Compile Include="FHIR\STU3\ImplementationGuideImporter.cs" />
     <Compile Include="FHIR\STU3\StructureDefinitionImporter.cs" />
     <Compile Include="FHIR\STU3\ValueSetImporter.cs" />
+    <Compile Include="Models\ImportStatusModel.cs" />
+    <Compile Include="Native\ImplementationGuideImporter.cs" />
     <Compile Include="Native\TemplateImporter.cs" />
+    <Compile Include="Native\TrifoliaImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

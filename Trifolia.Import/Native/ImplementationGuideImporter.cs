@@ -11,7 +11,7 @@ using ImportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
 using ImportImplementationGuide = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuide;
 using ImportImplementationGuideSection = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuideVolume1Section;
 
-namespace Trifolia.Shared.ImportExport
+namespace Trifolia.Import.Native
 {
     public class ImplementationGuideImporter
     {
@@ -267,6 +267,9 @@ namespace Trifolia.Shared.ImportExport
             if (implementationGuide == null)
             {
                 implementationGuide = new ImplementationGuide();
+                implementationGuide.ImplementationGuideType = igType;
+                implementationGuide.ImplementationGuideTypeId = igType.Id;
+
                 this.tdb.ImplementationGuides.AddObject(implementationGuide);
                 igSettings = new IGSettingsManager(this.tdb);
 

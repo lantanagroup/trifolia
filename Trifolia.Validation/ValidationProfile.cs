@@ -6,6 +6,7 @@ using System.Web;
 using LantanaGroup.Schematron;
 
 using Saxon.Api;
+using LantanaGroup.ValidationUtility;
 
 namespace Trifolia.ValidationService
 {
@@ -20,9 +21,9 @@ namespace Trifolia.ValidationService
             get { return id; }
             set { id = value; }
         }
-        private ISchematronValidator schematronValidator = null;
+        private IValidator schematronValidator = null;
 
-        internal ISchematronValidator SchematronValidator
+        internal IValidator SchematronValidator
         {
             get { return schematronValidator; }
             set { schematronValidator = value; }
