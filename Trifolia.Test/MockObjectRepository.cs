@@ -85,6 +85,7 @@ namespace Trifolia.Test
             this.FindOrCreateTemplateType(fhirType, "Composition", "Composition", "Composition", 1);
             this.FindOrCreateTemplateType(fhirType, "Patient", "Patient", "Patient", 2);
             this.FindOrCreateTemplateType(fhirType, "Practitioner", "Practitioner", "Practitioner", 3);
+            this.FindOrCreateTemplateType(fhirType, "List", "List", "List", 4);
         }
 
         public void InitializeFHIR2Repository()
