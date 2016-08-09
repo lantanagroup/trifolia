@@ -19,7 +19,7 @@ namespace Trifolia.Web.Controllers.API
         }
 
         public UserController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

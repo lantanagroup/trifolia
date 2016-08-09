@@ -66,7 +66,7 @@ namespace Trifolia.Shared
 
         public static List<LookupGreenTemplate> GetAll()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return (from gt in tdb.GreenTemplates
                         select new LookupGreenTemplate()
@@ -83,7 +83,7 @@ namespace Trifolia.Shared
 
         public static List<LookupGreenTemplate> GetForTemplate(int templateId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return (from gt in tdb.GreenTemplates
                         where gt.TemplateId == templateId
@@ -101,7 +101,7 @@ namespace Trifolia.Shared
 
         public static void Delete(LookupGreenTemplate lookupGreenTemplate)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 GreenTemplate greenTemplate = tdb.GreenTemplates.Single(y => y.Id == lookupGreenTemplate.Id);
 

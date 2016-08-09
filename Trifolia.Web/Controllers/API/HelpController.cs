@@ -33,7 +33,7 @@ namespace Trifolia.Web.Controllers.API
         }
 
         public HelpController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

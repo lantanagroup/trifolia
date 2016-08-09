@@ -31,7 +31,7 @@ namespace Trifolia.Web.Controllers.API
         #region Constructor
 
         public ImplementationGuideController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
         }
 

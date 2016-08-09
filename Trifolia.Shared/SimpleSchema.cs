@@ -701,7 +701,7 @@ namespace Trifolia.Shared
 
             //public static List<SchemaObject> GetComplexTypesFromSchema(int implementationGuideTypeId)
             //{
-            //    using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            //    using (IObjectRepository tdb = DBContext.Create())
             //    {
             //        ImplementationGuideType igType = tdb.ImplementationGuideTypes.Single(y => y.Id == implementationGuideTypeId);
             //        SimpleSchema schema = CreateSimpleSchema(Helper.GetIGSimplifiedSchemaLocation(igType));

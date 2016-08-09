@@ -92,7 +92,7 @@ namespace Trifolia.DB
         /// <summary>
         /// Initializes a new TemplateDatabaseDataSource object using the connection string found in the 'TemplateDatabaseDataSource' section of the application configuration file.
         /// </summary>
-        public TemplateDatabaseDataSource() : base("name=TemplateDatabaseDataSource", "TemplateDatabaseDataSource")
+        public TemplateDatabaseDataSource() : base("name=TrifoliaDatabase", "TemplateDatabaseDataSource")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();

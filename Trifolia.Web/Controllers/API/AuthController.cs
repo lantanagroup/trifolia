@@ -23,7 +23,7 @@ namespace Trifolia.Web.Controllers.API
         }
 
         public AuthController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

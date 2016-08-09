@@ -31,7 +31,7 @@ namespace Trifolia.Web.Controllers
         private IObjectRepository tdb;
 
         public LookupController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

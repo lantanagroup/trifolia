@@ -9,7 +9,7 @@ namespace Trifolia.DB
     {
         public static List<TemplateType> GetAll()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.TemplateTypes.ToList();
             }
@@ -17,7 +17,7 @@ namespace Trifolia.DB
 
         public static List<TemplateType> GetIgTypeTemplateTypes(int implementationGuideTypeId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.TemplateTypes
                     .Where(y => y.ImplementationGuideTypeId == implementationGuideTypeId)

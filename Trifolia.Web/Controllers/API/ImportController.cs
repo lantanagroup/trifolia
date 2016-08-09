@@ -26,7 +26,7 @@ namespace Trifolia.Web.Controllers.API
         }
 
         public ImportController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

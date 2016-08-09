@@ -25,7 +25,7 @@ namespace Trifolia.Web.Controllers.API
         }
 
         public RoleController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

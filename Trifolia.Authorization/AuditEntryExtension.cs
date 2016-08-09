@@ -30,7 +30,7 @@ namespace Trifolia.Authorization
 
         public static void SaveAuditEntry(string type, string note, string userName = null, string organizationName = null)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 CreateAuditEntry(tdb, type, note, userName, organizationName);
                 tdb.SaveChanges();

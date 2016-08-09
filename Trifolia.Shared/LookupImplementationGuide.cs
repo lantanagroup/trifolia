@@ -55,7 +55,7 @@ namespace Trifolia.Shared
 
         public static List<LookupImplementationGuide> GetImplementationGuides(bool aIncludePublishedGuides = true)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetImplementationGuides(tdb, aIncludePublishedGuides);
             }
@@ -80,7 +80,7 @@ namespace Trifolia.Shared
 
         public static List<LookupImplementationGuide> GetImplementationGuidesExcluding(int? excludedImplementationGuideId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 if (!CheckPoint.Instance.IsAuthenticated)
                     return new List<LookupImplementationGuide>();

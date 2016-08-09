@@ -20,7 +20,7 @@ namespace Trifolia.Web.Controllers.API
         #region Constructor
 
         public OrganizationController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
         }
 

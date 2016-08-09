@@ -163,7 +163,7 @@ namespace Trifolia.Web.Filters
         /// </remarks>
         private void AuditLogin()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 DateTime minDate = DateTime.Now.AddHours(-24);
                 string userName = string.Format("{0} ({1})", CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName);

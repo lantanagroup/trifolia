@@ -29,7 +29,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         }
 
         public FHIR3ValueSetController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

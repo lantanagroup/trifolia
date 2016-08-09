@@ -21,7 +21,7 @@ namespace Trifolia.Import.Native
         }
 
         public TrifoliaImporter()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

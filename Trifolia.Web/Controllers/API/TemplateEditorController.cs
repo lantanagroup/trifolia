@@ -24,7 +24,7 @@ namespace Trifolia.Web.Controllers.API
         private IObjectRepository tdb;
 
         public TemplateEditorController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

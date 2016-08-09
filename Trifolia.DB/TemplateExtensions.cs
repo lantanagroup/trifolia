@@ -83,7 +83,7 @@ namespace Trifolia.DB
 
         public static List<Template> GetTemplates()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetTemplates(tdb);
             }
@@ -102,7 +102,7 @@ namespace Trifolia.DB
 
         public static List<Template> GetTemplates(int excludeId, bool shouldFilter = false)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetTemplates(tdb, excludeId, shouldFilter);
             }
@@ -123,7 +123,7 @@ namespace Trifolia.DB
 
         public static List<Template> GetTemplates(string implementationGuideId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetTemplates(tdb, implementationGuideId);
             }
@@ -153,7 +153,7 @@ namespace Trifolia.DB
 
         public static List<Template> GetIgTypeTemplates(int implementationGuideTypeId, bool shouldFilter = false)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetIgTypeTemplates(tdb, implementationGuideTypeId);
             }

@@ -33,7 +33,7 @@ namespace Trifolia.Web.Controllers.API
         #region Constructors
 
         public BulkCopyController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

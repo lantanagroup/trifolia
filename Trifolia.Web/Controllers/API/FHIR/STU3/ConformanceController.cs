@@ -47,7 +47,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         }
 
         public FHIR3ConformanceController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

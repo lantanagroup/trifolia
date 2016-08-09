@@ -6,18 +6,19 @@ using System.Web.Mvc;
 using Trifolia.Shared;
 using Trifolia.Authorization;
 using Trifolia.Web.Models.OrganizationManagement;
+using Trifolia.DB;
 
 namespace Trifolia.Web.Controllers
 {
     [Securable(SecurableNames.ORGANIZATION_DETAILS)]
     public class OrganizationController : Controller
     {
-        DB.IObjectRepository tdb = null;
+        IObjectRepository tdb = null;
 
         #region Constructors
 
         public OrganizationController()
-            : this(new DB.TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

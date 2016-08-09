@@ -19,7 +19,7 @@ namespace Trifolia.Web.Controllers.API
         }
 
         public GroupController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

@@ -57,7 +57,7 @@ namespace Trifolia.Authorization
 
             if (context.Request.Headers.Authorization != null && context.Request.Headers.Authorization.Scheme == "Bearer")
             {
-                using (IObjectRepository tdb = new TemplateDatabaseDataSource())
+                using (IObjectRepository tdb = DBContext.Create())
                 {
                     var authorizationDataBytes = System.Convert.FromBase64String(context.Request.Headers.Authorization.Parameter);
                     var authorizationData = System.Text.Encoding.UTF8.GetString(authorizationDataBytes);

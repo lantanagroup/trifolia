@@ -381,5 +381,13 @@ namespace Trifolia.Config
                 return ConfigurationManager.AppSettings["DefaultBaseUrl"];
             }
         }
+
+        public static string DatabaseConnectionString
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["DatabaseConnectionString"];
+            }
+        }
     }
 }

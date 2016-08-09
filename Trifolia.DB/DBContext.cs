@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using Trifolia.Config;
 
 namespace Trifolia.DB
 {
     public static class DBContext
     {
-        public static IObjectRepository Instance { get; set; }
+        internal static IObjectRepository Instance { get; set; }
 
         public static IObjectRepository Create()
         {
@@ -16,7 +17,13 @@ namespace Trifolia.DB
                 return Instance;
 
             Type dbContextType = Type.GetType(Properties.Settings.Default.DBContextType);
-            IObjectRepository dbContext = (IObjectRepository) Activator.CreateInstance(dbContextType);
+            IObjectRepository dbContext = null;
+
+            if (!string.IsNullOrEmpty(AppSettings.DatabaseConnectionString))
+                dbContext = (IObjectRepository)Activator.CreateInstance(dbContextType);
+            else
+                dbContext = (IObjectRepository)Activator.CreateInstance(dbContextType, AppSettings.DatabaseConnectionString);
+
             return dbContext;
         }
     }

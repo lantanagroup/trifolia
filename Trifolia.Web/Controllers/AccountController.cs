@@ -37,7 +37,7 @@ namespace Trifolia.Web.Controllers
         #region Constructors 
 
         public AccountController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
             this.authClient = CreateClient();
         }
@@ -55,7 +55,7 @@ namespace Trifolia.Web.Controllers
         [HttpPost]
         public ActionResult SaveProfile(UserProfile aProfile)
         {
-            using (DB.TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (DB.IObjectRepository tdb = DBContext.Create())
             {
                 DB.User lUser = CheckPoint.Instance.GetUser(tdb);
 
@@ -86,7 +86,7 @@ namespace Trifolia.Web.Controllers
         [Securable()]
         public JsonResult ProfileData()
         {
-            using (DB.TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (DB.IObjectRepository tdb = DBContext.Create())
             {
                 DB.User lUser = CheckPoint.Instance.GetUser(tdb);
 

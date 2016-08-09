@@ -41,7 +41,7 @@ namespace Trifolia.ValidationService
         {
             List<ValidationResult> results = new List<ValidationResult>();
 
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 // Get the requested profile
                 ValidationProfile profile = null;
@@ -85,7 +85,7 @@ namespace Trifolia.ValidationService
 
         public List<ValidationProfile> GetValidationProfiles()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetValidationProfiles(tdb);
             }
@@ -112,7 +112,7 @@ namespace Trifolia.ValidationService
 
         public List<ValidationImplementationGuide> GetValidationImplementationGuides()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return (from ig in tdb.ImplementationGuides
                         select new ValidationImplementationGuide()
@@ -157,7 +157,7 @@ namespace Trifolia.ValidationService
 
         public List<ValidationDocument> GetValidationPackage(int implementationGuideId, GenerationOptions options, DateTime? lastRetrieveDate)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetValidationPackage(tdb, implementationGuideId, options, lastRetrieveDate);
             }

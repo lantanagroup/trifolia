@@ -11,7 +11,7 @@ namespace Trifolia.DB
     {
         public static List<ValueSet> GetAllValueSets()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.ValueSets.ToList();
             }

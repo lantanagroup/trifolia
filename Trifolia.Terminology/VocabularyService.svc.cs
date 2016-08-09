@@ -32,7 +32,7 @@ namespace Trifolia.Terminology
         #region Constructors
 
         public VocabularyService(bool isCDA = true)
-            : this(new TemplateDatabaseDataSource(), isCDA)
+            : this(DBContext.Create(), isCDA)
         {
 
         }

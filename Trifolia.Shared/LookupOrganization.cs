@@ -54,7 +54,7 @@ namespace Trifolia.Shared
 
         public static List<LookupOrganization> GetOrganizations()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetOrganizations(tdb);
             }
