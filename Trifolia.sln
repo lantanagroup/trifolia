@@ -2,6 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C1DF6EA4-3295-4D10-B208-7FEE96746C15}"
 	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
 		Install.ps1 = Install.ps1
 		Local.testsettings = Local.testsettings
 		README.md = README.md

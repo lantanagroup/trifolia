@@ -51,7 +51,10 @@ namespace Trifolia.Test.Generation.Green
 
             string importXml = Helper.GetSampleContents("Trifolia.Test.DocSamples.sample2.xml");
             TemplateImporter importer = new TemplateImporter(this.mockRepo);
-            importer.Import(importXml);
+            var templates = importer.Import(importXml);
+
+            Assert.AreEqual(0, importer.Errors.Count, "Expected 0 errors from importing sample2.xml");
+            Assert.AreEqual(5, templates.Count, "Expected 5 templates to be imported from sample2.xml");
         }
 
         private GreenTemplate CreateGreenTemplate(Template template, string name)
@@ -277,11 +280,11 @@ namespace Trifolia.Test.Generation.Green
         {
             var ivlts_dt = this.mockRepo.FindOrAddDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "IVL_TS");
 
-            Template docTemplate = this.mockRepo.Templates.Single(y => y.Oid == "1.2.3.4");
-            Template baseSectionTemplate = this.mockRepo.Templates.Single(y => y.Oid == "1.2.3.4.1");
-            Template sectionTemplateReq = this.mockRepo.Templates.Single(y => y.Oid == "1.2.3.4.1.1");
-            Template sectionTemplateOpt = this.mockRepo.Templates.Single(y => y.Oid == "1.2.3.4.1.2");
-            Template entryTemplate = this.mockRepo.Templates.Single(y => y.Oid == "1.2.3.4.1.3");
+            Template docTemplate = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4");
+            Template baseSectionTemplate = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4.1");
+            Template sectionTemplateReq = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4.1.1");
+            Template sectionTemplateOpt = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4.1.2");
+            Template entryTemplate = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4.1.3");
 
             GreenTemplate greenDocTemplate = CreateGreenTemplate(docTemplate, "myGreenDoc");
             string sectionXpath = "component/structuredBody/component/section";
@@ -365,11 +368,11 @@ namespace Trifolia.Test.Generation.Green
         [TestMethod]
         public void BuildGreenSchemaTest_SeparatedDataTypes()
         {
-            Template docTemplate = this.mockRepo.Templates.Single(y => y.Oid == "1.2.3.4");
-            Template baseSectionTemplate = this.mockRepo.Templates.Single(y => y.Oid == "1.2.3.4.1");
-            Template sectionTemplateReq = this.mockRepo.Templates.Single(y => y.Oid == "1.2.3.4.1.1");
-            Template sectionTemplateOpt = this.mockRepo.Templates.Single(y => y.Oid == "1.2.3.4.1.2");
-            Template entryTemplate = this.mockRepo.Templates.Single(y => y.Oid == "1.2.3.4.1.3");
+            Template docTemplate = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4");
+            Template baseSectionTemplate = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4.1");
+            Template sectionTemplateReq = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4.1.1");
+            Template sectionTemplateOpt = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4.1.2");
+            Template entryTemplate = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4.1.3");
 
             GreenTemplate greenDocTemplate = CreateGreenTemplate(docTemplate, "myGreenDoc");
             string sectionXpath = "component/structuredBody/component/section";

@@ -9,7 +9,7 @@ using Trifolia.DB;
 using ImportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
 using Trifolia.Shared.ImportExport;
 using System.Data.Entity.Core.Objects;
-using Trifolia.Web.Models.Import;
+using Trifolia.Import.Models;
 using Trifolia.Import.Native;
 
 namespace Trifolia.Web.Controllers.API
@@ -36,25 +36,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Import/Trifolia"), SecurableAction(SecurableNames.IMPORT)]
         public ImportStatusModel ImportTrifoliaModel(ImportModel model)
         {
-            ImportStatusModel importStatus = new ImportStatusModel(this.tdb);
-            List<ImplementationGuide> importedImplementationGuides = new List<ImplementationGuide>();
-
-            foreach (var importImplementationGuide in model.ImplementationGuide)
-            {
-                ImplementationGuideImporter importer = new ImplementationGuideImporter(this.tdb);
-                var importedImplementationGuide = importer.Import(importImplementationGuide);
-                importStatus.AddImportedImplementationGuide(importedImplementationGuide);
-                importStatus.Messages.AddRange(importer.Errors);
-            }
-
-            TemplateImporter templateImporter = new TemplateImporter(this.tdb, shouldUpdate: true);
-            List<Template> importedTemplates = templateImporter.Import(model.Template);
-            importStatus.AddImportedTemplates(importedTemplates);
-            importStatus.Messages.AddRange(templateImporter.Errors);
-
-            this.tdb.SaveChanges();
-
-            return importStatus;
+            TrifoliaImporter importer = new TrifoliaImporter(this.tdb);
+            return importer.Import(model);
         }
     }
 }

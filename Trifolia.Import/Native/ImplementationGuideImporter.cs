@@ -11,7 +11,7 @@ using ImportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
 using ImportImplementationGuide = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuide;
 using ImportImplementationGuideSection = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuideVolume1Section;
 
-namespace Trifolia.Shared.ImportExport
+namespace Trifolia.Import.Native
 {
     public class ImplementationGuideImporter
     {
@@ -128,10 +128,24 @@ namespace Trifolia.Shared.ImportExport
         {
             foreach (var importTemplateType in importImplementationGuide.CustomTemplateType)
             {
-                var foundIgTemplateType = implementationGuide.TemplateTypes.SingleOrDefault(y => y.TemplateType.Name == importTemplateType.templateTypeName);
+                var foundTemplateType = implementationGuide.ImplementationGuideType.TemplateTypes.SingleOrDefault(y => y.Name.ToLower() == importTemplateType.templateTypeName.ToLower());
+
+                if (foundTemplateType == null)
+                    throw new Exception("Could not find template type " + importTemplateType.templateTypeName + " associated with implementation guide type");
+
+                var foundIgTemplateType = implementationGuide.TemplateTypes.SingleOrDefault(y => y.TemplateTypeId == foundTemplateType.Id);
 
                 if (foundIgTemplateType == null)
-                    throw new ArgumentException("Could not find a template type with name \"" + importTemplateType.templateTypeName + "\" that is used by this type of implementation guide");
+                {
+                    foundIgTemplateType = new ImplementationGuideTemplateType()
+                    {
+                        ImplementationGuide = implementationGuide,
+                        TemplateType = foundTemplateType
+                    };
+
+                    implementationGuide.TemplateTypes.Add(foundIgTemplateType);
+                    this.tdb.ImplementationGuideTemplateTypes.AddObject(foundIgTemplateType);
+                }
 
                 if (foundIgTemplateType.Name != importTemplateType.CustomName)
                     foundIgTemplateType.Name = importTemplateType.CustomName;
@@ -171,6 +185,12 @@ namespace Trifolia.Shared.ImportExport
         private void UpdateProperties(ImplementationGuide implementationGuide, ImplementationGuideType igType, ImportImplementationGuide importImplementationGuide)
         {
             var importIgStatus = GetImportStatus(importImplementationGuide);
+
+            // TODO
+            /*
+            if (implementationGuide.Organization == null)
+                implementationGuide.Organization = CheckPoint.Instance.GetUser(this.tdb).Organization;
+             */
 
             if (implementationGuide.Name != importImplementationGuide.name)
                 implementationGuide.Name = importImplementationGuide.name;
@@ -222,7 +242,6 @@ namespace Trifolia.Shared.ImportExport
             ImplementationGuide foundPreviousVersionIg = null;
             IGSettingsManager igSettings = null;
             var igType = this.tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == importImplementationGuide.type.ToLower());
-            bool isNew = false;
 
             this.Errors = new List<string>();
 
@@ -232,11 +251,29 @@ namespace Trifolia.Shared.ImportExport
                 return null;
             }
 
+            // Make sure IG's previous version is set
+            // May not have an "id" for the previous version, so using the entity model to ensure the reference saves
+            if (importImplementationGuide.PreviousVersion != null && !string.IsNullOrEmpty(importImplementationGuide.PreviousVersion.name) && importImplementationGuide.PreviousVersion.number > 0)
+            {
+                foundPreviousVersionIg = FindImplementationGuide(importImplementationGuide.PreviousVersion.name, importImplementationGuide.PreviousVersion.number);
+
+                if (foundPreviousVersionIg != null && !foundPreviousVersionIg.PreviousVersion.Contains(implementationGuide))
+                    foundPreviousVersionIg.PreviousVersion.Add(implementationGuide);
+            }
+
+            if (implementationGuide == null && foundPreviousVersionIg == null && this.tdb.ImplementationGuides.Count(y => y.Name.ToLower() == importImplementationGuide.name.ToLower()) > 0)
+            {
+                this.Errors.Add("Implementation guide with the same name already exists, and this is not a new version of that implementation guide.");
+                return null;
+            }
+
             if (implementationGuide == null)
             {
                 implementationGuide = new ImplementationGuide();
+                implementationGuide.ImplementationGuideType = igType;
+                implementationGuide.ImplementationGuideTypeId = igType.Id;
+
                 this.tdb.ImplementationGuides.AddObject(implementationGuide);
-                isNew = true;
                 igSettings = new IGSettingsManager(this.tdb);
 
                 // Add default template types to new implementation guide
@@ -273,29 +310,6 @@ namespace Trifolia.Shared.ImportExport
             // Update categories
             this.UpdateCategories(implementationGuide, igSettings, importImplementationGuide);
 
-            // Make sure IG's previous version is set
-            // May not have an "id" for the previous version, so using the entity model to ensure the reference saves
-            if (importImplementationGuide.PreviousVersion != null)
-            {
-                foundPreviousVersionIg = FindImplementationGuide(importImplementationGuide.PreviousVersion.name, importImplementationGuide.PreviousVersion.number);
-
-                if (foundPreviousVersionIg != null && !foundPreviousVersionIg.PreviousVersion.Contains(implementationGuide))
-                    foundPreviousVersionIg.PreviousVersion.Add(implementationGuide);
-            }
-
-            // Validate versioning of the implementation guide
-            if (foundPreviousVersionIg == null && implementationGuide.Version != 1)
-            {
-                this.Errors.Add("Implementation guide cannot have a version greater than one when no previous version is specified");
-                return null;
-            }
-
-            if (isNew && foundPreviousVersionIg == null && this.tdb.ImplementationGuides.Count(y => y.Name.ToLower() == importImplementationGuide.name.ToLower()) > 0)
-            {
-                this.Errors.Add("Implementation guide with the same name already exists, and this is not a new version of that implementation guide.");
-                return null;
-            }
-
             if (foundPreviousVersionIg != null && foundPreviousVersionIg.PublishStatus != PublishStatus.GetPublishedStatus(this.tdb))
             {
                 this.Errors.Add("Previous version of implementation guide is not published, and cannot hav a new version associated with it");
@@ -305,6 +319,13 @@ namespace Trifolia.Shared.ImportExport
             var existingNextVersion = foundPreviousVersionIg != null ?
                 this.tdb.ImplementationGuides.SingleOrDefault(y => y.PreviousVersionImplementationGuideId == foundPreviousVersionIg.Id) :
                 null;
+
+            // Validate versioning of the implementation guide
+            if (foundPreviousVersionIg == null && implementationGuide.Version != 1)
+            {
+                this.Errors.Add("Implementation guide cannot have a version greater than one when no previous version is specified");
+                return null;
+            }
 
             if (foundPreviousVersionIg != null && existingNextVersion != null && existingNextVersion != implementationGuide)
             {

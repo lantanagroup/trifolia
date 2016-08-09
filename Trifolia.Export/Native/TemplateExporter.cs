@@ -53,27 +53,8 @@ namespace Trifolia.Export.Native
 
         private bool FindImplementationGuide(List<ExportImplementationGuide> exportIgs, ImplementationGuide current)
         {
-            foreach (var exportImplementationGuide in exportIgs)
-            {
-                if (exportImplementationGuide.name != current.Name)
-                    continue;
-
-                if (current.PreviousVersion.Count != 0)
-                {
-                    if (exportImplementationGuide.PreviousVersion == null)
-                        continue;
-
-                    if (exportImplementationGuide.PreviousVersion.name != current.PreviousVersion.First().Name)
-                        continue;
-
-                    if (exportImplementationGuide.PreviousVersion.number != current.PreviousVersion.First().Version)
-                        continue;
-                }
-
-                return true;        // Everything needed matches
-            }
-
-            return false;
+            int currentVersion = current.Version != null && current.Version.Value > 0 ? current.Version.Value : 1;
+            return exportIgs.Count(y => y.name.ToLower() == current.Name.ToLower() && y.version == currentVersion) > 0;
         }
 
         public ExportModel GenerateExport()

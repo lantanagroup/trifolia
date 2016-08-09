@@ -209,7 +209,7 @@ namespace Trifolia.Test.Generation.IG
         /// A test for MakePlural
         ///</summary>
         [TestMethod()]
-        [DeploymentItem("Trifolia.ImplementationGuideGeneration.dll")]
+        [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest1()
         {
             string noun = "entry";
@@ -222,7 +222,7 @@ namespace Trifolia.Test.Generation.IG
         /// A test for MakePlural
         ///</summary>
         [TestMethod()]
-        [DeploymentItem("Trifolia.ImplementationGuideGeneration.dll")]
+        [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest2()
         {
             string noun = "beach";
@@ -235,7 +235,7 @@ namespace Trifolia.Test.Generation.IG
         /// A test for MakePlural
         ///</summary>
         [TestMethod()]
-        [DeploymentItem("Trifolia.ImplementationGuideGeneration.dll")]
+        [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest3()
         {
             string noun = "wish";
@@ -248,7 +248,7 @@ namespace Trifolia.Test.Generation.IG
         /// A test for MakePlural
         ///</summary>
         [TestMethod()]
-        [DeploymentItem("Trifolia.ImplementationGuideGeneration.dll")]
+        [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest4()
         {
             string noun = "templateId";
@@ -261,7 +261,7 @@ namespace Trifolia.Test.Generation.IG
         /// A test for MakePlural
         ///</summary>
         [TestMethod()]
-        [DeploymentItem("Trifolia.ImplementationGuideGeneration.dll")]
+        [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest5()
         {
             string noun = "potato";
@@ -274,7 +274,7 @@ namespace Trifolia.Test.Generation.IG
         /// A test for MakePlural
         ///</summary>
         [TestMethod()]
-        [DeploymentItem("Trifolia.ImplementationGuideGeneration.dll")]
+        [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest6()
         {
             string noun = "auto";
@@ -287,7 +287,7 @@ namespace Trifolia.Test.Generation.IG
         /// A test for MakePlural
         ///</summary>
         [TestMethod()]
-        [DeploymentItem("Trifolia.ImplementationGuideGeneration.dll")]
+        [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest7()
         {
             string noun = "prefix";
@@ -297,7 +297,7 @@ namespace Trifolia.Test.Generation.IG
         }
 
         [TestMethod()]
-        [DeploymentItem("Trifolia.ImplementationGuideGeneration.dll")]
+        [DeploymentItem("Trifolia.Generation.dll")]
         public void PrimitiveTextFormattingTest1()
         {
             var repo = new MockObjectRepository();

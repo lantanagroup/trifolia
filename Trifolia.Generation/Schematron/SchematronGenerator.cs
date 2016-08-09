@@ -117,7 +117,7 @@ namespace Trifolia.Generation.Schematron
             {
                 return string.Format(this.igTypePlugin.ClosedTemplateVersionIdentifierXpath, this.schemaPrefix, root, extension);
             }
-            else if (IdentifierHelper.GetIdentifierURI(templateIdentifier, out urn))
+            else if (IdentifierHelper.GetIdentifierURL(templateIdentifier, out urn))
             {
                 return string.Format(this.igTypePlugin.ClosedTemplateIdentifierXpath, this.schemaPrefix, urn);
             }
@@ -168,7 +168,7 @@ namespace Trifolia.Generation.Schematron
                 else
                     return string.Format(this.igTypePlugin.TemplateVersionIdentifierXpath, this.schemaPrefix, root, extension);
             }
-            else if (IdentifierHelper.GetIdentifierURI(templateIdentifier, out urn))
+            else if (IdentifierHelper.GetIdentifierURL(templateIdentifier, out urn))
             {
                 return string.Format(this.igTypePlugin.TemplateIdentifierXpath, this.schemaPrefix, urn);
             }

@@ -12,13 +12,14 @@ using System.IO;
 using System.Reflection;
 using System.Web.Hosting;
 
-using LantanaGroup.Schematron.Model;
+using LantanaGroup.ValidationUtility.Model;
 using LantanaGroup.Schematron.ISO;
 using LantanaGroup.Schematron;
 
 using Trifolia.Shared;
 using Trifolia.Generation.Schematron;
 using Trifolia.DB;
+using LantanaGroup.ValidationUtility;
 
 namespace Trifolia.ValidationService
 {
@@ -334,14 +335,14 @@ namespace Trifolia.ValidationService
             }
         }
 
-        private List<ValidationResult> ValidateSchematron(ISchematronValidator validator, ValidationContent content)
+        private List<ValidationResult> ValidateSchematron(IValidator validator, ValidationContent content)
         {
             List<ValidationResult> results = new List<ValidationResult>();
 
             try
             {
                 string contentText = ASCIIEncoding.UTF8.GetString(content.Data);
-                SchematronResults validationResults = validator.Validate(contentText);
+                ValidationResults validationResults = validator.Validate(contentText);
 
                 results = (from schvr in validationResults.Messages
                            select new ValidationResult()
@@ -417,7 +418,7 @@ namespace Trifolia.ValidationService
                                                                     where pigf.ImplementationGuideId == implementationGuideId && igf.ContentType == ImplementationGuideFile.ContentTypeSchematronHelper
                                                                     select igf).ToList();
 
-                    ISchematronValidator schValidator = SchematronValidationFactory.NewValidator(ASCIIEncoding.UTF8.GetString(latestSchematron.Data));
+                    IValidator schValidator = SchematronValidationFactory.NewValidator(ASCIIEncoding.UTF8.GetString(latestSchematron.Data));
 
                     List<ImplementationGuideFile> additionalFiles = (from pigf in tdb.ImplementationGuideFiles
                                                                      join igf in tdb.ImplementationGuideFiles on pigf.ImplementationGuideId equals igf.ImplementationGuideId

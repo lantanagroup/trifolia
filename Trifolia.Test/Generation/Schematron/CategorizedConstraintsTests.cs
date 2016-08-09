@@ -14,6 +14,7 @@ namespace Trifolia.Test.Generation.Schematron
     /// Summary description for CategorizedConstraintsTests
     /// </summary>
     [TestClass]
+    [DeploymentItem("Trifolia.Plugins.dll")]
     public class CategorizedConstraintsTests
     {
         private TestContext testContextInstance;

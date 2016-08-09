@@ -24,6 +24,7 @@ using Trifolia.Import.Native;
 namespace Trifolia.Test.Generation.Schematron
 {
     [TestClass]
+    [DeploymentItem("Trifolia.Plugins.dll")]
     public class SchematronGeneratorTest
     {
         private static MockObjectRepository tdb = new MockObjectRepository();

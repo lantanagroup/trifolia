@@ -155,7 +155,7 @@
 						<xs:sequence>
 							<xs:element name="Description" type="xs:string" minOccurs="0"/>
 						</xs:sequence>
-						<xs:attribute name="oid" type="xs:string" use="required"/>
+						<xs:attribute name="identifier" type="xs:string" use="required"/>
 						<xs:attribute name="name" type="xs:string" use="required"/>
 						<xs:attribute name="isStatic" type="xs:boolean" use="optional"/>
 						<xs:attribute name="date" type="xs:date"/>
@@ -164,7 +164,8 @@
 			</xs:choice>
 			<xs:element name="CodeSystem" minOccurs="0">
 				<xs:complexType>
-					<xs:attribute name="oid" type="xs:string" use="required"/>
+					<xs:attribute name="identifier" type="xs:string" use="required"/>
+					<xs:attribute name="name"/>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="SchematronTest" type="xs:string" minOccurs="0"/>

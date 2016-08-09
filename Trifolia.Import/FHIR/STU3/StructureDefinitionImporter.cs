@@ -34,7 +34,7 @@ namespace Trifolia.Import.FHIR.STU3
             this.tdb = tdb;
             this.scheme = scheme;
             this.authority = authority;
-            this.implementationGuideType = DSTU2Helper.GetImplementationGuideType(this.tdb, true);
+            this.implementationGuideType = STU3Helper.GetImplementationGuideType(this.tdb, true);
             this.profileBundle = ProfileHelper.GetProfileBundle();
         }
 
@@ -48,15 +48,16 @@ namespace Trifolia.Import.FHIR.STU3
             if (template == null)
             {
                 ImplementationGuide unassignedImplementationGuide = this.tdb.ImplementationGuides.SingleOrDefault(y =>
-                    y.Name == DSTU2Helper.DEFAULT_IG_NAME &&
+                    y.Name == STU3Helper.DEFAULT_IG_NAME &&
                     y.ImplementationGuideTypeId == this.implementationGuideType.Id);
 
                 if (unassignedImplementationGuide == null)
                 {
                     unassignedImplementationGuide = new ImplementationGuide()
                     {
-                        Name = DSTU2Helper.DEFAULT_IG_NAME,
-                        ImplementationGuideType = this.implementationGuideType
+                        Name = STU3Helper.DEFAULT_IG_NAME,
+                        ImplementationGuideType = this.implementationGuideType,
+                        Organization = this.tdb.Organizations.Single(y => y.Name == STU3Helper.DEFAULT_ORG_NAME)
                     };
                     this.tdb.ImplementationGuides.AddObject(unassignedImplementationGuide);
                 }
@@ -65,7 +66,8 @@ namespace Trifolia.Import.FHIR.STU3
                 {
                     OwningImplementationGuide = unassignedImplementationGuide,
                     ImplementationGuideType = this.implementationGuideType,
-                    Author = this.tdb.Users.Single(y => y.UserName == DSTU2Helper.DEFAULT_USER_NAME),
+                    Author = this.tdb.Users.Single(y => y.UserName == STU3Helper.DEFAULT_USER_NAME),
+                    Organization = this.tdb.Organizations.Single(y => y.Name == STU3Helper.DEFAULT_ORG_NAME),
                     IsOpen = true
                 };
             }

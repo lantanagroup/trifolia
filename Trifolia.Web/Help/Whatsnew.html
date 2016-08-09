@@ -68,206 +68,88 @@
 	<div id="topic_content">
 		
 <p></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Version 3.0</span></span></h2>
-<h3 class="rvps6"><span class="rvts0"><span class="rvts15">FHIR DSTU2 Support</span></span></h3>
-<p class="rvps2"><span class="rvts6">Both Trifolia's FHIR REST API and the user interface have been improved to support FHIR profile designing.</span></p>
-<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts6">Bug fixes in the FHIR DSTU2 REST API</span></li>
-<li value="2" class="rvps2"><span class="rvts6">Improvements to content-type and _format support in the REST API</span></li>
-<li value="3" class="rvps2"><span class="rvts6">Profile editor enhancements for re-usable extensions</span></li>
-<li value="4" class="rvps2"><span class="rvts6">Extensions supported directly on a profile</span></li>
-<li value="5" class="rvps2"><span class="rvts6">Viewing a profile shows the JSON and XML representation of the profile</span></li>
-<li value="6" class="rvps2"><span class="rvts6">General update to user interface (UI) to use the term "profile", "slice", and "descriminator"</span></li>
-</ol>
-<p class="rvps2"><span class="rvts6"><br/></span></p>
-<p class="rvps2"><img alt="" style="padding : 1px;" src="lib/NewItem28.png"></p>
-<h3 class="rvps6"><span class="rvts0"><span class="rvts15">Browsing / Editing Value Sets</span></span></h3>
-<p class="rvps2"><span class="rvts6">Improvements to the UI to support very large value sets:</span></p>
-<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts6">A separate screen to view value sets so that larger value sets do not slow down the process of browsing/searching value sets</span></li>
-<li class="rvps2"><span class="rvts6">Viewing a value set includes information about where the value set is used within Trifolia (i.e., which template/profile) </span></li>
-<li class="rvps2"><span class="rvts6">A separate screen to support editing the codes/concepts of a value set</span></li>
-</ul>
-<p class="rvps2"><img alt="" style="padding : 1px;" src="lib/NewItem29.png"></p>
-<h3 class="rvps6"><span class="rvts0"><span class="rvts15">Human Verification During Login</span></span></h3>
-<p class="rvps2"><span class="rvts6">Commercial users are now prompted to verify that they are a human during login.</span></p>
-<p class="rvps2"><img alt="" style="padding : 1px;" src="lib/NewItem27.png"></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Development Log</span></span></h2>
-<div class="rvps7"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Version 4.0.0</span></span></h2>
+<p class="rvps6"><span class="rvts15">Released on Thursday, Aug 4, 2016</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts19">Open-Source Release</span></span></h3>
+<p class="rvps6"><span class="rvts15">Trifolia’s source code is available to the open-source community via a Github repository (</span><a class="rvts16" href="https://github.com/lantanagroup/trifolia">https://github.com/lantanagroup/trifolia</a><span class="rvts17">)</span><span class="rvts15">. This first release to open source is simply a dump of the Trifolia code-base. In the coming months, we will simplify the installation process, include exports of publicly available implementation guides (such as “IHE Health Story Consolidation”), and improve the developer documentation.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts19">Support for FHIR STU3</span></span></h3>
+<p class="rvps6"><span class="rvts15">Trifolia includes support for FHIR STU3 in addition to DSTU1 and DSTU2. (HL7 recently changed the naming convention of draft specifications from DSTU—Draft Standard for Trial Use— to STU—Standard for Trial Use.) Support focuses on exporting, although some import functionality exists. Trifolia users can edit profiles using the STU3 schemas, and /api/FHIR3 endpoints allow integration with Trifolia.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts19">Non-Google Captcha</span></span></h3>
+<p class="rvps6"><span class="rvts15">We have had reports from users in China that they were not able to successfully login due to the Google-based captcha system. We found that China restricts the google.com domain, which is required for Google’s captcha use. We have replaced the Google captcha, enabling China-based users to access Trifolia.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts19">Importing Data</span></span></h3>
+<p class="rvps6"><span class="rvts15">A new “Import” menu item is available to editors for importing Trifolia-formatted data. This allows multiple installations of Trifolia to exchange implementation guides. In the near future, exported implementation guides will be exchangeable between installations of Trifolia using this Import functionality.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts19">Development Log</span></span></h3>
+<div class="rvps7"><table width="498" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse;">
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts16">Issue Type</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts18">Type</span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts16">Key</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts16">Summary</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts18">Description</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">New Feature</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Task</span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-921</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Allow FHIR extensions on template meta-data</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Open-source release</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">New Feature</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">New Feature</span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-916</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Add Captcha to Login screen</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Provide method of importing data into Trifolia</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">New Feature</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">New Feature</span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-794</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">New Version of template - copy example from previous version</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Database installation scripts for open-source release</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">New Feature</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">New Feature</span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-909</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Remove closed template rules from Trifolia Schematron generation</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">FHIR STU3 Support</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">New Feature</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement</span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-984</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Drop-down in constraint editor for FHIR extensions</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Use non-google captcha for validating humanity during login </span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Improvement</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement</span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-981</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Create interface to test REST API</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Fix issues with FHIR exports found from testing</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Improvement</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement </span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-978</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Show template/profile relationships when viewing a value set</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Change exported publish statuses in MS Word</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Improvement</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement</span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-976</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Create a separate screen for viewing a value set</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Support for FHIR “must support” and “is modifier” flags on constraints</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Improvement</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-977</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Allow users to initiate terminology searches with &lt;enter&gt; key</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Web IG relationships diagram tab not working in Chrome 48+</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Improvement</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-964</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Add export settings options to define the default behavior for missing primitive custom Schematron</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Versioning an IG does not copy the Web IG Volume 1 HTML and/or Sections</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Improvement</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
 </td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-967</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Change "Templates" to "Templates/Profiles" globally</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Improvement</span></p>
-</td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-962</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Use slice and descriminator when the IG type is FHIR</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Defect</span></p>
-</td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-979</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">cda prefix being used by export of Schematron for hqmf implementation guide</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Defect</span></p>
-</td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-968</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Move generates error for unowned FHIR profiles</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Defect</span></p>
-</td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-915</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Cardinalities no longer allow custom ranges e.g., [1..4]</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Defect</span></p>
-</td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-969</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Value set - active status and date appear not to be working</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Defect</span></p>
-</td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-951</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Statically bound valueSet not appearing in list of value sets on export screen</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Defect</span></p>
-</td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-895</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Schematron Generation Branch Rules Issue</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Defect</span></p>
-</td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-953</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Template will not load for editing</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Defect</span></p>
-</td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-826</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">HQMF Schematron contexts are completely wrong</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="120" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Defect</span></p>
-</td>
-<td width="105" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">TRIF-894</span></p>
-</td>
-<td width="638" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Invalid Schematron being generated for new extensions</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">StructureDefinition not valid against latest FHIR schema</span></p>
 </td>
 </tr>
 </table>

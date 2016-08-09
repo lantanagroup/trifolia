@@ -22,6 +22,13 @@
         <!-- /ko -->
 
         <!-- ko if: ImportResults() -->
+        <!-- ko if: ImportResults().Success -->
+        <p class="label label-success">Successfully imported</p>
+        <!-- /ko -->
+        <!-- ko if: !ImportResults().Success -->
+        <p class="label label-warning">Import failed</p>
+        <!-- /ko -->
+
         <div class="panel panel-default" data-bind="if: ImportResults().Messages.length > 0">
             <div class="panel-heading">Messages</div>
             <table class="table">

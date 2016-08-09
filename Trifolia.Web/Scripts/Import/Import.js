@@ -48,6 +48,8 @@ var ImportViewModel = function () {
                     if (sampleChanged) {
                         return true;
                     }
+
+                    return false;
                 }
 
                 return true;

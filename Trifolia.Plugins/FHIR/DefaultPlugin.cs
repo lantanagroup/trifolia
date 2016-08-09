@@ -67,7 +67,7 @@ namespace Trifolia.Plugins.FHIR
             string searchXpath = null;
             string uri = null;
 
-            if (template.GetIdentifierURI(out uri))
+            if (template.GetIdentifierURL(out uri))
                 searchXpath = string.Format("meta/profile[@value='{0}']", uri);
             else
                 throw new Exception("Unexpected identifier format!");
