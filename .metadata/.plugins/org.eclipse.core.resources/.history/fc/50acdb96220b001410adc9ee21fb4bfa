@@ -1,0 +1,235 @@
+package trifolia.pkg;
+
+import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.*;
+
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
+import org.openqa.selenium.support.ui.Select;
+
+public class LCGAdminFunctions {
+  private static final String String = null;
+  private WebDriver driver;
+  private String baseUrl;
+  private boolean acceptNextAlert = true;
+  private StringBuffer verificationErrors = new StringBuffer();
+  private A_TrifoliaLogin LoginFunctions;
+  private B_ImplementationGuideFunctions IGFunctions;
+  private C_TemplateFunctions TemplateFunctions;
+  private D_ConstraintFunctions ConstraintFunctions;
+  private E_ExportFunctions ExportFunctions;
+  private F_PublishingFunctions PublishingFunctions;
+  private G_TerminologyFunctions TerminologyFunctions;
+	
+  
+  @Before
+  public void setUp() throws Exception {
+    ProfilesIni allProfiles = new ProfilesIni();
+    FirefoxProfile profile = allProfiles.getProfile("default-1380781714418");
+    driver = new FirefoxDriver(profile);
+	profile.setPreference("browser,helperapps.neverAsk.SaveToDisk","*.*");
+	profile.setPreference("browser.download.folderList",1);
+	// baseUrl = "http://fhir_profiling.trifolia.lantanagroup.com/";
+	baseUrl = "http://dev.trifolia.lantanagroup.com/";
+	driver.manage().window().maximize();
+	driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    
+	this.LoginFunctions = new A_TrifoliaLogin(this.driver);
+	this.IGFunctions = new B_ImplementationGuideFunctions(this.driver);
+	this.TemplateFunctions = new C_TemplateFunctions(this.driver);
+	this.ConstraintFunctions = new D_ConstraintFunctions(this.driver);
+	this.ExportFunctions = new E_ExportFunctions(this.driver);
+	this.PublishingFunctions = new F_PublishingFunctions(this.driver);
+	this.TerminologyFunctions = new G_TerminologyFunctions(this.driver);
+  }
+@Test
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//                           INITIALIZATION and LOGIN
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        public void testAdminFunctions() throws Exception {
+          driver.get(baseUrl + "/");
+          
+	    // Testing Logging into Trifolia as Admin User
+		this.LoginFunctions.LCGAdminLogin();
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//                           PART I - IMPLEMENTATION GUIDE TESTS
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+		// Test Browsing the HAI R9 Implementation Guide
+	    this.IGFunctions.BrowseImplementationGuide("Healthcare Associated Infection Reports Release 9", "sean.mcilvenna" );
+		
+		// Test Creating the "Automation Test IG"
+		this.IGFunctions.CreateImplementationGuide("Automation Test IG", "sean.mcilvenna", "CDA");
+		
+		// Test Editing the "Automation Test IG"
+		this.IGFunctions.EditImplementationGuide("Automation Test IG","sean.mcilvenna");
+	
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//                           PART II - TEMPLATE TESTS
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		
+		// Test Viewing the "Acuity Score Data Section" Template
+		   this.TemplateFunctions.ViewTemplate("Acuity score data section", "oid:2.16.840.1.113883.10.20.17.2.3", "sean.mcilvenna");
+		
+		// Test Creating the "Automation Test Template"
+		   this.TemplateFunctions.CreateTemplate("Automation Test Template", "oid:1.2.3.4.5.6.7.8", "Automation Test IG", "CDA: document", "Test Template for Automation", "sean.mcilvenna");
+		
+		// Test Editing the "Automation Test Template"
+		   this.TemplateFunctions.EditTemplate("Automation Test Template", "oid:1.2.3.4.5.6.7.8", "Add Notes to the Automation Test Template");
+		
+		// Test Copying the "Automation Test Template"
+		   this.TemplateFunctions.CopyTemplate("Automation Test Template", "oid:1.2.3.4.5.6.7.8", "Automation Test IG", "Automation Test Template Copy");
+	
+     	// Test Moving the "Automation Test Template Copy"
+    	   this.TemplateFunctions.MoveTemplate("Automation Test Template Copy", "Consolidation V2", "Document");
+	    
+		// Test Deleting the "Automation Test Template Copy"
+		   this.TemplateFunctions.DeleteTemplate("Automation Test Template Copy");
+
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+////                           PART III - CONSTRAINT TESTS
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		// Test Creating Computed Constraints for the "Automation Test Template"
+	       this.ConstraintFunctions.CreateComputedConstraint("Automation Test Template","oid:1.2.3.4.5.6.7.8", "Other", "1.2.3.4.5.6.7.8", "POCD_HD000040");
+		
+		// Test Adding the "id" element with a Primitive Constraint containing schematron
+	       this.ConstraintFunctions.AddPrimitiveConstraint("This id SHALL be a globally unique identifier for the document", "STATIC", "Engineer", "tested)");
+		
+		// Test Editing a Primitive Constraint in the "Automation Test Template"
+	       this.ConstraintFunctions.EditPrimitiveConstraint("Automation Test Template", "oid:1.2.3.4.5.6.7.8","Analyst", "SHOULD");
+		
+		// Test Duplicating and Deleting Primitive Constraints in the "Automation Test Template"
+		   this.ConstraintFunctions.DuplicateAndDeleteConstraint();
+		
+		// Test Previewing and Validating Constraints within the "Automation Test Template"
+	       this.ConstraintFunctions.PreviewAndValidateConstraint("This id SHALL be a globally unique identifier for the document", "Schema allows multiple for");
+
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+////                           PART IV - PUBLISHING TESTS
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		// Test Creating Sample XML for the "Automation Test Template"
+		this.PublishingFunctions.CreateTemplateXMLSample("Automation Test Template");
+		
+		// Test Editing the Sample XML for the "Automation Test Template"
+		this.PublishingFunctions.EditTemplateXMLSample("Automation Test Template");
+		
+		// Test Deleting the Template Sample for the "Automation Test Template"
+		this.PublishingFunctions.DeleteTemplateXMLSample("Automation Test Template");
+		
+		// Test Balloting and Publishing the "Automation Test Implementation Guide"
+		this.PublishingFunctions.BallotAndPublishIG("Automation Test IG");
+		
+		// Test Versioning the "Automation Test Implementation Guide"
+		this.PublishingFunctions.VersionIG("Automation Test IG", "Automation Test IG V2");
+		
+		// Test Versioning the "Automation Test Template"
+		this.PublishingFunctions.VersionTemplate("Automation Test Template");
+		
+		// Test Deleting the "Automation Test IG V2" and "Automation Test IG"
+        this.IGFunctions.DeleteImplementationGuide("Automation Test IG V2", "Automation Test IG");
+
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+////                         PART IV - EXPORTING TESTS
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		// Test Exporting the Templates for the "QRDA Category III" Implementation Guide
+		this.ExportFunctions.ExportTemplateToWord("QRDA Category III");
+		
+		// Test Exporting the Template XML for the "National Health Care Surveys (NCHS)" Implementation Guide
+		this.ExportFunctions.ExportTemplateXML("National Health Care Surveys (NCHS)");
+		
+		// Test Exporting the Schematron for the "Long-Term Post-Acute Care (LTPAC) Summary Release 1" Implementation Guide
+		this.ExportFunctions.ExportSchematron("LTPAC");
+		
+		// Test Exporting the Vocabulary for the "Consolidation V2" Implementation Guide
+		this.ExportFunctions.ExportVocabulary("Consolidation V2");
+
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+////                           PART VI - TERMINOLOGY TESTS
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		// Test Browsing the "CA Realm Header languageCode" Value Set
+		this.TerminologyFunctions.BrowseValueSet("CA Realm Header languageCode", "fra-CA");
+		
+		// Test Creating the "Automation Test Value Set"
+		this.TerminologyFunctions.CreateValueSet("Automation Test Gender Value Set", "2.2.2.2.2.2.2.2", "TEST_AdministrativeGender", 
+				"Administrative Gender based upon TEST vocabulary. This value set contains only male, female and undifferentiated concepts", "www.automationtesting.com", 
+				"F", "Female", "AdministrativeGender", "Active", "M", "Male", "AdministrativeGender", "Active");
+		
+		// Test Editing the "Automation Test Value Set"
+		this.TerminologyFunctions.EditValueSet("Automation Test Gender Value Set", "2.2.2.2.2.2.2.2", "UN", "Undifferentiated", "AdministrativeGender", "Active");
+		
+		// Test Deleting the "Automation Test Value Set"
+		this.TerminologyFunctions.DeleteValueSet("Automation Test Gender Value Set", "2.2.2.2.2.2.2.2");
+		
+		// Test Browsing the "FIPS 5-2 (State)" Code System
+		this.TerminologyFunctions.BrowseCodeSystem("FIPS 5-2 (State)", "2.16.840.1.113883.6.92");
+		
+		// Test Creating the "Automation Test Vaccine Code System"
+		this.TerminologyFunctions.CreateCodeSystem("Automation Test Vaccine Code System", "4.4.4.4.4.4.4.4", "Also known as CVX codes.");
+		
+		// Test Editing the "Automation Test Vaccine Code System"
+		this.TerminologyFunctions.EditCodeSystem("Automation Test Vaccine Code System", "4.4.4.4.4.4.4.4", "Used by the CDC");
+		
+		// Test Deleting the "Automation Test Vaccine Code System"
+		this.TerminologyFunctions.DeleteCodeSystem("Automation Test Vaccine Code System", "4.4.4.4.4.4.4.4");
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//                           CLOSING
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		// Test LCG Admin User Logout
+		this.LoginFunctions.TrifoliaLogout();
+}
+
+@After
+public void tearDown() throws Exception {
+  driver.quit();
+  String verificationErrorString = verificationErrors.toString();
+  if (!"".equals(verificationErrorString)) {
+    fail(verificationErrorString);
+  }
+}
+private boolean isElementPresent(By by) {
+  try {
+    driver.findElement(by);
+    return true;
+  } catch (NoSuchElementException e) {
+    return false;
+  }
+}
+
+private boolean isAlertPresent() {
+  try {
+    driver.switchTo().alert();
+    return true;
+  } catch (NoAlertPresentException e) {
+    return false;
+  }
+}
+
+private String closeAlertAndGetItsText() {
+  try {
+    Alert alert = driver.switchTo().alert();
+    String alertText = alert.getText();
+    if (acceptNextAlert) {
+      alert.accept();
+    } else {
+      alert.dismiss();
+    }
+    return alertText;
+  } finally {
+    acceptNextAlert = true;
+  }
+ }
+}

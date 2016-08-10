@@ -1,0 +1,2 @@
+INDEX VERSION 1.127+C:\Users\User\Documents\_Lantana Consulting Group\Trifolia Project\Automated Test Scripts\Selenium Webdriver Project Files\Trifolia Workbench\.metadata\.plugins\org.eclipse.jdt.core
+1279347048.index

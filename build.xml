@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="junit" name="Trifolia Workbench">
+    <property environment="env"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="Trifolia Workbench.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/selenium-server-standalone-2.48.2.jar"/>
+        <pathelement location="lib/junit.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="init" name="build">
+        <javac debug="true" destdir="bin" includeantruntime="false">
+            <src path="src"/>
+            <classpath refid="Trifolia Workbench.classpath"/>
+        </javac>
+    </target>                
+    <target depends="build" name="junit">
+        <junit showoutput="Yes">
+            <classpath refid="Trifolia Workbench.classpath"/>
+            
+            <batchtest fork="yes">
+                <fileset dir="src" includes="**/*.java"/>
+            </batchtest>
+        </junit>
+    </target>
+</project>
