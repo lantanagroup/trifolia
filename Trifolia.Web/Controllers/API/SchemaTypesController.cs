@@ -18,7 +18,7 @@ namespace Trifolia.Web.Controllers
 
         //dependency injection for unit tests
         public SchemaTypesController(): this(
-            new TemplateDatabaseDataSource(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress), 
+            DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress), 
             new Trifolia.Shared.Helper(),
             new Trifolia.Shared.SimpleSchema.SimpleSchemaFactory()) {}
 

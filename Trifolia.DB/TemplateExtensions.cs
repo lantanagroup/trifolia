@@ -58,8 +58,8 @@ namespace Trifolia.DB
         {
             get
             {
-                if (this.Organization != null)
-                    return this.Organization.Name;
+                if (this.OwningImplementationGuide != null && this.OwningImplementationGuide.Organization != null)
+                    return this.OwningImplementationGuide.Organization.Name;
 
                 return string.Empty;
             }
@@ -228,7 +228,6 @@ namespace Trifolia.DB
                 Description = this.Description,
                 Notes = this.Notes,
                 StatusId = this.StatusId,
-                OrganizationId = this.OrganizationId,
                 ImpliedTemplateId = this.ImpliedTemplateId
             };
 

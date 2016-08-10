@@ -12,7 +12,7 @@ namespace Trifolia.DB
 {
     public interface IObjectRepository :IDisposable
     {
-        void AuditChanges(string auditUserName, string auditOrganization, string auditIP);
+        void AuditChanges(string auditUserName, string auditIP);
 
         IObjectSet<AuditEntry> AuditEntries { get; }
         IObjectSet<CodeSystem> CodeSystems { get; }

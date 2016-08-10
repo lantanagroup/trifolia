@@ -237,7 +237,7 @@ namespace Trifolia.Test
 
         #region IObjectRepository
 
-        public void AuditChanges(string auditUserName, string auditOrganization, string auditIP)
+        public void AuditChanges(string auditUserName, string auditIP)
         {
 
         }
@@ -604,7 +604,7 @@ namespace Trifolia.Test
                                    IsOpen = t.IsOpen,
                                    Name = t.Name,
                                    Oid = t.Oid,
-                                   OrganizationName = t.Organization != null ? t.Organization.Name : null,
+                                   OrganizationName = t.OwningImplementationGuide != null && t.OwningImplementationGuide.Organization != null ? t.OwningImplementationGuide.Organization.Name : null,
                                    OwningImplementationGuideId = t.OwningImplementationGuideId,
                                    OwningImplementationGuideTitle = t.OwningImplementationGuide != null ? t.OwningImplementationGuide.Name : null,
                                    PrimaryContext = t.PrimaryContext,
@@ -629,7 +629,7 @@ namespace Trifolia.Test
                                    Oid = t.Oid,
                                    Name = t.Name,
                                    Open = t.IsOpen ? "Yes" : "No",
-                                   Organization = t.Organization != null ? t.Organization.Name : null,
+                                   Organization = t.OwningImplementationGuide != null && t.OwningImplementationGuide.Organization != null ? t.OwningImplementationGuide.Organization.Name : null,
                                    ImplementationGuide = t.OwningImplementationGuide != null ? t.OwningImplementationGuide.Name : null,
                                    PublishDate = t.OwningImplementationGuide != null ? t.OwningImplementationGuide.PublishDate : null,
                                    TemplateType = t.TemplateType.Name + " (" + t.TemplateType.ImplementationGuideType.Name + ")",
@@ -686,7 +686,7 @@ namespace Trifolia.Test
             if (!string.IsNullOrEmpty(status))
                 publishStatus = this.publishStatuses.Single(y => y.Status == status);
 
-            var template = GenerateTemplate(oid, templateType, title, owningImplementationGuide, primaryContext, primaryContextType, description, notes, organization, impliedTemplate, publishStatus);
+            var template = GenerateTemplate(oid, templateType, title, owningImplementationGuide, primaryContext, primaryContextType, description, notes, impliedTemplate, publishStatus);
 
             if (previousVersion != null)
                 template.SetPreviousVersion(previousVersion);
@@ -705,7 +705,7 @@ namespace Trifolia.Test
         /// <param name="notes">The notes of the template</param>
         /// <param name="owningImplementationGuide">The implementation guide that owns the template.</param>
         /// <returns>A new instance of Template that has been appropriately added to the mock object repository.</returns>
-        public Template GenerateTemplate(string oid, TemplateType type, string title, ImplementationGuide owningImplementationGuide, string primaryContext = null, string primaryContextType = null, string description = null, string notes = null, Organization organization = null, Template impliedTemplate = null, PublishStatus status = null)
+        public Template GenerateTemplate(string oid, TemplateType type, string title, ImplementationGuide owningImplementationGuide, string primaryContext = null, string primaryContextType = null, string description = null, string notes = null, Template impliedTemplate = null, PublishStatus status = null)
         {
             if (string.IsNullOrEmpty(oid))
                 throw new ArgumentNullException("oid");
@@ -722,8 +722,6 @@ namespace Trifolia.Test
             Template template = new Template()
             {
                 Id = this.Templates.DefaultIfEmpty().Max(y => y != null ? y.Id : 0) + 1,
-                OrganizationId = organization != null ? new Nullable<int>(organization.Id) : null,
-                Organization = organization,
                 OwningImplementationGuideId = owningImplementationGuide.Id,
                 OwningImplementationGuide = owningImplementationGuide,
                 ImplementationGuideTypeId = type.ImplementationGuideTypeId,

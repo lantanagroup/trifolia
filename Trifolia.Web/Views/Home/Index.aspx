@@ -7,10 +7,6 @@
     <h2>
         Welcome to Trifolia Workbench!
     </h2>
-    <h3>
-        HL7 Members can login and non-members can register to use Trifolia Workbench
-        <a href="<%# Model.HL7LoginLink %>">here.</a>
-    </h3>
 
     <% if (Model.DisplayInternalTechSupportPanel) { %>
     <div class="panel">

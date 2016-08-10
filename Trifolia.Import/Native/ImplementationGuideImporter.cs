@@ -16,14 +16,14 @@ namespace Trifolia.Import.Native
     public class ImplementationGuideImporter
     {
         private IObjectRepository tdb;
-        private TemplateDatabaseDataSource dataSource;
+        private TrifoliaDatabase dataSource;
 
         public List<string> Errors { get; set; }
 
         public ImplementationGuideImporter(IObjectRepository tdb)
         {
             this.tdb = tdb;
-            this.dataSource = tdb as TemplateDatabaseDataSource;
+            this.dataSource = tdb as TrifoliaDatabase;
         }
 
         private PublishStatus GetImportStatus(ImportImplementationGuide importIg)
@@ -185,12 +185,10 @@ namespace Trifolia.Import.Native
         private void UpdateProperties(ImplementationGuide implementationGuide, ImplementationGuideType igType, ImportImplementationGuide importImplementationGuide)
         {
             var importIgStatus = GetImportStatus(importImplementationGuide);
+            var organization = !string.IsNullOrEmpty(importImplementationGuide.organizationName) ? this.tdb.Organizations.SingleOrDefault(y => y.Name.ToLower() == importImplementationGuide.organizationName.ToLower()) : null;
 
-            // TODO
-            /*
-            if (implementationGuide.Organization == null)
-                implementationGuide.Organization = CheckPoint.Instance.GetUser(this.tdb).Organization;
-             */
+            if (implementationGuide.Organization != organization)
+                implementationGuide.Organization = organization;
 
             if (implementationGuide.Name != importImplementationGuide.name)
                 implementationGuide.Name = importImplementationGuide.name;

@@ -123,7 +123,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Properties\DataSources\TemplateDatabaseDataSource.datasource" />
     <None Include="ImportExport\Model\TemplateExport.xsd">
       <SubType>Designer</SubType>
     </None>

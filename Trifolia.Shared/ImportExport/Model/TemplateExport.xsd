@@ -56,7 +56,6 @@
 						<xs:attribute name="contextType" type="xs:string"/>
 						<xs:attribute name="isOpen" type="xs:boolean"/>
 						<xs:attribute name="impliedTemplateOid" type="xs:string"/>
-						<xs:attribute name="organizationName" type="xs:string"/>
 						<xs:attribute name="publishStatus" type="xs:string"/>
 					</xs:complexType>
 				</xs:element>
@@ -136,6 +135,7 @@
 							type="lcg:ImplementationGuideStatus" use="optional"/>
 						<xs:attribute name="displayName"/>
 						<xs:attribute name="webDisplayName"/>
+						<xs:attribute name="organizationName"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

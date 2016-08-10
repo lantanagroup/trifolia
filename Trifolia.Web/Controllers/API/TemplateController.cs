@@ -129,7 +129,7 @@ namespace Trifolia.Web.Controllers.API
                 IsOpen = template.IsOpen,
                 Name = template.Name,
                 Oid = template.Oid,
-                Organization = template.Organization != null ? template.Organization.Name : string.Empty,
+                Organization = template.OwningImplementationGuide != null && template.OwningImplementationGuide.Organization != null ? template.OwningImplementationGuide.Organization.Name : string.Empty,
                 ShowNotes = CheckPoint.Instance.GrantEditTemplate(template.Id),
                 CanEdit = canEditTemplate,
                 CanEditPublishSettings = canEditPublishSettings,
@@ -523,10 +523,8 @@ namespace Trifolia.Web.Controllers.API
             if (!CheckPoint.Instance.GrantEditTemplate(templateId))
                 throw new AuthorizationException("You do not have permission to delete this template");
 
-            using (IObjectRepository auditedTdb = DBContext.Create())
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                auditedTdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 var template = auditedTdb.Templates.Single(y => y.Id == templateId);
 
                 template.Delete(auditedTdb, replaceTemplateId);
@@ -652,11 +650,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Template/Copy"), SecurableAction(SecurableNames.TEMPLATE_COPY)]
         public dynamic Copy(CopyModel model)
         {
-            using (IObjectRepository auditedTdb = DBContext.Create())
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                // Audit the creation of this new template and its constraints
-                auditedTdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 if (!CheckPoint.Instance.GrantViewTemplate(model.TemplateId))
                     throw new AuthorizationException("You do not have permission to view this template.");
 
@@ -846,11 +841,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Template/Move"), SecurableAction(SecurableNames.TEMPLATE_MOVE)]
         public void Move(MoveCompleteModel model)
         {
-            using (IObjectRepository auditedTdb = DBContext.Create())
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                // Audit the changes being made to the template
-                auditedTdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 if (!CheckPoint.Instance.GrantEditTemplate(model.Template.TemplateId))
                     throw new AuthorizationException("You do not have permission to move this template");
 
@@ -961,10 +953,8 @@ namespace Trifolia.Web.Controllers.API
             if (!CheckPoint.Instance.GrantEditTemplate(aModel.TemplateId))
                 throw new AuthorizationException("You do not have permission to edit this template");
 
-            using (IObjectRepository auditedTdb = DBContext.Create())
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                auditedTdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 PublishModelMapper lMapper = new PublishModelMapper(auditedTdb);
                 lMapper.MapViewModelToEntity(aModel);
 

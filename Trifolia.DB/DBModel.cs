@@ -50,7 +50,6 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_user_role_user", "user", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.User), "user_role", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.UserRole), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_template_user", "User", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.User), "Template", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.Template), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_role_restriction_organization", "organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.Organization), "RoleRestriction", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.RoleRestriction), true)]
-[assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_template_organization", "organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Trifolia.DB.Organization), "Template", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.Template), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_organization_defaultpermission_group", "Group", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Trifolia.DB.Group), "organization_defaultpermission", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.OrganizationDefaultPermission), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_organization_defaultpermission_organization", "Organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.Organization), "organization_defaultpermission", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.OrganizationDefaultPermission), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_organization_defaultpermission_organization1", "Organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Trifolia.DB.Organization), "organization_defaultpermission", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.OrganizationDefaultPermission), true)]
@@ -59,7 +58,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_ig_igPreviousVersion", "implementationguide", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Trifolia.DB.ImplementationGuide), "implementationguide1", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.ImplementationGuide), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_implementationguide_file_implementationguide", "implementationguide", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.ImplementationGuide), "ImplementationGuideFile", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.ImplementationGuideFile), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_implementationguide_implementationguidetype", "ImplementationGuideType", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.ImplementationGuideType), "implementationguide", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.ImplementationGuide), true)]
-[assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_implementationguide_organization", "Organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.Organization), "implementationguide", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.ImplementationGuide), true)]
+[assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_implementationguide_organization", "Organization", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Trifolia.DB.Organization), "implementationguide", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.ImplementationGuide), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_implementationguide_permission_implementationguide", "implementationguide", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.ImplementationGuide), "ImplementationGuidePermission", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.ImplementationGuidePermission), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_implementationguide_schpattern_implementationguide", "implementationguide", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.ImplementationGuide), "ImplementationGuideSchematronPattern", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.ImplementationGuideSchematronPattern), true)]
 [assembly: EdmRelationshipAttribute("Trifolia.DB", "FK_implementationguide_setting_implementationguide", "implementationguide", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(Trifolia.DB.ImplementationGuide), "ImplementationGuideSetting", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Trifolia.DB.ImplementationGuideSetting), true)]
@@ -85,32 +84,32 @@ namespace Trifolia.DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    public partial class TemplateDatabaseDataSource : ObjectContext
+    public partial class TrifoliaDatabase : ObjectContext
     {
         #region Constructors
     
         /// <summary>
-        /// Initializes a new TemplateDatabaseDataSource object using the connection string found in the 'TemplateDatabaseDataSource' section of the application configuration file.
+        /// Initializes a new TrifoliaDatabase object using the connection string found in the 'TrifoliaDatabase' section of the application configuration file.
         /// </summary>
-        public TemplateDatabaseDataSource() : base("name=TrifoliaDatabase", "TemplateDatabaseDataSource")
+        public TrifoliaDatabase() : base("name=TrifoliaDatabase", "TrifoliaDatabase")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new TemplateDatabaseDataSource object.
+        /// Initialize a new TrifoliaDatabase object.
         /// </summary>
-        public TemplateDatabaseDataSource(string connectionString) : base(connectionString, "TemplateDatabaseDataSource")
+        public TrifoliaDatabase(string connectionString) : base(connectionString, "TrifoliaDatabase")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new TemplateDatabaseDataSource object.
+        /// Initialize a new TrifoliaDatabase object.
         /// </summary>
-        public TemplateDatabaseDataSource(EntityConnection connection) : base(connection, "TemplateDatabaseDataSource")
+        public TrifoliaDatabase(EntityConnection connection) : base(connection, "TrifoliaDatabase")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
@@ -3164,15 +3163,13 @@ namespace Trifolia.DB
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="implementationGuideTypeId">Initial value of the ImplementationGuideTypeId property.</param>
-        /// <param name="organizationId">Initial value of the OrganizationId property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="allowAccessRequests">Initial value of the AllowAccessRequests property.</param>
-        public static ImplementationGuide CreateImplementationGuide(global::System.Int32 id, global::System.Int32 implementationGuideTypeId, global::System.Int32 organizationId, global::System.String name, global::System.Boolean allowAccessRequests)
+        public static ImplementationGuide CreateImplementationGuide(global::System.Int32 id, global::System.Int32 implementationGuideTypeId, global::System.String name, global::System.Boolean allowAccessRequests)
         {
             ImplementationGuide implementationGuide = new ImplementationGuide();
             implementationGuide.Id = id;
             implementationGuide.ImplementationGuideTypeId = implementationGuideTypeId;
-            implementationGuide.OrganizationId = organizationId;
             implementationGuide.Name = name;
             implementationGuide.AllowAccessRequests = allowAccessRequests;
             return implementationGuide;
@@ -3236,9 +3233,9 @@ namespace Trifolia.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 OrganizationId
+        public Nullable<global::System.Int32> OrganizationId
         {
             get
             {
@@ -3253,8 +3250,8 @@ namespace Trifolia.DB
                 OnOrganizationIdChanged();
             }
         }
-        private global::System.Int32 _OrganizationId;
-        partial void OnOrganizationIdChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _OrganizationId;
+        partial void OnOrganizationIdChanging(Nullable<global::System.Int32> value);
         partial void OnOrganizationIdChanged();
     
         /// <summary>
@@ -6179,28 +6176,6 @@ namespace Trifolia.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("Trifolia.DB", "FK_template_organization", "Template")]
-        public EntityCollection<Template> Templates
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Template>("Trifolia.DB.FK_template_organization", "Template");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Template>("Trifolia.DB.FK_template_organization", "Template", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("Trifolia.DB", "FK_organization_defaultpermission_organization", "organization_defaultpermission")]
         public EntityCollection<OrganizationDefaultPermission> DefaultPermissions
         {
@@ -7438,30 +7413,6 @@ namespace Trifolia.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> OrganizationId
-        {
-            get
-            {
-                return _OrganizationId;
-            }
-            set
-            {
-                OnOrganizationIdChanging(value);
-                ReportPropertyChanging("OrganizationId");
-                _OrganizationId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OrganizationId");
-                OnOrganizationIdChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _OrganizationId;
-        partial void OnOrganizationIdChanging(Nullable<global::System.Int32> value);
-        partial void OnOrganizationIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
         public Nullable<global::System.Int32> ImpliedTemplateId
         {
             get
@@ -8079,44 +8030,6 @@ namespace Trifolia.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("Trifolia.DB.FK_template_user", "User", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("Trifolia.DB", "FK_template_organization", "organization")]
-        public Organization Organization
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Organization>("Trifolia.DB.FK_template_organization", "organization").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Organization>("Trifolia.DB.FK_template_organization", "organization").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Organization> OrganizationReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Organization>("Trifolia.DB.FK_template_organization", "organization");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Organization>("Trifolia.DB.FK_template_organization", "organization", value);
                 }
             }
         }

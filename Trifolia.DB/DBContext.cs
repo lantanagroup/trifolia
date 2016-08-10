@@ -20,10 +20,17 @@ namespace Trifolia.DB
             IObjectRepository dbContext = null;
 
             if (!string.IsNullOrEmpty(AppSettings.DatabaseConnectionString))
-                dbContext = (IObjectRepository)Activator.CreateInstance(dbContextType);
-            else
                 dbContext = (IObjectRepository)Activator.CreateInstance(dbContextType, AppSettings.DatabaseConnectionString);
+            else
+                dbContext = (IObjectRepository)Activator.CreateInstance(dbContextType);
 
+            return dbContext;
+        }
+
+        public static IObjectRepository CreateAuditable(string userName, string hostAddress)
+        {
+            var dbContext = Create();
+            dbContext.AuditChanges(userName, hostAddress);
             return dbContext;
         }
     }

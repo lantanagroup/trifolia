@@ -33,7 +33,7 @@ namespace Trifolia.Web.Controllers.API
         #region Constructor
 
         public TerminologyController()
-            : this(new TemplateDatabaseDataSource(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress))
+            : this(DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
         {
         }
 
@@ -256,10 +256,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpDelete, Route("api/Terminology/ValueSet/{valueSetId}"), SecurableAction(SecurableNames.VALUESET_EDIT)]
         public void DeleteValueSet(int valueSetId)
         {
-            using (IObjectRepository auditedTdb = DBContext.Create())
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                auditedTdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 var valueSet = auditedTdb.ValueSets.SingleOrDefault(y => y.Id == valueSetId);
 
                 if (!valueSet.CanModify(auditedTdb) && !valueSet.CanOverride(auditedTdb))
@@ -286,10 +284,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Terminology/ValueSet/Concepts"), SecurableAction(SecurableNames.VALUESET_EDIT)]
         public void SaveValueSetConcepts(SaveValueSetConceptsModel model)
         {
-            using (IObjectRepository auditedTdb = DBContext.Create())
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                auditedTdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 var valueSet = auditedTdb.ValueSets.Single(y => y.Id == model.ValueSetId);
 
                 if (model.Concepts != null)
@@ -341,10 +337,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Terminology/ValueSet/Save"), SecurableAction(SecurableNames.VALUESET_EDIT)]
         public int SaveValueSet(SaveValueSetModel model)
         {
-            using (IObjectRepository auditedTdb = DBContext.Create())
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                auditedTdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 ValueSetModel valueSetModel = model.ValueSet;
                 ValueSet valueSet = auditedTdb.ValueSets.SingleOrDefault(y => y.Id == valueSetModel.Id);
 
@@ -617,10 +611,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Terminology/Import/Excel"), SecurableAction(SecurableNames.ADMIN)]
         public void ExcelImport(ImportCheckResponse checkResponse)
         {
-            using (IObjectRepository auditedTdb = DBContext.Create())
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                auditedTdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 foreach (var checkValueSet in checkResponse.ValueSets)
                 {
                     ValueSet valueSet = null;

@@ -43,8 +43,9 @@
                 <input type="checkbox" data-bind="checked: OkayToContact" /> It is OK to contact me.
             </div>
 
-            <div class="form-group">
-                <button type="button" class="btn btn-default" data-bind="click: $parent.SaveChanges, enable: validation.isValid">Save</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" data-bind="click: $parent.SaveChanges, enable: validation.isValid">Save</button>
+                <a href="/Account/LogOff" class="btn btn-default">Cancel</a>
             </div>
         </div>
     </div>

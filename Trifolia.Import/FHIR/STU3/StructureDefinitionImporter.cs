@@ -67,7 +67,6 @@ namespace Trifolia.Import.FHIR.STU3
                     OwningImplementationGuide = unassignedImplementationGuide,
                     ImplementationGuideType = this.implementationGuideType,
                     Author = this.tdb.Users.Single(y => y.UserName == STU3Helper.DEFAULT_USER_NAME),
-                    Organization = this.tdb.Organizations.Single(y => y.Name == STU3Helper.DEFAULT_ORG_NAME),
                     IsOpen = true
                 };
             }

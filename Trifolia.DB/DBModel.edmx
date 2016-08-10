@@ -318,10 +318,6 @@
             <End Role="implementationguidetype" EntitySet="implementationguidetype" />
             <End Role="template" EntitySet="template" />
           </AssociationSet>
-          <AssociationSet Name="FK_template_organization" Association="Trifolia.Shared.Store.FK_template_organization">
-            <End Role="organization" EntitySet="organization" />
-            <End Role="template" EntitySet="template" />
-          </AssociationSet>
           <AssociationSet Name="FK_template_status" Association="Trifolia.Shared.Store.FK_template_status">
             <End Role="publish_status" EntitySet="publish_status" />
             <End Role="template" EntitySet="template" />
@@ -463,7 +459,7 @@
           </Key>
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="implementationGuideTypeId" Type="int" Nullable="false" />
-          <Property Name="organizationId" Type="int" Nullable="false" />
+          <Property Name="organizationId" Type="int" />
           <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
           <Property Name="publishDate" Type="datetime" />
           <Property Name="publishStatusId" Type="int" />
@@ -624,7 +620,6 @@
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="implementationGuideTypeId" Type="int" Nullable="false" />
           <Property Name="templateTypeId" Type="int" Nullable="false" />
-          <Property Name="organizationId" Type="int" />
           <Property Name="impliedTemplateId" Type="int" />
           <Property Name="owningImplementationGuideId" Type="int" Nullable="false" />
           <Property Name="oid" Type="nvarchar" Nullable="false" MaxLength="255" />
@@ -778,7 +773,7 @@
           <Property Name="statusDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_igaudittrail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'templatedb_auth.dbo.v_igaudittrail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="v_igaudittrail">
           <Key>
@@ -799,7 +794,7 @@
           <Property Name="conformanceNumber" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_implementationguidefile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'templatedb_auth.dbo.v_implementationguidefile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="v_implementationguidefile">
           <Key>
@@ -824,7 +819,7 @@
           <Property Name="note" Type="varchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_implementationGuidePermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'templatedb_auth.dbo.v_implementationGuidePermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="v_implementationGuidePermissions">
           <Key>
@@ -837,7 +832,7 @@
           <Property Name="permission" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_implementationGuideTemplates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'templatedb_auth.dbo.v_implementationGuideTemplates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="v_implementationGuideTemplates">
           <Key>
@@ -848,7 +843,7 @@
           <Property Name="templateId" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_latestimplementationguidefiledata' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'templatedb_auth.dbo.v_latestimplementationguidefiledata' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="v_latestimplementationguidefiledata">
           <Key>
@@ -866,7 +861,7 @@
           <Property Name="note" Type="varchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_template' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'templatedb_auth.dbo.v_template' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="v_template">
           <Key>
@@ -899,7 +894,7 @@
           <Property Name="impliedTemplateCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_templateList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'templatedb_auth.dbo.v_templateList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="v_templateList">
           <Key>
@@ -928,7 +923,7 @@
           <Property Name="primaryContextType" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_templatePermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'templatedb_auth.dbo.v_templatePermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="v_templatePermissions">
           <Key>
@@ -938,10 +933,10 @@
           </Key>
           <Property Name="userId" Type="int" Nullable="false" />
           <Property Name="templateId" Type="int" Nullable="false" />
-          <Property Name="permission" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="permission" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_templateusage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'templatedb_auth.dbo.v_templateusage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="v_templateusage">
           <Key>
@@ -956,7 +951,7 @@
           <Property Name="implementationGuideDisplay" Type="varchar" Nullable="false" MaxLength="513" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_userSecurables' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'templatedb_auth.dbo.v_userSecurables' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="v_userSecurables">
           <Key>
@@ -1139,7 +1134,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="1" />
+          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="0..1" />
           <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="organization">
@@ -1462,18 +1457,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_template_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="0..1" />
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="organization">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="template">
-              <PropertyRef Name="organizationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_template_status">
           <End Role="publish_status" Type="Trifolia.Shared.Store.publish_status" Multiplicity="0..1" />
           <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="*" />
@@ -1636,10 +1619,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="GetImplementationGuideTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="implementationGuideId" Type="int" Mode="In" />
-          <Parameter Name="inferred" Type="bit" Mode="In" />
-          <Parameter Name="parentTemplateId" Type="int" Mode="In" />
+	<Function Name="GetImplementationGuideTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+	  <Parameter Name="implementationGuideId" Type="int" Mode="In" />
+	  <Parameter Name="inferred" Type="bit" Mode="In" />
+	  <Parameter Name="parentTemplateId" Type="int" Mode="In" />
         </Function>
         <Function Name="SearchTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userId" Type="int" Mode="In" />
@@ -1663,7 +1646,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Trifolia.DB" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="TemplateDatabaseDataSource" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="TrifoliaDatabase" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
           <EntitySet Name="AuditEntries" EntityType="Trifolia.DB.AuditEntry" />
           <EntitySet Name="CodeSystems" EntityType="Trifolia.DB.CodeSystem" />
           <EntitySet Name="GreenConstraints" EntityType="Trifolia.DB.GreenConstraint" />
@@ -1824,10 +1807,6 @@
             <End Role="organization" EntitySet="Organizations" />
             <End Role="RoleRestriction" EntitySet="RoleRestrictions" />
           </AssociationSet>
-          <AssociationSet Name="FK_template_organization" Association="Trifolia.DB.FK_template_organization">
-            <End Role="organization" EntitySet="Organizations" />
-            <End Role="Template" EntitySet="Templates" />
-          </AssociationSet>
           <EntitySet Name="OrganizationDefaultPermissions" EntityType="Trifolia.DB.OrganizationDefaultPermission" />
           <AssociationSet Name="FK_organization_defaultpermission_group" Association="Trifolia.DB.FK_organization_defaultpermission_group">
             <End Role="Group" EntitySet="Groups" />
@@ -1947,13 +1926,13 @@
             <End Role="template_extension" EntitySet="TemplateExtensions" />
           </AssociationSet>
           <EntitySet Name="GroupManagers" EntityType="Trifolia.DB.GroupManager" />
-          <AssociationSet Name="FK_group_manager_group" Association="Trifolia.DB.FK_group_manager_group">
-            <End Role="Group" EntitySet="Groups" />
-            <End Role="group_manager" EntitySet="GroupManagers" />
+          <AssociationSet Name="FK_group_manager_group1" Association="Trifolia.DB.FK_group_manager_group">
+            <End EntitySet="Groups" Role="Group" />
+            <End EntitySet="GroupManagers" Role="group_manager" />
           </AssociationSet>
-          <AssociationSet Name="FK_group_manager_user" Association="Trifolia.DB.FK_group_manager_user">
-            <End Role="User" EntitySet="Users" />
-            <End Role="group_manager" EntitySet="GroupManagers" />
+          <AssociationSet Name="FK_group_manager_user1" Association="Trifolia.DB.FK_group_manager_user">
+            <End EntitySet="Users" Role="User" />
+            <End EntitySet="GroupManagers" Role="group_manager" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="AuditEntry">
@@ -2097,7 +2076,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="ImplementationGuideTypeId" Type="Int32" Nullable="false" />
           <Property Name="TemplateTypeId" Type="Int32" Nullable="false" />
-          <Property Name="OrganizationId" Type="Int32" />
           <Property Name="ImpliedTemplateId" Type="Int32" />
           <Property Name="OwningImplementationGuideId" Type="Int32" Nullable="false" />
           <Property Name="Oid" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
@@ -2118,7 +2096,6 @@
           <NavigationProperty Name="TemplateSamples" Relationship="Trifolia.DB.FK_templatesample_template" FromRole="Template" ToRole="template_sample" />
           <Property Type="Int32" Name="AuthorId" Nullable="false" />
           <NavigationProperty Name="Author" Relationship="Trifolia.DB.FK_template_user" FromRole="Template" ToRole="User" />
-          <NavigationProperty Name="Organization" Relationship="Trifolia.DB.FK_template_organization" FromRole="Template" ToRole="organization" />
           <Property Type="Int32" Name="PreviousVersionTemplateId" />
           <NavigationProperty Name="NextVersion" Relationship="Trifolia.DB.FK_template_templatePreviousVersion" FromRole="Template" ToRole="Template1" />
           <NavigationProperty Name="OwningImplementationGuide" Relationship="Trifolia.DB.FK_template_implementationguide" FromRole="Template" ToRole="implementationguide" />
@@ -2840,7 +2817,7 @@
           </Key>
           <Property Type="Int32" Name="UserId" Nullable="false" />
           <Property Type="Int32" Name="TemplateId" Nullable="false" />
-          <Property Type="String" Name="Permission" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Permission" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ViewUserSecurable">
           <Key>
@@ -2873,7 +2850,6 @@
           <Property Type="String" Name="ContactPhone" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="AuthProvider" MaxLength="1024" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="RoleRestrictions" Relationship="Trifolia.DB.FK_role_restriction_organization" FromRole="organization" ToRole="RoleRestriction" />
-          <NavigationProperty Name="Templates" Relationship="Trifolia.DB.FK_template_organization" FromRole="organization" ToRole="Template" />
           <NavigationProperty Name="DefaultPermissions" Relationship="Trifolia.DB.FK_organization_defaultpermission_organization" FromRole="Organization" ToRole="organization_defaultpermission" />
           <NavigationProperty Name="ImplementationGuides" Relationship="Trifolia.DB.FK_implementationguide_organization" FromRole="Organization" ToRole="implementationguide" />
           <Property Type="Boolean" Name="IsInternal" Nullable="false" />
@@ -2886,18 +2862,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="RoleRestriction">
-              <PropertyRef Name="OrganizationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_template_organization">
-          <End Type="Trifolia.DB.Organization" Role="organization" Multiplicity="0..1" />
-          <End Type="Trifolia.DB.Template" Role="Template" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="organization">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Template">
               <PropertyRef Name="OrganizationId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2984,7 +2948,7 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="Int32" Name="ImplementationGuideTypeId" Nullable="false" />
-          <Property Type="Int32" Name="OrganizationId" Nullable="false" />
+          <Property Type="Int32" Name="OrganizationId" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="PublishDate" Precision="3" />
           <Property Type="Int32" Name="PublishStatusId" />
@@ -3046,7 +3010,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_organization">
-          <End Type="Trifolia.DB.Organization" Role="Organization" Multiplicity="1" />
+          <End Type="Trifolia.DB.Organization" Role="Organization" Multiplicity="0..1" />
           <End Type="Trifolia.DB.ImplementationGuide" Role="implementationguide" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Organization">
@@ -3282,15 +3246,15 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Type="Int32" Name="GroupId" Nullable="false" />
-          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="GroupId" Nullable="false" Type="Int32" />
+          <Property Name="UserId" Nullable="false" Type="Int32" />
           <NavigationProperty Name="Group" Relationship="Trifolia.DB.FK_group_manager_group" FromRole="group_manager" ToRole="Group" />
           <NavigationProperty Name="User" Relationship="Trifolia.DB.FK_group_manager_user" FromRole="group_manager" ToRole="User" />
         </EntityType>
         <Association Name="FK_group_manager_group">
-          <End Type="Trifolia.DB.Group" Role="Group" Multiplicity="1" />
-          <End Type="Trifolia.DB.GroupManager" Role="group_manager" Multiplicity="*" />
+          <End Type="Trifolia.DB.Group" Multiplicity="1" Role="Group" />
+          <End Type="Trifolia.DB.GroupManager" Multiplicity="*" Role="group_manager" />
           <ReferentialConstraint>
             <Principal Role="Group">
               <PropertyRef Name="Id" />
@@ -3301,8 +3265,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_group_manager_user">
-          <End Type="Trifolia.DB.User" Role="User" Multiplicity="1" />
-          <End Type="Trifolia.DB.GroupManager" Role="group_manager" Multiplicity="*" />
+          <End Type="Trifolia.DB.User" Multiplicity="1" Role="User" />
+          <End Type="Trifolia.DB.GroupManager" Multiplicity="*" Role="group_manager" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
@@ -3317,7 +3281,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="TrifoliaSharedStoreContainer" CdmEntityContainer="TemplateDatabaseDataSource">
+        <EntityContainerMapping StorageEntityContainer="TrifoliaSharedStoreContainer" CdmEntityContainer="TrifoliaDatabase">
           <EntitySetMapping Name="AuditEntries">
             <EntityTypeMapping TypeName="Trifolia.DB.AuditEntry">
               <MappingFragment StoreEntitySet="audit">
@@ -3451,7 +3415,6 @@
                 <ScalarProperty Name="Id" ColumnName="id" />
                 <ScalarProperty Name="ImplementationGuideTypeId" ColumnName="implementationGuideTypeId" />
                 <ScalarProperty Name="TemplateTypeId" ColumnName="templateTypeId" />
-                <ScalarProperty Name="OrganizationId" ColumnName="organizationId" />
                 <ScalarProperty Name="ImpliedTemplateId" ColumnName="impliedTemplateId" />
                 <ScalarProperty Name="OwningImplementationGuideId" ColumnName="owningImplementationGuideId" />
                 <ScalarProperty Name="Oid" ColumnName="oid" />
@@ -3875,6 +3838,7 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SearchTemplates" FunctionName="Trifolia.Shared.Store.SearchTemplates" />
+          <FunctionImportMapping FunctionImportName="GetImplementationGuideTemplates" FunctionName="Trifolia.Shared.Store.GetImplementationGuideTemplates" />
           <EntitySetMapping Name="ImplementationGuideSections">
             <EntityTypeMapping TypeName="Trifolia.DB.ImplementationGuideSection">
               <MappingFragment StoreEntitySet="implementationguide_section">
@@ -3887,7 +3851,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetImplementationGuideTemplates" FunctionName="Trifolia.Shared.Store.GetImplementationGuideTemplates" />
           <EntitySetMapping Name="TemplateExtensions">
             <EntityTypeMapping TypeName="Trifolia.DB.TemplateExtension">
               <MappingFragment StoreEntitySet="template_extension">
@@ -4095,7 +4058,6 @@
         <edmx:AssociationConnector Association="Trifolia.DB.FK_template_user" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.Organization" Width="1.5" PointX="2.375" PointY="20.875" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_role_restriction_organization" />
-        <edmx:AssociationConnector Association="Trifolia.DB.FK_template_organization" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.OrganizationDefaultPermission" Width="1.5" PointX="3" PointY="28.625" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_organization_defaultpermission_group" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_organization_defaultpermission_organization" />
@@ -4125,13 +4087,9 @@
         <edmx:AssociationConnector Association="Trifolia.DB.FK_implementationguide_section_implementationguide" />
         <edmx:EntityTypeShape EntityType="Trifolia.DB.TemplateExtension" Width="1.5" PointX="10.125" PointY="7.875" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_template_extension_template" />
-        <edmx:EntityTypeShape EntityType="Trifolia.DB.GroupManager" Width="1.5" PointX="6.375" PointY="27.875" />
+        <edmx:EntityTypeShape EntityType="Trifolia.DB.GroupManager" PointX="6.375" PointY="28.25" Width="1.5" />
         <edmx:AssociationConnector Association="Trifolia.DB.FK_group_manager_group" />
-        <edmx:AssociationConnector Association="Trifolia.DB.FK_group_manager_user" ManuallyRouted="true" >
-          <edmx:ConnectorPoint PointX="5.9843775" PointY="26.537903645833335" />
-          <edmx:ConnectorPoint PointX="5.9843775" PointY="29.068270729166656" />
-          <edmx:ConnectorPoint PointX="6.375" PointY="29.068270729166656" />
-        </edmx:AssociationConnector>
+        <edmx:AssociationConnector Association="Trifolia.DB.FK_group_manager_user" />
         </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

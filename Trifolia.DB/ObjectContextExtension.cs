@@ -9,11 +9,10 @@ using System.Data.SqlClient;
 
 namespace Trifolia.DB
 {
-    public partial class TemplateDatabaseDataSource : IObjectRepository
+    public partial class TrifoliaDatabase : IObjectRepository
     {
         private List<TempAuditEntry> auditRecords = new List<TempAuditEntry>();
         private string auditUserName = null;
-        private string auditOrganization = null;
         private string auditIP = null;
 
         #region IObjectRepository Implementation
@@ -321,24 +320,17 @@ namespace Trifolia.DB
             "CodeSystem",
             "ValueSet" });
 
-        public TemplateDatabaseDataSource(string auditUserName, string auditOrganization, string auditIP)
-            : this()
-        {
-            this.AuditChanges(auditUserName, auditOrganization, auditIP);
-        }
-
-        public void AuditChanges(string auditUserName, string auditOrganization, string auditIP)
+        public void AuditChanges(string auditUserName, string auditIP)
         {
             if (!string.IsNullOrEmpty(auditUserName) && !string.IsNullOrEmpty(auditIP))
             {
                 this.auditUserName = auditUserName;
-                this.auditOrganization = auditOrganization;
                 this.auditIP = auditIP;
-                this.SavingChanges += TemplateDatabaseDataSource_SavingChanges;
+                this.SavingChanges += TrifoliaDatabase_SavingChanges;
             }
         }
 
-        void TemplateDatabaseDataSource_SavingChanges(object sender, EventArgs e)
+        void TrifoliaDatabase_SavingChanges(object sender, EventArgs e)
         {
             ObjectContext context = sender as ObjectContext;
 
@@ -374,7 +366,7 @@ namespace Trifolia.DB
 
             foreach (TempAuditEntry tempAuditEntry in this.auditRecords)
             {
-                AuditEntry newAuditEntry = tempAuditEntry.CreateAuditEntry(this.auditUserName, this.auditOrganization, this.auditIP);
+                AuditEntry newAuditEntry = tempAuditEntry.CreateAuditEntry(this.auditUserName, this.auditIP);
 
                 if (newAuditEntry != null)
                 {
@@ -393,12 +385,12 @@ namespace Trifolia.DB
             private List<string> fieldChanges = new List<string>();
             private EntityState changeState = EntityState.Unchanged;
             private object entity;
-            private TemplateDatabaseDataSource context;
+            private TrifoliaDatabase context;
             private int? implementationGuideId;
             private int? templateId;
             private int? constraintId;
 
-            public TempAuditEntry(TemplateDatabaseDataSource context, ObjectStateEntry entry)
+            public TempAuditEntry(TrifoliaDatabase context, ObjectStateEntry entry)
             {
                 this.context = context;
                 this.entity = entry.Entity;
@@ -409,7 +401,7 @@ namespace Trifolia.DB
                     this.SetIds();
             }
 
-            public AuditEntry CreateAuditEntry(string auditUserName, string auditOrganization, string auditIP)
+            public AuditEntry CreateAuditEntry(string auditUserName, string auditIP)
             {
                 if (this.fieldChanges.Count == 0)
                     return null;
@@ -432,7 +424,7 @@ namespace Trifolia.DB
                 newAuditEntry.TemplateConstraintId = this.constraintId;
                 newAuditEntry.Note = note;
                 newAuditEntry.IP = auditIP;
-                newAuditEntry.Username = string.Format("{0} ({1})", auditUserName, auditOrganization);
+                newAuditEntry.Username = auditUserName;
                 newAuditEntry.AuditDate = DateTime.Now;
                 newAuditEntry.Type = this.entity.GetType().Name;
 

@@ -31,11 +31,17 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <div class="tab-pane active" id="general">
-                    <div class="form-group">
+                    <div class="form-group" data-bind="css: { 'has-error': !Validation().Name.isValid() }">
                         <label>Name</label>
                         <input type="text" class="form-control" data-bind="value: Name, disable: PreviousVersionId" />
+                        <span class="help-block" data-bind="validationMessage: Name"></span>
                     </div>
-                    <span data-bind="validationMessage: Name"></span>
+
+                    <div class="form-group" data-bind="css: { 'has-error': !Validation().TypeId.isValid() }">
+                        <label>Type</label>
+                        <select class="form-control" data-bind="value: TypeId, options: $parent.ImplementationGuideTypes, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select', disable: Id"></select>
+                        <span class="help-block" data-bind="validationMessage: TypeId"></span>
+                    </div>
 
                     <div class="form-group">
                         <label>Organization</label>
@@ -67,15 +73,9 @@
                     <div class="form-group">
                         <label>Web Readme Overview</label>
                         <textarea style="width: 100%; height: 100px;" data-bind="value: WebReadmeOverview"></textarea>
-                        <span class="help-block">Web Readme Overview</span>
+                        <span class="help-block">Used in the .txt README file when the web-based implementation guide is downloaded as a ZIP package.</span>
                     </div>
                     <span data-bind="validationMessage: WebReadmeOverview"></span>
-
-                    <div class="form-group">
-                        <label>Type</label>
-                        <select class="form-control" data-bind="value: TypeId, options: $parent.ImplementationGuideTypes, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select', disable: Id"></select>
-                    </div>
-                    <span data-bind="validationMessage: TypeId"></span>
             
                     <div class="form-group">
                         <label>Consolidated Format</label>
@@ -89,6 +89,7 @@
                     <div class="form-group">
                         <label>Access Manager</label>
                         <select class="form-control" data-bind="value: AccessManagerId, options: GetEditUsers(), optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select...'""></select>
+                        <span class="help-block">One of the individual users that have edit permissions to the IG. Is the user that receives emails with access requests.</span>
                     </div>
 
                     <div class="form-group">
@@ -97,6 +98,7 @@
                             <option value="true">Yes</option>
                             <option value="false" selected>No</option>
                         </select>
+                        <span class="help-block">Indicates whether the implementation guide should be displayed in the list of implementation guides that users can request access to.</span>
                     </div>
                 </div>
                 <div class="tab-pane" id="templateTypes">

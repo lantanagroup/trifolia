@@ -369,16 +369,13 @@ namespace Trifolia.Web.Controllers.API
         {
             SaveResponse response = new SaveResponse();
 
-            using (IObjectRepository tdb = DBContext.Create())
+            using (IObjectRepository tdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
                 if (!CheckPoint.Instance.GrantEditImplementationGuide(model.Template.OwningImplementationGuideId))
                     throw new AuthorizationException("You do not have authorization to edit templates associated with the selected implementation guide");
 
                 if (model.Template.Id != null && !CheckPoint.Instance.GrantEditTemplate(model.Template.Id.Value))
                     throw new AuthorizationException("You do not have permission to edit this template");
-
-                // Audit all changes to template and constraints
-                tdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
 
                 Template template = SaveTemplate(tdb, model.Template);
 

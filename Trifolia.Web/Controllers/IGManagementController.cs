@@ -50,7 +50,7 @@ namespace Trifolia.Web.Controllers
 
         public IGManagementController()
         {
-            this.tdb = new TemplateDatabaseDataSource(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
+            this.tdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress);
         }
 
         #endregion
@@ -381,7 +381,7 @@ namespace Trifolia.Web.Controllers
         {
             switch (type)
             {
-                case "EntireOrganization":
+                case "Everyone":
                     return Trifolia.Web.Models.PermissionManagement.PermissionTypes.Everyone;
                 case "Group":
                     return Trifolia.Web.Models.PermissionManagement.PermissionTypes.Group;

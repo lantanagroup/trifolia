@@ -723,7 +723,6 @@
     <Content Include="Styles\Site.css" />
     <Content Include="Styles\templateEditor.css" />
     <Content Include="Unauthorized.aspx" />
-    <Content Include="Views\Account\Login.aspx" />
     <Content Include="Views\Account\MyProfile.aspx" />
     <Content Include="Views\Account\NewProfile.aspx" />
     <Content Include="Views\Admin\Groups.aspx" />

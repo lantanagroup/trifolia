@@ -285,7 +285,7 @@ namespace Trifolia.Shared
                 IgType = template.ImplementationGuideType.Name,
                 TemplateType = template.TemplateType.Name,
                 TemplateTypeDisplay = template.TemplateType.Name + " (" + template.ImplementationGuideType.Name + ")",
-                Organization = template.Organization != null ? template.Organization.Name : string.Empty,
+                Organization = template.OwningImplementationGuide != null && template.OwningImplementationGuide.Organization != null ? template.OwningImplementationGuide.Organization.Name : string.Empty,
                 PublishDate = template.OwningImplementationGuide != null ? template.OwningImplementationGuide.PublishDate : null,
                 ImpliedTemplateOid = template.ImpliedTemplate != null ? template.ImpliedTemplate.Oid : null,
                 ImpliedTemplateTitle = template.ImpliedTemplate != null ? template.ImpliedTemplate.Name : null,

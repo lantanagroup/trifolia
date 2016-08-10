@@ -936,10 +936,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/ImplementationGuide/Save"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
         public int SaveImplementationGuide(EditModel aModel)
         {
-            using (IObjectRepository auditedTdb = DBContext.Create())
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                auditedTdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 // Use a transaction scope to make sure that any errors that occur are rolled back, even though there shouldn't be any errors
                 using (var scope = auditedTdb.BeginTransaction())
                 {
@@ -1352,10 +1350,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/ImplementationGuide/Edit/Bookmark"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT_BOOKMARKS)]
         public void UpdateBookmarks(EditBookmarksModel model)
         {
-            using (IObjectRepository tdb = DBContext.Create())
+            using (IObjectRepository tdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                tdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 foreach (var currentTemplateModel in model.TemplateItems)
                 {
                     Template template = tdb.Templates.Single(y => y.Id == currentTemplateModel.Id);

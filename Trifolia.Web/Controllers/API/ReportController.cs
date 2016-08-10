@@ -19,7 +19,7 @@ namespace Trifolia.Web.Controllers.API
         #region Constructor
 
         public ReportController()
-            : this(new TemplateDatabaseDataSource(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress))
+            : this(DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
         {
         }
 
