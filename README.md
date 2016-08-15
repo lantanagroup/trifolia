@@ -82,12 +82,12 @@ code\root] powershell Database\InstallDB.ps1 -databaseDirectory Database -appVer
 
 ## Production Installation/Upgrade
 
-- Compile all projects using Visual Studio's package feature, or with MSBuild using the /package:"Install Release" switch
-- Execute *prepare_package.bat . "Install Release"* from the SLN folder. This will place all files that need to be deployed in a "Dist" directory
+- Compile all projects with MSBuild using the path Trifolia.Web\Trifolia.Web.csproj and the switches /T:Package and /p:Configuration="Install Release"
+- Execute *prepare_package.bat ./ "Install Release"* from the SLN folder. This will place all files that need to be deployed in a "Dist" directory
 - Create and seed a database for production use (see "Database Installation Script" above)
 - Create an IIS web site for the folder that uses a v4.5 app pool. Ensure that the app pool has permissions to the Trifolia directory and the directory where Trifolia data is stored
 - Extract/copy all files from the Dist directory to a temporary location on the destination computer
-- Execute "powershell.exe Install.ps1" from the temporary directory. Provide values for each of the parameters used by the script
+- Execute "powershell.exe Install.ps1" from the temporary directory. Provide values for each of the parameters used by the script based on what was used to create the repository and the IIS web site in the previous steps
 - Execute "powershell.exe Database\InstallDB.ps1" from the temporary directory. Provide values for each parameter when asked
 - Consider creating a batch file to easily execute the installation scripts for the app and database in the future with updates
 - If creating a new installation of Trifolia, create an appSettings.user.config file that stores configuration values for each parameter in the <appSettings> portion of the Web.config file. This will ensure that the settings do not get overwritten.
