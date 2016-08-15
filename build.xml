@@ -3,10 +3,23 @@
     <property environment="env"/>
     <property name="target" value="1.7"/>
     <property name="source" value="1.7"/>
+	<property name="basicUserUsername" value="basic.user" />
+	<property name="basicUserPassword" value="basic.password" />
+	<property name="adminUserUsername" value="admin"/>
+	<property name="adminUserPassword" value="test"/>
+	<property name="stagingAdminUsername" value="stagingAdmin.username" />
+	<property name="stagingAdminPassword" value="stagingAdmin.password" />
+	<property name="stagingUserUsername" value="stagingUser.username" />
+	<property name="stagingUserPassword" value="stagingUser.password" />
+	<property name="hl7MemberUsername" value="hl7member.user" />
+	<property name="hl7MemberPassword" value="hl7member.password" />
+	<property name="hl7UserUsername" value="hl7user.username" />
+	<property name="hl7UserPassword" value="hl7user.password" />
     <path id="Trifolia Workbench.classpath">
         <pathelement location="bin"/>
-        <pathelement location="lib/selenium-server-standalone-2.48.2.jar"/>
-        <pathelement location="lib/junit.jar"/>
+		<fileset dir="lib">
+			<include name="*.jar" />
+    	</fileset>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
@@ -28,7 +41,20 @@
     <target depends="build" name="junit">
         <junit showoutput="Yes">
             <classpath refid="Trifolia Workbench.classpath"/>
-            
+        	
+        	<sysproperty key="basicUserUsername" value="${basicUserUsername}" />
+        	<sysproperty key="basicUserPassword" value="${basicUserPassword}" />
+        	<sysproperty key="adminUserUsername" value="${adminUserUsername}" />
+        	<sysproperty key="adminUserPassword" value="${adminUserPassword}" />
+        	<sysproperty key="stagingAdminUsername" value="${stagingAdminUsername}" />
+        	<sysproperty key="stagingAdminPassword" value="${stagingAdminPassword}" />
+        	<sysproperty key="stagingUserUsername" value="${stagingUserUsername}" />
+        	<sysproperty key="stagingUserPassword" value="${stagingUserPassword}" />
+        	<sysproperty key="hl7MemberUsername" value="${hl7MemberUsername}" />
+        	<sysproperty key="hl7MemberPassword" value="${hl7MemberPassword}" />
+        	<sysproperty key="hl7UserUsername" value="${hl7UserUsername}" />
+        	<sysproperty key="hl7UserPassword" value="${hl7UserPassword}" />
+        	
             <batchtest fork="yes">
                 <fileset dir="src" includes="**/*.java"/>
             </batchtest>
