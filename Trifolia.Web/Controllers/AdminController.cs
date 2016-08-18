@@ -42,7 +42,7 @@ namespace Trifolia.Web.Controllers
         /// <summary>
         /// Prepares the model and returns the main Roles view
         /// </summary>
-        public ActionResult User()
+        public new ActionResult User()
         {
             return View("Users");
         }

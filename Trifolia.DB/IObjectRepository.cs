@@ -48,7 +48,6 @@ namespace Trifolia.DB
         IObjectSet<ViewTemplatePermission> ViewTemplatePermissions { get; }
         IObjectSet<ViewImplementationGuidePermission> ViewImplementationGuidePermissions { get; }
         IObjectSet<ViewUserSecurable> ViewUserSecurables { get; }
-        IObjectSet<OrganizationDefaultPermission> OrganizationDefaultPermissions { get; }
         IObjectSet<ViewImplementationGuideTemplate> ViewImplementationGuideTemplates { get; }
         IObjectSet<TemplateConstraintSample> TemplateConstraintSamples { get; }
         IObjectSet<TemplateSample> TemplateSamples { get; }

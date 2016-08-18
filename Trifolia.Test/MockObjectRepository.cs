@@ -270,7 +270,6 @@ namespace Trifolia.Test
         MockDbSet<Group> groups = new MockDbSet<Group>();
         MockDbSet<UserGroup> userGroups = new MockDbSet<UserGroup>();
         MockDbSet<ImplementationGuidePermission> implementationGuidePermissions = new MockDbSet<ImplementationGuidePermission>();
-        MockDbSet<OrganizationDefaultPermission> organizationDefaultPermissions = new MockDbSet<OrganizationDefaultPermission>();
         MockDbSet<TemplateConstraintSample> templateConstraintSamples = new MockDbSet<TemplateConstraintSample>();
         MockDbSet<TemplateSample> templateSamples = new MockDbSet<TemplateSample>();
         MockDbSet<ImplementationGuideSection> implementationGuideSections = new MockDbSet<ImplementationGuideSection>();
@@ -414,11 +413,6 @@ namespace Trifolia.Test
         public IObjectSet<ImplementationGuidePermission> ImplementationGuidePermissions
         {
             get { return implementationGuidePermissions; }
-        }
-
-        public IObjectSet<OrganizationDefaultPermission> OrganizationDefaultPermissions
-        {
-            get { return organizationDefaultPermissions; }
         }
 
         public IObjectSet<TemplateConstraintSample> TemplateConstraintSamples

@@ -70,11 +70,6 @@ namespace Trifolia.Web.Controllers.API
                 this.tdb.ImplementationGuidePermissions.DeleteObject(y);
             });
 
-            group.DefaultPermissions.ToList().ForEach(y =>
-            {
-                this.tdb.OrganizationDefaultPermissions.DeleteObject(y);
-            });
-
             this.tdb.Groups.DeleteObject(group);
 
             this.tdb.SaveChanges();

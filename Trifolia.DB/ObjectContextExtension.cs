@@ -237,11 +237,6 @@ namespace Trifolia.DB
             get { return this.ViewUserSecurables; }
         }
 
-        IObjectSet<OrganizationDefaultPermission> IObjectRepository.OrganizationDefaultPermissions
-        {
-            get { return this.OrganizationDefaultPermissions; }
-        }
-
         IObjectSet<ViewImplementationGuideTemplate> IObjectRepository.ViewImplementationGuideTemplates
         {
             get { return this.ViewImplementationGuideTemplates; }

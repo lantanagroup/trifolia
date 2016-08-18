@@ -344,24 +344,6 @@ namespace Trifolia.Web.Controllers
             return id != null ? id.Value : -1;
         }
 
-        /// <summary>
-        /// Converts the "Type" property of ImplementationGuidePermission to the PermissionTypes enum used by the PermissionManagement model
-        /// </summary>
-        public static Trifolia.Web.Models.PermissionManagement.PermissionTypes MemberType(this OrganizationDefaultPermission odp)
-        {
-            return ConvertType(odp.Type);
-        }
-
-        /// <summary>
-        /// Returns a single Id based on the type of the permission.
-        /// </summary>
-        /// <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
-        public static int PrimaryId(this OrganizationDefaultPermission odp)
-        {
-            int? id = ConvertId(odp.MemberType(), odp.GroupId, odp.UserId);
-            return id != null ? id.Value : -1;
-        }
-
         private static int? ConvertId(Trifolia.Web.Models.PermissionManagement.PermissionTypes type, int? groupId, int? userId)
         {
             switch (type)

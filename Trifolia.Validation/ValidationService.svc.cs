@@ -291,14 +291,18 @@ namespace Trifolia.ValidationService
         private List<ValidationResult> ValidateSchema(string fileName, ValidationProfile profile, byte[] sourceData, XmlNamespaceManager nsManager)
         {
             Dictionary<string, string> namespaces = null;
+#pragma warning disable CS0618 // Type or member is obsolete
             XmlSchemaCollection schemas = new XmlSchemaCollection();
+#pragma warning restore CS0618 // Type or member is obsolete
             schemas.Add(Helper.GetSchema(profile.SchemaLocation, out namespaces));
 
             XmlParserContext context = new XmlParserContext(null, nsManager, null, XmlSpace.None);
 
             using (MemoryStream sourceStream = new MemoryStream(sourceData))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 XmlValidatingReader validatingReader = new XmlValidatingReader(sourceStream, XmlNodeType.Document, context);
+#pragma warning restore CS0618 // Type or member is obsolete
                 validatingReader.ValidationType = ValidationType.Schema;
                 validatingReader.Schemas.Add(schemas);
 

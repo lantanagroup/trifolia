@@ -726,34 +726,6 @@ namespace Trifolia.Web.Controllers.API
                 model.CardinalityZeroOrOne = "zero or one [0..1]";
             }
 
-            // Always load default permissions for both pre-existing implementation guides and new IGs
-
-            if (implementationGuide != null && implementationGuide.Organization != null)
-            {
-                var org = implementationGuide.Organization;
-
-                foreach (OrganizationDefaultPermission cDefaultPerm in org.DefaultPermissions)
-                {
-                    EditModel.Permission newDefaultPermission = new EditModel.Permission()
-                    {
-                        Id = cDefaultPerm.PrimaryId(),
-                        Type = cDefaultPerm.MemberType()
-                    };
-
-                    if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.Everyone)
-                        newDefaultPermission.Name = string.Format("Entire Organization ({0})", cDefaultPerm.Organization.Name);
-                    else if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.Group)
-                        newDefaultPermission.Name = string.Format("{0}", cDefaultPerm.Group.Name);
-                    else if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.User)
-                        newDefaultPermission.Name = string.Format("{0} {1} ({2})", cDefaultPerm.User.FirstName, cDefaultPerm.User.LastName, cDefaultPerm.User.Email);
-
-                    if (cDefaultPerm.Permission == "View")
-                        model.DefaultViewPermissions.Add(newDefaultPermission);
-                    else if (cDefaultPerm.Permission == "Edit")
-                        model.DefaultEditPermissions.Add(newDefaultPermission);
-                }
-            }
-
             User me = CheckPoint.Instance.GetUser(this.tdb);
             EditModel.Permission newUserDefaultPermission = new EditModel.Permission()
             {

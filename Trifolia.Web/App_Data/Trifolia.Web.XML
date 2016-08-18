@@ -413,17 +413,6 @@
             </summary>
             <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.PermissionExtension.MemberType(Trifolia.DB.OrganizationDefaultPermission)">
-            <summary>
-            Converts the "Type" property of ImplementationGuidePermission to the PermissionTypes enum used by the PermissionManagement model
-            </summary>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.PermissionExtension.PrimaryId(Trifolia.DB.OrganizationDefaultPermission)">
-            <summary>
-            Returns a single Id based on the type of the permission.
-            </summary>
-            <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
-        </member>
         <member name="M:Trifolia.Web.Controllers.TemplateManagementController.ViewId(System.Int32)">
             <summary>
             View action for templates. Builds a model with all of the information necessary to display a template, including constraints and xml sample
