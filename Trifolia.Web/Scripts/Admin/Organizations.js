@@ -3,18 +3,22 @@
 
     self.Organizations = ko.observableArray([]);
     self.NewOrganizationName = ko.observable().extend({ required: true, maxLength: 255 });
+    self.CurrentOrganizationId = ko.observable();
 
-    self.EditDetails = function (organization) {
-        location.href = '/Organization/Details/' + organization.Id();
+    self.EditOrganization = function (organization) {
+        if (organization) {
+            self.NewOrganizationName(organization.Name());
+            self.CurrentOrganizationId(organization.Id());
+        } else {
+            self.NewOrganizationName('');
+            self.CurrentOrganizationId(null);
+        }
+        $('#editOrganizationDialog').modal('show');
     };
 
-    self.ShowAddOrganization = function () {
-        self.NewOrganizationName('');
-        $('#addOrganizationDialog').modal('show');
-    };
-
-    self.AddOrganization = function () {
+    self.SaveOrganization = function () {
         var data = {
+            Id: self.CurrentOrganizationId() ? self.CurrentOrganizationId() : null,
             Name: self.NewOrganizationName()
         };
 
@@ -24,7 +28,7 @@
             data: data,
             success: function () {
                 self.Initialize();
-                self.CancelAddOrganization();
+                self.CancelEditOrganization();
                 alert('Successfully saved organization!');
             },
             error: function (ex) {
@@ -34,12 +38,13 @@
         });
     };
 
-    self.CancelAddOrganization = function () {
+    self.CancelEditOrganization = function () {
+        self.CurrentOrganizationId(null);
         self.NewOrganizationName('');
-        $('#addOrganizationDialog').modal('hide');
+        $('#editOrganizationDialog').modal('hide');
     };
 
-    self.Delete = function (organization) {
+    self.DeleteOrganization = function (organization) {
         if (!confirm("Are you sure you want to delete this organization?")) {
             return;
         }

@@ -299,7 +299,6 @@
     <Compile Include="Controllers\GreenController.cs" />
     <Compile Include="Controllers\LocalizationController.cs" />
     <Compile Include="Controllers\LookupController.cs" />
-    <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\PermissionManagementController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Extensions\TemplateTypeExtension.cs" />

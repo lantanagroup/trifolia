@@ -16,7 +16,7 @@
             <div class="col-md-8"><strong>Name</strong></div>
             <div class="col-md-4">
                 <div class="pull-right">
-                    <button type="button" class="btn btn-primary" data-bind="click: function () { ShowAddOrganization(); }">Add</button>
+                    <button type="button" class="btn btn-primary" data-bind="click: function () { EditOrganization(); }">Add</button>
                 </div>
             </div>
         </div>
@@ -27,15 +27,15 @@
                 <div class="col-md-4">
                     <div class="pull-right">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary" data-bind="click: function () { EditDetails($data); }">Members & Groups</button>
-                            <button type="button" class="btn btn-default" data-bind="click: function () { Delete($data); }">Delete</button>
+                            <button type="button" class="btn btn-primary" data-bind="click: function () { EditOrganization($data); }">Edit</button>
+                            <button type="button" class="btn btn-default" data-bind="click: function () { DeleteOrganization($data); }">Delete</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal fade" id="addOrganizationDialog">
+        <div class="modal fade" id="editOrganizationDialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -48,8 +48,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-bind="click: AddOrganization, enable: NewOrganizationName.isValid">OK</button>
-                        <button type="button" class="btn btn-default" data-bind="click: CancelAddOrganization">Cancel</button>
+                        <button type="button" class="btn btn-primary" data-bind="click: SaveOrganization, enable: NewOrganizationName.isValid">OK</button>
+                        <button type="button" class="btn btn-default" data-bind="click: CancelEditOrganization">Cancel</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -66,7 +66,7 @@
             viewModel = OrganizationListViewModel();
             ko.applyBindings(viewModel, $('#OrganizationList')[0]);
 
-            $('#addOrganizationDialog').modal({
+            $('#editOrganizationDialog').modal({
                 show: false,
                 keyboard: false,
                 backdrop: 'static'
