@@ -30,6 +30,8 @@ namespace Trifolia.Authentication.Models
         public List<string> emails { get; set; }
         public Phones phones { get; set; }
 
+        public AppMetadata app_metadata { get; set; }
+
         internal string phone
         {
             get
@@ -53,6 +55,17 @@ namespace Trifolia.Authentication.Models
             public string personal { get; set; }
             public string business { get; set; }
             public string mobile { get; set; }
+        }
+
+        public class AppMetadata
+        {
+            public MigratedAccount migrated_account { get; set; }
+        }
+
+        public class MigratedAccount
+        {
+            public int internalId { get; set; }
+            public string userName { get; set; }
         }
     }
 }

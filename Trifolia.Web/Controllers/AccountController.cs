@@ -279,6 +279,23 @@ namespace Trifolia.Web.Controllers
 
                 var foundUser = this.tdb.Users.SingleOrDefault(y => y.UserName == userInfo.user_id);
 
+                // If the user has migration information (the account that they are moving from) in their
+                // profile, update trifolia so that it has the same userName/user_id.
+                if (foundUser == null && userInfo.app_metadata != null && userInfo.app_metadata.migrated_account != null)
+                {
+                    var migratingUser = this.tdb.Users.SingleOrDefault(y =>
+                        y.Id == userInfo.app_metadata.migrated_account.internalId &&
+                        y.UserName == userInfo.app_metadata.migrated_account.userName);
+
+                    if (migratingUser != null)
+                    {
+                        migratingUser.UserName = userInfo.user_id;
+                        foundUser = migratingUser;
+                    }
+
+                    this.tdb.SaveChanges();
+                }
+
                 string userData = string.Format("{0}={1}", CheckPoint.AUTH_DATA_OAUTH2_TOKEN, auth.AccessToken);
                 FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
                     2,

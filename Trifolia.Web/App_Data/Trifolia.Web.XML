@@ -158,34 +158,6 @@
             <returns>Hl7.Fhir.Model.Bundle&lt;Hl7.Fhir.Model.ValueSet&gt;</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.HelpController.XmlDocumentationProvider.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Trifolia.Web.Controllers.API.HelpController.XmlDocumentationProvider"/> class.
-            </summary>
-            <param name="documentPath">The physical path to XML document.</param>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.ExportController.GetExportSettings(System.Int32)">
-            <summary>
-            Gets default settings for the specified implementation guide
-            </summary>
-            <param name="implementationGuideId">The id of the implementation guide being exported</param>
-            <returns>Trifolia.Web.Models.Export.MSWordSettingsModel</returns>
-            <permission cref="F:Trifolia.Authorization.SecurableNames.EXPORT_WORD">User must have access to the EXPORT_WORD securable</permission>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.ExportController.MSWord(System.Int32)">
-            <summary>
-            Gets a model for displaying information about the implementation guide being exported
-            </summary>
-            <param name="implementationGuideId">The id of the implementation guide being exported</param>
-            <returns>Trifolia.Web.Models.Export.MSWordModel</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.ExportController.ExportMSWord(Trifolia.Web.Models.Export.MSWordSettingsModel)">
-            <summary>
-            Exports an MS Word implementation guide with the specified settings.
-            </summary>
-            <param name="exportSettings">The settings for the export</param>
-            <returns>A file-download of the .docx MS Word implementation guide</returns>
-        </member>
         <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ConformanceController.GetConformance(System.String)">
             <summary>
             Gets conformance information about the FHIR DSTU2 server.
@@ -277,6 +249,34 @@
             <param name="name">Specifies the name of the implementation guide to search for. Implementation guides whose name *contains* this value will be returned.</param>
             <returns>Hl7.Fhir.Model.Bundle</returns>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.HelpController.XmlDocumentationProvider.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Trifolia.Web.Controllers.API.HelpController.XmlDocumentationProvider"/> class.
+            </summary>
+            <param name="documentPath">The physical path to XML document.</param>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ExportController.GetExportSettings(System.Int32)">
+            <summary>
+            Gets default settings for the specified implementation guide
+            </summary>
+            <param name="implementationGuideId">The id of the implementation guide being exported</param>
+            <returns>Trifolia.Web.Models.Export.MSWordSettingsModel</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.EXPORT_WORD">User must have access to the EXPORT_WORD securable</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ExportController.MSWord(System.Int32)">
+            <summary>
+            Gets a model for displaying information about the implementation guide being exported
+            </summary>
+            <param name="implementationGuideId">The id of the implementation guide being exported</param>
+            <returns>Trifolia.Web.Models.Export.MSWordModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ExportController.ExportMSWord(Trifolia.Web.Models.Export.MSWordSettingsModel)">
+            <summary>
+            Exports an MS Word implementation guide with the specified settings.
+            </summary>
+            <param name="exportSettings">The settings for the export</param>
+            <returns>A file-download of the .docx MS Word implementation guide</returns>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.GetImplementationGuideValueSets(System.Int32,System.Boolean)">
             <summary>
             Gets all value sets for the given implementation guide.
@@ -296,20 +296,6 @@
             <summary>
             Gets all organizations in Trifolia
             </summary>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.SchemaTypesController.GetAll(System.Int32)">
-            <summary>
-            Gets all of the types in a schema regardless if they are prefered or not
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.SchemaTypesController.Get(System.Int32)">
-            <summary>
-            Gets all the prefered types in a schema
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.TemplateController.GetTemplateConstraints(System.Int32)">
             <summary>
@@ -373,6 +359,20 @@
             it registers as a change event when auditing, regardless if the value is different.
             </remarks>
         </member>
+        <member name="M:Trifolia.Web.Controllers.SchemaTypesController.GetAll(System.Int32)">
+            <summary>
+            Gets all of the types in a schema regardless if they are prefered or not
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.SchemaTypesController.Get(System.Int32)">
+            <summary>
+            Gets all the prefered types in a schema
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:Trifolia.Web.Controllers.AdminController.Role">
             <summary>
             Prepares the model and returns the main Roles view
@@ -401,6 +401,35 @@
             The redirectUrl parameter of the returned ActionResult includes the retAction passed to this method
             and an implementationGuideId param for the ig. 
             </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.PermissionExtension.MemberType(Trifolia.DB.ImplementationGuidePermission)">
+            <summary>
+            Converts the "Type" property of ImplementationGuidePermission to the PermissionTypes enum used by the PermissionManagement model
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.PermissionExtension.PrimaryId(Trifolia.DB.ImplementationGuidePermission)">
+            <summary>
+            Returns a single Id based on the type of the permission.
+            </summary>
+            <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.PermissionExtension.MemberType(Trifolia.DB.OrganizationDefaultPermission)">
+            <summary>
+            Converts the "Type" property of ImplementationGuidePermission to the PermissionTypes enum used by the PermissionManagement model
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.PermissionExtension.PrimaryId(Trifolia.DB.OrganizationDefaultPermission)">
+            <summary>
+            Returns a single Id based on the type of the permission.
+            </summary>
+            <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.TemplateManagementController.ViewId(System.Int32)">
+            <summary>
+            View action for templates. Builds a model with all of the information necessary to display a template, including constraints and xml sample
+            </summary>
+            <param name="templateId">Required. The id of the template to view</param>
+            <returns>The "View" view from the TemplateManagement view set, and the prepared ViewModel model</returns>
         </member>
         <member name="M:Trifolia.Web.Extensions.FileDownloadAttribute.CheckAndHandleFileResult(System.Web.Mvc.ActionExecutedContext)">
             <summary>
@@ -673,62 +702,47 @@
             The description of the template
             </summary>
         </member>
-        <member name="M:Trifolia.Web.PageExtensions.ShowClientMessage(System.Web.UI.Page,System.String)">
+        <member name="T:Trifolia.Web.Models.TemplateManagement.ListModel">
             <summary>
-            Shows the passed in message to the user as a client-side message
-            </summary>
-            <param name="aPage"></param>
-            <param name="aMessage"></param>
-        </member>
-        <member name="M:Trifolia.Web.SecurableForm.UserHasSecurable(System.String)">
-            <summary>
-            Overloaded version of UserHasSecurable(string[]) for checking a single securable
+            A model returned by the REST API to represent a list of templates
             </summary>
         </member>
-        <member name="M:Trifolia.Web.SecurableForm.UserHasSecurable(System.String[])">
+        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.HideOrganization">
             <summary>
-            Determines if the authenticated user has a role associated with the named securable.
-            </summary>
-            <param name="securables">The name(s) of the securable to check.</param>
-            <returns>Returns false if a user is not logged in. Return true if the authenticated user has a role associated with the requested securable, otherwise returns false.</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.PermissionExtension.MemberType(Trifolia.DB.ImplementationGuidePermission)">
-            <summary>
-            Converts the "Type" property of ImplementationGuidePermission to the PermissionTypes enum used by the PermissionManagement model
+            Indicates if the organization should be hidden from the screen
             </summary>
         </member>
-        <member name="M:Trifolia.Web.Controllers.PermissionExtension.PrimaryId(Trifolia.DB.ImplementationGuidePermission)">
+        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.CanView">
             <summary>
-            Returns a single Id based on the type of the permission.
-            </summary>
-            <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.PermissionExtension.MemberType(Trifolia.DB.OrganizationDefaultPermission)">
-            <summary>
-            Converts the "Type" property of ImplementationGuidePermission to the PermissionTypes enum used by the PermissionManagement model
+            Indicates if the user can (role-based) view templates
             </summary>
         </member>
-        <member name="M:Trifolia.Web.Controllers.PermissionExtension.PrimaryId(Trifolia.DB.OrganizationDefaultPermission)">
+        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.CanEdit">
             <summary>
-            Returns a single Id based on the type of the permission.
+            Indicates if the user can (role-based) edit templates
             </summary>
-            <returns>Returns OrganizationId when type is "EntireOrganization", GroupId when type is "Group" and "UserId" when type is "User"</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.TemplateManagementController.ViewId(System.Int32)">
+        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.Items">
             <summary>
-            View action for templates. Builds a model with all of the information necessary to display a template, including constraints and xml sample
+            A list of templates
             </summary>
-            <param name="templateId">Required. The id of the template to view</param>
-            <returns>The "View" view from the TemplateManagement view set, and the prepared ViewModel model</returns>
         </member>
-        <member name="M:Trifolia.Web.Filters.SecurableAuthorizationFilter.AuditLogin">
+        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.TotalItems">
             <summary>
-            Checks if the authenticated user has a "Login" audit within the last 24 hours. If not, creates a
-            Login audit.
+            The number of items included in the list
             </summary>
-            <remarks>
-            When user is logged in via "remember me", Login does not have to occur.
-            </remarks>
+        </member>
+        <member name="M:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel.#ctor">
+            <summary>
+            Hide the ctor so we can enforce usage of the factory method, so we can "fix up" the model as necessary
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel.AdaptFromTemplate(Trifolia.DB.Template)">
+            <summary>
+            Creates a new instance of <see cref="T:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel"/> from the passed in Template
+            </summary>
+            <param name="aTemplate"></param>
+            <returns></returns>
         </member>
         <member name="T:Trifolia.Web.Models.LogInViewModel">
             <summary>
@@ -825,47 +839,33 @@
             The description of the securable
             </summary>
         </member>
-        <member name="T:Trifolia.Web.Models.TemplateManagement.ListModel">
+        <member name="M:Trifolia.Web.PageExtensions.ShowClientMessage(System.Web.UI.Page,System.String)">
             <summary>
-            A model returned by the REST API to represent a list of templates
+            Shows the passed in message to the user as a client-side message
+            </summary>
+            <param name="aPage"></param>
+            <param name="aMessage"></param>
+        </member>
+        <member name="M:Trifolia.Web.SecurableForm.UserHasSecurable(System.String)">
+            <summary>
+            Overloaded version of UserHasSecurable(string[]) for checking a single securable
             </summary>
         </member>
-        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.HideOrganization">
+        <member name="M:Trifolia.Web.SecurableForm.UserHasSecurable(System.String[])">
             <summary>
-            Indicates if the organization should be hidden from the screen
+            Determines if the authenticated user has a role associated with the named securable.
             </summary>
+            <param name="securables">The name(s) of the securable to check.</param>
+            <returns>Returns false if a user is not logged in. Return true if the authenticated user has a role associated with the requested securable, otherwise returns false.</returns>
         </member>
-        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.CanView">
+        <member name="M:Trifolia.Web.Filters.SecurableAuthorizationFilter.AuditLogin">
             <summary>
-            Indicates if the user can (role-based) view templates
+            Checks if the authenticated user has a "Login" audit within the last 24 hours. If not, creates a
+            Login audit.
             </summary>
-        </member>
-        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.CanEdit">
-            <summary>
-            Indicates if the user can (role-based) edit templates
-            </summary>
-        </member>
-        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.Items">
-            <summary>
-            A list of templates
-            </summary>
-        </member>
-        <member name="P:Trifolia.Web.Models.TemplateManagement.ListModel.TotalItems">
-            <summary>
-            The number of items included in the list
-            </summary>
-        </member>
-        <member name="M:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel.#ctor">
-            <summary>
-            Hide the ctor so we can enforce usage of the factory method, so we can "fix up" the model as necessary
-            </summary>
-        </member>
-        <member name="M:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel.AdaptFromTemplate(Trifolia.DB.Template)">
-            <summary>
-            Creates a new instance of <see cref="T:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel"/> from the passed in Template
-            </summary>
-            <param name="aTemplate"></param>
-            <returns></returns>
+            <remarks>
+            When user is logged in via "remember me", Login does not have to occur.
+            </remarks>
         </member>
         <member name="T:Trifolia.Web.Session.SessionConstants">
             <summary>
