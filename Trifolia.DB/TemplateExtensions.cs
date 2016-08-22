@@ -283,6 +283,7 @@ namespace Trifolia.DB
                 IsSchRooted = constraint.IsSchRooted,
                 IsPrimitive = constraint.IsPrimitive,
                 IsInheritable = constraint.IsInheritable,
+                ValueSetDate = constraint.ValueSetDate,
                 Label = constraint.Label,
                 Notes = constraint.Notes,
                 Description = constraint.Description,
