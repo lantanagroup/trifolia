@@ -42,10 +42,8 @@ namespace Trifolia.Web.Controllers.API
 
                 if (string.IsNullOrEmpty(AppSettings.SupportEmailTo))
                     throw new Exception("SupportEmailTo is not configured");
-
-                string lSmtpServer = AppSettings.MailHost;
-
-                var client = new SmtpClient(lSmtpServer, 587)
+                
+                var client = new SmtpClient(AppSettings.MailHost, AppSettings.MailPort)
                 {
                     Credentials = new NetworkCredential(AppSettings.MailUser, AppSettings.MailPassword),
                     Port = AppSettings.MailPort,

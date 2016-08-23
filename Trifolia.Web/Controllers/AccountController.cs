@@ -31,6 +31,9 @@ namespace Trifolia.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private const string AUTH_RETURN_URL_COOKIE_NAME = "returnUrl";
+        private const string RETURN_URL_PARAM_NAME = "ReturnUrl";
+
         private IObjectRepository tdb;
         private WebServerClient authClient;
 
@@ -150,6 +153,24 @@ namespace Trifolia.Web.Controllers
 
         #endregion
 
+        #region My Groups
+
+        [Securable()]
+        public ActionResult Groups()
+        {
+            return View("MyGroups");
+        }
+
+        [Securable()]
+        public ActionResult Group(int? groupId)
+        {
+            return View("MyGroup", groupId);
+        }
+
+        #endregion
+
+        #region Authentication
+
         public static WebServerClient CreateClient()
         {
             if (string.IsNullOrEmpty(AppSettings.OAuth2ClientIdentifier))
@@ -213,6 +234,13 @@ namespace Trifolia.Web.Controllers
             state.Scope.Add("openid");
 
             var r = this.authClient.PrepareRequestUserAuthorization(state);
+
+            // If the user was trying to go somewhere specific, add the location/route 
+            // as a cookie to the authorization request so that we know where they were trying to
+            // go after authorization is complete
+            if (!string.IsNullOrEmpty(this.Request.Params[RETURN_URL_PARAM_NAME]))
+                r.Cookies.Add(new HttpCookie(AUTH_RETURN_URL_COOKIE_NAME, this.Request.Params[RETURN_URL_PARAM_NAME]));
+
             return r.AsActionResult();
         }
 
@@ -316,8 +344,16 @@ namespace Trifolia.Web.Controllers
                     return NewProfile("/", userInfo.given_name, userInfo.family_name, userInfo.email, userInfo.phone);
             }
 
+            // If the user was trying to go somewhere specific, redirect the user there instead
+            var returnUrlCookie = this.Request.Cookies[AUTH_RETURN_URL_COOKIE_NAME];
+
+            if (returnUrlCookie != null && !string.IsNullOrEmpty(returnUrlCookie.Value))
+                return Redirect(returnUrlCookie.Value);
+
             return Redirect("/");
         }
+
+        #endregion
 
         [AllowAnonymous]
         public ActionResult LogOff()

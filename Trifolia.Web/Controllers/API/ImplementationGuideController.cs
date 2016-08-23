@@ -1262,7 +1262,7 @@ namespace Trifolia.Web.Controllers.API
                     {
                         Type = PermissionTypes.User,
                         Id = u.Id,
-                        Name = (u.FirstName + " " + u.LastName + " (" + u.Email + ")")
+                        Name = u.FirstName + " " + u.LastName
                     });
             }
 

@@ -24,6 +24,36 @@ namespace Trifolia.Web.Controllers.API
 
         }
 
+        /// <summary>
+        /// Searches for users
+        /// </summary>
+        /// <param name="searchText">The text to search for.</param>
+        /// <returns></returns>
+        [HttpGet, Route("api/User/Search"), SecurableAction()]
+        public IEnumerable<SearchUserModel> SearchUsers(string searchText)
+        {
+            searchText = searchText.ToLower();
+
+            List<SearchUserModel> matches = new List<SearchUserModel>();
+
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                matches.AddRange(
+                    from u in this.tdb.Users
+                    where
+                        (u.FirstName + " " + u.LastName).ToLower().Contains(searchText) ||
+                        u.Email.Contains(searchText) ||
+                        u.UserName.ToLower().Contains(searchText)
+                    select new SearchUserModel()
+                    {
+                        Id = u.Id,
+                        Name = u.FirstName + " " + u.LastName
+                    });
+            }
+
+            return matches.OrderBy(y => y.Name);
+        }
+
         [HttpGet, Route("api/User"), SecurableAction(SecurableNames.ADMIN)]
         public IEnumerable<UserModel> GetUsers()
         {

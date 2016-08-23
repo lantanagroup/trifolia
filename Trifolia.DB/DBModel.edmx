@@ -78,6 +78,9 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="description" Type="ntext" />
+          <Property Name="disclaimer" Type="ntext" />
+          <Property Name="isOpen" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="group_manager">
           <Key>
@@ -2494,6 +2497,9 @@ FROM [dbo].[v_userSecurables] AS [v_userSecurables]</DefiningQuery>
           <NavigationProperty Name="ImplementationGuidePermissions" Relationship="Trifolia.DB.FK_implementationguide_permission_group" FromRole="group" ToRole="implementationguide_permission" />
           <NavigationProperty Name="Users" Relationship="Trifolia.DB.FK_user_group_group" FromRole="group" ToRole="user_group" />
           <NavigationProperty Name="Managers" Relationship="Trifolia.DB.FK_group_manager_group" FromRole="Group" ToRole="group_manager" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Disclaimer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsOpen" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ImplementationGuidePermission">
           <Key>
@@ -3478,6 +3484,9 @@ FROM [dbo].[v_userSecurables] AS [v_userSecurables]</DefiningQuery>
           <EntitySetMapping Name="Groups">
             <EntityTypeMapping TypeName="Trifolia.DB.Group">
               <MappingFragment StoreEntitySet="group">
+                <ScalarProperty Name="IsOpen" ColumnName="isOpen" />
+                <ScalarProperty Name="Disclaimer" ColumnName="disclaimer" />
+                <ScalarProperty Name="Description" ColumnName="description" />
                 <ScalarProperty Name="Name" ColumnName="name" />
                 <ScalarProperty Name="Id" ColumnName="id" />
               </MappingFragment>

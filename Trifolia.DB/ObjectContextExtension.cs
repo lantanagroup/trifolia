@@ -262,6 +262,11 @@ namespace Trifolia.DB
             get { return this.TemplateExtensions; }
         }
 
+        IObjectSet<GroupManager> IObjectRepository.GroupManagers
+        {
+            get { return this.GroupManagers; }
+        }
+
         #endregion
 
         #region State Functionality

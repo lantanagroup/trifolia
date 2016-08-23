@@ -135,6 +135,7 @@
                         <ul class="dropdown-menu">
                             <!-- ko if: Me() -->
                             <li><a href="/Account/MyProfile">My Profile</a></li>
+                            <li><a href="/Account/Groups">My Groups</a></li>
                             <li class="divider"></li>
                             <li><a href="/Account/LogOff">Logout</a></li>
                             <!-- /ko -->

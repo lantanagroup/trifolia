@@ -346,6 +346,7 @@
     <Compile Include="Models\GreenManagement\GreenTemplateSaveResult.cs" />
     <Compile Include="Models\GreenManagement\LeafLevelGreenConstraintsHaveDataType.cs" />
     <Compile Include="Models\GreenManagement\TemplateConstraintMapper.cs" />
+    <Compile Include="Models\Group\MyGroupModel.cs" />
     <Compile Include="Models\IGManagement\AuditEntryModel.cs" />
     <Compile Include="Models\IGManagement\FileModel.cs" />
     <Compile Include="Models\IGManagement\FilesModel.cs" />
@@ -367,6 +368,7 @@
     <Compile Include="Models\PermissionManagement\PermissionsInfoModel.cs" />
     <Compile Include="Models\OrganizationManagement\OrganizationModel.cs" />
     <Compile Include="Models\Group\GroupModel.cs" />
+    <Compile Include="Models\User\SearchUserModel.cs" />
     <Compile Include="Models\User\UserModel.cs" />
     <Compile Include="Models\Report\ExternalOrganizationDetail.cs" />
     <Compile Include="Models\Report\UserReportDetail.cs" />
@@ -560,6 +562,8 @@
     <None Include="Properties\PublishProfiles\DEV2 %28SHARE%29.pubxml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
+    <Content Include="Scripts\Account\MyGroup.js" />
+    <Content Include="Scripts\Account\MyGroups.js" />
     <Content Include="Scripts\Account\MyProfile.js" />
     <Content Include="Scripts\Account\NewProfile.js" />
     <Content Include="Scripts\Admin\Groups.js" />
@@ -722,6 +726,8 @@
     <Content Include="Styles\Site.css" />
     <Content Include="Styles\templateEditor.css" />
     <Content Include="Unauthorized.aspx" />
+    <Content Include="Views\Account\MyGroup.aspx" />
+    <Content Include="Views\Account\MyGroups.aspx" />
     <Content Include="Views\Account\MyProfile.aspx" />
     <Content Include="Views\Account\NewProfile.aspx" />
     <Content Include="Views\Admin\Groups.aspx" />

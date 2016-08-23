@@ -2773,11 +2773,13 @@ namespace Trifolia.DB
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static Group CreateGroup(global::System.Int32 id, global::System.String name)
+        /// <param name="isOpen">Initial value of the IsOpen property.</param>
+        public static Group CreateGroup(global::System.Int32 id, global::System.String name, global::System.Boolean isOpen)
         {
             Group group = new Group();
             group.Id = id;
             group.Name = name;
+            group.IsOpen = isOpen;
             return group;
         }
 
@@ -2835,6 +2837,78 @@ namespace Trifolia.DB
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Disclaimer
+        {
+            get
+            {
+                return _Disclaimer;
+            }
+            set
+            {
+                OnDisclaimerChanging(value);
+                ReportPropertyChanging("Disclaimer");
+                _Disclaimer = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Disclaimer");
+                OnDisclaimerChanged();
+            }
+        }
+        private global::System.String _Disclaimer;
+        partial void OnDisclaimerChanging(global::System.String value);
+        partial void OnDisclaimerChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsOpen
+        {
+            get
+            {
+                return _IsOpen;
+            }
+            set
+            {
+                OnIsOpenChanging(value);
+                ReportPropertyChanging("IsOpen");
+                _IsOpen = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsOpen");
+                OnIsOpenChanged();
+            }
+        }
+        private global::System.Boolean _IsOpen;
+        partial void OnIsOpenChanging(global::System.Boolean value);
+        partial void OnIsOpenChanged();
 
         #endregion
 
