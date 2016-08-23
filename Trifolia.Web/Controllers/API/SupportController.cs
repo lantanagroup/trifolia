@@ -22,7 +22,6 @@ namespace Trifolia.Web.Controllers.API
             {"Major", "3"}, 
             {"Minor", "4"}, 
             {"Trivial", "5"},
-            {"Medium", "7"}
         };
 
         Dictionary<string, string> _issueMap = new Dictionary<string, string>()
@@ -35,7 +34,7 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Support")]
         public string SubmitSupportRequest(SupportRequestModel model)
         {
-            if (CheckPoint.Instance.OrganizationName == "HL7" || !AppSettings.EnableJiraSupport)
+            if (CheckPoint.Instance.OrganizationName == "HL7" && !AppSettings.EnableJiraSupport)
             {
                 if (string.IsNullOrEmpty(AppSettings.MailFromAddress))
                     throw new Exception("MailFromAddress is not configured.");
@@ -98,7 +97,7 @@ namespace Trifolia.Web.Controllers.API
                 catch (Exception submitException)
                 {
                     Log.For(this).Error("Failed to submit JIRA beta user application", submitException);
-                    throw new Exception("Could not submit beta user application.  Please notify the administrator");
+                    return "Could not submit beta user application.  Please notify the administrator";
                 }
             }
         }
