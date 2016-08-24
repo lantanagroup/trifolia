@@ -346,7 +346,6 @@
     <Compile Include="Models\GreenManagement\GreenTemplateSaveResult.cs" />
     <Compile Include="Models\GreenManagement\LeafLevelGreenConstraintsHaveDataType.cs" />
     <Compile Include="Models\GreenManagement\TemplateConstraintMapper.cs" />
-    <Compile Include="Models\Group\MyGroupModel.cs" />
     <Compile Include="Models\IGManagement\AuditEntryModel.cs" />
     <Compile Include="Models\IGManagement\FileModel.cs" />
     <Compile Include="Models\IGManagement\FilesModel.cs" />
@@ -566,6 +565,7 @@
     <Content Include="Scripts\Account\MyGroups.js" />
     <Content Include="Scripts\Account\MyProfile.js" />
     <Content Include="Scripts\Account\NewProfile.js" />
+    <Content Include="Scripts\Admin\Group.js" />
     <Content Include="Scripts\Admin\Groups.js" />
     <Content Include="Scripts\Admin\Users.js" />
     <Content Include="Scripts\angular\angular-highlight.min.js" />
@@ -730,6 +730,7 @@
     <Content Include="Views\Account\MyGroups.aspx" />
     <Content Include="Views\Account\MyProfile.aspx" />
     <Content Include="Views\Account\NewProfile.aspx" />
+    <Content Include="Views\Admin\Group.aspx" />
     <Content Include="Views\Admin\Groups.aspx" />
     <Content Include="Views\Admin\Users.aspx" />
     <Content Include="Views\Api\help.html" />

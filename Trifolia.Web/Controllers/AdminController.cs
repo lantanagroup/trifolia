@@ -38,6 +38,11 @@ namespace Trifolia.Web.Controllers
         {
             return View("Groups");
         }
+        
+        public ActionResult EditGroup(int groupId)
+        {
+            return View("Group", groupId);
+        }
 
         /// <summary>
         /// Prepares the model and returns the main Roles view

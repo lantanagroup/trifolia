@@ -1,71 +1,56 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.MVC.Master" Inherits="System.Web.Mvc.ViewPage<int?>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.MVC.Master" Inherits="System.Web.Mvc.ViewPage<int>" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
-        textarea.disclaimer {
-            height: 200px;
-        }
-
-        textarea.description {
-            height: 100px;
+        #Roles .row {
+            padding-top: 5px;
         }
     </style>
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <script type="text/javascript" src="/Scripts/Account/MyGroup.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-
-    <h2>Edit Group</h2>
-
-    <div id="MyGroup">
-        <div class="col-md-4" data-bind="validationOptions: { messagesOnModified: false }">
+    <div id="Group">
+        <h2>Edit Group</h2>
+        
+        <div class="col-md-4" data-bind="with: Group, validationOptions: { messagesOnModified: false }">
             <div class="form-group">
                 <label>Name</label>
-                <input type="text" class="form-control" data-bind="value: Group().Name" />
+                <input type="text" class="form-control" data-bind="value: Name" />
             </div>
 
             <div class="form-group">
                 <label>Description</label>
-                <textarea class="form-control description" data-bind="value: Group().Description"></textarea>
+                <textarea class="form-control description" data-bind="value: Description"></textarea>
             </div>
 
             <div class="form-group">
                 <label>Join Method</label>
                 <br />
-                <input type="checkbox" data-bind="checked: Group().IsOpen" /> Anyone can join
-                <!-- ko if: !Group().IsOpen() -->
+                <input type="checkbox" data-bind="checked: IsOpen" /> Anyone can join
+                <!-- ko if: !IsOpen() -->
                 <span class="help-block">An email will be sent to managers for approval</span>
                 <!-- /ko -->
-                <!-- ko if: Group().IsOpen() -->
+                <!-- ko if: IsOpen() -->
                 <span class="help-block">When a user requests to join a group, they will be automatically added</span>
                 <!-- /ko -->
             </div>
 
             <div class="form-group">
                 <label>Disclaimer</label>
-                <textarea class="form-control disclaimer" data-bind="value: Group().Disclaimer" placeholder="HTML"></textarea>
+                <textarea class="form-control disclaimer" data-bind="value: Disclaimer" placeholder="HTML"></textarea>
             </div>
-
-            <!-- ko if: !GroupId() -->
-            <button type="button" class="btn btn-primary" data-bind="click: SaveChanges">Save</button>
-            <!-- /ko -->
         </div>
-        <div class="col-md-4" data-bind="if: GroupId()">
+        <div class="col-md-4">
             <h3>Managers <button type="button" class="btn btn-primary btn-sm" data-bind="click: AddManager">Add</button></h3>
-
-            <p class="alert alert-warning">Being a manager of a group does not imply you are a member of the group. Add yourself as a member if you intend to be included in implementation guide permissions when this group is assigned.</p>
 
             <ul data-bind="foreach: Managers">
                 <li>
-                    <span data-bind="text: Name"></span>
-                    <!-- ko if: $root.CurrentUser() && Id != $root.CurrentUser().Id -->
-                    [<a href="#" data-bind="click: function () { $root.RemoveUser(Id, true); }">remove</a>]
-                    <!-- /ko -->
+                    <span data-bind="text: Name"></span> [<a href="#" data-bind="click: function () { $root.RemoveUser(Id, true); }">remove</a>]
                 </li>
             </ul>
         </div>
-        <div class="col-md-4" data-bind="if: GroupId()">
+        <div class="col-md-4">
             <h3>Members <button type="button" class="btn btn-primary btn-sm" data-bind="click: AddMember">Add</button></h3>
 
             <ul data-bind="foreach: Members">
@@ -106,17 +91,17 @@
         <!-- /.modal -->
     </div>
 
+    <script type="text/javascript" src="/Scripts/Admin/Group.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript">
-        var vm = new MyGroupViewModel(<%= Model %>);
-
+        var viewModel = null;
         $(document).ready(function () {
-            var mainBody = document.getElementById('MyGroup');
-            ko.applyBindings(vm, mainBody);
+            viewModel = new GroupViewModel(<%= Model %>);
+            ko.applyBindings(viewModel, $('#Group')[0]);
         });
 
         $('#AddUserDialog').modal({
-            backdrop: 'static',
-            show: false
+            show: false,
+            backdrop: 'static'
         });
     </script>
 

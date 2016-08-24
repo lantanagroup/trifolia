@@ -12,6 +12,30 @@
 
     <div id="Groups">
         <h2>Groups</h2>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: Groups">
+                    <tr>
+                        <td data-bind="text: Name"></td>
+                        <td>
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" data-bind="attr: { href: '/Admin/Group/' + Id }">Edit</a>
+                                    <button type="button" class="btn btn-default" data-bind="click: function () { $root.DeleteGroup($data); }">Delete</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script type="text/javascript" src="/Scripts/Admin/Groups.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>

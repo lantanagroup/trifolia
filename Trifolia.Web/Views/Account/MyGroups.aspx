@@ -26,7 +26,7 @@
                                 <div class="btn-group">
                                     <!-- ko if: IsManager() -->
                                     <a class="btn btn-default" data-bind="attr: { href: '/Account/Group/' + Id() }">Edit</a>
-                                    <button type="button" class="btn btn-default" data-bind="click: function () { $root.RemoveGroup($data); }">Remove</button>
+                                    <button type="button" class="btn btn-default" data-bind="click: function () { $root.DeleteGroup(Id()); }">Delete</button>
                                     <!-- /ko -->
                                     <!-- ko if: !IsManager() -->
                                     <button type="button" class="btn btn-default" data-bind="disable: ViewDisabled, click: function () { $root.ViewGroup($data); }">View</button>

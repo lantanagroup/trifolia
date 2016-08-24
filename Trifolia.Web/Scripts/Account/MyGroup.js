@@ -1,39 +1,40 @@
 ﻿var MyGroupViewModel = function (groupId) {
     var self = this;
+    var isAddingManager = false;
 
     self.GroupId = ko.observable(groupId);
     self.Group = ko.observable(new MyGroupModel());
+    self.Managers = ko.observableArray([]);
+    self.Members = ko.observableArray([]);
     self.SelectedUserIds = ko.observableArray([]);
     self.SearchQuery = ko.observable();
     self.SearchResults = ko.observableArray();
-    self.IsAddingManager = false;
     self.CurrentUser = ko.observable();
 
     self.AddManager = function () {
-        self.IsAddingManager = true;
+        isAddingManager = true;
         $('#AddUserDialog').modal('show');
     };
 
     self.AddMember = function () {
-        self.IsAddingManager = false;
+        isAddingManager = false;
         $('#AddUserDialog').modal('show');
     };
 
     self.AddUserOk = function () {
         var addUser = function (userId) {
             var deferred = Q.defer();
-            var url = '/api/Group/My/' + self.GroupId() + '/User/' + userId;
+            var url = '/api/Group/' + self.GroupId() + '/Member/' + userId;
 
-            if (self.IsAddingManager) {
-                url += '?isManager=true';
+            if (isAddingManager) {
+                url = '/api/Group/' + self.GroupId() + '/Manager/' + userId;
             }
 
             $.ajax({
                 url: url,
                 method: 'POST',
                 success: function (result) {
-                    var user = ko.mapping.fromJS(result);
-                    deferred.resolve(user);
+                    deferred.resolve(result);
                 },
                 error: function (err) {
                     deferred.reject();
@@ -51,14 +52,23 @@
 
         Q.all(promises)
             .then(function (results) {
-                var list = self.IsAddingManager ? self.Group().Managers : self.Group().Members;
+                var list = isAddingManager ? self.Managers : self.Members;
 
                 _.each(results, function (result) {
-                    list.push(result);
+                    var foundUser = _.find(list(), function (user) {
+                        return user.Id == result.Id;
+                    })
+
+                    if (!foundUser) {
+                        list.push(result);
+                    }
                 });
 
                 list = list.sort(function (a, b) {
-                    return a.Name() == b.Name() ? 0 : (a.Name() < b.Name() ? -1 : 1);
+                    var aName = a.Name ? a.Name : '';
+                    var bName = b.Name ? b.Name : '';
+
+                    return aName.toLowerCase() == bName.toLowerCase() ? 0 : (aName.toLowerCase() < bName.toLowerCase() ? -1 : 1);
                 });
 
                 $('#AddUserDialog').modal('hide');
@@ -74,6 +84,8 @@
     };
 
     self.SearchUsers = function () {
+        self.SelectedUserIds([]);
+
         $.ajax({
             url: '/api/User/Search?searchText=' + encodeURIComponent(self.SearchQuery()),
             success: function (results) {
@@ -86,19 +98,19 @@
     };
 
     self.RemoveUser = function (userId, isManager) {
-        var url = '/api/Group/My/' + self.GroupId() + '/User/' + userId;
+        var url = '/api/Group/' + self.GroupId() + '/Member/' + userId;
 
         if (isManager) {
-            url += '?isManager=true';
+            url = '/api/Group/' + self.GroupId() + '/Manager/' + userId;
         }
 
         $.ajax({
             url: url,
             method: 'DELETE',
             success: function () {
-                var list = isManager ? self.Group().Managers : self.Group().Members;
+                var list = isManager ? self.Managers : self.Members;
                 var foundUser = _.find(list(), function (user) {
-                    return user.Id() == userId;
+                    return user.Id == userId;
                 });
 
                 if (foundUser) {
@@ -161,6 +173,40 @@
         });
 
         $.ajax({
+            url: '/api/Group/' + groupId + '/Manager',
+            success: function (results) {
+                results = results.sort(function (a, b) {
+                    var aName = a.Name ? a.Name : '';
+                    var bName = b.Name ? b.Name : '';
+
+                    return aName.toLowerCase() == bName.toLowerCase() ? 0 : (aName.toLowerCase() < bName.toLowerCase() ? -1 : 1);
+                });
+
+                self.Managers(results);
+            },
+            error: function (err) {
+                alert('An error occurred while getting the managers for this group');
+            }
+        });
+
+        $.ajax({
+            url: '/api/Group/' + groupId + '/Member',
+            success: function (results) {
+                results = results.sort(function (a, b) {
+                    var aName = a.Name ? a.Name : '';
+                    var bName = b.Name ? b.Name : '';
+
+                    return aName.toLowerCase() == bName.toLowerCase() ? 0 : (aName.toLowerCase() < bName.toLowerCase() ? -1 : 1);
+                });
+
+                self.Members(results);
+            },
+            error: function (err) {
+                alert('An error occurred while getting the members for this group');
+            }
+        });
+
+        $.ajax({
             url: '/api/Auth/WhoAmI',
             success: function (userModel) {
                 self.CurrentUser(userModel);
@@ -175,7 +221,7 @@
 var MyGroupModel = function (data) {
     var self = this;
     var mapping = {
-        include: ['Id', 'Name', 'Description', 'Disclaimer', 'IsOpen', 'Managers', 'Members']
+        include: ['Id', 'Name', 'Description', 'Disclaimer', 'IsOpen']
     };
 
     self.Id = ko.observable();
@@ -183,8 +229,6 @@ var MyGroupModel = function (data) {
     self.Description = ko.observable();
     self.Disclaimer = ko.observable();
     self.IsOpen = ko.observable(false);
-    self.Managers = ko.observableArray();
-    self.Members = ko.observableArray();
 
     var validation = ko.validatedObservable({
         Name: self.Name.extend({ required: true})

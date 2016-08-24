@@ -118,6 +118,13 @@
     $.ajax({
         url: '/api/Group/My',
         success: function (groups) {
+            groups = groups.sort(function (a, b) {
+                var aName = a.Name ? a.Name : '';
+                var bName = b.Name ? b.Name : '';
+
+                return aName.toLowerCase() == bName.toLowerCase() ? 0 : (aName.toLowerCase() < bName.toLowerCase() ? -1 : 1);
+            });
+
             ko.mapping.fromJS({ Groups: groups }, mapping, self);
         },
         error: function (err) {
@@ -128,6 +135,13 @@
     $.ajax({
         url: '/api/Group?onlyNotMember=true',
         success: function (groups) {
+            groups = groups.sort(function (a, b) {
+                var aName = a.Name ? a.Name : '';
+                var bName = b.Name ? b.Name : '';
+
+                return aName.toLowerCase() == bName.toLowerCase() ? 0 : (aName.toLowerCase() < bName.toLowerCase() ? -1 : 1);
+            });
+
             ko.mapping.fromJS({ AllGroups: groups }, mapping, self);
         },
         error: function (err) {

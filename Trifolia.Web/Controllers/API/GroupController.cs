@@ -12,6 +12,7 @@ using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Logging;
 using Trifolia.Web.Models.Group;
+using Trifolia.Web.Models.User;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -34,13 +35,15 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
+        #region My Groups
+
         /// <summary>
         /// Gets the specified group, including managers and members
         /// </summary>
         /// <param name="groupId">The id of the group to return</param>
-        /// <returns>Triflia.Web.Models.Group.MyGroupModel</returns>
+        /// <returns>Triflia.Web.Models.Group.GroupModel</returns>
         [HttpGet, Route("api/Group/My/{groupId}"), SecurableAction()]
-        public MyGroupModel GetMyGroup(int groupId)
+        public GroupModel GetMyGroup(int groupId)
         {
             var currentUser = CheckPoint.Instance.GetUser(this.tdb);
             var group = this.tdb.Groups.SingleOrDefault(y => y.Id == groupId);
@@ -48,7 +51,7 @@ namespace Trifolia.Web.Controllers.API
             if (group.Managers.Count(y => y.User == currentUser) == 0)
                 throw new AuthorizationException("You are not a manager of this group");
 
-            return new MyGroupModel(group);
+            return new GroupModel(group);
         }
 
         /// <summary>
@@ -76,104 +79,13 @@ namespace Trifolia.Web.Controllers.API
         }
 
         /// <summary>
-        /// Adds a user to the specified group as either a manager or member.
-        /// </summary>
-        /// <param name="groupId">The id of the group to add the user to</param>
-        /// <param name="userId">The id of the user to add to the group</param>
-        /// <param name="isManager">Whether or not to add the user as a manager of the group</param>
-        /// <exception cref="System.Exception">You are not a member of this group</exception>
-        /// <returns>Trifolia.Web.Models.Group.MyGroupModel.UserModel</returns>
-        [HttpPost, Route("api/Group/My/{groupId}/User/{userId}"), SecurableAction()]
-        public MyGroupModel.UserModel AddUserToMyGroup(int groupId, int userId, bool isManager = false)
-        {
-            var currentUser = CheckPoint.Instance.GetUser(this.tdb);
-            var group = this.tdb.Groups.SingleOrDefault(y => y.Id == groupId);
-
-            if (group.Managers.Count(y => y.User == currentUser) == 0)
-                throw new AuthorizationException("You are not a manager of this group");
-
-            var user = this.tdb.Users.Single(y => y.Id == userId);
-
-            if (isManager)
-            {
-                if (this.tdb.GroupManagers.Count(y => y.GroupId == groupId && y.UserId == userId) == 0)
-                {
-                    var newGroupManager = new GroupManager()
-                    {
-                        Group = group,
-                        User = user
-                    };
-                    this.tdb.GroupManagers.AddObject(newGroupManager);
-                    this.tdb.SaveChanges();
-                }
-            }
-            else
-            {
-                if (this.tdb.UserGroups.Count(y => y.GroupId == groupId && y.UserId == userId) == 0)
-                {
-                    var newUserGroup = new UserGroup()
-                    {
-                        Group = group,
-                        User = user
-                    };
-                    this.tdb.UserGroups.AddObject(newUserGroup);
-                    this.tdb.SaveChanges();
-                }
-            }
-
-            return new MyGroupModel.UserModel(user);
-        }
-
-        /// <summary>
-        /// Removes a user from the specified group
-        /// </summary>
-        /// <param name="groupId">The id of the group to remove the user from</param>
-        /// <param name="userId">The id of the user to remove from the group</param>
-        /// <param name="isManager">Whether or not to remove the user as a manager</param>
-        /// <exception cref="Trifolia.Authorization.AuthorizationException">You are not a manager of this group</exception>
-        /// <exception cref="System.ArgumentException">Cannot remove yourself as a manager from the group</exception>
-        [HttpDelete, Route("api/Group/My/{groupId}/User/{userId}"), SecurableAction()]
-        public void RemoveUserFromMyGroup(int groupId, int userId, bool isManager = false)
-        {
-            var currentUser = CheckPoint.Instance.GetUser(this.tdb);
-            var group = this.tdb.Groups.SingleOrDefault(y => y.Id == groupId);
-
-            if (group.Managers.Count(y => y.User == currentUser) == 0)
-                throw new AuthorizationException("You are not a manager of this group");
-
-            if (isManager)
-            {
-                if (userId == currentUser.Id)
-                    throw new Exception("Cannot remove yourself as a manager from the group");
-
-                var groupManager = this.tdb.GroupManagers.SingleOrDefault(y => y.GroupId == groupId && y.UserId == userId);
-
-                if (groupManager != null)
-                {
-                    this.tdb.GroupManagers.DeleteObject(groupManager);
-                    this.tdb.SaveChanges();
-                }
-            }
-            else
-            {
-                var userGroup = this.tdb.UserGroups.SingleOrDefault(y => y.GroupId == groupId && y.UserId == userId);
-
-                if (userGroup != null)
-                {
-                    this.tdb.UserGroups.DeleteObject(userGroup);
-                    this.tdb.SaveChanges();
-                }
-            }
-        }
-
-        /// <summary>
         /// Creates a new group. The current user is automatically added as a manager of the group.
         /// Members and managers of the model are not created as part of this operation.
         /// </summary>
         /// <param name="model">Information about the group to create</param>
-        /// <returns>Trifolia.Web.Models.Group.MyGroupModel</returns>
+        /// <returns>Trifolia.Web.Models.Group.GroupModel</returns>
         [HttpPost, Route("api/Group/My"), SecurableAction()]
-        public MyGroupModel AddMyGroup([FromBody] MyGroupModel model)
+        public GroupModel AddMyGroup([FromBody] GroupModel model)
         {
             var currentUser = CheckPoint.Instance.GetUser(this.tdb);
             Group newGroup = new Group()
@@ -194,7 +106,7 @@ namespace Trifolia.Web.Controllers.API
 
             this.tdb.SaveChanges();
 
-            return new MyGroupModel(newGroup);
+            return new GroupModel(newGroup);
         }
 
         /// <summary>
@@ -202,9 +114,9 @@ namespace Trifolia.Web.Controllers.API
         /// </summary>
         /// <param name="groupId">The id of the group to update</param>
         /// <param name="model">Information about the group to update</param>
-        /// <returns>Trifolia.Web.Models.Group.MyGroupModel</returns>
+        /// <returns>Trifolia.Web.Models.Group.GroupModel</returns>
         [HttpPut, Route("api/Group/My/{groupId}"), SecurableAction()]
-        public MyGroupModel UpdateMyGroup(int groupId, [FromBody] MyGroupModel model)
+        public GroupModel UpdateMyGroup(int groupId, [FromBody] GroupModel model)
         {
             var currentUser = CheckPoint.Instance.GetUser(this.tdb);
             var group = this.tdb.Groups.SingleOrDefault(y => y.Id == groupId);
@@ -226,84 +138,7 @@ namespace Trifolia.Web.Controllers.API
 
             this.tdb.SaveChanges();
 
-            return new MyGroupModel(group);
-        }
-
-        /// <summary>
-        /// Gets all groups
-        /// </summary>
-        /// <param name="onlyNotMember">Indicates that only groups the current user is not a member of should be returned</param>
-        /// <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupModel&gt;</returns>
-        [HttpGet, Route("api/Group"), SecurableAction()]
-        public IEnumerable<GroupModel> GetGroups(bool onlyNotMember = false)
-        {
-            var groups = this.tdb.Groups.AsQueryable();
-            var currentUser = CheckPoint.Instance.GetUser(this.tdb);
-
-            if (onlyNotMember)
-                groups = groups.Where(y => y.Users.Count(x => x.UserId == currentUser.Id) == 0);
-
-            var groupModels = (from g in groups.ToList()
-                               select new GroupModel(g, currentUser));
-
-            return groupModels;
-        }
-
-        /// <summary>
-        /// Creates or updates a group based on the body/model specified
-        /// Updates require an Id to be specified in the model
-        /// Responds with the id of the group that was created/updated
-        /// </summary>
-        /// <param name="model">Information about the group to create/update</param>
-        /// <returns>int</returns>
-        [HttpPost, Route("api/Group"), SecurableAction(SecurableNames.ADMIN)]
-        public int SaveMyGroup(GroupModel model)
-        {
-            Group group = this.tdb.Groups.SingleOrDefault(y => y.Id == model.Id);
-
-            if (group == null)
-            {
-                group = new Group();
-                this.tdb.Groups.AddObject(group);
-            }
-
-            group.Name = model.Name;
-            group.Description = model.Description;
-            group.Disclaimer = model.Disclaimer;
-            group.IsOpen = model.IsOpen;
-
-            this.tdb.SaveChanges();
-
-            return group.Id;
-        }
-
-        /// <summary>
-        /// Deletes the specified group
-        /// </summary>
-        /// <param name="groupId">The id of the group to delete</param>
-        [HttpDelete, Route("api/Group/{groupId}"), SecurableAction(SecurableNames.ADMIN)]
-        public void DeleteGroup(int groupId)
-        {
-            var group = this.tdb.Groups.Single(y => y.Id == groupId);
-
-            group.Users.ToList().ForEach(y =>
-            {
-                this.tdb.UserGroups.DeleteObject(y);
-            });
-
-            group.ImplementationGuidePermissions.ToList().ForEach(y =>
-            {
-                this.tdb.ImplementationGuidePermissions.DeleteObject(y);
-            });
-
-            group.Managers.ToList().ForEach(y =>
-            {
-                this.tdb.GroupManagers.DeleteObject(y);
-            });
-
-            this.tdb.Groups.DeleteObject(group);
-
-            this.tdb.SaveChanges();
+            return new GroupModel(group);
         }
 
         /// <summary>
@@ -397,7 +232,7 @@ namespace Trifolia.Web.Controllers.API
 
                     foreach (var groupManager in group.Managers)
                         message.To.Add(new MailAddress(groupManager.User.Email));
-                    
+
                     client.Send(message);
 
                     return false;
@@ -409,5 +244,269 @@ namespace Trifolia.Web.Controllers.API
                 }
             }
         }
+
+        #endregion
+
+        #region Members and Managers
+
+        /// <summary>
+        /// Adds a user to the specified group as a manager
+        /// </summary>
+        /// <param name="groupId">The id of the group</param>
+        /// <param name="userId">The id of the user</param>
+        /// <returns>Trifolia.Web.Models.User.SearchUserModel</returns>
+        [HttpPost, Route("api/Group/{groupId}/Manager/{userId}"), SecurableAction()]
+        public SearchUserModel AddManagerToGroup(int groupId, int userId)
+        {
+            var group = this.tdb.Groups.Single(y => y.Id == groupId);
+            var user = this.tdb.Users.Single(y => y.Id == userId);
+
+            if (!CheckPoint.Instance.HasSecurables(SecurableNames.ADMIN))
+            {
+                var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (group.Managers.Count(y => y.UserId == currentUser.Id) == 0)
+                    throw new AuthorizationException("You are not an admin, and you are not a manager of this group");
+            }
+
+            if (this.tdb.GroupManagers.Count(y => y.GroupId == groupId && y.UserId == userId) == 0)
+            {
+                var newGroupManager = new GroupManager()
+                {
+                    Group = group,
+                    User = user
+                };
+                this.tdb.GroupManagers.AddObject(newGroupManager);
+                this.tdb.SaveChanges();
+            }
+
+            return new SearchUserModel(user);
+        }
+
+        /// <summary>
+        /// Adds a user to the specified group as a member
+        /// </summary>
+        /// <param name="groupId">The id of the group</param>
+        /// <param name="userId">The id of the user</param>
+        /// <returns>Trifolia.Web.Models.User.SearchUserModel</returns>
+        [HttpPost, Route("api/Group/{groupId}/Member/{userId}"), SecurableAction()]
+        public SearchUserModel AddMemberToGroup(int groupId, int userId)
+        {
+            var group = this.tdb.Groups.SingleOrDefault(y => y.Id == groupId);
+            var user = this.tdb.Users.Single(y => y.Id == userId);
+
+            if (!CheckPoint.Instance.HasSecurables(SecurableNames.ADMIN))
+            {
+                var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (group.Managers.Count(y => y.UserId == currentUser.Id) == 0)
+                    throw new AuthorizationException("You are not an admin, and you are not a manager of this group");
+            }
+
+            if (this.tdb.UserGroups.Count(y => y.GroupId == groupId && y.UserId == userId) == 0)
+            {
+                var newUserGroup = new UserGroup()
+                {
+                    Group = group,
+                    User = user
+                };
+                this.tdb.UserGroups.AddObject(newUserGroup);
+                this.tdb.SaveChanges();
+            }
+
+            return new SearchUserModel(user);
+        }
+
+        /// <summary>
+        /// Removes a manager (user) from the specified group
+        /// </summary>
+        /// <param name="groupId">The id of the group</param>
+        /// <param name="userId">The id of the user</param>
+        [HttpDelete, Route("api/Group/{groupId}/Manager/{userId}"), SecurableAction()]
+        public void RemoveManagerFromGroup(int groupId, int userId)
+        {
+            var group = this.tdb.Groups.SingleOrDefault(y => y.Id == groupId);
+            var groupManager = this.tdb.GroupManagers.SingleOrDefault(y => y.GroupId == groupId && y.UserId == userId);
+
+            if (!CheckPoint.Instance.HasSecurables(SecurableNames.ADMIN))
+            {
+                var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (group.Managers.Count(y => y.UserId == currentUser.Id) == 0)
+                    throw new AuthorizationException("You are not an admin, and you are not a manager of this group");
+            }
+
+            if (groupManager != null)
+            {
+                this.tdb.GroupManagers.DeleteObject(groupManager);
+                this.tdb.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Removes a member (user) from the specified group
+        /// </summary>
+        /// <param name="groupId">The id of the group</param>
+        /// <param name="userId">The id of the user</param>
+        [HttpDelete, Route("api/Group/{groupId}/Member/{userId}"), SecurableAction()]
+        public void RemoveMemberFromGroup(int groupId, int userId)
+        {
+            var group = this.tdb.Groups.SingleOrDefault(y => y.Id == groupId);
+            var userGroup = this.tdb.UserGroups.SingleOrDefault(y => y.GroupId == groupId && y.UserId == userId);
+
+            if (!CheckPoint.Instance.HasSecurables(SecurableNames.ADMIN))
+            {
+                var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (group.Managers.Count(y => y.UserId == currentUser.Id) == 0)
+                    throw new AuthorizationException("You are not an admin, and you are not a manager of this group");
+            }
+
+            if (userGroup != null)
+            {
+                this.tdb.UserGroups.DeleteObject(userGroup);
+                this.tdb.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Gets all managers of the specified group
+        /// </summary>
+        /// <param name="groupId">The id of the group</param>
+        /// <returns>IEnumerable&lt;Trifolia.Web.Models.User.SearchUserModel&gt;</returns>
+        [HttpGet, Route("api/Group/{groupId}/Manager"), SecurableAction()]
+        public IEnumerable<SearchUserModel> GetGroupManagers(int groupId)
+        {
+            Group group = this.tdb.Groups.Single(y => y.Id == groupId);
+
+            if (!CheckPoint.Instance.HasSecurables(SecurableNames.ADMIN))
+            {
+                var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (group.Managers.Count(y => y.UserId == currentUser.Id) == 0)
+                    throw new AuthorizationException("You are not an admin, and you are not a manager of this group");
+            }
+
+            return group.Managers.Select(y => new SearchUserModel(y.User));
+        }
+
+        /// <summary>
+        /// Gets all members of the specified group
+        /// </summary>
+        /// <param name="groupId">The id of the group</param>
+        /// <returns>IEnumerable&lt;Trifolia.Web.Models.User.SearchUserModel&gt;</returns>
+        [HttpGet, Route("api/Group/{groupId}/Member"), SecurableAction()]
+        public IEnumerable<SearchUserModel> GetGroupMembers(int groupId)
+        {
+            Group group = this.tdb.Groups.Single(y => y.Id == groupId);
+
+            if (!CheckPoint.Instance.HasSecurables(SecurableNames.ADMIN))
+            {
+                var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (group.Managers.Count(y => y.UserId == currentUser.Id) == 0)
+                    throw new AuthorizationException("You are not an admin, and you are not a manager of this group");
+            }
+
+            return group.Users.Select(y => new SearchUserModel(y.User));
+        }
+
+        #endregion
+
+        #region Administration
+
+        /// <summary>
+        /// Gets all groups
+        /// </summary>
+        /// <param name="onlyNotMember">Indicates that only groups the current user is not a member of should be returned</param>
+        /// <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupModel&gt;</returns>
+        [HttpGet, Route("api/Group"), SecurableAction()]
+        public IEnumerable<GroupModel> GetGroups(bool onlyNotMember = false)
+        {
+            var groups = this.tdb.Groups.AsQueryable();
+            var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+            if (onlyNotMember)
+                groups = groups.Where(y => y.Users.Count(x => x.UserId == currentUser.Id) == 0);
+
+            var groupModels = (from g in groups.ToList()
+                               select new GroupModel(g, currentUser));
+
+            return groupModels;
+        }
+
+        [HttpGet, Route("api/Group/{groupId}"), SecurableAction(SecurableNames.ADMIN)]
+        public GroupModel GetGroup(int groupId)
+        {
+            var group = this.tdb.Groups.Single(y => y.Id == groupId);
+            return new GroupModel(group);
+        }
+
+        /// <summary>
+        /// Creates or updates a group based on the body/model specified
+        /// Updates require an Id to be specified in the model
+        /// Responds with the id of the group that was created/updated
+        /// </summary>
+        /// <param name="model">Information about the group to create/update</param>
+        /// <returns>int</returns>
+        [HttpPost, Route("api/Group"), SecurableAction(SecurableNames.ADMIN)]
+        public int SaveGroup(GroupModel model)
+        {
+            Group group = this.tdb.Groups.SingleOrDefault(y => y.Id == model.Id);
+
+            if (group == null)
+            {
+                group = new Group();
+                this.tdb.Groups.AddObject(group);
+            }
+
+            group.Name = model.Name;
+            group.Description = model.Description;
+            group.Disclaimer = model.Disclaimer;
+            group.IsOpen = model.IsOpen;
+
+            this.tdb.SaveChanges();
+
+            return group.Id;
+        }
+
+        /// <summary>
+        /// Deletes the specified group
+        /// </summary>
+        /// <param name="groupId">The id of the group to delete</param>
+        [HttpDelete, Route("api/Group/{groupId}"), SecurableAction()]
+        public void DeleteGroup(int groupId)
+        {
+            var group = this.tdb.Groups.Single(y => y.Id == groupId);
+
+            if (!CheckPoint.Instance.HasSecurables(SecurableNames.ADMIN))
+            {
+                var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (group.Managers.Count(y => y.UserId == currentUser.Id) == 0)
+                    throw new AuthorizationException("You are not an admin, and you are not a manager of this group");
+            }
+
+            group.Users.ToList().ForEach(y =>
+            {
+                this.tdb.UserGroups.DeleteObject(y);
+            });
+
+            group.ImplementationGuidePermissions.ToList().ForEach(y =>
+            {
+                this.tdb.ImplementationGuidePermissions.DeleteObject(y);
+            });
+
+            group.Managers.ToList().ForEach(y =>
+            {
+                this.tdb.GroupManagers.DeleteObject(y);
+            });
+
+            this.tdb.Groups.DeleteObject(group);
+
+            this.tdb.SaveChanges();
+        }
+
+        #endregion
     }
 }

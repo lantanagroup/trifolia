@@ -79,7 +79,7 @@
             Gets the specified group, including managers and members
             </summary>
             <param name="groupId">The id of the group to return</param>
-            <returns>Triflia.Web.Models.Group.MyGroupModel</returns>
+            <returns>Triflia.Web.Models.Group.GroupModel</returns>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.GroupController.GetMyGroups">
             <summary>
@@ -87,63 +87,21 @@
             </summary>
             <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupModel&gt;</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.AddUserToMyGroup(System.Int32,System.Int32,System.Boolean)">
-            <summary>
-            Adds a user to the specified group as either a manager or member.
-            </summary>
-            <param name="groupId">The id of the group to add the user to</param>
-            <param name="userId">The id of the user to add to the group</param>
-            <param name="isManager">Whether or not to add the user as a manager of the group</param>
-            <exception cref="T:System.Exception">You are not a member of this group</exception>
-            <returns>Trifolia.Web.Models.Group.MyGroupModel.UserModel</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.RemoveUserFromMyGroup(System.Int32,System.Int32,System.Boolean)">
-            <summary>
-            Removes a user from the specified group
-            </summary>
-            <param name="groupId">The id of the group to remove the user from</param>
-            <param name="userId">The id of the user to remove from the group</param>
-            <param name="isManager">Whether or not to remove the user as a manager</param>
-            <exception cref="T:Trifolia.Authorization.AuthorizationException">You are not a manager of this group</exception>
-            <exception cref="T:System.ArgumentException">Cannot remove yourself as a manager from the group</exception>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.AddMyGroup(Trifolia.Web.Models.Group.MyGroupModel)">
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.AddMyGroup(Trifolia.Web.Models.Group.GroupModel)">
             <summary>
             Creates a new group. The current user is automatically added as a manager of the group.
             Members and managers of the model are not created as part of this operation.
             </summary>
             <param name="model">Information about the group to create</param>
-            <returns>Trifolia.Web.Models.Group.MyGroupModel</returns>
+            <returns>Trifolia.Web.Models.Group.GroupModel</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.UpdateMyGroup(System.Int32,Trifolia.Web.Models.Group.MyGroupModel)">
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.UpdateMyGroup(System.Int32,Trifolia.Web.Models.Group.GroupModel)">
             <summary>
             Updates the specified group based on the information passed in the body/model.
             </summary>
             <param name="groupId">The id of the group to update</param>
             <param name="model">Information about the group to update</param>
-            <returns>Trifolia.Web.Models.Group.MyGroupModel</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetGroups(System.Boolean)">
-            <summary>
-            Gets all groups
-            </summary>
-            <param name="onlyNotMember">Indicates that only groups the current user is not a member of should be returned</param>
-            <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupModel&gt;</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.SaveMyGroup(Trifolia.Web.Models.Group.GroupModel)">
-            <summary>
-            Creates or updates a group based on the body/model specified
-            Updates require an Id to be specified in the model
-            Responds with the id of the group that was created/updated
-            </summary>
-            <param name="model">Information about the group to create/update</param>
-            <returns>int</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.DeleteGroup(System.Int32)">
-            <summary>
-            Deletes the specified group
-            </summary>
-            <param name="groupId">The id of the group to delete</param>
+            <returns>Trifolia.Web.Models.Group.GroupModel</returns>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.GroupController.LeaveGroup(System.Int32)">
             <summary>
@@ -160,6 +118,72 @@
             If the group is open for anyone to join, the user is added as a member of the group.
             </summary>
             <param name="groupId">The id of the group for the current user to join</param>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.AddManagerToGroup(System.Int32,System.Int32)">
+            <summary>
+            Adds a user to the specified group as a manager
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <param name="userId">The id of the user</param>
+            <returns>Trifolia.Web.Models.User.SearchUserModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.AddMemberToGroup(System.Int32,System.Int32)">
+            <summary>
+            Adds a user to the specified group as a member
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <param name="userId">The id of the user</param>
+            <returns>Trifolia.Web.Models.User.SearchUserModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.RemoveManagerFromGroup(System.Int32,System.Int32)">
+            <summary>
+            Removes a manager (user) from the specified group
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <param name="userId">The id of the user</param>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.RemoveMemberFromGroup(System.Int32,System.Int32)">
+            <summary>
+            Removes a member (user) from the specified group
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <param name="userId">The id of the user</param>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetGroupManagers(System.Int32)">
+            <summary>
+            Gets all managers of the specified group
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.User.SearchUserModel&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetGroupMembers(System.Int32)">
+            <summary>
+            Gets all members of the specified group
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.User.SearchUserModel&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetGroups(System.Boolean)">
+            <summary>
+            Gets all groups
+            </summary>
+            <param name="onlyNotMember">Indicates that only groups the current user is not a member of should be returned</param>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupModel&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.SaveGroup(Trifolia.Web.Models.Group.GroupModel)">
+            <summary>
+            Creates or updates a group based on the body/model specified
+            Updates require an Id to be specified in the model
+            Responds with the id of the group that was created/updated
+            </summary>
+            <param name="model">Information about the group to create/update</param>
+            <returns>int</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.DeleteGroup(System.Int32)">
+            <summary>
+            Deletes the specified group
+            </summary>
+            <param name="groupId">The id of the group to delete</param>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.FHIR.STU3.FHIR3ConformanceController.GetConformance(System.String)">
             <summary>
@@ -616,11 +640,6 @@
             Categories used to filter constraints exported in the ms word ig
             </summary>
         </member>
-        <member name="T:Trifolia.Web.Models.Group.GroupModel">
-            <summary>
-            Models a group as a view model
-            </summary>
-        </member>
         <member name="T:Trifolia.Web.Models.IGManagement.IGListModes">
             <summary>
             Defines what type of implementation guide list the requestor desires
@@ -680,6 +699,11 @@
         <member name="P:Trifolia.Web.Models.OrganizationManagement.OrganizationModel.Name">
             <summary>
             Gets or sets the organization name
+            </summary>
+        </member>
+        <member name="T:Trifolia.Web.Models.Group.GroupModel">
+            <summary>
+            Models a group as a view model
             </summary>
         </member>
         <member name="T:Trifolia.Web.Models.User.UserModel">

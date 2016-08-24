@@ -28,6 +28,12 @@ namespace Trifolia.Web
             routes.IgnoreRoute("favicon.ico");
 
             routes.MapRoute(
+                name: "Edit Group",
+                url: "Admin/Group/{groupId}",
+                defaults: new { controller = "Admin", action = "EditGroup" }
+            );
+
+            routes.MapRoute(
                 name: "Edit My Group",
                 url: "Account/Group/{groupId}",
                 defaults: new { controller = "Account", action = "Group" }
