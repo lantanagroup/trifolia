@@ -1,6 +1,3 @@
-USE [templatedb_auth]
-GO
-
 /****** Object:  View [dbo].[v_templateList]    Script Date: 8/9/2016 4:30:28 PM ******/
 SET ANSI_NULLS ON
 GO

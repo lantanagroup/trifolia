@@ -3,7 +3,7 @@ BEGIN
 	DROP INDEX IDX_template_organizationId ON dbo.template
 END
 
-IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID('template') AND name = 'FK_template_organization')
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID('dbo.FK_template_organization'))
 BEGIN
 	ALTER TABLE dbo.template DROP CONSTRAINT FK_template_organization
 END
