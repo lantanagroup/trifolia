@@ -74,6 +74,12 @@
             <param name="searchText">The text to search for.</param>
             <returns></returns>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetMyGroupDisclaimers">
+            <summary>
+            Gets disclaimers from groups (that have disclaimers) that the current user is a member of
+            </summary>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupDisclaimer&gt;</returns>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.GroupController.GetMyGroup(System.Int32)">
             <summary>
             Gets the specified group, including managers and members
@@ -640,6 +646,11 @@
             Categories used to filter constraints exported in the ms word ig
             </summary>
         </member>
+        <member name="T:Trifolia.Web.Models.Group.GroupModel">
+            <summary>
+            Models a group as a view model
+            </summary>
+        </member>
         <member name="T:Trifolia.Web.Models.IGManagement.IGListModes">
             <summary>
             Defines what type of implementation guide list the requestor desires
@@ -699,11 +710,6 @@
         <member name="P:Trifolia.Web.Models.OrganizationManagement.OrganizationModel.Name">
             <summary>
             Gets or sets the organization name
-            </summary>
-        </member>
-        <member name="T:Trifolia.Web.Models.Group.GroupModel">
-            <summary>
-            Models a group as a view model
             </summary>
         </member>
         <member name="T:Trifolia.Web.Models.User.UserModel">

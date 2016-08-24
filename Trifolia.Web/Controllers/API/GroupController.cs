@@ -38,6 +38,25 @@ namespace Trifolia.Web.Controllers.API
         #region My Groups
 
         /// <summary>
+        /// Gets disclaimers from groups (that have disclaimers) that the current user is a member of
+        /// </summary>
+        /// <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupDisclaimer&gt;</returns>
+        [HttpGet, Route("api/Group/My/Disclaimer"), AllowAnonymous]
+        public IEnumerable<GroupDisclaimer> GetMyGroupDisclaimers()
+        {
+            if (!CheckPoint.Instance.IsAuthenticated)
+                return new List<GroupDisclaimer>();
+
+            var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+            var groupsWithDisclaimers = currentUser.Groups
+                .Where(y => !string.IsNullOrEmpty(y.Group.Disclaimer))
+                .Select(y => y.Group);
+            var groupDisclaimers = groupsWithDisclaimers.Select(y => new GroupDisclaimer(y));
+
+            return groupDisclaimers;
+        }
+
+        /// <summary>
         /// Gets the specified group, including managers and members
         /// </summary>
         /// <param name="groupId">The id of the group to return</param>

@@ -346,6 +346,7 @@
     <Compile Include="Models\GreenManagement\GreenTemplateSaveResult.cs" />
     <Compile Include="Models\GreenManagement\LeafLevelGreenConstraintsHaveDataType.cs" />
     <Compile Include="Models\GreenManagement\TemplateConstraintMapper.cs" />
+    <Compile Include="Models\Group\GroupDisclaimer.cs" />
     <Compile Include="Models\IGManagement\AuditEntryModel.cs" />
     <Compile Include="Models\IGManagement\FileModel.cs" />
     <Compile Include="Models\IGManagement\FilesModel.cs" />

@@ -118,6 +118,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#" data-bind="click: function () { helpModel.showHelpMenu(); }">Documentation</a></li>
                             <li><a href="#" data-bind="click: function () { supportViewModel.ShowSupportRequest(); }">Support</a></li>
+                            <li><a href="#" data-bind="if: GroupDisclaimers() && GroupDisclaimers().length > 0, click: OpenDisclaimers">Disclaimers</a></li>
                             <li><a href="#" data-bind="click: function () { $('#keyboardShortcutsDialog').modal('show'); }">Keyboard Shortcuts</a></li>
                             <% if (!string.IsNullOrEmpty(this.DatabaseLabel) || !string.IsNullOrEmpty(this.VersionLabel)) { %>
                             <li class="divider"></li>
@@ -245,6 +246,35 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="GroupDisclaimersDialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Disclaimers</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist" data-bind="foreach: GroupDisclaimers">
+                        <li role="presentation"><a href="#profile" data-bind="css: { active: $index() == 0 }, text: GroupName, attr: { href: '#' + GroupName().replace(/ /g, '').toLowerCase() }" aria-controls="profile" role="tab" data-toggle="tab"></a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content" data-bind="foreach: GroupDisclaimers">
+                        <div role="tabpanel" class="tab-pane" id="home" data-bind="css: { active: $index() == 0 }, attr: { id: GroupName().replace(/ /g, '').toLowerCase() }, html: Disclaimer">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
         
     <!-- Template Selector Knockout Template -->
     <script type="text/html" id="selectTemplateDialogTemplate">
@@ -431,6 +461,7 @@
         $(document).ready(function () {
             $(document).ready(function () {
                 ko.applyBindings(containerViewModel, $('#appnav')[0]);
+                ko.applyBindings(containerViewModel, $('#GroupDisclaimersDialog')[0]);
             });
 
             $(document).mousemove(function (e) {
@@ -450,6 +481,10 @@
             });
 
             $("#keyboardShortcutsDialog").modal({
+                show: false
+            });
+
+            $('#GroupDisclaimersDialog').modal({
                 show: false
             });
 

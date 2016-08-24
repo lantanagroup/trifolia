@@ -13,6 +13,8 @@ namespace Trifolia.Web.Controllers.API
     {
         private IObjectRepository tdb;
 
+        #region Constructors
+
         public UserController(IObjectRepository tdb)
         {
             this.tdb = tdb;
@@ -23,6 +25,8 @@ namespace Trifolia.Web.Controllers.API
         {
 
         }
+
+        #endregion
 
         /// <summary>
         /// Searches for users
