@@ -43,6 +43,21 @@ namespace Trifolia.Web.Controllers
             : this(DBContext.Create())
         {
             this.authClient = CreateClient();
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2UserInfoEndpoint))
+                throw new MissingFieldException("Trifolia is not configured correctly for OAuth2 login: OAuth2UserInfoEndpoint");
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2AuthorizationEndpoint))
+                throw new MissingFieldException("Trifolia is not configured correctly for OAuth2 login: OAuth2AuthorizationEndpoint");
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2TokenEndpoint))
+                throw new MissingFieldException("Trifolia is not configured correctly for OAuth2 login: OAuth2TokenEndpoint");
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2ClientIdentifier))
+                throw new MissingFieldException("Trifolia is not configured correctly for OAuth2 login: OAuth2ClientIdentifier");
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2ClientSecret))
+                throw new MissingFieldException("Trifolia is not configured correctly for OAuth2 login: OAuth2ClientSecret");
         }
 
         public AccountController(IObjectRepository tdb)
@@ -273,6 +288,8 @@ namespace Trifolia.Web.Controllers
         {
             if (!string.IsNullOrEmpty(this.Request.QueryString["session_state"]))
             {
+                Log.For(this).Trace("Removing the session_state param from the auth request");
+
                 var uri = new Uri(this.Request.Url.ToString());
 
                 // this gets all the query string key value pairs as a collection
@@ -288,8 +305,12 @@ namespace Trifolia.Web.Controllers
                     ? String.Format("{0}?{1}", pagePathWithoutQueryString, newQueryString)
                     : pagePathWithoutQueryString;
 
+                Log.For(this).Trace("Redirecting the user back to this route without the session_state param");
+
                 return Redirect(newUrl);
             }
+
+            Log.For(this).Trace("Processing user authorization: " + this.Request.RawUrl);
 
             var auth = this.authClient.ProcessUserAuthorization(this.Request);
 
