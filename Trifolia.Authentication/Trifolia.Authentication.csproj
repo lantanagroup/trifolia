@@ -51,9 +51,7 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HL7AuthHelper.cs" />
     <Compile Include="Models\OAuth2UserInfo.cs" />
-    <Compile Include="TestMembershipProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

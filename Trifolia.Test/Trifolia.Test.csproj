@@ -169,7 +169,6 @@
     <Compile Include="Generation\Schematron\DocumentBuilderTests.cs" />
     <Compile Include="Generation\Schematron\SchematronGeneratorTest.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="HL7AuthHelperTest.cs" />
     <Compile Include="MockObjectRepository.cs" />
     <Compile Include="Generation\Schematron\SchematronAssertionGeneratorTest.cs" />
     <Compile Include="Generation\Schematron\TemplateDatabaseCDADocumentTemplateTest.cs" />

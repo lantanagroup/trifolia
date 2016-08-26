@@ -517,15 +517,6 @@
             Prepares the model and returns the main Roles view
             </summary>
         </member>
-        <member name="M:Trifolia.Web.Controllers.ExportController.BeforeExport(Trifolia.DB.ImplementationGuide,System.String)">
-            <summary>
-            Checks if the authenticated user is from the HL7 organization.
-            If yes, a redirect ActionResult is returned that forwards the user to the HL7 disclaimer page.
-            The action result includes a redirectUrl parameter that tells HL7 to redirect the user back to trifolia.
-            The redirectUrl parameter of the returned ActionResult includes the retAction passed to this method
-            and an implementationGuideId param for the ig. 
-            </summary>
-        </member>
         <member name="M:Trifolia.Web.Controllers.PermissionExtension.MemberType(Trifolia.DB.ImplementationGuidePermission)">
             <summary>
             Converts the "Type" property of ImplementationGuidePermission to the PermissionTypes enum used by the PermissionManagement model
