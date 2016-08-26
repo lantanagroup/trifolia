@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <h3>Managers <button type="button" class="btn btn-primary btn-sm" data-bind="click: AddManager">Add</button></h3>
+            <h3>Managers (<span data-bind="text: Managers().length"></span>)<button type="button" class="btn btn-primary btn-sm" data-bind="click: AddManager">Add</button></h3>
 
             <ul data-bind="foreach: Managers">
                 <li>
@@ -51,7 +51,7 @@
             </ul>
         </div>
         <div class="col-md-4">
-            <h3>Members <button type="button" class="btn btn-primary btn-sm" data-bind="click: AddMember">Add</button></h3>
+            <h3>Members (<span data-bind="text: Members().length"></span>)<button type="button" class="btn btn-primary btn-sm" data-bind="click: AddMember">Add</button></h3>
 
             <ul data-bind="foreach: Members">
                 <li><span data-bind="text: Name"></span> [<a href="#" data-bind="click: function () { $root.RemoveUser(Id, false); }">remove</a>]</li>
