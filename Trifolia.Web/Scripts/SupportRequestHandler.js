@@ -64,6 +64,9 @@ var SupportViewModel = function () {
             success: function(data, textStatus, jqXHR) {
                 if (data == 'Email sent') {
                     alert('JIRA Support Request email successfully sent.');
+                } else if (data == "Could not submit beta user application.  Please notify the administrator") {
+                    alert('JIRA Support Request email unable to be successfully sent with error: "Could not ' +
+                        'submit beta user application.  Please notify the administrator"');
                 } else {
                     alert('Successfully created JIRA support request: ' + data);
                     self.CancelSupportRequest();

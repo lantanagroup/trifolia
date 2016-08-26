@@ -201,7 +201,6 @@
                             <option>None</option>
                             <option>Trivial</option>
                             <option>Minor</option>
-                            <option>Medium</option>
                             <option>Major</option>
                             <option>Critical</option>
                             <option>Blocker</option>

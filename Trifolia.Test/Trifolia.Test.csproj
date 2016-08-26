@@ -146,6 +146,7 @@
     <Compile Include="Controllers\API\BulkCopyControllerTest.cs" />
     <Compile Include="Controllers\API\FHIR\DSTU1\ExportTests.cs" />
     <Compile Include="Controllers\API\FHIR\STU3\StructureDefinitionControllerTest.cs" />
+    <Compile Include="Controllers\API\FHIR\DSTU1\FHIRDSTU1ExportTest.cs" />
     <Compile Include="Controllers\API\FHIR\DSTU2\StructureDefinitionControllerTest.cs" />
     <Compile Include="Controllers\API\FHIR\STU3\ExportTests.cs" />
     <Compile Include="Controllers\API\TerminologyControllerTest.cs" />
@@ -339,14 +340,17 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\adversereaction.sch" />
     <None Include="Schemas\FHIR_DSTU1\adversereaction.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\alert.sch" />
     <None Include="Schemas\FHIR_DSTU1\alert.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\allergyintolerance.sch" />
     <None Include="Schemas\FHIR_DSTU1\allergyintolerance.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -355,54 +359,67 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\careplan.sch" />
     <None Include="Schemas\FHIR_DSTU1\careplan.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\composition.sch" />
     <None Include="Schemas\FHIR_DSTU1\composition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\conceptmap.sch" />
     <None Include="Schemas\FHIR_DSTU1\conceptmap.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\condition.sch" />
     <None Include="Schemas\FHIR_DSTU1\condition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\conformance.sch" />
     <None Include="Schemas\FHIR_DSTU1\conformance.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\device.sch" />
     <None Include="Schemas\FHIR_DSTU1\device.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\deviceobservationreport.sch" />
     <None Include="Schemas\FHIR_DSTU1\deviceobservationreport.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\diagnosticorder.sch" />
     <None Include="Schemas\FHIR_DSTU1\diagnosticorder.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\diagnosticreport.sch" />
     <None Include="Schemas\FHIR_DSTU1\diagnosticreport.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\documentmanifest.sch" />
     <None Include="Schemas\FHIR_DSTU1\documentmanifest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\documentreference.sch" />
     <None Include="Schemas\FHIR_DSTU1\documentreference.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\encounter.sch" />
     <None Include="Schemas\FHIR_DSTU1\encounter.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\familyhistory.sch" />
     <None Include="Schemas\FHIR_DSTU1\familyhistory.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -415,6 +432,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\fhir-atom.sch" />
     <None Include="Schemas\FHIR_DSTU1\fhir-atom.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -431,58 +449,72 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\group.sch" />
     <None Include="Schemas\FHIR_DSTU1\group.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\imagingstudy.sch" />
     <None Include="Schemas\FHIR_DSTU1\imagingstudy.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\immunization.sch" />
     <None Include="Schemas\FHIR_DSTU1\immunization.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\immunizationrecommendation.sch" />
     <None Include="Schemas\FHIR_DSTU1\immunizationrecommendation.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\list.sch" />
     <None Include="Schemas\FHIR_DSTU1\list.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\location.sch" />
     <None Include="Schemas\FHIR_DSTU1\location.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\media.sch" />
     <None Include="Schemas\FHIR_DSTU1\media.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\medication.sch" />
     <None Include="Schemas\FHIR_DSTU1\medication.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\medicationadministration.sch" />
     <None Include="Schemas\FHIR_DSTU1\medicationadministration.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\medicationdispense.sch" />
     <None Include="Schemas\FHIR_DSTU1\medicationdispense.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\medicationprescription.sch" />
     <None Include="Schemas\FHIR_DSTU1\medicationprescription.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\medicationstatement.sch" />
     <None Include="Schemas\FHIR_DSTU1\medicationstatement.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\messageheader.sch" />
     <None Include="Schemas\FHIR_DSTU1\messageheader.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\observation.sch" />
     <None Include="Schemas\FHIR_DSTU1\observation.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -495,70 +527,87 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\operationoutcome.sch" />
     <None Include="Schemas\FHIR_DSTU1\operationoutcome.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\order.sch" />
     <None Include="Schemas\FHIR_DSTU1\order.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\orderresponse.sch" />
     <None Include="Schemas\FHIR_DSTU1\orderresponse.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\organization.sch" />
     <None Include="Schemas\FHIR_DSTU1\organization.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\other.sch" />
     <None Include="Schemas\FHIR_DSTU1\other.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\patient.sch" />
     <None Include="Schemas\FHIR_DSTU1\patient.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\practitioner.sch" />
     <None Include="Schemas\FHIR_DSTU1\practitioner.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\procedure.sch" />
     <None Include="Schemas\FHIR_DSTU1\procedure.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\profile.sch" />
     <None Include="Schemas\FHIR_DSTU1\profile.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\provenance.sch" />
     <None Include="Schemas\FHIR_DSTU1\provenance.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\query.sch" />
     <None Include="Schemas\FHIR_DSTU1\query.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\questionnaire.sch" />
     <None Include="Schemas\FHIR_DSTU1\questionnaire.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\relatedperson.sch" />
     <None Include="Schemas\FHIR_DSTU1\relatedperson.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\securityevent.sch" />
     <None Include="Schemas\FHIR_DSTU1\securityevent.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\specimen.sch" />
     <None Include="Schemas\FHIR_DSTU1\specimen.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\substance.sch" />
     <None Include="Schemas\FHIR_DSTU1\substance.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\supply.sch" />
     <None Include="Schemas\FHIR_DSTU1\supply.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -567,6 +616,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Schemas\FHIR_DSTU1\valueset.sch" />
     <None Include="Schemas\FHIR_DSTU1\valueset.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1587,6 +1637,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DocSamples\ccda-on-fhir-native.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DocSamples\Camara-FHIR-IG.xml" />
+    <Content Include="DocSamples\Camara_FHIR_IG.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

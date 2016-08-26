@@ -13,6 +13,9 @@ using Trifolia.Shared;
 
 namespace Trifolia.Generation.IG
 {
+    /// <summary>
+    /// Constraint overview table in MS Word exports
+    /// </summary>
     public class TemplateConstraintTable
     {
         private const string CATEGORY = "Category";
@@ -72,7 +75,7 @@ namespace Trifolia.Generation.IG
 
             lHeaders.Add(new HeaderDescriptor() { HeaderName = XPATH, AutoResize = true, AutoWrap = false, ColumnWidth = "3445" });
             lHeaders.Add(new HeaderDescriptor() { HeaderName = CARD, AutoResize = false, CellWidth = .5, ColumnWidth = "720" });
-            lHeaders.Add(new HeaderDescriptor() { HeaderName = VERB, AutoResize = false, CellWidth = .6, ColumnWidth = "864" });
+            lHeaders.Add(new HeaderDescriptor() { HeaderName = VERB, AutoResize = false, CellWidth = .8, ColumnWidth = "1152" });
             lHeaders.Add(new HeaderDescriptor() { HeaderName = DATA_TYPE, AutoResize = false, CellWidth = .6, ColumnWidth = "864" });
             lHeaders.Add(new HeaderDescriptor() { HeaderName = CONF, AutoResize = false, CellWidth = .6, ColumnWidth = "864" });
             lHeaders.Add(new HeaderDescriptor() { HeaderName = FIXED_VALUE, AutoResize = false, CellWidth = .6, ColumnWidth = "3171" });
