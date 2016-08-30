@@ -48,6 +48,10 @@ namespace Trifolia.Web.Controllers.API
                 return new List<GroupDisclaimer>();
 
             var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+            if (currentUser == null)
+                return new List<GroupDisclaimer>();
+
             var groupsWithDisclaimers = currentUser.Groups
                 .Where(y => !string.IsNullOrEmpty(y.Group.Disclaimer))
                 .Select(y => y.Group);
