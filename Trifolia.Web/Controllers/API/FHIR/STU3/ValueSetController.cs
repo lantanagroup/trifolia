@@ -16,7 +16,7 @@ using ValueSet = Trifolia.DB.ValueSet;
 namespace Trifolia.Web.Controllers.API.FHIR.STU3
 {
     [STU3Config]
-    [Route("api/FHIR3")]
+    [RoutePrefix("api/FHIR3")]
     public class FHIR3ValueSetController : ApiController
     {
         private IObjectRepository tdb;
@@ -92,9 +92,16 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
                 Type = Bundle.BundleType.BatchResponse
             };
 
+            var publishedValueSets = (from ig in this.tdb.ImplementationGuides
+                                      join t in this.tdb.Templates on ig.Id equals t.OwningImplementationGuideId
+                                      join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
+                                      where ig.PublishStatus != null && ig.PublishStatus.Status == PublishStatus.PUBLISHED_STATUS && tc.ValueSet != null
+                                      select tc.ValueSet)
+                                      .ToList();  // Query the database immediately
+            
             foreach (var valueSet in valueSets)
             {
-                var fhirValueSet = exporter.Convert(valueSet, summary);
+                var fhirValueSet = exporter.Convert(valueSet, summary, publishedValueSets);
                 var fullUrl = string.Format("{0}://{1}/api/FHIR3/{2}",
                     this.Request.RequestUri.Scheme,
                     this.Request.RequestUri.Authority,

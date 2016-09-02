@@ -7,6 +7,8 @@ using FhirValueSet = fhir_stu3.Hl7.Fhir.Model.ValueSet;
 using ValueSet = Trifolia.DB.ValueSet;
 using CodeSystem = Trifolia.DB.CodeSystem;
 using Trifolia.Shared.FHIR;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Trifolia.Export.FHIR.STU3
 {
@@ -19,12 +21,28 @@ namespace Trifolia.Export.FHIR.STU3
             this.tdb = tdb;
         }
 
-        public FhirValueSet Convert(ValueSet valueSet, SummaryType? summaryType = null)
+        /// <summary>
+        /// Converts a Trifolia ValueSet model to a FHIR ValueSet model.
+        /// </summary>
+        /// <param name="valueSet">The Trifolia ValueSet model to convert to a FHIR model</param>
+        /// <param name="summaryType">Does not populate certain fields when a summaryType is specified.</param>
+        /// <param name="publishedValueSets">Optional list of ValueSets that are used by a published implementation guide. If not specified, queries the database for implementation guides that this value set may be published under.</param>
+        /// <returns>A FHIR ValueSet model</returns>
+        public FhirValueSet Convert(ValueSet valueSet, SummaryType? summaryType = null, IEnumerable<ValueSet> publishedValueSets = null)
         {
-            var implementationGuides = (from tc in valueSet.Constraints
-                                        join t in this.tdb.Templates on tc.TemplateId equals t.Id
-                                        select t.OwningImplementationGuide);
-            bool usedByPublishedIgs = implementationGuides.Count(y => y.PublishStatus.IsPublished) > 0;
+            bool usedByPublishedIgs = false;
+
+            if (publishedValueSets == null)
+            {
+                var implementationGuides = (from tc in valueSet.Constraints
+                                            join t in this.tdb.Templates on tc.TemplateId equals t.Id
+                                            select t.OwningImplementationGuide);
+                usedByPublishedIgs = implementationGuides.Count(y => y.PublishStatus != null && y.PublishStatus.IsPublished) > 0;
+            }
+            else
+            {
+                usedByPublishedIgs = publishedValueSets.Contains(valueSet);
+            }
 
             FhirValueSet fhirValueSet = new FhirValueSet()
             {

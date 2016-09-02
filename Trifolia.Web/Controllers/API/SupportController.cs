@@ -15,22 +15,6 @@ namespace Trifolia.Web.Controllers.API
 {
     public class SupportController : ApiController
     {
-        Dictionary<string, string> priorityMap = new Dictionary<string, string>(){
-            {"None", "6"},
-            {"Blocker", "1"},
-            {"Critical", "2"},
-            {"Major", "3"}, 
-            {"Minor", "4"}, 
-            {"Trivial", "5"},
-        };
-
-        Dictionary<string, string> _issueMap = new Dictionary<string, string>()
-        {
-            {"Question", "7"},
-            {"Bug/Defect", "8"},
-            {"Feature Request", "10"}
-        };
-
         [HttpPost, Route("api/Support")]
         public string SubmitSupportRequest(SupportRequestModel model)
         {
@@ -92,12 +76,21 @@ namespace Trifolia.Web.Controllers.API
 
                 try
                 {
-                    return lProxy.SubmitSupportTicket(lUserName, model.Summary, model.Details, priorityMap[model.Priority], _issueMap[model.Type]);
+                    var priorityConfig = JiraSection.GetSection().Priorities[model.Priority];
+                    var typeConfig = JiraSection.GetSection().Types[model.Type];
+
+                    if (priorityConfig == null)
+                        throw new Exception("Cannot find a configured JIRA priority mapping for " + model.Priority);
+
+                    if (typeConfig == null)
+                        throw new Exception("Cannot find a configured JIRA type mapping for " + model.Type);
+
+                    return lProxy.SubmitSupportTicket(lUserName, model.Summary, model.Details, priorityConfig.Id, typeConfig.Id);
                 }
                 catch (Exception submitException)
                 {
                     Log.For(this).Error("Failed to submit JIRA beta user application", submitException);
-                    return "Could not submit beta user application.  Please notify the administrator";
+                    throw new Exception("Could not submit beta user application.  Please notify the administrator");
                 }
             }
         }

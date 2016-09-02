@@ -57,7 +57,9 @@
     <Compile Include="IGTypeSection.cs" />
     <Compile Include="IGTypePluginElement.cs" />
     <Compile Include="HelpContextElement.cs" />
+    <Compile Include="JiraMappingElement.cs" />
     <Compile Include="ToolTipElement.cs" />
+    <Compile Include="JiraSection.cs" />
     <Compile Include="ToolTipSection.cs" />
     <Compile Include="HelpPageElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,7 +1,5 @@
 ﻿Param(
     [Parameter(Mandatory=$True)]
-    $databaseDirectory='Database',
-    [Parameter(Mandatory=$True)]
     $appVersion,
     [Parameter(Mandatory=$True)]
     $databaseServer,
@@ -9,14 +7,22 @@
     $databaseName,
     [Switch]
     $new)
+	
+function Get-ScriptDirectory
+{
+  $Invocation = (Get-Variable MyInvocation -Scope 1).Value
+  Split-Path $Invocation.MyCommand.Path
+}
+	
+$ScriptPath = Get-ScriptDirectory
 
-$DDLDirectory = Join-Path "$databaseDirectory\" "Upgrade\DDL" -Resolve
-$DataDirectory = Join-Path "$databaseDirectory\" "Upgrade\Data" -Resolve
+$DDLDirectory = Join-Path "$ScriptPath" "Upgrade\DDL" -Resolve
+$DataDirectory = Join-Path "$ScriptPath" "Upgrade\Data" -Resolve
 
 if ($new) {
     sqlcmd -E -S $databaseServer -Q "IF NOT EXISTS (SELECT * FROM master.dbo.sysdatabases WHERE name = '$databaseName') CREATE DATABASE $databaseName"
-    $DDLDirectory = Join-Path "$databaseDirectory\" "New\DDL" -Resolve
-    $DataDirectory = Join-Path "$databaseDirectory\" "New\Data" -Resolve
+    $DDLDirectory = Join-Path "$ScriptPath" "New\DDL" -Resolve
+    $DataDirectory = Join-Path "$ScriptPath" "New\Data" -Resolve
 }
 
 $DDLQuery = Join-Path "$DDLDirectory\" "$appVersion*.sql"
