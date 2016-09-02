@@ -86,7 +86,6 @@ namespace Trifolia.Web.Controllers
                     u.OkayToContact = aProfile.okayToContact;
                     u.ExternalOrganizationName = aProfile.organization;
                     u.ExternalOrganizationType = aProfile.organizationType;
-                    u.ApiKey = aProfile.apiKey;
                 });
 
                 tdb.SaveChanges();
@@ -111,16 +110,22 @@ namespace Trifolia.Web.Controllers
                 UserProfile lProfile = new UserProfile()
                 {
                     userName = lUser.UserName,
-
                     firstName = lUser.FirstName,
                     lastName = lUser.LastName,
                     phone = lUser.Phone,
                     email = lUser.Email,
                     okayToContact = lUser.OkayToContact.HasValue ? lUser.OkayToContact.Value : false,
                     organization = lUser.ExternalOrganizationName,
-                    organizationType = lUser.ExternalOrganizationType,
-                    apiKey = lUser.ApiKey
+                    organizationType = lUser.ExternalOrganizationType
                 };
+
+                if (!string.IsNullOrEmpty(AppSettings.OpenIdConfigUrl))
+                    lProfile.openIdConfigUrl = AppSettings.OpenIdConfigUrl;
+
+                var authData = CheckPoint.Instance.GetAuthenticatedData();
+
+                if (authData.ContainsKey(CheckPoint.AUTH_DATA_OAUTH2_TOKEN))
+                    lProfile.authToken = authData[CheckPoint.AUTH_DATA_OAUTH2_TOKEN];
 
                 return Json(lProfile, JsonRequestBehavior.AllowGet);
             }
@@ -313,57 +318,44 @@ namespace Trifolia.Web.Controllers
             Log.For(this).Trace("Processing user authorization: " + this.Request.RawUrl);
 
             var auth = this.authClient.ProcessUserAuthorization(this.Request);
+            var userInfo = OAuth2UserInfo.GetUserInfo(auth.AccessToken);
+            var foundUser = this.tdb.Users.SingleOrDefault(y => y.UserName == userInfo.user_id);
 
-            WebClient userInfoClient = new WebClient();
-            userInfoClient.Headers.Add("Authorization", "Bearer " + auth.AccessToken);
-            var userInfoStream = userInfoClient.OpenRead(AppSettings.OAuth2UserInfoEndpoint);
-
-            using (StreamReader sr = new StreamReader(userInfoStream))
+            // If the user has migration information (the account that they are moving from) in their
+            // profile, update trifolia so that it has the same userName/user_id.
+            if (foundUser == null && userInfo.app_metadata != null && userInfo.app_metadata.migrated_account != null)
             {
-                var userInfoString = sr.ReadToEnd();
-                var userInfo = JsonConvert.DeserializeObject<OAuth2UserInfo>(userInfoString);
+                var migratingUser = this.tdb.Users.SingleOrDefault(y =>
+                    y.Id == userInfo.app_metadata.migrated_account.internalId &&
+                    y.UserName == userInfo.app_metadata.migrated_account.userName);
 
-                if (string.IsNullOrEmpty(userInfo.user_id))
-                    throw new Exception("UserInfo returned no user_id information");
-
-                var foundUser = this.tdb.Users.SingleOrDefault(y => y.UserName == userInfo.user_id);
-
-                // If the user has migration information (the account that they are moving from) in their
-                // profile, update trifolia so that it has the same userName/user_id.
-                if (foundUser == null && userInfo.app_metadata != null && userInfo.app_metadata.migrated_account != null)
+                if (migratingUser != null)
                 {
-                    var migratingUser = this.tdb.Users.SingleOrDefault(y =>
-                        y.Id == userInfo.app_metadata.migrated_account.internalId &&
-                        y.UserName == userInfo.app_metadata.migrated_account.userName);
-
-                    if (migratingUser != null)
-                    {
-                        migratingUser.UserName = userInfo.user_id;
-                        foundUser = migratingUser;
-                    }
-
-                    this.tdb.SaveChanges();
+                    migratingUser.UserName = userInfo.user_id;
+                    foundUser = migratingUser;
                 }
 
-                string userData = string.Format("{0}={1}", CheckPoint.AUTH_DATA_OAUTH2_TOKEN, auth.AccessToken);
-                FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
-                    2,
-                    userInfo.user_id,
-                    DateTime.Now,
-                    DateTime.Now.AddDays(20),
-                    true,
-                    userData);
-                string encAuthTicket = FormsAuthentication.Encrypt(authTicket);
-                HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encAuthTicket);
-
-                if (auth.AccessTokenExpirationUtc != null)
-                    faCookie.Expires = auth.AccessTokenExpirationUtc.Value;
-
-                Response.Cookies.Set(faCookie);
-
-                if (foundUser == null)
-                    return NewProfile("/", userInfo.given_name, userInfo.family_name, userInfo.email, userInfo.phone);
+                this.tdb.SaveChanges();
             }
+
+            string userData = string.Format("{0}={1}", CheckPoint.AUTH_DATA_OAUTH2_TOKEN, auth.AccessToken);
+            FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+                2,
+                userInfo.user_id,
+                DateTime.Now,
+                DateTime.Now.AddDays(20),
+                true,
+                userData);
+            string encAuthTicket = FormsAuthentication.Encrypt(authTicket);
+            HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encAuthTicket);
+
+            if (auth.AccessTokenExpirationUtc != null)
+                faCookie.Expires = auth.AccessTokenExpirationUtc.Value;
+
+            Response.Cookies.Set(faCookie);
+
+            if (foundUser == null)
+                return NewProfile("/", userInfo.given_name, userInfo.family_name, userInfo.email, userInfo.phone);
 
             // If the user was trying to go somewhere specific, redirect the user there instead
             var returnUrlCookie = this.Request.Cookies[AUTH_RETURN_URL_COOKIE_NAME];

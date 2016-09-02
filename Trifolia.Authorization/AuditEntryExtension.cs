@@ -9,30 +9,28 @@ namespace Trifolia.Authorization
 {
     public static class AuditEntryExtension
     {
-        public static void SetContext(this AuditEntry auditEntry, string userName = null, string organizationName = null)
+        public static void SetContext(this AuditEntry auditEntry, string userName)
         {
-            auditEntry.Username = string.Format("{0} ({1})",
-                userName != null ? userName : CheckPoint.Instance.UserName,
-                organizationName != null ? organizationName : CheckPoint.Instance.OrganizationName);
+            auditEntry.Username = userName;
             auditEntry.IP = CheckPoint.Instance.HostAddress;
             auditEntry.AuditDate = DateTime.Now;
         }
 
-        public static AuditEntry CreateAuditEntry(IObjectRepository tdb, string type, string note, string userName = null, string organizationName = null)
+        public static AuditEntry CreateAuditEntry(IObjectRepository tdb, string type, string note, string userName)
         {
             AuditEntry newAuditEntry = new AuditEntry();
-            newAuditEntry.SetContext(userName, organizationName);
+            newAuditEntry.SetContext(userName);
             newAuditEntry.Type = type;
             newAuditEntry.Note = note;
             tdb.AuditEntries.AddObject(newAuditEntry);
             return newAuditEntry;
         }
 
-        public static void SaveAuditEntry(string type, string note, string userName = null, string organizationName = null)
+        public static void SaveAuditEntry(string type, string note, string userName)
         {
             using (IObjectRepository tdb = DBContext.Create())
             {
-                CreateAuditEntry(tdb, type, note, userName, organizationName);
+                CreateAuditEntry(tdb, type, note, userName);
                 tdb.SaveChanges();
             }
         }

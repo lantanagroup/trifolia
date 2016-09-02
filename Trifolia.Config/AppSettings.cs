@@ -25,6 +25,14 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string OpenIdConfigUrl
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OpenIdConfigUrl"];
+            }
+        }
+
         public static string OAuth2UserInfoEndpoint
         {
             get

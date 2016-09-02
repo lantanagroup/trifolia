@@ -74,7 +74,6 @@
     <Compile Include="FHIR\STU3Helper.cs" />
     <Compile Include="FHIR\SummaryType.cs" />
     <Compile Include="FHIR\TemplateConstraintExtensions.cs" />
-    <Compile Include="FilterOrganizationHelper.cs" />
     <Compile Include="HttpWebClient.cs" />
     <Compile Include="IdentifierHelper.cs" />
     <Compile Include="Plugins\IGTypePluginFactory.cs" />

@@ -1,8 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Trifolia.Config;
 
 namespace Trifolia.Authentication.Models
 {
@@ -47,6 +51,21 @@ namespace Trifolia.Authentication.Models
                     return this.phones.personal;
 
                 return null;
+            }
+        }
+
+        public static OAuth2UserInfo GetUserInfo(string accessToken)
+        {
+            WebClient userInfoClient = new WebClient();
+            userInfoClient.Headers.Add("Authorization", "Bearer " + accessToken);
+            var userInfoStream = userInfoClient.OpenRead(AppSettings.OAuth2UserInfoEndpoint);
+
+            using (StreamReader sr = new StreamReader(userInfoStream))
+            {
+                var userInfoString = sr.ReadToEnd();
+                var userInfo = JsonConvert.DeserializeObject<OAuth2UserInfo>(userInfoString);
+
+                return userInfo;
             }
         }
 

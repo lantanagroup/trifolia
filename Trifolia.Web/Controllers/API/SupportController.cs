@@ -34,7 +34,7 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Support")]
         public string SubmitSupportRequest(SupportRequestModel model)
         {
-            if (CheckPoint.Instance.OrganizationName == "HL7" && !AppSettings.EnableJiraSupport)
+            if (!AppSettings.EnableJiraSupport)
             {
                 if (string.IsNullOrEmpty(AppSettings.MailFromAddress))
                     throw new Exception("MailFromAddress is not configured.");

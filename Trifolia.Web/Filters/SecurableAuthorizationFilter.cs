@@ -44,9 +44,8 @@ namespace Trifolia.Web.Filters
                         throw new AuthorizationException(UNKNOWN_USERNAME, lSecurable.SecurableNames);
 
                     string lUserName = filterContext.HttpContext.User.Identity.Name;
-                    string lOrganizationName = CheckPoint.Instance.OrganizationName;
 
-                    this.AssertAuthorized(lUserName, lOrganizationName, lSecurable.SecurableNames);
+                    this.AssertAuthorized(lUserName, lSecurable.SecurableNames);
                 }
             }
             catch (AuthorizationException)
@@ -133,9 +132,9 @@ namespace Trifolia.Web.Filters
             return lSecurable;
         }
 
-        private void AssertAuthorized(string aUserName, string aOrganizationName, string[] aSecurableNames)
+        private void AssertAuthorized(string aUserName, string[] aSecurableNames)
         {
-            AuthorizationTypes lAuthType = CheckPoint.Instance.Authorize(aUserName, aOrganizationName, aSecurableNames);
+            AuthorizationTypes lAuthType = CheckPoint.Instance.Authorize(aUserName, aSecurableNames);
 
             if (lAuthType == AuthorizationTypes.AuthorizationSuccessful)
             {
@@ -165,12 +164,12 @@ namespace Trifolia.Web.Filters
         {
             using (IObjectRepository tdb = DBContext.Create())
             {
+                var user = CheckPoint.Instance.GetUser(tdb);
                 DateTime minDate = DateTime.Now.AddHours(-24);
-                string userName = string.Format("{0} ({1})", CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName);
 
                 // Determine if a login audit has been recorded in the last 24 hours
-                if (tdb.AuditEntries.Count(y => y.AuditDate > minDate && y.Username == userName && y.Type == "Login") == 0)
-                    AuditEntryExtension.SaveAuditEntry("Login", "Success");
+                if (tdb.AuditEntries.Count(y => y.AuditDate > minDate && y.Username == user.UserName && y.Type == "Login") == 0)
+                    AuditEntryExtension.SaveAuditEntry("Login", "Success", user.UserName);
             }
         }
 

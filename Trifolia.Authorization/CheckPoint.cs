@@ -18,73 +18,9 @@ namespace Trifolia.Authorization
     /// </summary>
     public class CheckPoint
     {
-        public const string AUTH_DATA_ROLES = "Roles";
-        public const string AUTH_DATA_USERID = "UserId";
-        public const string AUTH_DATA_ORGANIZATION = "Organization";
         public const string AUTH_DATA_OAUTH2_TOKEN = "OAuth2Token";
-        public const string HL7_ROLE_IS_MEMBER = "ismember";
-        public const string HL7_ROLE_IS_COCHAIR = "iscochair";
-        public const string HL7_ROLE_IS_STAFF = "isstaff";
-        public const string HL7_ROLE_IS_BOARD = "isboardmember";
 
         #region Configuration
-
-
-        private static string HL7DisclaimerUrl
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["HL7DisclaimerUrl"];
-            }
-        }
-
-        private static string HL7MemberRole
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["HL7MemberRole"];
-            }
-        }
-
-        private static string HL7OrganizationName
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["HL7OrganizationName"];
-            }
-        }
-
-        private static string HL7StaffRole
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["HL7StaffRole"];
-            }
-        }
-
-        private static string HL7BoardRole
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["HL7BoardRole"];
-            }
-        }
-
-        private static string HL7CoChairRole
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["HL7CoChairRole"];
-            }
-        }
-
-        private static string SharedSecret
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["SharedSecret"];
-            }
-        }
 
         private static string[] TrustedServers
         {
@@ -187,22 +123,6 @@ namespace Trifolia.Authorization
             }
         }
 
-        public string OrganizationName
-        {
-            get
-            {
-                if (!IsAuthenticated)
-                    return string.Empty;
-
-                Dictionary<string, string> authData = GetAuthenticatedData();
-
-                if (authData != null && authData.ContainsKey(AUTH_DATA_ORGANIZATION))
-                    return authData[AUTH_DATA_ORGANIZATION];
-
-                return string.Empty;
-            }
-        }
-
         public string UserFullName
         {
             get
@@ -240,51 +160,6 @@ namespace Trifolia.Authorization
             }
         }
 
-        public bool IsTrustedSharedSecret
-        {
-            get
-            {
-                if (HttpContext.Current == null)
-                    return false;
-
-                var authorizationHeader = HttpContext.Current.Request.Headers["Authorization"];
-
-                if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
-                {
-                    var authorizationDataBytes = System.Convert.FromBase64String(authorizationHeader.Substring(6));
-                    var authorizationData = System.Text.Encoding.UTF8.GetString(authorizationDataBytes);
-                    var authorizationSplit = authorizationData.Split('|');
-
-                    if (authorizationSplit.Length == 3)
-                    {
-                        var timestampString = authorizationSplit[0];
-                        long timestamp;
-                        var salt = authorizationSplit[1];
-                        var requestHashBytes = System.Convert.FromBase64String(authorizationSplit[2]);
-                        var requestHash = System.Text.Encoding.UTF8.GetString(requestHashBytes);
-
-                        long.TryParse(timestampString, out timestamp);
-
-                        var timestampDate = new DateTime(1970, 1, 1).AddMilliseconds(timestamp);
-
-                        if (timestampDate > DateTime.UtcNow.AddMinutes(5) || timestampDate < DateTime.UtcNow.AddMinutes(-5))
-                            return false;
-
-                        var cryptoProvider = new System.Security.Cryptography.SHA1CryptoServiceProvider();
-                        var actualHashData = timestamp + "|" + salt + "|" + SharedSecret;
-                        var actualHashDataBytes = System.Text.Encoding.UTF8.GetBytes(actualHashData);
-                        var actualHashBytes = cryptoProvider.ComputeHash(actualHashDataBytes);
-                        var actualHash = System.Text.Encoding.UTF8.GetString(actualHashBytes);
-
-                        if (actualHash == requestHash)
-                            return true;
-                    }
-                }
-
-                return false;
-            }
-        }
-
         #region Ctor
 
         private CheckPoint()
@@ -305,7 +180,7 @@ namespace Trifolia.Authorization
         {
             if (!IsAuthenticated || this.User == null)
             {
-                if (IsTrustedServer || IsTrustedSharedSecret)
+                if (IsTrustedServer)
                     return true;
 
                 return false;
@@ -324,7 +199,7 @@ namespace Trifolia.Authorization
         {
             if (!IsAuthenticated || this.User == null)
             {
-                if (IsTrustedServer || IsTrustedSharedSecret)
+                if (IsTrustedServer)
                     return true;
 
                 return false;
@@ -343,7 +218,7 @@ namespace Trifolia.Authorization
         {
             if (!IsAuthenticated || this.User == null)
             {
-                if (IsTrustedServer || IsTrustedSharedSecret)
+                if (IsTrustedServer)
                     return true;
 
                 return false;
@@ -362,7 +237,7 @@ namespace Trifolia.Authorization
         {
             if (!IsAuthenticated || this.User == null)
             {
-                if (IsTrustedServer || IsTrustedSharedSecret)
+                if (IsTrustedServer)
                     return true;
 
                 return false;
@@ -380,22 +255,6 @@ namespace Trifolia.Authorization
         #endregion
 
         #region Public Methods
-
-        public bool ValidateUser(string username, string organization, string password)
-        {
-            using (IObjectRepository tdb = DBContext.Create())
-            {
-                Organization org = tdb.Organizations.SingleOrDefault(y => y.Name.ToLower() == organization.ToLower());
-
-                if (org == null)
-                    return false;
-
-                if (string.IsNullOrEmpty(org.AuthProvider))
-                    return Membership.ValidateUser(username, password);
-
-                return Membership.Providers[org.AuthProvider].ValidateUser(username, password);
-            }
-        }
 
         public bool HasSecurables(params string[] aSecurableNames)
         {
@@ -422,12 +281,10 @@ namespace Trifolia.Authorization
                 return null;
 
             string userName = GetPrincipal().Identity.Name.ToLower();
-            string orgName = OrganizationName.ToLower();
-
             return repo.Users.SingleOrDefault(y => y.UserName.ToLower() == userName);
         }
 
-        public AuthorizationTypes Authorize(string aUserName, string aOrganizationName, params string[] aSecurableNames)
+        public AuthorizationTypes Authorize(string aUserName, params string[] aSecurableNames)
         {
             if (!IsAuthenticated || this.User == null)
                 return AuthorizationTypes.UserNonExistant;
@@ -504,41 +361,6 @@ namespace Trifolia.Authorization
         }
 
         #endregion
-
-        private void EnsureUserHasRoles(IObjectRepository tdb, User user, string roleName)
-        {
-            Log.For(this).Debug("Entering EnsureUserHasRole");
-
-            if (string.IsNullOrEmpty(roleName))
-            {
-                Log.For(this).Info("Empty roleName specified");
-                return;
-            }
-
-            Role foundRole = tdb.Roles.SingleOrDefault(y => y.Name.ToLower() == roleName.ToLower());
-
-            if (foundRole == null)
-            {
-                Log.For(this).Warn("No role found with name \"{0}\"", roleName);
-                return;
-            }
-
-            bool userHasRole = user.Roles.Count(y => y.Role == foundRole) > 0;
-
-            Log.For(this).Debug("User has role: {0}", userHasRole);
-
-            if (!userHasRole)
-            {
-                Log.For(this).Debug("Assigning role {0} to user {1} ({2})", foundRole.Name, user.UserName, user.Email);
-
-                tdb.UserRoles.AddObject(new UserRole()
-                {
-                    User = user,
-                    Role = foundRole
-                });
-                tdb.SaveChanges();
-            }
-        }
 
         private bool HasSecurable(User user, params string[] aSecurableNames)
         {
