@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
+using System.IO;
 
 using Trifolia.Config;
 
@@ -32,51 +34,95 @@ namespace Trifolia.Shared
             if (aIssueType == null)
                 aIssueType = AppSettings.DefaultJiraTaskType;
 
-            RemoteIssue lRemoteIssue = new RemoteIssue();
-            lRemoteIssue.project = AppSettings.DefaultJiraProject;
-            lRemoteIssue.type = aIssueType;
-            lRemoteIssue.summary = aSupportSummaryText;
-            lRemoteIssue.description = aSupportDetailsText;
-            lRemoteIssue.created = DateTime.Now;
-            lRemoteIssue.reporter = aUserName;
-            lRemoteIssue.priority = aSupportPriority;
+            JIRAIssueData issueData = new JIRAIssueData();
+            issueData.project = AppSettings.DefaultJiraProject;
+            issueData.type = aIssueType;
+            issueData.summary = aSupportSummaryText;
+            issueData.description = aSupportDetailsText;
+            issueData.reporter = aUserName;
+            issueData.priority = aSupportPriority;
 
-            return this.SubmitJIRAIssue(lRemoteIssue, TRIFOLIA_SUPPORT_LABEL);
+            return this.SubmitJIRAIssue(issueData, TRIFOLIA_SUPPORT_LABEL);
         }
 
         #endregion
 
         #region Private Methods
 
-        private string SubmitJIRAIssue(RemoteIssue aRemoteIssue, string aIssueLabel)
+        private string SubmitJIRAIssue(JIRAIssueData aIssue, string aIssueLabel)
         {
-            using (JiraSoapServiceClient client = new JiraSoapServiceClient())
+            bool validReporter = true;
+            string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(AppSettings.DefaultJiraUsername + ":" + AppSettings.DefaultJiraPassword));
+
+            var userCheck = (HttpWebRequest)WebRequest.Create("https://jira.lantanagroup.com/rest/api/2/user" + "?username=" + aIssue.reporter);
+            userCheck.Method = "GET";
+            userCheck.Headers.Add("Authorization", "Basic " + encoded);
+
+            try
             {
-                string jiraSession = client.login(AppSettings.DefaultJiraUsername, AppSettings.DefaultJiraPassword);
-                RemoteUser reporter = client.getUser(jiraSession, aRemoteIssue.reporter);
+                var userCheckResponse = userCheck.GetResponse();
 
-                if (reporter == null)
+                using (var streamReader = new StreamReader(userCheckResponse.GetResponseStream()))
                 {
-                    reporter = client.getUser(jiraSession, AppSettings.DefaultJiraUsername);
-                    aRemoteIssue.description = string.Format("{0}\n\nSubmitted By: {1}", aRemoteIssue.description, aRemoteIssue.reporter);
-                    aRemoteIssue.reporter = reporter.name;
+                    var result = streamReader.ReadToEnd();
                 }
+            }
+            catch (WebException e)
+            {
+                aIssue.description = string.Format("{0}\\n\\nSubmitted By: {1}", aIssue.description, aIssue.reporter);
+                validReporter = false;
+            }
 
-                // Define additional fields to set
-                List<RemoteFieldValue> actionParams = new List<RemoteFieldValue>();
+            var webRequest = (HttpWebRequest)WebRequest.Create("https://jira.lantanagroup.com/rest/api/2/issue");
+            webRequest.ContentType = "application/json";
+            webRequest.Method = "POST";
+            webRequest.Headers.Add("Authorization", "Basic " + encoded);
+             
+            using (var streamWriter = new StreamWriter(webRequest.GetRequestStream()))
+            {
+                string jsonIssue = "{" +
+                                        "\"fields\":{" +
+                                            "\"project\":{" +
+                                                "\"key\":\"" + aIssue.project + "\"" +
+                                            "}," +
+                                            "\"summary\":\"" + aIssue.summary + "\"," +
+                                            "\"priority\":{" +
+                                                "\"id\":\"" + aIssue.priority + "\"" +
+                                            "}," +
+                                            "\"description\":\"" + aIssue.description + "\"," +
+                                            "\"issuetype\":{" +
+                                                "\"id\":\"" + aIssue.type + "\"" +
+                                            "}";
+                if (validReporter) jsonIssue += "," +
+                                             "\"reporter\":{" +
+                                                "\"name\":\"" + aIssue.reporter + "\"" +
+                                             "}";
+                jsonIssue += "}}";
+                streamWriter.Write(jsonIssue);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
 
-                RemoteFieldValue labels
-                    = new RemoteFieldValue { id = REMOTE_FIELD_LABELS, values = new string[] { aIssueLabel } };
+            var response = webRequest.GetResponse();
 
-                actionParams.Add(labels);
-
-                RemoteIssue lNewIssue = client.createIssue(jiraSession, aRemoteIssue);
-                client.updateIssue(jiraSession, lNewIssue.key, actionParams.ToArray());
-
-                return lNewIssue.key;
+            using (var streamReader = new StreamReader(response.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                var key = result.Substring(result.IndexOf("\"key\":") + 7, result.IndexOf(",\"self\":") - result.IndexOf("\"key\":") - 8);
+                return key;
             }
         }
 
         #endregion
+    }
+
+    public class JIRAIssueData
+    {
+        public string project;
+        public string type;
+        public string summary;
+        public string description;
+        public string reporter;
+        public string priority;
     }
 }
