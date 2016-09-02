@@ -8,8 +8,6 @@ using System.Web.Security;
 using System.Net;
 
 using DotNetOpenAuth.AspNet;
-using Microsoft.Web.WebPages.OAuth;
-using WebMatrix.WebData;
 
 using Trifolia.Authentication;
 using Trifolia.Shared;

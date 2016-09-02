@@ -41,12 +41,5 @@ namespace Trifolia.Web.Models.TemplateManagement
             public string Narrative { get; set; }
             public NumberReplacementTypes NumberReplacementType { get; set; }
         }
-
-        public enum NumberReplacementTypes
-        {
-            UseSame = 0,
-            RegenerateThis = 1,
-            RegenerateOther = 2
-        }
     }
 }

@@ -8,7 +8,7 @@ namespace Trifolia.Web.Models.TemplateManagement
     public enum NumberReplacementTypes
     {
         UseSame = 0,
-        RegenerateThis = 0,
-        RegenerateOther = 0
+        RegenerateThis = 1,
+        RegenerateOther = 2
     }
 }

@@ -638,8 +638,8 @@ namespace Trifolia.Web.Controllers.API
                     Order = c.Order,
                     Narrative = fc.GetPlainText(),
                     NumberReplacementType = duplicateConformanceNumbers.Contains(c.Number.Value) ?
-                        CopyModel.NumberReplacementTypes.RegenerateThis :
-                        CopyModel.NumberReplacementTypes.UseSame
+                        NumberReplacementTypes.RegenerateThis :
+                        NumberReplacementTypes.UseSame
                 });
             });
 
@@ -691,15 +691,15 @@ namespace Trifolia.Web.Controllers.API
                     // Update the constraints conformance numbers
                     foreach (var cConstraint in model.Constraints)
                     {
-                        if (cConstraint.NumberReplacementType == CopyModel.NumberReplacementTypes.UseSame)
+                        if (cConstraint.NumberReplacementType == NumberReplacementTypes.UseSame)
                             continue;
 
-                        if (cConstraint.NumberReplacementType == CopyModel.NumberReplacementTypes.RegenerateThis)
+                        if (cConstraint.NumberReplacementType == NumberReplacementTypes.RegenerateThis)
                         {
                             var newConstraint = copyTemplate.ChildConstraints.Single(y => y.Number == cConstraint.Number);
                             newConstraint.Number = null;
                         }
-                        else if (cConstraint.NumberReplacementType == CopyModel.NumberReplacementTypes.RegenerateOther)
+                        else if (cConstraint.NumberReplacementType == NumberReplacementTypes.RegenerateOther)
                         {
                             var sourceConstraint = auditedTdb.TemplateConstraints.Single(y => y.TemplateId == sourceTemplate.Id && y.Number == cConstraint.Number);
                             sourceConstraint.Number = null;
