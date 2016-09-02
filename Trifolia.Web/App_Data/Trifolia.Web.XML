@@ -850,12 +850,6 @@
             <param name="name">Specifies the name of the implementation guide to search for. Implementation guides whose name *contains* this value will be returned.</param>
             <returns>Hl7.Fhir.Model.Bundle</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.HelpController.XmlDocumentationProvider.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Trifolia.Web.Controllers.API.HelpController.XmlDocumentationProvider"/> class.
-            </summary>
-            <param name="documentPath">The physical path to XML document.</param>
-        </member>
         <member name="M:Trifolia.Web.Controllers.API.ExportController.GetExportSettings(System.Int32)">
             <summary>
             Gets default settings for the specified implementation guide
