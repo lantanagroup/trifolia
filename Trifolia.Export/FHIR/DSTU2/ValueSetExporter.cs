@@ -23,7 +23,7 @@ namespace Trifolia.Export.FHIR.DSTU2
             var implementationGuides = (from tc in valueSet.Constraints
                                         join t in this.tdb.Templates on tc.TemplateId equals t.Id
                                         select t.OwningImplementationGuide);
-            bool usedByPublishedIgs = implementationGuides.Count(y => y.PublishStatus.IsPublished) > 0;
+            bool usedByPublishedIgs = implementationGuides.Count(y => y.PublishStatus != null && y.PublishStatus.Status == PublishStatus.PUBLISHED_STATUS) > 0;
 
             FhirValueSet fhirValueSet = new FhirValueSet()
             {
