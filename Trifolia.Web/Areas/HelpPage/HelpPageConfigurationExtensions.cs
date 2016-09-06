@@ -246,7 +246,10 @@ namespace Trifolia.Web.Areas.HelpPage
             GenerateUriParameters(apiModel, modelGenerator);
             GenerateRequestModelDescription(apiModel, modelGenerator, sampleGenerator);
             GenerateResourceDescription(apiModel, modelGenerator);
-            GenerateSamples(apiModel, sampleGenerator);
+
+            // SPM: Changed to ignore FHIR2 sample generations because of bug in FHIR2 library generating stack overflow exceptions
+            if (!apiDescription.ID.Contains("FHIR2") && !apiDescription.ID.Contains("FHIR3"))
+                GenerateSamples(apiModel, sampleGenerator);
 
             return apiModel;
         }

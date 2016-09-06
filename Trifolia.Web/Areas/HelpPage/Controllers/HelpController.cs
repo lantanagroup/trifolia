@@ -10,7 +10,7 @@ namespace Trifolia.Web.Areas.HelpPage.Controllers
     /// The controller that will handle requests for the help page.
     /// </summary>
     [System.Web.Mvc.AllowAnonymous]
-    public class HelpController : Controller
+    public partial class HelpController : Controller
     {
         private const string ErrorViewName = "Error";
 
