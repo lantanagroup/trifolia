@@ -1,7 +1,7 @@
 ﻿var CopyModel = function (templateId, isNewVersion) {
     var self = this;
     var mapping = {
-        include: [ 'TemplateId', 'Bookmark', 'Constraints', 'ImplementationGuideId', 'IsNewVersion', 'Message', 'Name', 'NewVersionImplementationGuideName', 'Oid', 'OriginalName', 'SubmitEnabled', 'Type' ],
+        include: [ 'TemplateId', 'Bookmark', 'Constraints', 'ImplementationGuideId', 'IsNewVersion', 'Message', 'Name', 'NewVersionImplementationGuideName', 'Oid', 'OriginalOid', 'OriginalName', 'SubmitEnabled', 'Type' ],
         'ignore': ["CurrentStep", "IsStep1", "IsStep2", "NameIsValid", "NameInvalidMessage"]
     }
 
@@ -9,6 +9,7 @@
     self.OriginalName = ko.observable('');
     self.Name = ko.observable('');
     self.Oid = ko.observable('');
+    self.OriginalOid = ko.observable('');
     self.Bookmark = ko.observable('');
     self.ImpliedTemplateId = ko.observable();
     self.ImplementationGuideId = ko.observable('');
@@ -49,7 +50,7 @@
             required: true,
             maxLength: 255,
             templateIdentifierUnique: false,
-            hl7iiValidation: false,
+            hl7iiValidation: isNewVersion ? self.OriginalOid : false,
             templateOidFormat: true
         }),
         Bookmark: self.Bookmark.extend({
