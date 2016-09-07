@@ -16,10 +16,6 @@
     self.ImplementationGuides = ko.observableArray([]);
     self.Organizations = ko.observableArray([]);
 
-    self.PageCount.subscribe(function () {
-        console.log('changed');
-    });
-
     var searchTimeout = null;
     var delayedSearch = function (newVal) {
         if (searchTimeout) {
@@ -28,6 +24,14 @@
 
         searchTimeout = setTimeout(self.Search, 500);
     };
+
+    self.CanEditTemplates = ko.computed(function () {
+        return containerViewModel.HasSecurable(['TemplateEdit']);
+    });
+
+    self.CanListOrganizations = ko.computed(function () {
+        return containerViewModel.HasSecurable(['OrganizationList']);
+    });
 
     self.TotalPages = ko.computed(function () {
         if (!self.Model() || self.Model().TotalItems() == 0) {

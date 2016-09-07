@@ -70,7 +70,7 @@
                     </th>
                     <!-- /ko -->
                     <th style="width: 130px;">
-                        <div class="pull-right" data-bind="if: containerViewModel.HasSecurable(['TemplateEdit'])">
+                        <div class="pull-right" data-bind="if: CanEditTemplates()">
                             <a class="btn btn-primary" href="/TemplateManagement/Edit/New" title="Add new template/profile">Add</a>
                         </div>
                     </th>
@@ -81,7 +81,7 @@
                     <td><select class="form-control" data-bind="value: FilterImplementationGuideId, options: ImplementationGuides, optionsText: 'Title', optionsValue: 'Id', optionsCaption: 'Filter...'"></select></td>
                     <td><select class="form-control" data-bind="value: FilterTemplateTypeId, options: TemplateTypes, optionsText: 'FullName', optionsValue: 'Id', optionsCaption: 'Filter...'"></select></td>
                     <!-- ko if: !Model() || !Model().HideOrganization() -->
-                    <td><select class="form-control" data-bind="value: FilterOrganizationId, options: Organizations, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Filter...', enable: containerViewModel.HasSecurable(['OrganizationList'])"></select></td>
+                    <td><select class="form-control" data-bind="value: FilterOrganizationId, options: Organizations, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Filter...', enable: CanListOrganizations()"></select></td>
                     <!-- /ko -->
                     <td>
                         <button type="button" class="btn btn-default" style="width: 100%;" data-bind="click: ClearFilter">Clear Filter</button>
