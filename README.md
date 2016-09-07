@@ -9,6 +9,7 @@ Trifolia template/profile editor, repository and publication tool
 
 - Visual Studio 2012 or 2015 (at least Express for Web)
 - SQL Server 2012 or newer
+- ASP NET 2 Required [Download|[https://www.microsoft.com/en-us/download/details.aspx?id=34600]
 - Run DB installation script
 - Seed the database (TODO)
 - Restore all NuGet packages either manually using "nuget restore" or via Visual Studio
