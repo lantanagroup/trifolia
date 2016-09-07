@@ -148,7 +148,7 @@ namespace Trifolia.Export.FHIR.STU3
                 {
                     ValueSet = new ResourceReference()
                     {
-                        Reference = string.Format("ValueSet/{0}", constraint.ValueSet.Id),
+                        Reference = constraint.ValueSet.Oid,
                         Display = constraint.ValueSet.Name
                     }
                 };
@@ -257,7 +257,9 @@ namespace Trifolia.Export.FHIR.STU3
                 Description = !string.IsNullOrEmpty(template.Description) ? new Markdown(template.Description) : null,
                 Kind = StructureDefinition.StructureDefinitionKind.Resource,
                 Url = template.Oid,
-                Type = template.PrimaryContextType,
+                Type = template.TemplateType.RootContextType,
+                Context = new List<string> { template.PrimaryContextType },
+                ContextType = template.PrimaryContextType == "Extension" ? StructureDefinition.ExtensionContext.Extension : StructureDefinition.ExtensionContext.Resource,
                 Abstract = false,
                 Derivation = StructureDefinition.TypeDerivationRule.Constraint
             };
@@ -305,7 +307,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             // Base profile
             if (template.ImpliedTemplate != null)
-                fhirStructureDef.BaseDefinitionElement = new FhirUri(string.Format("StructureDefinition/{0}", template.ImpliedTemplate.Id));
+                fhirStructureDef.BaseDefinitionElement = new FhirUri(template.Oid);
             else
                 fhirStructureDef.BaseDefinitionElement = new FhirUri(string.Format("http://hl7.org/fhir/StructureDefinition/{0}", template.TemplateType.RootContextType));
 
