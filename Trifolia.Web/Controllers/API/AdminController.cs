@@ -10,6 +10,7 @@ using Trifolia.Config;
 using Trifolia.Web.Models.RoleManagement;
 using Trifolia.Authorization;
 using Trifolia.Web.Models.Admin;
+using Trifolia.Logging;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -266,11 +267,18 @@ namespace Trifolia.Web.Controllers.API
             {
                 ImplementationGuideType igType = this.tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == fit.ImplementationGuideTypeName.ToLower());
 
+                if (igType == null)
+                {
+                    Log.For(this).Warn("Configured FHIR IG Type could not be found in the database: " + fit.ImplementationGuideTypeName);
+                    continue;
+                }
+
                 var fhirIgType = new ClientConfigModel.FhirIgType()
                 {
                     Id = igType.Id,
                     Name = igType.Name,
-                    Version = fit.Version
+                    Version = fit.Version,
+                    BaseUrl = ""
                 };
 
                 switch (fhirIgType.Version)
