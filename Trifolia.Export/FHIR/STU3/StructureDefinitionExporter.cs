@@ -307,7 +307,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             // Base profile
             if (template.ImpliedTemplate != null)
-                fhirStructureDef.BaseDefinitionElement = new FhirUri(template.Oid);
+                fhirStructureDef.BaseDefinitionElement = new FhirUri(template.ImpliedTemplate.Oid);
             else
                 fhirStructureDef.BaseDefinitionElement = new FhirUri(string.Format("http://hl7.org/fhir/StructureDefinition/{0}", template.TemplateType.RootContextType));
 
