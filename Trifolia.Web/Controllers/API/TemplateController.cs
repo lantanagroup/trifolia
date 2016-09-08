@@ -556,6 +556,7 @@ namespace Trifolia.Web.Controllers.API
                 TemplateId = template.Id,
                 Name = template.Name,
                 Oid = newOid,
+                OriginalOid = template.Oid,
                 Bookmark = template.Bookmark,
                 ImpliedTemplateId = template.ImpliedTemplateId,
                 Type = template.TypeDisplay,

@@ -137,9 +137,8 @@ namespace Trifolia.Web.Controllers.API
             if (lTemplate.PreviousVersion != null)
             {
                 lViewModel.PreviousVersionLink = "/TemplateManagement/View/" + lTemplate.PreviousVersion.Oid;
-                lViewModel.PreviousVersionName = string.Format("{0} ({1})", 
-                    lTemplate.PreviousVersion.Name, 
-                    lTemplate.PreviousVersion.Oid);
+                lViewModel.PreviousVersionName =  lTemplate.PreviousVersion.Name;
+                lViewModel.PreviousVersionOid = lTemplate.PreviousVersion.Oid;
             }
 
             // Contained By Templates

@@ -92,9 +92,19 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         [Route("ImplementationGuide")]
         [SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
         public HttpResponseMessage CreateImplementationGuide(
-            [FromBody] FhirImplementationGuide implementationGuide,
+            [FromBody] FhirImplementationGuide fhirImplementationGuide,
             [FromUri(Name = "_format")] string format = null)
         {
+            ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Name.ToLower() == fhirImplementationGuide.Name.ToLower());
+
+            if (ig != null)
+                throw new Exception("The implementation guide already exists. Use PUT to update the implementation guide instead.");
+
+            ig = new ImplementationGuide()
+            {
+                Name = fhirImplementationGuide.Name
+            };
+
             throw new NotImplementedException();
         }
 
@@ -105,6 +115,14 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             [FromUri] int implementationGuideId,
             [FromBody] FhirImplementationGuide implementationGuide)
         {
+            ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId);
+
+            if (ig == null)
+                throw new Exception("The implementation guide does not exist");
+
+            if (!CheckPoint.Instance.GrantEditImplementationGuide(ig.Id))
+                throw new UnauthorizedAccessException("You do not have permissions to edit this implementation guide");
+
             throw new NotImplementedException();
         }
 

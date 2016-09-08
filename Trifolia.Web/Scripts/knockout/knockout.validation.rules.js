@@ -147,7 +147,7 @@ ko.validation.rules['valueSetOidUnique'] = {
 
         return isValid;
     },
-    message: 'This identifier is not available.'
+    message: 'This value set identifier is not available.'
 };
 
 ko.validation.rules['codeSystemOidUnique'] = {
@@ -174,7 +174,7 @@ ko.validation.rules['codeSystemOidUnique'] = {
 
         return isValid;
     },
-    message: 'This identifier is not available.'
+    message: 'This code system identifier is not available.'
 };
 
 ko.validation.rules['templateIdentifierUnique'] = {
@@ -198,29 +198,34 @@ ko.validation.rules['templateIdentifierUnique'] = {
                 isValid = data;
             }
         });
-
         return isValid;
     },
-    message: 'This identifier is not available.'
+    message: 'This template identifier is not available.'
 };
 
 ko.validation.rules['hl7iiValidation'] = {
     validator: function (val, otherVal) {
+        var prevVersionOid = null;
+        if (typeof otherVal === 'function') {
+            prevVersionOid = otherVal();
+            if (prevVersionOid.indexOf('urn:oid:') != 0 && prevVersionOid.indexOf('urn:hl7ii:') != 0) {
+                return true;
+            }
+        } else if (otherVal === false) return true;
+
+        //Check if the previous version is an HL7 oid. If not, don't do validation.
+        if (val.indexOf('urn:hl7ii:') != 0) {
+            return true;
+        }
+
         //Obtain the oid of the inputted value for the url
         var oid = val.replace(/([^\:]*\:){2}/, '');
         oid = oid.substring(0, oid.indexOf(':'));
 
-        if (typeof otherVal === 'function') {
-            var previousVersionName = otherVal();
-        }
+        //Obtain the oid of the previous version
+        prevVersionOid = prevVersionOid.replace(/([^\:]*\:){2}/, '');
 
-        if (previousVersionName) {
-            var previousVersionOid = previousVersionName.replace(/([^\:]*\:){2}/, '');
-            previousVersionOid = previousVersionOid.substring(0, previousVersionOid.length - 1);
-        }
-
-        if (val.indexOf('hl7ii') > 0 && previousVersionOid && previousVersionOid != oid)
-            return false;
+        if (prevVersionOid != oid) return false;
 
         return true;
     },

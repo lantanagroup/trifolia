@@ -18,6 +18,7 @@ namespace Trifolia.Web.Models.TemplateManagement
         public string OriginalName { get; set; }
         public string Name { get; set; }
         public string Oid { get; set; }
+        public string OriginalOid { get; set; }
         public string Bookmark { get; set; }
         public string Type { get; set; }
         public int? ImpliedTemplateId { get; set; }

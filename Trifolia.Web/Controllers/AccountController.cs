@@ -7,8 +7,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Net;
 
-using DotNetOpenAuth.AspNet;
-
 using Trifolia.Authentication;
 using Trifolia.Shared;
 using Trifolia.Logging;

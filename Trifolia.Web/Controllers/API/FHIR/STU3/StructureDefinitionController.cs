@@ -123,7 +123,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             [FromUri(Name = "_summary")] SummaryType? summary = null)
         {
             var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
-            var templates = this.tdb.Templates.Where(y => y.TemplateType.ImplementationGuideType == this.implementationGuideType);
+            var templates = this.tdb.Templates.Where(y => y.TemplateType.ImplementationGuideTypeId == this.implementationGuideType.Id);
             StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, uri.Scheme, uri.Authority);
 
             if (!CheckPoint.Instance.IsDataAdmin)
@@ -317,6 +317,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
                 throw new UnauthorizedAccessException();
 
             template.Delete(this.tdb, null);
+
+            this.tdb.SaveChanges();
 
             return Content(HttpStatusCode.NoContent, outcome);
         }

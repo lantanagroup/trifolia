@@ -27,6 +27,7 @@ namespace Trifolia.Web.Models.TemplateEditing
 
         public string PreviousVersionLink { get; set; }
         public string PreviousVersionName { get; set; }
+        public string PreviousVersionOid { get; set; }
         public string Author { get; set; }
         public string OrganizationName { get; set; }
         public string MoveUrl { get; set; }

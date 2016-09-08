@@ -689,7 +689,7 @@ var TemplateModel = function (data, viewModel) {
     var mapping = {
         include: [ 'Id', 'Name', 'Oid', 'Bookmark', 'IsOpen', 'TemplateTypeId', 'PrimaryContext', 'PrimaryContextType',
             'OwningImplementationGuideId', 'ImpliedTemplateId', 'StatusId', 'Description', 'Notes', 'Author',
-            'PreviousVersionLink', 'PreviousVersionName', 'OrganizationName', 'MoveUrl', 'TemplateTypeAbbreviation', 'Locked',
+            'PreviousVersionLink', 'PreviousVersionName', 'PreviousVersionOid', 'OrganizationName', 'MoveUrl', 'TemplateTypeAbbreviation', 'Locked',
             'ContainedByTemplates', 'ImpliedByTemplates', 'Extensions' ],
         ignore: ['SubscribeChanges', 'IsValid'],
         Extensions: {
@@ -754,6 +754,7 @@ var TemplateModel = function (data, viewModel) {
     self.Author = ko.observable();
     self.PreviousVersionLink = ko.observable();
     self.PreviousVersionName = ko.observable();
+    self.PreviousVersionOid = ko.observable();
     self.OrganizationName = ko.observable();
     self.MoveUrl = ko.observable();
     self.TemplateTypeAbbreviation = ko.observable();
@@ -805,7 +806,7 @@ var TemplateModel = function (data, viewModel) {
 
     var validation = ko.validatedObservable({
         Name: self.Name.extend({ required: { message: 'Name is required.' }, maxLength: 255 }),
-        Oid: self.Oid.extend({ required: { message: 'ID is required.' }, maxLength: 255, templateOidFormat: true, templateIdentifierUnique: self.Id }),
+        Oid: self.Oid.extend({ required: { message: 'ID is required.' }, maxLength: 255, templateOidFormat: true, templateIdentifierUnique: self.Id}),
         Bookmark: self.Bookmark.extend({ required: { message: 'Bookmark is required.' }, maxLength: 40 }),
         IsOpen: self.IsOpen.extend({ required: { message: 'Extensibility is required.' } }),
         TemplateTypeId: self.TemplateTypeId.extend({ required: { message: 'Template/Profile Type is required.' } }),
