@@ -186,7 +186,7 @@ igViewApp.directive('igDiagram', function ($location) {
                 });
 
                 var createClass = function (template) {
-                    var identifierAttr = 'identifier: ' + scope.Template.Identifier;
+                    var identifierAttr = 'identifier:' + scope.Template.Identifier;
                     var width = template.Name.length * 5.5;
 
                     if (identifierAttr.length > template.Name.length) {
@@ -195,7 +195,7 @@ igViewApp.directive('igDiagram', function ($location) {
 
                     var newClassOptions = {
                         size: { width: width, height: 100 },
-                        name: template.Name,
+                        name: template.Name.replace(/ /g, '_'),
                         attributes: [
                             identifierAttr
                         ],
