@@ -224,6 +224,7 @@ ko.validation.rules['hl7iiValidation'] = {
 
         //Obtain the oid of the previous version
         prevVersionOid = prevVersionOid.replace(/([^\:]*\:){2}/, '');
+        prevVersionOid = prevVersionOid.substring(0, prevVersionOid.indexOf(':'));
 
         if (prevVersionOid != oid) return false;
 
