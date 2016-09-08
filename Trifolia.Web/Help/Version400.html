@@ -1,0 +1,166 @@
+﻿<html>
+	
+<head>
+	<title>Version 4.0.0</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.9.2.132">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("Version400");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Version 4.0.0</h1>
+				
+				<div id="topic_breadcrumb">
+					Previous Versions &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="PreviousVersions.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="Version300.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Version 4.0.0</span></span></h2>
+<p class="rvps6"><span class="rvts15">Released on Thursday, Aug 4, 2016</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts17">Open-Source Release</span></span></h3>
+<p class="rvps6"><span class="rvts15">Trifolia’s source code is available to the open-source community via a Github repository (</span><a class="rvts48" href="https://github.com/lantanagroup/trifolia">https://github.com/lantanagroup/trifolia</a><span class="rvts49">)</span><span class="rvts15">. This first release to open source is simply a dump of the Trifolia code-base. In the coming months, we will simplify the installation process, include exports of publicly available implementation guides (such as “IHE Health Story Consolidation”), and improve the developer documentation.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts17">Support for FHIR STU3</span></span></h3>
+<p class="rvps6"><span class="rvts15">Trifolia includes support for FHIR STU3 in addition to DSTU1 and DSTU2. (HL7 recently changed the naming convention of draft specifications from DSTU—Draft Standard for Trial Use— to STU—Standard for Trial Use.) Support focuses on exporting, although some import functionality exists. Trifolia users can edit profiles using the STU3 schemas, and /api/FHIR3 endpoints allow integration with Trifolia.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts17">Non-Google Captcha</span></span></h3>
+<p class="rvps6"><span class="rvts15">We have had reports from users in China that they were not able to successfully login due to the Google-based captcha system. We found that China restricts the google.com domain, which is required for Google’s captcha use. We have replaced the Google captcha, enabling China-based users to access Trifolia.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts17">Importing Data</span></span></h3>
+<p class="rvps6"><span class="rvts15">A new “Import” menu item is available to editors for importing Trifolia-formatted data. This allows multiple installations of Trifolia to exchange implementation guides. In the near future, exported implementation guides will be exchangeable between installations of Trifolia using this Import functionality.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts17">Development Log</span></span></h3>
+<div class="rvps7"><table width="498" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse;">
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts16">Type</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts16">Description</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Task</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Open-source release</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">New Feature</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Provide method of importing data into Trifolia</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">New Feature</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Database installation scripts for open-source release</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">New Feature</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">FHIR STU3 Support</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Use non-google captcha for validating humanity during login </span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Fix issues with FHIR exports found from testing</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement </span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Change exported publish statuses in MS Word</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Support for FHIR “must support” and “is modifier” flags on constraints</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Web IG relationships diagram tab not working in Chrome 48+</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Versioning an IG does not copy the Web IG Volume 1 HTML and/or Sections</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">StructureDefinition not valid against latest FHIR schema</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+

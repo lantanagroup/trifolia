@@ -3,7 +3,7 @@
 <head>
 	<title>What's New</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="generator" content="HelpNDoc Professional Edition 4.8.0.849">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.9.2.132">
 	<meta name="keywords" content="">
 	
 	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
@@ -68,88 +68,78 @@
 	<div id="topic_content">
 		
 <p></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Version 4.0.0</span></span></h2>
-<p class="rvps6"><span class="rvts15">Released on Thursday, Aug 4, 2016</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts19">Open-Source Release</span></span></h3>
-<p class="rvps6"><span class="rvts15">Trifolia’s source code is available to the open-source community via a Github repository (</span><a class="rvts16" href="https://github.com/lantanagroup/trifolia">https://github.com/lantanagroup/trifolia</a><span class="rvts17">)</span><span class="rvts15">. This first release to open source is simply a dump of the Trifolia code-base. In the coming months, we will simplify the installation process, include exports of publicly available implementation guides (such as “IHE Health Story Consolidation”), and improve the developer documentation.</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts19">Support for FHIR STU3</span></span></h3>
-<p class="rvps6"><span class="rvts15">Trifolia includes support for FHIR STU3 in addition to DSTU1 and DSTU2. (HL7 recently changed the naming convention of draft specifications from DSTU—Draft Standard for Trial Use— to STU—Standard for Trial Use.) Support focuses on exporting, although some import functionality exists. Trifolia users can edit profiles using the STU3 schemas, and /api/FHIR3 endpoints allow integration with Trifolia.</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts19">Non-Google Captcha</span></span></h3>
-<p class="rvps6"><span class="rvts15">We have had reports from users in China that they were not able to successfully login due to the Google-based captcha system. We found that China restricts the google.com domain, which is required for Google’s captcha use. We have replaced the Google captcha, enabling China-based users to access Trifolia.</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts19">Importing Data</span></span></h3>
-<p class="rvps6"><span class="rvts15">A new “Import” menu item is available to editors for importing Trifolia-formatted data. This allows multiple installations of Trifolia to exchange implementation guides. In the near future, exported implementation guides will be exchangeable between installations of Trifolia using this Import functionality.</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts19">Development Log</span></span></h3>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Version 4.1.0</span></span></h2>
+<p class="rvps6"><span class="rvts15">Released on Thursday, Sep 8, 2016</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts17">FHIR STU3 Updates</span></span></h3>
+<p class="rvps9"><span class="rvts15">StructureDefinition resources exported from Trifolia include some additional information that are required by the FHIR build process. A couple minor bugs were fixed related to searching for resources.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts17">Web IG UML Diagrams</span></span></h3>
+<p class="rvps9"><span class="rvts15">The web-based IG UML diagrams now works in the latest version of chrome, and the components used for generating the diagram have been updated to the latest version; requiring some minor changes to how the UML diagrams are built. Small improvements may be noticed in the layout of the diagrams as a result.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts17">Development Log</span></span></h3>
 <div class="rvps7"><table width="498" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse;">
 <tr valign="top">
-<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts18">Type</span></p>
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts16">Type</span></p>
 </td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts18">Description</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Task</span></p>
-</td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Open-source release</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">New Feature</span></p>
-</td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Provide method of importing data into Trifolia</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">New Feature</span></p>
-</td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Database installation scripts for open-source release</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">New Feature</span></p>
-</td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">FHIR STU3 Support</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts16">Description</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement</span></p>
 </td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Use non-google captcha for validating humanity during login </span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps9"><span class="rvts15">Always specify context and contextType for StructureDefinition exports</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement</span></p>
 </td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Fix issues with FHIR exports found from testing</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement </span></p>
-</td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Change exported publish statuses in MS Word</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps9"><span class="rvts15">Full URL is needed for value set</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement</span></p>
 </td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Support for FHIR “must support” and “is modifier” flags on constraints</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps9"><span class="rvts15">Base definition must have a full URL</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Improvement</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps9"><span class="rvts15">Terminology: Problem Type - vocabulary export does not include LOINC and SNOMED codes</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
 </td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Web IG relationships diagram tab not working in Chrome 48+</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps9"><span class="rvts15">MS Word Export is not formatting constraint overview tables properly.</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
 </td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Versioning an IG does not copy the Web IG Volume 1 HTML and/or Sections</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps9"><span class="rvts15">Unspecified error removing constraints with a comment</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
 </td>
-<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">StructureDefinition not valid against latest FHIR schema</span></p>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps9"><span class="rvts15">Make sure failed support requests, show failed to the user</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps9"><span class="rvts15">Value set static binding date is removed when a template is versioned.</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps9"><span class="rvts15">Web IG Relationships diagram tab not working in Chrome 48+</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="115" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts15">Defect</span></p>
+</td>
+<td width="351" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps9"><span class="rvts15">Value set static binding date is removed when a template is versioned.</span></p>
 </td>
 </tr>
 </table>
