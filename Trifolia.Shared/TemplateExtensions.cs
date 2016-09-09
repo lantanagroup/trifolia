@@ -230,7 +230,7 @@ namespace Trifolia.DB
             }
             else if (template.GetIdentifierURL(out uri))
             {
-                if (uri.IndexOf(':') < 0 && uri.IndexOf('/') < 0 || uri.IndexOf('.') != uri.Length - 1)
+                if (uri.IndexOf(':') < 0 && uri.IndexOf('/') < 0 && uri.IndexOf('.') != uri.Length - 1)
                     return string.Format("{0}/TemplateManagement/View/URI/{1}", linkBase, uri);
             }
 
@@ -254,7 +254,7 @@ namespace Trifolia.DB
             }
             else if (template.GetIdentifierURL(out uri))
             {
-                if (uri.IndexOf(':') < 0 && uri.IndexOf('/') < 0 || uri.IndexOf('.') != uri.Length - 1)
+                if (uri.IndexOf(':') < 0 && uri.IndexOf('/') < 0 && uri.IndexOf('.') != uri.Length - 1)
                     return string.Format("/TemplateManagement/Edit/URI/{0}", uri);
             }
 
@@ -278,7 +278,7 @@ namespace Trifolia.DB
             }
             else if (template.GetIdentifierURL(out uri))
             {
-                if (uri.IndexOf(':') < 0 && uri.IndexOf('/') < 0 || uri.IndexOf('.') != uri.Length - 1)
+                if (uri.IndexOf(':') < 0 && uri.IndexOf('/') < 0 && uri.IndexOf('.') != uri.Length - 1)
                     return string.Format("/TemplateManagement/Move/URI/{0}", uri);
             }
 
