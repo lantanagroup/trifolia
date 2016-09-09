@@ -8266,7 +8266,8 @@ namespace Trifolia.DB
         /// <param name="isHeading">Initial value of the IsHeading property.</param>
         /// <param name="isModifier">Initial value of the IsModifier property.</param>
         /// <param name="mustSupport">Initial value of the MustSupport property.</param>
-        public static TemplateConstraint CreateTemplateConstraint(global::System.Int32 id, global::System.Int32 templateId, global::System.Int32 order, global::System.Boolean isBranch, global::System.Boolean isPrimitive, global::System.Boolean isInheritable, global::System.Boolean isBranchIdentifier, global::System.Boolean isSchRooted, global::System.Boolean isHeading, global::System.Boolean isModifier, global::System.Boolean mustSupport)
+        /// <param name="isChoice">Initial value of the IsChoice property.</param>
+        public static TemplateConstraint CreateTemplateConstraint(global::System.Int32 id, global::System.Int32 templateId, global::System.Int32 order, global::System.Boolean isBranch, global::System.Boolean isPrimitive, global::System.Boolean isInheritable, global::System.Boolean isBranchIdentifier, global::System.Boolean isSchRooted, global::System.Boolean isHeading, global::System.Boolean isModifier, global::System.Boolean mustSupport, global::System.Boolean isChoice)
         {
             TemplateConstraint templateConstraint = new TemplateConstraint();
             templateConstraint.Id = id;
@@ -8280,6 +8281,7 @@ namespace Trifolia.DB
             templateConstraint.IsHeading = isHeading;
             templateConstraint.IsModifier = isModifier;
             templateConstraint.MustSupport = mustSupport;
+            templateConstraint.IsChoice = isChoice;
             return templateConstraint;
         }
 
@@ -9081,6 +9083,30 @@ namespace Trifolia.DB
         private global::System.Boolean _MustSupport;
         partial void OnMustSupportChanging(global::System.Boolean value);
         partial void OnMustSupportChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsChoice
+        {
+            get
+            {
+                return _IsChoice;
+            }
+            set
+            {
+                OnIsChoiceChanging(value);
+                ReportPropertyChanging("IsChoice");
+                _IsChoice = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsChoice");
+                OnIsChoiceChanged();
+            }
+        }
+        private global::System.Boolean _IsChoice;
+        partial void OnIsChoiceChanging(global::System.Boolean value);
+        partial void OnIsChoiceChanged();
 
         #endregion
 
