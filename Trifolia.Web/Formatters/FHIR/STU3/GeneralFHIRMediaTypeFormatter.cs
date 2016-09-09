@@ -19,6 +19,7 @@ using fhir_stu3.Hl7.Fhir.Model;
 using fhir_stu3.Hl7.Fhir.Rest;
 using fhir_stu3.Hl7.Fhir.Serialization;
 using System.Xml;
+using Trifolia.Logging;
 
 namespace Trifolia.Web.Formatters.FHIR.STU3
 {
@@ -199,6 +200,9 @@ namespace Trifolia.Web.Formatters.FHIR.STU3
                     Code = OperationOutcome.IssueType.Exception,
                     Location = locations
                 });
+
+                string logMessage = string.Format("An error with FHIR STU3 ocurred: {0}\nError Detail: {1}\n{2}\n{3}", error.Message, error.MessageDetail, error.ExceptionMessage, error.StackTrace);
+                Log.For(this).Error(logMessage);
 
                 value = opOutcome;
                 type = opOutcome.GetType();

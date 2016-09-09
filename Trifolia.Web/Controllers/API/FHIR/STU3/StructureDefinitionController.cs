@@ -12,6 +12,7 @@ using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3;
 using Trifolia.Import.FHIR.STU3;
+using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.FHIR;
 
@@ -28,6 +29,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
 
         public FHIR3StructureDefinitionController(IObjectRepository tdb, HttpRequestMessage request = null)
         {
+            Log.For(this).Trace("Instantiating controller");
+
             this.tdb = tdb;
 
             // NOTE: This is for unit testing only
@@ -35,6 +38,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
                 this.Request = request;
 
             this.implementationGuideType = STU3Helper.GetImplementationGuideType(this.tdb, true);
+
+            Log.For(this).Trace("Done instantiating controller");
         }
 
         public FHIR3StructureDefinitionController()
@@ -122,12 +127,16 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             [FromUri(Name = "name")] string name = null,
             [FromUri(Name = "_summary")] SummaryType? summary = null)
         {
+            Log.For(this).Trace("Begin GetTemplates");
+
             var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
             var templates = this.tdb.Templates.Where(y => y.TemplateType.ImplementationGuideTypeId == this.implementationGuideType.Id);
             StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, uri.Scheme, uri.Authority);
 
             if (!CheckPoint.Instance.IsDataAdmin)
             {
+                Log.For(this).Info("User is a data administrator");
+
                 User currentUser = CheckPoint.Instance.GetUser(this.tdb);
                 templates = (from t in templates
                              join vtp in this.tdb.ViewTemplatePermissions on t.Id equals vtp.TemplateId
@@ -146,42 +155,54 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
                 Type = Bundle.BundleType.BatchResponse
             };
 
-            foreach (var template in templates)
+            Log.For(this).Trace("Creating bundle with each template/profile found in search.");
+
+            try
             {
-                SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current, template.ImplementationGuideType);
-                schema = schema.GetSchemaFromContext(template.PrimaryContextType);
-
-                bool isMatch = true;
-                StructureDefinition strucDef = exporter.Convert(template, schema, summary);
-                var fullUrl = string.Format("{0}://{1}/api/FHIR3/StructureDefinition/{2}",
-                    this.Request.RequestUri.Scheme,
-                    this.Request.RequestUri.Authority,
-                    template.Id);
-
-                // Skip adding the structure definition to the response if a criteria rules it out
-                foreach (var queryParam in this.Request.GetQueryNameValuePairs())
+                foreach (var template in templates)
                 {
-                    if (queryParam.Key == "_id" || queryParam.Key == "name" || queryParam.Key == "_format" || queryParam.Key == "_summary")
-                        continue;
+                    SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current, template.ImplementationGuideType);
+                    schema = schema.GetSchemaFromContext(template.PrimaryContextType);
 
-                    if (queryParam.Key.Contains("."))
-                        throw new NotSupportedException(App_GlobalResources.TrifoliaLang.FHIRSearchCriteriaNotSupported);
+                    bool isMatch = true;
+                    StructureDefinition strucDef = exporter.Convert(template, schema, summary);
+                    var fullUrl = string.Format("{0}://{1}/api/FHIR3/StructureDefinition/{2}",
+                        this.Request.RequestUri.Scheme,
+                        this.Request.RequestUri.Authority,
+                        template.Id);
 
-                    var propertyDef = strucDef.GetType().GetProperty(queryParam.Key, System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                    // Skip adding the structure definition to the response if a criteria rules it out
+                    foreach (var queryParam in this.Request.GetQueryNameValuePairs())
+                    {
+                        if (queryParam.Key == "_id" || queryParam.Key == "name" || queryParam.Key == "_format" || queryParam.Key == "_summary")
+                            continue;
 
-                    if (propertyDef == null)
-                        continue;
+                        if (queryParam.Key.Contains("."))
+                            throw new NotSupportedException(App_GlobalResources.TrifoliaLang.FHIRSearchCriteriaNotSupported);
 
-                    var value = propertyDef.GetValue(strucDef);
-                    var valueString = value != null ? value.ToString() : string.Empty;
+                        var propertyDef = strucDef.GetType().GetProperty(queryParam.Key, System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
 
-                    if (valueString != queryParam.Value)
-                        isMatch = false;
+                        if (propertyDef == null)
+                            continue;
+
+                        var value = propertyDef.GetValue(strucDef);
+                        var valueString = value != null ? value.ToString() : string.Empty;
+
+                        if (valueString != queryParam.Value)
+                            isMatch = false;
+                    }
+
+                    if (isMatch)
+                        bundle.AddResourceEntry(strucDef, fullUrl);
                 }
-
-                if (isMatch)
-                    bundle.AddResourceEntry(strucDef, fullUrl);
             }
+            catch (Exception ex)
+            {
+                Log.For(this).Error("Error adding one or more templates to the bundle", ex);
+                throw ex;
+            }
+
+            Log.For(this).Trace("Returning bundle with " + bundle.Entry.Count + " entries");
 
             return Content<Bundle>(HttpStatusCode.OK, bundle);
         }
@@ -215,6 +236,25 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
                     Diagnostics = App_GlobalResources.TrifoliaLang.CreateFHIR2TemplateFailedDuplicateId
                 });
                 return Content<OperationOutcome>(HttpStatusCode.BadRequest, error);
+            }
+
+            var foundProfile = this.tdb.Templates.SingleOrDefault(y => y.Oid == strucDef.Url);
+
+            if (foundProfile != null)
+            {
+                OperationOutcome oo = new OperationOutcome()
+                {
+                    Issue = new List<OperationOutcome.IssueComponent> {
+                        new OperationOutcome.IssueComponent()
+                        {
+                            Severity = OperationOutcome.IssueSeverity.Error,
+                            Code = OperationOutcome.IssueType.Duplicate,
+                            Diagnostics = "A StructureDefinition with the same url already exists. To update, use PUT."
+                        }
+                    }
+                };
+
+                return Content<OperationOutcome>(HttpStatusCode.Created, oo);
             }
 
             var template = CreateTemplate(strucDef);
