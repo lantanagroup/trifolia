@@ -257,6 +257,14 @@ namespace Trifolia.Config
             }
         }
 
+        public static string RedirectURL
+        {
+            get 
+            {
+                return ConfigurationManager.AppSettings["RedirectURL"];
+            }
+        }
+
         public static bool EnableJiraSupport
         {
             get
