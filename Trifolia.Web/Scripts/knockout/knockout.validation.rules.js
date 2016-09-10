@@ -28,6 +28,9 @@ ko.validation.rules['extensionIdentifierFormat'] = {
 
 ko.validation.rules['constraintCardinalityFormat'] = {
     validator: function (val, isModifier) {
+        if (!val) {
+            return true;
+        }
 
         var regex = new RegExp(/^([0-9]*)[\.][\.]([0-9]*|[\*])$/gm);
         var matching = regex.exec(val);
@@ -46,6 +49,22 @@ ko.validation.rules['constraintCardinalityFormat'] = {
         return false;
     },
     message: 'The cardinality is not properly formatted (e.g. 0..1 and each value is < 1000) or the element is a modifier and doesn\'t have a cardinality of at least 1..# .'
+};
+
+ko.validation.rules['constraintCardinalityRequired'] = {
+    validator: function (val, isChildOfChoice) {
+        // Constraints that are options for a choice don't have cardinality
+        if (isChildOfChoice && isChildOfChoice()) {
+            return true;
+        }
+
+        if (!val) {
+            return false;
+        }
+
+        return true;
+    },
+    message: 'Cardinality is required'
 };
 
 ko.validation.rules['templateNameUnique'] = {
@@ -175,6 +194,18 @@ ko.validation.rules['codeSystemOidUnique'] = {
         return isValid;
     },
     message: 'This code system identifier is not available.'
+};
+
+ko.validation.rules['templateIdentifierSpecificity'] = {
+    validator: function (val, otherVal) {
+        if (val.indexOf('http://') != 0 && val.indexOf('https://') != 0) {
+            return true;
+        }
+
+        var term = '/';
+        return val.lastIndexOf(term) != val.length - term.length;
+    },
+    message: 'The identifier must be a more specific URL.'
 };
 
 ko.validation.rules['templateIdentifierUnique'] = {

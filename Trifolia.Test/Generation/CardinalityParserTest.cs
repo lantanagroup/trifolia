@@ -13,7 +13,7 @@ namespace Schematron.Test.Generation
     [TestClass]
     public class CardinalityParserTest
     {
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestZeroToMany()
         {
             var c = CardinalityParser.Parse("0..*");
@@ -24,7 +24,7 @@ namespace Schematron.Test.Generation
             Assert.IsFalse(c.IsOneToMany(), "Expected IsOneToMany() to return false instead it returned true");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestOneToMany()
         {
             var c = CardinalityParser.Parse("1..*");
@@ -34,7 +34,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(c.IsOneToMany(), "Expected IsOneToMany() to return true instead it returned false");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestOneToOne()
         {
             var c = CardinalityParser.Parse("1..1");
@@ -44,7 +44,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(c.IsOneToOne(), "Expected IsOneToOne() to return true instead it returned false");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestZeroToZero()
         {
             var c = CardinalityParser.Parse("0..0");
@@ -54,7 +54,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(c.IsZeroToZero(), "Expected IsZeroToZero() to return true instead it returned false");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestZeroToOne()
         {
             var c = CardinalityParser.Parse("0..1");
@@ -63,7 +63,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(c.Right == 1, "Right side is not correct. Expected 1, Actual {1}", c.Right);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestManyToMany()
         {
             var c = CardinalityParser.Parse("*..*");
@@ -72,7 +72,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(c.Right == Cardinality.MANY, "Right side is not correct. Expected MANY (*) or {0}, Actual {1}", Cardinality.MANY, c.Right);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestOneToFive()
         {
             var c = CardinalityParser.Parse("1..5");
@@ -81,7 +81,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(c.Right == 5, "Right side is not correct. Expected 5, Actual {1}", c.Right);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestZeroToNine()
         {
             var c = CardinalityParser.Parse("0..9");
@@ -90,7 +90,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(c.Right == 9, "Right side is not correct. Expected 9, Actual {1}", c.Right);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestCompletelyInvalid()
         {
             try
@@ -103,7 +103,7 @@ namespace Schematron.Test.Generation
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestInvalidLeft()
         {
             try
@@ -116,7 +116,7 @@ namespace Schematron.Test.Generation
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestInvalidRight()
         {
             try

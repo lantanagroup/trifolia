@@ -51,7 +51,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
             Assert.IsNotNull(ExportTests.exportedXml);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("FHIR3")]
         public void ValidateStructureDefinition()
         {
             string strucDefSch = Helper.GetSampleContents(STRUC_DEF_SCH);
@@ -62,7 +62,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
             Assert.AreEqual(0, results.Messages.Count, "Expected 0 validation messages");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("FHIR3")]
         public void ValidateImplementationGuide()
         {
             string implGuidSche = Helper.GetSampleContents(IMPL_GUIDE_SCH);
@@ -76,7 +76,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
         /// <summary>
         /// Tests aspects of structure definition exports that are not covered by schematron from the FHIR build
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("FHIR3")]
         public void TestStructureDefinition()
         {
             var structureDefinitions = ExportTests.exportedBundle.Entry

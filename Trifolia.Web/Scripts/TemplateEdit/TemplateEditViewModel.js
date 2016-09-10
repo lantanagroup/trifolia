@@ -880,7 +880,7 @@ var templateEditViewModel = function (templateId, defaults) {
             constraintList = self.Constraints;
         }
 
-        if (node) {
+        if (node && node.DisplayDataType()) {
             url += '?parentType=' + node.DisplayDataType();
         } else if (self.Template().PrimaryContextType()) {
             url += '?parentType=' + self.Template().PrimaryContextType();
@@ -981,6 +981,18 @@ var templateEditViewModel = function (templateId, defaults) {
         if (shouldCallServer) {
             if (node) {
                 node.ChildrenLoadingPromise(deferred.promise);
+            }
+
+            if (node && !node.DisplayDataType()) {
+                var path = '';
+                var next = node;
+
+                while (next != null) {
+                    path = next.Context() + (path ? '/' + path : '');
+                    next = next.Parent();
+                }
+
+                url += '&path=' + encodeURIComponent(path);
             }
 
             $.ajax({

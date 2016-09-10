@@ -15,7 +15,7 @@
                     <th>Schema</th>
                     <th>
                         <div class="pull-right">
-                            <button type="button" class="btn btn-primary" data-bind="click: Add">Add</button>
+                            <a class="btn btn-primary" href="/IGTypeManagement/Edit">Add</a>
                         </div>
                     </th>
                 </tr>
@@ -26,7 +26,8 @@
                     <td data-bind="text: Schema"></td>
                     <td>
                         <div class="btn-group pull-right">
-                            <button type="button" class="btn btn-primary" data-bind="click: function () { $parent.Edit($data); }">Edit</button>
+                            <a class="btn btn-primary" data-bind="attr: { href: '/IGTypeManagement/Edit/' + Id() }">Edit</a>
+                            <a class="btn btn-primary" data-bind="attr: { href: '/IGTypeManagement/SchemaChoice/' + Id() }">Schema Choices</a>
                             <button type="button" class="btn btn-default" data-bind="click: function () { $parent.Delete($data); }">Delete</button>
                         </div>
                     </td>

@@ -12,5 +12,6 @@ namespace Trifolia.Web.Models.TemplateEditing
         public string Cardinality { get; set; }
         public string DataType { get; set; }
         public bool HasChildren { get; set; }
+        public bool IsChoice { get; set; }
     }
 }

@@ -24,11 +24,11 @@ namespace Trifolia.Test.Shared
 
             ImplementationGuide ig = mockTdb.FindOrAddImplementationGuide("CDA", "Test IG", null, DateTime.Now);
             Template template = mockTdb.GenerateTemplate("urn:oid:2.16.22.22.11", "Document", "Test Doc Type", ig, "ClinicalDocument", "ClinicalDocument", "Test Description");
-            var tca1 = mockTdb.GenerateConstraint(template, null, null, "@classCode", "SHALL", "1..1", value: "test1");
-            var tca2 = mockTdb.GenerateConstraint(template, null, null, "@moodCode", "SHALL", "1..1", value: "test2");
-            var tc1 = mockTdb.GenerateConstraint(template, null, null, "entryRelationship", "SHALL", "1..1");
-            var tc2 = mockTdb.GenerateConstraint(template, tc1, null, "observation", "SHOULD", "0..1");
-            var tc3 = mockTdb.GenerateConstraint(template, tc2, null, "value", "SHALL", "1..1", "CD", value: "4321", displayName: "Test");
+            var tca1 = mockTdb.AddConstraintToTemplate(template, null, null, "@classCode", "SHALL", "1..1", value: "test1");
+            var tca2 = mockTdb.AddConstraintToTemplate(template, null, null, "@moodCode", "SHALL", "1..1", value: "test2");
+            var tc1 = mockTdb.AddConstraintToTemplate(template, null, null, "entryRelationship", "SHALL", "1..1");
+            var tc2 = mockTdb.AddConstraintToTemplate(template, tc1, null, "observation", "SHOULD", "0..1");
+            var tc3 = mockTdb.AddConstraintToTemplate(template, tc2, null, "value", "SHALL", "1..1", "CD", value: "4321", displayName: "Test");
 
             template.TemplateSamples = new System.Data.Entity.Core.Objects.DataClasses.EntityCollection<TemplateSample>();
             template.TemplateSamples.Add(new TemplateSample()

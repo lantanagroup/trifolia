@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-using Trifolia.Shared;
-using Trifolia.Web.Models.Shared;
+﻿using System.Web.Mvc;
 using Trifolia.Authorization;
 using Trifolia.DB;
 
@@ -42,6 +35,12 @@ namespace Trifolia.Web.Controllers
         public ActionResult Edit(int? implementationGuideTypeId)
         {
             return View("EditType", implementationGuideTypeId);
+        }
+
+        [HttpGet, Securable(SecurableNames.ADMIN)]
+        public ActionResult EditSchemaChoices(int implementationGuideTypeId)
+        {
+            return View("SchemaChoices", implementationGuideTypeId);
         }
 
         #endregion

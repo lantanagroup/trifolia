@@ -19,7 +19,7 @@ namespace Trifolia.Test.DB
             var template1 = mockDb.GenerateTemplate("1.2.3.4.1", "Document", "My Test Template", ig);
             template1.AuthorId = 2;
 
-            mockDb.GenerateConstraint(template1, null, null, "recordTarget", "SHALL", "1..1");
+            mockDb.AddConstraintToTemplate(template1, null, null, "recordTarget", "SHALL", "1..1");
 
             template1.TemplateSamples.Add(new TemplateSample()
             {

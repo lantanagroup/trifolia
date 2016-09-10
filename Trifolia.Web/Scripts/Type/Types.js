@@ -12,14 +12,6 @@
         });
     };
 
-    self.Add = function () {
-        location.href = '/IGTypeManagement/Edit';
-    };
-
-    self.Edit = function (igType) {
-        location.href = '/IGTypeManagement/Edit/' + igType.Id();
-    };
-
     self.Delete = function (igType) {
         if (igType.TemplateCount() > 0) {
             alert("Cannot delete an implementation guide type that is assocaited with templates. Move templates to a different implementation guide type first.");

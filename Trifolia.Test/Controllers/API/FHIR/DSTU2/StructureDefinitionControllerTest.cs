@@ -21,7 +21,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
     [TestClass]
     public class StructureDefinitionControllerTest
     {
-        [TestMethod]
+        [TestMethod, TestCategory("FHIR2")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestConvertExtension()
         {
@@ -115,7 +115,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             Assert.AreEqual(((CodeableConcept)strucDef.Extension[3].Value).Coding[0].System, "urn:oid:2.16.113");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("FHIR2")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestSuccessfulCreate()
         {
@@ -145,7 +145,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             Assert.AreEqual(strucDef.Name, result.Content.Name);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("FHIR2")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestFailedCreate_Id()
         {
@@ -174,7 +174,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             Assert.AreEqual(1, result.Content.Issue.Count);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("FHIR2")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestGetTemplates()
         {

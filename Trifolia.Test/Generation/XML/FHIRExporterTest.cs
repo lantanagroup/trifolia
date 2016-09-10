@@ -19,8 +19,8 @@ namespace Trifolia.Test.Generation.XML
             ImplementationGuide ig = tdb.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU1_IG_TYPE_NAME, "Test FHIR IG");
             Template t = tdb.GenerateTemplate("FHIR_1.2.3.4", "Composition", "Test FHIR Composition", ig, "Composition", "Composition");
 
-            var tc1 = tdb.GenerateConstraint(t, null, null, "subject", "SHALL", "1..1");
-            var tc2 = tdb.GenerateConstraint(t, null, null, "author", "SHALL", "1..1");
+            var tc1 = tdb.AddConstraintToTemplate(t, null, null, "subject", "SHALL", "1..1");
+            var tc2 = tdb.AddConstraintToTemplate(t, null, null, "author", "SHALL", "1..1");
 
             List<Template> templates = new List<Template>();
             templates.Add(t);

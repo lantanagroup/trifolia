@@ -12,7 +12,7 @@ namespace Schematron.Test.Generation.Schematron
     [TestClass]
     public class TemplateDatabaseCDADocumentTemplateTest
     {
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestCDADocumentTemplate_WithValidNamespace_SingleRootElement_RootElementCountIsOne()
         {
             var cdaDocumentTemplate = new DocumentTemplate("urn:hl7-org:v3");
@@ -23,7 +23,7 @@ namespace Schematron.Test.Generation.Schematron
             Assert.IsTrue(cdaDocumentTemplate.ChildElements.Count == 1, "Root element count failed, expected 1, actual {0}", cdaDocumentTemplate.ChildElements.Count);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestCDADocumentTemplate_WithValidNamespace_MulitpleRootElements_RootElementCountIsGreaterThanOne()
         {
             var cdaDocumentTemplate = new DocumentTemplate("urn:hl7-org:v3");
@@ -35,7 +35,7 @@ namespace Schematron.Test.Generation.Schematron
             Assert.AreEqual(cdaDocumentTemplate, cdaDocumentTemplate.ChildElements[0].Template, "CDA Document Template was not set on the element properly.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void TestCDADocumentTemplate_WithValidNamespace_SingleChildElement_SingleChildElement_ChildCountIsOne()
         {
             var cdaDocumentTemplate = new DocumentTemplate("urn:hl7-org:v3");

@@ -81,7 +81,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// Tests that containment tables are generated in the document and that the header is present and has the title and type columns.
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("MSWord")]
         public void TestContainmentTable()
         {
             // Test the containment table's caption
@@ -133,7 +133,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// Test a contained template WITHOUT a context
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("MSWord")]
         public void TestFormattedConstraint_ContainedTemplate1()
         {
             TemplateConstraint ctConstraint = this.mockRepo.TemplateConstraints.First(y => y.ContainedTemplateId != null);
@@ -149,7 +149,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// Test a contained template WITH a context
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("MSWord")]
         public void TestFormattedConstraint_ContainedTemplate2()
         {
             TemplateConstraint ctConstraint = this.mockRepo.TemplateConstraints.Last(y => y.ContainedTemplateId != null);
@@ -165,7 +165,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// Tests that the contained templates are properly linked and formatted in constraints.
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("MSWord")]
         public void TestContainedTemplate()
         {
             XmlNode containedPara = doc.SelectSingleNode("/w:document/w:body/w:p[47][w:pPr/w:numPr[w:ilvl/@w:val=0][w:numId/@w:val=503]]", nsMgr);
@@ -183,7 +183,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// Tests that an implied template outputs the "Conforms to" entry in the constraints list of the template.
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("MSWord")]
         public void TestImpliedTemplate()
         {
             XmlNode conformsPara = doc.SelectSingleNode("/w:document/w:body/w:p[37][w:pPr/w:numPr[w:ilvl/@w:val=0][w:numId/@w:val=502]]", nsMgr);
@@ -198,7 +198,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// Tests that a basic constraint (the first) is output correctly.
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("MSWord")]
         public void TestBasicConstraint()
         {
             // Test parts of constraint #1: "SHALL contain exactly one [1..1] templateId (CONF:1-1)."
@@ -216,7 +216,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// Tests that the child constraint is output correctly with a single value and display name
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("MSWord")]
         public void TestChildConstraint()
         {
             // Test parts of constraint #1: "SHALL contain exactly one [1..1] @code (CONF:1-3)."
@@ -238,7 +238,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// Tests that STATIC valueset is properly output in constraint
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("MSWord")]
         public void TestStaticValuesetConstraint()
         {
             XmlNode constraintPara = doc.SelectSingleNode("/w:document/w:body/w:p[28][w:pPr/w:numPr[w:ilvl/@w:val=1][w:numId/@w:val=501]]", nsMgr);
@@ -258,7 +258,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[12][not(w:rPr/w:rStyle)][w:t='.']", nsMgr), "Missing period at end of constraint.'");
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("MSWord")]
         public void TestConstraintDescription()
         {
             XmlNode constraintPara = doc.SelectSingleNode("/w:document/w:body/w:p[16]", nsMgr);
@@ -299,7 +299,7 @@ namespace Trifolia.Test.Generation.IG
         /// Generates a word document and stores it on the file system for manual viewing
         /// As the generation code is updated, the sample will have to be regenerated (uncomment the line below to regenerate the sample).
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("MSWord")]
         public void GenerateIGFileTest()
         {
             File.WriteAllText(Path.Combine(this.TestContext.TestDir, "sample1_word_document.xml"), this.docContents);

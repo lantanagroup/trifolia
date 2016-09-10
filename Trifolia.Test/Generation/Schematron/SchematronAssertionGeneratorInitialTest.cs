@@ -21,7 +21,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
 		/// Generates schematron assert for single element within the cda doc
 		/// </summary>
-		[TestMethod]
+		[TestMethod, TestCategory("Schematron")]
 		public void GenerateSchematronAssertion_Element_ConformanceSHALL_CardinalityOneToOne()
 		{
 			//create cda doc
@@ -46,7 +46,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Generates schematron assert for single element within the cda doc
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateSchematronAssertion_Element_With_Value_ConformanceSHALL_CardinalityOneToOne()
         {
             //create cda doc
@@ -71,7 +71,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Generates schematron assert for single element within the cda doc, but with an override element name with attribute
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateSchematronAssertion_Element_With_Value_And_AttributeOverride_ConformanceSHALL_CardinalityOneToOne()
         {
             //create cda doc
@@ -98,7 +98,7 @@ namespace Trifolia.Test.Generation.Schematron
 		/// <summary>
 		/// Generates schematron assert for single element within the cda doc
 		/// </summary>
-		[TestMethod]
+		[TestMethod, TestCategory("Schematron")]
 		public void GenerateSchematronAssertion_Element_ConformanceSHALL_CardinalityZeroToMany()
 		{
 			//create cda doc
@@ -128,7 +128,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Generates schematron specific attributes that have no value such as: @code/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
 		public void GenerateSchematronAssertion_Attribute_NoValue_ConformanceSHALL_CardinalityOneToOne()
 		{
 			var attr = new DocumentTemplateElementAttribute("code");
@@ -152,7 +152,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Generates schematron specific attributes such as: @code="57024-2"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateSchematronAssertion_Attribute_ConformanceSHALL_CardinalityOneToOne()
         {
             var attr = new DocumentTemplateElementAttribute("code", "57024-2");
@@ -176,7 +176,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
 		/// Generates schematron specific attributes such as: @code="57024-2" and data type @xsi-type="CE"/>
 		/// </summary>
-		[TestMethod]
+		[TestMethod, TestCategory("Schematron")]
 		public void GenerateSchematronAssertion_Attribute_Value_DataType_ConformanceSHALL_CardinalityOneToOne()
 		{
             var attr = new DocumentTemplateElementAttribute("code", "57024-2") { DataType = "CE" };
@@ -213,7 +213,7 @@ namespace Trifolia.Test.Generation.Schematron
 		/// The context will be : <sch:rule context="cda:addr[@use='HP']">
 		/// The assert will be <sch:assert test="count(cda:state)=1">shall...</sch:assert>
 		/// </summary>
-		[TestMethod]
+		[TestMethod, TestCategory("Schematron")]
 		public void GenerateSchematronAssertion_NestedElement_WithAttribute_ConformanceSHALL_CardinalityOneToOne()
 		{
 			var addrElement = new DocumentTemplateElement("addr");
@@ -243,7 +243,7 @@ namespace Trifolia.Test.Generation.Schematron
 		/// <summary>
 		/// test to look for NULL Flavor (uses AND)
 		/// </summary>
-		[TestMethod]
+		[TestMethod, TestCategory("Schematron")]
 		public void GenerateSchematronAssertion_NestedElement_WithAttribute_NULLFlavor_ConformanceSHALL_CardinalityOneToOne()
 		{
 			var idElement = new DocumentTemplateElement("id");
@@ -269,7 +269,7 @@ namespace Trifolia.Test.Generation.Schematron
 			Assert.IsTrue(context == expectedContext, "Context is not correct. Expected '{0}', Actual '{1}'", expectedContext, context);
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory("Schematron")]
 		public void GenerateSchematronAssertion_Element_WithSiblingAttributes_ConformanceSHALL_CardinalityOneToOne()
 		{
 			var doc = new DocumentTemplate("cda");
@@ -285,7 +285,7 @@ namespace Trifolia.Test.Generation.Schematron
 		}
 
 
-		[TestMethod]
+		[TestMethod, TestCategory("Schematron")]
 		public void GenerateSchematronAssertion_Element_ConformanceSHALL_CardinalityOneToMany()
 		{
 			var doc = new DocumentTemplate("cda");
@@ -299,7 +299,7 @@ namespace Trifolia.Test.Generation.Schematron
 			Assert.IsTrue(assertion == expected, "Assertion string was not correct. Expected '{0}', Actual '{1}'", expected, assertion);
 		}
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateSchematronAssertion_Attribute_Valueset_ConformanceMAY_CardinalityOneToOne()
         {
             var attr = new DocumentTemplateElementAttribute("moodCode", "EVN");
@@ -322,7 +322,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.IsTrue(assertion == expected, "Assertion string was not correct. Expected empty string, Actual '{1}'.", expected, assertion);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateSchematronAssertion_Attribute_Valueset_ConformanceMAYNOT_CardinalityOneToOne()
         {
             var attr = new DocumentTemplateElementAttribute("moodCode", "EVN");
@@ -351,7 +351,7 @@ namespace Trifolia.Test.Generation.Schematron
 			// This effectiveTime SHALL contain 1..1 high (CONF:15521).
 		///this should come out as count(cda:effectiveTime[count(cda:high)=1])=1 within context of cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.48']
 		/// </summary>
-		[TestMethod]
+		[TestMethod, TestCategory("Schematron")]
 		public void GenerateSchematronAssertion_NestedElement_ConformanceSHALL_CardinalityOneToOne()
 		{
 			var doc = new DocumentTemplate("cda");
@@ -387,7 +387,7 @@ namespace Trifolia.Test.Generation.Schematron
 					//This playingEntity SHALL contain 1..1 name (CONF:8673).
 						//The name of the agent who can provide a copy of the Advance Directive SHALL be recorded in the name element inside the playingEntity element (CONF:8674).
 		/// </summary>
-		[TestMethod]
+		[TestMethod, TestCategory("Schematron")]
 		public void GenerateSchematronAssertion_MultipleNestedElement_ConformanceSHALL_AND_SHOULD_CardinalityOneToOne_AND_ZeroToOne_For_Advance_Directive_Number9Constraint()
 		{
 			var doc = new DocumentTemplate("cda");
@@ -447,7 +447,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// Generates schematron assert for single element with a template id specified but inside the ema namespace
         /// This test was generated to test for Bug # TDBMGT-472
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateSchematronAssertion_NamespaceEMA_Element_Template_ConformanceSHALL_CardinalityOneToOne()
         {
             //create cda doc
@@ -470,7 +470,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.IsTrue(assertion == expected, "The generated assertion was not correct. Expected '{0}', Actual '{1}'.", expected, assertion);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateSchematronAssertion_Attribute_TwoAttributes_No_Element_ConformanceSHALL_CardinalityOneToOne()
         {
             var attr = new DocumentTemplateElementAttribute("code");
@@ -493,7 +493,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.IsTrue(assertion == expected, "Assertion string was not correct. Expected '{0}', Actual '{1}'.", expected, assertion);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateSchematronAssertion_Element_ValueSet_SVS_ConformanceSHALL_CardinalityOneToOne()
         {
             var element = new DocumentTemplateElement("administrativeGenderCode");

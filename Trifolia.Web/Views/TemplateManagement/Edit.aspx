@@ -640,6 +640,7 @@
         <!-- Analyst: Computable -->
         <div data-bind="if: IsAnalystComputable(), disableAll: $parents[1].DisableConstraintFields()" class="constraintEditorSet">
             <!-- Main Constraint Details -->
+            <!-- ko if: !$parents[$parents.length-1].CurrentNode().IsChildOfChoice() -->
             <div class="input-group input-group-sm" style="width: 100%;">
                 <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorConformanceCardinality"></div>
                 <select class="form-control input-sm" style="width: 50%;" data-bind="value: Conformance, disable: $parents[1].Template().Locked">
@@ -650,7 +651,7 @@
                     <option>SHOULD NOT</option>
                     <option>MAY NOT</option>
                 </select>
-                <div class="input-group input-group-sm cardinality" style="width:50%"; padding-top: "0px">
+                <div class="input-group input-group-sm cardinality" style="width:50%; padding-top: 0px">
                     <input class="span2 form-control" id="appendedInputButton" size="16" type="text" data-bind="value: Cardinality, disable: $parents[1].Template().Locked">
                     <div class="input-group-btn">
                         <a class="dropdown-toggle btn btn-primary btn-sm" data-toggle="dropdown" href="#">
@@ -689,6 +690,7 @@ disable: $parents[1].Template().Locked">
                     <input type="checkbox" name="Branching" data-bind="checked: IsBranchIdentifier, disable: (IsBranchIdentifierDisabled() || $parents[1].Template().Locked())" />&nbsp;<span data-bind="text: Trifolia.Web.TemplateEditorBranchIdentifierOption"></span>
                 </div>
             </div>
+            <!-- /ko -->
                                 
             <!-- ko if: $parents[1].Categories().length > 0 -->
             <div class="input-group input-group-sm">
@@ -959,6 +961,7 @@ disable: $parents[1].Template().Locked">
     <script type="text/html" id="constraintPreviewTemplate">
         <!-- ko foreach: $data -->
 
+        <!-- ko if: !IsChoice() || Children().length != 1 -->
         <!-- ko if: IsHeading() -->
         <p data-bind="text: Context" class="previewConstraintHeading"></p>
         <p data-bind="text: HeadingDescription" class="previewConstraintHeadingDescription"></p>
@@ -970,11 +973,12 @@ disable: $parents[1].Template().Locked">
 
         <p>
             <!-- ko foreach: $parents -->
-            <!-- ko if: $index() > 1 --><span style="white-space: pre">  </span><!-- /ko -->
+            <!-- ko if: $index() > 1 && $parents[$index()].IsChoice && (!$parents[$index()].IsChoice() || $parents[$index()].Children().length != 1) --><span style="white-space: pre">  </span><!-- /ko -->
             <!-- /ko -->
             <span data-bind="text: ($index() + 1)"></span>) 
             <span data-bind="html: NarrativeProseHtml"></span>
         </p>
+        <!-- /ko -->
 
         <div data-bind="template: { name: 'constraintPreviewTemplate', data: $data.Children() }"></div>
 
@@ -1010,14 +1014,26 @@ disable: $parents[1].Template().Locked">
                 <!-- ko if: $index() > 1 --><span style="white-space: pre">  </span><!-- /ko -->
                 <!-- /ko -->
                 <span data-bind="text: DisplayContext"></span>
+
+                <!-- ko if: !IsValid() -->
+                <span class="glyphicon glyphicon-exclamation-sign" style="color: red;" data-bind="tooltip: Constraint().ValidationMessages"></span>
+                <!-- /ko -->
                 
                 <!-- ko if: DisplayNotes() -->
                 <span class="glyphicon glyphicon-comment" data-bind="tooltip: DisplayNotes"></span>
                 <!-- /ko -->
             </div>
             <div class="constraintColumn constraintNumber" data-bind="text: ComputedNumber, attr: { 'data-original-title': ComputedNumberTooltip }, click: function () { $parents[$parents.length - 1].SelectNode($data); }"></div>
-            <div class="constraintColumn constraintBranch" data-bind="text: DisplayBranchRoot, click: function () { $parents[$parents.length - 1].SelectNode($data); }">BR</div>
-            <div class="constraintColumn constraintBranch" data-bind="text: DisplayBranchIdentifier, click: function () { $parents[$parents.length - 1].SelectNode($data); }">BI</div>
+            <div class="constraintColumn constraintBranch" data-bind="click: function () { $parents[$parents.length - 1].SelectNode($data); }">
+                <!-- ko if: !IsChildOfChoice() -->
+                <span data-bind="text: DisplayBranchRoot"></span>
+                <!-- /ko -->
+            </div>
+            <div class="constraintColumn constraintBranch" data-bind="click: function () { $parents[$parents.length - 1].SelectNode($data); }">
+                <!-- ko if: !IsChildOfChoice() -->
+                <span data-bind="text: DisplayBranchIdentifier"></span>
+                <!-- /ko -->
+            </div>
             <div class="constraintColumn constraintConformance" data-bind="text: DisplayConformance, click: function () { $parents[$parents.length - 1].SelectNode($data); }"></div>
             <div class="constraintColumn constraintCardinality" data-bind="text: DisplayCardinality, click: function () { $parents[$parents.length - 1].SelectNode($data); }"></div>
             <div class="constraintColumn constraintDataType" data-bind="text: DisplayDataType, click: function () { $parents[$parents.length - 1].SelectNode($data); }"></div>

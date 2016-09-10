@@ -84,11 +84,11 @@ namespace Trifolia.Test.Services.Validation
 
             // Template 1
             Template t1 = tdb.GenerateTemplate("urn:oid:1.2.3.4", docType, "Test Template", ig1, null, null, null);
-            tdb.GenerateConstraint(t1, null, null, "title", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(t1, null, null, "title", "SHALL", "1..1");
 
             // Template 2
             Template t2 = tdb.GenerateTemplate("urn:oid:1.2.3.4.1", docType, "Test Template", ig1, null, null, null);
-            TemplateConstraint t2_tc1 = tdb.GenerateConstraint(t2, null, null, "title", "SHALL", "1..1");
+            TemplateConstraint t2_tc1 = tdb.AddConstraintToTemplate(t2, null, null, "title", "SHALL", "1..1");
             t2_tc1.Schematron = "count(cda:title)";
 
             TemplateConstraint t2_tc2 = tdb.GeneratePrimitive(t2, null, "SHALL", "This is a test primitive");
@@ -97,13 +97,13 @@ namespace Trifolia.Test.Services.Validation
 
             // Template 3
             Template t3 = tdb.GenerateTemplate("urn:oid:1.2.3.4.2", docType, "Test Template", ig2, null, null, null);
-            tdb.GenerateConstraint(t1, null, null, "title", "SHOULD", "1..1");
+            tdb.AddConstraintToTemplate(t1, null, null, "title", "SHOULD", "1..1");
 
             // Template 4
             Template t4 = tdb.GenerateTemplate("urn:oid:1.2.3.4.3", docType, "Test Template", ig2, null, null, null);
-            TemplateConstraint t4_p1 = tdb.GenerateConstraint(t4, null, null, "entryRelationship", "SHALL", "1..1", null, null, null, null, null, null, null, true);
-            TemplateConstraint t4_p2 = tdb.GenerateConstraint(t4, t4_p1, null, "@typeCode", "SHALL", "1..1", null, null, "DRIV");
-            TemplateConstraint t4_p3 = tdb.GenerateConstraint(t4, t4_p1, null, "observation", "SHALL", "1..1", null, null, "DRIV", null, null, null, null, true);
+            TemplateConstraint t4_p1 = tdb.AddConstraintToTemplate(t4, null, null, "entryRelationship", "SHALL", "1..1", null, null, null, null, null, null, null, true);
+            TemplateConstraint t4_p2 = tdb.AddConstraintToTemplate(t4, t4_p1, null, "@typeCode", "SHALL", "1..1", null, null, "DRIV");
+            TemplateConstraint t4_p3 = tdb.AddConstraintToTemplate(t4, t4_p1, null, "observation", "SHALL", "1..1", null, null, "DRIV", null, null, null, null, true);
         }
 
         #endregion

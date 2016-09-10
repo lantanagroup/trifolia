@@ -12,7 +12,7 @@ namespace Schematron.Test.Generation
     [TestClass]
     public class ContextBuilderTest
     {
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateContext_SingleElement()
         {
             var element = new DocumentTemplateElement("code");
@@ -24,7 +24,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(context == expected, "Single element did not generate proper context, expected '{0}', actual '{0}'", expected, context);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateContext_SingleElement_Namespace()
         {
             var element = new DocumentTemplateElement("code");
@@ -36,7 +36,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(context == expected, "Single element did not generate proper context, expected '{0}', actual '{0}'", expected, context);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateContext_SingleChildElement_2Levels()
         {
             var administrativeCodeElement = new DocumentTemplateElement("administrativeGenderCode");            
@@ -51,7 +51,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(context == expected, "Context string was not correct, expected '{0}', actual '{1}'", expected, context);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateContext_SingleChildElement_4Levels()
         {
             var administrativeCodeElement = new DocumentTemplateElement("administrativeGenderCode");
@@ -68,7 +68,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(context == expected, "Context string was not correct, expected '{0}', actual '{1}'", expected, context);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateContext_SingleChildElement_4Levels_GenerateContextOn3rdLevel()
         {
             var administrativeCodeElement = new DocumentTemplateElement("administrativeGenderCode");
@@ -86,7 +86,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(context == expected, "Context string was not correct, expected '{0}', actual '{1}'", expected, context);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateContext_SingleChildElement_4Levels_GenerateContextOn3rdLevel_Namespace()
         {
             var administrativeCodeElement = new DocumentTemplateElement("administrativeGenderCode");
@@ -104,7 +104,7 @@ namespace Schematron.Test.Generation
             Assert.IsTrue(context == expected, "Context string was not correct, expected '{0}', actual '{1}'", expected, context);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateContext_SingleElementChildElement_2Levels_SingleAttribute()
         {
             var element = new DocumentTemplateElement("assignedPerson");

@@ -32,15 +32,15 @@ namespace Trifolia.Test.Generation.Versioning
 
             Template aTemplate = this.mockRepo.GenerateTemplate("1.2.3.4", this.documentType, "Test Template", this.ig, description: "Test Description 1");
             aTemplate.IsOpen = false;
-            this.mockRepo.GenerateConstraint(aTemplate, null, null, "id", "SHALL", "1..1", number: 1);
-            this.mockRepo.GenerateConstraint(aTemplate, null, null, "effectiveTime", "SHALL", "1..1", number: 2);
-            this.mockRepo.GenerateConstraint(aTemplate, null, null, "entryRelationship", "SHALL", "1..1", number: 3);
+            this.mockRepo.AddConstraintToTemplate(aTemplate, null, null, "id", "SHALL", "1..1", number: 1);
+            this.mockRepo.AddConstraintToTemplate(aTemplate, null, null, "effectiveTime", "SHALL", "1..1", number: 2);
+            this.mockRepo.AddConstraintToTemplate(aTemplate, null, null, "entryRelationship", "SHALL", "1..1", number: 3);
 
             Template bTemplate = this.mockRepo.GenerateTemplate("4.3.2.1", this.documentType, "New Test Template", this.ig, description: "Test Description 2", impliedTemplate: parentTemplate);
             bTemplate.IsOpen = true;
-            this.mockRepo.GenerateConstraint(bTemplate, null, null, "id", "SHALL", "1..*", number: 1);
-            this.mockRepo.GenerateConstraint(bTemplate, null, null, "entryRelationship", "SHALL", "1..1", number: 3);
-            this.mockRepo.GenerateConstraint(bTemplate, null, null, "author", "SHALL", "1..1", number: 4);
+            this.mockRepo.AddConstraintToTemplate(bTemplate, null, null, "id", "SHALL", "1..*", number: 1);
+            this.mockRepo.AddConstraintToTemplate(bTemplate, null, null, "entryRelationship", "SHALL", "1..1", number: 3);
+            this.mockRepo.AddConstraintToTemplate(bTemplate, null, null, "author", "SHALL", "1..1", number: 4);
 
             VersionComparer comparer = VersionComparer.CreateComparer(mockRepo);
             ComparisonResult compared = comparer.Compare(aTemplate, bTemplate);

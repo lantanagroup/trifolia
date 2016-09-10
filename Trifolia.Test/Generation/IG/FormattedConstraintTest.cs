@@ -54,7 +54,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         ///A test for GetPlainText
         ///</summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         public void GetPlainText_ContextConformanceTest()
         {
             // Test 1000
@@ -65,7 +65,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.AreEqual("SHALL contain exactly one [1..1] value (CONF:1-1).", constraintText);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         public void GetPlainText_ConformanceValueCodeSystemTest()
         {
             // Test 1001
@@ -76,7 +76,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.AreEqual("SHALL contain exactly one [1..1] @classCode=\"OBS\" Observation (CodeSystem: HL7ActStatus 113883.5.14) (CONF:1-2).", constraintText);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         public void GetPlainText_ConformanceTemplateTest1()
         {
             // Test 1002
@@ -87,7 +87,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.AreEqual("SHALL contain exactly one [1..1] templateId/@root=\"22.4.47\" (CONF:1-3).", constraintText);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         public void GetPlainText_ConformanceDataTypeTest()
         {
             // Test 1003
@@ -98,7 +98,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.AreEqual("SHALL contain exactly one [1..1] code with @xsi:type=\"CD\" (CONF:1-4).", constraintText);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         public void GetPlainText_ConformanceTemplateTest2()
         {
             // Test 1004
@@ -109,7 +109,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.AreEqual("MAY contain zero or one [0..1] Test Template 2 (identifier: 1.2.3.4.5.6.5) (CONF:1-5).", constraintText);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         public void GetPlainText_ConformanceXpathValueSetTest()
         {
             // Test 1005
@@ -120,7 +120,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.AreEqual("SHALL contain exactly one [1..1] administrativeGenderCode/@code, which MAY be selected from ValueSet GenderCode 11.1 (CONF:1-6).", constraintText);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         public void GetPlainText_ConformanceValueSetVersionTest()
         {
             // Test 1005
@@ -135,7 +135,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.AreEqual("SHALL contain exactly one [1..1] administrativeGenderCode, which MAY be selected from ValueSet GenderCode 11.1 2012-05-01 (CONF:1-6).", constraintText);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         public void GetPlainText_ConformanceValueSetVersionStaticTest()
         {
             // Test 1005
@@ -151,7 +151,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.AreEqual("SHALL contain exactly one [1..1] administrativeGenderCode, which MAY be selected from ValueSet GenderCode 11.1 STATIC 2012-05-01 (CONF:1-6).", constraintText);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         public void GetPlainText_ConformanceValueCodeSystemTest1()
         {
             // Test 1006
@@ -174,7 +174,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.AreEqual("SHALL contain exactly one [1..1] code/@code=\"1234-X\" Test Disp, which SHALL be selected from CodeSystem SNOMED CT (6.96) (CONF:1-8).", constraintText);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         public void GetPlainText_ConformanceValueWithConformanceCodeSystemTest()
         {
             // Test 1008
@@ -186,7 +186,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.AreEqual("SHALL contain exactly one [1..1] code=\"1234-X\" Test Disp with @xsi:type=\"CD\", where the code SHALL be selected from CodeSystem SNOMED CT (6.96) (CONF:1-9).", constraintText);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         public void GetPlainText_CategorizedConstraint()
         {
             TemplateConstraint constraint = mockRepo.TemplateConstraints.Single(y => y.Id == 10);
@@ -208,7 +208,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// A test for MakePlural
         ///</summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest1()
         {
@@ -221,7 +221,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// A test for MakePlural
         ///</summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest2()
         {
@@ -234,7 +234,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// A test for MakePlural
         ///</summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest3()
         {
@@ -247,7 +247,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// A test for MakePlural
         ///</summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest4()
         {
@@ -260,7 +260,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// A test for MakePlural
         ///</summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest5()
         {
@@ -273,7 +273,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// A test for MakePlural
         ///</summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest6()
         {
@@ -286,7 +286,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// A test for MakePlural
         ///</summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         [DeploymentItem("Trifolia.Generation.dll")]
         public void MakePluralTest7()
         {
@@ -296,7 +296,7 @@ namespace Trifolia.Test.Generation.IG
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Narrative Generation")]
         [DeploymentItem("Trifolia.Generation.dll")]
         public void PrimitiveTextFormattingTest1()
         {

@@ -12,7 +12,7 @@ namespace Trifolia.Test.Schema
     [TestClass]
     public class BuildSerializedSchema
     {
-        [TestMethod]
+        [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestSimplifiedSchema_CDA()
         {
@@ -33,8 +33,6 @@ namespace Trifolia.Test.Schema
             SimpleSchema.SchemaObject clinicalDocument = cdaSchema.Children.SingleOrDefault(y => y.Name == "ClinicalDocument");
             Assert.IsNotNull(clinicalDocument);
             Assert.AreEqual("ClinicalDocument", clinicalDocument.DataType);
-            Assert.AreEqual("1..1", clinicalDocument.Cardinality);
-            Assert.AreEqual("SHALL", clinicalDocument.Conformance);
             Assert.AreEqual(false, clinicalDocument.Mixed);
             Assert.AreEqual(30, clinicalDocument.Children.Count);
             var clinicalDocumentInvalidChildNames = clinicalDocument.Children.Where(y => string.IsNullOrEmpty(y.Name) || y.Name.Length <= 1);
@@ -110,12 +108,12 @@ namespace Trifolia.Test.Schema
             Assert.AreEqual("0..*", patientName.Cardinality);
             Assert.AreEqual("MAY", patientName.Conformance);
             Assert.AreEqual(true, patientName.Mixed);
-            Assert.AreEqual(8, patientName.Children.Count);
+            Assert.AreEqual(5, patientName.Children.Count, "Expected patient to have 5 children (some are choices)");
             Assert.IsTrue(patientName.Children.Count(y => string.IsNullOrEmpty(y.Name) || y.Name.Length <= 1) == 0);
             Assert.AreEqual(SimpleSchema.ObjectTypes.Element, patientRole.Type);
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestSimplifiedSchema_Observation()
         {
@@ -141,13 +139,16 @@ namespace Trifolia.Test.Schema
             var foundEntryRelationship = cdaSchema.Children.SingleOrDefault(y => y.Name == "entryRelationship" && !y.IsAttribute);
             Assert.IsNotNull(foundEntryRelationship);
 
-            var foundObservation = foundEntryRelationship.Children.SingleOrDefault(y => y.Name == "observation" && !y.IsAttribute);
+            var foundChoice = foundEntryRelationship.Children.SingleOrDefault(y => y.Name == "choice" && !y.IsAttribute);
+            Assert.IsNotNull(foundChoice);
+
+            var foundObservation = foundChoice.Children.SingleOrDefault(y => y.Name == "observation" && !y.IsAttribute);
             Assert.IsNotNull(foundObservation);
 
             Assert.IsNotNull(cdaSchema);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestSimplifiedSchema_eMeasure()
         {
@@ -173,7 +174,10 @@ namespace Trifolia.Test.Schema
             var foundEntryRelationship = cdaSchema.Children.SingleOrDefault(y => y.Name == "entryRelationship" && !y.IsAttribute);
             Assert.IsNotNull(foundEntryRelationship);
 
-            var foundObservation = foundEntryRelationship.Children.SingleOrDefault(y => y.Name == "observation" && !y.IsAttribute);
+            var foundChoice = foundEntryRelationship.Children.SingleOrDefault(y => y.Name == "choice" && !y.IsAttribute);
+            Assert.IsNotNull(foundChoice);
+
+            var foundObservation = foundChoice.Children.SingleOrDefault(y => y.Name == "observation" && !y.IsAttribute);
             Assert.IsNotNull(foundObservation);
 
             Assert.IsNotNull(cdaSchema);

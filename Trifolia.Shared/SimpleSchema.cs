@@ -21,6 +21,8 @@ namespace Trifolia.Shared
     [Serializable]
     public class SimpleSchema : ISimpleSchema
     {
+        public const string SchemaChoiceAppInfoUri = "https://trifolia.lantanagroup.com/choiceName";
+
         #region Private Fields
 
         private const int maxInitialDepth = 2;
@@ -341,7 +343,7 @@ namespace Trifolia.Shared
         /// <param name="complexType">The XSD complext ype that the new SchemaObject should be based on</param>
         private SchemaObject InitializeComplexType(XmlSchemaComplexType complexType)
         {
-            SchemaObject newSimpleObject = new SchemaObject(this, complexType)
+            SchemaObject newSimpleObject = new SchemaObject(this, complexType, false)
             {
                 Name = this.GetName(complexType.QualifiedName, null),
                 DataType = complexType.BaseXmlSchemaType != null && !string.IsNullOrEmpty(complexType.BaseXmlSchemaType.Name) ? 
@@ -402,7 +404,7 @@ namespace Trifolia.Shared
         {
             List<SchemaObject> siblings = parent == null ? this.Children : parent.Children;
 
-            SchemaObject newSimpleObject = new SchemaObject(this, element)
+            SchemaObject newSimpleObject = new SchemaObject(this, element, parent == null || parent.IsChoice)
             {
                 Parent = parent,
                 Name = this.GetName(element.QualifiedName, element.RefName),
@@ -460,20 +462,13 @@ namespace Trifolia.Shared
             public string Name { get; set; }
             public string DataType { get; set; }
             public string ChoiceId { get; set; }
+            public bool IsChoice { get; set; }
             public SchemaObject Parent { get; set; }
 
             public ObjectTypes Type
             {
                 get { return type; }
                 set { type = value; }
-            }
-
-            public bool IsChoice
-            {
-                get
-                {
-                    return !string.IsNullOrEmpty(this.ChoiceId);
-                }
             }
 
             public bool IsInitialized
@@ -582,15 +577,41 @@ namespace Trifolia.Shared
 
             #region Public Methods
 
-            public SchemaObject(SimpleSchema simpleSchema, XmlSchemaObject xmlObject)
+            public SchemaObject(SimpleSchema simpleSchema, XmlSchemaObject xmlObject, bool childOfChoice)
             {
                 this.simpleSchema = simpleSchema;
                 this.xmlObject = xmlObject;
 
                 if (xmlObject is XmlSchemaElement)
-                    InitializeElementValues(xmlObject as XmlSchemaElement);
+                    InitializeElementValues(xmlObject as XmlSchemaElement, childOfChoice);
                 else if (xmlObject is XmlSchemaAttribute)
                     InitializeAttributeValues(xmlObject as XmlSchemaAttribute);
+                else if (xmlObject is XmlSchemaChoice)
+                    InitializeChoice(xmlObject as XmlSchemaChoice);
+            }
+
+            public void InitializeChoice(XmlSchemaChoice schemaChoice)
+            {
+                this.IsChoice = true;
+
+                // Name
+                this.SetChoiceName(schemaChoice);
+
+                // Cardinality
+                string minOccurs = schemaChoice.MinOccurs.ToString();
+                string maxOccurs = schemaChoice.MaxOccurs.ToString();
+
+                this.Cardinality = string.Format("{0}..{1}",
+                    minOccurs != "79228162514264337593543950335" ? minOccurs : "*",
+                    maxOccurs != "79228162514264337593543950335" ? maxOccurs : "*");
+
+                // Conformance (default based on cardinality)
+                if (this.Cardinality == "0..0")
+                    this.Conformance = "SHALL NOT";
+                else if (this.Cardinality.StartsWith("0.."))
+                    this.Conformance = "MAY";
+                else if (this.Cardinality.StartsWith("1.."))
+                    this.Conformance = "SHALL";
             }
 
             public void InitializeChildren(SchemaObject theObject, XmlSchemaObject xmlObject)
@@ -640,7 +661,7 @@ namespace Trifolia.Shared
                             continue;
 
                         var foundChild = theObject.Children.SingleOrDefault(y => y.Name == cAttribute.Name);
-                        var newChild = new SchemaObject(theObject.simpleSchema, cAttribute)
+                        var newChild = new SchemaObject(theObject.simpleSchema, cAttribute, theObject.IsChoice)
                         {
                             Parent = theObject,
                             Name = this.SimpleSchema.GetName(cAttribute.QualifiedName, cAttribute.RefName),
@@ -667,7 +688,7 @@ namespace Trifolia.Shared
                     // TODO: More complicated logic to determine if a restriction is being applied
                     if (cAttribute != null && !theObject.Children.Exists(y => y.Name == cAttribute.Name))
                         theObject.Children.Add(
-                            new SchemaObject(theObject.simpleSchema, cAttribute)
+                            new SchemaObject(theObject.simpleSchema, cAttribute, theObject.IsChoice)
                             {
                                 Parent = theObject,
                                 Name = this.SimpleSchema.GetName(cAttribute.QualifiedName, cAttribute.RefName),
@@ -699,21 +720,56 @@ namespace Trifolia.Shared
                 return Copy(this, schema);
             }
 
-            //public static List<SchemaObject> GetComplexTypesFromSchema(int implementationGuideTypeId)
-            //{
-            //    using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
-            //    {
-            //        ImplementationGuideType igType = tdb.ImplementationGuideTypes.Single(y => y.Id == implementationGuideTypeId);
-            //        SimpleSchema schema = CreateSimpleSchema(Helper.GetIGSimplifiedSchemaLocation(igType));
-
-            //        return schema.ComplexTypes;
-            //    }
-            //}
-
-
             #endregion
 
             #region Private Methods
+
+            private string GetChoiceAppInfoText(XmlSchemaAnnotation annotation)
+            {
+                XmlSchemaAppInfo appInfo = annotation.Items.OfType<XmlSchemaAppInfo>().SingleOrDefault(y => y.Source == SimpleSchema.SchemaChoiceAppInfoUri);
+
+                if (appInfo != null)
+                {
+                    XmlText nameText = appInfo.Markup.OfType<XmlText>().FirstOrDefault();
+
+                    if (nameText != null && !string.IsNullOrEmpty(nameText.Value))
+                    {
+                        return nameText.Value;
+                    }
+                }
+
+                return string.Empty;
+            }
+
+            private void SetChoiceName(XmlSchemaChoice schemaChoice)
+            {
+                // See if the schema defines the name of the choice element
+                if (schemaChoice.Annotation != null)
+                {
+                    this.Name = GetChoiceAppInfoText(schemaChoice.Annotation);
+                }
+                else if (schemaChoice.Items.Count > 0 && ((XmlSchemaChoice)schemaChoice.Items[0].Parent).Annotation != null)
+                {
+                    // Weird bug in System.Xml.Schema where annotations stored in the schema are reflected by the children's parent,
+                    // and are never directly on schemaChoice.Annotation
+                    this.Name = GetChoiceAppInfoText(((XmlSchemaChoice)schemaChoice.Items[0].Parent).Annotation);
+                }
+
+                if (!string.IsNullOrEmpty(this.Name))
+                    return;
+
+                this.Name = Shared.Helper.GetChoiceCommonName(schemaChoice, this.SimpleSchema.Schema.TargetNamespace);
+
+                // Save the choice name to the schema
+                XmlSchemaAppInfo newAppInfo = new XmlSchemaAppInfo();
+                newAppInfo.Source = SimpleSchema.SchemaChoiceAppInfoUri;
+                newAppInfo.Markup = new XmlNode[] { new XmlDocument().CreateTextNode(this.Name) };
+
+                if (schemaChoice.Annotation == null)
+                    schemaChoice.Annotation = new XmlSchemaAnnotation();
+
+                schemaChoice.Annotation.Items.Add(newAppInfo);
+            }
 
             private void InitializeXmlSequence(SchemaObject parent, XmlSchemaSequence sequence, bool update = false)
             {
@@ -735,6 +791,10 @@ namespace Trifolia.Shared
 
             private void InitializeXmlChoice(SchemaObject parent, XmlSchemaChoice choice, bool update = false)
             {
+                SchemaObject choiceObject = new SchemaObject(this.simpleSchema, choice, false);
+                choiceObject.Parent = parent;
+                parent.Children.Add(choiceObject);
+
                 foreach (XmlSchemaObject cChoiceObject in choice.Items)
                 {
                     XmlSchemaElement cChoiceElement = cChoiceObject as XmlSchemaElement;
@@ -742,11 +802,11 @@ namespace Trifolia.Shared
 
                     if (cChoiceElement != null)
                     {
-                        this.simpleSchema.InitializeElement(parent, cChoiceElement, update);
+                        this.simpleSchema.InitializeElement(choiceObject, cChoiceElement, update);
                     }
                     else if (cChoiceSequence != null)
                     {
-                        InitializeXmlSequence(parent, cChoiceSequence, update);
+                        InitializeXmlSequence(choiceObject, cChoiceSequence, update);
                     }
                 }
             }
@@ -781,21 +841,24 @@ namespace Trifolia.Shared
                 }
             }
 
-            private void InitializeElementValues(XmlSchemaElement element)
+            private void InitializeElementValues(XmlSchemaElement element, bool childOfChoice)
             {
-                string minOccurs = element.MinOccurs.ToString();
-                string maxOccurs = element.MaxOccurs.ToString();
+                if (!childOfChoice)
+                {
+                    string minOccurs = element.MinOccurs.ToString();
+                    string maxOccurs = element.MaxOccurs.ToString();
 
-                this.Cardinality = string.Format("{0}..{1}",
-                    minOccurs != "79228162514264337593543950335" ? minOccurs : "*",
-                    maxOccurs != "79228162514264337593543950335" ? maxOccurs : "*");
+                    this.Cardinality = string.Format("{0}..{1}",
+                        minOccurs != "79228162514264337593543950335" ? minOccurs : "*",
+                        maxOccurs != "79228162514264337593543950335" ? maxOccurs : "*");
 
-                if (this.Cardinality == "0..0")
-                    this.Conformance = "SHALL NOT";
-                else if (this.Cardinality.StartsWith("0.."))
-                    this.Conformance = "MAY";
-                else if (this.Cardinality.StartsWith("1.."))
-                    this.Conformance = "SHALL";
+                    if (this.Cardinality == "0..0")
+                        this.Conformance = "SHALL NOT";
+                    else if (this.Cardinality.StartsWith("0.."))
+                        this.Conformance = "MAY";
+                    else if (this.Cardinality.StartsWith("1.."))
+                        this.Conformance = "SHALL";
+                }
 
                 if (element.ElementSchemaType != null && !string.IsNullOrEmpty(element.ElementSchemaType.Name))
                 {
@@ -806,14 +869,11 @@ namespace Trifolia.Shared
 
                     this.Mixed = element.ElementSchemaType.IsMixed;
                 }
-
-                if (element.Parent != null && element.Parent is XmlSchemaChoice)
-                    this.ChoiceId = element.Parent.LineNumber.ToString();
             }
 
             private SchemaObject Copy(SchemaObject source, SimpleSchema schema)
             {
-                SchemaObject newSchemaObject = new SchemaObject(schema, source.XmlObject)
+                SchemaObject newSchemaObject = new SchemaObject(schema, source.XmlObject, source.Parent == null || source.Parent.IsChoice)
                 {
                     Cardinality = source.Cardinality,
                     Conformance = source.Conformance,

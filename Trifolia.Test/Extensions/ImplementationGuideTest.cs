@@ -35,14 +35,14 @@ namespace Trifolia.Test.Extensions
             this.vs3.Source = "http://www.lantanagroup.com";
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Terminology")]
         public void GetValueSetsTest_NoPublishDate()
         {
             ImplementationGuide ig = this.tdb.FindOrAddImplementationGuide(this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME), "Test IG");
             Template t1 = this.tdb.GenerateTemplate("1.2.3.4", "Document", "Test Document Template", ig);
-            this.tdb.GenerateConstraint(t1, null, null, "code", "SHALL", "1..1", valueSet: this.vs1);
+            this.tdb.AddConstraintToTemplate(t1, null, null, "code", "SHALL", "1..1", valueSet: this.vs1);
             Template t2 = this.tdb.GenerateTemplate("1.2.3.4", "Document", "Test Document Template", ig);
-            var tc2 = this.tdb.GenerateConstraint(t2, null, null, "code", "SHALL", "1..1", valueSet: this.vs2);
+            var tc2 = this.tdb.AddConstraintToTemplate(t2, null, null, "code", "SHALL", "1..1", valueSet: this.vs2);
             tc2.ValueSetDate = new DateTime(2012, 1, 12);
 
             DateTime dateNow = DateTime.Now;
@@ -62,16 +62,16 @@ namespace Trifolia.Test.Extensions
             Assert.AreEqual(new DateTime(2012, 1, 12), valueSet2.BindingDate);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Terminology")]
         public void GetValueSetsTest_PublishDate()
         {
             ImplementationGuide ig = this.tdb.FindOrAddImplementationGuide(this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME), "Test IG");
             ig.PublishDate = new DateTime(2012, 5, 1);
 
             Template t1 = this.tdb.GenerateTemplate("1.2.3.4", "Document", "Test Document Template", ig);
-            this.tdb.GenerateConstraint(t1, null, null, "code", "SHALL", "1..1", valueSet: this.vs1);
+            this.tdb.AddConstraintToTemplate(t1, null, null, "code", "SHALL", "1..1", valueSet: this.vs1);
             Template t2 = this.tdb.GenerateTemplate("1.2.3.4", "Document", "Test Document Template", ig);
-            var tc2 = this.tdb.GenerateConstraint(t2, null, null, "code", "SHALL", "1..1", valueSet: this.vs2);
+            var tc2 = this.tdb.AddConstraintToTemplate(t2, null, null, "code", "SHALL", "1..1", valueSet: this.vs2);
             tc2.ValueSetDate = new DateTime(2012, 1, 12);
 
             DateTime dateNow = DateTime.Now;
@@ -90,19 +90,19 @@ namespace Trifolia.Test.Extensions
             Assert.AreEqual(new DateTime(2012, 1, 12), valueSet2.BindingDate);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Terminology")]
         public void GetValueSetsTest_Static()
         {
             ImplementationGuide ig = this.tdb.FindOrAddImplementationGuide(this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME), "Test IG");
             Template t1 = this.tdb.GenerateTemplate("1.2.3.4", "Document", "Test Document Template", ig);
-            var tc1 = this.tdb.GenerateConstraint(t1, null, null, "code", "SHALL", "1..1", valueSet: this.vs1);
+            var tc1 = this.tdb.AddConstraintToTemplate(t1, null, null, "code", "SHALL", "1..1", valueSet: this.vs1);
             tc1.IsStatic = false;
 
             Template t2 = this.tdb.GenerateTemplate("1.2.3.4", "Document", "Test Document Template", ig);
-            var tc2 = this.tdb.GenerateConstraint(t2, null, null, "code", "SHALL", "1..1", valueSet: this.vs2);
+            var tc2 = this.tdb.AddConstraintToTemplate(t2, null, null, "code", "SHALL", "1..1", valueSet: this.vs2);
             tc2.ValueSetDate = new DateTime(2012, 1, 12);
             tc2.IsStatic = true;
-            var tc3 = this.tdb.GenerateConstraint(t2, null, null, "value", "SHALL", "1..1", valueSet: this.vs3);
+            var tc3 = this.tdb.AddConstraintToTemplate(t2, null, null, "value", "SHALL", "1..1", valueSet: this.vs3);
 
             DateTime dateNow = DateTime.Now;
             var valueSets = ig.GetValueSets(this.tdb, true);

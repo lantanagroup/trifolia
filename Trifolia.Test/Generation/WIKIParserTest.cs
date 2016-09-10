@@ -44,7 +44,7 @@ namespace Trifolia.Test.Generation
                     new Body());
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("MSWord")]
         public void TestParseAsOpenXML_Bold_then_Italic()
         {
             string testWikiContent = "This *is a bold* test with _italic text as well_";
@@ -70,7 +70,7 @@ namespace Trifolia.Test.Generation
             AssertOpenXmlValid(body);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("MSWord")]
         public void TestParseAsOpenXML_Bullets()
         {
             string testWikiContent = @"* Test bullet 1
@@ -87,7 +87,7 @@ This is a non-bulleted test
             OpenXmlElement table = parser.ParseAsOpenXML(testWikiContent);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("MSWord")]
         public void TestParseAsOpenXML_Tables()
         {
             string testWikiContent = @"|| Test Header1 || Test Header2
@@ -102,7 +102,7 @@ This is a non-bulleted test
             AssertOpenXmlValid(table);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("MSWord")]
         public void TestParseAsOpenXML_LinkToTemplate()
         {
             string testWikiContent = @"This is a test of a [URL:#" + this.template1.Oid + "]";
@@ -129,7 +129,7 @@ This is a non-bulleted test
             AssertOpenXmlValid(body);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("MSWord")]
         public void TestParseAsOpenXML_LinkToURLWithoutName()
         {
             string testWikiContent = @"This is a test of a [URL:http://www.awesome.com]";
@@ -154,7 +154,7 @@ This is a non-bulleted test
             AssertOpenXmlValid(body);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("MSWord")]
         public void TestParseAsOpenXML_LinkToURLWithName()
         {
             string testWikiContent = @"This is a test of a [URL:Awesome|http://www.awesome.com]";
@@ -179,7 +179,7 @@ This is a non-bulleted test
             AssertOpenXmlValid(body);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("MSWord")]
         public void TestParseAsOpenXml_MultipleRoots()
         {
             string testWikiContent = @"The US Realm Patient Generated Document header template must conform to the Universal Realm Patient Generated Document header template. This template is designed to be used in conjunction with the US C-CDA General Header. It only includes additional conformances which further constrain the US C-CDA General Header.
@@ -201,28 +201,7 @@ There is more information here: [URL:#2.16.840.1.113883.10.20.29.1] and [URL:her
             AssertOpenXmlValid(body);
         }
 
-        [TestMethod]
-        public void TestParseAsOpenXml_InvalidContent()
-        {
-            Assert.Inconclusive("This test used to represent expected failures. The improvements to the WIKI parser make what was previously *not working*, now *working*. So, the test is no longer conclusive. If other examples are found of things that we expect not to convert between WIKI/HTML and OpenXML, this test should be updated");
-            string testWikiContent = @"|| Table header 1 || Table header 2
-| [URL:http://www.seanmcilvenna.com] | Table Cell 5";
-
-            WIKIParser parser = new WIKIParser(this.tdb, this.mainPart);
-            OpenXmlElement body = parser.ParseAsOpenXML(testWikiContent);
-
-            Assert.AreEqual(1, body.ChildElements.Count);
-            Paragraph para = body.ChildElements[0] as Paragraph;
-            Assert.IsNotNull(para);
-            Assert.AreEqual(1, para.ChildElements.Count);
-            Run run = para.ChildElements[0] as Run;
-            Assert.IsNotNull(run);
-            AssertRunText(run, testWikiContent);
-
-            AssertOpenXmlValid(body);
-        }
-
-        [TestMethod]
+        [TestMethod, TestCategory("MSWord")]
         public void TestParseAsOpenXml_LineBreaks()
         {
             string testWikiContent = @"This is a 
