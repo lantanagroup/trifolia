@@ -30,11 +30,34 @@ var SupportRequest = function () {
 var SupportViewModel = function () {
     var self = this;
 
+    self.Config = ko.observable();
+
+    self.ShowSupportLink = ko.computed(function () {
+        return self.Config() && self.Config().RedirectUrl &&
+            !(self.Config().EnableJiraSupport || self.Config().EmailConfigured);
+    });
+
+    self.ShowSupportPopup = ko.computed(function () {
+        //We don't care if there's a RedirectURL set as long as JIRA or a designated email address is available.
+        return self.Config() && (self.Config().EnableJiraSupport || self.Config().EmailConfigured);
+    });
+
     $.ajax({
         async: false,
         url: '/api/Auth/WhoAmI',
         complete: function (jqXHR, textstatus) {
             requireEmailandName(!jqXHR.responseJSON);
+        }
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "/api/Support/SupportMethodCheck",
+        success: function (data, textStatus, jqXHR) {
+            self.Config(data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('There was an error determining what the designated support method is.');
         }
     });
 
@@ -88,19 +111,6 @@ var SupportViewModel = function () {
 
     self.ShowSupportRequest = function ()
     {
-        var data = false;
-        $.ajax({
-            type: "GET",
-            url: "/api/Support/SupportMethodCheck",
-            data: data,
-            success: function(data, textStatus, jqXHR) {
-                if (data) alert('No support method is specified.  Redirecting user to GitHub support page.');
-                else $("#supportPopup").modal('show');
-            },
-            error: function(jqXHR, textStatus, errorThrown){
-                alert('There was an error determining what the designated support method is.');
-            }
-        });
-        
+        $("#supportPopup").modal('show');  
     };
 };

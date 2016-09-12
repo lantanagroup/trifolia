@@ -122,7 +122,12 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-question-sign"></i> Help <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#" data-bind="click: function () { helpModel.showHelpMenu(); }">Documentation</a></li>
+                            <!-- ko if: supportViewModel.ShowSupportLink() && !supportViewModel.ShowSupportPopup() -->
+                            <li><a href="#" data-bind="attr: { href: supportViewModel.Config().RedirectUrl }" target="_blank">Support</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: supportViewModel.ShowSupportPopup() -->
                             <li><a href="#" data-bind="click: function () { supportViewModel.ShowSupportRequest(); }">Support</a></li>
+                            <!-- /ko -->
                             <li><a href="#" data-bind="click: function () { $('#keyboardShortcutsDialog').modal('show'); }">Keyboard Shortcuts</a></li>
                             <% if (!string.IsNullOrEmpty(this.DatabaseLabel) || !string.IsNullOrEmpty(this.VersionLabel)) { %>
                             <li class="divider"></li>

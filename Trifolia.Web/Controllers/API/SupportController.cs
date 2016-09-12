@@ -96,11 +96,16 @@ namespace Trifolia.Web.Controllers.API
         }
 
         [HttpGet, Route("api/Support/SupportMethodCheck")]
-        public bool SupportMethodCheck()
+        public dynamic SupportMethodCheck()
         {
-            var result = !AppSettings.EnableJiraSupport && string.IsNullOrEmpty(AppSettings.SupportEmailTo);
-            if (result) System.Diagnostics.Process.Start(AppSettings.RedirectURL);
-            return result;
+            var methodResults = new
+            {
+                EnableJiraSupport = AppSettings.EnableJiraSupport,
+                EmailConfigured = !string.IsNullOrEmpty(AppSettings.SupportEmailTo),
+                RedirectUrl = AppSettings.RedirectURL
+            };
+
+            return methodResults;
         }
     }
 }
