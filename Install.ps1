@@ -25,7 +25,7 @@ if (!([IO.Directory]::Exists($appServicePath))) {
     New-Item -ItemType directory -Path $appServicePath
 } else {
     Write-Host "Main app service path found at $appServicePath, removing files from directory."
-    Remove-Item "$appServicePath\*" -recurse
+    Remove-Item "$appServicePath\*" -recurse -Exclude "appSettings.user.config"
 }
 
 Write-Host ""
