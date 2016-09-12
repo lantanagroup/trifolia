@@ -1488,6 +1488,7 @@ namespace Trifolia.Web.Controllers.API
         {
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
             ViewDataModel model = null;
+            SimpleSchema schema = ig.ImplementationGuideType.GetSimpleSchema();
 
             if (fileId != null)
             {
@@ -1576,6 +1577,7 @@ namespace Trifolia.Web.Controllers.API
 
                 foreach (var template in templates)
                 {
+                    var templateSchema = schema.GetSchemaFromContext(template.PrimaryContextType);
                     var newTemplateModel = new ViewDataModel.Template()
                     {
                         Identifier = template.Oid,
@@ -1645,9 +1647,11 @@ namespace Trifolia.Web.Controllers.API
 
                     model.Templates.Add(newTemplateModel);
 
+
+
                     // Create the constraint models (hierarchically)
                     var parentConstraints = template.ChildConstraints.Where(y => y.ParentConstraintId == null);
-                    CreateConstraints(wikiParser, igManager, parentConstraints, newTemplateModel.Constraints);
+                    CreateConstraints(wikiParser, igManager, parentConstraints, newTemplateModel.Constraints, templateSchema);
                 }
 
                 // Create models for template types in the IG
@@ -1668,12 +1672,15 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
-        private void CreateConstraints(WIKIParser wikiParser, IGSettingsManager igManager, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList)
+        private void CreateConstraints(WIKIParser wikiParser, IGSettingsManager igManager, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList, SimpleSchema templateSchema, SimpleSchema.SchemaObject schemaObject = null)
         {
             foreach (var constraint in constraints.OrderBy(y => y.Order))
             {
+                if(templateSchema != null && schemaObject == null) schemaObject = templateSchema.Children.SingleOrDefault(y => y.Name == constraint.Context);
+
                 IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, constraint, "#/volume2/", "#/valuesets/#", true, true, true, false);
 
+                //TODO: toss in the check against the schema done in TemplateConstraintTable.cs
                 var newConstraintModel = new ViewDataModel.Constraint()
                 {
                     Number = string.Format("{0}-{1}", constraint.Template.OwningImplementationGuideId, constraint.Number),
@@ -1688,10 +1695,20 @@ namespace Trifolia.Web.Controllers.API
                     ContainedTemplate = constraint.ContainedTemplateId != null ? new ViewDataModel.TemplateReference(constraint.ContainedTemplate) : null
                 };
 
+                var isFhir = constraint.Template.ImplementationGuideType.SchemaURI == ImplementationGuideType.FHIR_NS;
+
+                // Check if we're dealing with a FHIR constraint
+                if (isFhir && schemaObject != null)
+                    newConstraintModel.DataType = schemaObject.DataType;
+
                 parentList.Add(newConstraintModel);
 
+                var nextSchemaObject = schemaObject != null ?
+                    schemaObject.Children.SingleOrDefault(y => y.Name == constraint.Context) :
+                    null;
+
                 // Recursively add child constraints
-                CreateConstraints(wikiParser, igManager, constraint.ChildConstraints, newConstraintModel.Constraints);
+                CreateConstraints(wikiParser, igManager, constraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
             }
         }
 
