@@ -67,8 +67,6 @@ var SupportViewModel = function () {
                 } else if (data == "Could not submit beta user application.  Please notify the administrator") {
                     alert('JIRA Support Request email unable to be successfully sent with error: "Could not ' +
                         'submit beta user application.  Please notify the administrator"');
-                } else if (data == "redirect") {
-                    alert('No available email address or JIRA URL specified. Redirecting user to GitHub support.');
                 } else {
                     alert('Successfully created JIRA support request: ' + data);
                     self.CancelSupportRequest();
@@ -88,7 +86,21 @@ var SupportViewModel = function () {
         self.Request(new SupportRequest());
     };
 
-    self.ShowSupportRequest = function () {
-        $("#supportPopup").modal('show');
+    self.ShowSupportRequest = function ()
+    {
+        var data = false;
+        $.ajax({
+            type: "GET",
+            url: "/api/Support/SupportMethodCheck",
+            data: data,
+            success: function(data, textStatus, jqXHR) {
+                if (data) alert('No support method is specified.  Redirecting user to GitHub support page.');
+                else $("#supportPopup").modal('show');
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                alert('There was an error determining what the designated support method is.');
+            }
+        });
+        
     };
 };

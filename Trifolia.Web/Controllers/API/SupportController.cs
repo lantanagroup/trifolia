@@ -59,12 +59,6 @@ namespace Trifolia.Web.Controllers.API
                     throw ex;
                 }
             }
-            //Redirect user to URL
-            else if (CheckPoint.Instance.OrganizationName == "HL7" || (!AppSettings.EnableJiraSupport && string.IsNullOrEmpty(AppSettings.SupportEmailTo)))
-            {
-                System.Diagnostics.Process.Start(AppSettings.RedirectURL);
-                return "redirect";
-            }
             //Send a JIRA ticket
             else
             {
@@ -99,6 +93,14 @@ namespace Trifolia.Web.Controllers.API
                     throw new Exception("Could not submit beta user application.  Please notify the administrator");
                 }
             }
+        }
+
+        [HttpGet, Route("api/Support/SupportMethodCheck")]
+        public bool SupportMethodCheck()
+        {
+            var result = !AppSettings.EnableJiraSupport && string.IsNullOrEmpty(AppSettings.SupportEmailTo);
+            if (result) System.Diagnostics.Process.Start(AppSettings.RedirectURL);
+            return result;
         }
     }
 }
