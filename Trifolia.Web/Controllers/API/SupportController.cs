@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Http;
+using System.Diagnostics;
 using Trifolia.Authorization;
 using Trifolia.Config;
 using Trifolia.Logging;
@@ -18,13 +19,11 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Support")]
         public string SubmitSupportRequest(SupportRequestModel model)
         {
-            if (CheckPoint.Instance.OrganizationName == "HL7" && !AppSettings.EnableJiraSupport)
+            //Send an email
+            if (CheckPoint.Instance.OrganizationName == "HL7" || (!AppSettings.EnableJiraSupport && !string.IsNullOrEmpty(AppSettings.SupportEmailTo)))
             {
                 if (string.IsNullOrEmpty(AppSettings.MailFromAddress))
                     throw new Exception("MailFromAddress is not configured.");
-
-                if (string.IsNullOrEmpty(AppSettings.SupportEmailTo))
-                    throw new Exception("SupportEmailTo is not configured");
 
                 string lSmtpServer = AppSettings.MailHost;
 
@@ -60,6 +59,7 @@ namespace Trifolia.Web.Controllers.API
                     throw ex;
                 }
             }
+            //Send a JIRA ticket
             else
             {
                 JIRAProxy lProxy = new JIRAProxy();
@@ -93,6 +93,19 @@ namespace Trifolia.Web.Controllers.API
                     throw new Exception("Could not submit beta user application.  Please notify the administrator");
                 }
             }
+        }
+
+        [HttpGet, Route("api/Support/SupportMethodCheck")]
+        public dynamic SupportMethodCheck()
+        {
+            var methodResults = new
+            {
+                EnableJiraSupport = AppSettings.EnableJiraSupport,
+                EmailConfigured = !string.IsNullOrEmpty(AppSettings.SupportEmailTo),
+                RedirectUrl = AppSettings.RedirectURL
+            };
+
+            return methodResults;
         }
     }
 }

@@ -30,11 +30,34 @@ var SupportRequest = function () {
 var SupportViewModel = function () {
     var self = this;
 
+    self.Config = ko.observable();
+
+    self.ShowSupportLink = ko.computed(function () {
+        return self.Config() && self.Config().RedirectUrl &&
+            !(self.Config().EnableJiraSupport || self.Config().EmailConfigured);
+    });
+
+    self.ShowSupportPopup = ko.computed(function () {
+        //We don't care if there's a RedirectURL set as long as JIRA or a designated email address is available.
+        return self.Config() && (self.Config().EnableJiraSupport || self.Config().EmailConfigured);
+    });
+
     $.ajax({
         async: false,
         url: '/api/Auth/WhoAmI',
         complete: function (jqXHR, textstatus) {
             requireEmailandName(!jqXHR.responseJSON);
+        }
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "/api/Support/SupportMethodCheck",
+        success: function (data, textStatus, jqXHR) {
+            self.Config(data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('There was an error determining what the designated support method is.');
         }
     });
 
@@ -86,7 +109,8 @@ var SupportViewModel = function () {
         self.Request(new SupportRequest());
     };
 
-    self.ShowSupportRequest = function () {
-        $("#supportPopup").modal('show');
+    self.ShowSupportRequest = function ()
+    {
+        $("#supportPopup").modal('show');  
     };
 };
