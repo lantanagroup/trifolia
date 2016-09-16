@@ -43,8 +43,15 @@ public class G_TerminologyFunctions {
 //                      PART I - CREATE, EDIT and DELETE VALUE SETS
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+  public void waitForPageLoad() 
+  {
+	WebDriverWait wait = new WebDriverWait(driver, 30);
+	     wait.until(ExpectedConditions.jsReturnsValue("return document.readyState ==\"complete\";"));		
+  }
   public void OpenTerminologyBrowser() throws Exception {
 	    
+	  // waitForPageLoad();
+	  
 	  //  Open the Terminology Browser and find the Value Set
 		driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")).click();
 		driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[3]/a")).click();
@@ -69,10 +76,12 @@ public class G_TerminologyFunctions {
 		//Confirm the Value Set Page appears.
 			WebDriverWait wait3 = new WebDriverWait(driver, 60);                   
 			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/thead/tr/th[1]"), "Name"));
-  
 }
   
   public void FindValueSet(String valueSetName, String valueSetOID, String fieldLabel1) throws Exception {
+	  
+	   // Confirm the page is loaded
+	      // waitForPageLoad();
 	  
 	  //Confirm the Value Set Page appears.
 		WebDriverWait wait = new WebDriverWait(driver, 60);                   
@@ -121,6 +130,9 @@ public class G_TerminologyFunctions {
   
   public void SaveValueSet() throws Exception {
 	  
+	  // Confirm the page is loaded
+      // waitForPageLoad();
+  
 	    //Save the Value Set
 	    WebDriverWait wait = new WebDriverWait(driver, 60);
 		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"editValueSetDialog\"]/div/div/div[3]/button[1]")));
@@ -160,6 +172,9 @@ public class G_TerminologyFunctions {
 }
   public void FindCodeSystem(String codeSystemName, String codeSystemOID, String fieldLabel2) throws Exception {
 		  
+	  // Confirm the page is loaded
+         // waitForPageLoad();
+  
 		// Confirm the Code Systems page appears
 		WebDriverWait wait = new WebDriverWait(driver, 60);
 		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/thead/tr/th[3]")));
@@ -197,6 +212,9 @@ public class G_TerminologyFunctions {
 
   public void SaveCodeSystem() throws Exception {
 	  
+	  // Confirm the page is loaded
+         // waitForPageLoad();
+  
 	   //Save the Code System
 	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[3]/div/div/div[3]/button[1]")).click();
 
@@ -254,6 +272,9 @@ public class G_TerminologyFunctions {
 	  
 	   OpenTerminologyBrowser();
 	
+	   // Confirm the page is loaded
+	      // waitForPageLoad();
+	  
 	// Find the Value Set
 	if (permissionUserName == "lcg.admin")
 	{
@@ -292,14 +313,16 @@ public class G_TerminologyFunctions {
     // Return to the Value Set Browser
        OpenTerminologyBrowser();
     
-    // Wait for page to completely load
-	  WebDriverWait wait1 = new WebDriverWait(driver, 120);		           
-	  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[5]")));
-    
+       // Confirm the page is loaded
+	      // waitForPageLoad();
+		  WebDriverWait wait1 = new WebDriverWait(driver, 120);		           
+		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[5]")));
+	    
 	//Clear existing search criteria
 	  driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/span/button[1]")).click();
 	 	
-	// Wait for page to re-load
+	  // Confirm the page is re-loaded
+        // waitForPageLoad();
 	   WebDriverWait wait2 = new WebDriverWait(driver, 120);		
 	   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[5]"))); 
 
@@ -313,8 +336,12 @@ public class G_TerminologyFunctions {
     public void CreateValueSet(String valueSetName, String valueSetOid, String valueSetCode, String valueSetDescription, String valueSetSourceUrl
     		) throws Exception { 
     
+
 	     OpenTerminologyBrowser();
 	     
+	     // Confirm the page is loaded
+	      // waitForPageLoad();
+	      
 		// Confirm the Add Value Set option is available.
 		WebDriverWait wait = new WebDriverWait(driver, 60);
 		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[1]/div[2]/div/button")));
@@ -323,6 +350,9 @@ public class G_TerminologyFunctions {
 		// Launch the Value Set Editor
 		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[1]/div[2]/div/button")).click();
 
+		 // Confirm the page is loaded
+	      // waitForPageLoad();
+	      
 		 //Confirm the Value Set Editor appears
 		WebDriverWait wait1 = new WebDriverWait(driver, 60);
 	    WebElement element1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"editValueSetDialog\"]/div/div/div[1]/h4")));
@@ -341,6 +371,9 @@ public class G_TerminologyFunctions {
     
 	    SaveValueSet();
 	    
+	    // Confirm the page is loaded
+	      // waitForPageLoad();
+	      
 	    // Return to the Trifolia Home Page
 	    ReturnHome("Welcome to Trifolia Workbench");     
 }
@@ -351,9 +384,11 @@ public class G_TerminologyFunctions {
     		 String concept2CodeSystem, String concept2Status, String concept3Code, String concept3Name, String concept3CodeSystem, String concept3Status, String permissionUserName) throws Exception {  
 
 	 // Open Terminology Browser
-	  
 	    OpenTerminologyBrowser();
 	    
+	    // Confirm the page is loaded
+	      // waitForPageLoad();
+	      
 	    // Find the Value Set
 	    if (permissionUserName == "lcg.admin")
 			{
@@ -373,6 +408,9 @@ public class G_TerminologyFunctions {
 		 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/a/span[2]")).click();
 		 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/ul/li[3]/a")).click();
 		 
+		 // Confirm the page is loaded
+	      // waitForPageLoad();
+	      
 		 // Confirm the Edit Concept Form appears
 		 WebDriverWait wait1 = new WebDriverWait(driver, 60);
 		 WebElement element1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"EditValueSetConcepts\"]/h2")));
@@ -447,6 +485,7 @@ public class G_TerminologyFunctions {
       // assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Successfully saved value set[\\s\\S]*$"));
       
       // Wait for page to completely load
+        // waitForPageLoad();
 		 WebDriverWait wait2 = new WebDriverWait(driver, 120);		
 		 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id=\"ctl00_mainBody\"]/div[7]")));
  
@@ -455,6 +494,7 @@ public class G_TerminologyFunctions {
 	     Thread.sleep(1000);
 		 
 		  // Wait for page to completely load
+	      // waitForPageLoad();
 		  WebDriverWait wait3 = new WebDriverWait(driver, 120);		
 		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[8]")));
 	
@@ -464,9 +504,10 @@ public class G_TerminologyFunctions {
 		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/span/button[1]")).click();
 		
     	 // Wait for page to re-load
-		 WebDriverWait wait5 = new WebDriverWait(driver, 120);		
-		 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/div[5]"))); 
-     
+		    // waitForPageLoad();
+			 WebDriverWait wait5 = new WebDriverWait(driver, 120);		
+			 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/div[5]"))); 
+	     
        // Return to the Trifolia Home Page
        ReturnHome("Welcome to Trifolia Workbench");
     }
@@ -504,7 +545,7 @@ public class G_TerminologyFunctions {
 	    String alertText3 = alertDialog3.getText();
 	    //Click the OK button on the alert.
 	    alertDialog3.accept();
-	    Thread.sleep(500); 
+	    Thread.sleep(1000); 
 		 //Switch the driver context to the "Successfully deleted value set?" alert
 		 Alert alertDialog4 = driver.switchTo().alert();
 		 //Get the alert text
@@ -730,7 +771,7 @@ public class G_TerminologyFunctions {
 		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/ul/li[2]/a")).click();
 
     //Confirm the Alert appears
-	   WebDriverWait wait0 = new WebDriverWait(driver, 60);
+	   WebDriverWait wait0 = new WebDriverWait(driver, 120);
 	   wait0.until(ExpectedConditions.alertIsPresent());
 	   
 	 //Switch the driver context to the "Are you sure you want to delete this code system?" alert

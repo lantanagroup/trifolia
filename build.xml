@@ -17,7 +17,7 @@
 	<property name="hl7UserPassword" value="hl7user.password" />
     <path id="Trifolia Workbench.classpath">
         <pathelement location="bin"/>
-		<fileset dir="lib">
+		<fileset dir="lib">ier t
 			<include name="*.jar" />
     	</fileset>
     </path>

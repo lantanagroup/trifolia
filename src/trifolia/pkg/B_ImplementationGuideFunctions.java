@@ -45,29 +45,84 @@ public class B_ImplementationGuideFunctions {
 	  }
   }
   
+  public void waitForPageLoad() 
+  {
+	WebDriverWait wait = new WebDriverWait(driver, 30);
+	     wait.until(ExpectedConditions.jsReturnsValue("return document.readyState ==\"complete\";"));		
+  }
+  
+  public void OpenIGBrowser()
+  {
+		// Confirm Welcome Message is present
+		WebDriverWait wait = new WebDriverWait(driver, 60);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/h2"),"Welcome to Trifolia Workbench!"));
+		assertTrue("Unable to confirm Login",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S][\\s\\S]*$"));
+
+	    //Open the IG Browser        
+		driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")).click();
+	    driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[1]/a")).click();
+
+	     // Wait for the page to fully load
+	 	  waitForPageLoad();
+	    
+	    //Confirm the IG Browser appears
+	    WebDriverWait wait1 = new WebDriverWait(driver, 60);
+	    WebElement element1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("BrowseImplementationGuides")));
+	    assertTrue("Could not find \"Browse Implementation Guides\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Browse Implementation Guides[\\s\\S]*$"));
+	       
+	    // Clear existing Search Criteria
+	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/button")).click();
+	    
+	     // Wait for the page to fully re-load
+	 	  waitForPageLoad();
+  } 
+  
   public void FindImplementationGuide(String implementationGuideName) throws Exception {
 	
-    //Open the IG Browser
-	driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")).click();
-    driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[1]/a")).click();
-
-    //Confirm the IG Browser appears
-    WebDriverWait wait = new WebDriverWait(driver, 60);
-    WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("BrowseImplementationGuides")));
-    assertTrue("Could not find \"Browse Implementation Guides\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Browse Implementation Guides[\\s\\S]*$"));
-       
-    // Clear existing Search Criteria
-    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/button")).click();
-    
+	// Wait for the page to fully load
+	  waitForPageLoad();
+	  
+	// Confirm the Search options are available
+		 WebDriverWait wait = new WebDriverWait(driver, 60);
+	 	 WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")));
+	 	    
     // Search for the Implementation Guide
     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/input")).sendKeys(implementationGuideName);
-
+    
+      // Wait for the page to fully load
+ 	     waitForPageLoad();
+ 	  
+    //Confirm the search is complete
+    WebDriverWait wait3 = new WebDriverWait(driver, 60);                    
+    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr[2]/td[4]")));    
+    
     //Confirm the correct IG is found
-    WebDriverWait wait2 = new WebDriverWait(driver, 60);                    
-    wait2.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[1]"), implementationGuideName));
-    assertTrue("Could not find \"Template Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
+    WebDriverWait wait4 = new WebDriverWait(driver, 120);                    
+    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[1]"), implementationGuideName));
+    assertTrue("Could not find \"Implementation Guide Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
  }
   
+  public void ConfirmIGEditor(String implementationGuideName) throws Exception
+  {
+	// Wait for the page to fully load
+      waitForPageLoad();
+      
+      // Confirm the Edit Implementation Guide Editor appears and click in some fields
+	    WebDriverWait wait = new WebDriverWait(driver, 60);
+	    WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("EditImplementationGuide")));	    
+	    assertTrue("Could not find \"Edit Implementation Guide\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Edit Implementation Guide[\\s\\S]*$"));
+	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div[2]/input")).click();         
+	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div[3]/input")).click();
+	    
+	    // Confirm the Template Types option is available.  
+	    driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+	    WebDriverWait wait9 = new WebDriverWait(driver, 60);
+	    WebElement element9 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[2]/a")));   
+
+	  // Wait for the page to fully re-load
+         waitForPageLoad();  
+         Thread.sleep(1000);
+     }
   public void SaveImplementationGuide(String implementationGuideName) throws Exception {
 		
       // Save the Implementation Guide
@@ -84,7 +139,8 @@ public class B_ImplementationGuideFunctions {
 	 // Click the OK button on the alert.
 	 alertDialog1.accept();
 
-	 // Wait for page to fully load
+	 // Wait for page to fully re-load
+	 waitForPageLoad();
 	 WebDriverWait wait1 = new WebDriverWait(driver, 5);		
 	 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[8]"))); 
 	 
@@ -104,10 +160,13 @@ public class B_ImplementationGuideFunctions {
 
   
   @Test
-  // TEST 1:  Browse an existing Implementation Guide
+  //Browse an existing Implementation Guide
   public void BrowseImplementationGuide(String implementationGuideName, String Item, String Primitive, String Entries, String fileName, String validationText, String templateType, String cardinality, 
 		  String customSchematron, String Permission, String Volume, String Category, String permissionUserName) throws Exception {
 	
+	  // Open the IG Browser
+	     OpenIGBrowser();
+	  
 	  // Find the Implementation Guide
 	  if (permissionUserName == "lcg.admin") 
 	     {
@@ -146,19 +205,27 @@ public class B_ImplementationGuideFunctions {
 	    {
 	    	driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[4]/div/button")).click();
 	    }
-    // Step 2 - Confirm the correct IG appears in the viewer 
+    // Confirm the correct IG appears in the viewer 
+	    
+	 // Wait for the page to fully load
+		  waitForPageLoad();
+		  
         WebDriverWait wait = new WebDriverWait(driver, 60);                     
   	    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[2]/div/h2"), implementationGuideName));
-        assertTrue("Could not find \"Template Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
+        assertTrue("Could not find \"Implementation Guide Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
     
     if (permissionUserName == "lcg.admin") 
 	    {
 	    // Notes Tab Validation
-    	
+   	 
+    	// Wait for the page to fully load
+		  waitForPageLoad();
+		  
     	WebDriverWait wait0 = new WebDriverWait(driver, 60);
  	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/ul/li[2]/a")));
     	driver.findElement(By.xpath("/html/body/div[2]/div/div/ul/li[2]/a")).click();
-	    WebDriverWait wait1 = new WebDriverWait(driver, 60);
+	    
+    	WebDriverWait wait1 = new WebDriverWait(driver, 60);
 	    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[3]/div[2]/table/thead/tr/th[2]"), "Item"));
 	    assertTrue("Could not find \"Item\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(Item) >= 0);
 	    
@@ -185,7 +252,6 @@ public class B_ImplementationGuideFunctions {
 	    WebDriverWait wait7 = new WebDriverWait(driver, 60);
 	    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[3]/div[5]/table/thead/tr/th[1]"), "Name"));	  
 	    assertTrue("Could not find \"File Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(fileName) >= 0);
-	  
 	    
 	 //Confirm the Edit Menu options are available
 	    // Click on the Edit top menu option and select Implementation Guide
@@ -205,10 +271,13 @@ public class B_ImplementationGuideFunctions {
 	    WebDriverWait wait9 = new WebDriverWait(driver, 60);
 	    WebElement element9 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[2]/a")));
 	    
-	    // Open the  Template Types Page and validate information in the Templates Types Tab
+		 // Wait for the page to fully load
+		    waitForPageLoad();
+	    
+	    // Open the Template Types Page and validate information in the Templates Types Tab
 	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[2]/a")).click(); 
-	    WebDriverWait wait10 = new WebDriverWait(driver, 60);
-	    WebElement element10 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/div[2]/input")));
+	    WebDriverWait wait10 = new WebDriverWait(driver, 60);                   
+	    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/div[1]"), "document"));
 		assertTrue("Could not find \"Template Type\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateType) >= 0);
 		  
 	    // Confirm the Cardinality Tab option is available
@@ -350,6 +419,9 @@ public class B_ImplementationGuideFunctions {
   public void PermissionImplementationGuide(String implementationGuideName, 
 		  String validationText, String permissionUserName) throws Exception {
 	  
+	  // Open the IG Browser
+	     OpenIGBrowser();
+	     
 	  // Find the Implementation Guide
 	  if (permissionUserName == "lcg.admin") 
 	     {
@@ -359,89 +431,103 @@ public class B_ImplementationGuideFunctions {
 	  // Launch the Implementation Guide Editor
 		if (permissionUserName == "lcg.admin") 
 		  {                              
-		  	driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[5]/div/a[2]")).click();
-		  	
+		  	driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[5]/div/a[2]")).click();  	
 		  }
 		else
 		  {
 		  	driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[4]/div/a[2]")).click();
 		  }
  
-            // Confirm the Implementation Guide Editor is loaded
-		    WebDriverWait wait = new WebDriverWait(driver, 60);
-		    WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("EditImplementationGuide")));	    
-		    assertTrue("Could not find \"Edit Implementation Guide\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Edit Implementation Guide[\\s\\S]*$"));
-		    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div[2]/input")).click();         
-		    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div[3]/input")).click();
+		 // Wait for the page to fully re-load
+            waitForPageLoad();
+        
+             ConfirmIGEditor("Test IHE PCC");
+          
+		    // Confirm the Permissions tab is visible  
+	        WebDriverWait wait = new WebDriverWait(driver, 60);
+		  	wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[5]/a"), "Permissions"));
 		    
-		    // Confirm the Template Types option is available.  
-		    driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-		    WebDriverWait wait3 = new WebDriverWait(driver, 60);
-		    WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[2]/a")));
-		    
-//		    // Confirm the correct IG appears in the Editor
-//		    WebDriverWait wait20 = new WebDriverWait(driver, 60);                    
-//	        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div[1]/input"), implementationGuideName));
-//	        assertTrue("Could not find \"Implementation Guide\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
-//		  	  
-      // Navigate to the permissions page
-         WebDriverWait wait4 = new WebDriverWait(driver, 60);
-         WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[2]/a")));
-       
-         driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[2]/a")).click();
-         driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[3]/a")).click();
-         driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[4]/a")).click();
-         driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[5]/a")).click();
-         
-         // Confirm the Permissions page appears
-	     WebDriverWait wait5 = new WebDriverWait(driver, 60);
-	     WebElement element5 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[1]/div[1]/strong")));
-	     assertTrue("Could not find \"Add Permission\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*View Permission[\\s\\S]*$"));
-   
-         // Click the Add option for View permissions and confirm the Add Permission form appears
-         driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[1]/div[2]/div/button")).click();
-         WebDriverWait wait6 = new WebDriverWait(driver, 60);
-   	     WebElement element6 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[1]/h4")));
-   	     assertTrue("Could not find \"Add Permission\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Add Permission[\\s\\S]*$"));
-      
-   	     // Select the Organization
-   	        driver.findElement(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[2]/div/div[1]/div[1]/div/input")).click();
+	      // Navigate to the permissions page
+	         WebDriverWait wait1 = new WebDriverWait(driver, 60);
+	         WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[2]/a")));       
+	         driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[2]/a")).click();
+	         driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[3]/a")).click();
+	         driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[4]/a")).click();
+	         driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[5]/a")).click();
+	         
+	         // Wait for the page to fully load
+			    waitForPageLoad();
+	         
+	         // Confirm the Permissions page appears
+	         WebDriverWait wait2 = new WebDriverWait(driver, 60);
+			 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[1]/div[1]/strong"), "View Permission"));
+			  assertTrue("Could not find \"Add Permission\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*View Permission[\\s\\S]*$"));
+	   
+	         // Click the Add option for View permissions and confirm the Add Permission form appears
+	         driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[1]/div[2]/div/button")).click();
+	         WebDriverWait wait3 = new WebDriverWait(driver, 60);
+	   	     WebElement element3 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[1]/h4")));
+	   	     assertTrue("Could not find \"Add Permission\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Add Permission[\\s\\S]*$"));
+	      
+	   	     // Select the Organization
+	   	        driver.findElement(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[2]/div/div[1]/div[1]/div/input")).click();
 
    	     // Click OK
    	        driver.findElement(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[3]/button[1]")).click();
-            Thread.sleep(1000);
+
+   	     // Wait for the page to fully re-load
+		    waitForPageLoad();
             
    	     // Confirm the View permissions were added.
-   	        WebDriverWait wait7 = new WebDriverWait(driver, 60);
-		  	wait7.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[2]/div[2]/div[1]/span[1]"), "Entire Organization (LCG)"));
+   	        WebDriverWait wait4 = new WebDriverWait(driver, 60);
+		  	wait4.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[2]/div[2]/div[1]/span[1]"), "Entire Organization (LCG)"));
 		         
+		 // Wait for the page to fully re-load
+		    waitForPageLoad();
+		    
+		    // Confirm the Edit Permission text appears
+	        WebDriverWait wait6 = new WebDriverWait(driver, 60);
+		  	wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[3]/div[1]/strong"), "Edit Permission"));
+	
    	     // Confirm the Edit Permission "Add" option is clickable
-   	        WebDriverWait wait8 = new WebDriverWait(driver, 60);
-   	        WebElement element8 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[3]/div[2]/div/button")));
+   	        WebDriverWait wait7 = new WebDriverWait(driver, 60);
+   	        WebElement element7 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[3]/div[2]/div/button")));
    	           
+   	     // Wait for the page to fully re-load
+		    waitForPageLoad();
+		    Thread.sleep(1000);
+			   
    	     // Click the Add Option for Edit permissions
-   	        driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[7]/a")).click();
-            driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[6]/a")).click();
-            driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[5]/a")).click();
-	        driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[3]/div[2]/div/button")).click();
+   	        driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[3]/div[2]/div/button")).click();
 	         
 	      // Confirm the Add Permission form appears
-	         WebDriverWait wait9 = new WebDriverWait(driver, 60);
-	   	     WebElement element9 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[1]/h4")));
-	   	     assertTrue("Could not find \"Add Permission\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Add Permission[\\s\\S]*$"));
+   	        WebDriverWait wait8 = new WebDriverWait(driver, 60);
+		  	wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[1]/h4"), "Add Permission"));
+		    assertTrue("Could not find \"Add Permission\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Add Permission[\\s\\S]*$"));
 	        
    	     // Select the Organization
    	        driver.findElement(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[2]/div/div[1]/div[1]/div/input")).click();
 
    	     // Click OK
    	        driver.findElement(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[3]/button[1]")).click();
-   	        Thread.sleep(1000);
+
+   	     // Confirm the Edit permissions were added.
+	        WebDriverWait wait9 = new WebDriverWait(driver, 60);
+		  	wait4.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[5]/div[1]/span[1]"), "Entire Organization (LCG)"));
+		   
+   	     // Wait for the page to fully re-load
+		    waitForPageLoad();
+		    Thread.sleep(1000);
    	        
    	        // Confirm the user is returned to the Permissions page
    	        WebDriverWait wait10 = new WebDriverWait(driver, 60);
    	        WebElement element10 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[5]/div[1]/div[1]/strong")));
    	        assertTrue("Could not find \"View Permission\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*View Permission[\\s\\S]*$"));
    	  
+   	        // Confirm the Notify New Users option is available.
+	        WebDriverWait wait11 = new WebDriverWait(driver, 60);
+		  	wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[2]"), "Notify new users and groups that they have been granted permissions"));
+		    
    	        // Click the option to Notify New users they have been granted permissions 	                                        
    	           driver.findElement(By.xpath("/html/body/div[2]/div/div/div[2]/input")).click();
 		        
@@ -458,18 +544,9 @@ public class B_ImplementationGuideFunctions {
 			return;
 		}
 
-    	 //Open the IG Browser
-    	driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")).click();
-        driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[1]/a")).click();
- 
-  	   //Confirm the IG Browser Opens
-	    WebDriverWait wait = new WebDriverWait(driver, 60);
-	    WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("BrowseImplementationGuides")));
-	    assertTrue("Could not find \"Browse Implementation Guides\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Browse Implementation Guides[\\s\\S]*$"));
-      
-	    // Clear existing Search Criteria
-	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/button")).click();
-	    
+    	 // Open the IG Browser
+	     OpenIGBrowser();
+	     
 	    // Search for the Implementation Guide
 	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/input")).sendKeys(implementationGuideName);
 	        
@@ -494,8 +571,8 @@ public class B_ImplementationGuideFunctions {
 		    }
 
 		    //Confirm Correct Form Opens and Enter IG Meta Data
-		     WebDriverWait wait1 = new WebDriverWait(driver, 60);
-			 WebElement element1 = wait1.until(ExpectedConditions.visibilityOfElementLocated(By.id("EditImplementationGuide")));
+		     WebDriverWait wait = new WebDriverWait(driver, 60);
+			 WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("EditImplementationGuide")));
 			 assertTrue("Could not find \"Edit Implementation Guides\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Edit Implementation Guide[\\s\\S]*$"));
 			 
 			 // Add IG Name
@@ -530,11 +607,11 @@ public class B_ImplementationGuideFunctions {
 		    // Find the Implementation Guide
 			  if (permissionUserName == "lcg.admin") 
 			     {
-				  SaveImplementationGuide("Automation Test IG");   
+				  SaveImplementationGuide("1Automation Test IG");   
 			     }
 			  if (permissionUserName == "hl7.member") 
 			  	 {
-				  SaveImplementationGuide("HL7 Member Test IG");
+				  SaveImplementationGuide("1HL7 Member Test IG");
 			  	 }   
 		      createdImplementationGuide = true;
 		      			  
@@ -542,21 +619,24 @@ public class B_ImplementationGuideFunctions {
 		     ReturnHome("Welcome to Trifolia Workbench");    
 } 
 
-//TEST 4: Find and Edit an Implementation Guide
+//Find and Edit an Implementation Guide
     
 @Test
     public void EditImplementationGuide(String implementationGuideName, String permissionUserName, String customSchematron) throws Exception {
 	if (createdImplementationGuide)
 	{
 
+		 // Open the IG Browser
+	     OpenIGBrowser();
+	     
 	  // Find the Implementation Guide
 	  if (permissionUserName == "lcg.admin") 
 	     {
-		  FindImplementationGuide("Automation Test IG");   
+		  FindImplementationGuide("1Automation Test IG");   
 	     }
 	  if (permissionUserName == "hl7.member") 
 	  	 {
-		  FindImplementationGuide("HL7 Member Test IG");
+		  FindImplementationGuide("1HL7 Member Test IG");
 	  	 }
 		  
 	  // Open the IG Editor
@@ -569,12 +649,10 @@ public class B_ImplementationGuideFunctions {
   		{                              
     	  driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[4]/div/a")).click();
   		}
-      
-      // Confirm the IG Editor opens 
-      WebDriverWait wait1 = new WebDriverWait(driver, 60);
-	  WebElement element1 = wait1.until(ExpectedConditions.visibilityOfElementLocated(By.id("EditImplementationGuide")));
-	  assertTrue("Could not find \"Edit Implementation Guides\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Edit Implementation Guide[\\s\\S]*$"));   
-	  
+        
+      // Confirm the IG Editor opens with the correct IG
+         ConfirmIGEditor("1Automation Test IG");
+          
 	  // Add Custom Schematron
 	      // Wait for page to load
 		  WebDriverWait wait2 = new WebDriverWait(driver, 60);
@@ -611,11 +689,11 @@ public class B_ImplementationGuideFunctions {
 	      // Find the Implementation Guide
 		  if (permissionUserName == "lcg.admin") 
 		     {
-			  SaveImplementationGuide("Automation Test IG");   
+			  SaveImplementationGuide("1Automation Test IG");   
 		     }
 		  if (permissionUserName == "hl7.member") 
 		  	 {
-			  SaveImplementationGuide("HL7 Member Test IG");
+			  SaveImplementationGuide("1HL7 Member Test IG");
 		  	 }	
 		  
 		     // Return to the Trifolia Home Page
@@ -629,12 +707,15 @@ public class B_ImplementationGuideFunctions {
 } 
 
 //TEST 5: Web View of an Existing Implementation Guide
-public void WebViewImplementationGuide(String implementationGuideName, String iGDisplayName, String overviewText, String templateText, String valueSetText, String codeSystemText, String permissionUserName) throws Exception {
+public void WebViewImplementationGuide(String baseURL, String implementationGuideName, String iGDisplayName, String overviewText, String templateText, String valueSetText, String codeSystemText, String permissionUserName) throws Exception {
 
+	 // Open the IG Browser
+        OpenIGBrowser();
+        
 	  // Find the Implementation Guide
 	  if (permissionUserName == "lcg.admin") 
 	     {
-		  FindImplementationGuide("Healthcare Associated Infection Reports Release 9");   
+		  FindImplementationGuide("Healthcare Associated Infection Reports Release 2 DSTU 1 V8");   
 	     }
 	  if (permissionUserName == "hl7.member") 
 	  	 {
@@ -653,39 +734,57 @@ public void WebViewImplementationGuide(String implementationGuideName, String iG
    	   driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[5]/div/a[1]")).click();
    }  
 	       
+	   // Wait for the page to fully load
+	   	  waitForPageLoad();
+   
 	      for (String winHandle : driver.getWindowHandles()) {
 		 // switch focus of WebDriver to WebView page
 		   driver.switchTo().window(winHandle); 
 		   
-		   // driver.get("http://dev.trifolia.lantanagroup.com/IG/View/2227#/overview)");
-		    driver.get("http://staging.lantanagroup.com:1234/IG/View/2231#/overview");
-		   
+		    if (baseURL == "http://dev.trifolia.lantanagroup.com/")
+		    {
+		    	driver.get("http://dev.trifolia.lantanagroup.com/IG/View/3247#/overview");
+		    }
+		    if (baseURL == "http://staging.lantanagroup.com:1234/") 
+		    {
+		    	driver.get("http://staging.lantanagroup.com:1234/IG/View/2231#/overview");
+		    }
+		    
+		    // Wait for the page to fully re-load
+		    waitForPageLoad();
+		    WebDriverWait wait = new WebDriverWait(driver, 120);                    
+		    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));       
+	
 		   // Wait for the Web Viewer to be loaded
-		   WebDriverWait wait = new WebDriverWait(driver, 120);
-		   WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div[1]/div/div/a")));
-		   assertTrue("WebView Home Page did not appear", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Welcome to the Web-based Implementation Guide[\\s\\S]*$"));	   
-		     
+		    WebDriverWait wait1 = new WebDriverWait(driver, 60);                    
+		    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div/div[1]/div/h3"), "Table of Contents"));
+		    assertTrue("WebView Home Page did not appear", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Welcome to the Web-based Implementation Guide[\\s\\S]*$"));	    		    
+		   	   
 	    // Confirm correct IG is loaded  
-		   WebDriverWait wait3 = new WebDriverWait(driver, 120);                   
-		   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div/div[1]/div/h2"), "Welcome to the Web-based Implementation Guide for Automation Test IG Display Name")); 	    
-		   // WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/nav/div/div[2]/ul/li[2]/a")));
-	       assertTrue("Could not find \"Implementation Guide Display Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(iGDisplayName) >= 0);
+		    assertTrue("Could not find \"Implementation Guide Display Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(iGDisplayName) >= 0);
 	    
 	// Overview page validation
+	     
+	    // Open the Overview Page 
 	    WebDriverWait wait4 = new WebDriverWait(driver, 60);
 		WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div[1]/div/h4[1]/a")));
-	    
-	    // Open the Overview Page and confirm the overview page is loaded   
 		driver.findElement(By.xpath("/html/body/div/div[1]/div/h4[1]/a")).click();
-	    WebDriverWait wait5 = new WebDriverWait(driver, 60);
+	    
+		// Wait for the page to fully load
+	   	  waitForPageLoad();
+	   	  
+		// Confirm the overview page is loaded 
+		WebDriverWait wait5 = new WebDriverWait(driver, 60);
 	    WebElement element5 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h1")));
 	  
 	    //Validate the text within the overview page
-	    assertTrue("Could not find \"Overview\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(overviewText) >= 0);
+	    WebDriverWait wait6 = new WebDriverWait(driver, 60);                    
+	    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div/div[1]/div/div/div[1]/div[1]/h1/span[2]"), overviewText));
+	    assertTrue("Could not find \"Overview Text\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(overviewText) >= 0);
 	    
 	    //Return to the Web IG Home page and confirm the Home page appears
 	    driver.findElement(By.xpath("/html/body/div/div[1]/span[1]/span/a")).click();
-	    WebDriverWait wait6 = new WebDriverWait(driver, 60);
+	    WebDriverWait wait7 = new WebDriverWait(driver, 60);
 	    WebElement element6 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h2")));
 	
 	 //Template page validation
@@ -693,85 +792,106 @@ public void WebViewImplementationGuide(String implementationGuideName, String iG
 	    // Open the Template Page 
 		driver.findElement(By.xpath("/html/body/div/div[1]/div/h4[2]/a")).click();
 	
+		// Wait for the page to fully load
+	   	  waitForPageLoad();
+	   	  
 		//Confirm the Template page is loaded
-	    WebDriverWait wait7 = new WebDriverWait(driver, 60);
-	    WebElement element7 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h1")));
-	  
-	    //Validate the text within the Template page
-	    assertTrue("Could not find \"Template\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateText) >= 0);
-		   
-	    //Return to the Web IG Home page and confirm the Home page appears
-	    driver.findElement(By.xpath("/html/body/div/div[1]/span[1]/span/a")).click();
 	    WebDriverWait wait8 = new WebDriverWait(driver, 60);
-	    WebElement element8 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h2")));
-	
-     //Value Sets page validation
-	    
-	    // Open the Value Sets Page 
-		driver.findElement(By.xpath("/html/body/div/div[1]/div/h4[3]/a")).click();
-	
-		//Confirm the Value Sets page is loaded
-	    WebDriverWait wait9 = new WebDriverWait(driver, 60);
-	    WebElement element9 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h1")));
+	    WebElement element8 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h1")));
 	  
 	    //Validate the text within the Template page
-	    assertTrue("Could not find \"Value Sets\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(valueSetText) >= 0);
+	    WebDriverWait wait9 = new WebDriverWait(driver, 60);                    
+	    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div/div[1]/div/accordion/div/div[1]/div[2]/div/div[2]/ul/li[1]/a"), templateText));
+	    assertTrue("Could not find \"Template Text\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateText) >= 0);
 		   
 	    //Return to the Web IG Home page and confirm the Home page appears
 	    driver.findElement(By.xpath("/html/body/div/div[1]/span[1]/span/a")).click();
 	    WebDriverWait wait10 = new WebDriverWait(driver, 60);
 	    WebElement element10 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h2")));
 	
-    //Code Systems page validation
+     //Value Sets page validation
+	    
+	    // Wait for the page to fully load
+	   	  waitForPageLoad();
+	   	  
+	    // Open the Value Sets Page 
+		driver.findElement(By.xpath("/html/body/div/div[1]/div/h4[3]/a")).click();
+	
+		//Confirm the Value Sets page is loaded
+	    WebDriverWait wait11 = new WebDriverWait(driver, 60);
+	    WebElement element11 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h1")));
+	  
+	    //Validate the text within the Value Sets page
+	    WebDriverWait wait12 = new WebDriverWait(driver, 60);                    
+	    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div/div[1]/div/div[3]/div/div/a/strong"), valueSetText));
+	    assertTrue("Could not find \"Value Set Text\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(valueSetText) >= 0);
+		   
+	    //Return to the Web IG Home page 
+	    driver.findElement(By.xpath("/html/body/div/div[1]/span[1]/span/a")).click();
+	    
+	    // Wait for the page to fully load
+	   	  waitForPageLoad();
+	   	  
+	   	// Confirm the Home page appears
+	    WebDriverWait wait13 = new WebDriverWait(driver, 60);
+	    WebElement element13 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h2")));
+	
+        //Code Systems page validation
 	    
 	    // Open the Code Systems Page 
 		driver.findElement(By.xpath("/html/body/div/div[1]/div/h4[4]/a")).click();
 	
+		// Wait for the page to fully load
+	   	  waitForPageLoad();
+	   	  
 		//Confirm the Code Systems page is loaded
-	    WebDriverWait wait11 = new WebDriverWait(driver, 60);
-	    WebElement element11 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h1")));
+	    WebDriverWait wait14 = new WebDriverWait(driver, 60);
+	    WebElement element14 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h1")));
 	  
-	    //Validate the text within the Template page
-	    assertTrue("Could not find \"Code Systems\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(codeSystemText) >= 0);
+	    //Validate the text within the Code Systems page
+	    WebDriverWait wait15 = new WebDriverWait(driver, 60);                    
+	    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div/div[1]/div/div/table/tbody/tr[5]/td[1]"), codeSystemText));
+	    assertTrue("Could not find \"Code System Text\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(codeSystemText) >= 0);
 		   
-	    //Return to the Web IG Home page and confirm the Home page appears
+	    //Return to the Web IG Home page 
 	    driver.findElement(By.xpath("/html/body/div/div[1]/span[1]/span/a")).click();
-	    WebDriverWait wait12 = new WebDriverWait(driver, 60);
-	    WebElement element12 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[1]/div/h2")));
-	
-	// Step 5 - Return to the Trifolia Home Page    
-	    // driver.get("http://dev.trifolia.lantanagroup.com/IGManagement/List");
-	    driver.get("http://staging.lantanagroup.com:1234/IGManagement/List");
-		 
+	    
+		// Wait for the page to fully load
+	   	  waitForPageLoad();
+	   	
+	   	 // Switch focus to Trifolia Implementation Guide listing Page
+		   
+		    // driver.switchTo().window(parentHandle);    http://dev.trifolia.lantanagroup.com/IGManagement/List
+		      
+		      if (baseURL == "http://dev.trifolia.lantanagroup.com/")
+			    {
+		    	  driver.navigate().to("http://dev.trifolia.lantanagroup.com/IGManagement/List");
+			    }
+			    if (baseURL == "http://staging.lantanagroup.com:1234/") 
+			    {
+			    	driver.get("http://staging.lantanagroup.com:1234//IGManagement/List");
+			    }
+			    
+	    // Return to the Trifolia Home Page
+	     ReturnHome("Welcome to Trifolia Workbench"); 	     
 	 }
-	      
-	 // Switch focus to Trifolia Home Page
-	   Thread.sleep(5000);
-	   driver.switchTo().window(parentHandle);    
-   
-	     // Return to the Trifolia Home Page
-	     ReturnHome("Welcome to Trifolia Workbench");    
+	         
 }
 
 //TEST 6: Delete an Implementation Guide and it's Version
     @Test
     public void DeleteImplementationGuide(String implementationGuideVersioned, String implementationGuideName, String permissionUserName) throws Exception {
     	
-     //Locate the Versioned Implementation Guide
-	      driver.findElement(By.xpath("//*[@id=\"appnav\"]/div/div[2]/ul/li[2]/a")).click();
-	  	  driver.findElement(By.xpath("//*[@id=\"appnav\"]/div/div[2]/ul/li[2]/ul/li[1]/a")).click();
-	  
-	      //Confirm the IG Browser opens Opens
-	  	  WebDriverWait wait = new WebDriverWait(driver, 60);
-	      WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("BrowseImplementationGuides")));
-	      assertTrue("Could not find \"Browse Implementation Guides\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Browse Implementation Guides[\\s\\S]*$"));
-	 	   
+    	
+    	 // Open the IG Browser
+	        OpenIGBrowser();
+	     
 	  	  //Search for the IG to be Deleted
 	      driver.findElement(By.xpath("//*[@id=\"BrowseImplementationGuides\"]/div/div/button")).click();
 	      driver.findElement(By.xpath("//*[@id=\"SearchQuery\"]")).sendKeys(implementationGuideVersioned);
 	      
 	      //Confirm the correct IG is found
-	        WebDriverWait wait20 = new WebDriverWait(driver, 60);                    
+	        WebDriverWait wait = new WebDriverWait(driver, 60);                    
 		    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[1]"), implementationGuideName));
 		    assertTrue("Could not find \"Implementation Guide Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
 	      

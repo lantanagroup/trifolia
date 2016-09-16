@@ -88,22 +88,25 @@ public class AllUsersSpecificFunctions {
 		this.IGFunctions.PermissionImplementationGuide("Test IHE PCC", "CDA",
 				"lcg.admin");
 
-		// Test Creating the "Automation Test IG"
-		this.IGFunctions.CreateImplementationGuide("Automation Test IG",
-				"Automation Test IG Display Name", "Automation Test Web IG",
+		// Test Creating the "1Automation Test IG"
+		this.IGFunctions.CreateImplementationGuide("1Automation Test IG",
+				"1Automation Test IG Display Name", "Automation Test Web IG",
 				"Automation Test Web IG for testing", "CDA", "lcg.admin");
 
-		// Test Editing the "Automation Test IG"
+		// Test Editing the "1Automation Test IG"
 		this.IGFunctions
 				.EditImplementationGuide(
-						"Automation Test IG",
+						"1Automation Test IG",
 						"lcg.admin",
 						"<sch:rule context=\"cda:ClinicalDocument\"> <sch:assert test=\"count(cda:templateId[@root='1.2.3.4.5.6.7.8.9.10'])=1\">This document SHALL conform to template \"Automation Test Template\" (templateId: 1.2.3.4.5.6.7.8.9.10).</sch:assert> </sch:rule>");
 
-		// Test WebViewing the Automation Test IG
-		// this.IGFunctions.WebViewImplementationGuide("Automation Test IG",
-		// "Automation Test IG Display Name", "Overview", "Template Hierarchy",
-		// "Value Sets", "Code Systems", "lcg.admin");
+		 // Test WebViewing the Healthcare Associated Infection Reports Release 2 DSTU 1 V8 IG
+		 this.IGFunctions.WebViewImplementationGuide("http://dev.trifolia.lantanagroup.com/", 
+		 "Healthcare Associated Infection Reports Release 2 DSTU 1 V8",
+		 "NHSN Healthcare Associated", 
+		 "Structure of This Guide", 
+		 "Antimicrobial Resistance Option (ARO) Summary Report (V2)",
+		 "Administrative Gender (HL7 V3)", "SNOMED CT", "lcg.admin");
 
 		// *** TEMPLATE TESTS ***
 		// ------------------------------
@@ -120,22 +123,22 @@ public class AllUsersSpecificFunctions {
 
 		// Test Creating the "Automation Test Template"
 		this.TemplateFunctions.CreateTemplate("Automation Test Template",
-				"urn:oid:1.2.3.4.5.6.7.8.9.10", "Automation Test IG",
+				"urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG",
 				"CDA: document", "Test Template for Automation", "lcg.admin");
 
 		// Test Editing the "Automation Test Template"
 		this.TemplateFunctions.EditTemplate("Automation Test Template",
-				"urn:oid:1.2.3.4.5.6.7.8.9.10",
+				"urn:oid:1.2.3.4.5.6.7.8.9.10", "Allergies - Test",
 				"Add Notes to the Automation Test Template", "lcg.admin");
 
 		// Test Copying the "Automation Test Template"
 		this.TemplateFunctions.CopyTemplate("Automation Test Template",
-				"urn:oid:1.2.3.4.5.6.7.8.9.10", "Automation Test IG",
+				"urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG",
 				"Automation Test Template Copy", "lcg.admin");
 
 		// Test Moving the "Automation Test Template Copy"
 		this.TemplateFunctions.MoveTemplate("Automation Test Template Copy",
-				"urn:hl7ii:1.2.3.4.5.6.7.8.9.10", "Consolidation V2",
+				"urn:hl7ii:1.2.3.4.5.6.7.8.9.10", "ACCF DEMO",
 				"Section", "lcg.admin");
 
 		// Test Deleting the "Automation Test Template Copy"
@@ -165,8 +168,7 @@ public class AllUsersSpecificFunctions {
 				"Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10",
 				"CDA: Document", "Analyst", "SHOULD", "lcg.admin");
 
-		// Test Binding Value Sets and Templates to the
-		// "Automation Test Template" constraints
+		// Test Binding Value Sets and Templates to the "Automation Test Template" constraints
 		this.ConstraintFunctions.constraintBinding("Automation Test Template",
 				"CDA: Document", "2.16.840.1.113883.3.2898.11.22",
 				"Cause of Injury", "ACCF Family History", "lcg.admin");
@@ -207,21 +209,21 @@ public class AllUsersSpecificFunctions {
 
 		// Test Balloting and Publishing the
 		// "Automation Test Implementation Guide"
-		this.PublishingFunctions.BallotAndPublishIG("Automation Test IG",
+		this.PublishingFunctions.BallotAndPublishIG("1Automation Test IG",
 				"lcg.admin", "Ballot");
 
 		// Test Versioning the "Automation Test Implementation Guide"
-		this.PublishingFunctions.VersionIG("Automation Test IG",
-				"Automation Test IG V2", "lcg.admin");
+		this.PublishingFunctions.VersionIG("1Automation Test IG",
+				"1Automation Test IG V2", "lcg.admin");
 
 		// Test Versioning the "Automation Test Template"
 		this.PublishingFunctions.VersionTemplate("Automation Test Template",
 				"urn:oid:1.2.3.4.5.6.7.8.9.10", "Automation Test Template V2",
-				"lcg.admin");
+				"Adding Notes to Versioned Template", "lcg.admin");
 
-		// Test Deleting the "Automation Test IG V2" and "Automation Test IG"
-		this.IGFunctions.DeleteImplementationGuide("Automation Test IG V2",
-				"Automation Test IG", "lcg.admin");
+		// Test Deleting the "1Automation Test IG V2" and "1Automation Test IG"
+		this.IGFunctions.DeleteImplementationGuide("1Automation Test IG V2",
+				"1Automation Test IG", "lcg.admin");
 
 		// TERMINOLOGY TESTS
 		// ------------------------------
@@ -304,10 +306,12 @@ public class AllUsersSpecificFunctions {
 
 		// Lantana Administrator Logout
 		this.LoginFunctions.LCGLogout("lcg.admin");
-		// //=======================================================================================================================================================================================================
-		// // PART II - LANTANA USER TESTS
-		// //
-		// ========================================================================================================================================================================================================
+		
+		
+ //=======================================================================================================================================================================================================
+ // PART II - LANTANA USER TESTS
+ //
+//  ========================================================================================================================================================================================================
 
 		// Testing Logging into Trifolia Dev as Lantana User
 		this.LoginFunctions.LCGUserLogin("lcg.user",
@@ -386,17 +390,17 @@ public class AllUsersSpecificFunctions {
 				"entry", "[1..*]", "Rule(s) Definition", "", "", "", "",
 				"hl7.member");
 
-		// Test Creating the "HL7 Member Test IG"
-		this.IGFunctions.CreateImplementationGuide("HL7 Member Test IG",
-				"HL7 Member Test IG Display Name",
-				"HL7 Member Test IG IG Web Name",
-				"HL7 Member Test IG IG Web Description", "eMeasure",
+		// Test Creating the "1HL7 Member Test IG"
+		this.IGFunctions.CreateImplementationGuide("1HL7 Member Test IG",
+				"1HL7 Member Test IG Display Name",
+				"1HL7 Member Test IG IG Web Name",
+				"1HL7 Member Test IG IG Web Description", "eMeasure",
 				"hl7.member");
 
-		// Test Editing the "HL7 Member Test IG"
+		// Test Editing the "1HL7 Member Test IG"
 		this.IGFunctions
 				.EditImplementationGuide(
-						"HL7 Member Test IG",
+						"1HL7 Member Test IG",
 						"hl7.member",
 						"<sch:rule context=\"cda:ClinicalDocument\"> <sch:assert test=\"count(cda:templateId[@root='2.2.2.2.2.2.2.2'])=1\">This document SHALL conform to template \"HL7 Member Test Template\" (templateId: 2.2.2.2.2.2.2.2).</sch:assert> </sch:rule>");
 
@@ -415,17 +419,17 @@ public class AllUsersSpecificFunctions {
 
 		// Test Creating the "HL7 Member Test Template"
 		this.TemplateFunctions.CreateTemplate("HL7 Member Test Template",
-				"urn:oid:2.2.2.2.2.2.2.2", "HL7 Member Test IG",
+				"urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG",
 				"eMeasure: document", "Test Template HL7 Member", "hl7.member");
 
 		// Test Editing the "HL7 Member Test Template"
 		this.TemplateFunctions.EditTemplate("HL7 Member Test Template",
-				"urn:oid:2.2.2.2.2.2.2.2",
+				"urn:oid:2.2.2.2.2.2.2.2", "Allergies - Test",
 				"Add Notes to the HL7 Member Test Template", "hl7.member");
 
 		// Test Copying the "HL7 Member Test Template"
 		this.TemplateFunctions.CopyTemplate("HL7 Member Test Template",
-				"urn:oid:2.2.2.2.2.2.2.2", "HL7 Member Test IG",
+				"urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG",
 				"HL7 Member Test Template Copy", "hl7.member");
 
 		// Test Moving the "HL7 Member Test Template Copy"
@@ -502,21 +506,21 @@ public class AllUsersSpecificFunctions {
 
 		// Test Balloting and Publishing the
 		// "HL7 Member Test Implementation Guide"
-		this.PublishingFunctions.BallotAndPublishIG("HL7 Member Test IG",
+		this.PublishingFunctions.BallotAndPublishIG("1HL7 Member Test IG",
 				"hl7.member", "Ballot");
 
 		// Test Versioning the "HL7 Member Test Implementation Guide"
-		this.PublishingFunctions.VersionIG("HL7 Member Test IG",
-				"HL7 Member Test IG V2", "hl7.member");
+		this.PublishingFunctions.VersionIG("1HL7 Member Test IG",
+				"1HL7 Member Test IG V2", "hl7.member");
 
 		// Test Versioning the "HL7 Member Test Template"
 		this.PublishingFunctions.VersionTemplate("HL7 Member Test Template",
 				"urn:oid:2.2.2.2.2.2.2.2", "HL7 Member Test Template V2",
-				"hl7.member");
+				"Adding Notes to Versioned Template", "hl7.member");
 
-		// Test Deleting the "HL7 Member Test IG V2" and "HL7 Member Test IG"
-		this.IGFunctions.DeleteImplementationGuide("HL7 Member Test IG V2",
-				"HL7 Member Test IG", "hl7.member");
+		// Test Deleting the "1HL7 Member Test IG V2" and "1HL7 Member Test IG"
+		this.IGFunctions.DeleteImplementationGuide("1HL7 Member Test IG V2",
+				"1HL7 Member Test IG", "hl7.member");
 
 		// *** TERMINOLOGY TESTS ***
 		// ------------------------------

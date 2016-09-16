@@ -43,13 +43,79 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 //                           PART I - EXPORT TEMPLATES to MS. WORD
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+  public void waitForPageLoad() 
+  {
+	WebDriverWait wait = new WebDriverWait(driver, 30);
+	     wait.until(ExpectedConditions.jsReturnsValue("return document.readyState ==\"complete\";"));		
+  }
+  
+  public void OpenExportWordIGBrowser()
+  {
+	  // Wait for the page to fully load
+ 	     // waitForPageLoad();
+ 	  
+		// Confirm Welcome Message is present
+		WebDriverWait wait = new WebDriverWait(driver, 60);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/h2"),"Welcome to Trifolia Workbench!"));
+		assertTrue("Unable to confirm Login",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S][\\s\\S]*$"));
+
+	    //Open the Export IG Browser        
+		driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/a")).click();
+	    driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/ul/li[1]/a")).click();
+
+	     // Wait for the page to fully load
+	 	  // waitForPageLoad();
+	    
+	 	// Confirm the Export To Word page appears
+	 	  	driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+	 	  	WebDriverWait wait1 = new WebDriverWait(driver, 60);
+	 	    WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/p/a")));
+	 	    assertTrue("Could not find \"Export MS Word\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Export MS Word[\\s\\S][\\s\\S]*$"));
+	 		    
+	    // Clear existing Search Criteria
+	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/button")).click();
+	    
+	     // Wait for the page to fully re-load
+	 	  // waitForPageLoad();
+  } 
+  
+  public void FindImplementationGuide(String implementationGuideName) throws Exception {
+		
+		// Wait for the page to fully load
+		  // waitForPageLoad();
+		  
+		// Confirm the Search options are available
+			 WebDriverWait wait = new WebDriverWait(driver, 60);
+		 	 WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")));
+		 	    
+	    // Search for the Implementation Guide
+	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/input")).sendKeys(implementationGuideName);
+	    
+	      // Wait for the page to fully load
+	 	  // waitForPageLoad();
+	 	  
+//	    //Confirm the search is complete
+//	    WebDriverWait wait3 = new WebDriverWait(driver, 60);                    
+//	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr[2]/td[4]")));    
+	    
+	    //Confirm the correct IG is found
+	    WebDriverWait wait4 = new WebDriverWait(driver, 120);                    
+	    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[1]"), implementationGuideName));
+	    assertTrue("Could not find \"Template Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
+	 }
   public void ReturnHome(String welcomeMessage) throws Exception {
+	  
+		// Wait for the page to fully load
+	       // waitForPageLoad();
 	  
 	   // Return to the Trifolia Home Page
 	    driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[1]/a")).click();
 	    WebDriverWait wait = new WebDriverWait(driver, 60);
 	    WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("appnav")));
 	    
+		// Wait for the page to fully load
+		  // waitForPageLoad();
+		  
 	    //Confirm the Welcome Message appears
 		WebDriverWait wait1 = new WebDriverWait(driver, 60);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/h2"), welcomeMessage));
@@ -97,9 +163,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 		    driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
 			driver.findElement(By.xpath("/html/body/div[2]/div/form/div/button")).click();
 
-	     // Wait for page to refresh
-	      WebDriverWait wait2 = new WebDriverWait(driver, 60);
-	     WebElement element2 = wait2.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/form/div/button")));
+		// Wait for the page to fully load
+		  // waitForPageLoad();
+			  
+	     // Wait for Export to Complete
+	       WebDriverWait wait2 = new WebDriverWait(driver, 60);
+	       WebElement element2 = wait2.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/form/div/button")));
 	     
 	     // Return to the Trifolia Home Page
 	     ReturnHome("Welcome to Trifolia Workbench");    
@@ -157,27 +226,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
   @Test
     public void ExportTemplateToWord(String implementationGuideName, String baseURL, String permissionUserName) throws Exception {  
     
-     //Open the Export Browser
-  	driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/a")).click();
-  	driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/ul/li[1]/a")).click();
+	  OpenExportWordIGBrowser();
 
-  	// Confirm the Export To Word page appears
-  	driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
-  	WebDriverWait wait = new WebDriverWait(driver, 60);
-    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/p/a")));
-    assertTrue("Could not find \"Export MS Word\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Export MS Word[\\s\\S][\\s\\S]*$"));
-	 
-    // Clear the Existing Search Criteria 
-    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/button")).click();
-    
-    // Enter the new Search Criteria
-  	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/input")).sendKeys(implementationGuideName);
-
-  	// Confirm the correct IG is returned
-  	WebDriverWait wait2 = new WebDriverWait(driver, 60);                   
-	wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr[1]/td[1]"), implementationGuideName));
-  	assertTrue("Could not find \"Implementation Guide Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
-  	   
+	  FindImplementationGuide("QRDA Category III");
+	  	   
   	//launch the Export Options form
   	    if (permissionUserName == "lcg.admin" ) 
            {
@@ -199,6 +251,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 	    	  Thread.sleep(2000);
 	       }
    
+  	// Wait for the page to fully load
+	     // waitForPageLoad();
+	     
+  	 // Confirm the Export to Word form appears
+	  	WebDriverWait wait = new WebDriverWait(driver, 60);                   
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/form/div/h2"), "Export Templates/Profiles to MS Word"));
+  	  
     // Complete the Trifolia Export Form or the HL7 License Agreement page for HL7 Members and Users
   	    
   	   //  Accept Alert
@@ -219,6 +278,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
       }
       
 
+   
   	if ((driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Export Templates/Profiles to MS Word[\\s\\S][\\s\\S]*$")))
   	   {
   		     CompleteMSWordExport();   

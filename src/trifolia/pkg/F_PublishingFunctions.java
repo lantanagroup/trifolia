@@ -48,41 +48,77 @@ public class F_PublishingFunctions {
 //                               PART I - CREATE, EDIT and DELETE TEMPLATE XML SAMPLE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-public void OpenTemplateBrowser() throws Exception 
+  public void waitForPageLoad() 
   {
-     // Open the Template Browser
-	    driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")).click();
-	    driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[2]/a")).click();
-     
-	    // Confirm the Template Listing appears
-		  WebDriverWait wait = new WebDriverWait(driver, 60);                    
-		  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/thead/tr[1]/th[2]"), "Identifier"));
-	 
+	WebDriverWait wait = new WebDriverWait(driver, 30);
+	     wait.until(ExpectedConditions.jsReturnsValue("return document.readyState ==\"complete\";"));		
+  }
+	  
+  public void OpenTemplateBrowser() throws Exception 
+	  {
+		  // Wait for page to fully load
+		  // waitForPageLoad();
+		  
+	     // Open the Template Browser
+		   WebDriverWait wait = new WebDriverWait(driver, 60);                               
+	       WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a"))); 
+		   driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")).click();
+		   WebDriverWait wait1 = new WebDriverWait(driver, 60);
+		   WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[2]/a"))); 
+		   driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[2]/a")).click();
+
+		  // Confirm page completely loads
+		  // waitForPageLoad();
+		  
 		// Confirm Template Browser opens
-		 WebDriverWait wait1 = new WebDriverWait(driver, 60);
-		 WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("BrowseTemplates")));
+		 WebDriverWait wait2 = new WebDriverWait(driver, 60);
+		 WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("BrowseTemplates")));
 		 assertTrue("Could not find \"Browse Templates\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Browse Templates[\\s\\S]*$"));
 	 
-  }
+		 // Confirm Correct Page Title appears
+		 WebDriverWait wait3 = new WebDriverWait(driver, 60);                    
+		 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h3"), "Browse Templates/Profiles"));
+}
+	  
+public void ClearExistingSearch() throws Exception
+	  {
+		  // Wait for the page to fully load
+		  // waitForPageLoad();
+		  
+		  // Confirm the Template Listing appears
+		  WebDriverWait wait = new WebDriverWait(driver, 60);                    
+		  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/thead/tr[1]/th[2]"), "Identifier"));
+		
+	 	  // Clear existing Search Criteria 
+	  	   driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+	  	   driver.findElement(By.xpath("/html/body/div[2]/div/div/form/div/span/button[1]")).click();
+	  	   driver.findElement(By.xpath("/html/body/div[2]/div/div/form/div/span/button[1]")).click();
+		 
+		   // Clear existing Search Filters
+		  driver.findElement(By.xpath("/html/body/div[2]/div/div/table/thead/tr[2]/td[6]/button")).click();
+		  driver.findElement(By.xpath("/html/body/div[2]/div/div/table/thead/tr[2]/td[6]/button")).click();
+		 
+		   // Confirm search criteria is cleared
+		  WebDriverWait wait1 = new WebDriverWait(driver, 60);                    
+		  wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr[2]/td[5]")));        
+	  }
  public void FindTemplate(String templateName, String templateOID, String templateIG, String permissionUserName) throws Exception 
 	{	 
-	 // Confirm the Template Listing appears
-	  WebDriverWait wait = new WebDriverWait(driver, 60);                    
-	  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/thead/tr[1]/th[2]"), "Identifier"));
-	 
-	  // Clear the existing search criteria
-	     driver.findElement(By.xpath("/html/body/div[2]/div/div/form/div/span/button[1]")).click();
-	     
+	  // Wait for page to fully load
+		  // waitForPageLoad();
+		  
+		  // Clear the existing search criteria
+		      ClearExistingSearch();     
 	  // Confirm the search parameters are cleared
 	     
 	     if (permissionUserName == "lcg.admin")
 	    {
-	     WebDriverWait wait1 = new WebDriverWait(driver, 60);
+	     WebDriverWait wait = new WebDriverWait(driver, 60);
 		 wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/table/tbody/tr[4]/td[6]/div/a[1]")));
 	    }   
 	     if (permissionUserName == "hl7.member")
 	    {
-	     WebDriverWait wait1 = new WebDriverWait(driver, 60);
+	     WebDriverWait wait = new WebDriverWait(driver, 60);
 		 wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/table/tbody/tr[4]/td[5]/div/a[1]")));
 	    }   
 	     
@@ -123,6 +159,34 @@ public void OpenTemplateBrowser() throws Exception
 		     assertTrue("Could not find \"Template Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateName) >= 0);
    }
  
+ public void ConfirmTemplateEditor(String templateName, String templateOID) throws Exception 
+	{
+	  
+		// Wait for page to fully load
+		  // waitForPageLoad();
+		  
+	   // Confirm the Template Editor opens
+	       driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		   WebDriverWait wait = new WebDriverWait(driver, 60);
+		   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[1]/a"), "Template/Profile"));
+	       assertTrue("Could not find \"Template/Profile\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Template/Profile[\\s\\S]*$"));
+		   
+		   // Wait for page to fully load
+		   WebDriverWait wait1 = new WebDriverWait(driver, 60);		
+		   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[5]"))); 
+	    
+		   // Confirm the the correct Template Name appears in the Editor
+		   driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		   WebDriverWait wait2 = new WebDriverWait(driver, 60);
+		   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h3/span[2]"), templateName));
+		   assertTrue("Could not find \"Template Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateName) >= 0);
+		   
+		   // Confirm the the correct Template OID appears in the Editor
+		   driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		   WebDriverWait wait3 = new WebDriverWait(driver, 60);                                  
+		   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h4/span"), templateOID));
+		   assertTrue("Could not find \"Template OID\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateOID) >= 0);	
+	}	
  public void SaveTemplateSample(String templateName, String templateOID) throws Exception 
 	{
 	 
@@ -204,11 +268,11 @@ public void OpenTemplateBrowser() throws Exception
 	   // Find the Template
 	 	if (permissionUserName == "lcg.admin")
 	 		{
-	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "Automation Test IG", "lcg.admin");
+	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 	 		}
 	 	else if (permissionUserName == "hl7.member")
 		 	{
-	 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "HL7 Member Test IG", "hl7.member");
+	 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG", "hl7.member");
 		 	}
 	  	 	
 	      // Open the Template Viewer
@@ -288,11 +352,11 @@ public void OpenTemplateBrowser() throws Exception
 		   // Find the Template
 		 	if (permissionUserName == "lcg.admin")
 		 		{
-		 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "Automation Test IG", "lcg.admin");
+		 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 		 		}
 		 	else if (permissionUserName == "hl7.member")
 			 	{
-		 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "HL7 Member Test IG", "hl7.member");
+		 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG", "hl7.member");
 			 	}
 		 	  
 		 	// Open the Template Viewer
@@ -341,12 +405,12 @@ public void OpenTemplateBrowser() throws Exception
 	    // Find the Template
 	 	if (permissionUserName == "lcg.admin")
 	 		{
-	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "Automation Test IG", "lcg.admin");
+	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 	 		}
 	 	
 	 	else if (permissionUserName == "hl7.member")
 		 	{
-	 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "HL7 Member Test IG", "hl7.member");
+	 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG", "hl7.member");
 		 	}
 		
 	 	  // Open the Template Viewer
@@ -417,11 +481,11 @@ public void OpenTemplateBrowser() throws Exception
 	       // Find the Template
 		 	if (permissionUserName == "lcg.admin")
 		 		{
-		 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "Automation Test IG", "lcg.admin");
+		 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 		 		}
 		 	else if (permissionUserName == "hl7.member")
 			 	{
-		 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "HL7 Member Test IG", "hl7.member");
+		 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG", "hl7.member");
 			 	}
 		 	  
 		 	// Open the Template Viewer
@@ -471,11 +535,11 @@ public void OpenTemplateBrowser() throws Exception
 	 // Find the Template
 	 	if (permissionUserName == "lcg.admin")
 	 		{
-	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "Automation Test IG", "lcg.admin");
+	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 	 		}
 	 	else if (permissionUserName == "hl7.member")
 		 	{
-	 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "HL7 Member Test IG", "hl7.member");
+	 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG", "hl7.member");
 		 	}
 	 
 	 	// Open the Template Viewer
@@ -585,7 +649,8 @@ public void OpenTemplateBrowser() throws Exception
      driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/a")).click();
      driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/ul/li[1]/a")).click();
           
-     // Wait for screen to refresh
+  // Wait for screen to refresh
+        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
         WebDriverWait wait3 = new WebDriverWait(driver, 60);                    
 	    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/a"), implementationGuideName));
 	    assertTrue("Could not find \"Implementation Guide Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
@@ -717,7 +782,7 @@ public void OpenTemplateBrowser() throws Exception
          
 //TEST 3: Version the Template
  @Test
-     public void VersionTemplate(String templateName, String templateOID, String versionedTemplate, String permissionUserName) throws Exception {
+     public void VersionTemplate(String templateName, String templateOID, String versionedTemplate, String versionedTemplateNotes, String permissionUserName) throws Exception {
  	 
 	// Open the Template Browser
 	   OpenTemplateBrowser(); 
@@ -726,11 +791,11 @@ public void OpenTemplateBrowser() throws Exception
 	 
 	 	if (permissionUserName == "lcg.admin")
 	 		{
-	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "Automation Test IG", "lcg.admin");
+	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 	 		}
 	 	else if (permissionUserName == "hl7.member")
 		 	{
-	 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "HL7 Member Test IG", "hl7.member");
+	 		FindTemplate("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG", "hl7.member");
 		 	}
   	    
 	    //Open the Template Viewer
@@ -767,7 +832,6 @@ public void OpenTemplateBrowser() throws Exception
 		 WebDriverWait wait3 = new WebDriverWait(driver, 60);                    
 	     wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/ul/li[1]/a"), "Constraints"));
 	    
-	    
 	    // Confirm the correct template appears in the Template Viewer
 	    WebDriverWait wait4 = new WebDriverWait(driver, 120);                    
 	    wait3.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[2]/div/h4"), templateOID));
@@ -790,14 +854,6 @@ public void OpenTemplateBrowser() throws Exception
 	     WebDriverWait wait5 = new WebDriverWait(driver, 60);
 	     WebElement element5 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("Step1")));
 	     assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Version Step 1:[\\s\\S]*$"));
-
-//	   // Confirm the correct template appears in the Version Template form
-//	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[3]/input")).click();
-//	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/input")).click();
-//	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/input")).click();
-//		  WebDriverWait wait5 = new WebDriverWait(driver, 60);                     
-//		  wait4.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/input"), templateName));
-//		  assertTrue("Could not find \"Template Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateName) >= 0);
 	    
 	     //Add Version and click Next
          driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/input")).click();
@@ -818,41 +874,49 @@ public void OpenTemplateBrowser() throws Exception
 	   
 	     // Click Finish
 	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[2]/div[2]/button[1]")).click();
-	     
-	     // Confirm the page is refreshed	     
-	      driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 	      
 	      // Wait for page to fully load
-		   WebDriverWait wait1 = new WebDriverWait(driver, 5);		           
+	       // waitForPageLoad();
+		   WebDriverWait wait8 = new WebDriverWait(driver, 5);		           
 		   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[5]"))); 
 	    
 	      // Confirm the user is returned to the Template Editor
-	      WebDriverWait wait8 = new WebDriverWait(driver, 60);
-	      WebElement element8 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("TemplateEditor")));
-	      assertTrue("Could not find \"Authored By:\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Authored By[\\s\\S]*$"));
-	     
-	      // Confirm the Template Editor text appears
-	      WebDriverWait wait9 = new WebDriverWait(driver, 60);                     
-		  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[1]/a"), "Template/Profile"));
-	      
-	      // Confirm the correct Template appears in the Template Editor
-		  WebDriverWait wait10 = new WebDriverWait(driver, 60);                     
-		  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h3/span[2]"), versionedTemplate));
-		  assertTrue("Could not find \"Versioned Template\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(versionedTemplate) >= 0);
-	         
-	     // Click the various tabs
-	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[4]/a")).click();
-	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[3]/a")).click();
-	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[2]/a")).click();
-	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[1]/a")).click();
+		   
+		   // Confirm the Template Editor opens
+		       driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+			   WebDriverWait wait11 = new WebDriverWait(driver, 60);
+			   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[1]/a"), "Template/Profile"));
+		       assertTrue("Could not find \"Template/Profile\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Template/Profile[\\s\\S]*$"));
+			   
+			   // Wait for page to fully load
+			   WebDriverWait wait12 = new WebDriverWait(driver, 60);		
+			   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[5]"))); 
+		    
+			   // Confirm the the correct Template Name appears in the Editor
+			   driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+			   WebDriverWait wait13 = new WebDriverWait(driver, 60);
+			   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h3/span[2]"), templateName));
+			   assertTrue("Could not find \"Template Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateName) >= 0);
+			       
+		  // Add Versioned Template Notes
+		    if (permissionUserName == "lcg.admin")
+				{
+		    	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div[2]/div[8]/textarea")).clear();
+		    	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div[2]/div[8]/textarea")).sendKeys(versionedTemplateNotes);
+				}
+		    else
+				{
+		    	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div[2]/div[7]/textarea")).clear();
+		    	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div[2]/div[7]/textarea")).sendKeys(versionedTemplateNotes);
+				}
 	     
 	     // Click Save and return to the Template Viewer
 	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[2]/div/div[1]/div[1]/button")).click();
 	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[2]/div/div[1]/div[1]/ul/li[4]/a")).click();
 	     
 	     // Confirm template was created 
-	     WebDriverWait wait11 = new WebDriverWait(driver, 60);
-	     WebElement element11 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ViewTemplate")));
+	     WebDriverWait wait14 = new WebDriverWait(driver, 60);
+	     WebElement element14 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ViewTemplate")));
 	     assertTrue("Could not find \"Versioned Template\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(versionedTemplate) >= 0);
 	  
 	     // Return to the Trifolia Home Page

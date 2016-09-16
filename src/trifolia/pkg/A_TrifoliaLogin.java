@@ -89,11 +89,21 @@ public class A_TrifoliaLogin {
 	}
 
 	@Test
+	
+	public void waitForPageLoad() 
+	  {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		     wait.until(ExpectedConditions.jsReturnsValue("return document.readyState ==\"complete\";"));		
+	  }
+	
 	public void LCGAdminLogin(String permissionUserName, String baseURL)
 			throws Exception {
 		// Login to Trifolia Workbench Dev environment as Lantana Administrator
 
-		// Confirm Login Page Appears
+		// Wait for page to fully load
+		   waitForPageLoad(); 
+		   
+		// Confirm Welcome Page Appears
 		assertTrue(
 				"Login Page did not appear",
 				driver.findElement(By.cssSelector("BODY"))
@@ -103,9 +113,8 @@ public class A_TrifoliaLogin {
 
 		if (baseURL == "http://dev.trifolia.lantanagroup.com/") {
 			// Switch URL to Debug Mode to bypass Captcha
-			driver.navigate().to(
-					"dev.trifolia.lantanagroup.com/Account/Login?debug");
-
+			driver.navigate().to("http://dev.trifolia.lantanagroup.com/Account/Login?debug");
+            
 			// Enter Username and Password
 			driver.findElement(
 					By.xpath("/html/body/div[2]/div/form/div[2]/input"))
@@ -145,59 +154,69 @@ public class A_TrifoliaLogin {
 				.click();
 
 		// Confirm Login is Successful
-		WebDriverWait wait = new WebDriverWait(driver, 120);
-		WebElement element = wait.until(ExpectedConditions
-				.elementToBeClickable(By.id("appnav")));
-		assertTrue(
-				"Unable to confirm Login",
-				driver.findElement(By.cssSelector("BODY"))
-						.getText()
-						.matches(
-								"^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S][\\s\\S]*$"));
+		WebDriverWait wait1 = new WebDriverWait(driver, 60);
+		wait1.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/h2"),"Welcome to Trifolia Workbench!"));
+		assertTrue("Unable to confirm Login",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S][\\s\\S]*$"));
 
 		// Confirm Welcome Page Text appears
-		WebDriverWait wait1 = new WebDriverWait(driver, 60);
-		wait1.until(ExpectedConditions.textToBePresentInElementLocated(
-				By.xpath("/html/body/div[2]/div/p/strong"), "Did you know?"));
-	}
+		WebDriverWait wait2 = new WebDriverWait(driver, 60);
+		wait1.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/p/strong"), "Did you know?"));
+}
 
 	@Test
 	public void LCGUserLogin(String permissionUserName, String baseURL)
 			throws Exception {
 
+		// Wait for page to re-load
+			waitForPageLoad();
+					
 		// Login to Trifolia Workbench Dev environment as Lantana User
 
-		// Confirm Trifolia Home Page Appears
-		assertTrue(
-				"Trifolia Home Page did not appear",
-				driver.findElement(By.cssSelector("BODY"))
-						.getText()
-						.matches(
-								"^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S]*$"));
+			// Wait for page to fully load
+			   waitForPageLoad(); 
+			   
+			// Confirm Welcome Page Appears
+			assertTrue(
+					"Login Page did not appear",
+					driver.findElement(By.cssSelector("BODY"))
+							.getText()
+							.matches(
+									"^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S]*$"));
 
-		if (baseURL == "http://dev.trifolia.lantanagroup.com/") {
-			// Switch URL to Debug Mode to bypass Captcha
-			driver.navigate().to(
-					"dev.trifolia.lantanagroup.com/Account/Login?debug");
+			if (baseURL == "http://dev.trifolia.lantanagroup.com/") {
+				// Switch URL to Debug Mode to bypass Captcha
+				driver.navigate().to("http://dev.trifolia.lantanagroup.com/Account/Login?debug");
+	     
+			// Wait for page to re-load
+						waitForPageLoad();
+						
+		    // Confirm the Login Page appears
+				WebDriverWait wait = new WebDriverWait(driver, 60);
+				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/form/div[2]/label"), "User"));
 
-			// Enter Username and Password
-			driver.findElement(
-					By.xpath("/html/body/div[2]/div/form/div[2]/input"))
-					.clear();
-			driver.findElement(
-					By.xpath("/html/body/div[2]/div/form/div[2]/input"))
-					.sendKeys(this.basicUserUsername);
-			driver.findElement(
-					By.xpath("/html/body/div[2]/div/form/div[3]/input"))
-					.clear();
-			driver.findElement(
-					By.xpath("/html/body/div[2]/div/form/div[3]/input"))
-					.sendKeys(this.basicUserPassword);
-			driver.findElement(
-					By.xpath("//*[@id=\"ctl00_mainBody\"]/div[2]/div/form/button "))
-					.click();
+				WebDriverWait wait1 = new WebDriverWait(driver, 60);
+				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/form/div[3]/label"), "Password"));
 
-		} else if (baseURL == "http://staging.lantanagroup.com:1234/") {
+			// Enter Username 
+				
+			driver.findElement(By.xpath("/html/body/div[2]/div/form/div[2]/input")).click();
+			driver.findElement(By.xpath("/html/body/div[2]/div/form/div[2]/input")).clear();
+			driver.findElement(By.xpath("/html/body/div[2]/div/form/div[2]/input")).sendKeys(this.basicUserUsername);
+			driver.findElement(By.xpath("/html/body/div[2]/div/form/div[2]/input")).sendKeys(Keys.TAB);
+
+			// Enter Password
+			driver.findElement(By.xpath("/html/body/div[2]/div/form/div[3]/input")).click();
+			driver.findElement(By.xpath("/html/body/div[2]/div/form/div[3]/input")).clear();
+			driver.findElement(By.xpath("/html/body/div[2]/div/form/div[3]/input")).sendKeys(this.basicUserPassword);
+			driver.findElement(By.xpath("/html/body/div[2]/div/form/div[3]/input")).sendKeys(Keys.TAB);
+
+			Thread.sleep(1000);
+			driver.findElement(By.xpath("/html/body/div[2]/div/form/button")).click();
+
+		} 
+			else if (baseURL == "http://staging.lantanagroup.com:1234/") 
+			{
+				
 			// Switch URL to Debug Mode to bypass Captcha
 			driver.navigate().to(
 					"http://staging.lantanagroup.com:1234/Account/Login?debug");
@@ -220,6 +239,9 @@ public class A_TrifoliaLogin {
 					.click();
 		}
 
+			// Wait for page to fully load
+			waitForPageLoad();
+			
 		// Complete User Profile Page if it appears
 		if (driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*New Profile[\\s\\S]*$")) {
@@ -241,7 +263,12 @@ public class A_TrifoliaLogin {
 			driver.findElement(
 					By.xpath("//*[@id=\"mainBody\"]/div/div[7]/button"))
 					.click();
-		} else {
+		} 
+		else 
+		{
+			// Wait for page to re-load
+			waitForPageLoad();
+			
 			// Confirm Login is Successful
 			assertTrue(
 					"Login was not Successful",
@@ -412,6 +439,9 @@ public class A_TrifoliaLogin {
 	@Test
 	public void LCGLogout(String permissionUserName) throws Exception {
 
+		// Wait for the page to fully load
+		  waitForPageLoad();
+		  
 		// Confirm the User is still logged in
 		assertTrue(
 				"Welcome to Trifolia Workbench!",
@@ -420,7 +450,7 @@ public class A_TrifoliaLogin {
 						.matches(
 								"^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S]*$"));
 
-		// Logout the Lantana user
+		// Logout the Lantana admin or user account
 		if (permissionUserName == "lcg.admin") {
 			driver.findElement(
 					By.xpath("/html/body/div[1]/div/div[2]/ul/li[8]/a/span"))
@@ -428,6 +458,9 @@ public class A_TrifoliaLogin {
 			driver.findElement(
 					By.xpath("/html/body/div[1]/div/div[2]/ul/li[8]/ul/li[3]/a"))
 					.click();
+			
+			// Wait for the page to fully load
+			  waitForPageLoad();
 
 			// Confirm Logout is Successful
 			WebDriverWait wait = new WebDriverWait(driver, 60);
@@ -454,7 +487,10 @@ public class A_TrifoliaLogin {
 			driver.findElement(
 					By.xpath("/html/body/div[1]/div/div[2]/ul/li[5]/ul/li[3]/a"))
 					.click();
-
+			
+			// Wait for page to re-load
+			waitForPageLoad();
+			  	
 			// Confirm Logout is Successful
 			WebDriverWait wait = new WebDriverWait(driver, 60);
 			WebElement element = wait
@@ -481,6 +517,9 @@ public class A_TrifoliaLogin {
 	public void HL7Logout(String hl7Welcome, String baseURL,
 			String permissionUserName) throws Exception {
 
+		// Wait for page to fully load
+		  waitForPageLoad();
+					
 		// Log the HL7 Member or User out of Trifolia
 
 		if (permissionUserName == "hl7.member") {
@@ -509,6 +548,9 @@ public class A_TrifoliaLogin {
 					.click();
 		}
 
+		// Wait for page to fully load
+		    waitForPageLoad();
+					
 		// Confirm Trifolia Logout is Successful
 		WebDriverWait wait = new WebDriverWait(driver, 60);
 		WebElement element = wait.until(ExpectedConditions
