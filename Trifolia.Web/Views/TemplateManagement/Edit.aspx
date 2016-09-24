@@ -139,6 +139,7 @@
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu pull-right">
+                                            <li><a href="#" data-bind="click: function () { IdentifierPrefix($root.ImplementationGuideBaseIdentifier()) }, text: $root.ImplementationGuideBaseIdentifier"></a></li>
                                             <li><a href="#" data-bind="click: function () { IdentifierPrefix(location.origin + '/api/FHIR2/StructureDefinition/') }, text: location.origin + '/api/FHIR2/StructureDefinition'"></a></li>
                                             <li><a href="#" data-bind="click: function () { IdentifierPrefix('http://hl7.org/fhir/StructureDefinition/') }">http://hl7.org/fhir/StructureDefinition/</a></li>
                                             <!-- ko if: !$parent.IsFhir() -->

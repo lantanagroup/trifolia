@@ -42,6 +42,10 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
+        /// <summary>
+        /// Returns a list of implementation guides that are editable by the current user
+        /// </summary>
+        /// <returns>IEnumerable&lt;Trifolia.Web.Models.IGManagement.IGListItem&gt;</returns>
         [HttpGet, Route("api/ImplementationGuide/Editable"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_LIST)]
         public IEnumerable<IGListItem> GetEditableImplementationGuides()
         {
@@ -60,6 +64,7 @@ namespace Trifolia.Web.Controllers.API
                     select new IGListItem()
                     {
                         Id = ig.Id,
+                        Identifier = ig.Identifier,
                         Name = ig.NameWithVersion,
                         IsPublished = ig.IsPublished(),
                         Namespace = ig.ImplementationGuideType.SchemaURI
@@ -67,6 +72,12 @@ namespace Trifolia.Web.Controllers.API
                     .OrderBy(y => y.Name);
         }
 
+        /// <summary>
+        /// Returns all implementation guides that the current usre has access to.
+        /// Includes some additional information, such as a URL for the implementation guide to perform an operation based on the listMode sepecified, and whether the current user has access to edit the IG.
+        /// </summary>
+        /// <param name="listMode">What type of URL to return for the implementation guide</param>
+        /// <returns>Trifolia.Web.Models.IGManagement.ListModel</returns>
         [HttpGet, Route("api/ImplementationGuide"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_LIST)]
         public ListModel GetImplementationGuides(IGListModes listMode = IGListModes.Default)
         {
@@ -122,6 +133,12 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
+        /// <summary>
+        /// Gets the template types defined for the implementation guide. Any customizations to the template type's name and description for the specified
+        /// implementation guide is returned here.
+        /// </summary>
+        /// <param name="implementationGuideId">The id of the implementation guide</param>
+        /// <returns>IEnumerable&lt;Trifolia.Web.Models.IGManagement.TemplateTypeListItem&gt;</returns>
         [HttpGet, Route("api/ImplementationGuide/{implementationGuideId}/TemplateType")]
         public IEnumerable<TemplateTypeListItem> GetTemplateTypes(int implementationGuideId)
         {
@@ -143,6 +160,10 @@ namespace Trifolia.Web.Controllers.API
                     });
         }
 
+        /// <summary>
+        /// Gets all template types for all IGs
+        /// </summary>
+        /// <returns>IEnumerable&lt;Trifolia.Web.Models.IGManagement.TemplateTypeListItem&gt;</returns>
         [HttpGet, Route("api/ImplementationGuide/All/TemplateType"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_LIST)]
         public IEnumerable<TemplateTypeListItem> GetTemplateTypes()
         {
@@ -683,6 +704,11 @@ namespace Trifolia.Web.Controllers.API
             return result;
         }
 
+        /// <summary>
+        /// Returns all information related to an implementation guide to be edited
+        /// </summary>
+        /// <param name="implementationGuideId">The id of the implementation guide</param>
+        /// <returns>Trifolia.Web.Models.IGManagement.EditModel</returns>
         [HttpGet, Route("api/ImplementationGuide/Edit/{implementationGuideId?}"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
         public EditModel Edit(int? implementationGuideId = null)
         {
@@ -773,33 +799,74 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
-        [HttpGet, Route("api/ImplementationGuide/Edit/Name/Validate")]
+        /// <summary>
+        /// Validates that the specified name is unique.
+        /// </summary>
+        /// <param name="igName">The name to validate</param>
+        /// <param name="implementationGuideId">If an implementation guide id is specified here, it will ignore the implementation guide as part of validation so that validation doesn't fail against itself.</param>
+        /// <returns>bool</returns>
+        [HttpGet, Route("api/ImplementationGuide/Validate/Name")]
         public bool ValidateName(string igName, int? implementationGuideId = null)
         {
+            if (string.IsNullOrEmpty(igName))
+                return false;
+
             return this.ValidateName(this.tdb, igName, implementationGuideId);
+        }
+
+        /// <summary>
+        /// Validates that the specified identifier is unique.
+        /// </summary>
+        /// <param name="identifier">The identifier to validate</param>
+        /// <param name="implementationGuideId">If an implementation guide id is specified here, it will ignore the implementation guide as part of validation so that validation doesn't fail against itself.</param>
+        /// <returns>bool</returns>
+        [HttpGet, Route("api/ImplementationGuide/Validate/Identifier")]
+        public bool ValidateIdentifier(string identifier, int? implementationGuideId)
+        {
+            if (string.IsNullOrEmpty(identifier))
+                return false;
+
+            return this.ValidateIdentifier(this.tdb, identifier, implementationGuideId);
+        }
+
+        private List<int> GetIgnoredImplementationGuides(IObjectRepository tdb, int? implementationGuideId = null)
+        {
+            List<int> ignoreIgs = new List<int>();
+
+            if (implementationGuideId != null)
+            {
+
+                // Ignore names for previous versions of the specified implementation guide
+                var current = tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId);
+                while (current != null)
+                {
+                    ignoreIgs.Add(current.Id);
+                    current = tdb.ImplementationGuides.SingleOrDefault(y => y.Id == current.PreviousVersionImplementationGuideId);
+                }
+
+                // Ignore names for next versions of the specified implementation guide
+                current = tdb.ImplementationGuides.FirstOrDefault(y => y.PreviousVersionImplementationGuideId == implementationGuideId);
+                while (current != null)
+                {
+                    ignoreIgs.Add(current.Id);
+                    current = tdb.ImplementationGuides.FirstOrDefault(y => y.PreviousVersionImplementationGuideId == current.Id);
+                }
+            }
+
+            return ignoreIgs;
         }
 
         private bool ValidateName(IObjectRepository tdb, string igName, int? implementationGuideId = null)
         {
-            List<int> ignoreIgs = new List<int>();
-
-            // Ignore names for previous versions of the specified implementation guide
-            var current = tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId);
-            while (current != null)
-            {
-                ignoreIgs.Add(current.Id);
-                current = tdb.ImplementationGuides.SingleOrDefault(y => y.Id == current.PreviousVersionImplementationGuideId);
-            }
-
-            // Ignore names for next versions of the specified implementation guide
-            current = tdb.ImplementationGuides.FirstOrDefault(y => y.PreviousVersionImplementationGuideId == implementationGuideId);
-            while (current != null)
-            {
-                ignoreIgs.Add(current.Id);
-                current = tdb.ImplementationGuides.FirstOrDefault(y => y.PreviousVersionImplementationGuideId == current.Id);
-            }
-
+            List<int> ignoreIgs = GetIgnoredImplementationGuides(tdb, implementationGuideId);
             var found = tdb.ImplementationGuides.SingleOrDefault(y => !ignoreIgs.Contains(y.Id) && y.Name.ToLower() == igName.ToLower());
+            return found == null;
+        }
+
+        private bool ValidateIdentifier(IObjectRepository tdb, string identifier, int? implementationGuideId = null)
+        {
+            List<int> ignoreIgs = GetIgnoredImplementationGuides(tdb, implementationGuideId);
+            var found = tdb.ImplementationGuides.SingleOrDefault(y => !ignoreIgs.Contains(y.Id) && y.Identifier.ToLower() == identifier.ToLower());
             return found == null;
         }
 
@@ -838,6 +905,7 @@ namespace Trifolia.Web.Controllers.API
             EditModel model = new EditModel()
             {
                 Id = ig.Id,
+                Identifier = ig.Identifier,
                 Name = ig.Name,
                 DisplayName = ig.DisplayName,
                 WebDisplayName = ig.WebDisplayName,
@@ -937,6 +1005,13 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
+        /// <summary>
+        /// Persists the implementation guide edit model specified. If the model includes a non-0 Id then the existing implementation guide
+        /// is updated with the changes specified in the model. In this case, the current user must have access to edit the implementation guide.
+        /// </summary>
+        /// <param name="aModel">The edit model to create/update</param>
+        /// <returns>int</returns>
+        /// <remarks>Returns the id of the implementation guide</remarks>
         [HttpPost, Route("api/ImplementationGuide/Save"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
         public int SaveImplementationGuide(EditModel aModel)
         {
@@ -973,6 +1048,7 @@ namespace Trifolia.Web.Controllers.API
                             throw new Exception("An implementation guide with that name already exists!");
                     }
 
+                    ig.Identifier = aModel.Identifier;
                     ig.Name = aModel.Name;
                     ig.DisplayName = aModel.DisplayName;
                     ig.WebDisplayName = aModel.WebDisplayName;

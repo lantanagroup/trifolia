@@ -54,9 +54,21 @@ namespace Trifolia.Powershell
             string export = ig.ImplementationGuideType.GetPlugin().Export(this.tdb, schema, this.Format, igSettings, null, templates, this.IncludeVocab, this.ReturnJson);
 
             if (!string.IsNullOrEmpty(this.OutputFileName))
-                File.WriteAllText(this.OutputFileName, export);
+            {
+                if (this.Format == ExportFormats.FHIRBuild)
+                {
+                    byte[] exportBytes = System.Text.Encoding.Default.GetBytes(export);
+                    File.WriteAllBytes(this.OutputFileName, exportBytes);
+                }
+                else
+                {
+                    File.WriteAllText(this.OutputFileName, export);
+                }
+            }
             else
+            {
                 this.WriteObject(export);
+            }
         }
     }
 }

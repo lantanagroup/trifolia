@@ -4,386 +4,13 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Trifolia.Shared.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityContainer Name="TrifoliaSharedStoreContainer">
-          <EntitySet Name="app_securable" EntityType="Trifolia.Shared.Store.app_securable" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="appsecurable_role" EntityType="Trifolia.Shared.Store.appsecurable_role" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="audit" EntityType="Trifolia.Shared.Store.audit" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="codesystem" EntityType="Trifolia.Shared.Store.codesystem" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="green_constraint" EntityType="Trifolia.Shared.Store.green_constraint" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="green_template" EntityType="Trifolia.Shared.Store.green_template" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="group" EntityType="Trifolia.Shared.Store.group" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="implementationguide" EntityType="Trifolia.Shared.Store.implementationguide" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="implementationguide_file" EntityType="Trifolia.Shared.Store.implementationguide_file" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="implementationguide_filedata" EntityType="Trifolia.Shared.Store.implementationguide_filedata" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="implementationguide_permission" EntityType="Trifolia.Shared.Store.implementationguide_permission" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="implementationguide_schpattern" EntityType="Trifolia.Shared.Store.implementationguide_schpattern" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="implementationguide_section" EntityType="Trifolia.Shared.Store.implementationguide_section" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="implementationguide_setting" EntityType="Trifolia.Shared.Store.implementationguide_setting" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="implementationguide_templatetype" EntityType="Trifolia.Shared.Store.implementationguide_templatetype" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="implementationguidetype" EntityType="Trifolia.Shared.Store.implementationguidetype" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="implementationguidetype_datatype" EntityType="Trifolia.Shared.Store.implementationguidetype_datatype" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="organization" EntityType="Trifolia.Shared.Store.organization" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="organization_defaultpermission" EntityType="Trifolia.Shared.Store.organization_defaultpermission" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="publish_status" EntityType="Trifolia.Shared.Store.publish_status" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="role" EntityType="Trifolia.Shared.Store.role" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="role_restriction" EntityType="Trifolia.Shared.Store.role_restriction" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="template" EntityType="Trifolia.Shared.Store.template" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="template_constraint" EntityType="Trifolia.Shared.Store.template_constraint" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="template_constraint_sample" EntityType="Trifolia.Shared.Store.template_constraint_sample" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="template_extension" EntityType="Trifolia.Shared.Store.template_extension" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="template_sample" EntityType="Trifolia.Shared.Store.template_sample" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="templatetype" EntityType="Trifolia.Shared.Store.templatetype" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="user" EntityType="Trifolia.Shared.Store.user" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="user_group" EntityType="Trifolia.Shared.Store.user_group" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="user_role" EntityType="Trifolia.Shared.Store.user_role" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="valueset" EntityType="Trifolia.Shared.Store.valueset" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="valueset_member" EntityType="Trifolia.Shared.Store.valueset_member" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="v_igaudittrail" EntityType="Trifolia.Shared.Store.v_igaudittrail" store:Type="Views" store:Schema="dbo" store:Name="v_igaudittrail">
-            <DefiningQuery>SELECT 
-      [v_igaudittrail].[username] AS [username], 
-      [v_igaudittrail].[auditDate] AS [auditDate], 
-      [v_igaudittrail].[ip] AS [ip], 
-      [v_igaudittrail].[type] AS [type], 
-      [v_igaudittrail].[note] AS [note], 
-      [v_igaudittrail].[implementationGuideId] AS [implementationGuideId], 
-      [v_igaudittrail].[templateId] AS [templateId], 
-      [v_igaudittrail].[templateConstraintId] AS [templateConstraintId], 
-      [v_igaudittrail].[templateName] AS [templateName], 
-      [v_igaudittrail].[conformanceNumber] AS [conformanceNumber]
-      FROM [dbo].[v_igaudittrail] AS [v_igaudittrail]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="v_implementationguidefile" EntityType="Trifolia.Shared.Store.v_implementationguidefile" store:Type="Views" store:Schema="dbo" store:Name="v_implementationguidefile">
-            <DefiningQuery>SELECT 
-      [v_implementationguidefile].[id] AS [id], 
-      [v_implementationguidefile].[implementationGuideId] AS [implementationGuideId], 
-      [v_implementationguidefile].[fileName] AS [fileName], 
-      [v_implementationguidefile].[mimeType] AS [mimeType], 
-      [v_implementationguidefile].[contentType] AS [contentType], 
-      [v_implementationguidefile].[expectedErrorCount] AS [expectedErrorCount], 
-      [v_implementationguidefile].[data] AS [data], 
-      [v_implementationguidefile].[updatedDate] AS [updatedDate], 
-      [v_implementationguidefile].[updatedBy] AS [updatedBy], 
-      [v_implementationguidefile].[note] AS [note]
-      FROM [dbo].[v_implementationguidefile] AS [v_implementationguidefile]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="v_implementationGuidePermissions" EntityType="Trifolia.Shared.Store.v_implementationGuidePermissions" store:Type="Views" store:Schema="dbo" store:Name="v_implementationGuidePermissions">
-            <DefiningQuery>SELECT 
-      [v_implementationGuidePermissions].[userId] AS [userId], 
-      [v_implementationGuidePermissions].[implementationGuideId] AS [implementationGuideId], 
-      [v_implementationGuidePermissions].[permission] AS [permission]
-      FROM [dbo].[v_implementationGuidePermissions] AS [v_implementationGuidePermissions]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="v_implementationGuideTemplates" EntityType="Trifolia.Shared.Store.v_implementationGuideTemplates" store:Type="Views" store:Schema="dbo" store:Name="v_implementationGuideTemplates">
-            <DefiningQuery>SELECT 
-      [v_implementationGuideTemplates].[implementationGuideId] AS [implementationGuideId], 
-      [v_implementationGuideTemplates].[templateId] AS [templateId]
-      FROM [dbo].[v_implementationGuideTemplates] AS [v_implementationGuideTemplates]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="v_latestimplementationguidefiledata" EntityType="Trifolia.Shared.Store.v_latestimplementationguidefiledata" store:Type="Views" store:Schema="dbo" store:Name="v_latestimplementationguidefiledata">
-            <DefiningQuery>SELECT 
-      [v_latestimplementationguidefiledata].[id] AS [id], 
-      [v_latestimplementationguidefiledata].[implementationGuideFileId] AS [implementationGuideFileId], 
-      [v_latestimplementationguidefiledata].[data] AS [data], 
-      [v_latestimplementationguidefiledata].[updatedDate] AS [updatedDate], 
-      [v_latestimplementationguidefiledata].[updatedBy] AS [updatedBy], 
-      [v_latestimplementationguidefiledata].[note] AS [note]
-      FROM [dbo].[v_latestimplementationguidefiledata] AS [v_latestimplementationguidefiledata]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="v_template" EntityType="Trifolia.Shared.Store.v_template" store:Type="Views" store:Schema="dbo" store:Name="v_template">
-            <DefiningQuery>SELECT 
-      [v_template].[id] AS [id], 
-      [v_template].[oid] AS [oid], 
-      [v_template].[name] AS [name], 
-      [v_template].[isOpen] AS [isOpen], 
-      [v_template].[owningImplementationGuideId] AS [owningImplementationGuideId], 
-      [v_template].[owningImplementationGuideTitle] AS [owningImplementationGuideTitle], 
-      [v_template].[implementationGuideTypeName] AS [implementationGuideTypeName], 
-      [v_template].[templateTypeId] AS [templateTypeId], 
-      [v_template].[templateTypeName] AS [templateTypeName], 
-      [v_template].[primaryContext] AS [primaryContext], 
-      [v_template].[templateTypeDisplay] AS [templateTypeDisplay], 
-      [v_template].[organizationName] AS [organizationName], 
-      [v_template].[publishDate] AS [publishDate], 
-      [v_template].[impliedTemplateOid] AS [impliedTemplateOid], 
-      [v_template].[impliedTemplateTitle] AS [impliedTemplateTitle], 
-      [v_template].[constraintCount] AS [constraintCount], 
-      [v_template].[containedTemplateCount] AS [containedTemplateCount], 
-      [v_template].[impliedTemplateCount] AS [impliedTemplateCount]
-      FROM [dbo].[v_template] AS [v_template]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="v_templateList" EntityType="Trifolia.Shared.Store.v_templateList" store:Type="Views" store:Schema="dbo" store:Name="v_templateList">
-            <DefiningQuery>SELECT 
-      [v_templateList].[id] AS [id], 
-      [v_templateList].[name] AS [name], 
-      [v_templateList].[oid] AS [oid], 
-      [v_templateList].[open] AS [open], 
-      [v_templateList].[templateType] AS [templateType], 
-      [v_templateList].[templateTypeId] AS [templateTypeId], 
-      [v_templateList].[implementationGuide] AS [implementationGuide], 
-      [v_templateList].[implementationGuideId] AS [implementationGuideId], 
-      [v_templateList].[organization] AS [organization], 
-      [v_templateList].[organizationId] AS [organizationId], 
-      [v_templateList].[publishDate] AS [publishDate], 
-      [v_templateList].[impliedTemplateName] AS [impliedTemplateName], 
-      [v_templateList].[impliedTemplateOid] AS [impliedTemplateOid], 
-      [v_templateList].[impliedTemplateId] AS [impliedTemplateId], 
-      [v_templateList].[description] AS [description], 
-      [v_templateList].[primaryContextType] AS [primaryContextType]
-      FROM [dbo].[v_templateList] AS [v_templateList]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="v_templatePermissions" EntityType="Trifolia.Shared.Store.v_templatePermissions" store:Type="Views" store:Schema="dbo" store:Name="v_templatePermissions">
-            <DefiningQuery>SELECT 
-      [v_templatePermissions].[userId] AS [userId], 
-      [v_templatePermissions].[templateId] AS [templateId], 
-      [v_templatePermissions].[permission] AS [permission]
-      FROM [dbo].[v_templatePermissions] AS [v_templatePermissions]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="v_templateusage" EntityType="Trifolia.Shared.Store.v_templateusage" store:Type="Views" store:Schema="dbo" store:Name="v_templateusage">
-            <DefiningQuery>SELECT 
-      [v_templateusage].[templateId] AS [templateId], 
-      [v_templateusage].[templateDisplay] AS [templateDisplay], 
-      [v_templateusage].[implementationGuideId] AS [implementationGuideId], 
-      [v_templateusage].[implementationGuideDisplay] AS [implementationGuideDisplay]
-      FROM [dbo].[v_templateusage] AS [v_templateusage]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="v_userSecurables" EntityType="Trifolia.Shared.Store.v_userSecurables" store:Type="Views" store:Schema="dbo" store:Name="v_userSecurables">
-            <DefiningQuery>SELECT 
-      [v_userSecurables].[userId] AS [userId], 
-      [v_userSecurables].[name] AS [name]
-      FROM [dbo].[v_userSecurables] AS [v_userSecurables]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK_appsecurable_role_appsecurable" Association="Trifolia.Shared.Store.FK_appsecurable_role_appsecurable">
-            <End Role="app_securable" EntitySet="app_securable" />
-            <End Role="appsecurable_role" EntitySet="appsecurable_role" />
-          </AssociationSet>
-          <AssociationSet Name="FK_appsecurable_role_roles" Association="Trifolia.Shared.Store.FK_appsecurable_role_roles">
-            <End Role="role" EntitySet="role" />
-            <End Role="appsecurable_role" EntitySet="appsecurable_role" />
-          </AssociationSet>
-          <AssociationSet Name="FK_green_constraint_green_constraint1" Association="Trifolia.Shared.Store.FK_green_constraint_green_constraint1">
-            <End Role="green_constraint" EntitySet="green_constraint" />
-            <End Role="green_constraint1" EntitySet="green_constraint" />
-          </AssociationSet>
-          <AssociationSet Name="FK_green_constraint_green_template" Association="Trifolia.Shared.Store.FK_green_constraint_green_template">
-            <End Role="green_template" EntitySet="green_template" />
-            <End Role="green_constraint" EntitySet="green_constraint" />
-          </AssociationSet>
-          <AssociationSet Name="FK_green_constraint_igtype_datatype" Association="Trifolia.Shared.Store.FK_green_constraint_igtype_datatype">
-            <End Role="implementationguidetype_datatype" EntitySet="implementationguidetype_datatype" />
-            <End Role="green_constraint" EntitySet="green_constraint" />
-          </AssociationSet>
-          <AssociationSet Name="FK_green_constraint_template_constraint" Association="Trifolia.Shared.Store.FK_green_constraint_template_constraint">
-            <End Role="template_constraint" EntitySet="template_constraint" />
-            <End Role="green_constraint" EntitySet="green_constraint" />
-          </AssociationSet>
-          <AssociationSet Name="FK_green_template_green_template" Association="Trifolia.Shared.Store.FK_green_template_green_template">
-            <End Role="green_template" EntitySet="green_template" />
-            <End Role="green_template1" EntitySet="green_template" />
-          </AssociationSet>
-          <AssociationSet Name="FK_green_template_template" Association="Trifolia.Shared.Store.FK_green_template_template">
-            <End Role="template" EntitySet="template" />
-            <End Role="green_template" EntitySet="green_template" />
-          </AssociationSet>
-          <AssociationSet Name="FK_group_organization" Association="Trifolia.Shared.Store.FK_group_organization">
-            <End Role="organization" EntitySet="organization" />
-            <End Role="group" EntitySet="group" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ig_igPreviousVersion" Association="Trifolia.Shared.Store.FK_ig_igPreviousVersion">
-            <End Role="implementationguide" EntitySet="implementationguide" />
-            <End Role="implementationguide1" EntitySet="implementationguide" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_file_implementationguide" Association="Trifolia.Shared.Store.FK_implementationguide_file_implementationguide">
-            <End Role="implementationguide" EntitySet="implementationguide" />
-            <End Role="implementationguide_file" EntitySet="implementationguide_file" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_filedata_implementationguide_file" Association="Trifolia.Shared.Store.FK_implementationguide_filedata_implementationguide_file">
-            <End Role="implementationguide_file" EntitySet="implementationguide_file" />
-            <End Role="implementationguide_filedata" EntitySet="implementationguide_filedata" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_implementationguidetype" Association="Trifolia.Shared.Store.FK_implementationguide_implementationguidetype">
-            <End Role="implementationguidetype" EntitySet="implementationguidetype" />
-            <End Role="implementationguide" EntitySet="implementationguide" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_organization" Association="Trifolia.Shared.Store.FK_implementationguide_organization">
-            <End Role="organization" EntitySet="organization" />
-            <End Role="implementationguide" EntitySet="implementationguide" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_permission_group" Association="Trifolia.Shared.Store.FK_implementationguide_permission_group">
-            <End Role="group" EntitySet="group" />
-            <End Role="implementationguide_permission" EntitySet="implementationguide_permission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_permission_implementationguide" Association="Trifolia.Shared.Store.FK_implementationguide_permission_implementationguide">
-            <End Role="implementationguide" EntitySet="implementationguide" />
-            <End Role="implementationguide_permission" EntitySet="implementationguide_permission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_permission_organization" Association="Trifolia.Shared.Store.FK_implementationguide_permission_organization">
-            <End Role="organization" EntitySet="organization" />
-            <End Role="implementationguide_permission" EntitySet="implementationguide_permission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_permission_user" Association="Trifolia.Shared.Store.FK_implementationguide_permission_user">
-            <End Role="user" EntitySet="user" />
-            <End Role="implementationguide_permission" EntitySet="implementationguide_permission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_publish_status" Association="Trifolia.Shared.Store.FK_implementationguide_publish_status">
-            <End Role="publish_status" EntitySet="publish_status" />
-            <End Role="implementationguide" EntitySet="implementationguide" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_schpattern_implementationguide" Association="Trifolia.Shared.Store.FK_implementationguide_schpattern_implementationguide">
-            <End Role="implementationguide" EntitySet="implementationguide" />
-            <End Role="implementationguide_schpattern" EntitySet="implementationguide_schpattern" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_section_implementationguide" Association="Trifolia.Shared.Store.FK_implementationguide_section_implementationguide">
-            <End Role="implementationguide" EntitySet="implementationguide" />
-            <End Role="implementationguide_section" EntitySet="implementationguide_section" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_setting_implementationguide" Association="Trifolia.Shared.Store.FK_implementationguide_setting_implementationguide">
-            <End Role="implementationguide" EntitySet="implementationguide" />
-            <End Role="implementationguide_setting" EntitySet="implementationguide_setting" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_templatetype_implementationguide" Association="Trifolia.Shared.Store.FK_implementationguide_templatetype_implementationguide">
-            <End Role="implementationguide" EntitySet="implementationguide" />
-            <End Role="implementationguide_templatetype" EntitySet="implementationguide_templatetype" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_templatetype_templatetype" Association="Trifolia.Shared.Store.FK_implementationguide_templatetype_templatetype">
-            <End Role="templatetype" EntitySet="templatetype" />
-            <End Role="implementationguide_templatetype" EntitySet="implementationguide_templatetype" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguide_user" Association="Trifolia.Shared.Store.FK_implementationguide_user">
-            <End Role="user" EntitySet="user" />
-            <End Role="implementationguide" EntitySet="implementationguide" />
-          </AssociationSet>
-          <AssociationSet Name="FK_implementationguidetype_datatype_implementationguidetype" Association="Trifolia.Shared.Store.FK_implementationguidetype_datatype_implementationguidetype">
-            <End Role="implementationguidetype" EntitySet="implementationguidetype" />
-            <End Role="implementationguidetype_datatype" EntitySet="implementationguidetype_datatype" />
-          </AssociationSet>
-          <AssociationSet Name="FK_organization_defaultpermission_group" Association="Trifolia.Shared.Store.FK_organization_defaultpermission_group">
-            <End Role="group" EntitySet="group" />
-            <End Role="organization_defaultpermission" EntitySet="organization_defaultpermission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_organization_defaultpermission_organization" Association="Trifolia.Shared.Store.FK_organization_defaultpermission_organization">
-            <End Role="organization" EntitySet="organization" />
-            <End Role="organization_defaultpermission" EntitySet="organization_defaultpermission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_organization_defaultpermission_organization1" Association="Trifolia.Shared.Store.FK_organization_defaultpermission_organization1">
-            <End Role="organization" EntitySet="organization" />
-            <End Role="organization_defaultpermission" EntitySet="organization_defaultpermission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_organization_defaultpermission_user" Association="Trifolia.Shared.Store.FK_organization_defaultpermission_user">
-            <End Role="user" EntitySet="user" />
-            <End Role="organization_defaultpermission" EntitySet="organization_defaultpermission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_role_restriction_organization" Association="Trifolia.Shared.Store.FK_role_restriction_organization">
-            <End Role="organization" EntitySet="organization" />
-            <End Role="role_restriction" EntitySet="role_restriction" />
-          </AssociationSet>
-          <AssociationSet Name="FK_role_restriction_roles" Association="Trifolia.Shared.Store.FK_role_restriction_roles">
-            <End Role="role" EntitySet="role" />
-            <End Role="role_restriction" EntitySet="role_restriction" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_constraint_codesystem" Association="Trifolia.Shared.Store.FK_template_constraint_codesystem">
-            <End Role="codesystem" EntitySet="codesystem" />
-            <End Role="template_constraint" EntitySet="template_constraint" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_constraint_sample_template_constraint" Association="Trifolia.Shared.Store.FK_template_constraint_sample_template_constraint">
-            <End Role="template_constraint" EntitySet="template_constraint" />
-            <End Role="template_constraint_sample" EntitySet="template_constraint_sample" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_constraint_template" Association="Trifolia.Shared.Store.FK_template_constraint_template">
-            <End Role="template" EntitySet="template" />
-            <End Role="template_constraint" EntitySet="template_constraint" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_constraint_template_constraint1" Association="Trifolia.Shared.Store.FK_template_constraint_template_constraint1">
-            <End Role="template_constraint" EntitySet="template_constraint" />
-            <End Role="template_constraint1" EntitySet="template_constraint" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_constraint_template1" Association="Trifolia.Shared.Store.FK_template_constraint_template1">
-            <End Role="template" EntitySet="template" />
-            <End Role="template_constraint" EntitySet="template_constraint" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_constraint_valueset" Association="Trifolia.Shared.Store.FK_template_constraint_valueset">
-            <End Role="valueset" EntitySet="valueset" />
-            <End Role="template_constraint" EntitySet="template_constraint" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_extension_template" Association="Trifolia.Shared.Store.FK_template_extension_template">
-            <End Role="template" EntitySet="template" />
-            <End Role="template_extension" EntitySet="template_extension" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_implementationguide" Association="Trifolia.Shared.Store.FK_template_implementationguide">
-            <End Role="implementationguide" EntitySet="implementationguide" />
-            <End Role="template" EntitySet="template" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_implementationguidetype" Association="Trifolia.Shared.Store.FK_template_implementationguidetype">
-            <End Role="implementationguidetype" EntitySet="implementationguidetype" />
-            <End Role="template" EntitySet="template" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_organization" Association="Trifolia.Shared.Store.FK_template_organization">
-            <End Role="organization" EntitySet="organization" />
-            <End Role="template" EntitySet="template" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_status" Association="Trifolia.Shared.Store.FK_template_status">
-            <End Role="publish_status" EntitySet="publish_status" />
-            <End Role="template" EntitySet="template" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_template" Association="Trifolia.Shared.Store.FK_template_template">
-            <End Role="template" EntitySet="template" />
-            <End Role="template1" EntitySet="template" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_templatePreviousVersion" Association="Trifolia.Shared.Store.FK_template_templatePreviousVersion">
-            <End Role="template" EntitySet="template" />
-            <End Role="template1" EntitySet="template" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_templatetype" Association="Trifolia.Shared.Store.FK_template_templatetype">
-            <End Role="templatetype" EntitySet="templatetype" />
-            <End Role="template" EntitySet="template" />
-          </AssociationSet>
-          <AssociationSet Name="FK_template_user" Association="Trifolia.Shared.Store.FK_template_user">
-            <End Role="user" EntitySet="user" />
-            <End Role="template" EntitySet="template" />
-          </AssociationSet>
-          <AssociationSet Name="FK_templatesample_template" Association="Trifolia.Shared.Store.FK_templatesample_template">
-            <End Role="template" EntitySet="template" />
-            <End Role="template_sample" EntitySet="template_sample" />
-          </AssociationSet>
-          <AssociationSet Name="FK_templatetype_implementationguidetype" Association="Trifolia.Shared.Store.FK_templatetype_implementationguidetype">
-            <End Role="implementationguidetype" EntitySet="implementationguidetype" />
-            <End Role="templatetype" EntitySet="templatetype" />
-          </AssociationSet>
-          <AssociationSet Name="FK_user_group_group" Association="Trifolia.Shared.Store.FK_user_group_group">
-            <End Role="group" EntitySet="group" />
-            <End Role="user_group" EntitySet="user_group" />
-          </AssociationSet>
-          <AssociationSet Name="FK_user_group_user" Association="Trifolia.Shared.Store.FK_user_group_user">
-            <End Role="user" EntitySet="user" />
-            <End Role="user_group" EntitySet="user_group" />
-          </AssociationSet>
-          <AssociationSet Name="FK_user_organization" Association="Trifolia.Shared.Store.FK_user_organization">
-            <End Role="organization" EntitySet="organization" />
-            <End Role="user" EntitySet="user" />
-          </AssociationSet>
-          <AssociationSet Name="FK_user_role_roles" Association="Trifolia.Shared.Store.FK_user_role_roles">
-            <End Role="role" EntitySet="role" />
-            <End Role="user_role" EntitySet="user_role" />
-          </AssociationSet>
-          <AssociationSet Name="FK_user_role_user" Association="Trifolia.Shared.Store.FK_user_role_user">
-            <End Role="user" EntitySet="user" />
-            <End Role="user_role" EntitySet="user_role" />
-          </AssociationSet>
-          <AssociationSet Name="FK_valueset_member_codesystem" Association="Trifolia.Shared.Store.FK_valueset_member_codesystem">
-            <End Role="codesystem" EntitySet="codesystem" />
-            <End Role="valueset_member" EntitySet="valueset_member" />
-          </AssociationSet>
-          <AssociationSet Name="FK_valueset_member_valueset" Association="Trifolia.Shared.Store.FK_valueset_member_valueset">
-            <End Role="valueset" EntitySet="valueset" />
-            <End Role="valueset_member" EntitySet="valueset_member" />
-          </AssociationSet>
-        </EntityContainer>
+    <Schema Namespace="Trifolia.Shared.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="app_securable">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="displayName" Type="nvarchar" MaxLength="255" />
           <Property Name="description" Type="ntext" />
         </EntityType>
@@ -391,7 +18,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="appSecurableId" Type="int" Nullable="false" />
           <Property Name="roleId" Type="int" Nullable="false" />
         </EntityType>
@@ -399,11 +26,11 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="auditDate" Type="datetime" Nullable="false" />
-          <Property Name="ip" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="type" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="ip" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="type" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="implementationGuideId" Type="int" />
           <Property Name="templateId" Type="int" />
           <Property Name="templateConstraintId" Type="int" />
@@ -413,9 +40,9 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="oid" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="oid" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="description" Type="nvarchar(max)" />
           <Property Name="lastUpdate" Type="datetime" />
         </EntityType>
@@ -423,12 +50,12 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="greenTemplateId" Type="int" Nullable="false" />
           <Property Name="templateConstraintId" Type="int" Nullable="false" />
           <Property Name="parentGreenConstraintId" Type="int" />
           <Property Name="order" Type="int" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="description" Type="nvarchar(max)" />
           <Property Name="isEditable" Type="bit" Nullable="false" />
           <Property Name="rootXPath" Type="nvarchar" MaxLength="250" />
@@ -438,29 +65,29 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="parentGreenTemplateId" Type="int" />
           <Property Name="templateId" Type="int" Nullable="false" />
           <Property Name="order" Type="int" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="description" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="group">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="organizationId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="implementationguide">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="implementationGuideTypeId" Type="int" Nullable="false" />
           <Property Name="organizationId" Type="int" Nullable="false" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="publishDate" Type="datetime" />
           <Property Name="publishStatusId" Type="int" />
           <Property Name="previousVersionImplementationGuideId" Type="int" />
@@ -471,16 +98,17 @@
           <Property Name="webDisplayName" Type="nvarchar" MaxLength="255" />
           <Property Name="webDescription" Type="nvarchar(max)" />
           <Property Name="webReadmeOverview" Type="nvarchar(max)" />
+          <Property Name="identifier" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="implementationguide_file">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
-          <Property Name="fileName" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="mimeType" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="contentType" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="fileName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="mimeType" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="contentType" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="expectedErrorCount" Type="int" />
           <Property Name="description" Type="ntext" Nullable="false" />
           <Property Name="url" Type="nvarchar" MaxLength="255" />
@@ -489,21 +117,21 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="implementationGuideFileId" Type="int" Nullable="false" />
           <Property Name="data" Type="image" Nullable="false" />
           <Property Name="updatedDate" Type="datetime" Nullable="false" />
-          <Property Name="updatedBy" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="updatedBy" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="note" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="implementationguide_permission">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
-          <Property Name="permission" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="type" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="permission" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="organizationId" Type="int" />
           <Property Name="groupId" Type="int" />
           <Property Name="userId" Type="int" />
@@ -512,19 +140,19 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
-          <Property Name="phase" Type="nvarchar" Nullable="false" MaxLength="128" />
-          <Property Name="patternId" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="phase" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="patternId" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="patternContent" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="implementationguide_section">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
-          <Property Name="heading" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="heading" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="content" Type="ntext" />
           <Property Name="order" Type="int" Nullable="false" />
           <Property Name="level" Type="int" Nullable="false" />
@@ -533,45 +161,45 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
-          <Property Name="propertyName" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="propertyName" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="propertyValue" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="implementationguide_templatetype">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
           <Property Name="templateTypeId" Type="int" Nullable="false" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="detailsText" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="implementationguidetype">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="schemaLocation" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="schemaPrefix" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="schemaURI" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="schemaLocation" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="schemaPrefix" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="schemaURI" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="implementationguidetype_datatype">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="implementationGuideTypeId" Type="int" Nullable="false" />
-          <Property Name="dataTypeName" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="dataTypeName" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="organization">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="contactName" Type="nvarchar" MaxLength="128" />
           <Property Name="contactEmail" Type="nvarchar" MaxLength="255" />
           <Property Name="contactPhone" Type="nvarchar" MaxLength="50" />
@@ -582,10 +210,10 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="organizationId" Type="int" Nullable="false" />
-          <Property Name="permission" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="type" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="permission" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="entireOrganizationId" Type="int" />
           <Property Name="groupId" Type="int" />
           <Property Name="userId" Type="int" />
@@ -594,14 +222,14 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="status" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="status" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="role">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="50" />
           <Property Name="isDefault" Type="bit" Nullable="false" />
           <Property Name="isAdmin" Type="bit" Nullable="false" />
@@ -610,7 +238,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="roleId" Type="int" Nullable="false" />
           <Property Name="organizationId" Type="int" Nullable="false" />
         </EntityType>
@@ -618,16 +246,16 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="implementationGuideTypeId" Type="int" Nullable="false" />
           <Property Name="templateTypeId" Type="int" Nullable="false" />
           <Property Name="organizationId" Type="int" />
           <Property Name="impliedTemplateId" Type="int" />
           <Property Name="owningImplementationGuideId" Type="int" Nullable="false" />
-          <Property Name="oid" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="oid" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="isOpen" Type="bit" Nullable="false" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="bookmark" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="bookmark" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="description" Type="nvarchar(max)" />
           <Property Name="primaryContext" Type="nvarchar" MaxLength="255" />
           <Property Name="notes" Type="nvarchar(max)" />
@@ -642,7 +270,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="number" Type="int" />
           <Property Name="templateId" Type="int" Nullable="false" />
           <Property Name="parentConstraintId" Type="int" />
@@ -680,38 +308,38 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="templateConstraintId" Type="int" Nullable="false" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="sampleText" Type="ntext" Nullable="false" />
         </EntityType>
         <EntityType Name="template_extension">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="templateId" Type="int" Nullable="false" />
-          <Property Name="identifier" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="type" Type="nvarchar" Nullable="false" MaxLength="55" />
-          <Property Name="value" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="identifier" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="type" Type="nvarchar" MaxLength="55" Nullable="false" />
+          <Property Name="value" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="template_sample">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="templateId" Type="int" Nullable="false" />
           <Property Name="lastUpdated" Type="date" Nullable="false" />
           <Property Name="xmlSample" Type="text" Nullable="false" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="templatetype">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="implementationGuideTypeId" Type="int" Nullable="false" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="outputOrder" Type="int" Nullable="false" />
           <Property Name="rootContext" Type="nvarchar" MaxLength="255" />
           <Property Name="rootContextType" Type="nvarchar" MaxLength="255" />
@@ -720,13 +348,13 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="userName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="organizationId" Type="int" Nullable="false" />
-          <Property Name="firstName" Type="nvarchar" Nullable="false" MaxLength="125" />
-          <Property Name="lastName" Type="nvarchar" Nullable="false" MaxLength="125" />
-          <Property Name="email" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="phone" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="125" Nullable="false" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="125" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="phone" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="okayToContact" Type="bit" />
           <Property Name="externalOrganizationName" Type="nvarchar" MaxLength="50" />
           <Property Name="externalOrganizationType" Type="nvarchar" MaxLength="50" />
@@ -736,7 +364,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="userId" Type="int" Nullable="false" />
           <Property Name="groupId" Type="int" Nullable="false" />
         </EntityType>
@@ -744,7 +372,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="roleId" Type="int" Nullable="false" />
           <Property Name="userId" Type="int" Nullable="false" />
         </EntityType>
@@ -752,9 +380,9 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="oid" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="oid" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="code" Type="nvarchar" MaxLength="255" />
           <Property Name="description" Type="nvarchar(max)" />
           <Property Name="intensional" Type="bit" />
@@ -767,7 +395,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="valueSetId" Type="int" Nullable="false" />
           <Property Name="codeSystemId" Type="int" />
           <Property Name="code" Type="nvarchar" MaxLength="255" />
@@ -776,29 +404,27 @@
           <Property Name="statusDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_igaudittrail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'templatedb.dbo.v_igaudittrail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_igaudittrail">
           <Key>
             <PropertyRef Name="username" />
             <PropertyRef Name="auditDate" />
-            <PropertyRef Name="ip" />
             <PropertyRef Name="type" />
+            <PropertyRef Name="ip" />
           </Key>
-          <Property Name="username" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="auditDate" Type="datetime" Nullable="false" />
-          <Property Name="ip" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="type" Type="nvarchar" Nullable="false" MaxLength="128" />
-          <Property Name="note" Type="nvarchar(max)" />
+          <Property Name="ip" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="note" Type="varchar(max)" />
           <Property Name="implementationGuideId" Type="int" />
           <Property Name="templateId" Type="int" />
           <Property Name="templateConstraintId" Type="int" />
-          <Property Name="templateName" Type="nvarchar" MaxLength="255" />
+          <Property Name="templateName" Type="varchar" MaxLength="255" />
           <Property Name="conformanceNumber" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_implementationguidefile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'templatedb.dbo.v_implementationguidefile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_implementationguidefile">
           <Key>
             <PropertyRef Name="id" />
@@ -812,18 +438,17 @@
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
-          <Property Name="fileName" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="mimeType" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="contentType" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="fileName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="mimeType" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="contentType" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="expectedErrorCount" Type="int" />
           <Property Name="data" Type="image" Nullable="false" />
           <Property Name="updatedDate" Type="datetime" Nullable="false" />
-          <Property Name="updatedBy" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="note" Type="nvarchar(max)" />
+          <Property Name="updatedBy" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="note" Type="varchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_implementationGuidePermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'templatedb.dbo.v_implementationGuidePermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_implementationGuidePermissions">
           <Key>
             <PropertyRef Name="userId" />
@@ -832,11 +457,10 @@
           </Key>
           <Property Name="userId" Type="int" Nullable="false" />
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
-          <Property Name="permission" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="permission" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_implementationGuideTemplates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'templatedb.dbo.v_implementationGuideTemplates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_implementationGuideTemplates">
           <Key>
             <PropertyRef Name="implementationGuideId" />
@@ -846,8 +470,7 @@
           <Property Name="templateId" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_latestimplementationguidefiledata' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'templatedb.dbo.v_latestimplementationguidefiledata' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_latestimplementationguidefiledata">
           <Key>
             <PropertyRef Name="id" />
@@ -860,12 +483,11 @@
           <Property Name="implementationGuideFileId" Type="int" Nullable="false" />
           <Property Name="data" Type="image" Nullable="false" />
           <Property Name="updatedDate" Type="datetime" Nullable="false" />
-          <Property Name="updatedBy" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="note" Type="nvarchar(max)" />
+          <Property Name="updatedBy" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="note" Type="varchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_template' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'templatedb.dbo.v_template' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_template">
           <Key>
             <PropertyRef Name="id" />
@@ -878,27 +500,26 @@
             <PropertyRef Name="templateTypeDisplay" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="oid" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="oid" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="isOpen" Type="bit" Nullable="false" />
           <Property Name="owningImplementationGuideId" Type="int" />
-          <Property Name="owningImplementationGuideTitle" Type="nvarchar" MaxLength="255" />
-          <Property Name="implementationGuideTypeName" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="owningImplementationGuideTitle" Type="varchar" MaxLength="255" />
+          <Property Name="implementationGuideTypeName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="templateTypeId" Type="int" Nullable="false" />
-          <Property Name="templateTypeName" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="primaryContext" Type="nvarchar" MaxLength="255" />
-          <Property Name="templateTypeDisplay" Type="nvarchar" Nullable="false" MaxLength="513" />
-          <Property Name="organizationName" Type="nvarchar" MaxLength="255" />
+          <Property Name="templateTypeName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="primaryContext" Type="varchar" MaxLength="255" />
+          <Property Name="templateTypeDisplay" Type="varchar" MaxLength="513" Nullable="false" />
+          <Property Name="organizationName" Type="varchar" MaxLength="255" />
           <Property Name="publishDate" Type="datetime" />
-          <Property Name="impliedTemplateOid" Type="nvarchar" MaxLength="255" />
-          <Property Name="impliedTemplateTitle" Type="nvarchar" MaxLength="255" />
+          <Property Name="impliedTemplateOid" Type="varchar" MaxLength="255" />
+          <Property Name="impliedTemplateTitle" Type="varchar" MaxLength="255" />
           <Property Name="constraintCount" Type="int" />
           <Property Name="containedTemplateCount" Type="int" />
           <Property Name="impliedTemplateCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_templateList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'templatedb.dbo.v_templateList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_templateList">
           <Key>
             <PropertyRef Name="id" />
@@ -909,10 +530,10 @@
             <PropertyRef Name="templateTypeId" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="oid" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="open" Type="varchar" Nullable="false" MaxLength="3" />
-          <Property Name="templateType" Type="nvarchar" Nullable="false" MaxLength="513" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="oid" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="open" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="templateType" Type="nvarchar" MaxLength="513" Nullable="false" />
           <Property Name="templateTypeId" Type="int" Nullable="false" />
           <Property Name="implementationGuide" Type="nvarchar" MaxLength="267" />
           <Property Name="implementationGuideId" Type="int" />
@@ -926,8 +547,7 @@
           <Property Name="primaryContextType" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_templatePermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'templatedb.dbo.v_templatePermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_templatePermissions">
           <Key>
             <PropertyRef Name="userId" />
@@ -936,11 +556,10 @@
           </Key>
           <Property Name="userId" Type="int" Nullable="false" />
           <Property Name="templateId" Type="int" Nullable="false" />
-          <Property Name="permission" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="permission" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_templateusage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'templatedb.dbo.v_templateusage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_templateusage">
           <Key>
             <PropertyRef Name="templateId" />
@@ -949,24 +568,23 @@
             <PropertyRef Name="implementationGuideDisplay" />
           </Key>
           <Property Name="templateId" Type="int" Nullable="false" />
-          <Property Name="templateDisplay" Type="nvarchar" Nullable="false" MaxLength="513" />
+          <Property Name="templateDisplay" Type="varchar" MaxLength="513" Nullable="false" />
           <Property Name="implementationGuideId" Type="int" Nullable="false" />
-          <Property Name="implementationGuideDisplay" Type="nvarchar" Nullable="false" MaxLength="513" />
+          <Property Name="implementationGuideDisplay" Type="varchar" MaxLength="513" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'templatedb.dbo.v_userSecurables' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'templatedb.dbo.v_userSecurables' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_userSecurables">
           <Key>
             <PropertyRef Name="userId" />
             <PropertyRef Name="name" />
           </Key>
           <Property Name="userId" Type="int" Nullable="false" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="FK_appsecurable_role_appsecurable">
-          <End Role="app_securable" Type="Trifolia.Shared.Store.app_securable" Multiplicity="1" />
-          <End Role="appsecurable_role" Type="Trifolia.Shared.Store.appsecurable_role" Multiplicity="*" />
+          <End Role="app_securable" Type="Self.app_securable" Multiplicity="1" />
+          <End Role="appsecurable_role" Type="Self.appsecurable_role" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="app_securable">
               <PropertyRef Name="id" />
@@ -977,8 +595,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_appsecurable_role_roles">
-          <End Role="role" Type="Trifolia.Shared.Store.role" Multiplicity="1" />
-          <End Role="appsecurable_role" Type="Trifolia.Shared.Store.appsecurable_role" Multiplicity="*" />
+          <End Role="role" Type="Self.role" Multiplicity="1" />
+          <End Role="appsecurable_role" Type="Self.appsecurable_role" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="role">
               <PropertyRef Name="id" />
@@ -989,8 +607,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_green_constraint_green_constraint1">
-          <End Role="green_constraint" Type="Trifolia.Shared.Store.green_constraint" Multiplicity="0..1" />
-          <End Role="green_constraint1" Type="Trifolia.Shared.Store.green_constraint" Multiplicity="*" />
+          <End Role="green_constraint" Type="Self.green_constraint" Multiplicity="0..1" />
+          <End Role="green_constraint1" Type="Self.green_constraint" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="green_constraint">
               <PropertyRef Name="id" />
@@ -1001,8 +619,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_green_constraint_green_template">
-          <End Role="green_template" Type="Trifolia.Shared.Store.green_template" Multiplicity="1" />
-          <End Role="green_constraint" Type="Trifolia.Shared.Store.green_constraint" Multiplicity="*" />
+          <End Role="green_template" Type="Self.green_template" Multiplicity="1" />
+          <End Role="green_constraint" Type="Self.green_constraint" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="green_template">
               <PropertyRef Name="id" />
@@ -1013,8 +631,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_green_constraint_igtype_datatype">
-          <End Role="implementationguidetype_datatype" Type="Trifolia.Shared.Store.implementationguidetype_datatype" Multiplicity="0..1" />
-          <End Role="green_constraint" Type="Trifolia.Shared.Store.green_constraint" Multiplicity="*" />
+          <End Role="implementationguidetype_datatype" Type="Self.implementationguidetype_datatype" Multiplicity="0..1" />
+          <End Role="green_constraint" Type="Self.green_constraint" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguidetype_datatype">
               <PropertyRef Name="id" />
@@ -1025,10 +643,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_green_constraint_template_constraint">
-          <End Role="template_constraint" Type="Trifolia.Shared.Store.template_constraint" Multiplicity="1">
+          <End Role="template_constraint" Type="Self.template_constraint" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="green_constraint" Type="Trifolia.Shared.Store.green_constraint" Multiplicity="*" />
+          <End Role="green_constraint" Type="Self.green_constraint" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="template_constraint">
               <PropertyRef Name="id" />
@@ -1039,8 +657,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_green_template_green_template">
-          <End Role="green_template" Type="Trifolia.Shared.Store.green_template" Multiplicity="0..1" />
-          <End Role="green_template1" Type="Trifolia.Shared.Store.green_template" Multiplicity="*" />
+          <End Role="green_template" Type="Self.green_template" Multiplicity="0..1" />
+          <End Role="green_template1" Type="Self.green_template" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="green_template">
               <PropertyRef Name="id" />
@@ -1051,10 +669,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_green_template_template">
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="1">
+          <End Role="template" Type="Self.template" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="green_template" Type="Trifolia.Shared.Store.green_template" Multiplicity="*" />
+          <End Role="green_template" Type="Self.green_template" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="template">
               <PropertyRef Name="id" />
@@ -1065,8 +683,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_group_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="1" />
-          <End Role="group" Type="Trifolia.Shared.Store.group" Multiplicity="*" />
+          <End Role="organization" Type="Self.organization" Multiplicity="1" />
+          <End Role="group" Type="Self.group" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="organization">
               <PropertyRef Name="id" />
@@ -1077,8 +695,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ig_igPreviousVersion">
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="0..1" />
-          <End Role="implementationguide1" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="*" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="0..1" />
+          <End Role="implementationguide1" Type="Self.implementationguide" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguide">
               <PropertyRef Name="id" />
@@ -1089,8 +707,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_file_implementationguide">
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="1" />
-          <End Role="implementationguide_file" Type="Trifolia.Shared.Store.implementationguide_file" Multiplicity="*" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="1" />
+          <End Role="implementationguide_file" Type="Self.implementationguide_file" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguide">
               <PropertyRef Name="id" />
@@ -1101,8 +719,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_filedata_implementationguide_file">
-          <End Role="implementationguide_file" Type="Trifolia.Shared.Store.implementationguide_file" Multiplicity="1" />
-          <End Role="implementationguide_filedata" Type="Trifolia.Shared.Store.implementationguide_filedata" Multiplicity="*" />
+          <End Role="implementationguide_file" Type="Self.implementationguide_file" Multiplicity="1" />
+          <End Role="implementationguide_filedata" Type="Self.implementationguide_filedata" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguide_file">
               <PropertyRef Name="id" />
@@ -1113,8 +731,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_implementationguidetype">
-          <End Role="implementationguidetype" Type="Trifolia.Shared.Store.implementationguidetype" Multiplicity="1" />
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="*" />
+          <End Role="implementationguidetype" Type="Self.implementationguidetype" Multiplicity="1" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguidetype">
               <PropertyRef Name="id" />
@@ -1125,8 +743,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="1" />
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="*" />
+          <End Role="organization" Type="Self.organization" Multiplicity="1" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="organization">
               <PropertyRef Name="id" />
@@ -1137,8 +755,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_permission_group">
-          <End Role="group" Type="Trifolia.Shared.Store.group" Multiplicity="0..1" />
-          <End Role="implementationguide_permission" Type="Trifolia.Shared.Store.implementationguide_permission" Multiplicity="*" />
+          <End Role="group" Type="Self.group" Multiplicity="0..1" />
+          <End Role="implementationguide_permission" Type="Self.implementationguide_permission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="group">
               <PropertyRef Name="id" />
@@ -1149,8 +767,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_permission_implementationguide">
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="1" />
-          <End Role="implementationguide_permission" Type="Trifolia.Shared.Store.implementationguide_permission" Multiplicity="*" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="1" />
+          <End Role="implementationguide_permission" Type="Self.implementationguide_permission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguide">
               <PropertyRef Name="id" />
@@ -1161,8 +779,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_permission_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="0..1" />
-          <End Role="implementationguide_permission" Type="Trifolia.Shared.Store.implementationguide_permission" Multiplicity="*" />
+          <End Role="organization" Type="Self.organization" Multiplicity="0..1" />
+          <End Role="implementationguide_permission" Type="Self.implementationguide_permission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="organization">
               <PropertyRef Name="id" />
@@ -1173,8 +791,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_permission_user">
-          <End Role="user" Type="Trifolia.Shared.Store.user" Multiplicity="0..1" />
-          <End Role="implementationguide_permission" Type="Trifolia.Shared.Store.implementationguide_permission" Multiplicity="*" />
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="implementationguide_permission" Type="Self.implementationguide_permission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user">
               <PropertyRef Name="id" />
@@ -1185,8 +803,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_publish_status">
-          <End Role="publish_status" Type="Trifolia.Shared.Store.publish_status" Multiplicity="0..1" />
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="*" />
+          <End Role="publish_status" Type="Self.publish_status" Multiplicity="0..1" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="publish_status">
               <PropertyRef Name="id" />
@@ -1197,8 +815,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_schpattern_implementationguide">
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="1" />
-          <End Role="implementationguide_schpattern" Type="Trifolia.Shared.Store.implementationguide_schpattern" Multiplicity="*" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="1" />
+          <End Role="implementationguide_schpattern" Type="Self.implementationguide_schpattern" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguide">
               <PropertyRef Name="id" />
@@ -1209,8 +827,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_section_implementationguide">
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="1" />
-          <End Role="implementationguide_section" Type="Trifolia.Shared.Store.implementationguide_section" Multiplicity="*" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="1" />
+          <End Role="implementationguide_section" Type="Self.implementationguide_section" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguide">
               <PropertyRef Name="id" />
@@ -1221,8 +839,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_setting_implementationguide">
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="1" />
-          <End Role="implementationguide_setting" Type="Trifolia.Shared.Store.implementationguide_setting" Multiplicity="*" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="1" />
+          <End Role="implementationguide_setting" Type="Self.implementationguide_setting" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguide">
               <PropertyRef Name="id" />
@@ -1233,8 +851,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_templatetype_implementationguide">
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="1" />
-          <End Role="implementationguide_templatetype" Type="Trifolia.Shared.Store.implementationguide_templatetype" Multiplicity="*" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="1" />
+          <End Role="implementationguide_templatetype" Type="Self.implementationguide_templatetype" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguide">
               <PropertyRef Name="id" />
@@ -1245,8 +863,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_templatetype_templatetype">
-          <End Role="templatetype" Type="Trifolia.Shared.Store.templatetype" Multiplicity="1" />
-          <End Role="implementationguide_templatetype" Type="Trifolia.Shared.Store.implementationguide_templatetype" Multiplicity="*" />
+          <End Role="templatetype" Type="Self.templatetype" Multiplicity="1" />
+          <End Role="implementationguide_templatetype" Type="Self.implementationguide_templatetype" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="templatetype">
               <PropertyRef Name="id" />
@@ -1257,8 +875,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguide_user">
-          <End Role="user" Type="Trifolia.Shared.Store.user" Multiplicity="0..1" />
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="*" />
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user">
               <PropertyRef Name="id" />
@@ -1269,8 +887,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_implementationguidetype_datatype_implementationguidetype">
-          <End Role="implementationguidetype" Type="Trifolia.Shared.Store.implementationguidetype" Multiplicity="1" />
-          <End Role="implementationguidetype_datatype" Type="Trifolia.Shared.Store.implementationguidetype_datatype" Multiplicity="*" />
+          <End Role="implementationguidetype" Type="Self.implementationguidetype" Multiplicity="1" />
+          <End Role="implementationguidetype_datatype" Type="Self.implementationguidetype_datatype" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguidetype">
               <PropertyRef Name="id" />
@@ -1281,8 +899,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_organization_defaultpermission_group">
-          <End Role="group" Type="Trifolia.Shared.Store.group" Multiplicity="0..1" />
-          <End Role="organization_defaultpermission" Type="Trifolia.Shared.Store.organization_defaultpermission" Multiplicity="*" />
+          <End Role="group" Type="Self.group" Multiplicity="0..1" />
+          <End Role="organization_defaultpermission" Type="Self.organization_defaultpermission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="group">
               <PropertyRef Name="id" />
@@ -1293,8 +911,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_organization_defaultpermission_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="1" />
-          <End Role="organization_defaultpermission" Type="Trifolia.Shared.Store.organization_defaultpermission" Multiplicity="*" />
+          <End Role="organization" Type="Self.organization" Multiplicity="1" />
+          <End Role="organization_defaultpermission" Type="Self.organization_defaultpermission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="organization">
               <PropertyRef Name="id" />
@@ -1305,8 +923,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_organization_defaultpermission_organization1">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="0..1" />
-          <End Role="organization_defaultpermission" Type="Trifolia.Shared.Store.organization_defaultpermission" Multiplicity="*" />
+          <End Role="organization" Type="Self.organization" Multiplicity="0..1" />
+          <End Role="organization_defaultpermission" Type="Self.organization_defaultpermission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="organization">
               <PropertyRef Name="id" />
@@ -1317,8 +935,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_organization_defaultpermission_user">
-          <End Role="user" Type="Trifolia.Shared.Store.user" Multiplicity="0..1" />
-          <End Role="organization_defaultpermission" Type="Trifolia.Shared.Store.organization_defaultpermission" Multiplicity="*" />
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="organization_defaultpermission" Type="Self.organization_defaultpermission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user">
               <PropertyRef Name="id" />
@@ -1329,8 +947,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_role_restriction_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="1" />
-          <End Role="role_restriction" Type="Trifolia.Shared.Store.role_restriction" Multiplicity="*" />
+          <End Role="organization" Type="Self.organization" Multiplicity="1" />
+          <End Role="role_restriction" Type="Self.role_restriction" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="organization">
               <PropertyRef Name="id" />
@@ -1341,8 +959,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_role_restriction_roles">
-          <End Role="role" Type="Trifolia.Shared.Store.role" Multiplicity="1" />
-          <End Role="role_restriction" Type="Trifolia.Shared.Store.role_restriction" Multiplicity="*" />
+          <End Role="role" Type="Self.role" Multiplicity="1" />
+          <End Role="role_restriction" Type="Self.role_restriction" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="role">
               <PropertyRef Name="id" />
@@ -1353,8 +971,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_constraint_codesystem">
-          <End Role="codesystem" Type="Trifolia.Shared.Store.codesystem" Multiplicity="0..1" />
-          <End Role="template_constraint" Type="Trifolia.Shared.Store.template_constraint" Multiplicity="*" />
+          <End Role="codesystem" Type="Self.codesystem" Multiplicity="0..1" />
+          <End Role="template_constraint" Type="Self.template_constraint" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="codesystem">
               <PropertyRef Name="id" />
@@ -1365,8 +983,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_constraint_sample_template_constraint">
-          <End Role="template_constraint" Type="Trifolia.Shared.Store.template_constraint" Multiplicity="1" />
-          <End Role="template_constraint_sample" Type="Trifolia.Shared.Store.template_constraint_sample" Multiplicity="*" />
+          <End Role="template_constraint" Type="Self.template_constraint" Multiplicity="1" />
+          <End Role="template_constraint_sample" Type="Self.template_constraint_sample" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="template_constraint">
               <PropertyRef Name="id" />
@@ -1377,8 +995,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_constraint_template">
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="1" />
-          <End Role="template_constraint" Type="Trifolia.Shared.Store.template_constraint" Multiplicity="*" />
+          <End Role="template" Type="Self.template" Multiplicity="1" />
+          <End Role="template_constraint" Type="Self.template_constraint" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="template">
               <PropertyRef Name="id" />
@@ -1389,8 +1007,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_constraint_template_constraint1">
-          <End Role="template_constraint" Type="Trifolia.Shared.Store.template_constraint" Multiplicity="0..1" />
-          <End Role="template_constraint1" Type="Trifolia.Shared.Store.template_constraint" Multiplicity="*" />
+          <End Role="template_constraint" Type="Self.template_constraint" Multiplicity="0..1" />
+          <End Role="template_constraint1" Type="Self.template_constraint" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="template_constraint">
               <PropertyRef Name="id" />
@@ -1401,8 +1019,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_constraint_template1">
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="0..1" />
-          <End Role="template_constraint" Type="Trifolia.Shared.Store.template_constraint" Multiplicity="*" />
+          <End Role="template" Type="Self.template" Multiplicity="0..1" />
+          <End Role="template_constraint" Type="Self.template_constraint" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="template">
               <PropertyRef Name="id" />
@@ -1413,8 +1031,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_constraint_valueset">
-          <End Role="valueset" Type="Trifolia.Shared.Store.valueset" Multiplicity="0..1" />
-          <End Role="template_constraint" Type="Trifolia.Shared.Store.template_constraint" Multiplicity="*" />
+          <End Role="valueset" Type="Self.valueset" Multiplicity="0..1" />
+          <End Role="template_constraint" Type="Self.template_constraint" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="valueset">
               <PropertyRef Name="id" />
@@ -1425,8 +1043,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_extension_template">
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="1" />
-          <End Role="template_extension" Type="Trifolia.Shared.Store.template_extension" Multiplicity="*" />
+          <End Role="template" Type="Self.template" Multiplicity="1" />
+          <End Role="template_extension" Type="Self.template_extension" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="template">
               <PropertyRef Name="id" />
@@ -1437,8 +1055,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_implementationguide">
-          <End Role="implementationguide" Type="Trifolia.Shared.Store.implementationguide" Multiplicity="1" />
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="*" />
+          <End Role="implementationguide" Type="Self.implementationguide" Multiplicity="1" />
+          <End Role="template" Type="Self.template" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguide">
               <PropertyRef Name="id" />
@@ -1449,8 +1067,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_implementationguidetype">
-          <End Role="implementationguidetype" Type="Trifolia.Shared.Store.implementationguidetype" Multiplicity="1" />
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="*" />
+          <End Role="implementationguidetype" Type="Self.implementationguidetype" Multiplicity="1" />
+          <End Role="template" Type="Self.template" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguidetype">
               <PropertyRef Name="id" />
@@ -1461,8 +1079,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="0..1" />
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="*" />
+          <End Role="organization" Type="Self.organization" Multiplicity="0..1" />
+          <End Role="template" Type="Self.template" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="organization">
               <PropertyRef Name="id" />
@@ -1473,8 +1091,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_status">
-          <End Role="publish_status" Type="Trifolia.Shared.Store.publish_status" Multiplicity="0..1" />
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="*" />
+          <End Role="publish_status" Type="Self.publish_status" Multiplicity="0..1" />
+          <End Role="template" Type="Self.template" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="publish_status">
               <PropertyRef Name="id" />
@@ -1485,8 +1103,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_template">
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="0..1" />
-          <End Role="template1" Type="Trifolia.Shared.Store.template" Multiplicity="*" />
+          <End Role="template" Type="Self.template" Multiplicity="0..1" />
+          <End Role="template1" Type="Self.template" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="template">
               <PropertyRef Name="id" />
@@ -1497,8 +1115,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_templatePreviousVersion">
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="0..1" />
-          <End Role="template1" Type="Trifolia.Shared.Store.template" Multiplicity="*" />
+          <End Role="template" Type="Self.template" Multiplicity="0..1" />
+          <End Role="template1" Type="Self.template" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="template">
               <PropertyRef Name="id" />
@@ -1509,8 +1127,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_templatetype">
-          <End Role="templatetype" Type="Trifolia.Shared.Store.templatetype" Multiplicity="1" />
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="*" />
+          <End Role="templatetype" Type="Self.templatetype" Multiplicity="1" />
+          <End Role="template" Type="Self.template" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="templatetype">
               <PropertyRef Name="id" />
@@ -1521,8 +1139,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_template_user">
-          <End Role="user" Type="Trifolia.Shared.Store.user" Multiplicity="1" />
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="*" />
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="template" Type="Self.template" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user">
               <PropertyRef Name="id" />
@@ -1533,8 +1151,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_templatesample_template">
-          <End Role="template" Type="Trifolia.Shared.Store.template" Multiplicity="1" />
-          <End Role="template_sample" Type="Trifolia.Shared.Store.template_sample" Multiplicity="*" />
+          <End Role="template" Type="Self.template" Multiplicity="1" />
+          <End Role="template_sample" Type="Self.template_sample" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="template">
               <PropertyRef Name="id" />
@@ -1545,8 +1163,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_templatetype_implementationguidetype">
-          <End Role="implementationguidetype" Type="Trifolia.Shared.Store.implementationguidetype" Multiplicity="1" />
-          <End Role="templatetype" Type="Trifolia.Shared.Store.templatetype" Multiplicity="*" />
+          <End Role="implementationguidetype" Type="Self.implementationguidetype" Multiplicity="1" />
+          <End Role="templatetype" Type="Self.templatetype" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="implementationguidetype">
               <PropertyRef Name="id" />
@@ -1557,10 +1175,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_user_group_group">
-          <End Role="group" Type="Trifolia.Shared.Store.group" Multiplicity="1">
+          <End Role="group" Type="Self.group" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="user_group" Type="Trifolia.Shared.Store.user_group" Multiplicity="*" />
+          <End Role="user_group" Type="Self.user_group" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="group">
               <PropertyRef Name="id" />
@@ -1571,8 +1189,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_user_group_user">
-          <End Role="user" Type="Trifolia.Shared.Store.user" Multiplicity="1" />
-          <End Role="user_group" Type="Trifolia.Shared.Store.user_group" Multiplicity="*" />
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="user_group" Type="Self.user_group" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user">
               <PropertyRef Name="id" />
@@ -1583,8 +1201,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_user_organization">
-          <End Role="organization" Type="Trifolia.Shared.Store.organization" Multiplicity="1" />
-          <End Role="user" Type="Trifolia.Shared.Store.user" Multiplicity="*" />
+          <End Role="organization" Type="Self.organization" Multiplicity="1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="organization">
               <PropertyRef Name="id" />
@@ -1595,10 +1213,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_user_role_roles">
-          <End Role="role" Type="Trifolia.Shared.Store.role" Multiplicity="1">
+          <End Role="role" Type="Self.role" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="user_role" Type="Trifolia.Shared.Store.user_role" Multiplicity="*" />
+          <End Role="user_role" Type="Self.user_role" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="role">
               <PropertyRef Name="id" />
@@ -1609,10 +1227,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_user_role_user">
-          <End Role="user" Type="Trifolia.Shared.Store.user" Multiplicity="1">
+          <End Role="user" Type="Self.user" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="user_role" Type="Trifolia.Shared.Store.user_role" Multiplicity="*" />
+          <End Role="user_role" Type="Self.user_role" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user">
               <PropertyRef Name="id" />
@@ -1623,8 +1241,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_valueset_member_codesystem">
-          <End Role="codesystem" Type="Trifolia.Shared.Store.codesystem" Multiplicity="0..1" />
-          <End Role="valueset_member" Type="Trifolia.Shared.Store.valueset_member" Multiplicity="*" />
+          <End Role="codesystem" Type="Self.codesystem" Multiplicity="0..1" />
+          <End Role="valueset_member" Type="Self.valueset_member" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="codesystem">
               <PropertyRef Name="id" />
@@ -1635,8 +1253,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_valueset_member_valueset">
-          <End Role="valueset" Type="Trifolia.Shared.Store.valueset" Multiplicity="1" />
-          <End Role="valueset_member" Type="Trifolia.Shared.Store.valueset_member" Multiplicity="*" />
+          <End Role="valueset" Type="Self.valueset" Multiplicity="1" />
+          <End Role="valueset_member" Type="Self.valueset_member" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="valueset">
               <PropertyRef Name="id" />
@@ -1669,6 +1287,379 @@
           <Parameter Name="orderProperty" Type="varchar" Mode="In" />
           <Parameter Name="orderDesc" Type="bit" Mode="In" />
         </Function>
+        <EntityContainer Name="TrifoliaSharedStoreContainer">
+          <EntitySet Name="app_securable" EntityType="Self.app_securable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="appsecurable_role" EntityType="Self.appsecurable_role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="audit" EntityType="Self.audit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="codesystem" EntityType="Self.codesystem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="green_constraint" EntityType="Self.green_constraint" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="green_template" EntityType="Self.green_template" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="group" EntityType="Self.group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="implementationguide" EntityType="Self.implementationguide" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="implementationguide_file" EntityType="Self.implementationguide_file" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="implementationguide_filedata" EntityType="Self.implementationguide_filedata" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="implementationguide_permission" EntityType="Self.implementationguide_permission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="implementationguide_schpattern" EntityType="Self.implementationguide_schpattern" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="implementationguide_section" EntityType="Self.implementationguide_section" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="implementationguide_setting" EntityType="Self.implementationguide_setting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="implementationguide_templatetype" EntityType="Self.implementationguide_templatetype" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="implementationguidetype" EntityType="Self.implementationguidetype" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="implementationguidetype_datatype" EntityType="Self.implementationguidetype_datatype" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="organization" EntityType="Self.organization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="organization_defaultpermission" EntityType="Self.organization_defaultpermission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="publish_status" EntityType="Self.publish_status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="role_restriction" EntityType="Self.role_restriction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="template" EntityType="Self.template" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="template_constraint" EntityType="Self.template_constraint" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="template_constraint_sample" EntityType="Self.template_constraint_sample" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="template_extension" EntityType="Self.template_extension" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="template_sample" EntityType="Self.template_sample" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="templatetype" EntityType="Self.templatetype" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_group" EntityType="Self.user_group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_role" EntityType="Self.user_role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="valueset" EntityType="Self.valueset" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="valueset_member" EntityType="Self.valueset_member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="v_igaudittrail" EntityType="Self.v_igaudittrail" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[v_igaudittrail].[username] AS [username], 
+[v_igaudittrail].[auditDate] AS [auditDate], 
+[v_igaudittrail].[ip] AS [ip], 
+[v_igaudittrail].[type] AS [type], 
+[v_igaudittrail].[note] AS [note], 
+[v_igaudittrail].[implementationGuideId] AS [implementationGuideId], 
+[v_igaudittrail].[templateId] AS [templateId], 
+[v_igaudittrail].[templateConstraintId] AS [templateConstraintId], 
+[v_igaudittrail].[templateName] AS [templateName], 
+[v_igaudittrail].[conformanceNumber] AS [conformanceNumber]
+FROM [dbo].[v_igaudittrail] AS [v_igaudittrail]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_implementationguidefile" EntityType="Self.v_implementationguidefile" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[v_implementationguidefile].[id] AS [id], 
+[v_implementationguidefile].[implementationGuideId] AS [implementationGuideId], 
+[v_implementationguidefile].[fileName] AS [fileName], 
+[v_implementationguidefile].[mimeType] AS [mimeType], 
+[v_implementationguidefile].[contentType] AS [contentType], 
+[v_implementationguidefile].[expectedErrorCount] AS [expectedErrorCount], 
+[v_implementationguidefile].[data] AS [data], 
+[v_implementationguidefile].[updatedDate] AS [updatedDate], 
+[v_implementationguidefile].[updatedBy] AS [updatedBy], 
+[v_implementationguidefile].[note] AS [note]
+FROM [dbo].[v_implementationguidefile] AS [v_implementationguidefile]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_implementationGuidePermissions" EntityType="Self.v_implementationGuidePermissions" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[v_implementationGuidePermissions].[userId] AS [userId], 
+[v_implementationGuidePermissions].[implementationGuideId] AS [implementationGuideId], 
+[v_implementationGuidePermissions].[permission] AS [permission]
+FROM [dbo].[v_implementationGuidePermissions] AS [v_implementationGuidePermissions]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_implementationGuideTemplates" EntityType="Self.v_implementationGuideTemplates" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[v_implementationGuideTemplates].[implementationGuideId] AS [implementationGuideId], 
+[v_implementationGuideTemplates].[templateId] AS [templateId]
+FROM [dbo].[v_implementationGuideTemplates] AS [v_implementationGuideTemplates]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_latestimplementationguidefiledata" EntityType="Self.v_latestimplementationguidefiledata" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[v_latestimplementationguidefiledata].[id] AS [id], 
+[v_latestimplementationguidefiledata].[implementationGuideFileId] AS [implementationGuideFileId], 
+[v_latestimplementationguidefiledata].[data] AS [data], 
+[v_latestimplementationguidefiledata].[updatedDate] AS [updatedDate], 
+[v_latestimplementationguidefiledata].[updatedBy] AS [updatedBy], 
+[v_latestimplementationguidefiledata].[note] AS [note]
+FROM [dbo].[v_latestimplementationguidefiledata] AS [v_latestimplementationguidefiledata]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_template" EntityType="Self.v_template" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[v_template].[id] AS [id], 
+[v_template].[oid] AS [oid], 
+[v_template].[name] AS [name], 
+[v_template].[isOpen] AS [isOpen], 
+[v_template].[owningImplementationGuideId] AS [owningImplementationGuideId], 
+[v_template].[owningImplementationGuideTitle] AS [owningImplementationGuideTitle], 
+[v_template].[implementationGuideTypeName] AS [implementationGuideTypeName], 
+[v_template].[templateTypeId] AS [templateTypeId], 
+[v_template].[templateTypeName] AS [templateTypeName], 
+[v_template].[primaryContext] AS [primaryContext], 
+[v_template].[templateTypeDisplay] AS [templateTypeDisplay], 
+[v_template].[organizationName] AS [organizationName], 
+[v_template].[publishDate] AS [publishDate], 
+[v_template].[impliedTemplateOid] AS [impliedTemplateOid], 
+[v_template].[impliedTemplateTitle] AS [impliedTemplateTitle], 
+[v_template].[constraintCount] AS [constraintCount], 
+[v_template].[containedTemplateCount] AS [containedTemplateCount], 
+[v_template].[impliedTemplateCount] AS [impliedTemplateCount]
+FROM [dbo].[v_template] AS [v_template]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_templateList" EntityType="Self.v_templateList" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[v_templateList].[id] AS [id], 
+[v_templateList].[name] AS [name], 
+[v_templateList].[oid] AS [oid], 
+[v_templateList].[open] AS [open], 
+[v_templateList].[templateType] AS [templateType], 
+[v_templateList].[templateTypeId] AS [templateTypeId], 
+[v_templateList].[implementationGuide] AS [implementationGuide], 
+[v_templateList].[implementationGuideId] AS [implementationGuideId], 
+[v_templateList].[organization] AS [organization], 
+[v_templateList].[organizationId] AS [organizationId], 
+[v_templateList].[publishDate] AS [publishDate], 
+[v_templateList].[impliedTemplateName] AS [impliedTemplateName], 
+[v_templateList].[impliedTemplateOid] AS [impliedTemplateOid], 
+[v_templateList].[impliedTemplateId] AS [impliedTemplateId], 
+[v_templateList].[description] AS [description], 
+[v_templateList].[primaryContextType] AS [primaryContextType]
+FROM [dbo].[v_templateList] AS [v_templateList]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_templatePermissions" EntityType="Self.v_templatePermissions" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[v_templatePermissions].[userId] AS [userId], 
+[v_templatePermissions].[templateId] AS [templateId], 
+[v_templatePermissions].[permission] AS [permission]
+FROM [dbo].[v_templatePermissions] AS [v_templatePermissions]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_templateusage" EntityType="Self.v_templateusage" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[v_templateusage].[templateId] AS [templateId], 
+[v_templateusage].[templateDisplay] AS [templateDisplay], 
+[v_templateusage].[implementationGuideId] AS [implementationGuideId], 
+[v_templateusage].[implementationGuideDisplay] AS [implementationGuideDisplay]
+FROM [dbo].[v_templateusage] AS [v_templateusage]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_userSecurables" EntityType="Self.v_userSecurables" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[v_userSecurables].[userId] AS [userId], 
+[v_userSecurables].[name] AS [name]
+FROM [dbo].[v_userSecurables] AS [v_userSecurables]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_appsecurable_role_appsecurable" Association="Self.FK_appsecurable_role_appsecurable">
+            <End Role="app_securable" EntitySet="app_securable" />
+            <End Role="appsecurable_role" EntitySet="appsecurable_role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_appsecurable_role_roles" Association="Self.FK_appsecurable_role_roles">
+            <End Role="role" EntitySet="role" />
+            <End Role="appsecurable_role" EntitySet="appsecurable_role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_green_constraint_green_constraint1" Association="Self.FK_green_constraint_green_constraint1">
+            <End Role="green_constraint" EntitySet="green_constraint" />
+            <End Role="green_constraint1" EntitySet="green_constraint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_green_constraint_green_template" Association="Self.FK_green_constraint_green_template">
+            <End Role="green_template" EntitySet="green_template" />
+            <End Role="green_constraint" EntitySet="green_constraint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_green_constraint_igtype_datatype" Association="Self.FK_green_constraint_igtype_datatype">
+            <End Role="implementationguidetype_datatype" EntitySet="implementationguidetype_datatype" />
+            <End Role="green_constraint" EntitySet="green_constraint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_green_constraint_template_constraint" Association="Self.FK_green_constraint_template_constraint">
+            <End Role="template_constraint" EntitySet="template_constraint" />
+            <End Role="green_constraint" EntitySet="green_constraint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_green_template_green_template" Association="Self.FK_green_template_green_template">
+            <End Role="green_template" EntitySet="green_template" />
+            <End Role="green_template1" EntitySet="green_template" />
+          </AssociationSet>
+          <AssociationSet Name="FK_green_template_template" Association="Self.FK_green_template_template">
+            <End Role="template" EntitySet="template" />
+            <End Role="green_template" EntitySet="green_template" />
+          </AssociationSet>
+          <AssociationSet Name="FK_group_organization" Association="Self.FK_group_organization">
+            <End Role="organization" EntitySet="organization" />
+            <End Role="group" EntitySet="group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ig_igPreviousVersion" Association="Self.FK_ig_igPreviousVersion">
+            <End Role="implementationguide" EntitySet="implementationguide" />
+            <End Role="implementationguide1" EntitySet="implementationguide" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_file_implementationguide" Association="Self.FK_implementationguide_file_implementationguide">
+            <End Role="implementationguide" EntitySet="implementationguide" />
+            <End Role="implementationguide_file" EntitySet="implementationguide_file" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_filedata_implementationguide_file" Association="Self.FK_implementationguide_filedata_implementationguide_file">
+            <End Role="implementationguide_file" EntitySet="implementationguide_file" />
+            <End Role="implementationguide_filedata" EntitySet="implementationguide_filedata" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_implementationguidetype" Association="Self.FK_implementationguide_implementationguidetype">
+            <End Role="implementationguidetype" EntitySet="implementationguidetype" />
+            <End Role="implementationguide" EntitySet="implementationguide" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_organization" Association="Self.FK_implementationguide_organization">
+            <End Role="organization" EntitySet="organization" />
+            <End Role="implementationguide" EntitySet="implementationguide" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_permission_group" Association="Self.FK_implementationguide_permission_group">
+            <End Role="group" EntitySet="group" />
+            <End Role="implementationguide_permission" EntitySet="implementationguide_permission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_permission_implementationguide" Association="Self.FK_implementationguide_permission_implementationguide">
+            <End Role="implementationguide" EntitySet="implementationguide" />
+            <End Role="implementationguide_permission" EntitySet="implementationguide_permission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_permission_organization" Association="Self.FK_implementationguide_permission_organization">
+            <End Role="organization" EntitySet="organization" />
+            <End Role="implementationguide_permission" EntitySet="implementationguide_permission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_permission_user" Association="Self.FK_implementationguide_permission_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="implementationguide_permission" EntitySet="implementationguide_permission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_publish_status" Association="Self.FK_implementationguide_publish_status">
+            <End Role="publish_status" EntitySet="publish_status" />
+            <End Role="implementationguide" EntitySet="implementationguide" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_schpattern_implementationguide" Association="Self.FK_implementationguide_schpattern_implementationguide">
+            <End Role="implementationguide" EntitySet="implementationguide" />
+            <End Role="implementationguide_schpattern" EntitySet="implementationguide_schpattern" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_section_implementationguide" Association="Self.FK_implementationguide_section_implementationguide">
+            <End Role="implementationguide" EntitySet="implementationguide" />
+            <End Role="implementationguide_section" EntitySet="implementationguide_section" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_setting_implementationguide" Association="Self.FK_implementationguide_setting_implementationguide">
+            <End Role="implementationguide" EntitySet="implementationguide" />
+            <End Role="implementationguide_setting" EntitySet="implementationguide_setting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_templatetype_implementationguide" Association="Self.FK_implementationguide_templatetype_implementationguide">
+            <End Role="implementationguide" EntitySet="implementationguide" />
+            <End Role="implementationguide_templatetype" EntitySet="implementationguide_templatetype" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_templatetype_templatetype" Association="Self.FK_implementationguide_templatetype_templatetype">
+            <End Role="templatetype" EntitySet="templatetype" />
+            <End Role="implementationguide_templatetype" EntitySet="implementationguide_templatetype" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguide_user" Association="Self.FK_implementationguide_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="implementationguide" EntitySet="implementationguide" />
+          </AssociationSet>
+          <AssociationSet Name="FK_implementationguidetype_datatype_implementationguidetype" Association="Self.FK_implementationguidetype_datatype_implementationguidetype">
+            <End Role="implementationguidetype" EntitySet="implementationguidetype" />
+            <End Role="implementationguidetype_datatype" EntitySet="implementationguidetype_datatype" />
+          </AssociationSet>
+          <AssociationSet Name="FK_organization_defaultpermission_group" Association="Self.FK_organization_defaultpermission_group">
+            <End Role="group" EntitySet="group" />
+            <End Role="organization_defaultpermission" EntitySet="organization_defaultpermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_organization_defaultpermission_organization" Association="Self.FK_organization_defaultpermission_organization">
+            <End Role="organization" EntitySet="organization" />
+            <End Role="organization_defaultpermission" EntitySet="organization_defaultpermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_organization_defaultpermission_organization1" Association="Self.FK_organization_defaultpermission_organization1">
+            <End Role="organization" EntitySet="organization" />
+            <End Role="organization_defaultpermission" EntitySet="organization_defaultpermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_organization_defaultpermission_user" Association="Self.FK_organization_defaultpermission_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="organization_defaultpermission" EntitySet="organization_defaultpermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_restriction_organization" Association="Self.FK_role_restriction_organization">
+            <End Role="organization" EntitySet="organization" />
+            <End Role="role_restriction" EntitySet="role_restriction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_restriction_roles" Association="Self.FK_role_restriction_roles">
+            <End Role="role" EntitySet="role" />
+            <End Role="role_restriction" EntitySet="role_restriction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_constraint_codesystem" Association="Self.FK_template_constraint_codesystem">
+            <End Role="codesystem" EntitySet="codesystem" />
+            <End Role="template_constraint" EntitySet="template_constraint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_constraint_sample_template_constraint" Association="Self.FK_template_constraint_sample_template_constraint">
+            <End Role="template_constraint" EntitySet="template_constraint" />
+            <End Role="template_constraint_sample" EntitySet="template_constraint_sample" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_constraint_template" Association="Self.FK_template_constraint_template">
+            <End Role="template" EntitySet="template" />
+            <End Role="template_constraint" EntitySet="template_constraint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_constraint_template_constraint1" Association="Self.FK_template_constraint_template_constraint1">
+            <End Role="template_constraint" EntitySet="template_constraint" />
+            <End Role="template_constraint1" EntitySet="template_constraint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_constraint_template1" Association="Self.FK_template_constraint_template1">
+            <End Role="template" EntitySet="template" />
+            <End Role="template_constraint" EntitySet="template_constraint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_constraint_valueset" Association="Self.FK_template_constraint_valueset">
+            <End Role="valueset" EntitySet="valueset" />
+            <End Role="template_constraint" EntitySet="template_constraint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_extension_template" Association="Self.FK_template_extension_template">
+            <End Role="template" EntitySet="template" />
+            <End Role="template_extension" EntitySet="template_extension" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_implementationguide" Association="Self.FK_template_implementationguide">
+            <End Role="implementationguide" EntitySet="implementationguide" />
+            <End Role="template" EntitySet="template" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_implementationguidetype" Association="Self.FK_template_implementationguidetype">
+            <End Role="implementationguidetype" EntitySet="implementationguidetype" />
+            <End Role="template" EntitySet="template" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_organization" Association="Self.FK_template_organization">
+            <End Role="organization" EntitySet="organization" />
+            <End Role="template" EntitySet="template" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_status" Association="Self.FK_template_status">
+            <End Role="publish_status" EntitySet="publish_status" />
+            <End Role="template" EntitySet="template" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_template" Association="Self.FK_template_template">
+            <End Role="template" EntitySet="template" />
+            <End Role="template1" EntitySet="template" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_templatePreviousVersion" Association="Self.FK_template_templatePreviousVersion">
+            <End Role="template" EntitySet="template" />
+            <End Role="template1" EntitySet="template" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_templatetype" Association="Self.FK_template_templatetype">
+            <End Role="templatetype" EntitySet="templatetype" />
+            <End Role="template" EntitySet="template" />
+          </AssociationSet>
+          <AssociationSet Name="FK_template_user" Association="Self.FK_template_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="template" EntitySet="template" />
+          </AssociationSet>
+          <AssociationSet Name="FK_templatesample_template" Association="Self.FK_templatesample_template">
+            <End Role="template" EntitySet="template" />
+            <End Role="template_sample" EntitySet="template_sample" />
+          </AssociationSet>
+          <AssociationSet Name="FK_templatetype_implementationguidetype" Association="Self.FK_templatetype_implementationguidetype">
+            <End Role="implementationguidetype" EntitySet="implementationguidetype" />
+            <End Role="templatetype" EntitySet="templatetype" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_group_group" Association="Self.FK_user_group_group">
+            <End Role="group" EntitySet="group" />
+            <End Role="user_group" EntitySet="user_group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_group_user" Association="Self.FK_user_group_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="user_group" EntitySet="user_group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_organization" Association="Self.FK_user_organization">
+            <End Role="organization" EntitySet="organization" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_role_roles" Association="Self.FK_user_role_roles">
+            <End Role="role" EntitySet="role" />
+            <End Role="user_role" EntitySet="user_role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_role_user" Association="Self.FK_user_role_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="user_role" EntitySet="user_role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_valueset_member_codesystem" Association="Self.FK_valueset_member_codesystem">
+            <End Role="codesystem" EntitySet="codesystem" />
+            <End Role="valueset_member" EntitySet="valueset_member" />
+          </AssociationSet>
+          <AssociationSet Name="FK_valueset_member_valueset" Association="Self.FK_valueset_member_valueset">
+            <End Role="valueset" EntitySet="valueset" />
+            <End Role="valueset_member" EntitySet="valueset_member" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -2214,8 +2205,8 @@
           <Property Name="ImplementationGuideFileId" Type="Int32" Nullable="false" />
           <Property Name="Data" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedBy" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="Note" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="UpdatedBy" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="Note" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
         </EntityType>
         <EntityType Name="ViewTemplate">
           <Key>
@@ -2229,20 +2220,20 @@
             <PropertyRef Name="TemplateTypeDisplay" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Oid" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Oid" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="IsOpen" Type="Boolean" Nullable="false" />
           <Property Name="OwningImplementationGuideId" Type="Int32" />
-          <Property Name="OwningImplementationGuideTitle" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="ImplementationGuideTypeName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="OwningImplementationGuideTitle" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="ImplementationGuideTypeName" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="TemplateTypeId" Type="Int32" Nullable="false" />
-          <Property Name="TemplateTypeName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="PrimaryContext" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="TemplateTypeDisplay" Type="String" Nullable="false" MaxLength="513" Unicode="true" FixedLength="false" />
-          <Property Name="OrganizationName" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="TemplateTypeName" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="PrimaryContext" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="TemplateTypeDisplay" Type="String" Nullable="false" MaxLength="513" Unicode="false" FixedLength="false" />
+          <Property Name="OrganizationName" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="PublishDate" Type="DateTime" Precision="3" />
-          <Property Name="ImpliedTemplateOid" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="ImpliedTemplateTitle" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="ImpliedTemplateOid" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="ImpliedTemplateTitle" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="ConstraintCount" Type="Int32" />
           <Property Name="ContainedTemplateCount" Type="Int32" />
           <Property Name="ImpliedTemplateCount" Type="Int32" />
@@ -2452,14 +2443,14 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="ImplementationGuideId" Nullable="false" />
-          <Property Type="String" Name="FileName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="MimeType" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ContentType" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FileName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MimeType" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ContentType" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="ExpectedErrorCount" />
           <Property Type="Binary" Name="Data" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Type="DateTime" Name="UpdatedDate" Nullable="false" Precision="3" />
-          <Property Type="String" Name="UpdatedBy" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Note" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="UpdatedBy" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Note" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ValueSet">
           <Key>
@@ -2536,9 +2527,9 @@
             <PropertyRef Name="ImplementationGuideDisplay" />
           </Key>
           <Property Type="Int32" Name="TemplateId" Nullable="false" />
-          <Property Type="String" Name="TemplateDisplay" Nullable="false" MaxLength="513" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="TemplateDisplay" Nullable="false" MaxLength="513" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="ImplementationGuideId" Nullable="false" />
-          <Property Type="String" Name="ImplementationGuideDisplay" Nullable="false" MaxLength="513" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImplementationGuideDisplay" Nullable="false" MaxLength="513" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ImplementationGuideSchematronPattern">
           <Key>
@@ -2558,15 +2549,15 @@
             <PropertyRef Name="IP" />
             <PropertyRef Name="Type" />
           </Key>
-          <Property Type="String" Name="Username" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="AuditDate" Nullable="false" Precision="3" />
-          <Property Type="String" Name="IP" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Type" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Note" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="IP" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Type" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Note" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="ImplementationGuideId" />
           <Property Type="Int32" Name="TemplateId" />
           <Property Type="Int32" Name="TemplateConstraintId" />
-          <Property Type="String" Name="TemplateName" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="TemplateName" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="conformanceNumber" />
         </EntityType>
         <EntityType Name="ViewTemplateList">
@@ -2857,7 +2848,7 @@
           </Key>
           <Property Type="Int32" Name="UserId" Nullable="false" />
           <Property Type="Int32" Name="TemplateId" Nullable="false" />
-          <Property Type="String" Name="Permission" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Permission" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ViewUserSecurable">
           <Key>
@@ -2865,7 +2856,7 @@
             <PropertyRef Name="SecurableName" />
           </Key>
           <Property Type="Int32" Name="UserId" Nullable="false" />
-          <Property Type="String" Name="SecurableName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecurableName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_template_user">
           <End Type="Trifolia.DB.User" Role="User" Multiplicity="1" />
@@ -3064,6 +3055,7 @@
           <Property Type="String" Name="WebDisplayName" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="WebDescription" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="WebReadmeOverview" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Identifier" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_ig_igPreviousVersion">
           <End Type="Trifolia.DB.ImplementationGuide" Role="implementationguide" Multiplicity="0..1" />
@@ -3838,6 +3830,7 @@
           <EntitySetMapping Name="ImplementationGuides">
             <EntityTypeMapping TypeName="Trifolia.DB.ImplementationGuide">
               <MappingFragment StoreEntitySet="implementationguide">
+                <ScalarProperty Name="Identifier" ColumnName="identifier" />
                 <ScalarProperty Name="WebReadmeOverview" ColumnName="webReadmeOverview" />
                 <ScalarProperty Name="WebDescription" ColumnName="webDescription" />
                 <ScalarProperty Name="WebDisplayName" ColumnName="webDisplayName" />
@@ -3941,6 +3934,7 @@
         <edmx:DesignerProperty Name="EnablePluralization" Value="True" />
         <edmx:DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <edmx:DesignerProperty Name="UseLegacyProvider" Value="True" />
       </edmx:DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->

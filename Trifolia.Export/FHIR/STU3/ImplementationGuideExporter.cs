@@ -81,19 +81,36 @@ namespace Trifolia.Export.FHIR.STU3
 
             if (summaryType == null || summaryType == SummaryType.Data)
             {
+                // Add profiles to the implementation guide
                 List<Template> templates = ig.GetRecursiveTemplates(this.tdb, inferred: false);
-                var packageResources = (from t in templates
+                var profileResources = (from t in templates
                                         select new FhirImplementationGuide.ResourceComponent()
                                         {
                                             Example = false,
                                             Source = new ResourceReference()
                                             {
-                                                Reference = string.Format("StructureDefinition/{0}", t.Id),
+                                                Reference = string.Format("StructureDefinition/{0}", t.FhirId()),
                                                 Display = t.Name
                                             }
                                         });
+                package.Resource.AddRange(profileResources);
 
-                package.Resource.AddRange(packageResources);
+                // Add value sets to the implementation guide
+                var valueSets = (from t in templates
+                                 join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
+                                 where tc.ValueSet != null
+                                 select tc.ValueSet).Distinct().ToList();
+                var valueSetResources = (from vs in valueSets
+                                         select new FhirImplementationGuide.ResourceComponent()
+                                         {
+                                             Example = false,
+                                             Source = new ResourceReference()
+                                             {
+                                                 Reference = string.Format("ValueSet/{0}", vs.Id.ToString()),
+                                                 Display = vs.Name
+                                             }
+                                         });
+                package.Resource.AddRange(valueSetResources);
             }
 
             // Page

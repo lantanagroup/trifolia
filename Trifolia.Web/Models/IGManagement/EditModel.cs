@@ -27,6 +27,7 @@ namespace Trifolia.Web.Models.IGManagement
         }
 
         public int Id { get; set; }
+        public string Identifier { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public string WebDisplayName { get; set; }

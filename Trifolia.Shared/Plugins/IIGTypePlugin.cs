@@ -84,6 +84,7 @@ namespace Trifolia.Shared.Plugins
         Proprietary,
         FHIR,
         TemplatesDSTU,
-        Snapshot
+        Snapshot,
+        FHIRBuild
     }
 }

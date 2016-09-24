@@ -277,6 +277,34 @@
             <param name="exportSettings">The settings for the export</param>
             <returns>A file-download of the .docx MS Word implementation guide</returns>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.GetEditableImplementationGuides">
+            <summary>
+            Returns a list of implementation guides that are editable by the current user
+            </summary>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.IGManagement.IGListItem&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.GetImplementationGuides(Trifolia.Web.Models.IGManagement.IGListModes)">
+            <summary>
+            Returns all implementation guides that the current usre has access to.
+            Includes some additional information, such as a URL for the implementation guide to perform an operation based on the listMode sepecified, and whether the current user has access to edit the IG.
+            </summary>
+            <param name="listMode">What type of URL to return for the implementation guide</param>
+            <returns>Trifolia.Web.Models.IGManagement.ListModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.GetTemplateTypes(System.Int32)">
+            <summary>
+            Gets the template types defined for the implementation guide. Any customizations to the template type's name and description for the specified
+            implementation guide is returned here.
+            </summary>
+            <param name="implementationGuideId">The id of the implementation guide</param>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.IGManagement.TemplateTypeListItem&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.GetTemplateTypes">
+            <summary>
+            Gets all template types for all IGs
+            </summary>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.IGManagement.TemplateTypeListItem&gt;</returns>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.GetImplementationGuideValueSets(System.Int32,System.Boolean)">
             <summary>
             Gets all value sets for the given implementation guide.
@@ -285,12 +313,44 @@
             <param name="onlyStatic">Defaults to true, if not specified. When true, returns ONLY value sets that are statically bound to constraints in the implementation guide. When false, returns all value sets regardless of the static binding.</param>
             <returns>A list of all value sets, including id, name, oid, and binding date</returns>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.Edit(System.Nullable{System.Int32})">
+            <summary>
+            Returns all information related to an implementation guide to be edited
+            </summary>
+            <param name="implementationGuideId">The id of the implementation guide</param>
+            <returns>Trifolia.Web.Models.IGManagement.EditModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.ValidateName(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Validates that the specified name is unique.
+            </summary>
+            <param name="igName">The name to validate</param>
+            <param name="implementationGuideId">If an implementation guide id is specified here, it will ignore the implementation guide as part of validation so that validation doesn't fail against itself.</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.ValidateIdentifier(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Validates that the specified identifier is unique.
+            </summary>
+            <param name="identifier">The identifier to validate</param>
+            <param name="implementationGuideId">If an implementation guide id is specified here, it will ignore the implementation guide as part of validation so that validation doesn't fail against itself.</param>
+            <returns>bool</returns>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.UserHasPermissions(Trifolia.DB.User,System.Collections.Generic.List{Trifolia.Web.Models.IGManagement.EditModel.Permission})">
             <summary>
             Ensures that in the permissions list provided, the current user shows up as either a direct permissions to the user,
             permitted via a group, or permitted via the entire organization.
             </summary>
             <exception cref="T:System.Exception">Throws an exception if the user is not part of the list, which is intended to be handled in the calling method.</exception>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.SaveImplementationGuide(Trifolia.Web.Models.IGManagement.EditModel)">
+            <summary>
+            Persists the implementation guide edit model specified. If the model includes a non-0 Id then the existing implementation guide
+            is updated with the changes specified in the model. In this case, the current user must have access to edit the implementation guide.
+            </summary>
+            <param name="aModel">The edit model to create/update</param>
+            <returns>int</returns>
+            <remarks>Returns the id of the implementation guide</remarks>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.OrganizationController.GetOrganizations">
             <summary>
@@ -945,7 +1005,7 @@
         </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorBookmarkTooltip">
             <summary>
-              Looks up a localized string similar to The bookmark that is used during the export of a MS Word document. The bookmark must be unique, and not contain any special characters (including spaces, with the exception of underscores). The bookmark may not be greater than 40 characters (due to MS Word\&apos;s limitation in bookmark size)..
+              Looks up a localized string similar to The short id is used during the export of a MS Word document and as the id field in FHIR&apos;s StructureDefinition resources. The short id must be unique in the implentation guide, and not contain any special characters (including spaces, with the exception of underscores). The short id may not be greater than 40 characters (due to MS Word\&apos;s limitation in bookmark size)..
             </summary>
         </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorBranchIdentifierHeading">
@@ -1140,7 +1200,7 @@
         </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataBookmarkField">
             <summary>
-              Looks up a localized string similar to Bookmark:.
+              Looks up a localized string similar to Short Id:.
             </summary>
         </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataDescriptionField">
@@ -1175,7 +1235,7 @@
         </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataOidField">
             <summary>
-              Looks up a localized string similar to Identifier:.
+              Looks up a localized string similar to Long Id:.
             </summary>
         </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorMetaDataOrganizationField">
@@ -1200,7 +1260,7 @@
         </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorOidTooltip">
             <summary>
-              Looks up a localized string similar to A unique identifier for the template/profile. Must be less than 255 characters..
+              Looks up a localized string similar to A unique identifier for the template/profile. Must be less than 255 characters. For FHIR, this identifier is used as the URL of the StructureDefinition resource and is best practice to use the implementation guide&apos;s base url with the short id..
             </summary>
         </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorRemoveTooltip">

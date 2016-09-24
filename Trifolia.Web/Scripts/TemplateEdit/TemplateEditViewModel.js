@@ -200,7 +200,11 @@ var templateEditViewModel = function (templateId, defaults) {
             initializeFhirProperties();
 
             if (!self.Template().Oid() && self.IsFhir()) {
-                self.Template().Oid(location.origin + '/api/FHIR2/StructureDefinition/');
+                if (self.ImplementationGuideBaseIdentifier()) {
+                    self.Template().IdentifierPrefix(self.ImplementationGuideBaseIdentifier());
+                } else {
+                    self.Template().IdentifierPrefix(location.origin + '/api/FHIR2/StructureDefinition/');
+                }
             }
 
             self.InitializeAppliesToNodeLevel(null)
@@ -1264,6 +1268,36 @@ var templateEditViewModel = function (templateId, defaults) {
             }
         });
     };
+
+    self.ImplementationGuideBaseIdentifier = ko.computed(function () {
+        if (!self.Template().OwningImplementationGuideId()) {
+            return '';
+        }
+
+        var ig = _.find(self.ImplementationGuides(), function (ig) {
+            return ig.Id == self.Template().OwningImplementationGuideId();
+        });
+
+        if (!ig || !ig.Identifier) {
+            return '';
+        }
+
+        var initIdentifier = ig.Identifier;
+
+        if (initIdentifier.indexOf('http://') == 0 || initIdentifier.indexf('https://') == 0) {
+            if (initIdentifier.lastIndexOf('/') != initIdentifier.length - 1) {
+                initIdentifier += '/';
+            }
+
+            var initIdentifierAfix = 'StructureDefinition/';
+
+            if (initIdentifier.lastIndexOf(initIdentifierAfix) != initIdentifier.length - initIdentifierAfix.length) {
+                initIdentifier += 'StructureDefinition/';
+            }
+        }
+
+        return initIdentifier;
+    });
 
     self.InitializeImplementationGuides = function () {
         var startTime = new Date().getTime();

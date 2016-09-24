@@ -1,10 +1,10 @@
-﻿ko.validation.rules['uniqueName'] = {
+﻿ko.validation.rules['uniqueImplementationGuideName'] = {
     validator: function (val, otherVal) {
         var implementationGuideId = otherVal();
         var ret = false;
 
         $.ajax({
-            url: '/api/ImplementationGuide/Edit/Name/Validate?implementationGuideId=' + implementationGuideId + '&igName=' + encodeURIComponent(val),
+            url: '/api/ImplementationGuide/Validate/Name?implementationGuideId=' + implementationGuideId + '&igName=' + encodeURIComponent(val),
             async: false,
             cache: false,
             success: function (isValid) {
@@ -15,6 +15,25 @@
         return ret;
     },
     message: 'The name specified is already in use'
+};
+
+ko.validation.rules['uniqueImplementationGuideIdentifier'] = {
+    validator: function (val, otherVal) {
+        var implementationGuideId = otherVal();
+        var ret = false;
+
+        $.ajax({
+            url: '/api/ImplementationGuide/Validate/Identifier?implementationGuideId=' + implementationGuideId + '&identifier=' + encodeURIComponent(val),
+            async: false,
+            cache: false,
+            success: function (isValid) {
+                ret = isValid;
+            }
+        });
+
+        return ret;
+    },
+    message: 'The identifier specified is already in use'
 };
 
 ko.validation.rules['categoryText'] = {
@@ -523,6 +542,7 @@ var ImplementationGuideModel = function (data) {
     };
 
     self.Id = ko.observable();
+    self.Identifier = ko.observable();
     self.Name = ko.observable();
     self.DisplayName = ko.observable();
     self.WebDisplayName = ko.observable();
@@ -618,7 +638,8 @@ var ImplementationGuideModel = function (data) {
     });
 
     self.Validation = ko.validatedObservable({
-        Name: self.Name.extend({ required: true, uniqueName: self.Id }),
+        Name: self.Name.extend({ required: true, uniqueImplementationGuideName: self.Id }),
+        Identifier: self.Identifier.extend({ required: true, uniqueImplementationGuideIdentifier: self.Id }),
         TypeId: self.TypeId.extend({ required: true }),
         CardinalityZeroOrOne: self.CardinalityZeroOrOne.extend({ required: true }),
         CardinalityExactlyOne: self.CardinalityExactlyOne.extend({ required: true }),

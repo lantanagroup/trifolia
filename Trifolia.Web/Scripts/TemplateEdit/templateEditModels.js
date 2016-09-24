@@ -772,7 +772,11 @@ var TemplateModel = function (data, viewModel) {
                 return '';
             }
 
-            if (identifier.indexOf('http://') == 0 || identifier.indexOf('https://') == 0) {
+            var baseIdentifier = viewModel.ImplementationGuideBaseIdentifier();
+
+            if (baseIdentifier && identifier.indexOf(baseIdentifier) == 0) {
+                prefix = baseIdentifier;
+            } else if (identifier.indexOf('http://') == 0 || identifier.indexOf('https://') == 0) {
                 prefix = identifier.substring(0, identifier.lastIndexOf('/') + 1);
             } else if (identifier.indexOf('urn:oid:') == 0) {
                 prefix = identifier.substring(0, 8);
@@ -886,11 +890,21 @@ var TemplateModel = function (data, viewModel) {
         return self.Locked() || !self.IsValid();
     });
 
+    var templateBookmarkChanged = function () {
+        var baseIdentifier = viewModel.ImplementationGuideBaseIdentifier();
+        
+        if (baseIdentifier && self.IdentifierPrefix() == baseIdentifier) {
+            self.IdentifierAfix(self.Bookmark());
+        }
+
+        templateChanged();
+    };
+
     /* Methods */
     self.SubscribeChanges = function () {
         self.Name.subscribe(templateChanged);
         self.Oid.subscribe(templateChanged);
-        self.Bookmark.subscribe(templateChanged);
+        self.Bookmark.subscribe(templateBookmarkChanged);
         self.IsOpen.subscribe(templateChanged);
         self.TemplateTypeId.subscribe(templateChanged);
         self.PrimaryContext.subscribe(templateChanged);

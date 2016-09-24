@@ -245,18 +245,13 @@ namespace Trifolia.Export.FHIR.STU3
 
         public StructureDefinition Convert(Template template, SimpleSchema schema, SummaryType? summaryType = null)
         {
-            string id = template.Id.ToString();
-
-            if (template.Oid.StartsWith("http://") || template.Oid.StartsWith("https://"))
-                id = template.Oid.Substring(template.Oid.LastIndexOf("/") + 1);
-
             var fhirStructureDef = new fhir_stu3.Hl7.Fhir.Model.StructureDefinition()
             {
-                Id = id,
+                Id = template.FhirId(),
                 Name = template.Name,
                 Description = !string.IsNullOrEmpty(template.Description) ? new Markdown(template.Description) : null,
                 Kind = StructureDefinition.StructureDefinitionKind.Resource,
-                Url = template.Oid,
+                Url = template.FhirUrl(),
                 Type = template.TemplateType.RootContextType,
                 Context = new List<string> { template.PrimaryContextType },
                 ContextType = template.PrimaryContextType == "Extension" ? StructureDefinition.ExtensionContext.Extension : StructureDefinition.ExtensionContext.Resource,

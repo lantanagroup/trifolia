@@ -3351,6 +3351,30 @@ namespace Trifolia.DB
         private global::System.String _WebReadmeOverview;
         partial void OnWebReadmeOverviewChanging(global::System.String value);
         partial void OnWebReadmeOverviewChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Identifier
+        {
+            get
+            {
+                return _Identifier;
+            }
+            set
+            {
+                OnIdentifierChanging(value);
+                ReportPropertyChanging("Identifier");
+                _Identifier = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Identifier");
+                OnIdentifierChanged();
+            }
+        }
+        private global::System.String _Identifier;
+        partial void OnIdentifierChanging(global::System.String value);
+        partial void OnIdentifierChanged();
 
         #endregion
 

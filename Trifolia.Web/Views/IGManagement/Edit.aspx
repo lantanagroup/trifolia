@@ -38,6 +38,12 @@
                     <span data-bind="validationMessage: Name"></span>
 
                     <div class="form-group">
+                        <label>Identifier/Base URL</label>
+                        <input type="text" class="form-control" data-bind="value: Identifier, disable: PreviousVersionId" />
+                    </div>
+                    <span data-bind="validationMessage: Identifier"></span>
+
+                    <div class="form-group">
                         <label>Display Name</label>
                         <input type="text" class="form-control" data-bind="value: DisplayName" />
                         <span class="help-block">Display name is used on many of the management screens, and in the DOCX export</span>

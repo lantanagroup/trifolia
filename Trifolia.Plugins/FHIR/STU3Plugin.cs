@@ -29,6 +29,10 @@ namespace Trifolia.Plugins.FHIR
                 case ExportFormats.TemplatesDSTU:
                     DecorExporter decorExporter = new DecorExporter(templates, tdb, igSettings.ImplementationGuideId);
                     return decorExporter.GenerateXML();
+                case ExportFormats.FHIRBuild:
+                    BuildExporter buildExporter = new BuildExporter(tdb, igSettings.ImplementationGuideId);
+                    var export = buildExporter.Export();
+                    return System.Text.Encoding.Default.GetString(export);
                 default:
                     throw new Exception("Invalid export format for the specified implementation guide type");
             }
