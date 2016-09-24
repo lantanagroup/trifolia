@@ -149,6 +149,10 @@ namespace Trifolia.Web.Controllers.API
             {
                 export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIR, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
             }
+            else if (model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuild)
+            {
+                export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIRBuild, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
+            }
             else if (model.XmlType == XMLSettingsModel.ExportTypes.JSON)
             {
                 ImplementationGuideController ctrl = new ImplementationGuideController(this.tdb);

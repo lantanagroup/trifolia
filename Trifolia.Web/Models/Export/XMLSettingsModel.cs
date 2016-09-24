@@ -23,6 +23,7 @@ namespace Trifolia.Web.Models.Export
         {
             Proprietary,
             FHIR,
+            FHIRBuild,
             JSON,
             DSTU
         }
