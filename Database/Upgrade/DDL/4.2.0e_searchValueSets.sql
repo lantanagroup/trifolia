@@ -1,14 +1,3 @@
-USE [templatedb]
-GO
-
-/****** Object:  StoredProcedure [dbo].[SearchValueSet]    Script Date: 9/24/2016 1:15:17 PM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER OFF
-GO
-
-
 ALTER PROCEDURE [dbo].[SearchValueSet]
 	@userId INT = NULL,
 	@searchText VARCHAR(255) = '',
@@ -106,10 +95,3 @@ BEGIN
 	OFFSET @offset ROWS
 	FETCH NEXT @count ROWS ONLY
 END
-
-
-
-
-GO
-
-
