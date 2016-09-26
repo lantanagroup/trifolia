@@ -483,6 +483,15 @@
             </summary>
             <param name="filterContext"></param>
         </member>
+        <member name="M:Trifolia.Web.Filters.SecurableAuthorizationFilter.AuditLogin">
+            <summary>
+            Checks if the authenticated user has a "Login" audit within the last 24 hours. If not, creates a
+            Login audit.
+            </summary>
+            <remarks>
+            When user is logged in via "remember me", Login does not have to occur.
+            </remarks>
+        </member>
         <member name="T:Trifolia.Web.Models.Export.MSWordSettingsModel">
             <summary>
             Models used to define settings for exporting to MS Word
@@ -907,15 +916,6 @@
             </summary>
             <param name="securables">The name(s) of the securable to check.</param>
             <returns>Returns false if a user is not logged in. Return true if the authenticated user has a role associated with the requested securable, otherwise returns false.</returns>
-        </member>
-        <member name="M:Trifolia.Web.Filters.SecurableAuthorizationFilter.AuditLogin">
-            <summary>
-            Checks if the authenticated user has a "Login" audit within the last 24 hours. If not, creates a
-            Login audit.
-            </summary>
-            <remarks>
-            When user is logged in via "remember me", Login does not have to occur.
-            </remarks>
         </member>
         <member name="T:Trifolia.Web.Session.SessionConstants">
             <summary>

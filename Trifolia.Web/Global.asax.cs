@@ -13,6 +13,7 @@ using Trifolia.Authentication;
 using Trifolia.Logging;
 using Trifolia.Web.Filters;
 using Trifolia.Shared.FHIR.Profiles.STU3;
+using System.Web.Http.ExceptionHandling;
 
 namespace Trifolia.Web
 {

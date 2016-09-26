@@ -276,6 +276,7 @@
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Extensions\TemplateTypeExtension.cs" />
     <Compile Include="Filters\FileDownloadAttribute.cs" />
+    <Compile Include="Filters\TrifoliaExceptionLogger.cs" />
     <Compile Include="Formatters\FHIR\DSTU2\FhirMediaTypeFormatter.cs" />
     <Compile Include="Formatters\FHIR\DSTU2\GeneralFHIRMediaTypeFormatter.cs" />
     <Compile Include="Formatters\FHIR\DSTU1\JSONFHIRMediaTypeFormatter.cs" />

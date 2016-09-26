@@ -21,6 +21,7 @@ using System.Security.Principal;
 
 using FHIR1OperationOutcome = fhir_dstu1.Hl7.Fhir.Model.OperationOutcome;
 using FHIR2OperationOutcome = fhir_dstu2.Hl7.Fhir.Model.OperationOutcome;
+using Trifolia.Logging;
 
 namespace Trifolia.Authorization
 {
@@ -153,14 +154,9 @@ namespace Trifolia.Authorization
             }
             catch (AuthorizationException ex)
             {
+                Log.For(next).Error(ex.Message, ex);
                 errorMessage.StatusCode = HttpStatusCode.Unauthorized;
                 errorMessage.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(authenticationScheme));
-                errorString = ex.Message;
-                errorStackTrace = ex.StackTrace;
-            }
-            catch (Exception ex)
-            {
-                errorMessage.StatusCode = HttpStatusCode.InternalServerError;
                 errorString = ex.Message;
                 errorStackTrace = ex.StackTrace;
             }
