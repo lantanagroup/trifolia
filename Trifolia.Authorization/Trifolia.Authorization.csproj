@@ -60,6 +60,10 @@
       <HintPath>..\packages\Hl7.Fhir.DSTU2.0.90.2\lib\net45\Hl7.Fhir.DSTU2.Core.dll</HintPath>
       <Aliases>fhir_dstu2</Aliases>
     </Reference>
+    <Reference Include="Hl7.Fhir.STU3.Core">
+      <HintPath>..\libraries\Hl7.Fhir.STU3.Core.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -131,6 +135,10 @@
     <ProjectReference Include="..\Trifolia.Authentication\Trifolia.Authentication.csproj">
       <Project>{fb7ff53b-df9f-437a-adba-ab0beb854243}</Project>
       <Name>Trifolia.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Config\Trifolia.Config.csproj">
+      <Project>{3FCE87C4-71B6-4FEB-A9EE-C6D64FDCC477}</Project>
+      <Name>Trifolia.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trifolia.DB\Trifolia.DB.csproj">
       <Project>{3e3c8e62-b392-433d-8c18-a4cfc72b36ef}</Project>

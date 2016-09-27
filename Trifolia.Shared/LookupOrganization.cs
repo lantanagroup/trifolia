@@ -36,14 +36,7 @@ namespace Trifolia.Shared
 
         public static List<LookupOrganization> GetOrganizations(IObjectRepository tdb)
         {
-            string organizationName = CheckPoint.Instance.OrganizationName;
-
-            List<Organization> organizations = tdb.Organizations.ToList();
-
-            if (!CheckPoint.Instance.IsDataAdmin)
-                organizations = organizations.Where(y => y.Name.ToLower() == organizationName.ToLower()).ToList();
-
-            return (from o in organizations
+            return (from o in tdb.Organizations.AsEnumerable()
                     select new LookupOrganization()
                     {
                         Id = o.Id,
@@ -54,7 +47,7 @@ namespace Trifolia.Shared
 
         public static List<LookupOrganization> GetOrganizations()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetOrganizations(tdb);
             }

@@ -47,7 +47,7 @@ namespace Trifolia.Shared
 
         public static List<LookupTemplateType> GetTemplateTypes()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetTemplateTypes(tdb);
             }
@@ -71,7 +71,7 @@ namespace Trifolia.Shared
 
         public static List<LookupTemplateType> GetTemplateTypes(int implementationGuideId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetTemplateTypes(tdb, implementationGuideId);
             }

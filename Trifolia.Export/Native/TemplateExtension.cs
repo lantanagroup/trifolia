@@ -33,7 +33,6 @@ namespace Trifolia.Export.Native
                 impliedTemplateOid = template.ImpliedTemplate != null ? template.ImpliedTemplate.Oid : null,
                 Description = !string.IsNullOrEmpty(template.Description) ? template.Description : null,
                 Notes = !string.IsNullOrEmpty(template.Notes) ? template.Notes : null,
-                organizationName = template.Organization != null ? template.Organization.Name : null,
                 publishStatus = template.Status != null ? template.Status.Status : null,
                 PreviousVersion = null,
                 ImplementationGuide = new TrifoliaTemplateImplementationGuide()

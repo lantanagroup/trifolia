@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="DBContextType" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Trifolia.DB.TemplateDatabaseDataSource</Value>
+      <Value Profile="(Default)">Trifolia.DB.TrifoliaDatabase</Value>
     </Setting>
   </Settings>
 </SettingsFile>

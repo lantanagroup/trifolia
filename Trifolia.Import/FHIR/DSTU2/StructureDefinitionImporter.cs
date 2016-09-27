@@ -49,8 +49,7 @@ namespace Trifolia.Import.FHIR.DSTU2
                     unassignedImplementationGuide = new ImplementationGuide()
                     {
                         Name = DSTU2Helper.DEFAULT_IG_NAME,
-                        ImplementationGuideType = this.implementationGuideType,
-                        Organization = this.tdb.Organizations.Single(y => y.Name == DSTU2Helper.DEFAULT_ORG_NAME)
+                        ImplementationGuideType = this.implementationGuideType
                     };
                     this.tdb.ImplementationGuides.AddObject(unassignedImplementationGuide);
                 }
@@ -59,8 +58,7 @@ namespace Trifolia.Import.FHIR.DSTU2
                 {
                     OwningImplementationGuide = unassignedImplementationGuide,
                     ImplementationGuideType = this.implementationGuideType,
-                    Author = this.tdb.Users.Single(y => y.UserName == DSTU2Helper.DEFAULT_USER_NAME && y.Organization.Name == DSTU2Helper.DEFAULT_ORG_NAME),
-                    Organization = this.tdb.Organizations.Single(y => y.Name == DSTU2Helper.DEFAULT_ORG_NAME),
+                    Author = this.tdb.Users.Single(y => y.UserName == DSTU2Helper.DEFAULT_USER_NAME),
                     IsOpen = true
                 };
             }

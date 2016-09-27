@@ -64,7 +64,7 @@ namespace Trifolia.Shared
             if (includeInferred == null || implementationGuideId == null)
                 return new List<LookupTemplate>();
 
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 ImplementationGuide ig = tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
                 List<Template> igTemplates = ig.GetRecursiveTemplates(tdb, inferred: includeInferred == true);
@@ -84,7 +84,7 @@ namespace Trifolia.Shared
         /// </summary>
         public static List<LookupTemplate> GetTemplates()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetTemplates(tdb);
             }
@@ -94,7 +94,7 @@ namespace Trifolia.Shared
         {
             List<LookupTemplate> lAvailableTemplates = new List<LookupTemplate>();
 
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 ImplementationGuide lSelectedGuide = tdb.ImplementationGuides.SingleOrDefault(ig => ig.Id == implementationGuideId);
 
@@ -138,7 +138,7 @@ namespace Trifolia.Shared
         /// <param name="excludedTemplateId">Excludes the specified template id from the return list</param>
         public static List<LookupTemplate> GetTemplateDataTypeTemplatesExcluding(List<string> dataTypes, int? excludedTemplateId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 if (!CheckPoint.Instance.IsAuthenticated)
                     return new List<LookupTemplate>();
@@ -162,7 +162,7 @@ namespace Trifolia.Shared
         /// <param name="excludedTemplateId">The template that should be excluded from the return list.</param>
         public static List<LookupTemplate> GetTemplateTypeTemplatesExcluding(int? templateTypeId, int? excludedTemplateId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 if (!CheckPoint.Instance.IsAuthenticated)
                     return new List<LookupTemplate>();
@@ -191,7 +191,7 @@ namespace Trifolia.Shared
         /// <param name="excludeTemplate">The template instance that should not be returned as part of the list</param>
         public static List<LookupTemplate> GetTemplatesExcluding(int excludeTemplateId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetTemplatesExcluding(tdb, excludeTemplateId);
             }
@@ -201,7 +201,7 @@ namespace Trifolia.Shared
         /// Gets a list of all templates in the database, excluding the specified template.
         /// </summary>
         /// <param name="excludeTemplate">The template instance that should not be returned as part of the list</param>
-        public static List<LookupTemplate> GetTemplatesExcluding(TemplateDatabaseDataSource tdb, int excludeTemplateId)
+        public static List<LookupTemplate> GetTemplatesExcluding(IObjectRepository tdb, int excludeTemplateId)
         {
             var templates = tdb.ViewTemplates.Where(y => y.Id != excludeTemplateId);
             return FilterAndConvertTemplates(tdb, templates);
@@ -213,7 +213,7 @@ namespace Trifolia.Shared
         /// <param name="implementationGuideId">The id of the implementation guide that templates should be returned for.</param>
         public static List<LookupTemplate> GetImplementationGuideTemplates(int? implementationGuideId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 if (implementationGuideId == null)
                     return new List<LookupTemplate>();
@@ -285,7 +285,7 @@ namespace Trifolia.Shared
                 IgType = template.ImplementationGuideType.Name,
                 TemplateType = template.TemplateType.Name,
                 TemplateTypeDisplay = template.TemplateType.Name + " (" + template.ImplementationGuideType.Name + ")",
-                Organization = template.Organization != null ? template.Organization.Name : string.Empty,
+                Organization = template.OwningImplementationGuide != null && template.OwningImplementationGuide.Organization != null ? template.OwningImplementationGuide.Organization.Name : string.Empty,
                 PublishDate = template.OwningImplementationGuide != null ? template.OwningImplementationGuide.PublishDate : null,
                 ImpliedTemplateOid = template.ImpliedTemplate != null ? template.ImpliedTemplate.Oid : null,
                 ImpliedTemplateTitle = template.ImpliedTemplate != null ? template.ImpliedTemplate.Name : null,

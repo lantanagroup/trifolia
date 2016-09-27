@@ -24,6 +24,7 @@ namespace Trifolia.Test
         public const string DEFAULT_CDA_IG_TYPE_NAME = "CDA";
         public const string DEFAULT_HQMF_R2_IG_TYPE_NAME = "HQMF R2";
         public const string DEFAULT_USERNAME = "admin";
+        public const string ADMIN_ROLE = "admin";
 
         public MockObjectRepository()
         {
@@ -54,7 +55,7 @@ namespace Trifolia.Test
             });
 
             // Add the default admin role
-            var adminRole = this.FindOrAddRole("admin");
+            var adminRole = this.FindOrAddRole(ADMIN_ROLE);
             adminRole.IsAdmin = true;
 
             // Add all securables to the system
@@ -270,8 +271,8 @@ namespace Trifolia.Test
         public void InitializeLCG()
         {
             var org = this.FindOrAddOrganization(DEFAULT_ORGANIZATION);
-            this.FindOrAddUser(DEFAULT_USERNAME, org);
-            this.AssociateUserWithRole(DEFAULT_USERNAME, org.Id, "admin");
+            this.FindOrAddUser(DEFAULT_USERNAME);
+            this.AssociateUserWithRole(DEFAULT_USERNAME, ADMIN_ROLE);
         }
 
         public void InitializeLCGAndLogin()
@@ -282,7 +283,7 @@ namespace Trifolia.Test
 
         #region IObjectRepository
 
-        public void AuditChanges(string auditUserName, string auditOrganization, string auditIP)
+        public void AuditChanges(string auditUserName, string auditIP)
         {
 
         }
@@ -314,8 +315,8 @@ namespace Trifolia.Test
         MockDbSet<RoleRestriction> roleRestrictions = new MockDbSet<RoleRestriction>();
         MockDbSet<Group> groups = new MockDbSet<Group>();
         MockDbSet<UserGroup> userGroups = new MockDbSet<UserGroup>();
+        MockDbSet<GroupManager> groupManagers = new MockDbSet<GroupManager>();
         MockDbSet<ImplementationGuidePermission> implementationGuidePermissions = new MockDbSet<ImplementationGuidePermission>();
-        MockDbSet<OrganizationDefaultPermission> organizationDefaultPermissions = new MockDbSet<OrganizationDefaultPermission>();
         MockDbSet<TemplateConstraintSample> templateConstraintSamples = new MockDbSet<TemplateConstraintSample>();
         MockDbSet<TemplateSample> templateSamples = new MockDbSet<TemplateSample>();
         MockDbSet<ImplementationGuideSection> implementationGuideSections = new MockDbSet<ImplementationGuideSection>();
@@ -456,14 +457,14 @@ namespace Trifolia.Test
             get { return userGroups; }
         }
 
+        public IObjectSet<GroupManager> GroupManagers
+        {
+            get { return this.groupManagers; }
+        }
+
         public IObjectSet<ImplementationGuidePermission> ImplementationGuidePermissions
         {
             get { return implementationGuidePermissions; }
-        }
-
-        public IObjectSet<OrganizationDefaultPermission> OrganizationDefaultPermissions
-        {
-            get { return organizationDefaultPermissions; }
         }
 
         public IObjectSet<TemplateConstraintSample> TemplateConstraintSamples
@@ -523,16 +524,6 @@ namespace Trifolia.Test
                                           Permission = igp.Permission,
                                           TemplateId = t.Id,
                                           UserId = ug.UserId
-                                      })
-                               .Union(from ig in this.ImplementationGuides
-                                      join igp in this.ImplementationGuidePermissions on ig.Id equals igp.ImplementationGuideId
-                                      join t in this.Templates on ig.Id equals t.OwningImplementationGuideId
-                                      join u in this.Users on igp.OrganizationId equals u.OrganizationId
-                                      select new ViewTemplatePermission()
-                                      {
-                                          Permission = igp.Permission,
-                                          TemplateId = t.Id,
-                                          UserId = u.Id
                                       });
 
                 return new MockDbSet<ViewTemplatePermission>(results);
@@ -543,7 +534,7 @@ namespace Trifolia.Test
         {
             get
             {
-                var results = (from igp in this.implementationGuidePermissions 
+                var results = (from igp in this.implementationGuidePermissions
                                join u in this.Users on igp.UserId equals u.Id
                                select new ViewImplementationGuidePermission()
                                {
@@ -558,14 +549,6 @@ namespace Trifolia.Test
                                           Permission = igp.Permission,
                                           ImplementationGuideId = igp.ImplementationGuideId,
                                           UserId = ug.UserId
-                                      })
-                               .Union(from igp in this.implementationGuidePermissions
-                                      join u in this.Users on igp.OrganizationId equals u.OrganizationId
-                                      select new ViewImplementationGuidePermission()
-                                      {
-                                          Permission = igp.Permission,
-                                          ImplementationGuideId = igp.ImplementationGuideId,
-                                          UserId = u.Id
                                       });
 
                 return new MockDbSet<ViewImplementationGuidePermission>(results);
@@ -667,7 +650,7 @@ namespace Trifolia.Test
                                    IsOpen = t.IsOpen,
                                    Name = t.Name,
                                    Oid = t.Oid,
-                                   OrganizationName = t.Organization != null ? t.Organization.Name : null,
+                                   OrganizationName = t.OwningImplementationGuide != null && t.OwningImplementationGuide.Organization != null ? t.OwningImplementationGuide.Organization.Name : null,
                                    OwningImplementationGuideId = t.OwningImplementationGuideId,
                                    OwningImplementationGuideTitle = t.OwningImplementationGuide != null ? t.OwningImplementationGuide.Name : null,
                                    PrimaryContext = t.PrimaryContext,
@@ -692,7 +675,7 @@ namespace Trifolia.Test
                                    Oid = t.Oid,
                                    Name = t.Name,
                                    Open = t.IsOpen ? "Yes" : "No",
-                                   Organization = t.Organization != null ? t.Organization.Name : null,
+                                   Organization = t.OwningImplementationGuide != null && t.OwningImplementationGuide.Organization != null ? t.OwningImplementationGuide.Organization.Name : null,
                                    ImplementationGuide = t.OwningImplementationGuide != null ? t.OwningImplementationGuide.Name : null,
                                    PublishDate = t.OwningImplementationGuide != null ? t.OwningImplementationGuide.PublishDate : null,
                                    TemplateType = t.TemplateType.Name + " (" + t.TemplateType.ImplementationGuideType.Name + ")",
@@ -749,7 +732,7 @@ namespace Trifolia.Test
             if (!string.IsNullOrEmpty(status))
                 publishStatus = this.publishStatuses.Single(y => y.Status == status);
 
-            var template = GenerateTemplate(oid, templateType, title, owningImplementationGuide, primaryContext, primaryContextType, description, notes, organization, impliedTemplate, publishStatus);
+            var template = GenerateTemplate(oid, templateType, title, owningImplementationGuide, primaryContext, primaryContextType, description, notes, impliedTemplate, publishStatus);
 
             if (previousVersion != null)
                 template.SetPreviousVersion(previousVersion);
@@ -768,7 +751,7 @@ namespace Trifolia.Test
         /// <param name="notes">The notes of the template</param>
         /// <param name="owningImplementationGuide">The implementation guide that owns the template.</param>
         /// <returns>A new instance of Template that has been appropriately added to the mock object repository.</returns>
-        public Template GenerateTemplate(string oid, TemplateType type, string title, ImplementationGuide owningImplementationGuide, string primaryContext = null, string primaryContextType = null, string description = null, string notes = null, Organization organization = null, Template impliedTemplate = null, PublishStatus status = null)
+        public Template GenerateTemplate(string oid, TemplateType type, string title, ImplementationGuide owningImplementationGuide, string primaryContext = null, string primaryContextType = null, string description = null, string notes = null, Template impliedTemplate = null, PublishStatus status = null)
         {
             if (string.IsNullOrEmpty(oid))
                 throw new ArgumentNullException("oid");
@@ -785,8 +768,6 @@ namespace Trifolia.Test
             Template template = new Template()
             {
                 Id = this.Templates.DefaultIfEmpty().Max(y => y != null ? y.Id : 0) + 1,
-                OrganizationId = organization != null ? new Nullable<int>(organization.Id) : null,
-                Organization = organization,
                 OwningImplementationGuideId = owningImplementationGuide.Id,
                 OwningImplementationGuide = owningImplementationGuide,
                 ImplementationGuideTypeId = type.ImplementationGuideTypeId,
@@ -1353,7 +1334,7 @@ namespace Trifolia.Test
             return igFileData;
         }
 
-        public User FindOrAddUser(string username, Organization organization)
+        public User FindOrAddUser(string username)
         {
             User foundUser = this.Users.SingleOrDefault(y => y.UserName.ToLower() == username.ToLower());
 
@@ -1363,9 +1344,7 @@ namespace Trifolia.Test
             User newUser = new User()
             {
                 Id = this.Users.DefaultIfEmpty().Max(y => y != null ? y.Id : 0) + 1,
-                UserName = username,
-                OrganizationId = organization.Id,
-                Organization = organization
+                UserName = username
             };
 
             this.Users.AddObject(newUser);
@@ -1438,16 +1417,9 @@ namespace Trifolia.Test
             }
         }
 
-        public void AssociateUserWithRole(string userName, string organizationName, string roleName)
+        public void AssociateUserWithRole(string userName, string roleName)
         {
-            Organization foundOrg = this.Organizations.Single(y => y.Name.ToLower() == organizationName.ToLower());
-
-            AssociateUserWithRole(userName, foundOrg.Id, roleName);
-        }
-
-        public void AssociateUserWithRole(string userName, int organizationId, string roleName)
-        {
-            User foundUser = this.Users.Single(y => y.UserName.ToLower() == userName.ToLower() && y.OrganizationId == organizationId);
+            User foundUser = this.Users.Single(y => y.UserName.ToLower() == userName.ToLower());
             Role foundRole = this.Roles.Single(y => y.Name.ToLower() == roleName.ToLower());
 
             if (foundUser.Roles.Count(y => y.RoleId == foundRole.Id) > 0)

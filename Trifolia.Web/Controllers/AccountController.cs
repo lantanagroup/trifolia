@@ -15,19 +15,47 @@ using Trifolia.Web.Filters;
 using Trifolia.Web.Models.Account;
 using Trifolia.DB;
 using Trifolia.Config;
-using BotDetect.Web.Mvc;
+
+using DotNetOpenAuth.OAuth2;
+using DotNetOpenAuth.Messaging;
+using System.Reflection;
+using System.IO;
+using Newtonsoft.Json;
+using Trifolia.Authentication.Models;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Trifolia.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private const string AUTH_RETURN_URL_COOKIE_NAME = "returnUrl";
+        private const string RETURN_URL_PARAM_NAME = "ReturnUrl";
+
         private IObjectRepository tdb;
+        private WebServerClient authClient;
 
         #region Constructors 
 
         public AccountController()
+            : this(DBContext.Create())
         {
-            this.tdb = new TemplateDatabaseDataSource();
+            this.authClient = CreateClient();
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2UserInfoEndpoint))
+                throw new MissingFieldException("Trifolia is not configured correctly for OAuth2 login: OAuth2UserInfoEndpoint");
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2AuthorizationEndpoint))
+                throw new MissingFieldException("Trifolia is not configured correctly for OAuth2 login: OAuth2AuthorizationEndpoint");
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2TokenEndpoint))
+                throw new MissingFieldException("Trifolia is not configured correctly for OAuth2 login: OAuth2TokenEndpoint");
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2ClientIdentifier))
+                throw new MissingFieldException("Trifolia is not configured correctly for OAuth2 login: OAuth2ClientIdentifier");
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2ClientSecret))
+                throw new MissingFieldException("Trifolia is not configured correctly for OAuth2 login: OAuth2ClientSecret");
         }
 
         public AccountController(IObjectRepository tdb)
@@ -43,7 +71,7 @@ namespace Trifolia.Web.Controllers
         [HttpPost]
         public ActionResult SaveProfile(UserProfile aProfile)
         {
-            using (DB.TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (DB.IObjectRepository tdb = DBContext.Create())
             {
                 DB.User lUser = CheckPoint.Instance.GetUser(tdb);
 
@@ -56,7 +84,6 @@ namespace Trifolia.Web.Controllers
                     u.OkayToContact = aProfile.okayToContact;
                     u.ExternalOrganizationName = aProfile.organization;
                     u.ExternalOrganizationType = aProfile.organizationType;
-                    u.ApiKey = aProfile.apiKey;
                 });
 
                 tdb.SaveChanges();
@@ -74,35 +101,44 @@ namespace Trifolia.Web.Controllers
         [Securable()]
         public JsonResult ProfileData()
         {
-            using (DB.TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (DB.IObjectRepository tdb = DBContext.Create())
             {
                 DB.User lUser = CheckPoint.Instance.GetUser(tdb);
 
                 UserProfile lProfile = new UserProfile()
                 {
                     userName = lUser.UserName,
-                    accountOrganization = lUser.Organization.Name,
-
                     firstName = lUser.FirstName,
                     lastName = lUser.LastName,
                     phone = lUser.Phone,
                     email = lUser.Email,
                     okayToContact = lUser.OkayToContact.HasValue ? lUser.OkayToContact.Value : false,
                     organization = lUser.ExternalOrganizationName,
-                    organizationType = lUser.ExternalOrganizationType,
-                    apiKey = lUser.ApiKey
+                    organizationType = lUser.ExternalOrganizationType
                 };
+
+                if (!string.IsNullOrEmpty(AppSettings.OpenIdConfigUrl))
+                    lProfile.openIdConfigUrl = AppSettings.OpenIdConfigUrl;
+
+                var authData = CheckPoint.Instance.GetAuthenticatedData();
+
+                if (authData.ContainsKey(CheckPoint.AUTH_DATA_OAUTH2_TOKEN))
+                    lProfile.authToken = authData[CheckPoint.AUTH_DATA_OAUTH2_TOKEN];
 
                 return Json(lProfile, JsonRequestBehavior.AllowGet);
             }
         }
 
         [Securable()]           // Must be logged in, but no specific securables
-        public ActionResult NewProfile(string RedirectUrl)
+        public ActionResult NewProfile(string RedirectUrl, string firstName = null, string lastName = null, string email = null, string phone = null)
         {
             NewProfileModel model = new NewProfileModel()
             {
-                RedirectUrl = RedirectUrl
+                RedirectUrl = RedirectUrl,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                Phone = phone
             };
 
             return View("NewProfile", model);
@@ -113,14 +149,10 @@ namespace Trifolia.Web.Controllers
         public ActionResult CompleteProfile(NewProfileModel model)
         {
             string userName = CheckPoint.Instance.UserName;
-            string organizationName = CheckPoint.Instance.OrganizationName;
 
-            CheckPoint.Instance.CreateUserWithDefaultPermissions(userName, organizationName, model.FirstName, model.LastName, model.Email, model.Phone);
+            CheckPoint.Instance.CreateUserWithDefaultPermissions(userName, model.FirstName, model.LastName, model.Email, model.Phone);
 
             Dictionary<string, string> authData = CheckPoint.Instance.GetAuthenticatedData();
-
-            if (organizationName == "HL7" && authData.ContainsKey(CheckPoint.AUTH_DATA_ROLES))
-                CheckPoint.Instance.CheckHL7Roles(userName, authData[CheckPoint.AUTH_DATA_ROLES]);
 
             // Update the other fields in the user's profile
             User user = CheckPoint.Instance.GetUser(this.tdb);
@@ -139,199 +171,201 @@ namespace Trifolia.Web.Controllers
 
         #endregion
 
+        #region My Groups
+
+        [Securable()]
+        public ActionResult Groups()
+        {
+            return View("MyGroups");
+        }
+
+        [Securable()]
+        public ActionResult Group(int? groupId)
+        {
+            return View("MyGroup", groupId);
+        }
+
+        #endregion
+
+        #region Authentication
+
+        public static WebServerClient CreateClient()
+        {
+            if (string.IsNullOrEmpty(AppSettings.OAuth2ClientIdentifier))
+            {
+                Log.For(typeof(AccountController)).Error("OAuth2ClientIdentifier is not specified in configuration!");
+                throw new Exception("Authentication is incorrectly configured");
+            }
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2ClientSecret))
+            {
+                Log.For(typeof(AccountController)).Error("OAuth2ClientSecret is not specified in configuration!");
+                throw new Exception("Authentication is incorrectly configured");
+            }
+
+            var desc = GetAuthServerDescription();
+            var client = new WebServerClient(desc, clientIdentifier: AppSettings.OAuth2ClientIdentifier);
+            client.ClientCredentialApplicator = ClientCredentialApplicator.PostParameter(AppSettings.OAuth2ClientSecret);
+            return client;
+        }
+
+        public static AuthorizationServerDescription GetAuthServerDescription()
+        {
+            if (string.IsNullOrEmpty(AppSettings.OAuth2AuthorizationEndpoint))
+            {
+                Log.For(typeof(AccountController)).Error("OAuth2AuthorizationEndpoint is not specified in configuration!");
+                throw new Exception("Authentication is incorrectly configured");
+            }
+
+            if (string.IsNullOrEmpty(AppSettings.OAuth2TokenEndpoint))
+            {
+                Log.For(typeof(AccountController)).Error("OAuth2TokenEndpoint is not specified in configuration!");
+                throw new Exception("Authentication is incorrectly configured");
+            }
+
+            var authServerDescription = new AuthorizationServerDescription();
+            authServerDescription.AuthorizationEndpoint = new Uri(AppSettings.OAuth2AuthorizationEndpoint);
+            authServerDescription.TokenEndpoint = new Uri(AppSettings.OAuth2TokenEndpoint);
+            authServerDescription.ProtocolVersion = ProtocolVersion.V20;
+            return authServerDescription;
+        }
+
         [AllowAnonymous]
         public ActionResult Login(string ReturnUrl = null)
         {
-            if (CheckPoint.Instance.IsAuthenticated)
-                return RedirectToAction("LoggedInIndex", "Home");
-
-            LoginModel model = GetLoginModel(returnUrl: ReturnUrl);
-
-            return View("Login", model);
-        }
-
-        [CaptchaValidation("CaptchaCode", "TrifoliaCaptcha", "Incorrect CAPTCHA code!")]
-        [AllowAnonymous]
-        [HttpPost]
-        public ActionResult DoLogin(LoginModel model)
-        {
-            Organization org = this.tdb.Organizations.Single(y => y.Id == model.OrganizationId);
-
-            // Run the re-captcha checks unless we allow re-captcha to be bypassed or the client has not specified debug mode
-            if (!AppSettings.RecaptchaAllowBypass || !this.Request.Params.ToString().Split('&').Contains("debug"))
+            if (string.IsNullOrEmpty(Request.QueryString["code"]))
             {
-                if (!ModelState.IsValid)
-                {
-                    LoginModel newModel = GetLoginModel(model, App_GlobalResources.TrifoliaLang.RecaptchaInvalid);
-                    AuditEntryExtension.SaveAuditEntry("Login", "Failed - The re-captcha response specified is not valid", model.Username, org.Name);
-                    return View("Login", newModel);
-                }
-            }
-
-            if (CheckPoint.Instance.ValidateUser(model.Username, org.Name, model.Password))
-            {
-                Response.Cookies.Clear();
-
-                string userData = string.Format("{0}={1}", CheckPoint.AUTH_DATA_ORGANIZATION, org.Name);
-                FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
-                    2, 
-                    model.Username, 
-                    DateTime.Now, 
-                    DateTime.Now.AddDays(20), 
-                    model.RememberMe, 
-                    userData);
-                string encAuthTicket = FormsAuthentication.Encrypt(authTicket);
-                HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encAuthTicket);
-
-                if (model.RememberMe)
-                    faCookie.Expires = DateTime.Now.AddDays(20);
-
-                Response.Cookies.Set(faCookie);
-
-                // Audit the login
-                AuditEntryExtension.SaveAuditEntry("Login", "Success", model.Username, org.Name);
-
-                if (!string.IsNullOrEmpty(model.ReturnUrl))
-                    return Redirect(model.ReturnUrl);
-
-                return RedirectToAction("LoggedInIndex", "Home");
+                return InitAuth();
             }
             else
             {
-                LoginModel newModel = GetLoginModel(
-                    model.ReturnUrl,
-                    model.Username,
-                    model.OrganizationId,
-                    App_GlobalResources.TrifoliaLang.AuthenticationInvalid,
-                    model.RememberMe);
-
-                // Audit the failed login
-                AuditEntryExtension.SaveAuditEntry("Login", "Failed", model.Username, org.Name);
-
-                return View("Login", newModel);
+                return OAuthCallback();
             }
         }
 
-        [AllowAnonymous]
-        public ActionResult HL7LoginRedirect()
+        private ActionResult InitAuth()
         {
-            string redirectUrl = string.Format("{0}://{1}/Account/DoHL7Login",
-                Request.Url.Scheme,
-                Request.Url.Authority);
+            var state = new AuthorizationState();
+            var uri = Request.Url.AbsoluteUri;
+            uri = RemoveQueryStringFromUri(uri);
+            state.Callback = new Uri(uri);
+            state.Scope.Add("openid");
 
-            string url = string.Format(AppSettings.HL7LoginUrlFormat,
-                AppSettings.HL7ApiKey,
-                redirectUrl);
+            var r = this.authClient.PrepareRequestUserAuthorization(state);
 
-            return Redirect(url);
+            // If the user was trying to go somewhere specific, add the location/route 
+            // as a cookie to the authorization request so that we know where they were trying to
+            // go after authorization is complete
+            if (!string.IsNullOrEmpty(this.Request.Params[RETURN_URL_PARAM_NAME]))
+                r.Cookies.Add(new HttpCookie(AUTH_RETURN_URL_COOKIE_NAME, this.Request.Params[RETURN_URL_PARAM_NAME]));
+
+            // This wrapper is needed due to some security changes in MVC 3
+            return new WrapperHttpResponseMessageResult(r);
         }
 
-        [AllowAnonymous]
-        public ActionResult DoHL7Login(HL7LoginModel model)
+        private static string RemoveQueryStringFromUri(string uri)
         {
-            string validateRequestHashFormat = string.Format("{0}|{1}|{2}", model.userid, model.timestampUTCEpoch, AppSettings.HL7ApiKey);
-            string validateRequestHash = HL7AuthHelper.GetEncrypted(validateRequestHashFormat, AppSettings.HL7SharedKey);
-
-            // The hash does not match what we expect, this is an invalid request
-            if (validateRequestHash != model.requestHash)
+            int index = uri.IndexOf('?');
+            if (index > -1)
             {
-                Log.For(this).Error("Invalid attempt to login as HL7 user with user ID {0} and request hash '{1}'", model.userid, model.requestHash);
-                return Redirect("/?Message=" + App_GlobalResources.TrifoliaLang.HL7AttemptInvalid);
+                uri = uri.Substring(0, index);
+            }
+            return uri;
+        }
+
+        private void RemoveQueryStringParam(string paramName)
+        {
+            // reflect to readonly property
+            PropertyInfo isreadonly = typeof(System.Collections.Specialized.NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            // make collection editable
+            isreadonly.SetValue(this.Request.QueryString, false, null);
+
+            // remove
+            this.Request.QueryString.Remove(paramName);
+
+            // make collection readonly again
+            isreadonly.SetValue(this.Request.QueryString, true, null);
+        }
+
+        private ActionResult OAuthCallback()
+        {
+            if (!string.IsNullOrEmpty(this.Request.QueryString["session_state"]))
+            {
+                Log.For(this).Trace("Removing the session_state param from the auth request");
+
+                var uri = new Uri(this.Request.Url.ToString());
+
+                // this gets all the query string key value pairs as a collection
+                var newQueryString = HttpUtility.ParseQueryString(uri.Query);
+
+                // this removes the key if exists
+                newQueryString.Remove("session_state");
+
+                // this gets the page path from root without QueryString
+                string pagePathWithoutQueryString = uri.GetLeftPart(UriPartial.Path);
+
+                var newUrl = newQueryString.Count > 0
+                    ? String.Format("{0}?{1}", pagePathWithoutQueryString, newQueryString)
+                    : pagePathWithoutQueryString;
+
+                Log.For(this).Trace("Redirecting the user back to this route without the session_state param");
+
+                return Redirect(newUrl);
             }
 
-            try
+            Log.For(this).Trace("Processing user authorization: " + this.Request.RawUrl);
+
+            var auth = this.authClient.ProcessUserAuthorization(this.Request);
+            var userInfo = OAuth2UserInfo.GetUserInfo(auth.AccessToken);
+            var foundUser = this.tdb.Users.SingleOrDefault(y => y.UserName == userInfo.user_id);
+
+            // If the user has migration information (the account that they are moving from) in their
+            // profile, update trifolia so that it has the same userName/user_id.
+            if (foundUser == null && userInfo.app_metadata != null && userInfo.app_metadata.migrated_account != null)
             {
-                // Verify that the request sent from HL7 took less than 5 minutes
-                if (!HL7AuthHelper.ValidateTimestamp(model.timestampUTCEpoch))
+                var migratingUser = this.tdb.Users.SingleOrDefault(y =>
+                    y.Id == userInfo.app_metadata.migrated_account.internalId &&
+                    y.UserName == userInfo.app_metadata.migrated_account.userName);
+
+                if (migratingUser != null)
                 {
-                    Log.For(this).Warn("Request to login took longer than 5 minutes to reach the server.");
-                    return Redirect("/?Message=" + App_GlobalResources.TrifoliaLang.HL7AuthTimeout);
+                    migratingUser.UserName = userInfo.user_id;
+                    foundUser = migratingUser;
                 }
-            }
-            catch
-            {
-                Log.For(this).Error("Timestamp passed in request to HL7 login is not a valid timestamp: {0}", model.timestampUTCEpoch);
-                return Redirect("/?Message=An error occurred while logging in.");
+
+                this.tdb.SaveChanges();
             }
 
-            string userData = string.Format("{0}=HL7;{1}={2};{3}={4}", CheckPoint.AUTH_DATA_ORGANIZATION, CheckPoint.AUTH_DATA_USERID, model.userid, CheckPoint.AUTH_DATA_ROLES, model.roles);
-            FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1, model.userid, DateTime.Now, DateTime.Now.AddDays(20), true, userData);
+            string userData = string.Format("{0}={1}", CheckPoint.AUTH_DATA_OAUTH2_TOKEN, auth.AccessToken);
+            FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+                2,
+                userInfo.user_id,
+                DateTime.Now,
+                DateTime.Now.AddDays(20),
+                true,
+                userData);
             string encAuthTicket = FormsAuthentication.Encrypt(authTicket);
-
             HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encAuthTicket);
-            faCookie.Expires = DateTime.Now.AddDays(20);
 
-            if (Response.Cookies[FormsAuthentication.FormsCookieName] != null)
-                Response.Cookies.Set(faCookie);
-            else
-                Response.Cookies.Add(faCookie);
+            if (auth.AccessTokenExpirationUtc != null)
+                faCookie.Expires = auth.AccessTokenExpirationUtc.Value;
 
-            CheckPoint.Instance.CheckHL7Roles(model.userid, model.roles);
+            Response.Cookies.Set(faCookie);
 
-            // Audit the login
-            AuditEntryExtension.SaveAuditEntry("Login", "Success", model.userid, "HL7");
+            if (foundUser == null)
+                return NewProfile("/", userInfo.given_name, userInfo.family_name, userInfo.email, userInfo.phone);
 
-            // Either return the user to the specified url, or to the default homepage if none is specified
-            return Redirect(!string.IsNullOrEmpty(model.ReturnUrl) ? model.ReturnUrl : "/");
+            // If the user was trying to go somewhere specific, redirect the user there instead
+            var returnUrlCookie = this.Request.Cookies[AUTH_RETURN_URL_COOKIE_NAME];
+
+            if (returnUrlCookie != null && !string.IsNullOrEmpty(returnUrlCookie.Value))
+                return Redirect(returnUrlCookie.Value);
+
+            return Redirect("/");
         }
 
-        private LoginModel GetLoginModel(LoginModel defaults, string message)
-        {
-            LoginModel newModel = GetLoginModel(
-                defaults.ReturnUrl,
-                defaults.Username,
-                defaults.OrganizationId,
-                message,
-                defaults.RememberMe);
-
-            return newModel;
-        }
-
-        private LoginModel GetLoginModel(string returnUrl = null, string username = null, int? organizationId = null, string message = null, bool rememberMe = false)
-        {
-            LoginModel model = new LoginModel()
-            {
-                ReturnUrl = returnUrl,
-                Username = username,
-                OrganizationId = organizationId,
-                Message = message,
-                RememberMe = rememberMe,
-                RecaptchaAllowBypass = AppSettings.RecaptchaAllowBypass
-            };
-
-            if (returnUrl == null)
-            {
-                returnUrl = string.Format("{0}://{1}/Account/DoHL7Login",
-                    Request.Url.Scheme,
-                    Request.Url.Authority);
-            }
-            else if (!returnUrl.Contains("://"))
-            {
-                if (!returnUrl.StartsWith("/"))
-                    returnUrl = "/" + returnUrl;
-
-                returnUrl = string.Format("{0}://{1}{2}",
-                    Request.Url.Scheme,
-                    Request.Url.Authority,
-                    returnUrl);
-            }
-
-            // Determine the HL7 login link
-            model.HL7LoginLink = string.Format(AppSettings.HL7LoginUrlFormat,
-                AppSettings.HL7ApiKey,
-                returnUrl);
-
-            // Bypass the HL7 organization, since the app has a separate page just for logging in as HL7
-            foreach (var cOrganization in this.tdb.Organizations.Where(y => y.Name != "HL7").OrderBy(y => y.Name))
-            {
-                model.Organizations.Add(cOrganization.Id, cOrganization.Name);
-            }
-
-            if (organizationId == null && model.Organizations.Count > 0)
-                model.OrganizationId = model.Organizations.Keys.First();
-
-            return model;
-        }
+        #endregion
 
         [AllowAnonymous]
         public ActionResult LogOff()
@@ -342,6 +376,38 @@ namespace Trifolia.Web.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+    }
+    public class WrapperHttpResponseMessageResult : ActionResult
+    {
+        private readonly OutgoingWebResponse _response;
+
+        public WrapperHttpResponseMessageResult(OutgoingWebResponse response)
+        {
+            _response = response;
+        }
+
+        public override void ExecuteResult(ControllerContext context)
+        {
+            HttpResponseBase responseContext = context.RequestContext.HttpContext.Response;
+            responseContext.StatusCode = (int)_response.Status;
+            responseContext.StatusDescription = _response.Status.ToString();
+
+            foreach (string key in _response.Headers.Keys)
+            {
+                responseContext.AddHeader(key, _response.Headers[key]);
+            }
+
+            foreach (string cookieName in _response.Cookies.AllKeys)
+            {
+                responseContext.Cookies.Add(_response.Cookies[cookieName]);
+            }
+
+            if (_response.Body != null)
+            {
+                StreamWriter escritor = new StreamWriter(responseContext.OutputStream);
+                escritor.WriteAsync(_response.Body).Wait();
+            }
         }
     }
 }

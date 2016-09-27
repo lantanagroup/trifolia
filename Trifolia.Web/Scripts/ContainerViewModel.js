@@ -2,6 +2,11 @@
     var self = this;
 
     self.Me = ko.observable();
+    self.GroupDisclaimers = ko.observableArray([]);
+
+    self.OpenDisclaimers = function () {
+        $('#GroupDisclaimersDialog').modal('show');
+    };
 
     self.Initialize = function () {
         $(document).ajaxError(function (event, jqXHR, settings, thrownError) {
@@ -20,6 +25,20 @@
             async: false,
             success: function (results) {
                 ko.mapping.fromJS({ Me: results }, {}, self);
+            },
+            error: function (err) {
+                alert('An error occurred while identifying who the current user is');
+            }
+        });
+
+        $.ajax({
+            url: '/api/Group/My/Disclaimer',
+            cache: false,
+            success: function (results) {
+                ko.mapping.fromJS({ GroupDisclaimers: results }, {}, self);
+            },
+            error: function (err) {
+                alert('An error occurred while getting disclaimers associated with the current user');
             }
         });
     };

@@ -24,7 +24,7 @@ namespace Trifolia.Web.Controllers
         }
 
         public TerminologyManagementController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

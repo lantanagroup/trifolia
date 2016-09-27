@@ -25,6 +25,54 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string OpenIdConfigUrl
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OpenIdConfigUrl"];
+            }
+        }
+
+        public static string OAuth2UserInfoEndpoint
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OAuth2UserInfoEndpoint"];
+            }
+        }
+
+        public static string OAuth2AuthorizationEndpoint
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OAuth2AuthorizationEndpoint"];
+            }
+        }
+
+        public static string OAuth2TokenEndpoint
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OAuth2TokenEndpoint"];
+            }
+        }
+
+        public static string OAuth2ClientIdentifier
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OAuth2ClientIdentifier"];
+            }
+        }
+
+        public static string OAuth2ClientSecret
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OAuth2ClientSecret"];
+            }
+        }
+
         public static string HL7ApiKey
         {
             get
@@ -347,6 +395,14 @@ namespace Trifolia.Config
             get
             {
                 return ConfigurationManager.AppSettings["DefaultBaseUrl"];
+            }
+        }
+
+        public static string DatabaseConnectionString
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["DatabaseConnectionString"];
             }
         }
     }

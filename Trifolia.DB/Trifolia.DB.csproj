@@ -132,6 +132,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Trifolia.Config\Trifolia.Config.csproj">
+      <Project>{3fce87c4-71b6-4feb-a9ee-c6d64fdcc477}</Project>
+      <Name>Trifolia.Config</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
       <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>
       <Name>Trifolia.Logging</Name>

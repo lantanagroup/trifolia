@@ -38,7 +38,7 @@ namespace Trifolia.Shared
 
         public static List<LookupValueSet> GetValuesets()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetValuesets(tdb);
             }

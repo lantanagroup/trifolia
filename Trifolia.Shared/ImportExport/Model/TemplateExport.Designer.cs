@@ -296,8 +296,6 @@ namespace Trifolia.Shared.ImportExport.Model
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string impliedTemplateOid { get; set; }
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string organizationName { get; set; }
-        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string publishStatus { get; set; }
 
         public TrifoliaTemplate()
@@ -2835,6 +2833,8 @@ namespace Trifolia.Shared.ImportExport.Model
         public string displayName { get; set; }
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string webDisplayName { get; set; }
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string organizationName { get; set; }
 
         public TrifoliaImplementationGuide()
         {

@@ -31,7 +31,7 @@ namespace Trifolia.Shared
 
         public static List<LookupImplementationGuideType> GetImplementationGuideTypes()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return (from igt in tdb.ImplementationGuideTypes
                         select new LookupImplementationGuideType()

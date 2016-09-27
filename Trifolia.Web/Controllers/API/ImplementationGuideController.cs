@@ -31,7 +31,7 @@ namespace Trifolia.Web.Controllers.API
         #region Constructor
 
         public ImplementationGuideController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
         }
 
@@ -632,11 +632,10 @@ namespace Trifolia.Web.Controllers.API
             {
                 MailMessage mailMessage = new MailMessage(AppSettings.MailFromAddress, accessManager.Email);
                 mailMessage.Subject = string.Format("Trifolia: Request to access " + ig.NameWithVersion);
-                mailMessage.Body = string.Format("User {0} {1} ({2}) from organization {3} has requested access to {4} on {5} @ {6}\nThe user has requested {7} permissions.\n\nMessage from user: {8}\n\nUse this link to add them to the implementation guide: {9}",
+                mailMessage.Body = string.Format("User {0} {1} ({2}) has requested access to {3} on {4} @ {5}\nThe user has requested {6} permissions.\n\nMessage from user: {7}\n\nUse this link to add them to the implementation guide: {8}",
                     currentUser.FirstName,
                     currentUser.LastName,
                     currentUser.Email,
-                    currentUser.Organization.Name,
                     ig.GetDisplayName(),
                     DateTime.Now.ToShortDateString(),
                     DateTime.Now.ToShortTimeString(),
@@ -715,10 +714,8 @@ namespace Trifolia.Web.Controllers.API
             if (implementationGuideId != null && !CheckPoint.Instance.GrantEditImplementationGuide(implementationGuideId.Value))
                 throw new AuthorizationException("You do not have permissions to edit this implementation guide!");
 
-            EditModel model = new EditModel()
-            {
-                OrganizationId = CheckPoint.Instance.User.OrganizationId
-            };
+            ImplementationGuide implementationGuide = implementationGuideId != null ? this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId) : null;
+            EditModel model = new EditModel();
 
             if (implementationGuideId != null)
             {
@@ -755,37 +752,11 @@ namespace Trifolia.Web.Controllers.API
                 model.CardinalityZeroOrOne = "zero or one [0..1]";
             }
 
-            // Always load default permissions for both pre-existing implementation guides and new IGs
-            Organization org = implementationGuideId != null ?
-                this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId).Organization :
-                CheckPoint.Instance.GetUser(this.tdb).Organization;
-
-            foreach (OrganizationDefaultPermission cDefaultPerm in org.DefaultPermissions)
-            {
-                EditModel.Permission newDefaultPermission = new EditModel.Permission()
-                {
-                    Id = cDefaultPerm.PrimaryId(),
-                    Type = cDefaultPerm.MemberType()
-                };
-
-                if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.EntireOrganization)
-                    newDefaultPermission.Name = string.Format("Entire Organization ({0})", cDefaultPerm.Organization.Name);
-                else if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.Group)
-                    newDefaultPermission.Name = string.Format("{0} ({1})", cDefaultPerm.Group.Name, cDefaultPerm.Group.Organization.Name);
-                else if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.User)
-                    newDefaultPermission.Name = string.Format("{0} {1} ({2})", cDefaultPerm.User.FirstName, cDefaultPerm.User.LastName, cDefaultPerm.User.Organization.Name);
-
-                if (cDefaultPerm.Permission == "View")
-                    model.DefaultViewPermissions.Add(newDefaultPermission);
-                else if (cDefaultPerm.Permission == "Edit")
-                    model.DefaultEditPermissions.Add(newDefaultPermission);
-            }
-
             User me = CheckPoint.Instance.GetUser(this.tdb);
             EditModel.Permission newUserDefaultPermission = new EditModel.Permission()
             {
                 Id = me.Id,
-                Name = string.Format("{0} {1} ({2})", me.FirstName, me.LastName, me.Organization.Name),
+                Name = string.Format("{0} {1} ({2})", me.FirstName, me.LastName, me.Email),
                 Type = Models.PermissionManagement.PermissionTypes.User
             };
 
@@ -877,11 +848,8 @@ namespace Trifolia.Web.Controllers.API
         /// <exception cref="Exception">Throws an exception if the user is not part of the list, which is intended to be handled in the calling method.</exception>
         private bool UserHasPermissions(User user, List<EditModel.Permission> permissions)
         {
-            var foundMeInOrganizations = (from p in permissions
-                                          join u in this.tdb.Users on p.Id equals u.OrganizationId
-                                          where p.Type == Models.PermissionManagement.PermissionTypes.EntireOrganization &&
-                                          u.Id == user.Id
-                                          select u);
+            if (permissions.Exists(y => y.Type == PermissionTypes.Everyone))
+                return true;
 
             var foundMeInGroups = (from p in permissions
                                    join ug in this.tdb.UserGroups on p.Id equals ug.GroupId
@@ -893,7 +861,7 @@ namespace Trifolia.Web.Controllers.API
                                    where p.Id == user.Id && p.Type == Models.PermissionManagement.PermissionTypes.User
                                    select p);
 
-            return foundMeInOrganizations.Count() > 0 || foundMeInGroups.Count() > 0 || foundMeDirectly.Count() > 0;
+            return foundMeInGroups.Count() > 0 || foundMeDirectly.Count() > 0;
         }
 
         private EditModel GetEditModel(int implementationGuideId)
@@ -982,17 +950,17 @@ namespace Trifolia.Web.Controllers.API
 
                 switch (cPermission.MemberType())
                 {
-                    case Models.PermissionManagement.PermissionTypes.EntireOrganization:
-                        newPermission.Id = cPermission.OrganizationId.Value;
-                        newPermission.Name = "Entire Organization (" + cPermission.Organization.Name + ")";
+                    case Models.PermissionManagement.PermissionTypes.Everyone:
+                        newPermission.Id = 0;
+                        newPermission.Name = "Everyone";
                         break;
                     case Models.PermissionManagement.PermissionTypes.Group:
                         newPermission.Id = cPermission.GroupId.Value;
-                        newPermission.Name = cPermission.Group.Name + " (" + cPermission.Group.Organization.Name + ")";
+                        newPermission.Name = cPermission.Group.Name;
                         break;
                     case Models.PermissionManagement.PermissionTypes.User:
                         newPermission.Id = cPermission.UserId.Value;
-                        newPermission.Name = cPermission.User.FirstName + " " + cPermission.User.LastName + " (" + cPermission.User.Organization.Name + ")";
+                        newPermission.Name = cPermission.User.FirstName + " " + cPermission.User.LastName + " (" + cPermission.User.Email + ")";
                         break;
                 }
 
@@ -1015,10 +983,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/ImplementationGuide/Save"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
         public int SaveImplementationGuide(EditModel aModel)
         {
-            using (IObjectRepository auditedTdb = DBContext.Create())
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                auditedTdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 // Use a transaction scope to make sure that any errors that occur are rolled back, even though there shouldn't be any errors
                 using (var scope = auditedTdb.BeginTransaction())
                 {
@@ -1242,7 +1208,7 @@ namespace Trifolia.Web.Controllers.API
 
                 ig.Permissions.Add(BuildPermission(ig, "View", cPermission));
 
-                if (cPermission.Type != PermissionTypes.EntireOrganization)
+                if (cPermission.Type != PermissionTypes.Everyone)
                     addedViewPermissions.Add(cPermission);
             }
 
@@ -1253,7 +1219,7 @@ namespace Trifolia.Web.Controllers.API
 
                 ig.Permissions.Add(BuildPermission(ig, "Edit", cPermission));
 
-                if (cPermission.Type != PermissionTypes.EntireOrganization)
+                if (cPermission.Type != PermissionTypes.Everyone)
                 {
                     var foundAddedPermission = addedViewPermissions.SingleOrDefault(y => y.Type == cPermission.Type && y.Id == cPermission.Id);
 
@@ -1315,7 +1281,7 @@ namespace Trifolia.Web.Controllers.API
                         userEmail.User.FirstName,
                         userEmail.User.LastName,
                         userEmail.User.UserName,
-                        userEmail.User.Organization.Name,
+                        userEmail.User.Email,
                         userEmail.Permission == "Edit" ? "edit" : "view",
                         ig.GetDisplayName(),
                         userEmail.Permission == "Edit" ? "view/edit" : "view",
@@ -1345,9 +1311,7 @@ namespace Trifolia.Web.Controllers.API
                 ImplementationGuide = ig
             };
 
-            if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.EntireOrganization)
-                permission.OrganizationId = permissionModel.Id;
-            else if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.Group)
+            if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.Group)
                 permission.GroupId = permissionModel.Id;
             else if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.User)
                 permission.UserId = permissionModel.Id;
@@ -1355,99 +1319,49 @@ namespace Trifolia.Web.Controllers.API
             return permission;
         }
 
-        [HttpGet, Route("api/ImplementationGuide/Edit/User"), SecurableAction()]
-        public MyOrganizationInfo GetMyOrganizationInfo(bool includeGroups = true)
-        {
-            string organizationName = CheckPoint.Instance.OrganizationName;
-            Organization organization = this.tdb.Organizations.Single(y => y.Name == organizationName);
-
-            MyOrganizationInfo model = new MyOrganizationInfo()
-            {
-                MyOrganizationId = organization.Id
-            };
-
-            model.MyGroups.Add(new MyOrganizationInfo.MemberEntry()
-            {
-                Id = model.MyOrganizationId,
-                Name = string.Format("Entire Organization ({0})", organization.Name),
-                Type = PermissionTypes.EntireOrganization
-            });
-
-            if (includeGroups)
-            {
-                foreach (var cGroup in organization.Groups)
-                {
-                    model.MyGroups.Add(new MyOrganizationInfo.MemberEntry()
-                    {
-                        Id = cGroup.Id,
-                        Type = PermissionTypes.Group,
-                        Name = string.Format("{0} ({1})", cGroup.Name, organization.Name)
-                    });
-                }
-            }
-
-            model.OtherOrganizations = (from o in this.tdb.Organizations
-                                        where o.Id != organization.Id
-                                        select new MyOrganizationInfo.OrganizationEntry()
-                                        {
-                                            Id = o.Id,
-                                            Name = o.Name
-                                        }).ToList();
-
-            return model;
-        }
-
-        [HttpGet, Route("api/ImplementationGuide/Edit/User/Search"), SecurableAction()]
-        public IEnumerable<MyOrganizationInfo.MemberEntry> SearchUsers(int organizationId, string searchText, bool includeGroups)
+        [HttpGet, Route("api/ImplementationGuide/Edit/Permission/Search"), SecurableAction()]
+        public IEnumerable<PermissionsInfoModel.MemberEntry> SearchUsers(string searchText, bool includeGroups)
         {
             searchText = searchText.ToLower();
 
-            string myOrganizationName = CheckPoint.Instance.OrganizationName;
-            Organization myOrganization = this.tdb.Organizations.Single(y => y.Name == myOrganizationName);
-            Organization organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            List<MyOrganizationInfo.MemberEntry> matches = new List<MyOrganizationInfo.MemberEntry>();
+            List<PermissionsInfoModel.MemberEntry> matches = new List<PermissionsInfoModel.MemberEntry>();
 
             if (!string.IsNullOrEmpty(searchText))
             {
                 matches.AddRange(
                     from u in this.tdb.Users
-                    where u.OrganizationId == organizationId && (
+                    where
                         (u.FirstName + " " + u.LastName).ToLower().Contains(searchText) ||
                         u.Email.Contains(searchText) ||
-                        u.UserName.ToLower().Contains(searchText))
-                    select new MyOrganizationInfo.MemberEntry()
+                        u.UserName.ToLower().Contains(searchText)
+                    select new PermissionsInfoModel.MemberEntry()
                     {
                         Type = PermissionTypes.User,
                         Id = u.Id,
-                        Name = (u.FirstName + " " + u.LastName + " (" + u.Organization.Name + ")")
+                        Name = u.FirstName + " " + u.LastName
                     });
             }
 
             // Only add groups if allowGroupSelection and the requested organization is not "my organization"
-            if (includeGroups && organizationId != myOrganization.Id)
+            if (includeGroups)
             {
-                // Add the "Entire Organization" option
-                if (organizationId != myOrganization.Id)
+                matches.Insert(0, new PermissionsInfoModel.MemberEntry()
                 {
-                    matches.Insert(0, new MyOrganizationInfo.MemberEntry()
-                    {
-                        Id = organizationId,
-                        Name = string.Format("Entire Organization ({0})", organization.Name),
-                        Type = PermissionTypes.EntireOrganization
-                    });
-                }
+                    Id = 0,
+                    Name = string.Format("Everyone"),
+                    Type = PermissionTypes.Everyone
+                });
 
                 if (!string.IsNullOrEmpty(searchText))
                 {
                     // TODO: Add other groups from the organization
                     matches.AddRange(
                         from g in this.tdb.Groups
-                        where g.OrganizationId == organizationId &&
-                            g.Name.ToLower().Contains(searchText)
-                        select new MyOrganizationInfo.MemberEntry()
+                        where g.Name.ToLower().Contains(searchText)
+                        select new PermissionsInfoModel.MemberEntry()
                         {
                             Id = g.Id,
-                            Name = g.Name + " (" + g.Organization.Name + ")",
+                            Name = g.Name,
                             Type = PermissionTypes.Group
                         });
                 }
@@ -1484,10 +1398,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/ImplementationGuide/Edit/Bookmark"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT_BOOKMARKS)]
         public void UpdateBookmarks(EditBookmarksModel model)
         {
-            using (IObjectRepository tdb = DBContext.Create())
+            using (IObjectRepository tdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                tdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 foreach (var currentTemplateModel in model.TemplateItems)
                 {
                     Template template = tdb.Templates.Single(y => y.Id == currentTemplateModel.Id);

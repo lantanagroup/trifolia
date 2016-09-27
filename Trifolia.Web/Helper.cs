@@ -26,7 +26,7 @@ namespace Trifolia.Web
 <script language=""javascript"">
     var valuesets = [";
 
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 foreach (ValueSet cValueset in tdb.ValueSets)
                 {
@@ -51,7 +51,7 @@ namespace Trifolia.Web
 <script language=""javascript"">
     var codesystems = [";
 
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 foreach (CodeSystem cCodeSystem in tdb.CodeSystems)
                 {
@@ -76,7 +76,7 @@ namespace Trifolia.Web
 <script language=""javascript"">
     var contexts = [";
 
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 var contexts = (from tc in tdb.TemplateConstraints
                                 select tc.Context).Distinct();

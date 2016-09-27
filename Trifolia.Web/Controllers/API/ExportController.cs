@@ -43,7 +43,7 @@ namespace Trifolia.Web.Controllers.API
         #region CTOR
 
         public ExportController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

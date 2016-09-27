@@ -31,11 +31,23 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <div class="tab-pane active" id="general">
-                    <div class="form-group">
+                    <div class="form-group" data-bind="css: { 'has-error': !Validation().Name.isValid() }">
                         <label>Name</label>
                         <input type="text" class="form-control" data-bind="value: Name, disable: PreviousVersionId" />
+                        <span class="help-block" data-bind="validationMessage: Name"></span>
                     </div>
-                    <span data-bind="validationMessage: Name"></span>
+
+                    <div class="form-group" data-bind="css: { 'has-error': !Validation().TypeId.isValid() }">
+                        <label>Type</label>
+                        <select class="form-control" data-bind="value: TypeId, options: $parent.ImplementationGuideTypes, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select', disable: Id"></select>
+                        <span class="help-block" data-bind="validationMessage: TypeId"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Organization</label>
+                        <select class="form-control" data-bind="value: OrganizationId, options: $parent.Organizations, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select...'"></select>
+                        <span class="help-block">The organization specified here identifies (for example) a standards body that the implementation guide will be developed under.</span>
+                    </div>
 
                     <div class="form-group">
                         <label>Identifier/Base URL</label>
@@ -67,15 +79,9 @@
                     <div class="form-group">
                         <label>Web Readme Overview</label>
                         <textarea style="width: 100%; height: 100px;" data-bind="value: WebReadmeOverview"></textarea>
-                        <span class="help-block">Web Readme Overview</span>
+                        <span class="help-block">Used in the .txt README file when the web-based implementation guide is downloaded as a ZIP package.</span>
                     </div>
                     <span data-bind="validationMessage: WebReadmeOverview"></span>
-
-                    <div class="form-group">
-                        <label>Type</label>
-                        <select class="form-control" data-bind="value: TypeId, options: $parent.ImplementationGuideTypes, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select', disable: Id"></select>
-                    </div>
-                    <span data-bind="validationMessage: TypeId"></span>
             
                     <div class="form-group">
                         <label>Consolidated Format</label>
@@ -89,6 +95,7 @@
                     <div class="form-group">
                         <label>Access Manager</label>
                         <select class="form-control" data-bind="value: AccessManagerId, options: GetEditUsers(), optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select...'""></select>
+                        <span class="help-block">One of the individual users that have edit permissions to the IG. Is the user that receives emails with access requests.</span>
                     </div>
 
                     <div class="form-group">
@@ -97,6 +104,7 @@
                             <option value="true">Yes</option>
                             <option value="false" selected>No</option>
                         </select>
+                        <span class="help-block">Indicates whether the implementation guide should be displayed in the list of implementation guides that users can request access to.</span>
                     </div>
                 </div>
                 <div class="tab-pane" id="templateTypes">
@@ -325,71 +333,25 @@
                     <div class="modal-header">
                         <h4 class="modal-title">Add Permission</h4>
                     </div>
-                    <div class="modal-body" style="padding: 0px; max-height: 350px; overflow-y: auto;">
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a href="#myOrg" data-toggle="tab">My Organization</a></li>
-                            <li><a href="#otherOrg" data-toggle="tab">Other Organization</a></li>
-                        </ul>
-
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="myOrg" data-bind="with: MyOrganizationInfo">
-                                <!-- ko foreach: MyGroups -->
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <input type="checkbox" name="MyGroupCheckbox" data-bind="attr: { value: UniqueId }, checked: $parents[1].MySelectedGroups" /> <span data-bind="text: Name"></span>
+                    <div class="modal-body" style="max-height: 350px; overflow-y: auto;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="User Name" data-bind="value: PermissionSearchText" />
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default" data-bind="click: SearchPermissions">Search</button>
                                     </div>
                                 </div>
-                                <!-- /ko -->
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="User Name" data-bind="value: $parent.MyOrganizationSearchText" />
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default" data-bind="click: $parent.SearchMyOrganization">Search</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- ko foreach: $parent.MyOrganizationSearchResults -->
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <input type="checkbox" name="MyUserCheckbox" data-bind="attr: { value: UniqueId }, checked: $parents[1].MySelectedUsers" /> <span data-bind="    text: Name"></span>
-                                    </div>
-                                </div>
-                                <!-- /ko -->
-                            </div>
-
-                            <!-- other organizations -->
-                            <div class="tab-pane" id="otherOrg">
-                                <div class="row">
-                                    <div class="col-md-4" data-bind="with: MyOrganizationInfo">
-                                        <div class="input-group">
-                                            <select class="form-control" data-bind="value: $parent.OtherOrganizationSelected, options: OtherOrganizations, optionsText: 'Name', optionsValue: 'Id'"></select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" data-bind="value: OtherOrganizationSearchText" />
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-default" data-bind="click: SearchOtherOrganization">Search</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- ko foreach: OtherOrganizationSearchResults -->
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <input type="checkbox" name="OtherUserCheckbox" data-bind="attr: { value: UniqueId }, checked: $parent.SelectedOtherOrganizationUsers" /> <span data-bind="text: Name"></span>
-                                    </div>
-                                </div>
-                                <!-- /ko -->
                             </div>
                         </div>
+
+                        <!-- ko foreach: PermissionSearchResults -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="checkbox" name="NewSelectedUserCheckbox" data-bind="attr: { value: UniqueId }, checked: $parent.NewSelectedUsers" /> <span data-bind="    text: Name"></span>
+                            </div>
+                        </div>
+                        <!-- /ko -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bind="click: AddPermissions">OK</button>

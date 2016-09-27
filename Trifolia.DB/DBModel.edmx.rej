@@ -1,0 +1,13 @@
+diff a/Trifolia.DB/DBModel.edmx b/Trifolia.DB/DBModel.edmx	(rejected hunks)
+@@ -1629,11 +1629,6 @@
+             </Dependent>
+           </ReferentialConstraint>
+         </Association>
+-        <Function Name="GetImplementationGuideTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+-          <Parameter Name="implementationGuideId" Type="int" Mode="In" />
+-          <Parameter Name="inferred" Type="bit" Mode="In" />
+-          <Parameter Name="parentTemplateId" Type="int" Mode="In" />
+-        </Function>
+         <Function Name="SearchTemplates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+           <Parameter Name="userId" Type="int" Mode="In" />
+           <Parameter Name="filterImplementationGuideId" Type="int" Mode="In" />

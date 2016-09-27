@@ -50,9 +50,8 @@ namespace Trifolia.Web
                 return false;
 
             string userName = Page.User.Identity.Name;
-            string organizationName = CheckPoint.Instance.OrganizationName;
 
-            if (CheckPoint.Instance.Authorize(userName, organizationName, securables) == AuthorizationTypes.AuthorizationSuccessful)
+            if (CheckPoint.Instance.Authorize(userName, securables) == AuthorizationTypes.AuthorizationSuccessful)
                 return true;
 
             return false;

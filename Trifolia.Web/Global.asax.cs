@@ -21,10 +21,24 @@ namespace Trifolia.Web
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.LowercaseUrls = true;
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{resource}.ashx/{*pathInfo}");
             routes.IgnoreRoute("{*botdetect}", new { botdetect = @"(.*)BotDetectCaptcha\.ashx" });
             routes.IgnoreRoute("favicon.ico");
+
+            routes.MapRoute(
+                name: "Edit Group",
+                url: "Admin/Group/{groupId}",
+                defaults: new { controller = "Admin", action = "EditGroup" }
+            );
+
+            routes.MapRoute(
+                name: "Edit My Group",
+                url: "Account/Group/{groupId}",
+                defaults: new { controller = "Account", action = "Group" }
+            );
 
             routes.MapRoute(
                 name: "Import Terminology from External Source",

@@ -44,6 +44,7 @@ namespace Trifolia.Export.Native
                 status = ig.GetExportStatus(),
                 displayName = ig.DisplayName,
                 webDisplayName = ig.WebDisplayName,
+                organizationName = ig.Organization != null ? ig.Organization.Name : string.Empty,
                 WebDescription = ig.WebDescription,
                 WebReadmeOverview = ig.WebReadmeOverview,
                 Volume1 = null,

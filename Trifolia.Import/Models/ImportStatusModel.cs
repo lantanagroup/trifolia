@@ -113,7 +113,7 @@ namespace Trifolia.Import.Models
             if (implementationGuide == null || this.ImportedImplementationGuides.ContainsKey(implementationGuide))
                 return;
 
-            var dataSource = this.tdb as TemplateDatabaseDataSource;
+            var dataSource = this.tdb as TrifoliaDatabase;
 
             if (dataSource != null)
                 this.ImportedImplementationGuides.Add(implementationGuide, dataSource.ObjectStateManager.GetObjectStateEntry(implementationGuide).State);
@@ -126,7 +126,7 @@ namespace Trifolia.Import.Models
             if (template == null)
                 return;
 
-            var dataSource = this.tdb as TemplateDatabaseDataSource;
+            var dataSource = this.tdb as TrifoliaDatabase;
 
             if (dataSource != null)
             {

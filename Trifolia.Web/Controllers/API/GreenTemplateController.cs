@@ -27,7 +27,7 @@ namespace Trifolia.Web.Controllers.API
         }
 
         public GreenTemplateController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

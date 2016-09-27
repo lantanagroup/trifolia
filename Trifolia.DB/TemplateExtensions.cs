@@ -58,8 +58,8 @@ namespace Trifolia.DB
         {
             get
             {
-                if (this.Organization != null)
-                    return this.Organization.Name;
+                if (this.OwningImplementationGuide != null && this.OwningImplementationGuide.Organization != null)
+                    return this.OwningImplementationGuide.Organization.Name;
 
                 return string.Empty;
             }
@@ -83,7 +83,7 @@ namespace Trifolia.DB
 
         public static List<Template> GetTemplates()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetTemplates(tdb);
             }
@@ -102,7 +102,7 @@ namespace Trifolia.DB
 
         public static List<Template> GetTemplates(int excludeId, bool shouldFilter = false)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetTemplates(tdb, excludeId, shouldFilter);
             }
@@ -123,7 +123,7 @@ namespace Trifolia.DB
 
         public static List<Template> GetTemplates(string implementationGuideId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetTemplates(tdb, implementationGuideId);
             }
@@ -153,7 +153,7 @@ namespace Trifolia.DB
 
         public static List<Template> GetIgTypeTemplates(int implementationGuideTypeId, bool shouldFilter = false)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return GetIgTypeTemplates(tdb, implementationGuideTypeId);
             }
@@ -228,7 +228,6 @@ namespace Trifolia.DB
                 Description = this.Description,
                 Notes = this.Notes,
                 StatusId = this.StatusId,
-                OrganizationId = this.OrganizationId,
                 ImpliedTemplateId = this.ImpliedTemplateId
             };
 

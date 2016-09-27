@@ -9,7 +9,7 @@ namespace Trifolia.DB
     {
         public static List<ValueSetMember> GetValueSetMembers()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.ValueSetMembers
                     .ToList();
@@ -18,7 +18,7 @@ namespace Trifolia.DB
 
         public static List<ValueSetMember> GetValueSetMembers(int valueSetId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.ValueSetMembers
                     .Where(y => y.ValueSetId == valueSetId)

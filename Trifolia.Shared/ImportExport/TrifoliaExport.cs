@@ -484,9 +484,6 @@ namespace Trifolia.Generation.IG
 
                 foreach (Template currentTemplate in templates)
                 {
-                    if (currentTemplate.OwningImplementationGuideId == null)
-                        continue;
-
                     Dictionary<string, string> columns = new Dictionary<string, string>()
                     {
                         { "ID", id.ToString() },

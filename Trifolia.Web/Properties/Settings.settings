@@ -25,5 +25,14 @@
   &lt;string&gt;Trifolia's template editor is based on XML Schemas. Trifolia is not restricted to editing templates for just CDA, it can define templates for E-Measures and also define profiles for FHIR. Because Trifolia uses XML Schema, in theory, any schema can be loaded into Trifolia and used with the template editor; after the schema has been properly tested within Trifolia.&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
+    <Setting Name="JoinGroupEmailSubject" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Request to join Trifolia group</Value>
+    </Setting>
+    <Setting Name="JoinGroupEmailBodyHtml" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">&lt;html&gt;&lt;body&gt;{0} {1} ({2}) has requested to join the group "{3}". Click &lt;a href="{4}" target="_new"&gt;here&lt;/a&gt; to edit the group and grant the user membership.&lt;/body&gt;&lt;/html&gt;</Value>
+    </Setting>
+    <Setting Name="JoinGroupEmailBodyText" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">{0} {1} ({2}) has requested to join the group "{3}". Go to {4} to edit the group and grant the user membership.</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

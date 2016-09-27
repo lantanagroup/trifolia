@@ -39,7 +39,7 @@ namespace Trifolia.Web.Models.IGManagement
         public int? PreviousVersionId { get; set; }
         public int? CurrentVersion { get; set; }
         public bool DisableVersionFields { get; set; }
-        public int OrganizationId { get; set; }
+        public int? OrganizationId { get; set; }
         public string Html { get; set; }
 
         public string CardinalityZeroOrOne { get; set; }

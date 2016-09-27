@@ -24,7 +24,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         }
 
         public FHIR2ConformanceController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

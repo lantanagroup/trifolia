@@ -36,7 +36,7 @@ namespace Trifolia.Web.Controllers
 
         public TemplateManagementController()
         {
-            this.tdb = new TemplateDatabaseDataSource(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
+            this.tdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress);
         }
 
         #endregion

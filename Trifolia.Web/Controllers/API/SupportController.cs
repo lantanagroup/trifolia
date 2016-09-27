@@ -19,15 +19,15 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Support")]
         public string SubmitSupportRequest(SupportRequestModel model)
         {
-            //Send an email
-            if (CheckPoint.Instance.OrganizationName == "HL7" || (!AppSettings.EnableJiraSupport && !string.IsNullOrEmpty(AppSettings.SupportEmailTo)))
+            if (!AppSettings.EnableJiraSupport)
             {
                 if (string.IsNullOrEmpty(AppSettings.MailFromAddress))
                     throw new Exception("MailFromAddress is not configured.");
 
-                string lSmtpServer = AppSettings.MailHost;
-
-                var client = new SmtpClient(lSmtpServer, 587)
+                if (string.IsNullOrEmpty(AppSettings.SupportEmailTo))
+                    throw new Exception("SupportEmailTo is not configured");
+                
+                var client = new SmtpClient(AppSettings.MailHost, AppSettings.MailPort)
                 {
                     Credentials = new NetworkCredential(AppSettings.MailUser, AppSettings.MailPassword),
                     Port = AppSettings.MailPort,

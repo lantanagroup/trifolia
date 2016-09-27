@@ -23,7 +23,7 @@ namespace Trifolia.Web.Controllers
         }
 
         public IGTypeManagementController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

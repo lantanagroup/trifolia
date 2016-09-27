@@ -43,8 +43,9 @@
                 <input type="checkbox" data-bind="checked: OkayToContact" /> It is OK to contact me.
             </div>
 
-            <div class="form-group">
-                <button type="button" class="btn btn-default" data-bind="click: $parent.SaveChanges, enable: validation.isValid">Save</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" data-bind="click: $parent.SaveChanges, enable: validation.isValid">Save</button>
+                <a href="/Account/LogOff" class="btn btn-default">Cancel</a>
             </div>
         </div>
     </div>
@@ -53,6 +54,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var vm = new newProfileViewModel('<%= Model.RedirectUrl %>');
+            vm.Model.FirstName('<%= Model.FirstName %>');
+            vm.Model.LastName('<%= Model.LastName %>');
+            vm.Model.Email('<%= Model.Email %>');
+            vm.Model.Phone('<%= Model.Phone %>');
             ko.applyBindings(vm, $("#mainBody")[0]);
         });
     </script>

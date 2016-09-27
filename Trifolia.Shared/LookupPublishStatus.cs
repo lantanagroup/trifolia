@@ -30,7 +30,7 @@ namespace Trifolia.Shared
 
         public List<PublishStatus> GetPublishStatusAll()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.PublishStatuses.ToList();
             }
@@ -38,7 +38,7 @@ namespace Trifolia.Shared
 
         public List<PublishStatus> GetFilteredPublishStatuses(string aExcludeStatuses)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 List<PublishStatus> lStatuses = tdb.PublishStatuses.ToList();
 
@@ -62,7 +62,7 @@ namespace Trifolia.Shared
 
             List<string> excludedStatuses = new List<string>();
 
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 ImplementationGuide ig = tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
                 var excludedStatusObjects = tdb.PublishStatuses.Where(y => 

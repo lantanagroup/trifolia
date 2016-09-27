@@ -17,7 +17,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         private IObjectRepository tdb;
 
         public ValidationController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

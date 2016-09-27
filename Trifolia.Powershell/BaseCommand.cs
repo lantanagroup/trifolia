@@ -16,7 +16,7 @@ namespace Trifolia.Powershell
         {
             AppConfig.Change();
 
-            this.tdb = new TemplateDatabaseDataSource();
+            this.tdb = DBContext.Create();
         }
 
         protected override void StopProcessing()

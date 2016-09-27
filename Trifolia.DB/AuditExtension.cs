@@ -9,7 +9,7 @@ namespace Trifolia.DB
     {
         public static List<AuditEntry> GetAllEntries()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.AuditEntries.ToList();
             }
@@ -17,7 +17,7 @@ namespace Trifolia.DB
 
         public static List<AuditEntry> GetImplementationGuideEntries(int implementationGuideId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 List<AuditEntry> igEntries = tdb.AuditEntries.Where(y => y.ImplementationGuideId == implementationGuideId).ToList();
 
