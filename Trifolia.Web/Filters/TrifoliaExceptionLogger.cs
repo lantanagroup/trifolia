@@ -13,7 +13,12 @@ namespace Trifolia.Web.Filters
     {
         public Task LogAsync(ExceptionLoggerContext context, CancellationToken cancellationToken)
         {
-            Trifolia.Logging.Log.For(context.ExceptionContext.ActionContext.ControllerContext.Controller)
+            object forObject = context.ExceptionContext.ControllerContext;
+
+            if (forObject == null)
+                forObject = this;
+
+            Trifolia.Logging.Log.For(forObject)
                 .Error(context.ExceptionContext.Exception.Message, context.ExceptionContext.Exception);
 
             return Task.FromResult(0);

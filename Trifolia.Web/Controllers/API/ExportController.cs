@@ -26,6 +26,7 @@ using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using Ionic.Zip;
 using Trifolia.Shared.Plugins;
 using System.Web;
+using Microsoft.AspNet.WebApi.MessageHandlers.Compression.Attributes;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -33,6 +34,11 @@ namespace Trifolia.Web.Controllers.API
     {
         private IObjectRepository tdb;
         private const string MSWordExportSettingsPropertyName = "MSWordExportSettingsJson";
+        private const string DOCX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        private const string XML_MIME_TYPE = "application/xml";
+        private const string JSON_MIME_TYPE = "application/json";
+        private const string ZIP_MIME_TYPE = "application/zip";
+        private const string XLSX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
         #region CTOR
 
@@ -114,7 +120,13 @@ namespace Trifolia.Web.Controllers.API
             }
         }
 
-        [HttpPost, Route("api/Export/XML"), SecurableAction(SecurableNames.EXPORT_XML)]
+        /// <summary>
+        /// Exports data from Trifolia using the export format specified in the export model.
+        /// </summary>
+        /// <param name="model">Settings/information on what XML format should be generated.</param>
+        /// <returns>HttpResponseMessage</returns>
+        /// <remarks>Compression is disabled for this Web API endpoint because there are problems with the FHIRBuild export being zipped/compressed, and then WebAPI tries to re-compress the content and fails.</remarks>
+        [HttpPost, Route("api/Export/XML"), SecurableAction(SecurableNames.EXPORT_XML), Compression(Enabled = false)]
         public HttpResponseMessage ExportXML(XMLSettingsModel model)
         {
             if (model == null)
@@ -131,8 +143,9 @@ namespace Trifolia.Web.Controllers.API
             List<Template> templates = this.tdb.Templates.Where(y => model.TemplateIds.Contains(y.Id)).ToList();
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, model.ImplementationGuideId);
             string fileName = string.Format("{0}.xml", ig.GetDisplayName(true));
-            string export = string.Empty;
-            bool returnJson = Request.Headers.Accept.Count(y => y.MediaType == "application/json") == 1;
+            string contentType = XML_MIME_TYPE;
+            byte[] export = null;
+            bool returnJson = Request.Headers.Accept.Count(y => y.MediaType == JSON_MIME_TYPE) == 1;
             bool includeVocabulary = model.IncludeVocabulary == true;
             var igTypePlugin = IGTypePluginFactory.GetPlugin(ig.ImplementationGuideType);
             var schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, ig.ImplementationGuideType);
@@ -152,6 +165,8 @@ namespace Trifolia.Web.Controllers.API
             else if (model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuild)
             {
                 export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIRBuild, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
+                contentType = ZIP_MIME_TYPE;
+                fileName = string.Format("{0}.zip", ig.GetDisplayName(true));
             }
             else if (model.XmlType == XMLSettingsModel.ExportTypes.JSON)
             {
@@ -161,14 +176,14 @@ namespace Trifolia.Web.Controllers.API
                 // Serialize the data to JSON
                 var jsonSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                 jsonSerializer.MaxJsonLength = Int32.MaxValue;
-                export = jsonSerializer.Serialize(dataModel);
+                export = System.Text.Encoding.UTF8.GetBytes(jsonSerializer.Serialize(dataModel));
 
                 // Set the filename to JSON
                 fileName = string.Format("{0}.json", ig.GetDisplayName(true));
+                contentType = JSON_MIME_TYPE;
             }
-
-            byte[] data = System.Text.ASCIIEncoding.UTF8.GetBytes(export);
-            return GetExportResponse(fileName, data);
+            
+            return GetExportResponse(fileName, contentType, export);
         }
 
         #endregion
@@ -206,21 +221,21 @@ namespace Trifolia.Web.Controllers.API
                 case VocabularySettingsModel.ExportFormatTypes.SVS:
                 case VocabularySettingsModel.ExportFormatTypes.FHIR:
                     fileType = "xml";
-                    contentType = "text/xml";
+                    contentType = XML_MIME_TYPE;
                     string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, model.MaximumMembers, (int)model.ExportFormat, model.Encoding);
                     Encoding encoding = Encoding.GetEncoding(model.Encoding);
                     data = encoding.GetBytes(vocXml);
                     break;
                 case VocabularySettingsModel.ExportFormatTypes.Excel:
                     fileType = "xlsx";
-                    contentType = "application/octet-stream";
+                    contentType = XLSX_MIME_TYPE;
                     data = service.GetImplementationGuideVocabularySpreadsheet(model.ImplementationGuideId, model.MaximumMembers);
                     break;
             }
 
             string fileName = string.Format("{0}.{1}", ig.GetDisplayName(true), fileType);
 
-            return GetExportResponse(fileName, data);
+            return GetExportResponse(fileName, contentType, data);
         }
 
         [HttpGet, Route("api/Export/{implementationGuideId}/ValueSet"), SecurableAction()]
@@ -304,7 +319,7 @@ namespace Trifolia.Web.Controllers.API
             byte[] data = ASCIIEncoding.UTF8.GetBytes(schematronResult);
             string fileName = string.Format("{0}.sch", ig.GetDisplayName(true));
 
-            return GetExportResponse(fileName, data);
+            return GetExportResponse(fileName, XML_MIME_TYPE, data);
         }
 
         #endregion
@@ -427,7 +442,7 @@ namespace Trifolia.Web.Controllers.API
 
             byte[] data = generator.GetDocument();
 
-            return GetExportResponse(fileName, data);
+            return GetExportResponse(fileName, DOCX_MIME_TYPE, data);
         }
 
         #endregion
@@ -485,7 +500,7 @@ namespace Trifolia.Web.Controllers.API
                     string packageFileName = string.Format("{0}_green.zip", ig.GetDisplayName(true));
                     byte[] data = ms.ToArray();
 
-                    return GetExportResponse(packageFileName, data);
+                    return GetExportResponse(packageFileName, ZIP_MIME_TYPE, data);
                 }
             }
         }
@@ -514,7 +529,7 @@ namespace Trifolia.Web.Controllers.API
             return VocabularyOutputType.Default;
         }
 
-        private HttpResponseMessage GetExportResponse(string fileName, byte[] data) 
+        private HttpResponseMessage GetExportResponse(string fileName, string contentType, byte[] data) 
         {
             Array.ForEach(Path.GetInvalidFileNameChars(),
                 c => fileName = fileName.Replace(c.ToString(), String.Empty));
@@ -524,9 +539,10 @@ namespace Trifolia.Web.Controllers.API
                 .Replace(",", string.Empty);
 
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new StreamContent(new MemoryStream(data));
+            response.Content = new ByteArrayContent(data);
             response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
             response.Content.Headers.ContentDisposition.FileName = fileName;
+            response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
             return response;
         }
 

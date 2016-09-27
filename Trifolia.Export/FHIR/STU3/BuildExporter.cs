@@ -17,6 +17,8 @@ namespace Trifolia.Export.FHIR.STU3
 {
     public class BuildExporter
     {
+        private const string STU3_FHIR_BUILD_PACKAGE = "Trifolia.Export.FHIR.STU3.package.zip";
+
         private IObjectRepository tdb;
         private ImplementationGuide ig;
         private ZipFile zip;
@@ -24,7 +26,7 @@ namespace Trifolia.Export.FHIR.STU3
         private Models.Control control;
         private string igName;
         private string controlFileName;
-        private List<Template> templates;
+        private IEnumerable<Template> templates;
 
         private static Regex RemoveSpecialCharactersRegex = new Regex(@"[^\u0000-\u007F]+", RegexOptions.Compiled);
 
@@ -38,12 +40,12 @@ namespace Trifolia.Export.FHIR.STU3
 
         #region Constructors
 
-        public BuildExporter(IObjectRepository tdb, int implementationGuideId)
+        public BuildExporter(IObjectRepository tdb, int implementationGuideId, IEnumerable<Template> templates = null)
         {
             this.tdb = tdb;
 
             this.ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId);
-            this.templates = this.ig.GetRecursiveTemplates(this.tdb);
+            this.templates = templates == null ? this.ig.GetRecursiveTemplates(this.tdb) : templates;
 
             this.schema = this.ig.ImplementationGuideType.GetSimpleSchema();
             this.igName = this.ig.Name.Replace(" ", "_");
@@ -58,7 +60,7 @@ namespace Trifolia.Export.FHIR.STU3
 
         #endregion
 
-        public byte[] Export()
+        public byte[] Export(bool includeVocabulary = true)
         {
             this.control = new Models.Control();
             this.control.canonicalBase = this.ig.Identifier;
@@ -66,13 +68,14 @@ namespace Trifolia.Export.FHIR.STU3
             if (!string.IsNullOrEmpty(this.control.canonicalBase) && this.control.canonicalBase.LastIndexOf("/") == this.control.canonicalBase.Length - 1)
                 this.control.canonicalBase = this.control.canonicalBase.Substring(0, this.control.canonicalBase.Length - 1);
 
-            this.zip = ZipFile.Read(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Trifolia.Export.FHIR.STU3.package.zip"));
+            this.zip = ZipFile.Read(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(STU3_FHIR_BUILD_PACKAGE));
 
-            this.AddImplementationGuide();
+            this.AddImplementationGuide(includeVocabulary);
 
             this.AddTemplates();
 
-            this.AddValueSets();
+            if (includeVocabulary)
+                this.AddValueSets();
 
             this.AddVolume1Pages();
 
@@ -90,10 +93,18 @@ namespace Trifolia.Export.FHIR.STU3
 
             this.UpdateBuildXml();
 
-            using (MemoryStream ms = new MemoryStream())
+            try
             {
-                this.zip.Save(ms);
-                return ms.ToArray();
+                string tempFileName = Path.GetTempFileName();
+                this.zip.Save(tempFileName);
+                byte[] retBytes = File.ReadAllBytes(tempFileName);
+                File.Delete(tempFileName);
+
+                return retBytes;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error saving/reading zip package for generated FHIR build", ex);
             }
         }
 
@@ -106,7 +117,7 @@ namespace Trifolia.Export.FHIR.STU3
                              where tc.ValueSet != null
                              select tc.ValueSet).Distinct();
 
-            if (valueSets.Count() > 0)
+            if (valueSets.Any())
             {
                 valueSetsContent += "<h3>Value Sets</h3>\n" +
                     "<p>This guide references the following value sets.</p>\n" +
@@ -170,7 +181,7 @@ namespace Trifolia.Export.FHIR.STU3
             var authors = this.templates.Select(y => y.Author).Distinct();
             string authorsContent = string.Empty;
 
-            if (authors.Count() > 0)
+            if (authors.Any())
             {
                 authorsContent += "<h3>Authors</h3>\n";
                 authorsContent += "<table class=\"grid\"><thead><tr><td><b>Author Name</b></td><td><b>Email</b></td></tr></thead><tbody>\n";
@@ -251,10 +262,11 @@ namespace Trifolia.Export.FHIR.STU3
             }
         }
 
-        private void AddImplementationGuide()
+        private void AddImplementationGuide(bool includeVocabulary)
         {
             ImplementationGuideExporter igExporter = new ImplementationGuideExporter(this.tdb, this.schema, "http", "test.com");
-            var fhirIg = igExporter.Convert(this.ig);
+            var fhirIg = igExporter.Convert(this.ig, includeVocabulary: includeVocabulary);
+
             var fhirIgContent = FhirSerializer.SerializeResourceToXml(fhirIg);
             string fhirIgFileName = string.Format("resources/implementationguide/ImplementationGuide_{0}.xml", ig.Id);
 

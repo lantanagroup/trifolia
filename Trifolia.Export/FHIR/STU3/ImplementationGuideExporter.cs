@@ -57,7 +57,7 @@ namespace Trifolia.Export.FHIR.STU3
             return url;
         }
 
-        public FhirImplementationGuide Convert(ImplementationGuide ig, SummaryType? summaryType = null)
+        public FhirImplementationGuide Convert(ImplementationGuide ig, SummaryType? summaryType = null, bool includeVocabulary = true)
         {
             var fhirImplementationGuide = new FhirImplementationGuide()
             {
@@ -95,22 +95,25 @@ namespace Trifolia.Export.FHIR.STU3
                                         });
                 package.Resource.AddRange(profileResources);
 
-                // Add value sets to the implementation guide
-                var valueSets = (from t in templates
-                                 join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
-                                 where tc.ValueSet != null
-                                 select tc.ValueSet).Distinct().ToList();
-                var valueSetResources = (from vs in valueSets
-                                         select new FhirImplementationGuide.ResourceComponent()
-                                         {
-                                             Example = false,
-                                             Source = new ResourceReference()
+                if (includeVocabulary)
+                {
+                    // Add value sets to the implementation guide
+                    var valueSets = (from t in templates
+                                     join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
+                                     where tc.ValueSet != null
+                                     select tc.ValueSet).Distinct().ToList();
+                    var valueSetResources = (from vs in valueSets
+                                             select new FhirImplementationGuide.ResourceComponent()
                                              {
-                                                 Reference = string.Format("ValueSet/{0}", vs.Id.ToString()),
-                                                 Display = vs.Name
-                                             }
-                                         });
-                package.Resource.AddRange(valueSetResources);
+                                                 Example = false,
+                                                 Source = new ResourceReference()
+                                                 {
+                                                     Reference = string.Format("ValueSet/{0}", vs.Id.ToString()),
+                                                     Display = vs.Name
+                                                 }
+                                             });
+                    package.Resource.AddRange(valueSetResources);
+                }
             }
 
             // Page

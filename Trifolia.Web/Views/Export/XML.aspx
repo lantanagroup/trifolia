@@ -49,9 +49,21 @@
                             <option value="DSTU">Templates DSTU</option>
                             <!-- /ko -->
                         </select>
+                        <!-- ko if: XmlType() == 'Proprietary' -->
+                        <span class="help-block">Trifolia's native XML format that includes most (if not all) of the information captured by Trifolia's implementation guide and template/profile editors.</span>
+                        <!-- /ko -->
+                        <!-- ko if: XmlType() == 'FHIR' -->
+                        <span class="help-block">Option is only available for FHIR-based implementation guides. Export is a bundle of the ImplementationGuide resource, all StructureDefinition and all ValueSet resources (if "Include Vocabulary" is specified) that are referenced by the implementation guide.</span>
+                        <!-- /ko -->
+                        <!-- ko if: XmlType() == 'FHIRBuild' -->
+                        <span class="help-block">Option is only available to FHIR-based implementation guides. The export is a ZIP package containing all the necessary files to use the FHIR IG publisher to create a FHIR implementation guide using the data (profiles, value sets, etc.) stored in Trifolia.</span>
+                        <!-- /ko -->
+                        <!-- ko if: XmlType() == 'DSTU' -->
+                        <span class="help-block">A preliminary/draft export of the templates/profiles for the implementation guide that uses the Template DSTU standard.</span>
+                        <!-- /ko -->
                     </div>
 
-                    <!-- ko if: XmlType() == 'FHIR' -->
+                    <!-- ko if: XmlType() == 'FHIR' || XmlType() == 'FHIRBuild' -->
                     <div class="form-group">
                         <label>Include Vocabulary?</label>
                         <select class="form-control" name="IncludeVocabulary">

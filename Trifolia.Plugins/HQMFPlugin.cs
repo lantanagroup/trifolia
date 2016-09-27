@@ -175,7 +175,7 @@ namespace Trifolia.Plugins
             return;
         }
 
-        public string Export(DB.IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<DB.Template> templates, bool includeVocabulary, bool returnJson = true)
+        public byte[] Export(DB.IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<DB.Template> templates, bool includeVocabulary, bool returnJson = true)
         {
             string requestScheme = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url.Scheme : null;
             string requestAuthority = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url.Authority : null;
@@ -186,10 +186,10 @@ namespace Trifolia.Plugins
                     throw new NotImplementedException();
                 case ExportFormats.Proprietary:
                     NativeExporter nativeExporter = new NativeExporter(tdb, templates, igSettings, true, categories);
-                    return nativeExporter.GenerateXMLExport();
+                    return System.Text.Encoding.UTF8.GetBytes(nativeExporter.GenerateXMLExport());
                 case ExportFormats.TemplatesDSTU:
                     DecorExporter decorExporter = new DecorExporter(templates, tdb, igSettings.ImplementationGuideId);
-                    return decorExporter.GenerateXML();
+                    return System.Text.Encoding.UTF8.GetBytes(decorExporter.GenerateXML());
                 default:
                     throw new Exception("Invalid export format for the specified implementation guide type");
             }

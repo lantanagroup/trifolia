@@ -74,7 +74,7 @@ namespace Trifolia.Shared.Plugins
 
         string ParseIdentifier(string identifier);
 
-        string Export(IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<Template> templates, bool includeVocabulary, bool returnJson = true);
+        byte[] Export(IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<Template> templates, bool includeVocabulary, bool returnJson = true);
 
         string GenerateSample(IObjectRepository tdb, Template template);
     }
