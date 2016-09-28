@@ -22,7 +22,7 @@ namespace Trifolia.Web.Controllers
                 return RedirectToAction("NewProfile", "Account");
 
             HomeModel model = new HomeModel();
-            
+
             model.DisplayInternalTechSupportPanel = CheckPoint.Instance.IsDataAdmin;
 
             // Determine the did you know tip
@@ -48,16 +48,8 @@ namespace Trifolia.Web.Controllers
                 return RedirectToAction("LoggedInIndex");
 
             LogInViewModel model = new LogInViewModel();
-            string redirectUrl = string.Format("{0}://{1}/Account/DoHL7Login",
-                Request.Url.Scheme,
-                Request.Url.Authority);
 
             model.DisplayInternalTechSupportPanel = CheckPoint.Instance.IsDataAdmin;
-
-            // Determine the HL7 login link
-            model.HL7LoginLink = string.Format(AppSettings.HL7LoginUrlFormat,
-                AppSettings.HL7ApiKey,
-                redirectUrl);
 
             // Determine the did you know tip
             var didYouKnowTips = Properties.Settings.Default.DidYouKnowItems;

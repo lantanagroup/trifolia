@@ -10,14 +10,5 @@ namespace Trifolia.Web.Models
     /// </summary>
     public class LogInViewModel : HomeModel
     {
-        #region Properties
-
-        public string HL7LoginLink
-        {
-            get;
-            set;
-        }
-
-        #endregion
     }
 }
