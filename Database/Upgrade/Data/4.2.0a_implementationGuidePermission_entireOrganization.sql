@@ -1,0 +1,1 @@
+delete from implementationguide_permission where [type] = 'EntireOrganization'
