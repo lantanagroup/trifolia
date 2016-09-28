@@ -3,8 +3,6 @@ IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'impl
 BEGIN
 	ALTER TABLE dbo.implementationguide ADD identifier varchar(255) NULL
 	
-	/* TODO: Populate implementation guide identifiers with values
-
 	update implementationguide set identifier='urn:oid:2.16.840.1.113883.10.20.15' WHERE id = 13
 	update implementationguide set identifier='urn:oid:2.16.840.1.113883.10.20.1' WHERE id = 14
 	update implementationguide set identifier='urn:oid:2.16.840.1.113883.10.20.5' WHERE id = 15
@@ -145,8 +143,4 @@ BEGIN
 	update implementationguide set identifier='urn:hl7ii:2.16.840.1.113883.3' WHERE id = 3269
 	update implementationguide set identifier='urn:hl7ii:2.16.840.1.113883.10.20.22' WHERE id = 3270
 	update implementationguide set identifier='http://cleardecisionsupport.com/fhir/StructureDefinition/' WHERE id = 3272
-	
-	ALTER TABLE dbo.implementationguide ALTER COLUMN identifier varchar(255) NOT NULL
-
-	*/
 END
