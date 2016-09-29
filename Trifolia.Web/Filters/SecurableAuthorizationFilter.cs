@@ -167,6 +167,9 @@ namespace Trifolia.Web.Filters
                 var user = CheckPoint.Instance.GetUser(tdb);
                 DateTime minDate = DateTime.Now.AddHours(-24);
 
+                if (user == null)
+                    return;
+
                 // Determine if a login audit has been recorded in the last 24 hours
                 if (tdb.AuditEntries.Count(y => y.AuditDate > minDate && y.Username == user.UserName && y.Type == "Login") == 0)
                     AuditEntryExtension.SaveAuditEntry("Login", "Success", user.UserName);

@@ -43,19 +43,16 @@ newProfileViewModel = function (redirectUrl) {
         $('#mainBody').block('Saving changes...');
 
         var data = ko.toJS(self.Model);
-        var stringData = JSON.stringify(data);
 
         $.ajax({
             url: '/Account/CompleteProfile',
             type: 'POST',
-            dataType: 'json',
-            data: stringData,
-            contentType: 'application/json; charset=utf-8',
+            data: data,
             complete: function (jqXHR, textStatus) {
                 $("#mainBody").unblock();
 
                 if (textStatus != 'success') {
-                    showError('There was an error saving your changes; please submit a support ticket');
+                    alert('There was an error saving your changes; please submit a support ticket');
                 } else {
                     var responseRedirectUrl = JSON.parse(jqXHR.responseText);
                     location.href = responseRedirectUrl;
