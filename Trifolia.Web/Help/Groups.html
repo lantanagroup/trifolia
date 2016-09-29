@@ -1,0 +1,133 @@
+﻿<html>
+	
+<head>
+	<title>Groups</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.9.2.132">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("Groups");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Groups</h1>
+				
+				<div id="topic_breadcrumb">
+					Getting Started &rsaquo;&rsaquo; <a href="Security.html">Security</a> &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="Security.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="Permissions.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="Browsing.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<p class="rvps2"><span class="rvts6">Each user can create their own groups, and can request to join any existing groups. These groups are used by implementation guide permissions to assign multiple users read/edit access to an implementation guide and its templates/profiles.</span></p>
+<p class="rvps2"><span class="rvts6">To manage groups, select the menu for your name in the top-right corner of Trifolia, and click "My Groups".</span></p>
+<p class="rvps2"><span class="rvts6">The top portion of the screen shows groups that you manage as well as groups that you are joined to.</span></p>
+<p class="rvps2"><span class="rvts6">The bottom portion of the screen shows groups that you may request to join.</span></p>
+<p class="rvps2"><span class="rvts6">If you are a manager of a group, you will have options to Edit and/or Delete the group. If you are only a member of the group, you will have options to view the group, but no options to edit the group.</span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts26">Editing a group</span></span></h2>
+<p class="rvps2"><span class="rvts6">Create a new group by clicking the "Add" button in the top-right of the "My Groups" screen.</span></p>
+<p class="rvps2"><span class="rvts6">Edit an existing group (if you are a manager of the group) by clicking the "Edit" button to the right of the group.</span></p>
+<div class="rvps2"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
+<tr valign="top">
+<td width="155" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Name</span></p>
+</td>
+<td width="891" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">The name of the group that is displayed to all users</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="155" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Description</span></p>
+</td>
+<td width="891" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">The description is shows to all users so that they know what the group represents</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="155" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Anyone can join</span></p>
+</td>
+<td width="891" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">When checked, anyone can join the group without approval, and joining the group is automatic as soon as the user clicks "Join". When not checked, an email is sent to the managers of the group to indicate which user would like to join the group. The managers are responsible for logging into Trifolia and adding the user to the group.</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="155" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Disclaimer</span></p>
+</td>
+<td width="891" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Disclaimers are shown in two places:</span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">When users request to join the group, the disclaimer is shown to the user prior to them joining. When the user clicks "Join", they are effectively agreeing to the terms of the disclaimer.</span></li>
+<li value="2" class="rvps2"><span class="rvts6">Users that are members of a group with a disclaimer are shown the group's disclaimer under the "Help" &gt; "Disclaimers" menu.</span></li>
+</ol>
+</td>
+</tr>
+<tr valign="top">
+<td width="155" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Managers</span></p>
+</td>
+<td width="891" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">The list of users that are responsible for managing the group. These users can edit the details of the group, including adding/removing other managers and members.</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="155" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Members</span></p>
+</td>
+<td width="891" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">The list of members that belong to the group. These members are granted permissions to implementation guides when the group is assigned permissions to the implementation guide.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+
