@@ -1284,7 +1284,7 @@ var templateEditViewModel = function (templateId, defaults) {
 
         var initIdentifier = ig.Identifier;
 
-        if (initIdentifier.indexOf('http://') == 0 || initIdentifier.indexf('https://') == 0) {
+        if (initIdentifier.indexOf('http://') == 0 || initIdentifier.indexOf('https://') == 0) {
             if (initIdentifier.lastIndexOf('/') != initIdentifier.length - 1) {
                 initIdentifier += '/';
             }
