@@ -45,7 +45,6 @@ namespace Trifolia.Web.Controllers.API
         public ExportController()
             : this(DBContext.Create())
         {
-
         }
 
         public ExportController(IObjectRepository tdb)
@@ -57,8 +56,32 @@ namespace Trifolia.Web.Controllers.API
 
         #region XML
 
+        [HttpPost, Route("api/Export/XML/Validate"), SecurableAction(SecurableNames.EXPORT_XML)]
+        public IEnumerable<string> ValidateXml(XMLSettingsModel model)
+        {
+            List<string> messages = new List<string>();
+            ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == model.ImplementationGuideId);
+
+            if (ig == null)
+            {
+                messages.Add("Could not find implementation guide with id " + model.ImplementationGuideId);
+                return messages;
+            }
+
+            switch (model.XmlType)
+            {
+                case XMLSettingsModel.ExportTypes.FHIRBuild:
+                    if (string.IsNullOrEmpty(ig.Identifier))
+                        messages.Add("Implementation guide does not have a base identifier/url");
+
+                    break;
+            }
+
+            return messages;
+        }
+
         [HttpGet, Route("api/Export/{implementationGuideId}/XML"), SecurableAction(SecurableNames.EXPORT_XML)]
-        public XMLModel Xml(int implementationGuideId, bool dy = false)
+        public XMLModel Xml(int implementationGuideId)
         {
             if (!CheckPoint.Instance.GrantViewImplementationGuide(implementationGuideId))
                 throw new AuthorizationException("You do not have permissions to this implementation guide.");
@@ -93,7 +116,7 @@ namespace Trifolia.Web.Controllers.API
         public Trifolia.Shared.ImportExport.Model.Trifolia ExportTrifoliaModel(XMLSettingsModel model)
         {
             if (model == null)
-                throw new ArgumentNullException("model");
+                throw new ArgumentNullException(nameof(model));
 
             if (model.ImplementationGuideId == 0)
                 throw new ArgumentNullException("model.ImplementationGuideId");
@@ -116,7 +139,7 @@ namespace Trifolia.Web.Controllers.API
             catch (Exception ex)
             {
                 Log.For(this).Error("Error creating Trifolia export", ex);
-                throw ex;
+                throw;
             }
         }
 
@@ -130,7 +153,7 @@ namespace Trifolia.Web.Controllers.API
         public HttpResponseMessage ExportXML(XMLSettingsModel model)
         {
             if (model == null)
-                throw new ArgumentNullException("model");
+                throw new ArgumentNullException(nameof(model));
 
             if (model.ImplementationGuideId == 0)
                 throw new ArgumentNullException("model.ImplementationGuideId");
@@ -182,7 +205,7 @@ namespace Trifolia.Web.Controllers.API
                 fileName = string.Format("{0}.json", ig.GetDisplayName(true));
                 contentType = JSON_MIME_TYPE;
             }
-            
+
             return GetExportResponse(fileName, contentType, export);
         }
 
@@ -414,7 +437,7 @@ namespace Trifolia.Web.Controllers.API
                 c.IncludeNotes = exportSettings.IncludeNotes;
                 c.SelectedCategories = exportSettings.SelectedCategories;
             });
-            
+
             if (exportSettings.ValueSetOid != null && exportSettings.ValueSetOid.Count > 0)
             {
                 Dictionary<string, int> valueSetMemberMaximums = new Dictionary<string, int>();
@@ -529,7 +552,7 @@ namespace Trifolia.Web.Controllers.API
             return VocabularyOutputType.Default;
         }
 
-        private HttpResponseMessage GetExportResponse(string fileName, string contentType, byte[] data) 
+        private HttpResponseMessage GetExportResponse(string fileName, string contentType, byte[] data)
         {
             Array.ForEach(Path.GetInvalidFileNameChars(),
                 c => fileName = fileName.Replace(c.ToString(), String.Empty));

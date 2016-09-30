@@ -32,10 +32,7 @@ namespace Trifolia.Export.FHIR.STU3
 
         public Models.Control Control
         {
-            get
-            {
-                return this.control;
-            }
+            get { return this.control; }
         }
 
         #region Constructors
@@ -45,7 +42,7 @@ namespace Trifolia.Export.FHIR.STU3
             this.tdb = tdb;
 
             this.ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId);
-            this.templates = templates == null ? this.ig.GetRecursiveTemplates(this.tdb) : templates;
+            this.templates = templates ?? this.ig.GetRecursiveTemplates(this.tdb);
 
             this.schema = this.ig.ImplementationGuideType.GetSimpleSchema();
             this.igName = this.ig.Name.Replace(" ", "_");
@@ -55,7 +52,6 @@ namespace Trifolia.Export.FHIR.STU3
         public BuildExporter(int implementationGuideId)
             : this(DBContext.Create(), implementationGuideId)
         {
-
         }
 
         #endregion
@@ -153,7 +149,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             if (codeSystems.Count() > 0)
             {
-                codeSystemsContent += "<h3>Code Systems</h3>\n" + 
+                codeSystemsContent += "<h3>Code Systems</h3>\n" +
                     "<p>This guide references the following code systems.</p>\n" +
                     "<table class=\"codes\"><thead><tr><td><b>Name</b></td><td><b>Definition</b></td></tr></thead><tbody>";
             }
@@ -172,7 +168,7 @@ namespace Trifolia.Export.FHIR.STU3
 
         private void AddDescriptionPage()
         {
-            string descriptionContent = this.ig.WebDescription != null ? this.ig.WebDescription : string.Empty;
+            string descriptionContent = this.ig.WebDescription ?? string.Empty;
             this.zip.AddEntry("pages/_includes/description.html", RemoveSpecialCharacters(descriptionContent));
         }
 
@@ -239,7 +235,7 @@ namespace Trifolia.Export.FHIR.STU3
             {
                 volume1Content += string.Format("<div><h{0}>{1}</h{0}>{2}</div>\n", section.Level + 2, section.Heading, section.Content);
             }
-            
+
             this.zip.AddEntry("pages/_includes/volume1.html", RemoveSpecialCharacters(volume1Content));
         }
 
@@ -298,6 +294,7 @@ namespace Trifolia.Export.FHIR.STU3
                 control.resources.Add(location, new Models.Control.ResourceReference("instance-template-sd-no-example.html", "StructureDefinition_" + template.FhirId() + ".html"));
             }
         }
+
         public static string RemoveSpecialCharacters(string str)
         {
             return RemoveSpecialCharactersRegex.Replace(str, "");

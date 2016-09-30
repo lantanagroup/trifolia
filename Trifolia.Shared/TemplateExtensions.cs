@@ -14,7 +14,6 @@ namespace Trifolia.DB
 {
     public static class TemplateExtensions
     {
-
         #region Schema
 
         public static SimpleSchema GetSchema(this Template template, SimpleSchema igSchema = null)
@@ -57,7 +56,7 @@ namespace Trifolia.DB
             else
             {
                 List<TemplateConstraint> rootConstraints = template.ChildConstraints.Where(y => y.ParentConstraintId == null).ToList();
-                rootConstraints.ForEach(y => 
+                rootConstraints.ForEach(y =>
                 {
                     // The first child in the schema is the complex type itself
                     template.ValidateTemplateConstraint(xpathNavigator, errors, templateSchema, templateSchema.Children, y);
