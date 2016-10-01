@@ -74,6 +74,7 @@
                                 <option value="6">Test Sample (bad)</option>
                                 <option value="7">Data Snapshot (JSON)</option>
                                 <option value="8">Image</option>
+                                <option value="9">FHIR Resource Instance (XML or JSON)</option>
                             </select>
                         </div>
 

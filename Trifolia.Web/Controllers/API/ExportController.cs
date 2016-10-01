@@ -1,5 +1,6 @@
 ﻿extern alias fhir_dstu1;
 extern alias fhir_dstu2;
+extern alias fhir_stu3;
 
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,9 @@ namespace Trifolia.Web.Controllers.API
         {
             List<string> messages = new List<string>();
             ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == model.ImplementationGuideId);
+            var templates = (from t in this.tdb.Templates
+                             join tid in model.TemplateIds on t.Id equals tid
+                             select t);
 
             if (ig == null)
             {
@@ -71,8 +75,79 @@ namespace Trifolia.Web.Controllers.API
             switch (model.XmlType)
             {
                 case XMLSettingsModel.ExportTypes.FHIRBuild:
+                    // Check that the implementation guide has a base identifier/url
                     if (string.IsNullOrEmpty(ig.Identifier))
-                        messages.Add("Implementation guide does not have a base identifier/url");
+                        messages.Add("Implementation guide does not have a base identifier/url.");
+
+                    // Check that each FHIR resource instance is valid and has the required fields
+                    foreach (var file in ig.Files)
+                    {
+                        var fileData = file.GetLatestData();
+                        fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
+
+                        try
+                        {
+                            string fileContent = System.Text.Encoding.UTF8.GetString(fileData.Data);
+
+                            if (file.MimeType == "application/xml" || file.MimeType == "text/xml")
+                                resource = fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromXml(fileContent);
+                            else if (file.MimeType == "application/json")
+                                resource = fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromJson(fileContent);
+                        }
+                        catch
+                        {
+                        }
+
+                        if (resource == null)
+                        {
+                            string msg = string.Format("FHIR resource instance \"" + file.FileName + "\" cannot be parsed as a valid XML or JSON resource.");
+                            messages.Add(msg);
+                        }
+
+                        if (string.IsNullOrEmpty(resource.Id))
+                        {
+                            string msg = string.Format("FHIR resource instance \"" + file.FileName + "\" does not have an \"id\" property.");
+                            messages.Add(msg);
+                        }
+                    }
+
+                    // Validate that each of the samples associated with profiles has the required fields
+                    var templateExamples = (from t in templates
+                                        join ts in this.tdb.TemplateSamples on t.Id equals ts.TemplateId
+                                        select new { Template = t, Sample = ts });
+
+                    foreach (var templateExample in templateExamples)
+                    {
+                        fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
+
+                        try
+                        {
+                            resource = fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromXml(templateExample.Sample.XmlSample);
+                        }
+                        catch
+                        {
+                        }
+
+                        try
+                        {
+                            if (resource == null)
+                                resource = fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromJson(templateExample.Sample.XmlSample);
+                        }
+                        catch
+                        {
+                        }
+
+                        if (resource == null)
+                        {
+                            string msg = string.Format("Profile sample \"" + templateExample.Sample.Name + "\" cannot be parsed as a valid XML or JSON resource.");
+                            messages.Add(msg);
+                        }
+                        else if (string.IsNullOrEmpty(resource.Id))
+                        {
+                            string msg = string.Format("Profile sample \"" + templateExample.Sample.Name + "\" does not have an \"id\" property.");
+                            messages.Add(msg);
+                        }
+                    }
 
                     break;
             }

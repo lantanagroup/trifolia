@@ -18,6 +18,20 @@
             <h2>Export XML/JSON</h2>
             <h3><a data-bind="attr: { href: '/IGManagement/View/' + ImplementationGuideId() }, text: Name"></a></h3>
 
+            <!-- ko if: Messages().length == 1 -->
+            <div class="alert alert-warning">
+                <span data-bind="text: Messages()[0]"></span><br />
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: Messages().length > 1 -->
+            <div class="alert alert-warning">
+                <ul data-bind="foreach: Messages">
+                    <li data-bind="text: $data"></li>
+                </ul>
+            </div>
+            <!-- /ko -->
+
             <input type="hidden" name="ImplementationGuideId" data-bind="value: ImplementationGuideId" />
 
             <!-- Nav tabs -->
@@ -66,7 +80,7 @@
                     <!-- ko if: XmlType() == 'FHIR' || XmlType() == 'FHIRBuild' -->
                     <div class="form-group">
                         <label>Include Vocabulary?</label>
-                        <select class="form-control" name="IncludeVocabulary">
+                        <select class="form-control" name="IncludeVocabulary" data-bind="value: IncludeVocabulary">
                             <option value="false" selected="selected">No</option>
                             <option value="true">Yes</option>
                         </select>
@@ -120,7 +134,7 @@
             </div>
     
             <div class="btn-group">
-                <button class="btn btn-primary" type="button" id="ExportButton" data-bind="click: Export">Export</button>
+                <button class="btn btn-primary" type="button" id="ExportButton" data-bind="click: Export, enable: EnableExportButton">Export</button>
                 <button class="btn btn-default" type="button" id="CancelButton" data-bind="click: Cancel">Cancel</button>
             </div>
         </div>

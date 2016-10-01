@@ -13,6 +13,7 @@ using Trifolia.Logging;
 using FhirImplementationGuide = fhir_stu3.Hl7.Fhir.Model.ImplementationGuide;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using SummaryType = fhir_stu3.Hl7.Fhir.Rest.SummaryType;
+using fhir_stu3.Hl7.Fhir.Serialization;
 
 namespace Trifolia.Export.FHIR.STU3
 {
@@ -57,6 +58,23 @@ namespace Trifolia.Export.FHIR.STU3
             return url;
         }
 
+        private static string GetResourceName(Resource resource, string defaultName = "")
+        {
+            string name = !string.IsNullOrEmpty(defaultName) ? defaultName.Replace(" ", "_") : "";
+
+            switch (resource.ResourceType)
+            {
+                case ResourceType.Organization:
+                    return ((fhir_stu3.Hl7.Fhir.Model.Organization)resource).Name;
+                case ResourceType.Conformance:
+                    return ((fhir_stu3.Hl7.Fhir.Model.Conformance)resource).Name;
+                case ResourceType.SearchParameter:
+                    return ((fhir_stu3.Hl7.Fhir.Model.SearchParameter)resource).Name;
+            }
+
+            return name;
+        }
+
         public FhirImplementationGuide Convert(ImplementationGuide ig, SummaryType? summaryType = null, bool includeVocabulary = true)
         {
             var fhirImplementationGuide = new FhirImplementationGuide()
@@ -74,13 +92,13 @@ namespace Trifolia.Export.FHIR.STU3
             else
                 fhirImplementationGuide.Status = ConformanceResourceStatus.Draft;
 
-            // Package
-            FhirImplementationGuide.PackageComponent package = new FhirImplementationGuide.PackageComponent();
-            package.Name = "Profiles in this Implementation Guide";
-            fhirImplementationGuide.Package.Add(package);
-
             if (summaryType == null || summaryType == SummaryType.Data)
             {
+                // Package
+                FhirImplementationGuide.PackageComponent package = new FhirImplementationGuide.PackageComponent();
+                package.Name = "Profiles in this Implementation Guide";
+                fhirImplementationGuide.Package.Add(package);
+
                 // Add profiles to the implementation guide
                 List<Template> templates = ig.GetRecursiveTemplates(this.tdb, inferred: false);
                 var profileResources = (from t in templates
@@ -114,13 +132,84 @@ namespace Trifolia.Export.FHIR.STU3
                                              });
                     package.Resource.AddRange(valueSetResources);
                 }
-            }
 
-            // Page
-            fhirImplementationGuide.Page = new FhirImplementationGuide.PageComponent();
-            fhirImplementationGuide.Page.Kind = FhirImplementationGuide.GuidePageKind.Page;
-            fhirImplementationGuide.Page.Title = ig.GetDisplayName();
-            fhirImplementationGuide.Page.Source = string.Format("{0}://{1}/IG/View/{2}", this.scheme, this.authority, ig.Id);
+                // Add each of the individual FHIR resources added as files to the IG
+                foreach (var file in ig.Files)
+                {
+                    var fileData = file.GetLatestData();
+                    Resource resource = null;
+
+                    try
+                    {
+                        string fileContent = System.Text.Encoding.UTF8.GetString(fileData.Data);
+
+                        if (file.MimeType == "application/xml" || file.MimeType == "text/xml")
+                            resource = FhirParser.ParseResourceFromXml(fileContent);
+                        else if (file.MimeType == "application/json")
+                            resource = FhirParser.ParseResourceFromJson(fileContent);
+                    }
+                    catch
+                    {
+                    }
+
+                    if (resource == null || string.IsNullOrEmpty(resource.Id))
+                        continue;
+
+                    var packageFile = new FhirImplementationGuide.ResourceComponent()
+                    {
+                        Example = false,
+                        Source = new ResourceReference()
+                        {
+                            Reference = string.Format("{0}/{1}", resource.ResourceType, resource.Id),
+                            Display = GetResourceName(resource, file.FileName)
+                        }
+                    };
+
+                    package.Resource.Add(packageFile);
+                }
+
+                // Add each of the samples generated for the template/profile
+                var templateExamples = (from t in templates
+                                        join ts in this.tdb.TemplateSamples on t.Id equals ts.TemplateId
+                                        select new { Template = t, Sample = ts });
+
+                foreach (var templateExample in templateExamples)
+                {
+                    Resource resource = null;
+
+                    try
+                    {
+                        resource = FhirParser.ParseResourceFromXml(templateExample.Sample.XmlSample);
+                    }
+                    catch
+                    {
+                    }
+
+                    try
+                    {
+                        if (resource == null)
+                            resource = FhirParser.ParseResourceFromJson(templateExample.Sample.XmlSample);
+                    }
+                    catch
+                    {
+                    }
+
+                    if (resource == null || string.IsNullOrEmpty(resource.Id))
+                        continue;
+
+                    var packageExample = new FhirImplementationGuide.ResourceComponent()
+                    {
+                        Example = true,
+                        Source = new ResourceReference()
+                        {
+                            Reference = string.Format("{0}/{1}", resource.ResourceType, resource.Id),
+                            Display = GetResourceName(resource, templateExample.Sample.Name)
+                        }
+                    };
+
+                    package.Resource.Add(packageExample);
+                }
+            }
 
             return fhirImplementationGuide;
         }

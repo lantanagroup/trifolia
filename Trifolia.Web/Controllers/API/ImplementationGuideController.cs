@@ -392,6 +392,31 @@ namespace Trifolia.Web.Controllers.API
 
             return primitives;
         }
+        
+        private static string GetIGFileContentTypeDisplay(string contentType)
+        {
+            switch (contentType)
+            {
+                case "ImplementationGuide":
+                    return "Implementation Guide Document";
+                case "Schematron":
+                    return "Schematron";
+                case "SchematronHelper":
+                    return "Schematron Helper";
+                case "Vocabulary":
+                    return "Vocabulary";
+                case "DeliverableSample":
+                    return "Sample (deliverable)";
+                case "GoodSample":
+                    return "Test Sample (good)";
+                case "BadSample":
+                    return "Test Sample (bad)";
+                case "FHIRResourceInstance":
+                    return "FHIR Resource Instance (XML or JSON)";
+                default:
+                    return contentType;
+            }
+        }
 
         [HttpGet, Route("api/ImplementationGuide/{implementationGuideId}/File"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_FILE_VIEW)]
         public IEnumerable<ImplementationGuideFileModel> GetImplementationGuideFiles(int implementationGuideId)
@@ -415,36 +440,9 @@ namespace Trifolia.Web.Controllers.API
                     VersionId = latestVersion.Id,
                     Date = latestVersion.UpdatedDate,
                     Description = currentFile.Description,
-                    Name = currentFile.FileName
+                    Name = currentFile.FileName,
+                    Type = GetIGFileContentTypeDisplay(currentFile.ContentType)
                 };
-
-                switch (currentFile.ContentType)
-                {
-                    case "ImplementationGuide":
-                        newItem.Type = "Implementation Guide Document";
-                        break;
-                    case "Schematron":
-                        newItem.Type = "Schematron";
-                        break;
-                    case "SchematronHelper":
-                        newItem.Type = "Schematron Helper";
-                        break;
-                    case "Vocabulary":
-                        newItem.Type = "Vocabulary";
-                        break;
-                    case "DeliverableSample":
-                        newItem.Type = "Sample (deliverable)";
-                        break;
-                    case "GoodSample":
-                        newItem.Type = "Test Sample (good)";
-                        break;
-                    case "BadSample":
-                        newItem.Type = "Test Sample (bad)";
-                        break;
-                    default:
-                        newItem.Type = currentFile.ContentType;
-                        break;
-                }
 
                 retFiles.Add(newItem);
             }

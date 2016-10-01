@@ -147,3 +147,25 @@ function findTrifoliaEvent(eventName) {
 
     return document.trifoliaEvents[eventName];
 }
+
+function joinUrl() {
+    var joined = '';
+
+    for (var i = 0; i < arguments.length; i++) {
+        var arg = arguments[i].toString();
+
+        // All but first arg should have a beginning /
+        while (i != 0 && arg.indexOf('/') != 0) {
+            arg = '/' + arg;
+        }
+
+        // No args should have an ending /
+        while (arg.lastIndexOf('/') == arg.length - 1) {
+            arg = arg.substring(0, arg.length - 1);
+        }
+
+        joined += arg;
+    }
+
+    return joined;
+}

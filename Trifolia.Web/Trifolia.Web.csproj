@@ -348,6 +348,7 @@
     <Compile Include="Formatters\FHIR\STU3\GeneralFHIRMediaTypeFormatter.cs" />
     <Compile Include="Formatters\JavaScriptFormatter.cs" />
     <Compile Include="Formatters\TrifoliaXmlFormatter.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\Account\HL7LoginModel.cs" />
     <Compile Include="Models\Account\WhoAmIModel.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />

@@ -31,13 +31,13 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <div class="tab-pane active" id="general">
-                    <div class="form-group" data-bind="css: { 'has-error': !Validation().Name.isValid() }">
+                    <div class="form-group has-feedback" data-bind="css: { 'has-error': !Validation().Name.isValid() }">
                         <label>Name</label>
                         <input type="text" class="form-control" data-bind="value: Name, disable: PreviousVersionId" />
                         <span class="help-block" data-bind="validationMessage: Name"></span>
                     </div>
 
-                    <div class="form-group" data-bind="css: { 'has-error': !Validation().TypeId.isValid() }">
+                    <div class="form-group has-feedback" data-bind="css: { 'has-error': !Validation().TypeId.isValid() }">
                         <label>Type</label>
                         <select class="form-control" data-bind="value: TypeId, options: $parent.ImplementationGuideTypes, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select', disable: Id"></select>
                         <span class="help-block" data-bind="validationMessage: TypeId"></span>
@@ -49,7 +49,7 @@
                         <span class="help-block">The organization specified here identifies (for example) a standards body that the implementation guide will be developed under.</span>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback" data-bind="css: { 'has-error': !Validation().Identifier.isValid() }">
                         <label>Identifier/Base URL</label>
                         <input type="text" class="form-control" data-bind="value: Identifier, disable: PreviousVersionId" />
                     </div>

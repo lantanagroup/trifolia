@@ -10,6 +10,8 @@
     self.Primitives = ko.observableArray([]);
     self.NewPublishDate = ko.observable();
     self.SearchTemplateQuery = ko.observable();
+    self.FhirXml = ko.observable();
+    self.FhirJson = ko.observable();
 
     var initializeAuditTrail = function () {
         $.ajax({
@@ -17,6 +19,47 @@
             cache: false,
             success: function (auditTrail) {
                 self.AuditTrail(auditTrail);
+            }
+        });
+    };
+
+    var initializeFhir = function () {
+        var foundFhirIgType = _.find(trifoliaConfig.FhirIgTypes, function (fhirIgType) {
+            return fhirIgType.Name == self.Model().Type();
+        });
+
+        if (!foundFhirIgType) {
+            return;
+        }
+
+        self.FhirXml('Loading...');
+        self.FhirJson('Loading...');
+
+        var fhirIgUrl = joinUrl(foundFhirIgType.BaseUrl, 'ImplementationGuide', implementationGuideId);
+
+        $.ajax({
+            url: fhirIgUrl,
+            dataType: 'text',
+            headers: {
+                'Accept': 'application/xml'
+            },
+            success: function (results) {
+                var prettyXml = vkbeautify.xml(results)
+                self.FhirXml(prettyXml);
+            },
+            error: function (errObj, status, text) {
+                self.FhirXml('Error occurred while getting FHIR XML: ' + text);
+            }
+        });
+
+        $.ajax({
+            url: fhirIgUrl,
+            success: function (results) {
+                var prettyJson = JSON.stringify(results, null, '\t');
+                self.FhirJson(prettyJson);
+            },
+            error: function (errObj, status, text) {
+                self.FhirJson('Error occurred while getting FHIR JSON: ' + text);
             }
         });
     };
@@ -36,6 +79,8 @@
             success: function (model) {
                 self.Model(new ViewImplementationGuideModel(model));
                 fireTrifoliaEvent('implementationGuideLoaded');
+
+                initializeFhir();
 
                 if (model.ViewAuditTrail) {
                     initializeAuditTrail();

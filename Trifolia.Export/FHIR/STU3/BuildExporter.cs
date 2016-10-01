@@ -83,6 +83,10 @@ namespace Trifolia.Export.FHIR.STU3
 
             this.AddValueSetsPage();
 
+            this.AddResourceInstances();
+
+            this.AddExamples();
+
             this.AddControl();
 
             this.AddBatch();
@@ -101,6 +105,84 @@ namespace Trifolia.Export.FHIR.STU3
             catch (Exception ex)
             {
                 throw new Exception("Error saving/reading zip package for generated FHIR build", ex);
+            }
+        }
+
+        private void AddResourceInstances()
+        {
+
+            // Check that each FHIR resource instance is valid and has the required fields
+            foreach (var file in ig.Files)
+            {
+                var fileData = file.GetLatestData();
+                fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
+                string fileExtension = "";
+
+                try
+                {
+                    string fileContent = System.Text.Encoding.UTF8.GetString(fileData.Data);
+
+                    if (file.MimeType == "application/xml" || file.MimeType == "text/xml")
+                    {
+                        resource = FhirParser.ParseResourceFromXml(fileContent);
+                        fileExtension = "xml";
+                    }
+                    else if (file.MimeType == "application/json")
+                    {
+                        resource = FhirParser.ParseResourceFromJson(fileContent);
+                        fileExtension = "json";
+                    }
+                }
+                catch
+                {
+                }
+
+                if (resource == null || string.IsNullOrEmpty(resource.Id))
+                    continue;
+
+                string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString().ToLower(), resource.Id, fileExtension);
+                this.zip.AddEntry(fileName, fileData.Data);
+            }
+        }
+
+        private void AddExamples()
+        {
+            // Validate that each of the samples associated with profiles has the required fields
+            var templateExamples = (from t in this.templates
+                                    join ts in this.tdb.TemplateSamples on t.Id equals ts.TemplateId
+                                    select new { Template = t, Sample = ts });
+
+            foreach (var templateExample in templateExamples)
+            {
+                fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
+                string fileExtension = "";
+
+                try
+                {
+                    resource = FhirParser.ParseResourceFromXml(templateExample.Sample.XmlSample);
+                    fileExtension = "xml";
+                }
+                catch
+                {
+                }
+
+                try
+                {
+                    if (resource == null)
+                    {
+                        resource = FhirParser.ParseResourceFromJson(templateExample.Sample.XmlSample);
+                        fileExtension = "json";
+                    }
+                }
+                catch
+                {
+                }
+
+                if (resource == null || string.IsNullOrEmpty(resource.Id))
+                    continue;
+
+                string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString().ToLower(), resource.Id, fileExtension);
+                this.zip.AddEntry(fileName, templateExample.Sample.XmlSample);
             }
         }
 
