@@ -41,7 +41,7 @@
     <!-- Export Menu -->
     <add route="/IGManagement/List/ExportMSWord" helpLocation="Trifolia.html?ExportMSWord.html" windowType="NewWindow" />
     <add route="/Export/MSWord/*" helpLocation="Trifolia.html?ExportMSWord.html" windowType="NewWindow" />
-    <add route="/IGManagement/List/ExportXML" helpLocation="Trifolia.html?ExportXML.html" windowType="NewWindow" />
+    <add route="/IGManagement/List/ExportXML" helpLocation="Trifolia.html?XMLJSON.html" windowType="NewWindow" />
     <add route="/Export/Xml/*" helpLocation="Trifolia.html?ExportXML.html" windowType="NewWindow" />
     <add route="/IGManagement/List/ExportSchematron" helpLocation="Trifolia.html?ExportSchematron.html" windowType="NewWindow" />
     <add route="/Export/Schematron/*" helpLocation="Trifolia.html?ExportSchematron.html" windowType="NewWindow" />
@@ -53,10 +53,12 @@
     <add route="/Report/TemplateReview" helpLocation="Trifolia.html?Reports.html" windowType="NewWindow" />
     <add route="/Report/TemplateValidation" helpLocation="Trifolia.html?Reports.html" windowType="NewWindow" />
     <add route="/Report/Organizations" helpLocation="Trifolia.html?Reports.html" windowType="NewWindow" />
+	
+	<add route="/Import" helpLocation="Trifolia.html?Importing.html" windowType="NewWindow" />
 
     <!-- Admin > Import 
-    <add route="/TerminologyManagement/Import/Excel" helpLocation="ImportingValueSets.html"/>
-    <add route="/TerminologyManagement/Import/External" helpLocation="ImportingValueSets.html"/>
+    <add route="/TerminologyManagement/Import/Excel" helpLocation="Trifolia.html?AdminImporting" windowType="NewWindow" />
+    <add route="/TerminologyManagement/Import/External" helpLocation="Trifolia.html?AdminImporting" windowType="NewWindow" />
     -->
 
     <!-- Admin > IG Types 

@@ -1,0 +1,135 @@
+﻿<html>
+	
+<head>
+	<title>Building a FHIR IG</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Professional Edition 4.9.2.132">
+	<meta name="keywords" content="">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "Trifolia.html?" + sTopicUrl;
+			}
+			else
+			{
+				var bTocSelected = false;
+				(function waitForTOC()
+				{
+					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+					{
+						top.FrameTOC.SelectTocItem("BuildingaFHIRIG");
+						bTocSelected = true;
+					}
+					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
+				})();
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Building a FHIR IG</h1>
+				
+				<div id="topic_breadcrumb">
+					Tutorials &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="Tutorials.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="Tutorials.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="GettingStarted.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<p class="rvps2"><span class="rvts6">This tutorial will provide an overview of the workflow/process used to design/develop a FHIR implementation guide using Trifolia.</span></p>
+<p class="rvps2"><span class="rvts6">The basic steps are as follows, with details below:</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><a class="rvts11" href="BuildingaFHIRIG.html#create_ig">Create an implementation guide</a><span class="rvts6">.</span></li>
+<li value="2" class="rvps2"><a class="rvts11" href="BuildingaFHIRIG.html#create_profiles">Create profiles for the implementation guide. </a></li>
+<li value="3" class="rvps2"><a class="rvts11" href="BuildingaFHIRIG.html#ig_files">Upload "FHIR resource instances" to the implementation guide.</a></li>
+<li value="4" class="rvps2"><a class="rvts11" href="BuildingaFHIRIG.html#export">Export the implementation guide as a FHIR build package.</a></li>
+</ol>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h2 class="rvps5"><a name="create_ig"></a>
+<span class="rvts0"><span class="rvts26">Create an implementation guide</span></span></h2>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="AuthorImplementationGuides.html">Authoring &gt; Implementation Guides</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Make sure the "type" of implementation guide is set to a FHIR implementation guide type.</span></li>
+<li class="rvps2"><span class="rvts6">Create a base identifier for the implementation guide that is a URL (ex: https://trifolia.lantanagroup.com/my_base_id"). This base url will be used by the FHIR IG publisher later, and requires that all profiles within the implementation guide have a matching base identifier.</span></li>
+<li class="rvps2"><span class="rvts6">Provide a description for the implementation guide. This description is shown on the front page of the implementation guide (if it is specified) after the IG publisher has been run on the artifacts produced by Trifolia.</span></li>
+<li class="rvps2"><span class="rvts6">Specify any additional guidance that will not be inferred by the profiles of the implementation guide in the "Volume 1" tab, by adding sections to "Volume 1". Each of the sections defined in the implementation guide's "Volume 1" tab will be displayed on the "Overview" tab of the implementation guide's front-page.</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h2 class="rvps5"><a name="create_profiles"></a>
+<span class="rvts0"><span class="rvts26">Create profiles for the implementation guide</span></span></h2>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="TemplateEditor.html">Authoring &gt; Templates/Profiles &gt; Editor</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Each profile must have the same base url as the implementation guide in the "long id" field.</span></li>
+<li class="rvps2"><span class="rvts6">Each profile must have a "short id" that matches the outer-most leaf level of the long id (everything to the right of the last / in the long id).</span></li>
+<li class="rvps2"><span class="rvts6">Define constraints for each profile in the "Constraints" tab of the editor, modifying the cardinality, value set bindings, etc. as appropriate.</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts16">Defining and using extensions</span></span></h3>
+<p class="rvps2"><span class="rvts6">In the event that an extension is necessary, you must produce a profile that describes how the extension is intended to be used, and reference that extension as a "Contained template/profile" on the "extension" element of another profile.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h2 class="rvps5"><a name="ig_files"></a>
+<span class="rvts0"><span class="rvts26">Upload "FHIR resource instances" to the implementation guide</span></span></h2>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="ImplementationGuideFiles.html">Authoring &gt; ImplementationGuides &gt; Files</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">In certain cases, (such as "Conformance", "SearchParameter" and "Questionnaire") instances of resources need to be associated with the implementation guide rather than defining profiles. Add these "FHIR resource instances" to the implementation guide's files (as type "FHIR Resource Instance") so that they are included in the fhir build package when exported from Trifolia.</span></p>
+<h2 class="rvps5"><a name="export"></a>
+<span class="rvts0"><span class="rvts26">Export the implementation guide as a FHIR build package</span></span></h2>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="XMLJSON.html">Exporting &gt; XML/JSON</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">Export the implementation guide as a FHIR build package. The result is a zip package that can be run against the FHIR ig publisher. The zip package includes a copy of the FHIR IG publisher, but may be out-dated depending on the status of the core FHIR standard; you may optionally update the FHIR IG publisher by downling the latest version from </span><a class="rvts11" href="http://hl7-fhir.github.io/org.hl7.fhir.igpublisher.jar" target="_blank">this url</a><span class="rvts6"> and replacing the </span><span class="rvts25">org.hl7.fhir.igpublisher.jar</span><span class="rvts6"> file in the directory you exported the ZIP.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">Run the FHIR IG publisher by:</span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">Execute the "RunIGPublisher.bat" batch script</span></li>
+<li value="2" class="rvps2"><span class="rvts6">Select the XXXX.json file exported from the ZIP</span></li>
+<li value="3" class="rvps2"><span class="rvts6">Press "execute"</span></li>
+</ol>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">Note: The FHIR IG publisher is still relatively new, and being actively developed. If the latest version of the FHIR IG publisher produces errors, you should seek guidance from </span><a class="rvts11" href="http://chat.fhir.org" target="_blank">http://chat.fhir.org</a><span class="rvts6"> in the #Implementers channel.</span></p>
+<p></p>
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+
