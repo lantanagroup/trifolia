@@ -191,7 +191,7 @@ namespace Trifolia.Web.Controllers.API
         public Trifolia.Shared.ImportExport.Model.Trifolia ExportTrifoliaModel(XMLSettingsModel model)
         {
             if (model == null)
-                throw new ArgumentNullException(nameof(model));
+                throw new ArgumentNullException("model");
 
             if (model.ImplementationGuideId == 0)
                 throw new ArgumentNullException("model.ImplementationGuideId");
@@ -228,7 +228,7 @@ namespace Trifolia.Web.Controllers.API
         public HttpResponseMessage ExportXML(XMLSettingsModel model)
         {
             if (model == null)
-                throw new ArgumentNullException(nameof(model));
+                throw new ArgumentNullException("model");
 
             if (model.ImplementationGuideId == 0)
                 throw new ArgumentNullException("model.ImplementationGuideId");
