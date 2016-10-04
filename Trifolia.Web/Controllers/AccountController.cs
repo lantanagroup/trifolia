@@ -253,14 +253,15 @@ namespace Trifolia.Web.Controllers
 
             var r = this.authClient.PrepareRequestUserAuthorization(state);
 
+            Log.For(this).Trace("User has not been authorized, redirecting user to identity provider.");
+
             // If the user was trying to go somewhere specific, add the location/route 
             // as a cookie to the authorization request so that we know where they were trying to
             // go after authorization is complete
             if (!string.IsNullOrEmpty(this.Request.Params[RETURN_URL_PARAM_NAME]))
                 r.Cookies.Add(new HttpCookie(AUTH_RETURN_URL_COOKIE_NAME, this.Request.Params[RETURN_URL_PARAM_NAME]));
-
-            // This wrapper is needed due to some security changes in MVC 3
-            return new WrapperHttpResponseMessageResult(r);
+            
+            return r.AsActionResultMvc5();
         }
 
         private static string RemoveQueryStringFromUri(string uri)
@@ -376,38 +377,6 @@ namespace Trifolia.Web.Controllers
             }
 
             return RedirectToAction("Index", "Home");
-        }
-    }
-    public class WrapperHttpResponseMessageResult : ActionResult
-    {
-        private readonly OutgoingWebResponse _response;
-
-        public WrapperHttpResponseMessageResult(OutgoingWebResponse response)
-        {
-            _response = response;
-        }
-
-        public override void ExecuteResult(ControllerContext context)
-        {
-            HttpResponseBase responseContext = context.RequestContext.HttpContext.Response;
-            responseContext.StatusCode = (int)_response.Status;
-            responseContext.StatusDescription = _response.Status.ToString();
-
-            foreach (string key in _response.Headers.Keys)
-            {
-                responseContext.AddHeader(key, _response.Headers[key]);
-            }
-
-            foreach (string cookieName in _response.Cookies.AllKeys)
-            {
-                responseContext.Cookies.Add(_response.Cookies[cookieName]);
-            }
-
-            if (_response.Body != null)
-            {
-                StreamWriter escritor = new StreamWriter(responseContext.OutputStream);
-                escritor.WriteAsync(_response.Body).Wait();
-            }
         }
     }
 }
