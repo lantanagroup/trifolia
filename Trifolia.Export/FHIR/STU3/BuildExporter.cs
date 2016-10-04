@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Trifolia.Shared;
 using fhir_stu3.Hl7.Fhir.Serialization;
 using System.Text.RegularExpressions;
+using Trifolia.Config;
 
 namespace Trifolia.Export.FHIR.STU3
 {
@@ -56,6 +57,14 @@ namespace Trifolia.Export.FHIR.STU3
 
         #endregion
 
+        private ZipFile GetPackage()
+        {
+            if (!string.IsNullOrEmpty(AppSettings.FhirSTU3Package) && File.Exists(AppSettings.FhirSTU3Package))
+                return ZipFile.Read(AppSettings.FhirSTU3Package);
+
+            return ZipFile.Read(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(STU3_FHIR_BUILD_PACKAGE));
+        }
+
         public byte[] Export(bool includeVocabulary = true)
         {
             this.control = new Models.Control();
@@ -64,7 +73,7 @@ namespace Trifolia.Export.FHIR.STU3
             if (!string.IsNullOrEmpty(this.control.canonicalBase) && this.control.canonicalBase.LastIndexOf("/") == this.control.canonicalBase.Length - 1)
                 this.control.canonicalBase = this.control.canonicalBase.Substring(0, this.control.canonicalBase.Length - 1);
 
-            this.zip = ZipFile.Read(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(STU3_FHIR_BUILD_PACKAGE));
+            this.zip = GetPackage();
 
             this.AddImplementationGuide(includeVocabulary);
 
@@ -73,7 +82,7 @@ namespace Trifolia.Export.FHIR.STU3
             if (includeVocabulary)
                 this.AddValueSets();
 
-            this.AddVolume1Pages();
+            this.AddOverviewPage();
 
             this.AddAuthorPage();
 
@@ -82,6 +91,8 @@ namespace Trifolia.Export.FHIR.STU3
             this.AddCodeSystemsPage();
 
             this.AddValueSetsPage();
+
+            this.AddExtensionsPage();
 
             this.AddResourceInstances();
 
@@ -197,18 +208,21 @@ namespace Trifolia.Export.FHIR.STU3
 
             if (valueSets.Any())
             {
-                valueSetsContent += "<h3>Value Sets</h3>\n" +
-                    "<p>This guide references the following value sets.</p>\n" +
+                valueSetsContent += "<p>This guide references the following value sets.</p>\n" +
                     "<table class=\"codes\"><thead><tr><td><b>Name</b></td><td><b>Definition</b></td></tr></thead><tbody>";
+            }
+            else
+            {
+                valueSetsContent += "<p>This guide does not reference any value sets.</p>";
             }
 
             foreach (var valueSet in valueSets)
             {
                 string definition = !string.IsNullOrEmpty(valueSet.Description) ? string.Format("<u>{0}</u><br/>\n{1}", valueSet.Oid, valueSet.Description) : valueSet.Oid;
-                valueSetsContent += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", valueSet.Name, definition);
+                valueSetsContent += string.Format("<tr><td><a href=\"ValueSet-{0}.html\">{1}</a></td><td>{2}</td></tr>", valueSet.GetFhirId(), valueSet.Name, definition);
             }
 
-            if (!string.IsNullOrEmpty(valueSetsContent))
+            if (valueSets.Any())
                 valueSetsContent += "</tbody></table>";
 
             this.zip.AddEntry("pages/_includes/valuesets.html", RemoveSpecialCharacters(valueSetsContent));
@@ -217,7 +231,6 @@ namespace Trifolia.Export.FHIR.STU3
         private void AddCodeSystemsPage()
         {
             string codeSystemsContent = string.Empty;
-
             var codeSystems = (from t in this.templates
                                join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
                                where tc.CodeSystem != null
@@ -229,11 +242,14 @@ namespace Trifolia.Export.FHIR.STU3
                                 select vsm.CodeSystem)
                 .Distinct();
 
-            if (codeSystems.Count() > 0)
+            if (codeSystems.Any())
             {
-                codeSystemsContent += "<h3>Code Systems</h3>\n" +
-                    "<p>This guide references the following code systems.</p>\n" +
+                codeSystemsContent += "<p>This guide references the following code systems.</p>\n" +
                     "<table class=\"codes\"><thead><tr><td><b>Name</b></td><td><b>Definition</b></td></tr></thead><tbody>";
+            }
+            else
+            {
+                codeSystemsContent += "<p>This guide does not reference any code systems.</p>";
             }
 
             foreach (var codeSystem in codeSystems)
@@ -242,10 +258,38 @@ namespace Trifolia.Export.FHIR.STU3
                 codeSystemsContent += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", codeSystem.Name, definition);
             }
 
-            if (!string.IsNullOrEmpty(codeSystemsContent))
+            if (codeSystems.Any())
                 codeSystemsContent += "</tbody></table>";
 
             this.zip.AddEntry("pages/_includes/codesystems.html", RemoveSpecialCharacters(codeSystemsContent));
+        }
+        
+        private void AddExtensionsPage()
+        {
+            string extensionsContent = string.Empty;
+            var extensionTemplates = (from t in this.templates
+                                      where t.TemplateType.RootContextType == "Extension"
+                                      select t);
+
+            if (extensionTemplates.Any())
+            {
+                extensionsContent += "<p>This guide references the following extensions.</p>\n" +
+                    "<table class=\"codes\"><thead><tr><td><b>Name</b></td><td><b>Definition</b></td></tr></thead><tbody>";
+            }
+            else
+            {
+                extensionsContent += "<p>This guide does not reference any extensions</p>";
+            }
+
+            foreach (var extensionTemplate in extensionTemplates)
+            {
+                extensionsContent += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", extensionTemplate.Name, extensionTemplate.Oid);
+            }
+
+            if (extensionTemplates.Any())
+                extensionsContent += "</tbody></table>";
+
+            this.zip.AddEntry("pages/_includes/extensions.html", RemoveSpecialCharacters(extensionsContent));
         }
 
         private void AddDescriptionPage()
@@ -309,7 +353,7 @@ namespace Trifolia.Export.FHIR.STU3
             this.zip.AddEntry(this.controlFileName, controlContent);
         }
 
-        private void AddVolume1Pages()
+        private void AddOverviewPage()
         {
             string volume1Content = "";
 
@@ -318,7 +362,7 @@ namespace Trifolia.Export.FHIR.STU3
                 volume1Content += string.Format("<div><h{0}>{1}</h{0}>{2}</div>\n", section.Level + 2, section.Heading, section.Content);
             }
 
-            this.zip.AddEntry("pages/_includes/volume1.html", RemoveSpecialCharacters(volume1Content));
+            this.zip.AddEntry("pages/_includes/overview.html", RemoveSpecialCharacters(volume1Content));
         }
 
         private void AddValueSets()
@@ -332,11 +376,20 @@ namespace Trifolia.Export.FHIR.STU3
             foreach (var valueSet in valueSets)
             {
                 var fhirValueSet = exporter.Convert(valueSet);
-                fhirValueSet.Id = valueSet.Id.ToString();
                 var fhirValueSetContent = FhirSerializer.SerializeResourceToXml(fhirValueSet);
                 var fhirValueSetFileName = string.Format("resources/valueset/{0}.xml", valueSet.Id);
 
+                // Add the value set file to the package
                 this.zip.AddEntry(fhirValueSetFileName, fhirValueSetContent);
+
+                // Add the value set to the control file so it knows what to do with it
+                string resourceKey = "ValueSet/" + valueSet.GetFhirId();
+
+                this.control.resources.Add(resourceKey, new Models.Control.ResourceReference()
+                {
+                    template_base = "instance-template-format.html",
+                    reference_base = string.Format("ValueSet-{0}.html", valueSet.GetFhirId())
+                });
             }
         }
 

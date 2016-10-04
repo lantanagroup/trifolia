@@ -25,6 +25,11 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string FhirSTU3Package
+        {
+            get { return ConfigurationManager.AppSettings["FhirSTU3Package"]; }
+        }
+
         public static string OpenIdConfigUrl
         {
             get { return ConfigurationManager.AppSettings["OpenIdConfigUrl"]; }

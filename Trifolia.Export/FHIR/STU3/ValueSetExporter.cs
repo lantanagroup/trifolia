@@ -46,7 +46,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             FhirValueSet fhirValueSet = new FhirValueSet()
             {
-                Id = valueSet.Id.ToString(),
+                Id = valueSet.GetFhirId(),
                 Name = valueSet.Name,
                 Status = usedByPublishedIgs ? ConformanceResourceStatus.Active : ConformanceResourceStatus.Draft,
                 Description = new Markdown(valueSet.Description),

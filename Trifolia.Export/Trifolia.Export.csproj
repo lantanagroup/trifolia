@@ -121,6 +121,7 @@
     <Compile Include="FHIR\DSTU2\ImplementationGuideExporter.cs" />
     <Compile Include="FHIR\DSTU2\StructureDefinitionExporter.cs" />
     <Compile Include="FHIR\DSTU2\ValueSetExporter.cs" />
+    <Compile Include="FHIR\STU3\ValueSetExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Native\ImplementationGuideExtension.cs" />
     <Compile Include="Native\TemplateConstraintExtension.cs" />

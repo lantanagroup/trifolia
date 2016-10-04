@@ -99,6 +99,12 @@ namespace Trifolia.Export.FHIR.STU3
                 package.Name = "Profiles in this Implementation Guide";
                 fhirImplementationGuide.Package.Add(package);
 
+                // Page: Create a page for the implementation guide. This is required by the fhir ig publisher
+                fhirImplementationGuide.Page = new FhirImplementationGuide.PageComponent();
+                fhirImplementationGuide.Page.Kind = FhirImplementationGuide.GuidePageKind.Page;
+                fhirImplementationGuide.Page.Title = ig.GetDisplayName();
+                fhirImplementationGuide.Page.Source = string.Format("{0}://{1}/IG/View/{2}", this.scheme, this.authority, ig.Id);
+
                 // Add profiles to the implementation guide
                 List<Template> templates = ig.GetRecursiveTemplates(this.tdb, inferred: false);
                 var profileResources = (from t in templates
