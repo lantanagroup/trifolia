@@ -25,6 +25,16 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string LatestFhirIGPublisherLocation
+        {
+            get { return ConfigurationManager.AppSettings["LatestFhirIGPublisherLocation"]; }
+        }
+
+        public static string FhirIGPublisherDownload
+        {
+            get { return ConfigurationManager.AppSettings["FhirIGPublisherDownload"]; }
+        }
+
         public static string FhirSTU3Package
         {
             get { return ConfigurationManager.AppSettings["FhirSTU3Package"]; }

@@ -7,12 +7,14 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using Trifolia.DB;
+using Trifolia.Logging;
 using Ionic.Zip;
 using Newtonsoft.Json;
 using Trifolia.Shared;
 using fhir_stu3.Hl7.Fhir.Serialization;
 using System.Text.RegularExpressions;
 using Trifolia.Config;
+using System.Net;
 
 namespace Trifolia.Export.FHIR.STU3
 {
@@ -75,6 +77,8 @@ namespace Trifolia.Export.FHIR.STU3
 
             this.zip = GetPackage();
 
+            this.UpdateIGPublisher();
+
             this.AddImplementationGuide(includeVocabulary);
 
             this.AddTemplates();
@@ -119,6 +123,92 @@ namespace Trifolia.Export.FHIR.STU3
             }
         }
 
+        private bool ShouldUpdateIGPublisher()
+        {
+            // Only download the latest ig publisher if we have a location to download from and to
+            if (string.IsNullOrEmpty(AppSettings.FhirIGPublisherDownload) || string.IsNullOrEmpty(AppSettings.LatestFhirIGPublisherLocation))
+                return false;
+
+            // Always downloaded the latest IG Publisher if we don't have a "latest ig publisher" file yet
+            if (!File.Exists(AppSettings.LatestFhirIGPublisherLocation))
+                return true;
+
+            WebRequest headRequest = HttpWebRequest.Create(AppSettings.FhirIGPublisherDownload);
+            headRequest.Method = "HEAD";
+
+            var headResponse = headRequest.GetResponse();
+            long? headContentLength = !string.IsNullOrEmpty(headResponse.Headers["Content-Length"]) ? (long?) long.Parse(headResponse.Headers["Content-Length"]) : null;
+            DateTime? headLastModified = !string.IsNullOrEmpty(headResponse.Headers["Last-Modified"]) ? (DateTime?) DateTime.Parse(headResponse.Headers["Last-Modified"]) : null;
+
+            FileInfo currentLatestInfo = new FileInfo(AppSettings.LatestFhirIGPublisherLocation);
+
+            if (headContentLength == null)
+            {
+                Log.For(this).Error("HEAD request for latest FHIR IG Publisher did not return a valid content-length.");
+                return false;
+            }
+
+            if (currentLatestInfo.Length != headContentLength.Value)
+                return true;
+
+            if (headLastModified == null)
+            {
+                Log.For(this).Error("HEAD request for latest FHIR IG Publisher did not return a valid last-modified date.");
+                return false;
+            }
+
+            if (currentLatestInfo.LastWriteTime != headLastModified.Value)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Updates the ZIP package with the latest IG publisher from the configured AppSettings.FhirIGPublisherDownload url.
+        /// </summary>
+        private void UpdateIGPublisher()
+        {
+            if (!this.ShouldUpdateIGPublisher())
+                return;
+
+            try
+            {
+                Log.For(this).Trace("Downloading latest FHIR IG Publisher jar package");
+
+                WebRequest downloadRequest = HttpWebRequest.Create(AppSettings.FhirIGPublisherDownload);
+                downloadRequest.Method = "GET";
+
+                var downloadResponse = downloadRequest.GetResponse();
+
+                if (string.IsNullOrEmpty(downloadResponse.Headers["Last-Modified"]))
+                {
+                    Log.For(this).Error("Download request for latest FHIR IG Publisher did not include a last-modified date");
+                    return;
+                }
+
+                using (var downloadStream = downloadResponse.GetResponseStream())
+                {
+                    using (FileStream fs = File.Create(AppSettings.LatestFhirIGPublisherLocation))
+                        downloadStream.CopyTo(fs);
+
+                    DateTime lastModified = DateTime.Parse(downloadResponse.Headers["Last-Modified"]);
+                    File.SetCreationTime(AppSettings.LatestFhirIGPublisherLocation, lastModified);
+                    File.SetLastWriteTime(AppSettings.LatestFhirIGPublisherLocation, lastModified);
+                }
+
+                this.zip.UpdateEntry("org.hl7.fhir.igpublisher.jar", File.ReadAllBytes(AppSettings.LatestFhirIGPublisherLocation));
+            }
+            catch (Exception ex)
+            {
+                Log.For(this).Error("Error downloading/updating FHIR IG Publisher", ex);
+            }
+        }
+
+        /// <summary>
+        /// Adds individual FHIR Resource Instance files attached to the implementation guide being exported
+        /// to the ZIP package
+        /// </summary>
+        /// <remarks>Uses the mime-type of the file to determine if the attached file is xml or json.</remarks>
         private void AddResourceInstances()
         {
 
@@ -156,6 +246,11 @@ namespace Trifolia.Export.FHIR.STU3
             }
         }
 
+        /// <summary>
+        /// Adds examples for the profiles to the ZIP package. Only adds valid samples to the zip package.
+        /// </summary>
+        /// <remarks>Attempts to use the fhir-net-api to parse the resource as Xml and then as Json. If the sample 
+        /// cannot be parsed successfully, then it is skipped and not added to the ZIP package.</remarks>
         private void AddExamples()
         {
             // Validate that each of the samples associated with profiles has the required fields
