@@ -1347,9 +1347,11 @@ var templateEditViewModel = function (templateId, defaults) {
         $.ajax({
             method: 'GET',
             url: '/api/ImplementationGuide/' + implementationGuideId + '/TemplateType',
+            async: false,       // Knockout is not recognizing changes to self.TemplateTypes sporratically when this runs async:true
             success: function (templateTypes) {
                 self.TemplateTypes(templateTypes);
-                console.log('Done loading template/profile types: ' + (new Date().getTime() - startTime) + ' milliseconds');
+
+                console.log('Done loading template/profile types (count: ' + self.TemplateTypes().length + '): ' + (new Date().getTime() - startTime) + ' milliseconds');
                 deferred.resolve(templateTypes);
             },
             error: function (err) {
