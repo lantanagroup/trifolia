@@ -106,11 +106,12 @@ public class A_Grid_Testing {
 	this.IGFunctions.BrowseImplementationGuide("Healthcare Associated Infection Reports Release 9", "15-19677", "The value of the id", "No audit entries", "hai_voc.xml", "Published : Tuesday, June 18, 2013", "section", "[1..1]", "Phase", "Entire Organization (HL7)", "HTML Content", "Notify", "lcg.admin");
 	
 	// Test Adding Permissions to the "IHE PCC"
-	this.IGFunctions.PermissionImplementationGuide("Test IHE PCC", "CDA", "lcg.admin");
+
+	this.IGFunctions.PermissionImplementationGuide("Test IHE PCC", "CDA", "lcg.admin", "Lantana Admin");
 	
 	// Test Creating the "Automation Test IG"
-	this.IGFunctions.CreateImplementationGuide("Automation Test IG", "Automation Test IG Display Name", "Automation Test Web IG", "Automation Test Web IG for testing", "CDA", "lcg.admin");
-	
+	this.IGFunctions.CreateImplementationGuide("Automation Test IG", "automation.test@lcg.org", "LCG" ,"Automation Test IG Display Name", "Automation Test Web IG", "Automation Test Web IG for testing", "CDA", "lcg.admin");
+
 	// Test Editing the "Automation Test IG"
 	this.IGFunctions.EditImplementationGuide("Automation Test IG", "lcg.admin", 
 	"<sch:rule context=\"cda:ClinicalDocument\"> <sch:assert test=\"count(cda:templateId[@root='1.2.3.4.5.6.7.8.9.10'])=1\">This document SHALL conform to template \"Automation Test Template\" (templateId: 1.2.3.4.5.6.7.8.9.10).</sch:assert> </sch:rule>");	
@@ -198,8 +199,9 @@ public class A_Grid_Testing {
 	
 	// Test Creating the "Automation Test Value Set"
 	this.TerminologyFunctions.CreateValueSet("Automation Test Gender Value Set", "urn:oid:2.2.2.2.2.2.2.2", "TEST_AdministrativeGender", 
-	"Administrative Gender based upon TEST vocabulary. This value set contains only male, female and undifferentiated concepts", "www.automationtesting.com");
-	
+
+	"Administrative Gender based upon TEST vocabulary. This value set contains only male, female and undifferentiated concepts", "www.automationtesting.com", "lcg.admin");
+
 	// Test Editing the "Automation Test Value Set"
 	this.TerminologyFunctions.EditValueSet("Automation Test Gender Value Set", "urn:oid:2.2.2.2.2.2.2.2", "F", "Female", "AdministrativeGender", 
 	"Active", "M", "Male", "AdministrativeGender", "Active", "UN", "Undifferentiated", "AdministrativeGender", "Active", "lcg.admin");
@@ -307,7 +309,9 @@ public class A_Grid_Testing {
 	this.IGFunctions.BrowseImplementationGuide("Public Health Case Report Release 1", "Tuberculosis PHCR CDA R2 report", "effectiveTime/low", "No audit entries", "Published : Thursday, October 01, 2009", "entry", "[1..*]", "Rule(s) Definition","","","","", "hl7.member");
 	
 	// Test Creating the "HL7 Member Test IG"
-	this.IGFunctions.CreateImplementationGuide("HL7 Member Test IG", "HL7 Member Test IG Display Name", "HL7 Member Test IG IG Web Name", "HL7 Member Test IG IG Web Description", "eMeasure","hl7.member");
+
+	this.IGFunctions.CreateImplementationGuide("HL7 Member Test IG", "hl7memberIG@lcg.org", "HL7", "HL7 Member Test IG Display Name", "HL7 Member Test IG IG Web Name", "HL7 Member Test IG IG Web Description", "eMeasure","hl7.member");
+
 	
 	// Test Editing the "HL7 Member Test IG"
 	this.IGFunctions.EditImplementationGuide("HL7 Member Test IG","hl7.member",
@@ -390,8 +394,9 @@ public class A_Grid_Testing {
 	
 	// Test Creating the "HL7 Member Test Value Set"
 	this.TerminologyFunctions.CreateValueSet("HL7 Member Test Gender Value Set", "urn:oid:1.2.3.4.5.6.7.8", "TEST_AdministrativeGender", 
-	"Administrative Gender based upon TEST vocabulary. This value set contains only male, female and undifferentiated concepts", "www.automationtesting.com");
 	
+	"Administrative Gender based upon TEST vocabulary. This value set contains only male, female and undifferentiated concepts", "www.automationtesting.com", "hl7.member");
+
 	// Test Editing the "HL7 Member Test Value Set"
 	this.TerminologyFunctions.EditValueSet("HL7 Member Test Gender Value Set", "urn:oid:1.2.3.4.5.6.7.8", "F", "Female", "AdministrativeGender", 
 	"Active", "M", "Male", "AdministrativeGender", "Active", "UN", "Undifferentiated", "AdministrativeGender", "Active", "hl7.member");

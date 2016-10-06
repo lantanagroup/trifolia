@@ -34,9 +34,8 @@ public class AllUsersSpecificFunctions {
 		profile.setPreference("browser.download.folderList", 1);
 		driver.manage().window().maximize();
 
-		baseUrl = "http://dev.trifolia.lantanagroup.com/";
-
-		// baseUrl = "http://staging.lantanagroup.com:1234/";
+	     baseUrl = "http://dev.trifolia.lantanagroup.com/";
+        // baseUrl = "https://staging-trifolia.lantanagroup.com";
 		// baseUrl = "http://fhir_profiling.trifolia.lantanagroup.com/";
 
 		this.LoginFunctions = new A_TrifoliaLogin();
@@ -63,15 +62,11 @@ public class AllUsersSpecificFunctions {
 		// PART I - LANTANA ADMINISTRATOR TESTS
 		// ========================================================================================================================================================================================================
 
-		// Testing Logging into Trifolia Dev environment with Lantana Admin
-		// account
-		this.LoginFunctions.LCGAdminLogin("lcg.admin",
-				"http://dev.trifolia.lantanagroup.com/");
+		// Testing Logging into Trifolia Dev environment with Lantana Admin  account
+		   this.LoginFunctions.LCGAdminLogin("lcg.admin", "http://dev.trifolia.lantanagroup.com/");
 
-		// Testing Logging into Trifolia Staging environment with Lantana Admin
-		// account
-		// this.LoginFunctions.LCGAdminLogin("lcg.admin",
-		// "http://staging.lantanagroup.com:1234/");
+		// Testing Logging into Trifolia Staging environment with Lantana Admin account
+		   // this.LoginFunctions.LCGAdminLogin("lcg.admin","https://staging-trifolia.lantanagroup.com");
 
 		// *** IMPLEMENTATION GUIDE TESTS ***
 		// ------------------------------------
@@ -81,15 +76,17 @@ public class AllUsersSpecificFunctions {
 				"Healthcare Associated Infection Reports Release 9",
 				"15-19677", "The value of the id", "No audit entries",
 				"hai_voc.xml", "Published : Tuesday, June 18, 2013", "section",
-				"[1..1]", "Phase", "Entire Organization (HL7)", "HTML Content",
+				"[1..1]", "Phase", "Internal Analysts, Group", "HTML Content",
 				"Notify", "lcg.admin");
 
 		// Test Adding Permissions to the "IHE PCC"
 		this.IGFunctions.PermissionImplementationGuide("Test IHE PCC", "CDA",
-				"lcg.admin");
+				"lcg.admin", "Trifolia Admin");
 
 		// Test Creating the "1Automation Test IG"
 		this.IGFunctions.CreateImplementationGuide("1Automation Test IG",
+				"automation.test@lcg.org","LCG",
+
 				"1Automation Test IG Display Name", "Automation Test Web IG",
 				"Automation Test Web IG for testing", "CDA", "lcg.admin");
 
@@ -207,8 +204,7 @@ public class AllUsersSpecificFunctions {
 				"Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10",
 				"lcg.admin");
 
-		// Test Balloting and Publishing the
-		// "Automation Test Implementation Guide"
+		// Test Balloting and Publishing the "Automation Test Implementation Guide"
 		this.PublishingFunctions.BallotAndPublishIG("1Automation Test IG",
 				"lcg.admin", "Ballot");
 
@@ -239,7 +235,7 @@ public class AllUsersSpecificFunctions {
 						"urn:oid:2.2.2.2.2.2.2.2",
 						"TEST_AdministrativeGender",
 						"Administrative Gender based upon TEST vocabulary. This value set contains only male, female and undifferentiated concepts",
-						"www.automationtesting.com");
+						"www.automationtesting.com", "lcg.admin");
 
 		// Test Editing the "Automation Test Value Set"
 		this.TerminologyFunctions.EditValueSet(
@@ -307,39 +303,34 @@ public class AllUsersSpecificFunctions {
 		// Lantana Administrator Logout
 		this.LoginFunctions.LCGLogout("lcg.admin");
 		
-		
- //=======================================================================================================================================================================================================
- // PART II - LANTANA USER TESTS
- //
+//=======================================================================================================================================================================================================
+// PART II - LANTANA USER TESTS
+//
 //  ========================================================================================================================================================================================================
 
 		// Testing Logging into Trifolia Dev as Lantana User
-		this.LoginFunctions.LCGUserLogin("lcg.user",
-				"http://dev.trifolia.lantanagroup.com/");
+		   // this.LoginFunctions.LCGUserLogin("lcg.user","http://dev.trifolia.lantanagroup.com/");
 
-		// Testing Logging into Trifolia Staging as Lantana User
-		// this.LoginFunctions.LCGUserLogin("lcg.user",
-		// "http://staging.lantanagroup.com:1234/");
+		//  Testing Logging into Trifolia Staging as Lantana User
+		    this.LoginFunctions.LCGUserLogin("lcg.user","http://staging.lantanagroup.com:1234/");
 
 		// *** IMPLEMENTATION GUIDE TESTS ***
 		// ----------------------------------
 
 		// Test Browsing the "PHARM HIT Demo" Implementation Guide
-		this.IGFunctions.BrowseImplementationGuide("PHARM HIT Demo", "", "",
-				"", "", "PHARM HIT Demo", "document", "[0..1]", "Pattern ID",
+		this.IGFunctions.BrowseImplementationGuide("ASCO-BCR Sample Report Release 1", "", "",
+				"", "", "ASCO-BCR Sample Report Release 1", "document", "[0..1]", "Pattern ID",
 				"", "", "", "lcg.user");
 
 		// *** TEMPLATE TESTS ***
 		// ------------------------------
 
 		// Test Viewing the "MAP Topic" Template
-		this.TemplateFunctions
-				.ViewTemplate(
-						"MAP Topic",
-						"http://www.lantanagroup.com/camara/fhir/map-topic",
+		this.TemplateFunctions.ViewTemplate("ASCO Example Document R1",
+						"urn:oid:2.16.840.1.113883.3.117.1.5.3",
 						"",
 						"",
-						"SHALL contain exactly one [1..1] extension (CONF:1206-1034) such that it",
+						"SHALL contain exactly one [1..1]",
 						"lcg.user");
 
 		// *** TERMINOLOGY TESTS ***
@@ -356,322 +347,322 @@ public class AllUsersSpecificFunctions {
 		// *** EXPORT TESTS ***
 		// ----------------------------
 
-		// Test Exporting the Templates for the "Test IHE PCC" Implementation
+		// Test Exporting the Templates for the "C-CDA on FHIR" Implementation
 		// Guide
-		this.ExportFunctions.ExportTemplateToWord("C-CDA on FHIR", "",
-				"lcg.user");
+		this.ExportFunctions.ExportTemplateToWord("ASCO-BCR Sample Report Release 1", "", "lcg.user");
 
 		// Test Exporting the Template XML for the "TEST_CONF_IG V2 V2"
 		// Implementation Guide
-		this.ExportFunctions
-				.ExportTemplateXML("PHARM HIT Demo", "", "lcg.user");
+		this.ExportFunctions.ExportTemplateXML("C-CDA on FHIR", "", "lcg.user");
 
 		// *** CLOSING ***
 		// -------------------
 
 		// Lantana User Logout
-		this.LoginFunctions.LCGLogout("lcg.user");
+		   this.LoginFunctions.LCGLogout("lcg.user");
 
-		// ========================================================================================================================================================================================================
-		// PART IV - HL7 MEMBER TESTS
-		// ========================================================================================================================================================================================================
-
-		// Testing Logging into Trifolia as HL7 Member "student_test"
-		this.LoginFunctions.HL7MemberLogin("Health Level Seven");
-
-		// *** IMPLEMENTATION GUIDE TESTS ***
-		// -----------------------------------------
-
-		// Test Browsing the "Public Health Case Report Release 1"
-		this.IGFunctions.BrowseImplementationGuide(
-				"Public Health Case Report Release 1",
-				"Tuberculosis PHCR CDA R2 report", "effectiveTime/low",
-				"No audit entries", "Published : Thursday, October 01, 2009",
-				"entry", "[1..*]", "Rule(s) Definition", "", "", "", "",
-				"hl7.member");
-
-		// Test Creating the "1HL7 Member Test IG"
-		this.IGFunctions.CreateImplementationGuide("1HL7 Member Test IG",
-				"1HL7 Member Test IG Display Name",
-				"1HL7 Member Test IG IG Web Name",
-				"1HL7 Member Test IG IG Web Description", "eMeasure",
-				"hl7.member");
-
-		// Test Editing the "1HL7 Member Test IG"
-		this.IGFunctions
-				.EditImplementationGuide(
-						"1HL7 Member Test IG",
-						"hl7.member",
-						"<sch:rule context=\"cda:ClinicalDocument\"> <sch:assert test=\"count(cda:templateId[@root='2.2.2.2.2.2.2.2'])=1\">This document SHALL conform to template \"HL7 Member Test Template\" (templateId: 2.2.2.2.2.2.2.2).</sch:assert> </sch:rule>");
-
-		// *** TEMPLATE TESTS ***
-		// -----------------------------
-
-		// Test Viewing the "LTPAC Home Health Summary" Template
-		this.TemplateFunctions
-				.ViewTemplate(
-						"LTPAC Home Health Summary",
-						"urn:oid:2.16.840.1.113883.10.20.22.1.11.2",
-						"",
-						"",
-						"This template describes constraints that apply to the OASIS LTPAC Home Health Summary.",
-						"hl7.member");
-
-		// Test Creating the "HL7 Member Test Template"
-		this.TemplateFunctions.CreateTemplate("HL7 Member Test Template",
-				"urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG",
-				"eMeasure: document", "Test Template HL7 Member", "hl7.member");
-
-		// Test Editing the "HL7 Member Test Template"
-		this.TemplateFunctions.EditTemplate("HL7 Member Test Template",
-				"urn:oid:2.2.2.2.2.2.2.2", "Allergies - Test",
-				"Add Notes to the HL7 Member Test Template", "hl7.member");
-
-		// Test Copying the "HL7 Member Test Template"
-		this.TemplateFunctions.CopyTemplate("HL7 Member Test Template",
-				"urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG",
-				"HL7 Member Test Template Copy", "hl7.member");
-
-		// Test Moving the "HL7 Member Test Template Copy"
-		// this.TemplateFunctions.MoveTemplate("HL7 Member Test Template Copy",
-		// "Consolidation V2", "Document", "hl7.member");
-
-		// Test Deleting the "HL7 Member Test Template Copy"
-		this.TemplateFunctions.DeleteTemplate("HL7 Member Test Template Copy",
-				"urn:oid:2.2.2.2.2.2.2.2", "hl7.member");
-
-		// *** CONSTRAINT TESTS ***
-		// ------------------------------
-
-		// Test Creating Computed Constraints for the "HL7 Member Test Template"
-		this.ConstraintFunctions.CreateComputedConstraint(
-				"HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2",
-				"eMeasure: Document", "Other", "2.2.2.2.2.2.2.2",
-				"POCD_HD000040", "hl7.member");
-
-		// Test Adding the "id" element with a Primitive Constraint containing
-		// schematron
-		this.ConstraintFunctions
-				.AddPrimitiveConstraint(
-						"HL7 Member Test Template",
-						"eMeasure: Document",
-						"This id SHALL be a globally unique identifier for the document",
-						"STATIC", "Engineer", "tested)", "hl7.member");
-
-		// Test Editing, Duplicating and Deleting a Primitive Constraint in the
-		// "HL7 Member Test Template"
-		this.ConstraintFunctions.EditPrimitiveConstraint(
-				"HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2",
-				"eMeasure: Document", "Analyst", "SHOULD", "hl7.member");
-
-		// Test Binding Value Sets and Templates to constraints in the
-		// "HL7 Member Test Template"
-		this.ConstraintFunctions.constraintBinding("HL7 Member Test Template",
-				"eMeasure: Document", "2.16.840.1.113883.11.20.11.2",
-				"Cardiac Ejection Methods", "Admission Diagnosis Section (V2)",
-				"hl7.member");
-
-		// Test Previewing and Validating Constraints within the
-		// "HL7 Member Test Template"
-		this.ConstraintFunctions
-				.PreviewAndValidateConstraint(
-						"HL7 Member Test Template",
-						"urn:oid:2.2.2.2.2.2.2.2",
-						"SHALL contain exactly one [1..1] realmCode=\"US\"",
-						"SHALL contain exactly one [1..1] typeId",
-						"SHALL contain exactly one [1..1] @root=\"2.2.2.2.2.2.2.2\"",
-						"SHALL contain exactly one [1..1] @extension=\"POCD_HD000040\"",
-						"", "Schema allows multiple for", "hl7.member");
-
-		// *** PUBLISHING TESTS ***
-		// ----------------------------------
-
-		// Test Creating Sample XML for the "HL7 Member Test Template"
-		this.PublishingFunctions
-				.CreateTemplateXMLSample(
-						"HL7 Member Test Template",
-						"urn:oid:2.2.2.2.2.2.2.2",
-						"1. SHALL contain exactly one [1..1] realmCode= \"US\" (CONF:2234-3).",
-						"hl7.member");
-
-		// Test Editing the Sample XML for the "HL7 Member Test Template"
-		this.PublishingFunctions.EditTemplateXMLSample(
-				"HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2",
-				"hl7.member");
-
-		// Test Deleting the Template Sample for the "HL7 Member Test Template"
-		this.PublishingFunctions.DeleteTemplateXMLSample(
-				"HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2",
-				"hl7.member");
-
-		// Test Balloting and Publishing the
-		// "HL7 Member Test Implementation Guide"
-		this.PublishingFunctions.BallotAndPublishIG("1HL7 Member Test IG",
-				"hl7.member", "Ballot");
-
-		// Test Versioning the "HL7 Member Test Implementation Guide"
-		this.PublishingFunctions.VersionIG("1HL7 Member Test IG",
-				"1HL7 Member Test IG V2", "hl7.member");
-
-		// Test Versioning the "HL7 Member Test Template"
-		this.PublishingFunctions.VersionTemplate("HL7 Member Test Template",
-				"urn:oid:2.2.2.2.2.2.2.2", "HL7 Member Test Template V2",
-				"Adding Notes to Versioned Template", "hl7.member");
-
-		// Test Deleting the "1HL7 Member Test IG V2" and "1HL7 Member Test IG"
-		this.IGFunctions.DeleteImplementationGuide("1HL7 Member Test IG V2",
-				"1HL7 Member Test IG", "hl7.member");
-
-		// *** TERMINOLOGY TESTS ***
-		// ------------------------------
-
-		// Test Browsing the "Observation Interpretation (HL7)" Value Set
-		this.TerminologyFunctions.BrowseValueSet(
-				"Observation Interpretation (HL7)",
-				"urn:oid:2.16.840.1.113883.1.11.78", "above high threshold",
-				"hl7.member");
-
-		// Test Creating the "HL7 Member Test Value Set"
-		this.TerminologyFunctions
-				.CreateValueSet(
-						"HL7 Member Test Gender Value Set",
-						"urn:oid:1.2.3.4.5.6.7.8",
-						"TEST_AdministrativeGender",
-						"Administrative Gender based upon TEST vocabulary. This value set contains only male, female and undifferentiated concepts",
-						"www.automationtesting.com");
-
-		// Test Editing the "HL7 Member Test Value Set"
-		this.TerminologyFunctions.EditValueSet(
-				"HL7 Member Test Gender Value Set", "urn:oid:1.2.3.4.5.6.7.8",
-				"F", "Female", "AdministrativeGender", "Active", "M", "Male",
-				"AdministrativeGender", "Active", "UN", "Undifferentiated",
-				"AdministrativeGender", "Active", "hl7.member");
-
-		// Test Deleting the "HL7 Member Value Set"
-		this.TerminologyFunctions.DeleteValueSet(
-				"HL7 Member Test Gender Value Set", "urn:oid:1.2.3.4.5.6.7.8",
-				"hl7.member");
-
-		// Test Browsing the "HL7 V2.5 Route of Administration Codes" Code
-		// System
-		this.TerminologyFunctions.BrowseCodeSystem(
-				"HL7 V2.5 Route of Administration codes",
-				"2.16.840.1.113883.12.162", "hl7.member");
-
-		// Test Creating the "HL7 Member Test Vaccine Code System"
-		this.TerminologyFunctions.CreateCodeSystem(
-				"HL7 Member Test Vaccine Code System",
-				"urn:oid:1.5.5.5.5.5.5.5", "Also known as CVX codes.");
-
-		// Test Editing the "HL7 Member Test Vaccine Code System"
-		this.TerminologyFunctions.EditCodeSystem(
-				"HL7 Member Test Vaccine Code System",
-				"urn:oid:1.5.5.5.5.5.5.5", "Used by the CDC", "hl7.member");
-
-		// Test Deleting the "HL7 Member Test Vaccine Code System"
-		this.TerminologyFunctions.DeleteCodeSystem(
-				"HL7 Member Test Vaccine Code System",
-				"urn:oid:1.5.5.5.5.5.5.5", "hl7.member");
-
-		// *** EXPORT TESTS ***
-		// -------------------------
-
-		// Test Exporting the Templates for the "HIV/AIDS Services Report"
-		// Implementation Guide
-		this.ExportFunctions.ExportTemplateToWord("HIV/AIDS Services Report",
-				"http://dev.trifolia.lantanagroup.com/", "hl7.member");
-
-		// Test Exporting the Template XML for the
-		// "PC Review of Allergies and Intolerances" Implementation Guide
-		this.ExportFunctions.ExportTemplateXML(
-				"PC Review of Allergies and Intolerances",
-				"http://dev.trifolia.lantanagroup.com/", "hl7.member");
-
-		// Test Exporting the Schematron for the
-		// "Healthcare Associated Infection Reports Normative Release 1"
-		// Implementation Guide
-		this.ExportFunctions.ExportSchematron(
-				"Healthcare Associated Infection Reports Normative Release 1",
-				"hl7.member");
-
-		// Test Exporting the Vocabulary for the "Transfer Summary"
-		// Implementation Guide
-		this.ExportFunctions.ExportVocabulary("Transfer Summary", "hl7.member");
-
-		// *** CLOSING ***
-		// -------------------------
-
-		// Test HL7 Member Logout
-		this.LoginFunctions.HL7Logout("Health Level Seven",
-				"http://dev.trifolia.lantanagroup.com/", "hl7.member");
-		// this.LoginFunctions.HL7Logout("Health Level Seven",
-		// "http://staging.lantanagroup.com:1234/", "hl7.member");
-
-		// ========================================================================================================================================================================================================
-		// PART V - HL7 USER TESTS
-		// ========================================================================================================================================================================================================
-
-		// Testing Logging into Trifolia as HL7 User "trifolia_test"
-		this.LoginFunctions.HL7UserLogin("Health Level Seven");
-
-		// *** IMPLEMENTATION GUIDE TESTS ***
-		// -----------------------------------------
-
-		// Test Browsing the "Cath/PCI Registry Reporting Implementation Guide"
-		this.IGFunctions.BrowseImplementationGuide(
-				"Cath/PCI Registry Reporting Implementation Guide",
-				"Published : Wednesday, October 16, 2013", "subentry",
-				"[0..*]", "", "", "", "", "", "", "", "", "hl7.user");
-
-		// *** TEMPLATE TESTS ***
-		// -----------------------------
-
-		// Test Viewing the "Activated partial thromboplastin time" Template
-		this.TemplateFunctions
-				.ViewTemplate(
-						"Activated partial thromboplastin time",
-						"urn:oid:2.16.840.1.113883.10.20.17.3.44",
-						"",
-						"",
-						"This observation represents an activated partial thromboplastin time result",
-						"hl7.user");
-
-		// *** TERMINOLOGY TESTS ***
-		// ------------------------------
-
-		// Test Browsing the "HL7 BasicConfidentialityKind" Value Set
-		this.TerminologyFunctions.BrowseValueSet(
-				"HL7 BasicConfidentialityKind", "2.16.840.1.113883.1.11.16926",
-				"very restricted", "hl7.user");
-
-		// Test Browsing the "HL7 Realm" Code System
-		this.TerminologyFunctions.BrowseCodeSystem("HL7Realm",
-				"2.16.840.1.113883.5.1124", "hl7.user");
-
-		// *** EXPORT TESTS ***
-		// -------------------------
-
-		// Test Exporting the Templates for the "Neonatal Care Report Release 1"
-		// Implementation Guide
-		this.ExportFunctions.ExportTemplateToWord(
-				"Neonatal Care Report Release 1",
-				"http://dev.trifolia.lantanagroup.com/", "hl7.user");
-
-		// Test Exporting the Template XML for the
-		// "Cath/PCI Registry Reporting Implementation Guide" Implementation
-		// Guide
-		this.ExportFunctions.ExportTemplateXML(
-				"Cath/PCI Registry Reporting Implementation Guide",
-				"http://dev.trifolia.lantanagroup.com/", "hl7.user");
-
-		// *** CLOSING ***
-		// -------------------------
-
-		// Test HL7 User Logout
-		this.LoginFunctions.HL7Logout("Health Level Seven",
-				"http://dev.trifolia.lantanagroup.com/", "hl7.user");
-		// this.LoginFunctions.HL7Logout("Health Level Seven",
-		// "http://staging.lantanagroup.com:1234/", "hl7.user");
+//		// ========================================================================================================================================================================================================
+//		// PART IV - HL7 MEMBER TESTS
+//		// ========================================================================================================================================================================================================
+//
+//		// Testing Logging into Trifolia as HL7 Member "student_test"
+//		this.LoginFunctions.HL7MemberLogin("Health Level Seven");
+//
+//		// *** IMPLEMENTATION GUIDE TESTS ***
+//		// -----------------------------------------
+//
+//		// Test Browsing the "Public Health Case Report Release 1"
+//		this.IGFunctions.BrowseImplementationGuide(
+//				"Public Health Case Report Release 1",
+//				"Tuberculosis PHCR CDA R2 report", "effectiveTime/low",
+//				"No audit entries", "Published : Thursday, October 01, 2009",
+//				"entry", "[1..*]", "Rule(s) Definition", "", "", "", "",
+//				"hl7.member");
+//
+//		// Test Creating the "1HL7 Member Test IG"
+//		this.IGFunctions.CreateImplementationGuide("1HL7 Member Test IG",
+//				"hl7memberIG@lcg.org","HL7",
+//				"1HL7 Member Test IG Display Name",
+//				"1HL7 Member Test IG IG Web Name",
+//				"1HL7 Member Test IG IG Web Description", "eMeasure",
+//				"hl7.member");
+//
+//		// Test Editing the "1HL7 Member Test IG"
+//		this.IGFunctions
+//				.EditImplementationGuide(
+//						"1HL7 Member Test IG",
+//						"hl7.member",
+//						"<sch:rule context=\"cda:ClinicalDocument\"> <sch:assert test=\"count(cda:templateId[@root='2.2.2.2.2.2.2.2'])=1\">This document SHALL conform to template \"HL7 Member Test Template\" (templateId: 2.2.2.2.2.2.2.2).</sch:assert> </sch:rule>");
+//
+//		// *** TEMPLATE TESTS ***
+//		// -----------------------------
+//
+//		// Test Viewing the "LTPAC Home Health Summary" Template
+//		this.TemplateFunctions
+//				.ViewTemplate(
+//						"LTPAC Home Health Summary",
+//						"urn:oid:2.16.840.1.113883.10.20.22.1.11.2",
+//						"",
+//						"",
+//						"This template describes constraints that apply to the OASIS LTPAC Home Health Summary.",
+//						"hl7.member");
+//
+//		// Test Creating the "HL7 Member Test Template"
+//		this.TemplateFunctions.CreateTemplate("HL7 Member Test Template",
+//				"urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG",
+//				"eMeasure: document", "Test Template HL7 Member", "hl7.member");
+//
+//		// Test Editing the "HL7 Member Test Template"
+//		this.TemplateFunctions.EditTemplate("HL7 Member Test Template",
+//				"urn:oid:2.2.2.2.2.2.2.2", "Allergies - Test",
+//				"Add Notes to the HL7 Member Test Template", "hl7.member");
+//
+//		// Test Copying the "HL7 Member Test Template"
+//		this.TemplateFunctions.CopyTemplate("HL7 Member Test Template",
+//				"urn:oid:2.2.2.2.2.2.2.2", "1HL7 Member Test IG",
+//				"HL7 Member Test Template Copy", "hl7.member");
+//
+//		// Test Moving the "HL7 Member Test Template Copy"
+//		// this.TemplateFunctions.MoveTemplate("HL7 Member Test Template Copy",
+//		// "Consolidation V2", "Document", "hl7.member");
+//
+//		// Test Deleting the "HL7 Member Test Template Copy"
+//		this.TemplateFunctions.DeleteTemplate("HL7 Member Test Template Copy",
+//				"urn:oid:2.2.2.2.2.2.2.2", "hl7.member");
+//
+//		// *** CONSTRAINT TESTS ***
+//		// ------------------------------
+//
+//		// Test Creating Computed Constraints for the "HL7 Member Test Template"
+//		this.ConstraintFunctions.CreateComputedConstraint(
+//				"HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2",
+//				"eMeasure: Document", "Other", "2.2.2.2.2.2.2.2",
+//				"POCD_HD000040", "hl7.member");
+//
+//		// Test Adding the "id" element with a Primitive Constraint containing
+//		// schematron
+//		this.ConstraintFunctions
+//				.AddPrimitiveConstraint(
+//						"HL7 Member Test Template",
+//						"eMeasure: Document",
+//						"This id SHALL be a globally unique identifier for the document",
+//						"STATIC", "Engineer", "tested)", "hl7.member");
+//
+//		// Test Editing, Duplicating and Deleting a Primitive Constraint in the
+//		// "HL7 Member Test Template"
+//		this.ConstraintFunctions.EditPrimitiveConstraint(
+//				"HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2",
+//				"eMeasure: Document", "Analyst", "SHOULD", "hl7.member");
+//
+//		// Test Binding Value Sets and Templates to constraints in the
+//		// "HL7 Member Test Template"
+//		this.ConstraintFunctions.constraintBinding("HL7 Member Test Template",
+//				"eMeasure: Document", "2.16.840.1.113883.11.20.11.2",
+//				"Cardiac Ejection Methods", "Admission Diagnosis Section (V2)",
+//				"hl7.member");
+//
+//		// Test Previewing and Validating Constraints within the
+//		// "HL7 Member Test Template"
+//		this.ConstraintFunctions
+//				.PreviewAndValidateConstraint(
+//						"HL7 Member Test Template",
+//						"urn:oid:2.2.2.2.2.2.2.2",
+//						"SHALL contain exactly one [1..1] realmCode=\"US\"",
+//						"SHALL contain exactly one [1..1] typeId",
+//						"SHALL contain exactly one [1..1] @root=\"2.2.2.2.2.2.2.2\"",
+//						"SHALL contain exactly one [1..1] @extension=\"POCD_HD000040\"",
+//						"", "Schema allows multiple for", "hl7.member");
+//
+//		// *** PUBLISHING TESTS ***
+//		// ----------------------------------
+//
+//		// Test Creating Sample XML for the "HL7 Member Test Template"
+//		this.PublishingFunctions
+//				.CreateTemplateXMLSample(
+//						"HL7 Member Test Template",
+//						"urn:oid:2.2.2.2.2.2.2.2",
+//						"1. SHALL contain exactly one [1..1] realmCode= \"US\" (CONF:2234-3).",
+//						"hl7.member");
+//
+//		// Test Editing the Sample XML for the "HL7 Member Test Template"
+//		this.PublishingFunctions.EditTemplateXMLSample(
+//				"HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2",
+//				"hl7.member");
+//
+//		// Test Deleting the Template Sample for the "HL7 Member Test Template"
+//		this.PublishingFunctions.DeleteTemplateXMLSample(
+//				"HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2",
+//				"hl7.member");
+//
+//		// Test Balloting and Publishing the
+//		// "HL7 Member Test Implementation Guide"
+//		this.PublishingFunctions.BallotAndPublishIG("1HL7 Member Test IG",
+//				"hl7.member", "Ballot");
+//
+//		// Test Versioning the "HL7 Member Test Implementation Guide"
+//		this.PublishingFunctions.VersionIG("1HL7 Member Test IG",
+//				"1HL7 Member Test IG V2", "hl7.member");
+//
+//		// Test Versioning the "HL7 Member Test Template"
+//		this.PublishingFunctions.VersionTemplate("HL7 Member Test Template",
+//				"urn:oid:2.2.2.2.2.2.2.2", "HL7 Member Test Template V2",
+//				"Adding Notes to Versioned Template", "hl7.member");
+//
+//		// Test Deleting the "1HL7 Member Test IG V2" and "1HL7 Member Test IG"
+//		this.IGFunctions.DeleteImplementationGuide("1HL7 Member Test IG V2",
+//				"1HL7 Member Test IG", "hl7.member");
+//
+//		// *** TERMINOLOGY TESTS ***
+//		// ------------------------------
+//
+//		// Test Browsing the "Observation Interpretation (HL7)" Value Set
+//		this.TerminologyFunctions.BrowseValueSet(
+//				"Observation Interpretation (HL7)",
+//				"urn:oid:2.16.840.1.113883.1.11.78", "above high threshold",
+//				"hl7.member");
+//
+//		// Test Creating the "HL7 Member Test Value Set"
+//		this.TerminologyFunctions
+//				.CreateValueSet(
+//						"HL7 Member Test Gender Value Set",
+//						"urn:oid:1.2.3.4.5.6.7.8",
+//						"TEST_AdministrativeGender",
+//						"Administrative Gender based upon TEST vocabulary. This value set contains only male, female and undifferentiated concepts",
+//						"www.automationtesting.com", "hl7.member");
+//
+//		// Test Editing the "HL7 Member Test Value Set"
+//		this.TerminologyFunctions.EditValueSet(
+//				"HL7 Member Test Gender Value Set", "urn:oid:1.2.3.4.5.6.7.8",
+//				"F", "Female", "AdministrativeGender", "Active", "M", "Male",
+//				"AdministrativeGender", "Active", "UN", "Undifferentiated",
+//				"AdministrativeGender", "Active", "hl7.member");
+//
+//		// Test Deleting the "HL7 Member Value Set"
+//		this.TerminologyFunctions.DeleteValueSet(
+//				"HL7 Member Test Gender Value Set", "urn:oid:1.2.3.4.5.6.7.8",
+//				"hl7.member");
+//
+//		// Test Browsing the "HL7 V2.5 Route of Administration Codes" Code
+//		// System
+//		this.TerminologyFunctions.BrowseCodeSystem(
+//				"HL7 V2.5 Route of Administration codes",
+//				"2.16.840.1.113883.12.162", "hl7.member");
+//
+//		// Test Creating the "HL7 Member Test Vaccine Code System"
+//		this.TerminologyFunctions.CreateCodeSystem(
+//				"HL7 Member Test Vaccine Code System",
+//				"urn:oid:1.5.5.5.5.5.5.5", "Also known as CVX codes.");
+//
+//		// Test Editing the "HL7 Member Test Vaccine Code System"
+//		this.TerminologyFunctions.EditCodeSystem(
+//				"HL7 Member Test Vaccine Code System",
+//				"urn:oid:1.5.5.5.5.5.5.5", "Used by the CDC", "hl7.member");
+//
+//		// Test Deleting the "HL7 Member Test Vaccine Code System"
+//		this.TerminologyFunctions.DeleteCodeSystem(
+//				"HL7 Member Test Vaccine Code System",
+//				"urn:oid:1.5.5.5.5.5.5.5", "hl7.member");
+//
+//		// *** EXPORT TESTS ***
+//		// -------------------------
+//
+//		// Test Exporting the Templates for the "HIV/AIDS Services Report"
+//		// Implementation Guide
+//		this.ExportFunctions.ExportTemplateToWord("HIV/AIDS Services Report",
+//				"http://dev.trifolia.lantanagroup.com/", "hl7.member");
+//
+//		// Test Exporting the Template XML for the
+//		// "PC Review of Allergies and Intolerances" Implementation Guide
+//		this.ExportFunctions.ExportTemplateXML(
+//				"PC Review of Allergies and Intolerances",
+//				"http://dev.trifolia.lantanagroup.com/", "hl7.member");
+//
+//		// Test Exporting the Schematron for the
+//		// "Healthcare Associated Infection Reports Normative Release 1"
+//		// Implementation Guide
+//		this.ExportFunctions.ExportSchematron(
+//				"Healthcare Associated Infection Reports Normative Release 1",
+//				"hl7.member");
+//
+//		// Test Exporting the Vocabulary for the "Transfer Summary"
+//		// Implementation Guide
+//		this.ExportFunctions.ExportVocabulary("Transfer Summary", "hl7.member");
+//
+//		// *** CLOSING ***
+//		// -------------------------
+//
+//		// Test HL7 Member Logout
+//		this.LoginFunctions.HL7Logout("Health Level Seven",
+//				"http://dev.trifolia.lantanagroup.com/", "hl7.member");
+//		// this.LoginFunctions.HL7Logout("Health Level Seven",
+//		// "http://staging.lantanagroup.com:1234/", "hl7.member");
+//
+//		// ========================================================================================================================================================================================================
+//		// PART V - HL7 USER TESTS
+//		// ========================================================================================================================================================================================================
+//
+//		// Testing Logging into Trifolia as HL7 User "trifolia_test"
+//		this.LoginFunctions.HL7UserLogin("Health Level Seven");
+//
+//		// *** IMPLEMENTATION GUIDE TESTS ***
+//		// -----------------------------------------
+//
+//		// Test Browsing the "Cath/PCI Registry Reporting Implementation Guide"
+//		this.IGFunctions.BrowseImplementationGuide(
+//				"Cath/PCI Registry Reporting Implementation Guide",
+//				"Published : Wednesday, October 16, 2013", "subentry",
+//				"[0..*]", "", "", "", "", "", "", "", "", "hl7.user");
+//
+//		// *** TEMPLATE TESTS ***
+//		// -----------------------------
+//
+//		// Test Viewing the "Activated partial thromboplastin time" Template
+//		this.TemplateFunctions
+//				.ViewTemplate(
+//						"Activated partial thromboplastin time",
+//						"urn:oid:2.16.840.1.113883.10.20.17.3.44",
+//						"",
+//						"",
+//						"This observation represents an activated partial thromboplastin time result",
+//						"hl7.user");
+//
+//		// *** TERMINOLOGY TESTS ***
+//		// ------------------------------
+//
+//		// Test Browsing the "HL7 BasicConfidentialityKind" Value Set
+//		this.TerminologyFunctions.BrowseValueSet(
+//				"HL7 BasicConfidentialityKind", "2.16.840.1.113883.1.11.16926",
+//				"very restricted", "hl7.user");
+//
+//		// Test Browsing the "HL7 Realm" Code System
+//		this.TerminologyFunctions.BrowseCodeSystem("HL7Realm",
+//				"2.16.840.1.113883.5.1124", "hl7.user");
+//
+//		// *** EXPORT TESTS ***
+//		// -------------------------
+//
+//		// Test Exporting the Templates for the "Neonatal Care Report Release 1"
+//		// Implementation Guide
+//		this.ExportFunctions.ExportTemplateToWord(
+//				"Neonatal Care Report Release 1",
+//				"http://dev.trifolia.lantanagroup.com/", "hl7.user");
+//
+//		// Test Exporting the Template XML for the
+//		// "Cath/PCI Registry Reporting Implementation Guide" Implementation
+//		// Guide
+//		this.ExportFunctions.ExportTemplateXML(
+//				"Cath/PCI Registry Reporting Implementation Guide",
+//				"http://dev.trifolia.lantanagroup.com/", "hl7.user");
+//
+//		// *** CLOSING ***
+//		// -------------------------
+//
+//		// Test HL7 User Logout
+//		this.LoginFunctions.HL7Logout("Health Level Seven",
+//				"http://dev.trifolia.lantanagroup.com/", "hl7.user");
+//		// this.LoginFunctions.HL7Logout("Health Level Seven",
+//		// "http://staging.lantanagroup.com:1234/", "hl7.user");
+>>>>>>> Stashed changes
 	}
 
 	// ========================================================================================================================================================================================================

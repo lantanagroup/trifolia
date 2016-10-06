@@ -45,34 +45,48 @@ public class G_TerminologyFunctions {
 
   public void waitForPageLoad() 
   {
-	WebDriverWait wait = new WebDriverWait(driver, 30);
+	WebDriverWait wait = new WebDriverWait(driver, 60);
 	     wait.until(ExpectedConditions.jsReturnsValue("return document.readyState ==\"complete\";"));		
   }
+  
+  public void waitForBindings(String waitForBinding) 
+  {
+        JavascriptExecutor js = (JavascriptExecutor)driver;	
+	  	WebDriverWait wait = new WebDriverWait(driver, 60);
+	  	wait.until(ExpectedConditions.jsReturnsValue("return !!ko.dataFor(document.getElementById('"+waitForBinding+"'))"));  
+  }
+  
   public void OpenTerminologyBrowser() throws Exception {
-	    
-	  // waitForPageLoad();
 	  
-	  //  Open the Terminology Browser and find the Value Set
-		driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")).click();
-		driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[3]/a")).click();
-		
+	  // Confirm page is fully loaded 
+	     waitForPageLoad();
+	     
+	     //  Open the Terminology Browser and find the Value Set
+			driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")).click();
+			driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[3]/a")).click();
+			
+			  // Wait for page to fully load
+		       waitForPageLoad(); 
+		       
+	     // Wait for the bindings to complete
+		    waitForBindings("BrowseTerminology");
+ 
 	   // Wait for the Terminology Browser to appear
       	WebDriverWait wait = new WebDriverWait(driver, 60);
 		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/h3")));
 		assertTrue("Could not find \"Browse Terminology\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Browse Terminology[\\s\\S][\\s\\S]*$"));
-		
-//       // Wait for page to completely load
-//		  WebDriverWait wait1 = new WebDriverWait(driver, 120);		
-//		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id=\"ctl00_mainBody\"]/div[7]")));	
-		 	
+				 	
 		  // Wait for page to completely load
-		  WebDriverWait wait1 = new WebDriverWait(driver, 120);		
+		  WebDriverWait wait1 = new WebDriverWait(driver, 60);		
 		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[8]")));	
 	  	
 		// Wait for page to completely load
-		  WebDriverWait wait2 = new WebDriverWait(driver, 120);		                     
+		  WebDriverWait wait2 = new WebDriverWait(driver, 60);		                     
 		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[5]")));
 	  
+		// Confirm page is fully loaded 
+		  waitForPageLoad();
+		  
 		//Confirm the Value Set Page appears.
 			WebDriverWait wait3 = new WebDriverWait(driver, 60);                   
 			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/thead/tr/th[1]"), "Name"));
@@ -81,27 +95,37 @@ public class G_TerminologyFunctions {
   public void FindValueSet(String valueSetName, String valueSetOID, String fieldLabel1) throws Exception {
 	  
 	   // Confirm the page is loaded
-	      // waitForPageLoad();
+	      waitForPageLoad();
+	      
+	   // Wait for the bindings to complete
+		    waitForBindings("BrowseTerminology");
 	  
 	  //Confirm the Value Set Page appears.
 		WebDriverWait wait = new WebDriverWait(driver, 60);                   
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/thead/tr/th[2]"), "Identifier"));
 	  		  
 		  // Wait for page to completely load
-		  WebDriverWait wait1 = new WebDriverWait(driver, 120);		
+		  WebDriverWait wait1 = new WebDriverWait(driver, 60);		
 		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[8]")));	
 	  	
 		// Wait for page to completely load
-		  WebDriverWait wait2 = new WebDriverWait(driver, 120);		                     
+		  WebDriverWait wait2 = new WebDriverWait(driver, 60);		                     
 		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[5]")));
 	      
+		// Confirm page is fully loaded 
+		  waitForPageLoad();
+		  
 	      //Clear existing search criteria
 		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/span/button[1]")).click();	
 		 
-	    // Wait for page to completely load
-		  WebDriverWait wait3 = new WebDriverWait(driver, 120);		                     
+		 // Confirm page is fully re-loaded 
+		  waitForPageLoad();
+		  
+		  // Wait for the bindings to complete
+		    waitForBindings("BrowseTerminology");
+		    
+		  WebDriverWait wait3 = new WebDriverWait(driver, 60);		                     
 		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[5]")));
-	      Thread.sleep(2000);
 	      
 	      WebDriverWait wait4 = new WebDriverWait(driver, 60);                   
 		  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/thead/tr/th[2]"), "Identifier"));
@@ -109,29 +133,39 @@ public class G_TerminologyFunctions {
 		//Add new search criteria 		                       
 		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/input")).click();
 		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/input")).sendKeys(valueSetName);
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/input")).sendKeys(Keys.TAB);
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/input")).sendKeys(Keys.RETURN);
 		
-		//Click Search               
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/span/button[2]")).click();	
+		//Click Search                         
+		  driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/span/button[2]")).click();	
 		
-		 // Wait for page to completely load
-		  WebDriverWait wait5 = new WebDriverWait(driver, 120);		
+		  //Confirm page is fully loaded
+		  waitForPageLoad();
+		  WebDriverWait wait5 = new WebDriverWait(driver, 60);		
 		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id=\"ctl00_mainBody\"]/div[8]")));	
-
-		//Confirm the search is complete   
-		WebDriverWait wait6 = new WebDriverWait(driver, 60);                   
-		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/thead/tr/th[1]"), "Name"));
 		
+		// Confirm page is fully re-loaded 
+		  waitForPageLoad();
+		  WebDriverWait wait6 = new WebDriverWait(driver, 60);		                     
+		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[5]")));
+	   
+		//Confirm the search is complete   
+		  WebDriverWait wait7 = new WebDriverWait(driver, 60);                   
+		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr[2]/td[3]")));
+		
+		//Confirm only one value set is returned   
+		  WebDriverWait wait8 = new WebDriverWait(driver, 60);                   
+		  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[2]/span[3]"), "1"));
+		  
 		//Confirm the correct Value Set appears
-		WebDriverWait wait7 = new WebDriverWait(driver, 60);                   
-		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[2]"), valueSetOID));
-		assertTrue("Could not find \"Value Set OID\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(valueSetOID) >= 0); 		
+		  WebDriverWait wait9 = new WebDriverWait(driver, 60);                   
+		  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[2]"), valueSetOID));
+		  assertTrue("Could not find \"Value Set OID\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(valueSetOID) >= 0); 		
 }
   
   public void SaveValueSet() throws Exception {
 	  
 	  // Confirm the page is loaded
-      // waitForPageLoad();
+         waitForPageLoad();
   
 	    //Save the Value Set
 	    WebDriverWait wait = new WebDriverWait(driver, 60);
@@ -148,107 +182,29 @@ public class G_TerminologyFunctions {
 	      String alertText1 = alertDialog1.getText();
 	      // 3.3 Click the OK button on the alert.
 	      alertDialog1.accept();
-	      // assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Successfully saved value set[\\s\\S]*$"));
-	      Thread.sleep(10000);
-	      
-	      // Wait for page to completely load
-		  WebDriverWait wait1 = new WebDriverWait(driver, 120);		
+		      
+		  //Confirm page is fully loaded
+		  waitForPageLoad();
+		  WebDriverWait wait1 = new WebDriverWait(driver, 60);		
 		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[4]")));	
 	  
 	      // Wait for page to completely load
-		  WebDriverWait wait2 = new WebDriverWait(driver, 120);		           
+		  WebDriverWait wait2 = new WebDriverWait(driver, 60);		           
 		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[5]")));
 	  
-		  // Confirm Terminology Browser  page refreshes
+		  // Confirm Terminology Browser page refreshes
 		  WebDriverWait wait3 = new WebDriverWait(driver, 60);
 		  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/thead/tr/th[2]"), "Identifier"));
 		  
 		   //Clear existing search criteria
 			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/span/button[1]")).click();	
 			 
-		  // Wait for page to completely load
-			  WebDriverWait wait4 = new WebDriverWait(driver, 120);		
-			  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id=\"ctl00_mainBody\"]/div[8]")));	
-}
-  public void FindCodeSystem(String codeSystemName, String codeSystemOID, String fieldLabel2) throws Exception {
-		  
-	  // Confirm the page is loaded
-         // waitForPageLoad();
-  
-		// Confirm the Code Systems page appears
-		WebDriverWait wait = new WebDriverWait(driver, 60);
-		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/thead/tr/th[3]")));
-		assertTrue("Could not find \"Code System Members\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*#/Members[\\s\\S][\\s\\S]*$"));
-		
-	    // Wait for page to fully load
-	    WebDriverWait wait1 = new WebDriverWait(driver, 120);		
-	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[8]"))); 
-
-	    // Wait for page to refresh
-	    WebDriverWait wait2 = new WebDriverWait(driver, 120);		
-	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/div[5]")));    
-	    
-	   //Clear existing search criteria 
-		 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/span/button[1]")).click();
-
-		 // Wait for page to refresh
-	    WebDriverWait wait3 = new WebDriverWait(driver, 120);		
-	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/div[5]"))); 
-
-	    // Confirm the search box is clickable
-	    WebDriverWait wait4 = new WebDriverWait(driver, 60);
-		WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/input")));
-	    
-		// Search for the Code System
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/input")).sendKeys(codeSystemName);
-		Thread.sleep(1000);
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/span/button[2]")).click();
-
-	    //Confirm the correct Code System is returned
-		WebDriverWait wait5 = new WebDriverWait(driver, 60);
-		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[2]"), codeSystemOID));
-	 	assertTrue("Could not find \"Code System OID\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(codeSystemOID) >= 0);
+		  //Confirm page is fully re-loaded
+		  waitForPageLoad();
+		  WebDriverWait wait4 = new WebDriverWait(driver, 60);		
+		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id=\"ctl00_mainBody\"]/div[8]")));	
 }
 
-  public void SaveCodeSystem() throws Exception {
-	  
-	  // Confirm the page is loaded
-         // waitForPageLoad();
-  
-	   //Save the Code System
-	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[3]/div/div/div[3]/button[1]")).click();
-
-	     //Confirm the Alert appears
-		   WebDriverWait wait = new WebDriverWait(driver, 60);
-		   wait.until(ExpectedConditions.alertIsPresent());
-		   
-	     // Switch the driver context to the "Successfully saved code system" alert
-		    Alert alertDialog5 = driver.switchTo().alert();
-		    //Get the alert text
-		    String alertText5 = alertDialog5.getText();
-		    //Click the OK button on the alert.
-		    alertDialog5.accept();
-		    // assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Successfully saved code system[\\s\\S]*$"));
-		    Thread.sleep(2000);
-		    
-		  // Confirm the user is returned to the Code Systems Page
-		    WebDriverWait wait2 = new WebDriverWait(driver, 60);
-			WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/thead/tr/th[3]")));
-			assertTrue("Could not find \"Code System Members\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*#/Members[\\s\\S][\\s\\S]*$"));
-			
-			// Confirm Code System Browser text appears
-			WebDriverWait wait3 = new WebDriverWait(driver, 60);
-			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/thead/tr/th[2]"), "Identifier"));
-		
-		  //Clear existing search criteria 
-			 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/span/button[2]")).click();
-			                               		
-		    // Wait for page to fully load
-		    WebDriverWait wait4 = new WebDriverWait(driver, 120);		
-		    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.blockUI.blockOverlay"))); 
-
-  }
- 
   public void ReturnHome(String welcomeMessage) throws Exception {
 	  
 	   // Return to the Trifolia Home Page
@@ -256,25 +212,26 @@ public class G_TerminologyFunctions {
 	    WebDriverWait wait4 = new WebDriverWait(driver, 60);
 	    WebElement element4 = wait4.until(ExpectedConditions.visibilityOfElementLocated(By.id("appnav")));
 	    
+	    // Wait for page to fully load
+		   waitForPageLoad();
+		   
+	    // Wait for Bindings to complete
+	      waitForBindings("appnav");
+		  
 	    //Confirm the Welcome Message appears
 		WebDriverWait wait = new WebDriverWait(driver, 60);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/h2"), welcomeMessage));
 		assertTrue("Could not find \"Value Set OID\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(welcomeMessage) >= 0);   
-	
 }
 
-  
 // TEST 1:  Browse a Value Set
   @Test
     public void BrowseValueSet(String valueSetName, String valueSetOID, String conceptID, String permissionUserName) throws Exception {
     
-	// Open Terminology Browser
-	  
+	// Open Terminology Browser  
 	   OpenTerminologyBrowser();
-	
-	   // Confirm the page is loaded
-	      // waitForPageLoad();
-	  
+
+
 	// Find the Value Set
 	if (permissionUserName == "lcg.admin")
 	{
@@ -296,10 +253,22 @@ public class G_TerminologyFunctions {
 		FindValueSet("HL7 BasicConfidentialityKind", "2.16.840.1.113883.1.11.16926", "Identifier");
 	}
 	
-	//Expand the Value Set and check members
+	 // Wait for page to fully load
+	    waitForPageLoad();
+	    
+    // Wait for the bindings to complete
+    waitForBindings("BrowseTerminology");
+	   
+	//Open the Value Set Viewer
 	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/a")).click();
 	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/ul/li[1]/a")).click();
 	
+	  //Confirm page is fully loaded
+	  waitForPageLoad();
+	  
+	// Wait for the bindings to complete
+	    waitForBindings("ViewValueSet");
+	  
 	// Confirm the View Value Sets form appears
 	WebDriverWait wait = new WebDriverWait(driver, 60);
 	WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/h1/span")));
@@ -314,33 +283,38 @@ public class G_TerminologyFunctions {
        OpenTerminologyBrowser();
     
        // Confirm the page is loaded
-	      // waitForPageLoad();
-		  WebDriverWait wait1 = new WebDriverWait(driver, 120);		           
+	      waitForPageLoad();
+		  WebDriverWait wait1 = new WebDriverWait(driver, 60);		           
 		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[5]")));
 	    
 	//Clear existing search criteria
-	  driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/span/button[1]")).click();
+	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/span/button[1]")).click();
 	 	
-	  // Confirm the page is re-loaded
-        // waitForPageLoad();
-	   WebDriverWait wait2 = new WebDriverWait(driver, 120);		
+	    // Confirm the page is re-loaded
+        waitForPageLoad();
+        
+        // Wait for the bindings to complete
+	    waitForBindings("BrowseTerminology");
+        
+	   // Confirm existing search criteria is cleared
+	   WebDriverWait wait2 = new WebDriverWait(driver, 60);		
+>>>>>>> Stashed changes
 	   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[5]"))); 
 
     // Return to the Trifolia Home Page
-    ReturnHome("Welcome to Trifolia Workbench");
-    
+    ReturnHome("Welcome to Trifolia Workbench"); 
  }
     
 // TEST 2:  Create the Value Set
   @Test
-    public void CreateValueSet(String valueSetName, String valueSetOid, String valueSetCode, String valueSetDescription, String valueSetSourceUrl
-    		) throws Exception { 
+    public void CreateValueSet(String valueSetName, String valueSetOid, String valueSetCode, String valueSetDescription, String valueSetSourceUrl,
+    		String permissionUserName) throws Exception { 
     
 
 	     OpenTerminologyBrowser();
 	     
 	     // Confirm the page is loaded
-	      // waitForPageLoad();
+	      waitForPageLoad();
 	      
 		// Confirm the Add Value Set option is available.
 		WebDriverWait wait = new WebDriverWait(driver, 60);
@@ -351,16 +325,16 @@ public class G_TerminologyFunctions {
 		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[1]/div[2]/div/button")).click();
 
 		 // Confirm the page is loaded
-	      // waitForPageLoad();
+	      waitForPageLoad();
+	      
+	      // Wait for the bindings to complete
+		    waitForBindings("BrowseTerminology");
 	      
 		 //Confirm the Value Set Editor appears
 		WebDriverWait wait1 = new WebDriverWait(driver, 60);
 	    WebElement element1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"editValueSetDialog\"]/div/div/div[1]/h4")));
 	    assertTrue("Could not find \"Edit Value Set\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Edit Value Set[\\s\\S][\\s\\S]*$"));
 	    
-	    // Open the Add new Value Set form
-	    // driver.findElement(By.xpath("//*[@id=\"valuesets\"]/div[1]/span/button[2]")).click();
-
 		// Add Value Set Meta Data
 		driver.findElement(By.xpath("//*[@id=\"valueSetName\"]")).sendKeys(valueSetName);
 		driver.findElement(By.xpath("//*[@id=\"valueSetOid\"]")).sendKeys(valueSetOid);
@@ -369,13 +343,25 @@ public class G_TerminologyFunctions {
 	    driver.findElement(By.xpath("//*[@id=\"valueSetIncomplete\"]")).click();
 	    driver.findElement(By.xpath("//*[@id=\"valueSetSourceUrl\"]")).sendKeys(valueSetSourceUrl);
     
-	    SaveValueSet();
+	    // Save the Value Set
+	       SaveValueSet();
 	    
-	    // Confirm the page is loaded
-	      // waitForPageLoad();
-	      
+	    // Confirm the value set appears in the Value Set Browser
+	       if (permissionUserName == "lcg.admin")
+			{
+				FindValueSet("Automation Test Gender Value Set", "urn:oid:2.2.2.2.2.2.2.2", "Identifier");
+			}
+		if (permissionUserName == "hl7.member")
+			{
+				FindValueSet("HL7 Member Test Gender Value Set", "urn:oid:1.2.3.4.5.6.7.8", "Identifier");
+			}
+	       
+		// Wait for page to fully load and the bindings to complete
+	        waitForPageLoad();
+		    waitForBindings("BrowseTerminology");
+		          
 	    // Return to the Trifolia Home Page
-	    ReturnHome("Welcome to Trifolia Workbench");     
+	       ReturnHome("Welcome to Trifolia Workbench");     
 }
       
 // TEST 3:  Edit the Value Set
@@ -387,7 +373,7 @@ public class G_TerminologyFunctions {
 	    OpenTerminologyBrowser();
 	    
 	    // Confirm the page is loaded
-	      // waitForPageLoad();
+	      waitForPageLoad();
 	      
 	    // Find the Value Set
 	    if (permissionUserName == "lcg.admin")
@@ -399,78 +385,150 @@ public class G_TerminologyFunctions {
 				FindValueSet("HL7 Member Test Gender Value Set", "urn:oid:1.2.3.4.5.6.7.8", "Identifier");
 			}
 		
-		//Open the Value Set Editor and confirm the correct Value Set appears
-		WebDriverWait wait = new WebDriverWait(driver, 60);
-		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[2]"), valueSetOID));
-		assertTrue("Could not find \"Value Set OID\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(valueSetOID) >= 0);
-	    
-		 //Launch the Member Editor 
-		 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/a/span[2]")).click();
-		 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/ul/li[3]/a")).click();
-		 
 		 // Confirm the page is loaded
-	      // waitForPageLoad();
+            waitForPageLoad();
+            
+		  // Click the drop-down option for the value set
+		     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/a/span[2]")).click();
+		 
+		 //Launch the Concept Editor
+		   WebDriverWait wait = new WebDriverWait(driver, 60);
+		   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/ul/li[3]/a"), "Edit Concepts"));
+    	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/ul/li[3]/a")).click();
+			
+		 // Confirm the page is loaded
+		    waitForPageLoad();
+		    
+		    // Wait for the bindings to complete
+		    waitForBindings("EditValueSetConcepts");
+		
+		 // Confirm the concept Editor opens
+		    WebDriverWait wait1 = new WebDriverWait(driver, 60);
+			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/thead/tr/th[2]"), "Display Name"));
+			WebDriverWait wait2 = new WebDriverWait(driver, 60);
+			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/thead/tr/th[1]"), "Code"));
+		
+		// Confirm the correct Value Set appears in the Concept Editor
+			WebDriverWait wait20 = new WebDriverWait(driver, 60);
+			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h2/span"), valueSetName));
+			assertTrue("Could not find \"Value Set Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(valueSetName) >= 0);
+	    	 
+    	  // Confirm the page is loaded
+	         waitForPageLoad();
 	      
 		 // Confirm the Edit Concept Form appears
-		 WebDriverWait wait1 = new WebDriverWait(driver, 60);
-		 WebElement element1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"EditValueSetConcepts\"]/h2")));
-		 assertTrue("Could not find \"Value Set Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(valueSetName) >= 0);
+		    WebDriverWait wait3 = new WebDriverWait(driver, 60);
+		    WebElement element3 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"EditValueSetConcepts\"]/h2")));
+		    assertTrue("Could not find \"Value Set Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(valueSetName) >= 0);
     
       // Add Concept Member Meta Data
 		 
 		 // Concept Code
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[1]/input")).sendKeys(concept1Code);
-	     // Concept Name
-	 	 driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[2]/input")).sendKeys(concept1Name);
-	 	 // Concept Code System
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[3]/select")).sendKeys(concept1CodeSystem);
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[3]/select")).sendKeys(Keys.TAB);
-	     //Concept Status
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[4]/select")).sendKeys(concept1Status);
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[4]/select")).sendKeys(Keys.TAB);
-	     // Select 
-    	 driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[5]/div/div[2]/button/i")).click();
-    	 driver.findElement(By.xpath("//*[@id=\"ctl00_mainBody\"]/div[6]/div[1]/table/tfoot/tr[1]/th")).click();
-    	 Thread.sleep(200);
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[6]/div/button")).click();
+		    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[1]/input")).click();
+	        driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[1]/input")).sendKeys(concept1Code);
+	        driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[1]/input")).sendKeys(Keys.TAB);
 
+	     // Concept Name
+	        driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[2]/input")).click();
+	 	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[2]/input")).sendKeys(concept1Name);
+	 	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[2]/input")).sendKeys(Keys.TAB);
+
+	 	 // Concept Code System
+	 	     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[3]/select")).click();
+		     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[3]/select")).sendKeys(concept1CodeSystem);
+		     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[3]/select")).sendKeys(Keys.TAB);
+		   
+	     //Concept Status
+		     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[4]/select")).click();
+		     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[4]/select")).sendKeys(concept1Status);
+		     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[4]/select")).sendKeys(Keys.TAB);
+		    
+	     // Select Date
+	     // Open Calendar
+		     WebDriverWait wait4 = new WebDriverWait(driver, 60); 
+		     WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[5]/div/div[2]/button")));
+    	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[5]/div/div[2]/button")).click();
+    	 
+    	 // Confirm Calendar Opens and click Today
+	    	 WebDriverWait wait5 = new WebDriverWait(driver, 60);                   
+			 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[7]/div[1]/table/tfoot/tr[1]/th"), "Today"));
+	    	 driver.findElement(By.xpath("/html/body/div[7]/div[1]/table/tfoot/tr[1]/th")).click();
+	    	 
+    	 // Click Add                     
+	    	 driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[6]/div/button")).click();
 	     
      // Add Concept 2 details
-	     //Concept Code
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[1]/input")).sendKeys(concept2Code);
-	     //Concept Name
-	 	 driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[2]/input")).sendKeys(concept2Name);
-	 	 //Concept Code System
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[3]/select")).sendKeys(concept2CodeSystem);
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[3]/select")).sendKeys(Keys.RETURN);
-	     //Concept Status
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[4]/select")).sendKeys(concept2Status);
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[4]/select")).sendKeys(Keys.RETURN);
-	     //Select
-		 driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[5]/div/div[2]/button/i")).click();
-		 driver.findElement(By.xpath("//*[@id=\"ctl00_mainBody\"]/div[6]/div[1]/table/tfoot/tr[1]/th")).click();
-		 Thread.sleep(500);
-	     driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[6]/div/button")).click();
-     
-    //Add Concept 3    
-	     //Concept Code
-	    driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[1]/input")).sendKeys(concept3Code);
-	    //Concept Name
-		driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[2]/input")).sendKeys(concept3Name);
-		 //Concept Code system
-	    driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[3]/select")).sendKeys(concept3CodeSystem);
-	    driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[3]/select")).sendKeys(Keys.TAB);
-	    //Concept Status
-	    driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[4]/select")).sendKeys(concept3Status);
-	    driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[4]/select")).sendKeys(Keys.TAB);
-	    // Select Date
-		driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[5]/div/div[2]/button/i")).click();
-		driver.findElement(By.xpath("//*[@id=\"ctl00_mainBody\"]/div[6]/div[1]/table/tfoot/tr[1]/th")).click();
-		// Add Concept
-	    driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/table/tfoot/tr/td[6]/div/button")).click();
+	    	 // Concept Code
+			    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[1]/input")).click();
+		        driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[1]/input")).sendKeys(concept2Code);
+		        driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[1]/input")).sendKeys(Keys.TAB);
 
+		     // Concept Name
+		        driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[2]/input")).click();
+		 	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[2]/input")).sendKeys(concept2Name);
+		 	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[2]/input")).sendKeys(Keys.TAB);
+
+		 	 // Concept Code System
+		 	     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[3]/select")).click();
+			     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[3]/select")).sendKeys(concept2CodeSystem);
+			     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[3]/select")).sendKeys(Keys.TAB);
+			   
+		     //Concept Status
+			     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[4]/select")).click();
+			     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[4]/select")).sendKeys(concept2Status);
+			     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[4]/select")).sendKeys(Keys.TAB);
+			    
+		     // Select Date
+		     // Open Calendar
+			     WebDriverWait wait6 = new WebDriverWait(driver, 60);
+			     WebElement element6 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[5]/div/div[2]/button")));
+	    	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[5]/div/div[2]/button")).click();
+	    	 
+	    	    // Confirm Calendar Opens and click Today
+		    	 WebDriverWait wait7 = new WebDriverWait(driver, 60);                   
+				 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[7]/div[1]/table/tfoot/tr[1]/th"), "Today"));
+		    	 driver.findElement(By.xpath("/html/body/div[7]/div[1]/table/tfoot/tr[1]/th")).click();
+		   	 
+	    	 // Click Add
+		    	 driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[6]/div/button")).click();
+		
+    //Add Concept 3    
+		    	 // Concept Code
+				    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[1]/input")).click();
+			        driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[1]/input")).sendKeys(concept3Code);
+			        driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[1]/input")).sendKeys(Keys.TAB);
+
+			     // Concept Name
+			        driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[2]/input")).click();
+			 	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[2]/input")).sendKeys(concept3Name);
+			 	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[2]/input")).sendKeys(Keys.TAB);
+
+			 	 // Concept Code System
+			 	     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[3]/select")).click();
+				     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[3]/select")).sendKeys(concept3CodeSystem);
+				     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[3]/select")).sendKeys(Keys.TAB);
+				   
+			     //Concept Status
+				     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[4]/select")).click();
+				     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[4]/select")).sendKeys(concept3Status);
+				     driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[4]/select")).sendKeys(Keys.TAB);
+				    
+			     // Select Date
+			     // Open Calendar
+				     WebDriverWait wait8 = new WebDriverWait(driver, 60);
+				     WebElement element8 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[5]/div/div[2]/button")));
+		    	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[5]/div/div[2]/button")).click();
+		    	 
+		    	    // Confirm Calendar Opens and click Today
+			    	 WebDriverWait wait9 = new WebDriverWait(driver, 60);                   
+					 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[7]/div[1]/table/tfoot/tr[1]/th"), "Today"));
+			    	 driver.findElement(By.xpath("/html/body/div[7]/div[1]/table/tfoot/tr[1]/th")).click();
+			  	 
+		    	 // Click Add
+			    	 driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tfoot/tr/td[6]/div/button")).click();
+			
     //Save the updated Value Set Members 
-    driver.findElement(By.xpath("//*[@id=\"EditValueSetConcepts\"]/div[2]/button")).click();
+      driver.findElement(By.xpath("/html/body/div[2]/div/div/div[2]/button")).click();
 
     //Confirm the Alert appears
 	   WebDriverWait wait0 = new WebDriverWait(driver, 60);
@@ -485,27 +543,49 @@ public class G_TerminologyFunctions {
       // assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Successfully saved value set[\\s\\S]*$"));
       
       // Wait for page to completely load
-        // waitForPageLoad();
-		 WebDriverWait wait2 = new WebDriverWait(driver, 120);		
+         waitForPageLoad();
+		 WebDriverWait wait10 = new WebDriverWait(driver, 60);		
 		 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id=\"ctl00_mainBody\"]/div[7]")));
  
-	  // Click Cancel to return to the Value Set Browser    
-		 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[2]/a")).click();
-	     Thread.sleep(1000);
+	   WebDriverWait wait21 = new WebDriverWait(driver, 60);		
+	   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/div[5]"))); 
+
+	 // Wait for the bindings to complete
+	    waitForBindings("EditValueSetConcepts");
+	 
+	 // Confirm Value Set Members have been added.
+	    WebDriverWait wait11 = new WebDriverWait(driver, 60);                   
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr[1]/td[2]"), concept1Name));
+		WebDriverWait wait12 = new WebDriverWait(driver, 60);                   
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr[2]/td[2]"), concept2Name));
+		WebDriverWait wait13 = new WebDriverWait(driver, 60);                   
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr[3]/td[2]"), concept3Name));	    
+		Thread.sleep(1000);
+		
+		// Click Cancel to return to the Value Set Browser   
+		  WebDriverWait wait22 = new WebDriverWait(driver, 60);
+		  WebElement element22 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[2]/a")));
+		  driver.findElement(By.xpath("/html/body/div[2]/div/div/div[2]/a")).click();
+
+		// Wait for page to fully load 
+	        waitForPageLoad();
+	        
+	        // Wait for bindings to complete
+		    waitForBindings("BrowseTerminology");
 		 
 		  // Wait for page to completely load
-	      // waitForPageLoad();
-		  WebDriverWait wait3 = new WebDriverWait(driver, 120);		
-		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[8]")));
-	
+		      waitForPageLoad();
+			  WebDriverWait wait14 = new WebDriverWait(driver, 60);		
+			  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[8]")));
+		
 		//Clear existing search criteria 
-		   WebDriverWait wait4 = new WebDriverWait(driver, 60);                                                    
+		   WebDriverWait wait15 = new WebDriverWait(driver, 60);                                                    
 		   WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/span/button[1]")));	
 		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/span/button[1]")).click();
 		
     	 // Wait for page to re-load
-		    // waitForPageLoad();
-			 WebDriverWait wait5 = new WebDriverWait(driver, 120);		
+		    waitForPageLoad();
+		    WebDriverWait wait16 = new WebDriverWait(driver, 60);		
 			 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/div[5]"))); 
 	     
        // Return to the Trifolia Home Page
@@ -530,13 +610,27 @@ public class G_TerminologyFunctions {
 				FindValueSet("HL7 Member Test Gender Value Set", "urn:oid:1.2.3.4.5.6.7.8", "Identifier");
 			}
 	    
-    //Delete the Value Set 
-		
-		 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/a/span[2]")).click();
-		 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/ul/li[4]/a")).click();
+		 // Wait for page to re-load
+	         waitForPageLoad();
+	         
+         // Wait for the bindings to complete
+		    waitForBindings("BrowseTerminology");
+	         
+	     // Click the drop-down options for the Value Set
+		    WebDriverWait wait = new WebDriverWait(driver, 60);                                                    
+			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/a/span[2]")));	
+		    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/a/span[2]")).click();
+		 
+		 //Delete the Value Set 
+		   WebDriverWait wait21 = new WebDriverWait(driver, 120);
+		   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/ul/li[4]/a"), "Remove"));
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/tbody/tr/td[1]/div/ul/li[4]/a")).click();
     
+		 // Wait for page to re-load
+		    waitForPageLoad();
+		    
 		 //Confirm the Alert appears
-		   WebDriverWait wait = new WebDriverWait(driver, 60);
+		   WebDriverWait wait1 = new WebDriverWait(driver, 120);
 		   wait.until(ExpectedConditions.alertIsPresent());
 	    
 	    //Switch the driver context to the "Are you sure you want to delete this value set?" alert
@@ -545,7 +639,8 @@ public class G_TerminologyFunctions {
 	    String alertText3 = alertDialog3.getText();
 	    //Click the OK button on the alert.
 	    alertDialog3.accept();
-	    Thread.sleep(1000); 
+	    Thread.sleep(2000); 
+
 		 //Switch the driver context to the "Successfully deleted value set?" alert
 		 Alert alertDialog4 = driver.switchTo().alert();
 		 //Get the alert text
@@ -555,18 +650,18 @@ public class G_TerminologyFunctions {
 		 alertDialog4.accept();
 		 
 		 // Wait for page to completely load
-		 WebDriverWait wait1 = new WebDriverWait(driver, 120);		
+		 WebDriverWait wait2 = new WebDriverWait(driver, 60);		
 		 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id=\"ctl00_mainBody\"]/div[7]"))); 
 
 	   // Confirm the Terminology Browser appears
-		 WebDriverWait wait2 = new WebDriverWait(driver, 60);                   
+		 WebDriverWait wait3 = new WebDriverWait(driver, 60);                   
 	     wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/thead/tr/th[2]"), "Identifier"));
    
 //	   //Clear existing search criteria
 //		  driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/form/div/span/button[1]")).click();	
 			 
 	   // Wait for page to completely load
-		  WebDriverWait wait3 = new WebDriverWait(driver, 120);		
+		  WebDriverWait wait4 = new WebDriverWait(driver, 60);		
 		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id=\"ctl00_mainBody\"]/div[8]")));	
 	
 	    // Return to the Trifolia Home Page
@@ -578,6 +673,129 @@ public class G_TerminologyFunctions {
 //                               PART II - CREATE, EDIT and DELETE CODE SYSTEMS
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
+  public void FindCodeSystem(String codeSystemName, String codeSystemOID, String fieldLabel2) throws Exception {
+	  
+		//Confirm page is fully loaded
+		  waitForPageLoad();
+		  
+		  // Wait for the bindings to complete
+		    waitForBindings("BrowseTerminology");
+	  
+	    // Confirm the search box is clickable
+	    WebDriverWait wait = new WebDriverWait(driver, 60);
+		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/input")));
+	    
+		// Enter Code System Name
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/input")).click();
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/input")).sendKeys(codeSystemName);
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/input")).sendKeys(Keys.RETURN);
+		   
+		// Click Search
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/span/button[2]")).click();
+
+		  //Confirm page is fully loaded
+		  waitForPageLoad();
+		  WebDriverWait wait4 = new WebDriverWait(driver, 60);		
+		  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/div[5]")));	
+		  
+	    //Confirm the correct Code System is returned
+		WebDriverWait wait5 = new WebDriverWait(driver, 60);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[2]"), codeSystemOID));
+	 	assertTrue("Could not find \"Code System OID\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(codeSystemOID) >= 0);
+}
+
+public void ClearExistingCodeSystem() throws Exception {
+	
+	  // Confirm the page is loaded
+         waitForPageLoad();
+         
+         // Wait for the bindings to complete
+		    waitForBindings("BrowseTerminology");
+
+	// Confirm the Code Systems page appears
+		WebDriverWait wait = new WebDriverWait(driver, 60);
+		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/thead/tr/th[3]")));
+		assertTrue("Could not find \"Code System Members\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*#/Members[\\s\\S][\\s\\S]*$"));
+	
+ // Wait for page to fully load
+	   WebDriverWait wait1 = new WebDriverWait(driver, 60);		
+	   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[8]"))); 
+
+ // Wait for page to refresh
+	   WebDriverWait wait2 = new WebDriverWait(driver, 60);		
+	   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/div[5]")));    
+	   
+ //Clear existing search criteria 
+	 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/span/button[1]")).click();
+
+	  //Confirm page is fully re-loaded
+	    waitForPageLoad();  
+	     WebDriverWait wait3 = new WebDriverWait(driver, 60);		
+	     wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/div[5]"))); 	
+}
+
+public void OpenCodeSystemEditor() throws Exception {
+	
+	       // Click the drop-down options for the code system
+			WebDriverWait wait = new WebDriverWait(driver, 60);
+			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/a/span[2]")));
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/a/span[2]")).click();
+			
+		     // Open the Code System EditorOpenCodeSystemEditor()
+			WebDriverWait wait1 = new WebDriverWait(driver, 120);                   
+			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/ul/li[1]/a"), "Edit"));
+	      	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/ul/li[1]/a")).click();
+
+			//Confirm the Code System Editor appears
+		    WebDriverWait wait2 = new WebDriverWait(driver, 60);
+			WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"editCodeSystemDialog\"]/div/div/div[1]/h4")));
+			assertTrue("Could not find \"Edit Code System\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Edit Code System[\\s\\S][\\s\\S]*$"));	   
+}
+
+public void SaveCodeSystem() throws Exception {
+	  
+	  // Confirm the page is loaded
+       waitForPageLoad();
+
+	   //Save the Code System
+	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[3]/div/div/div[3]/button[1]")).click();
+
+	     //Confirm the Alert appears
+		   WebDriverWait wait = new WebDriverWait(driver, 60);
+		   wait.until(ExpectedConditions.alertIsPresent());
+		   
+	     // Switch the driver context to the "Successfully saved code system" alert
+		    Alert alertDialog5 = driver.switchTo().alert();
+		    //Get the alert text
+		    String alertText5 = alertDialog5.getText();
+		    //Click the OK button on the alert.
+		    alertDialog5.accept();
+		    // assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Successfully saved code system[\\s\\S]*$"));
+		    // Thread.sleep(2000);
+		    
+			  //Confirm page is fully loaded
+			  waitForPageLoad();
+			  
+			  // Wait for the bindings to complete
+			    waitForBindings("BrowseTerminology");
+		    
+		  // Confirm the user is returned to the Code Systems Page
+		    WebDriverWait wait2 = new WebDriverWait(driver, 60);
+			WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/thead/tr/th[3]")));
+			assertTrue("Could not find \"Code System Members\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*#/Members[\\s\\S][\\s\\S]*$"));
+			
+			// Confirm Code System Browser text appears
+			WebDriverWait wait3 = new WebDriverWait(driver, 60);
+			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/thead/tr/th[2]"), "Identifier"));
+		
+			  //Clear existing search criteria 
+				 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/span/button[2]")).click();
+				                               		
+			  //Confirm page is fully re-loaded
+			  waitForPageLoad();
+		    WebDriverWait wait4 = new WebDriverWait(driver, 60);		
+		    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.blockUI.blockOverlay"))); 
+}
 // TEST 1: Browse a Code System
   @Test
     public void BrowseCodeSystem(String codeSystemName, String codeSystemOID, String permissionUserName) throws Exception {
@@ -586,13 +804,16 @@ public class G_TerminologyFunctions {
 	  
 	       OpenTerminologyBrowser();
 	   
-	    // Confirm the Value Set Page appears
+	    // Confirm the Code System Page appears
 			WebDriverWait wait = new WebDriverWait(driver, 60);                   
 			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/table/thead/tr/th[2]"), "Identifier"));
       
 		// Click the Code Systems tab
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/ul/li[2]/a")).click();
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/ul/li[2]/a")).click();
 		
+		// Clear existing code system search criteria
+		   ClearExistingCodeSystem();
+		   
 		// Find the Code System
 		if (permissionUserName == "lcg.admin")
 		{
@@ -603,41 +824,28 @@ public class G_TerminologyFunctions {
 			FindCodeSystem("HL7 V2.5 Route of Administration codes", "2.16.840.1.113883.12.162", "#/Members");
 		}
 
-		//Open the Code System Editor for Admin Users
+		//Open the Code System Editor 
 		if (permissionUserName == "lcg.admin") 
 	       {
-				driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/a/span[2]")).click();
-				driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/ul/li[1]/a")).click();
-				
-				//Confirm the Code System Editor is opened
-				 WebDriverWait wait1 = new WebDriverWait(driver, 60);
-				 WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"editCodeSystemDialog\"]/div/div/div[1]/h4")));
-			     assertTrue("Could not find \"Edit Code System\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Edit Code System[\\s\\S][\\s\\S]*$"));
-		
+			     OpenCodeSystemEditor();
+			     
 			     //Cancel and return to the Code System Browser
 			     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[3]/div/div/div[3]/button[2]")).click();
-			     WebDriverWait wait2 = new WebDriverWait(driver, 60);
-				 WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/span/button[1]")));	
-				 Thread.sleep(1000);
+			     WebDriverWait wait1 = new WebDriverWait(driver, 60);
+				 WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/span/button[1]")));	
 				 
-			    // Wait for page to re-load
-				  WebDriverWait wait3 = new WebDriverWait(driver, 120);		
-				  wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[3]/div/div/div[1]/h4"))); 
-		
-			   //Clear existing search criteria 
-			     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/span/button[1]")).click();
-			    
-				 // Wait for page to re-load
-				 WebDriverWait wait4 = new WebDriverWait(driver, 120);		
-				 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/div[5]"))); 
-			
-			  // Confirm screen is refreshed
-				 WebDriverWait wait5 = new WebDriverWait(driver, 60);
-				 WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr[3]/td[1]/div/a")));	
-					
-			    // Return to the Trifolia Home Page
-			    ReturnHome("Welcome to Trifolia Workbench");	    
+				//Confirm page is fully re-loaded
+				  waitForPageLoad();
+				  
+				// Confirm the Code Systems page appears
+					WebDriverWait wait2 = new WebDriverWait(driver, 60);
+					WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/thead/tr/th[3]")));
+					assertTrue("Could not find \"Code System Members\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*#/Members[\\s\\S][\\s\\S]*$"));
+					  
+				// Clear existing code system search criteria
+				   ClearExistingCodeSystem();     
 		   }
+		
 			if (permissionUserName == "lcg.user")
 			{
 				FindCodeSystem("HL7 Ethnicity", "urn:oid:2.16.840.1.113883.5.50", "#/Members");
@@ -682,7 +890,6 @@ public class G_TerminologyFunctions {
 	     driver.findElement(By.xpath("//*[@id=\"editCodeSystemDialog\"]/div/div/div[2]/div[3]/textarea")).sendKeys(codeSystemDescription);
      
 	     // Save the Code System
-	     
 	     SaveCodeSystem();
      
 	     // Return to the Trifolia Home Page
@@ -705,6 +912,9 @@ public class G_TerminologyFunctions {
 		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/thead/tr/th[3]")));
 		assertTrue("Could not find \"Browse Terminology\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*#/Members[\\s\\S][\\s\\S]*$"));
 	
+		// Clear existing code system search criteria
+		   ClearExistingCodeSystem();
+		
 		// Find the Code System
 			if (permissionUserName == "lcg.admin")
 			{
@@ -715,21 +925,21 @@ public class G_TerminologyFunctions {
 				FindCodeSystem("HL7 Member Test Vaccine Code System", "urn:oid:1.5.5.5.5.5.5.5", "#/Members");
 			}
 
-		// Open the Code System Editor and Change the Description
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/a")).click();
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/ul/li[1]/a")).click();
-
-		//Confirm the Code System Editor appears
-	    WebDriverWait wait3 = new WebDriverWait(driver, 60);
-		WebElement element3 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"editCodeSystemDialog\"]/div/div/div[1]/h4")));
-		assertTrue("Could not find \"Edit Code System\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Edit Code System[\\s\\S][\\s\\S]*$"));
-    
+	     // Wait for page to re-load
+	        waitForPageLoad();
+	 	 
+	     // Open the Code System Editor
+	        OpenCodeSystemEditor();
+	        
 	    //Change the Description
-	    driver.findElement(By.xpath("//*[@id=\"editCodeSystemDialog\"]/div/div/div[2]/div[3]/textarea")).sendKeys(codeSystemDescription);
+	      driver.findElement(By.xpath("//*[@id=\"editCodeSystemDialog\"]/div/div/div[2]/div[3]/textarea")).sendKeys(codeSystemDescription);
 
 	    // Save the Code System
 	     SaveCodeSystem();
      
+	    // Clear existing code system search criteria
+		   ClearExistingCodeSystem();
+		   
 	     // Return to the Trifolia Home Page
 	     ReturnHome("Welcome to Trifolia Workbench");
      
@@ -761,15 +971,22 @@ public class G_TerminologyFunctions {
 				FindCodeSystem("HL7 Member Test Vaccine Code System", "urn:oid:1.5.5.5.5.5.5.5", "#/Members");
 			}
 	
-     // Delete the Code System
+		 // Wait for page to re-load
+	        waitForPageLoad();
 	 	
+	    // Click the drop-down options for the code system
 		WebDriverWait wait1 = new WebDriverWait(driver, 60);
 		WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/a/span[2]")));
 		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/a/span[2]")).click();
-		WebDriverWait wait2 = new WebDriverWait(driver, 60);
-		WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/ul/li[2]/a")));
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/ul/li[2]/a")).click();
+		
+	     // Delete the Code System
+		WebDriverWait wait2 = new WebDriverWait(driver, 60);                   
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr[1]/td[1]/div/ul/li[2]/a"), "Remove"));
+      	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr/td[1]/div/ul/li[2]/a")).click();
 
+		// Wait for page to re-load
+           waitForPageLoad();
+        
     //Confirm the Alert appears
 	   WebDriverWait wait0 = new WebDriverWait(driver, 120);
 	   wait0.until(ExpectedConditions.alertIsPresent());
@@ -780,26 +997,17 @@ public class G_TerminologyFunctions {
 	 String alertText7 = alertDialog7.getText();
 	 // Click the OK button on the alert.
 	 alertDialog7.accept();
+	 Thread.sleep(2000);
 	 //Switch the driver context to the "Successfully deleted code system?" alert
 	 Alert alertDialog8 = driver.switchTo().alert();
 	 //Get the alert text
 	 String alertText8 = alertDialog8.getText();
 	 // 3.6 Click the OK button on the alert.
 	 alertDialog8.accept();
-	// 3.4 Clear the search criteria
-	 Thread.sleep(1000);
-	 
-	   //Clear existing search criteria 
-     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/form/div/span/button[1]")).click();
-    
-	 // Wait for page to re-load
-	 WebDriverWait wait3 = new WebDriverWait(driver, 120);		
-	 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/div[5]"))); 
-
-  // Confirm screen is refreshed
-	 WebDriverWait wait4 = new WebDriverWait(driver, 60);
-	 WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/table/tbody/tr[3]/td[1]/div/a")));	
-		
+ 
+	   //Clear existing Code System search criteria 
+       ClearExistingCodeSystem();
+       		
     // Return to the Trifolia Home Page
     ReturnHome("Welcome to Trifolia Workbench");	    
      

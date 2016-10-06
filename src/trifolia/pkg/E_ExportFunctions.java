@@ -45,26 +45,35 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
   public void waitForPageLoad() 
   {
-	WebDriverWait wait = new WebDriverWait(driver, 30);
+	WebDriverWait wait = new WebDriverWait(driver, 60);
 	     wait.until(ExpectedConditions.jsReturnsValue("return document.readyState ==\"complete\";"));		
   }
   
+  public void waitForBindings(String waitForBinding) 
+  {
+        JavascriptExecutor js = (JavascriptExecutor)driver;	
+	  	WebDriverWait wait = new WebDriverWait(driver, 60);
+	  	wait.until(ExpectedConditions.jsReturnsValue("return !!ko.dataFor(document.getElementById('"+waitForBinding+"'))"));  
+  }
   public void OpenExportWordIGBrowser()
   {
 	  // Wait for the page to fully load
- 	     // waitForPageLoad();
+ 	     waitForPageLoad();
  	  
 		// Confirm Welcome Message is present
 		WebDriverWait wait = new WebDriverWait(driver, 60);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/h2"),"Welcome to Trifolia Workbench!"));
 		assertTrue("Unable to confirm Login",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S][\\s\\S]*$"));
 
-	    //Open the Export IG Browser        
+	    //Open the Export to Word IG Browser        
 		driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/a")).click();
 	    driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/ul/li[1]/a")).click();
 
 	     // Wait for the page to fully load
-	 	  // waitForPageLoad();
+	 	  waitForPageLoad();
+	 	  
+	 	 // Wait for the bindings to complete
+		    waitForBindings("BrowseImplementationGuides");
 	    
 	 	// Confirm the Export To Word page appears
 	 	  	driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
@@ -76,14 +85,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/button")).click();
 	    
 	     // Wait for the page to fully re-load
-	 	  // waitForPageLoad();
+	 	  waitForPageLoad();
   } 
   
   public void FindImplementationGuide(String implementationGuideName) throws Exception {
 		
 		// Wait for the page to fully load
-		  // waitForPageLoad();
+		   waitForPageLoad();
 		  
+		  // Wait for the bindings to complete
+		    waitForBindings("BrowseImplementationGuides");
+
 		// Confirm the Search options are available
 			 WebDriverWait wait = new WebDriverWait(driver, 60);
 		 	 WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")));
@@ -92,7 +104,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/input")).sendKeys(implementationGuideName);
 	    
 	      // Wait for the page to fully load
-	 	  // waitForPageLoad();
+	 	     waitForPageLoad();
 	 	  
 //	    //Confirm the search is complete
 //	    WebDriverWait wait3 = new WebDriverWait(driver, 60);                    
@@ -106,15 +118,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
   public void ReturnHome(String welcomeMessage) throws Exception {
 	  
 		// Wait for the page to fully load
-	       // waitForPageLoad();
+	       waitForPageLoad();
 	  
 	   // Return to the Trifolia Home Page
 	    driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[1]/a")).click();
 	    WebDriverWait wait = new WebDriverWait(driver, 60);
 	    WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("appnav")));
-	    
-		// Wait for the page to fully load
-		  // waitForPageLoad();
+
+	    // Wait for page to fully load
+		   waitForPageLoad();
+		   
+	    // Wait for Bindings to complete
+	      waitForBindings("appnav");
 		  
 	    //Confirm the Welcome Message appears
 		WebDriverWait wait1 = new WebDriverWait(driver, 60);
@@ -131,6 +146,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
   @Test 
   public void CompleteMSWordExport()throws Exception{
 	        
+			  // Wait for the page to fully load
+			     waitForPageLoad();
+      
+			  // Wait for the bindings to complete
+			     waitForBindings("ExportMSWord");
+	    
 			  // Confirm the Export Templates To Word form appears correctly
 		  	  WebDriverWait wait5 = new WebDriverWait(driver, 60);
 		      WebElement element5 = wait5.until(ExpectedConditions.visibilityOfElementLocated(By.id("ExportMSWord")));
@@ -164,7 +185,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 			driver.findElement(By.xpath("/html/body/div[2]/div/form/div/button")).click();
 
 		// Wait for the page to fully load
-		  // waitForPageLoad();
+		  waitForPageLoad();
 			  
 	     // Wait for Export to Complete
 	       WebDriverWait wait2 = new WebDriverWait(driver, 60);
@@ -222,13 +243,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
       }
 }
   
-  // Test Exporting Templates to MS. Word
+  // Test Exporting Templates XML
   @Test
     public void ExportTemplateToWord(String implementationGuideName, String baseURL, String permissionUserName) throws Exception {  
     
 	  OpenExportWordIGBrowser();
 
-	  FindImplementationGuide("QRDA Category III");
+	  if (permissionUserName == "lcg.admin" ) 
+      {
+		  FindImplementationGuide("QRDA Category III");
+      }
+     if (permissionUserName == "lcg.user" )
+      {
+	   FindImplementationGuide("ASCO-BCR Sample Report Release 1");
+      }
 	  	   
   	//launch the Export Options form
   	    if (permissionUserName == "lcg.admin" ) 
@@ -252,9 +280,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 	       }
    
   	// Wait for the page to fully load
-	     // waitForPageLoad();
+	     waitForPageLoad();
+
+	  // Wait for the bindings to complete
+	     waitForBindings("ExportMSWord");
 	     
-  	 // Confirm the Export to Word form appears
+  	 // Confirm the Export Templates to Word form appears
 	  	WebDriverWait wait = new WebDriverWait(driver, 60);                   
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/form/div/h2"), "Export Templates/Profiles to MS Word"));
   	  
@@ -276,7 +307,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 			  alertDialog1.accept();
 			  Thread.sleep(1000);
       }
-      
 
    
   	if ((driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Export Templates/Profiles to MS Word[\\s\\S][\\s\\S]*$")))
@@ -300,10 +330,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
   @Test
     public void ExportTemplateXML(String implementationGuideName, String baseURL, String permissionUserName) throws Exception {
     
-    //Open the Export Browser and find the IG
-  	driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/a/b")).click();
-  	driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/ul/li[2]/a")).click();
+	  // Wait for the page to fully load
+	    waitForPageLoad();
 
+       // Wait for Bindings to complete
+      waitForBindings("appnav");
+	      
+	      //Open the Export Browser and find the IG
+	  	driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/a/b")).click();
+	  	driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/ul/li[2]/a")).click();
+
+	 // Wait for the page to fully load
+	    waitForPageLoad();
+	
+	    // Wait for the bindings to complete
+	    waitForBindings("BrowseImplementationGuides");
+    
 	  // Confirm the Export Templates XML form appears
  	 WebDriverWait wait = new WebDriverWait(driver, 60);
      WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/h2")));
@@ -357,16 +399,21 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 //			  Thread.sleep(1000);
 //     }
 
+		  // Wait for the page to fully load
+		     waitForPageLoad();
+
+		  // Wait for the bindings to complete
+		     waitForBindings("ExportXML");
+  	 
 		  // Confirm the Export Templates XML form appears
 		  	 WebDriverWait wait2 = new WebDriverWait(driver, 60);
 		     WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ExportXML")));
 		     assertTrue("Could not find \"Export XML\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Export XML[\\s\\S][\\s\\S]*$"));
 		    
         //Export and Download the File to the Downloads folder
-	   
-		    driver.findElement(By.xpath("//*[@id=\"ExportButton\"]")).click();
 		    WebDriverWait wait3 = new WebDriverWait(driver, 60);
-		    WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"ExportButton\"]")));
+		    WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/form/div/div[2]/button[1]")));
+		    driver.findElement(By.xpath("/html/body/div[2]/div/form/div/div[2]/button[1]")).click();
 		    
 		 // Confirm the user is returned to the form   
 			WebDriverWait wait4 = new WebDriverWait(driver, 60);                   
@@ -384,10 +431,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 //Export the Schematron for an Implementation Guide
   @Test
     public void ExportSchematron(String implementationGuideName, String permissionUserName) throws Exception {
+	     
+   // Wait for the page to fully load
+      waitForPageLoad();
 	  
+	// Wait for Bindings to complete
+      waitForBindings("appnav");
+      
 	// Open the Export Browser and find the IG
 	driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/a")).click();
 	driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/ul/li[3]/a")).click();
+	
+	// Wait for the page to fully load
+       waitForPageLoad();
+
+   // Wait for the bindings to complete
+      waitForBindings("BrowseImplementationGuides");
 
 	// Confirm the Export Schematron form appears
 	WebDriverWait wait = new WebDriverWait(driver, 60);
@@ -395,13 +454,21 @@ import org.openqa.selenium.support.ui.WebDriverWait;
     assertTrue("Could not find \"Export Schematron\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Export Schematron[\\s\\S][\\s\\S]*$"));
 	
 	// Clear the Existing Search Criteria
-    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/button")).click();
+	    WebDriverWait wait1 = new WebDriverWait(driver, 60);
+	    WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/button")));
+       driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/button")).click();
     
+	 // Wait for the page to fully load
+	    waitForPageLoad();
+   
     // Enter the new Search Criteria
-	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/input")).sendKeys(implementationGuideName);
+	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/input")).sendKeys(implementationGuideName);
 	
+	// Wait for the page to fully load
+       waitForPageLoad();
+    
 	// Confirm the correct IG appears
-	WebDriverWait wait1 = new WebDriverWait(driver, 60);                   
+	WebDriverWait wait21 = new WebDriverWait(driver, 60);                   
 	wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[1]"), implementationGuideName));
   	assertTrue("Could not find \"Implementation Guide Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
   	
@@ -438,6 +505,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 //			  Thread.sleep(1000);
 //     }
 
+	  // Wait for the page to fully load
+	     waitForPageLoad();
+	
+	 // Wait for the bindings to complete
+	    waitForBindings("ExportSchematronDiv");
+    
 	// Confirm the Export Schematron form appears
 	 WebDriverWait wait2 = new WebDriverWait(driver, 60);
      WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ExportSchematronDiv")));
@@ -470,10 +543,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
   @Test
     public void ExportVocabulary(String implementationGuideName, String permissionUserName) throws Exception {
 	
-	  //Open the Export Browser and find the IG
+	// Wait for the page to fully load
+       waitForPageLoad();
+	  
+	// Wait for Bindings to complete
+       waitForBindings("appnav");
+      
+	   //Open the Export Browser and find the IG
 		driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/a")).click();
 		driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/ul/li[4]/a")).click();
 
+		// Wait for the page to fully load
+	       waitForPageLoad();
+
+	   // Wait for the bindings to complete
+	      waitForBindings("BrowseImplementationGuides");
+	      
 		// Confirm the Export Vocabulary form appears
 		WebDriverWait wait = new WebDriverWait(driver, 60);
 	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/p/a")));
@@ -523,6 +608,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 //			  Thread.sleep(1000);
 //    }
 
+		// Wait for the page to fully load
+	       waitForPageLoad();
+	
+	     // Wait for the bindings to complete
+	        waitForBindings("ExportVocabulary");
+	        
 		//Confirm the Export Vocabulary form appears
 		WebDriverWait wait2 = new WebDriverWait(driver, 60);
 	    WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ExportVocabulary")));
@@ -551,25 +642,45 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 @Test
 public void ExportFHIRXML(String implementationGuideName, String permissionUserName) throws Exception 
 {
+	// Wait for the page to fully load
+       waitForPageLoad();
+	  
+	// Wait for Bindings to complete
+       waitForBindings("appnav");
+    
 		//Open the Export Browser and find the IG
 		driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/a")).click();
 		driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/ul/li[2]/a")).click();
 		
+		// Wait for the page to fully load
+	       waitForPageLoad();
+
+	   // Wait for the bindings to complete
+	      waitForBindings("BrowseImplementationGuides");
+	      
 		// Confirm the Export XML page appears
 	  	WebDriverWait wait = new WebDriverWait(driver, 60);
 	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/p/a")));
 	    assertTrue("Could not find \"Export Template XML\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Export XML[\\s\\S][\\s\\S]*$"));
 		
 		// Clear the Existing Search Criteria
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/button")).click();
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/button")).click();
 		
+		// Wait for the page to fully load
+	       waitForPageLoad();
+      
 		// Enter the new Search Criteria
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/input")).sendKeys(implementationGuideName);
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/input")).sendKeys(implementationGuideName);
 		
-		// Confirm the correct IG appears   
-		assertTrue("Could not find \"Implementation Guide Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
-		
-		//Launch the Export Vocabulary Options form
+		// Wait for the page to fully load
+	       waitForPageLoad();
+	       
+		// Confirm the correct IG appears  
+			WebDriverWait wait4 = new WebDriverWait(driver, 60);                   
+			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr[1]/td[1]"), implementationGuideName));
+			assertTrue("Could not find \"Implementation Guide Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
+			
+			//Launch the ExportXML Options form
 		if (permissionUserName == "lcg.admin") 
 		{
 		driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[5]/div/button")).click();
@@ -603,6 +714,12 @@ public void ExportFHIRXML(String implementationGuideName, String permissionUserN
 				  Thread.sleep(1000);
 	     }
 
+	 	// Wait for the page to fully load
+	       waitForPageLoad();
+
+	   // Wait for the bindings to complete
+	      waitForBindings("ExportXML");
+	      
 		//Confirm the Export FHIR XML form appears
 		WebDriverWait wait1 = new WebDriverWait(driver, 60);
 		WebElement element1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/form/div/h2")));
@@ -622,7 +739,7 @@ public void ExportFHIRXML(String implementationGuideName, String permissionUserN
 		driver.findElement(By.xpath("/html/body/div[2]/div/form/div/div[2]/button[1]")).click();
 		
 		// Confirm the user is returned to the form   
-		WebDriverWait wait4 = new WebDriverWait(driver, 60);                   
+		WebDriverWait wait5 = new WebDriverWait(driver, 60);                   
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/form/div/div[1]/div[1]/div/label"), "Type"));
 
 		 // Return to the Trifolia Home Page

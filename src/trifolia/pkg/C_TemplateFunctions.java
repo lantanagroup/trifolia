@@ -42,14 +42,20 @@ public class C_TemplateFunctions {
   
   public void waitForPageLoad() 
   {
-	WebDriverWait wait = new WebDriverWait(driver, 30);
+	WebDriverWait wait = new WebDriverWait(driver, 60);
 	     wait.until(ExpectedConditions.jsReturnsValue("return document.readyState ==\"complete\";"));		
   }
   
+  public void waitForBindings(String waitForBinding) 
+  {
+        JavascriptExecutor js = (JavascriptExecutor)driver;	
+	  	WebDriverWait wait = new WebDriverWait(driver, 60);
+	  	wait.until(ExpectedConditions.jsReturnsValue("return !!ko.dataFor(document.getElementById('"+waitForBinding+"'))"));  
+  }
   public void OpenTemplateBrowser() throws Exception 
   {
 	  // Wait for page to fully load
-	  // waitForPageLoad();
+	     waitForPageLoad();
 	  
      // Open the Template Browser
 	   WebDriverWait wait = new WebDriverWait(driver, 60);                               
@@ -60,7 +66,10 @@ public class C_TemplateFunctions {
 	   driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[2]/a")).click();
 
 	  // Confirm page completely loads
-	  // waitForPageLoad();
+	     waitForPageLoad();
+	  
+	  // Wait for Bindings to complete
+	     waitForBindings("BrowseTemplates");
 	  
 	// Confirm Template Browser opens
 	 WebDriverWait wait2 = new WebDriverWait(driver, 60);
@@ -76,6 +85,9 @@ public class C_TemplateFunctions {
   {
 	  // Wait for the page to fully load
 	     waitForPageLoad();
+	     
+     // Wait for Bindings to complete
+     waitForBindings("BrowseTemplates");
 	  
 	  // Confirm the Template Listing appears
 	  WebDriverWait wait = new WebDriverWait(driver, 60);                    
@@ -88,6 +100,9 @@ public class C_TemplateFunctions {
 	 
   	 // Wait for the page to fully load
  	    waitForPageLoad();
+
+ 	   // Wait for Bindings to complete
+	     waitForBindings("BrowseTemplates");
  	  
 	   // Clear existing Search Filters
 
@@ -111,7 +126,10 @@ public class C_TemplateFunctions {
   public void FindTemplate(String templateName, String templateOID, String templateIG) throws Exception 
 	{
 	  // Wait for page to fully load
-	  // waitForPageLoad();
+	  waitForPageLoad();
+	  
+	  // Wait for Bindings to complete
+	     waitForBindings("BrowseTemplates");
 	  
 	  // Clear the existing search criteria
 	      ClearExistingSearch();
@@ -143,7 +161,10 @@ public class C_TemplateFunctions {
   public void ConfirmTemplateViewer(String templateName, String templateOID) throws Exception 
 	{	
 			// Wait for page to fully load
-				  // waitForPageLoad();
+			   waitForPageLoad();
+				  
+		  // Wait for Bindings to complete
+		     waitForBindings("ViewTemplate");
 				  
 			 WebDriverWait wait = new WebDriverWait(driver, 60);		
 			 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[8]"))); 
@@ -165,7 +186,10 @@ public class C_TemplateFunctions {
 	{
 	  
 		// Wait for page to fully load
-		  // waitForPageLoad();
+		   waitForPageLoad();
+		  
+		// Wait for Bindings to complete
+		   waitForBindings("TemplateEditor");
 		  
 	   // Confirm the Template Editor opens
 	       driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
@@ -219,6 +243,12 @@ public class C_TemplateFunctions {
 	    driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[1]/a")).click();
 	    WebDriverWait wait = new WebDriverWait(driver, 60);  
 	    WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("appnav")));
+	    
+	    // Wait for page to fully load
+		   waitForPageLoad();
+		   
+	   // Wait for Bindings to complete
+	      waitForBindings("appnav");
 	     
 	    //Confirm the Welcome Message appears
 		WebDriverWait wait0 = new WebDriverWait(driver, 60);                    
@@ -243,7 +273,7 @@ public class C_TemplateFunctions {
 	
 	if (permissionUserName == "lcg.user") 
 	{
-	FindTemplate("MAP Topic", "http://www.lantanagroup.com/camara/fhir/map-topic", "PHARM HIT Demo");	 
+	FindTemplate("ASCO Example Document R1", "urn:oid:2.16.840.1.113883.3.117.1.5.3", "ASCO-BCR Sample Report Release 1");	 
 	}
 	
 	if (permissionUserName == "hl7.member") 
@@ -260,7 +290,7 @@ public class C_TemplateFunctions {
     driver.findElement(By.xpath("/html/body/div[2]/div/div/form/div/span/button[1]")).click();
     
      // Wait for page to re-load
-	  // waitForPageLoad();
+	    waitForPageLoad();
 	  
     if (permissionUserName == "lcg.admin") 
     	{
@@ -269,7 +299,7 @@ public class C_TemplateFunctions {
 		    driver.findElement(By.xpath("//*[@id=\"BrowseTemplates\"]/table/thead/tr[2]/td[5]/select")).sendKeys(Keys.RETURN);
             
 		    // Wait for page to re-load
-			  // waitForPageLoad();
+			  waitForPageLoad();
 			  
 		    // Confirm Templates for the selected Organization appear
 		    WebDriverWait wait = new WebDriverWait(driver, 60);                    
@@ -286,14 +316,14 @@ public class C_TemplateFunctions {
 		   	wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/thead/tr[2]/td[5]/select"), "Filter..."));
 	  	    
 		    // Wait for page to re-load
-			  // waitForPageLoad();
+			  waitForPageLoad();
 			  
 		    //Send the new filter criteria
 	  	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/thead/tr[2]/td[1]/input")).click();
 	  	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/thead/tr[2]/td[1]/input")).sendKeys(templateName); 
 	  	    
 	  	  // Wait for page to re-load
-	  	     // waitForPageLoad();
+	  	     waitForPageLoad();
 	  	  
 	  	    // Confirm the correct Template OID is returned
 	  	    WebDriverWait wait9 = new WebDriverWait(driver, 60);                     
@@ -306,14 +336,14 @@ public class C_TemplateFunctions {
 	  	    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/thead/tr[2]/td[6]/button")).click();
 	  	    
 	  	  // Wait for page to re-load
-	  	     // waitForPageLoad();
+	  	     waitForPageLoad();
 	  	  
 	  	    // Enter new search criteria
 	  	    driver.findElement(By.xpath("//*[@id=\"BrowseTemplates\"]/table/thead/tr[2]/td[2]/input")).click();
 	  	    driver.findElement(By.xpath("//*[@id=\"BrowseTemplates\"]/table/thead/tr[2]/td[2]/input")).sendKeys(templateOID);
 
 	  	  // Wait for page to re-load
-	  	     // waitForPageLoad();
+	  	     waitForPageLoad();
 	  	     
 	  	    // Confirm the correct Template Name appears
 	  	    WebDriverWait wait10 = new WebDriverWait(driver, 60);                     
@@ -328,7 +358,7 @@ public class C_TemplateFunctions {
 		    driver.findElement(By.xpath("//*[@id=\"BrowseTemplates\"]/table/thead/tr[2]/td[1]/input")).sendKeys(templateName);
 		    
 		    // Wait for page to re-load
-			  // waitForPageLoad();
+			  waitForPageLoad();
 			  
 		    // Confirm the search is complete
 			   WebDriverWait wait2 = new WebDriverWait(driver, 60);
@@ -350,14 +380,14 @@ public class C_TemplateFunctions {
 		    }
 		    
 		    // Wait for page to re-load
-			  // waitForPageLoad();
+			   waitForPageLoad();
 			  
 		      // Filter by Template OID
 		    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/thead/tr[2]/td[2]/input")).click();
 		    driver.findElement(By.xpath("/html/body/div[2]/div/div/table/thead/tr[2]/td[2]/input")).sendKeys(templateOID);
 	
 		    // Wait for page to re-load
-			  // waitForPageLoad();
+			  waitForPageLoad();
 			  
 		    // Confirm the correct Template OID is returned
 		    driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
@@ -389,7 +419,7 @@ public class C_TemplateFunctions {
     // Confirm the Template Viewer opens
 		
 		    // Wait for page to re-load
-			  // waitForPageLoad();
+			   waitForPageLoad();
 			  
 	    if (permissionUserName == "lcg.admin") 
 	    {
@@ -397,7 +427,7 @@ public class C_TemplateFunctions {
 	    }
 	    if (permissionUserName == "lcg.user") 
 	    {
-	    	ConfirmTemplateViewer("MAP Topic", "http://www.lantanagroup.com/camara/fhir/map-topic");
+	    	ConfirmTemplateViewer("ASCO Example Document R1", "urn:oid:2.16.840.1.113883.3.117.1.5.3");
 	    }
 	    if (permissionUserName == "hl7.member") 
 	    {
@@ -411,7 +441,7 @@ public class C_TemplateFunctions {
 	    assertTrue("Could not find Template Verification Text on page\"Constraint Text\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(verificationText) >= 0);
 	   
 	    // Wait for page to re-load
-		  // waitForPageLoad();
+		   waitForPageLoad();
 		  
     // Check Template Links
     driver.findElement(By.xpath("//*[@id=\"ViewTemplate\"]/ul/li[2]/a")).click();
@@ -446,14 +476,15 @@ public class C_TemplateFunctions {
 	    wait14.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h3"), "Browse Templates/Profiles"));
 	    
 	    // Confirm the page is fully loaded
-	       // waitForPageLoad();
+	       waitForPageLoad();
 	    
 	    // Confirm the Template Listing Text appears
 		  WebDriverWait wait17 = new WebDriverWait(driver, 60);                    
 		  wait15.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/thead/tr[1]/th[2]"), "Identifier"));
 		
 		  // Wait for page to re-load
-		    // waitForPageLoad();
+		    waitForPageLoad();
+
 		    driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		  
 		// Clear existing Search criteria
@@ -467,14 +498,17 @@ public class C_TemplateFunctions {
 	    WebElement element1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("BrowseTemplates")));
 	     
 	    // Confirm the page is fully loaded
-	       // waitForPageLoad();
+	       waitForPageLoad();
 	       
+	       // Wait for Bindings to complete
+		     waitForBindings("BrowseTemplates");
+
 	    // Confirm the Template Listing appears
 		  WebDriverWait wait2 = new WebDriverWait(driver, 60);                    
 		  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/thead/tr[1]/th[2]"), "Identifier"));
 		 
 		  // Wait for page to re-load
-		     // waitForPageLoad();
+		     waitForPageLoad();
 		    driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		    
 		 // Clear existing Search criteria
@@ -495,14 +529,14 @@ public class C_TemplateFunctions {
 	   OpenTemplateBrowser(); 
 	   
 	// Confirm the page is fully loaded
-       // waitForPageLoad();
+       waitForPageLoad();
        
 	// Clear existing Search criteria
 	    ClearExistingSearch();  
 	    
 	 // Confirm the page is re-loaded
-	       // waitForPageLoad();
-	       
+	       waitForPageLoad();
+
     //Open the Template Editor
     if (permissionUserName == "lcg.admin") 
     {
@@ -519,8 +553,11 @@ public class C_TemplateFunctions {
     }
     
 	 // Confirm the page is fully loaded
-	    // waitForPageLoad();
+	    waitForPageLoad();
 	    
+	    // Wait for Bindings to complete
+	     waitForBindings("TemplateEditor");
+	     
        // Confirm the Template Editor Opens
       WebDriverWait wait = new WebDriverWait(driver, 60);                    
 	  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div[1]/span"), "Owning Implementation Guide is required"));
@@ -552,7 +589,9 @@ public class C_TemplateFunctions {
     WebDriverWait wait4 = new WebDriverWait(driver, 60);
     WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div[1]/div[2]/select")));
     assertTrue("Could not find \"Type\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Type:[\\s\\S]*$"));
-    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div[1]/div[2]/select")).sendKeys(templateType);
+    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div[1]/div[2]/select")).click();
+    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div[1]/div[2]/select")).sendKeys(Keys.ARROW_DOWN);
+    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div[1]/div[2]/select")).click();
     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div[1]/div[2]/select")).sendKeys(Keys.TAB);
 
     // Wait for new field to load and add Template Type
@@ -586,13 +625,13 @@ public class C_TemplateFunctions {
     public void EditTemplate(String templateName, String templateOID, String impliedTemplate, String templateNotes, String permissionUserName) throws Exception {
 	
 	// Confirm the page is fully loaded
-    // waitForPageLoad();
-    
+    waitForPageLoad();
+
 	// Open the Template Browser
 	   OpenTemplateBrowser();
 	   
 	// Confirm the page is fully loaded
-       // waitForPageLoad();
+       waitForPageLoad();
        
 	// Find the template
 	if (permissionUserName == "lcg.admin") 
@@ -618,7 +657,7 @@ public class C_TemplateFunctions {
     	}
     
 	 // Confirm the page is fully loaded
-	    // waitForPageLoad();
+	    waitForPageLoad();
     
      // Confirm the correct template appears in the Editor
 	   
@@ -698,7 +737,7 @@ public class C_TemplateFunctions {
 	   OpenTemplateBrowser();
 	   
 	// Confirm the page is fully loaded
-       // waitForPageLoad();
+        waitForPageLoad();
        
 	    //Find the Template
 	    if (permissionUserName == "lcg.admin") 
@@ -713,7 +752,7 @@ public class C_TemplateFunctions {
 		}
 		  
 		// Confirm the page is re-loaded
-	       // waitForPageLoad();
+	       waitForPageLoad();
 	       
 	  // Open the Template Viewer
 	  if (permissionUserName == "lcg.admin") 
@@ -726,7 +765,7 @@ public class C_TemplateFunctions {
 	    }
 	  
 		// Confirm the page is fully loaded
-	      // waitForPageLoad();
+	      waitForPageLoad();
       
 	  // Confirm the Template Viewer opens and the correct template appears
 	  
@@ -739,26 +778,29 @@ public class C_TemplateFunctions {
 	 		ConfirmTemplateViewer("HL7 Member Test Template", "urn:oid:2.2.2.2.2.2.2.2");
 		 	}	  
 	 	// Confirm the page is fully loaded
-	      // waitForPageLoad();
+	      waitForPageLoad();
 	      
 	  //Open the Copy Template form
 	  if (permissionUserName == "lcg.admin") 
 	    {
-		  // Confirm the Copy option is clickable
+		  // Confirm the Copy option is available
 		  WebDriverWait wait = new WebDriverWait(driver, 60);                     
 		  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[5]/a")));
 		  driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[5]/a")).click();
 	    }
 	  else
 	    {
-		  // Confirm the Copy option is clickable
+		  // Confirm the Copy option is available
 		  WebDriverWait wait = new WebDriverWait(driver, 60);                     
 		  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/a")));
 	      driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/a")).click();
 	    }
 	  
-	// Confirm the page is fully loaded
-       waitForPageLoad();
+		// Confirm the page is fully loaded
+	       waitForPageLoad();
+       
+       // Wait for Bindings to complete
+	     waitForBindings("CopyTemplate");
       
 	  // Confirm the Copy Template form open 
 	  WebDriverWait wait = new WebDriverWait(driver, 90);
@@ -796,7 +838,8 @@ public class C_TemplateFunctions {
 	  driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[6]/button[1]")).click();
   
 	   // Confirm the page is fully loaded
-      // waitForPageLoad();
+          waitForPageLoad();
+
       
 	  //Copy Step 2 - Constraint Generation
 	  WebDriverWait wait7 = new WebDriverWait(driver, 60);
@@ -811,7 +854,7 @@ public class C_TemplateFunctions {
 	  driver.findElement(By.xpath("/html/body/div[2]/div/div/div[2]/div[2]/button[1]")).click();
 	  
 		// Confirm the page is fully loaded
-	      // waitForPageLoad();
+	      waitForPageLoad();
 	
 	   // Wait for page to fully load
 	   WebDriverWait wait10 = new WebDriverWait(driver, 60);		
@@ -845,7 +888,7 @@ public class C_TemplateFunctions {
 	  if (permissionUserName == "lcg.admin")
 	  {
 		// Wait for page to fully load
-		  // waitForPageLoad();
+		  waitForPageLoad();
 		  
 		// Open the Template Browser
 		   OpenTemplateBrowser();
@@ -854,13 +897,13 @@ public class C_TemplateFunctions {
 		  FindTemplate("Automation Test Template Copy", "urn:oid:2.2.2.2.2.2.2.2", "1Automation Test IG");	 
 		   
 		// Wait for page to fully load
-		  // waitForPageLoad();
+		  waitForPageLoad();
 		  
 		  //  Open the Template Viewer
 		      driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[6]/div/a[1]")).click();
 		  
 		   // Wait for page to fully load
-			  // waitForPageLoad();
+			  waitForPageLoad();
 			  
 	      // Confirm the Template Viewer opens and the correct template appears
 		 	 if (permissionUserName == "lcg.admin")
@@ -874,13 +917,16 @@ public class C_TemplateFunctions {
 			 	}
 		 	 
 	 	// Confirm the page is fully loaded
-	       // waitForPageLoad();
+	       waitForPageLoad();
 	       
 	     // Move the Template
 		  driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[7]/a")).click();
 		  
 		// Confirm the page is fully loaded
 	       waitForPageLoad();
+	       
+	       // Wait for Bindings to complete
+		     waitForBindings("MoveTemplate");
 	       
 		  // Confirm the Move Template form appears
 		  WebDriverWait wait = new WebDriverWait(driver, 60);
@@ -943,6 +989,9 @@ public class C_TemplateFunctions {
 		  // Return to the Template Browser
 		     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[1]/a")).click();
 		
+	     // Wait for Bindings to complete
+	     waitForBindings("BrowseTemplates");
+		     
 	     // Confirm the Template Browser appears
 		  WebDriverWait wait7 = new WebDriverWait(driver, 60);
 		  WebElement element7 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("BrowseTemplates")));
@@ -992,7 +1041,7 @@ public class C_TemplateFunctions {
 		}
 		 
 		// Confirm the page is fully loaded
-	       // waitForPageLoad();
+	       waitForPageLoad();
 	       
 	    // Open the Template Viewer
 		    if (permissionUserName == "lcg.admin") 
@@ -1035,7 +1084,10 @@ public class C_TemplateFunctions {
 			     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[7]/a")).click();
 			    }
 		// Wait for page to fully load
-		  // waitForPageLoad();
+		  waitForPageLoad();
+		  
+		  // Wait for Bindings to complete
+		     waitForBindings("DeleteTemplate");
 	  
     // Confirm the Delete Templates form opens 
 		WebDriverWait wait = new WebDriverWait(driver, 60);
@@ -1062,7 +1114,8 @@ public class C_TemplateFunctions {
 	    String alertText3 = alertDialog3.getText();
 	    //Click the OK button on the alert.
 	    alertDialog3.accept();
-	    Thread.sleep(1000); 
+	    Thread.sleep(2000); 
+
 		 //Switch the driver context to the "Successfully deleted value set?" alert
 		 Alert alertDialog4 = driver.switchTo().alert();
 		 //Get the alert text
@@ -1071,7 +1124,13 @@ public class C_TemplateFunctions {
 		 //Click the OK button on the alert.
 		 alertDialog4.accept();
 	
-		   // Confirm the Template Browser appears
+		 // Confirm the page is fully loaded
+	        waitForPageLoad();
+	        
+		  // Wait for Bindings to complete
+	         waitForBindings("BrowseTemplates");
+	     
+		  // Confirm the Template Browser appears
 		  WebDriverWait wait7 = new WebDriverWait(driver, 60);
 		  WebElement element7 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("BrowseTemplates")));
 		  assertTrue("Could not find \"Browse Templates\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Browse Templates[\\s\\S]*$"));Thread.sleep(1000);

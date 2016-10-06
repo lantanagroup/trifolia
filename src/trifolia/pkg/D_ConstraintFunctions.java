@@ -50,37 +50,45 @@ public class D_ConstraintFunctions {
 
 public void waitForPageLoad() 
 {
-	WebDriverWait wait = new WebDriverWait(driver, 30);
+	WebDriverWait wait = new WebDriverWait(driver, 60);
 	     wait.until(ExpectedConditions.jsReturnsValue("return document.readyState ==\"complete\";"));		
 }
 
+public void waitForBindings(String waitForBinding) 
+{
+      JavascriptExecutor js = (JavascriptExecutor)driver;	
+	  	WebDriverWait wait = new WebDriverWait(driver, 60);
+	  	wait.until(ExpectedConditions.jsReturnsValue("return !!ko.dataFor(document.getElementById('"+waitForBinding+"'))"));  
+}
 public void OpenTemplateBrowser() throws Exception 
 {
 	 // Confirm page completely loads
         waitForPageLoad();
+        
+        // Wait for Bindings to complete
+	      waitForBindings("appnav");
     
-     //Confirm the Welcome Message appears
-		WebDriverWait wait = new WebDriverWait(driver, 60);
-		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/h2"), "Welcome to Trifolia Workbench!"));  	
-
     // Open the Template Browser
-	  WebDriverWait wait1 = new WebDriverWait(driver, 60);                               
-      WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a"))); 
+	  WebDriverWait wait = new WebDriverWait(driver, 60);                               
+      WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a"))); 
 	  driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")).click();
-	  WebDriverWait wait2 = new WebDriverWait(driver, 60);
-	  WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[2]/a"))); 
+	  WebDriverWait wait1 = new WebDriverWait(driver, 60);
+	  WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[2]/a"))); 
 	  driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[2]/a")).click();
 
 	  // Confirm page completely loads
 	     waitForPageLoad();
 	  
+	  // Wait for Bindings to complete
+	     waitForBindings("BrowseTemplates");
+	  
 	// Confirm Template Browser opens
-	 WebDriverWait wait3 = new WebDriverWait(driver, 60);
-	 WebElement element3 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("BrowseTemplates")));
+	 WebDriverWait wait2 = new WebDriverWait(driver, 60);
+	 WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("BrowseTemplates")));
 	 assertTrue("Could not find \"Browse Templates\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Browse Templates[\\s\\S]*$"));
 
 	 // Confirm Correct Page Title appears
-	 WebDriverWait wait4 = new WebDriverWait(driver, 60);                    
+	 WebDriverWait wait3 = new WebDriverWait(driver, 60);                    
 	 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h3"), "Browse Templates/Profiles"));
 }
 
@@ -88,6 +96,9 @@ public void ClearExistingSearch() throws Exception
 {
 	  // Wait for the page to fully load
 	     waitForPageLoad();
+	     
+	     // Wait for Bindings to complete
+	     waitForBindings("BrowseTemplates");
 	  
 	  // Confirm the Template Listing appears
 	  WebDriverWait wait = new WebDriverWait(driver, 60);                    
@@ -120,6 +131,9 @@ public void FindTemplate(String templateName, String templateOID, String templat
 	  // Wait for page to fully load
 	     waitForPageLoad();
 	  
+     // Wait for Bindings to complete
+        waitForBindings("BrowseTemplates");
+	     
 	  // Clear the existing search criteria
 	      ClearExistingSearch();
 	     
@@ -151,7 +165,10 @@ public void ConfirmTemplateViewer(String templateName, String templateOID) throw
 {	
 		// Wait for page to fully load
 		   waitForPageLoad();
-			  
+
+	   // Wait for Bindings to complete
+	     waitForBindings("ViewTemplate");
+		     
 		 WebDriverWait wait = new WebDriverWait(driver, 60);		
 		 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[8]"))); 
  
@@ -174,7 +191,10 @@ public void ConfirmTemplateEditor(String templateName, String templateOID) throw
 	       waitForPageLoad();
 		   WebDriverWait wait = new WebDriverWait(driver, 5);		
 		   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[5]"))); 
-	    
+		   
+		   // Wait for Bindings to complete
+		     waitForBindings("TemplateEditor");
+
 	      // Confirm the Template Editor opens
 	       driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		   WebDriverWait wait1 = new WebDriverWait(driver, 60);
@@ -229,7 +249,8 @@ public void ConfirmConstraintEditor() throws Exception
 	    WebDriverWait wait = new WebDriverWait(driver, 60);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[1]"), "Conf/Card:"));
 	}
-public void SetConformance() throws Exception 
+
+public void SetConformance(String conformance) throws Exception 
 	{
 	
 	// Confirm page completely re-loads
@@ -238,11 +259,11 @@ public void SetConformance() throws Exception
 	// Set the Conformance        
 	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/select")).click();
 	   WebDriverWait wait3 = new WebDriverWait(driver, 60);
-	   WebElement element3 = wait3.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/select/option[1]")));
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/select/option[1]")).sendKeys(Keys.ARROW_UP);
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/select/option[1]")).sendKeys(Keys.ARROW_UP);
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/select/option[1]")).click();
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/select/option[1]")).sendKeys(Keys.RETURN);
+	   WebElement element3 = wait3.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/select")));
+	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/select")).click();
+	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/select")).sendKeys(Keys.ARROW_UP);
+	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/select")).sendKeys(Keys.ARROW_UP);
+	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/select")).sendKeys(Keys.TAB);
 	   
 	// Wait for page to refresh
 	 	  waitForPageLoad();
@@ -255,7 +276,7 @@ public void SetConformance() throws Exception
 	 	  waitForPageLoad();
 	}	  
 
-public void SetCardinality() throws Exception 
+public void SetCardinality(String cardinality) throws Exception 
 	{
 	     // Set the Cardinality    
 	
@@ -264,22 +285,15 @@ public void SetCardinality() throws Exception
 	  
 	   WebDriverWait wait3 = new WebDriverWait(driver, 60);
 	   WebElement element3 = wait3.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")));
-	   // driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")).clear();
-	   // driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")).click();
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")).sendKeys(Keys.ARROW_DOWN);
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")).sendKeys(Keys.ARROW_DOWN);
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")).sendKeys(Keys.ARROW_DOWN);
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")).sendKeys(Keys.ARROW_DOWN);
 	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")).click();
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")).click();
+	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")).clear();
+	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")).sendKeys(cardinality);
 	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input")).sendKeys(Keys.TAB);
-	
-		// Wait for page to refresh
-	 	  waitForPageLoad();
-	 	  
-	   // Confirm the selected Cardinality appears in the field
-	     WebDriverWait wait = new WebDriverWait(driver, 60);                   
-		 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input"), "1..1"));
+	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[4]/div[1]/div/div/input")).click();
+ 
+	   // Confirm the selected Cardinality appears in the field                 
+	     WebDriverWait wait = new WebDriverWait(driver, 60);                     
+		 wait.until(ExpectedConditions.invisibilityOfElementWithText(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div[2]/input"), "0..1"));
 
 		// Confirm page completely re-loads
 	 	  waitForPageLoad();
@@ -291,22 +305,44 @@ public void SetBindingType(String bindingType) throws Exception
 	  // Confirm page completely re-loads
     	  waitForPageLoad();
     
+     // Confirm the Binding Type field default appears
+ 	     WebDriverWait wait = new WebDriverWait(driver, 60);
+ 		 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select"), "None"));
+
 	 //Set Binding Type 
-	
-	   WebDriverWait wait = new WebDriverWait(driver, 60);
-	   WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")));
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).click();	  
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).sendKeys(bindingType);
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).click();
-	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).sendKeys(Keys.TAB);
-	  
+	   if (bindingType == "Single")
+	   {
+		   WebDriverWait wait1 = new WebDriverWait(driver, 60);                              
+		   WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")));
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).click();	 
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).sendKeys(Keys.ARROW_DOWN);
+//		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).sendKeys(Keys.ARROW_DOWN);
+//		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).sendKeys(Keys.ARROW_DOWN);
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).click();	
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).sendKeys(Keys.TAB);
+		   
+	   }
+	   else
+	   {
+		   WebDriverWait wait1 = new WebDriverWait(driver, 60);                              
+		   WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")));
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).click();	  
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).sendKeys(bindingType);
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).click();	
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select")).sendKeys(Keys.TAB);
+		 
+	   }
+		  
 		// Confirm page completely re-loads
 	 	  waitForPageLoad();
- 	  
+  
+ 	   // Confirm the Binding Type default no longer appears              
+	     WebDriverWait wait2 = new WebDriverWait(driver, 60);                     
+		 wait.until(ExpectedConditions.invisibilityOfElementWithText(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select"), "None"));
+
 	   //Confirm Binding Type appears in the field
 	   WebDriverWait wait3 = new WebDriverWait(driver, 60);                                  
-	   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select"), bindingType));
-		
+	   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select"), bindingType));	
 		}	 
 	
 public void SaveTemplate() throws Exception 
@@ -342,6 +378,12 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	    WebDriverWait wait4 = new WebDriverWait(driver, 60);
 	    WebElement element4 = wait4.until(ExpectedConditions.visibilityOfElementLocated(By.id("appnav")));
 	    
+	    // Wait for page to fully load
+		   waitForPageLoad();
+		   
+	    // Wait for Bindings to complete
+	      waitForBindings("appnav");
+	      
 	    //Confirm the Welcome Message appears
 		WebDriverWait wait = new WebDriverWait(driver, 60);
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/h2"), welcomeMessage));
@@ -405,26 +447,32 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	   // Open the Constraints Editor
 	 	   OpenConstraintsEditor();
  	   
-   // Add "realmCode" "typeId" Constraints 
+   // Add "realmCode" Constraint
 	   assertTrue("Could not find \"Template OID\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateOID) >= 0);
 	   if (templateType == "CDA: Document")
 			{
-			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[5]/div[2]/span")).click();
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[4]/div[2]/span")).click();
 			}
 	   if (templateType == "eMeasure: Document")
 			{
-			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[4]/div[2]/span")).click();
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[4]/div[2]")).click();
 			}
    
 	   // Open the realmCode constraint
 	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")).click();
 	   
 	  // Confirm the Constraints Editor opens for the selected constraint
-	  ConfirmConstraintEditor();
+	      ConfirmConstraintEditor();
 	  
-	   SetConformance();
+	   SetConformance("SHALL");
 	   
-	   SetCardinality();
+	   // Confirm constraint form re-loads
+	      waitForPageLoad();
+	      
+	   SetCardinality("1..1");
+	   
+	   // Confirm constraint form re-loads
+	      waitForPageLoad();
 	   
 	   SetBindingType("Other");
 	   
@@ -443,11 +491,11 @@ public void ReturnHome(String welcomeMessage) throws Exception {
      // Select the "typeId" constraint
 	   if (templateType == "CDA: Document")
 			{
-			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[6]/div[2]/span")).click();
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[5]/div[2]/span")).click();
 			}
 	    else if (templateType == "eMeasure: Document")
 			{
-			driver.findElement(By.xpath("//*[@id=\"constraintsTree\"]/div[2]/div[4]/div[2]/span")).click();
+			driver.findElement(By.xpath("//*[@id=\"constraintsTree\"]/div[2]/div[5]/div[2]/span")).click();
 			}
    
    // Open the "typeId" element     
@@ -457,19 +505,19 @@ public void ReturnHome(String welcomeMessage) throws Exception {
  	  ConfirmConstraintEditor();
  	  
    	   // Select the conformance for the constraint
-	   SetConformance();
+	   SetConformance("SHALL");
 	   
 	   // Set the cardinality for the constraint
-	   SetCardinality();
+	   SetCardinality("1..1");
 	   
     //Add Template ID Parent Branched and Child Identifier Constraints
    if (templateType == "CDA: Document")
 		{
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/span")).click();
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[6]/div[2]/span")).click();
 		}
    else if (templateType == "eMeasure: Document")
 		{
-		driver.findElement(By.xpath("//*[@id=\"constraintsTree\"]/div[2]/div[5]/div[2]/span")).click();
+		driver.findElement(By.xpath("//*[@id=\"constraintsTree\"]/div[2]/div[6]/div[2]/span")).click();
 		}
    // Open the Constraint Editor
    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")).click();
@@ -478,10 +526,10 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	  ConfirmConstraintEditor();
 	  
 	  // Set the Confirmance for the constraint
-	   SetConformance();
+	   SetConformance("SHALL");
 	   
 	   // Set the Cardinality for the constraint
-	   SetCardinality();
+	   SetCardinality("1..1");
    
    //Setup templateId as 'Branch Root'
    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[3]/div[2]/input[1]")).click();
@@ -493,14 +541,14 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 		}
    else if (templateType == "eMeasure: Document")
 		{
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[5]/div[1]/span[1]/div")).click();
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[6]/div[1]/span[1]/div")).click();
 		}  
    
    // Confirm the Template ID is expanded
 	   if (templateType == "CDA: Document")
 		{
 	      WebDriverWait wait13 = new WebDriverWait(driver, 60);
-	  	  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[1]/div[2]"), "@nullFlavor"));
+	  	  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[1]/div[2]/span[3]"), "@nullFlavor"));
 		} 
 	   if (templateType == "eMeasure: Document")
 		{
@@ -511,14 +559,14 @@ public void ReturnHome(String welcomeMessage) throws Exception {
    if (templateType == "CDA: Document")
 		{
 	   WebDriverWait wait3 = new WebDriverWait(driver, 60);                               
-	   WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[2]/div[2]")));
-	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[2]/div[2]")).click();
+	   WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/div[2]/span[3]")));
+	    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/div[2]/span[3]")).click();
 		}
    if (templateType == "eMeasure: Document")
 		{
 	     WebDriverWait wait3 = new WebDriverWait(driver, 60);                               
-	     WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[6]/div[5]/div[2]/span[3]")));
-	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[6]/div[5]/div[2]/span[3]")).click();
+	     WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[5]/div[2]/span[3]")));
+	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[5]/div[2]/span[3]")).click();
 		}   
 
    // Confirm the Root element constraints editor appears and open 
@@ -532,7 +580,7 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	ConfirmConstraintEditor();
 	  
    // Select the Conformance
-   SetConformance();
+   SetConformance("SHALL");
    
    //Confirm the Alert appears
 	   WebDriverWait wait0 = new WebDriverWait(driver, 60);
@@ -547,43 +595,58 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	      // assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*The parent constraint is a branch root. Do you want to mark this constraint as a branch identifier?[\\s\\S]*$"));
 	      
 	  //Select the Cardinality
-      SetCardinality();
+        SetCardinality("1..1");
+        //Thread.sleep(2000);
+      
+      // Confirm the Identifier Flag is checked
+         driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[3]/div[2]/input[2]")).isSelected();
+      
+      // Confirm constraint form re-loads
+         waitForPageLoad();
       
       // Confirm constraint form re-loads
       waitForPageLoad();
       
       // Select the Binding Type
-      SetBindingType("Single Value");
+         SetBindingType("Single");
       
       // Confirm constraint form re-loads
-      waitForPageLoad();
+         waitForPageLoad();
     
-    // Confirm the code field appears
-    WebDriverWait wait5 = new WebDriverWait(driver, 60);
-	wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[6]/div/div[1]/div"), "Code:"));
-      
+         WebDriverWait wait5 = new WebDriverWait(driver, 60);
+     	wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[5]/select"), "Single Value"));
+        
+	    // Confirm the code field appears
+	    WebDriverWait wait60 = new WebDriverWait(driver, 60);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[6]/div/div[1]/div"), "Code:"));
+	      
 	   // Set Code Value  
        WebDriverWait wait6 = new WebDriverWait(driver, 60);                               
 	   WebElement element6 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[6]/div/div[1]/input[1]")));
 	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[6]/div/div[1]/input[1]")).sendKeys(templateIdRoot);
-	   
+	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[6]/div/div[1]/input[2]")).click();
+
      // Add "Extension" Child Constraint
    if (templateType == "CDA: Document")
 		{
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[3]/div[2]/span[3]")).click();
+		   WebDriverWait wait1 = new WebDriverWait(driver, 60);                               
+		   WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[3]/div[2]/span[3]")));
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[3]/div[2]/span[3]")).click();
 		}
    else if (templateType == "eMeasure: Document")
 		{
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[3]/div[2]/span[3]")).click();
+		   WebDriverWait wait1 = new WebDriverWait(driver, 60);                               
+		   WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[6]/div[2]")));
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[6]/div[2]")).click();
 		}
    // Open the constraint editor
-   driver.findElement(By.xpath("//*[@id=\"constraints\"]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]/i")).click();
+   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")).click();
    
     // Confirm the Constraints Editor opens for the selected constraint
 	ConfirmConstraintEditor();
 	
    // Select the Conformance
-   SetConformance();
+   SetConformance("SHALL");
    
    //Confirm the Alert appears
    WebDriverWait wait7 = new WebDriverWait(driver, 60);
@@ -598,9 +661,17 @@ public void ReturnHome(String welcomeMessage) throws Exception {
       // assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*The parent constraint is a branch root. Do you want to mark this constraint as a branch identifier?[\\s\\S]*$"));
          
       //Select the Cardinality
-      SetCardinality();
+      SetCardinality("1..1");
+      //Thread.sleep(2000);
       
-      SetBindingType("Single Value");
+      SetBindingType("Single");
+      
+      // Confirm constraint form re-loads
+         waitForPageLoad();
+      
+	    // Confirm the code field appears
+	    WebDriverWait wait8 = new WebDriverWait(driver, 60);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[6]/div/div[1]/div"), "Code:"));
       
       // Confirm constraint form re-loads
       waitForPageLoad();
@@ -614,7 +685,11 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	   WebElement element9 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[6]/div/div[1]/input[1]")));
 	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[6]/div/div[1]/input[1]")).sendKeys(templateIdExtension);
 	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[6]/div/div[1]/input[1]")).sendKeys(Keys.TAB);
+	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[6]/div/div[1]/input[2]")).click();
 	   
+      // Confirm constraint form refresh
+         waitForPageLoad();
+	      	   
 	   // Save the Template 
 	   SaveTemplate();
 	   
@@ -672,21 +747,21 @@ public void ReturnHome(String welcomeMessage) throws Exception {
    if (templateType == "CDA: Document")
 		{
 	    WebDriverWait wait = new WebDriverWait(driver, 60);                             
-	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[2]")));
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[2]")).click();
+	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/span")));
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/span")).click();
 		}                         
    
    if (templateType == "eMeasure: Document")
 		{  
 	    WebDriverWait wait = new WebDriverWait(driver, 60);                             
-	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[6]/div[2]/span")));
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[6]/div[2]/span")).click();
+	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/span")));
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/span")).click();
 		}
    
    // Confirm page completely loads
        waitForPageLoad();
    
-     // Open the 'id' element       
+     // Open the constraint editor for the 'id' element       
        driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")).click();
        WebDriverWait wait = new WebDriverWait(driver, 60);                             
 	   WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")));
@@ -748,7 +823,10 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	      waitForPageLoad();
 	    
 	   // Save the template 
-	   SaveTemplate();			   
+	      SaveTemplate();
+	      
+      // Return to the Trifolia Home Page
+	   ReturnHome("Welcome to Trifolia Workbench");  
  }
  
 // Edit Primitive Constraint, then Duplicate and Delete the Primitive Constraint 
@@ -784,7 +862,7 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 			}		
      
 	   // Confirm page completely loads
-	    // waitForPageLoad();
+	       waitForPageLoad();
 	    
 	   // Confirm the correct template appears in the Editor
 	   
@@ -806,15 +884,15 @@ public void ReturnHome(String welcomeMessage) throws Exception {
    if (templateType == "CDA: Document")
 		{
 	    WebDriverWait wait = new WebDriverWait(driver, 60);                             
-	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[2]/span")));
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[2]")).click();
+	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/span")));
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/span")).click();
 		}                         
    
    if (templateType == "eMeasure: Document")
 		{  
 	    WebDriverWait wait = new WebDriverWait(driver, 60);                             
-	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[6]/div[2]/span")));
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[6]/div[2]/span")).click();
+	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/span")));
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/span")).click();
 		}
    
 	   // Change View Mode back to 'Analyst' 
@@ -828,7 +906,7 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	  	wait0.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[2]/div/div[4]/div/select"), "Analyst"));
 
      // Expand the 'id' element       
-       driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")).click();
+       driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[1]/span[1]/div")).click();
        WebDriverWait wait1 = new WebDriverWait(driver, 60);                             
 	   WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")));
 	   
@@ -836,22 +914,22 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 			{
 		   // Confirm the primitive constraint is selectable
 		   WebDriverWait wait3 = new WebDriverWait(driver, 60);                             
-		   WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[9]/div[6]/div[3]")));
+		   WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[6]/div[2]")));
 		  
 		 //Select the Primitive Constraint
 		    WebDriverWait wait4 = new WebDriverWait(driver, 60);                                     
-		    WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[9]/div[6]/div[3]")));
-			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[9]/div[6]/div[3]")).click();
+		    WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[6]/div[2]")));
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[6]/div[2]")).click();
 			}
 	   if (templateType == "eMeasure: Document")
 			{  
 			// Confirm the primitive constraint is selectable
 			   WebDriverWait wait3 = new WebDriverWait(driver, 60);                             
-			   WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[11]/div[6]")));
+			   WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[12]/div[6]")));
 			
 			// Confirm the primitive constraint appears in the Grid View
 				 WebDriverWait wait5 = new WebDriverWait(driver, 60);                    
-		  	     wait5.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[11]/div[6]"), "SHALL"));
+		  	     wait5.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[12]/div[6]"), "SHALL"));
 			   
 		  	// Click the other constraints
 		  	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[1]/div[2]/span")).click();                                 
@@ -862,7 +940,7 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 		  	   
 		  	 //Select the Primitive Constraint
 		     WebDriverWait wait4 = new WebDriverWait(driver, 60);                                                           
-		     WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[11]/div[6]")));	
+		     WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[12]/div[6]")));	
 		     driver.findElement(By.cssSelector("html body#ctl00_mainBody div.container-fluid div.main div#TemplateEditor div div.tab-content div#constraints.tab-pane.active div#constraintsTree.constraintTree div div div.constraintRow.constrained.primitive div.constraintColumn.constraintBranch")).click();                                 
 			}
 	   
@@ -872,7 +950,6 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	   //Confirm the constraint editor opens
          WebDriverWait wait5 = new WebDriverWait(driver, 60);                    
 	     wait5.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[2]/div/div[1]/div"), "Conformance"));
-	 
 	     	
       // Update the Conformance
       
@@ -888,14 +965,14 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	   if (templateType == "CDA: Document")
 			{
 		   WebDriverWait wait7 = new WebDriverWait(driver, 60);                               
-		   WebElement element7 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[9]/div[7]/div[6]")));
-		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[9]/div[7]/div[6]")).click();
+		   WebElement element7 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[7]/div[6]")));
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[7]/div[6]")).click();
 			}
 	   else if (templateType == "eMeasure: Document")
 			{
 		   WebDriverWait wait8 = new WebDriverWait(driver, 60);
-		   WebElement element8 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[12]/div[6]")));
-		    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[12]/div[6]")).click();
+		   WebElement element8 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[13]/div[6]")));
+		    driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[13]/div[6]")).click();
 			}
    
 	      // Delete the Duplicated constraint
@@ -952,7 +1029,7 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 		 	}
        
        // Confirm page completely loads
-	    // waitForPageLoad();
+	      waitForPageLoad();
 	    
 	    // Open the Constraints Editor
 	    OpenConstraintsEditor();
@@ -960,30 +1037,42 @@ public void ReturnHome(String welcomeMessage) throws Exception {
    // Select and open the 'code' element 
 	 if (templateType == "CDA: Document")
 		{
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[2]/span")).click();
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")).click();
+		   WebDriverWait wait = new WebDriverWait(driver, 60);
+		   WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[2]")));
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[2]")).click();
 		}
 	 else if (templateType == "eMeasure: Document")
 	 	{
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[7]/div[2]/span")).click();
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")).click();
+		   WebDriverWait wait = new WebDriverWait(driver, 60);
+		   WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[2]/span")));
+		   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[8]/div[2]/span")).click();
 	 	} 
 	 
+	 // Open the constraint editor for the selected constraint
+	 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")).click();
+     WebDriverWait wait = new WebDriverWait(driver, 60);                             
+	 WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")));
+
 	   //Confirm the Constraint Editor box opens
 	     ConfirmConstraintEditor();
-	     
-	// Set Binding Type and Select the Value Set
-	 
-		 // Confirm page completely loads
-		    waitForPageLoad();
+ 
+	 // Confirm page completely loads
+	    waitForPageLoad();
 		    
-	 SetBindingType("Value Set");
+	// Set the Binding Type	    
+	 SetBindingType("Value");
 	    
+	 // Confirm the Value Set field appear
+	     WebDriverWait wait1 = new WebDriverWait(driver, 60);                    
+	     wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[7]/div/div[1]/div"), "Value Conf.:"));
+	     WebDriverWait wait2 = new WebDriverWait(driver, 60);                    
+	     wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[7]/div/div[2]/div[1]/div/div/span[1]"), "Value Set:"));
+	 
 	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[7]/div/div[2]/div[1]/div/div/input")).sendKeys(valueSetOID);
 
 	// Confirm Value Set is located
-	WebDriverWait wait = new WebDriverWait(driver, 60);                                      
-    WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"constraints\"]/div[2]/div[2]/div/div[1]/div[7]/div/div[2]/div[2]")));
+	WebDriverWait wait3 = new WebDriverWait(driver, 60);                                      
+    WebElement element3 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"constraints\"]/div[2]/div[2]/div/div[1]/div[7]/div/div[2]/div[2]")));
 	assertTrue("Could not find \"Value Set Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(valueSetName) >= 0);
 	     
 	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[7]/div/div[2]/div[1]/div/div/input")).sendKeys(Keys.RETURN);
@@ -993,54 +1082,55 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	// Navigate to the Section constraint
 	if (templateType == "CDA: Document")
 	{  
-			
     //Confirm the Component element is available and expand the element 
-      WebDriverWait wait2 = new WebDriverWait(driver, 60);                               
-	  WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[31]/div[1]/span[1]/div")));
+      WebDriverWait wait4 = new WebDriverWait(driver, 60);                               
+	  WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[31]/div[1]/span[1]/div")));
 	  driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[31]/div[1]/span[1]/div")).click();  
 	
 	  // Confirm the Structure Document element is available, and expand the element
-	  WebDriverWait wait3 = new WebDriverWait(driver, 60);
-	  WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[32]/div[8]/div[1]/span[1]/div")));
+	  WebDriverWait wait5 = new WebDriverWait(driver, 60);
+	  WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[32]/div[8]/div[1]/span[1]/div")));
 	  driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[32]/div[8]/div[1]/span[1]/div")).click(); 
 	
 	// Confirm the Component element is available, expand the 'component' element
-	 WebDriverWait wait4 = new WebDriverWait(driver, 60);
-	 WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[32]/div[9]/div[9]/div[1]/span[1]/div")));
-	 driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[32]/div[9]/div[9]/div[1]/span[1]/div")).click(); 
-	
-	// Select and open 'section' element
-	   WebDriverWait wait5 = new WebDriverWait(driver, 60);
-	   WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[32]/div[9]/div[10]/div[7]/div[2]/span[7]")));
+	 WebDriverWait wait6 = new WebDriverWait(driver, 60);
+	 WebElement element6 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[32]/div[9]/div[9]/div[1]/span[1]/div")));	
+	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[32]/div[9]/div[9]/div[1]/span[1]/div")).click();
+
+	 // Select and open 'section' element
+	   WebDriverWait wait7 = new WebDriverWait(driver, 60);
+	   WebElement element7 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[32]/div[9]/div[10]/div[7]/div[2]/span[7]")));
 	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[32]/div[9]/div[10]/div[7]/div[2]/span[7]")).click();
 	
 	// Open the 'section' element
-	   WebDriverWait wait6 = new WebDriverWait(driver, 60);
-	   WebElement element6 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")));
+	   WebDriverWait wait8 = new WebDriverWait(driver, 60);
+	   WebElement element8 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")));
 	   driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")).click();
-	
 	}
 	
 	else if (templateType == "eMeasure: Document")
  	{
 		 //Expand the 'component' element 
 		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[23]/div[1]/span[1]/div")).click();  
-	    WebDriverWait wait2 = new WebDriverWait(driver, 60);
-		WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[24]/div[7]/div[2]/span[3]")));
+	    WebDriverWait wait0 = new WebDriverWait(driver, 60);
+		WebElement element0 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[24]/div[7]/div[2]/span[3]")));
 					
-		// Select and open 'section' element
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[24]/div[7]/div[2]/span[3]")).click();
+		// Select the 'section' element
 		WebDriverWait wait5 = new WebDriverWait(driver, 60);
-		WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")));
-		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")).click();
+		WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[24]/div[7]/div[2]/span[3]")));
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[1]/div[2]/div[24]/div[7]/div[2]/span[3]")).click();
 		
+		// Open the Section element
+		WebDriverWait wait6 = new WebDriverWait(driver, 60);
+		WebElement element6 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")));
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[1]/table/tbody/tr/td[4]/div/div/button[1]")).click();	
  	}
 	
 	// Bind the Template 
-	WebDriverWait wait6 = new WebDriverWait(driver, 60);                               
-	WebElement element6 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[4]/div[1]/div/div/input")));	
-	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[4]/div[1]/div/div/input")).click();
-	driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[4]/div[1]/div/div/input")).sendKeys(templateOID);
+		WebDriverWait wait6 = new WebDriverWait(driver, 60);                               
+		WebElement element6 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[4]/div[1]/div/div/input")));	
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[4]/div[1]/div/div/input")).click();
+		driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[4]/div[1]/div/div/input")).sendKeys(templateOID);
 	
 	// Confirm the binding template is located
 	   WebDriverWait wait4 = new WebDriverWait(driver, 60);                                
@@ -1120,7 +1210,7 @@ public void ReturnHome(String welcomeMessage) throws Exception {
 	   
 	   //Confirm the validation text appears    
 	   WebDriverWait wait9 = new WebDriverWait(driver, 60);               
-	   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[4]/div[1]/div[1]/h3"), "Errors"));
+	   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[4]/div[1]/div/h3"), "Warnings"));
 	   assertTrue("Could not find \"Validation Text\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(validationText) >= 0);
    
 	   // Cancel and View the Template
