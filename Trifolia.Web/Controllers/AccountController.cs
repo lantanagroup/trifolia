@@ -163,6 +163,12 @@ namespace Trifolia.Web.Controllers
 
             this.tdb.SaveChanges();
 
+            if (model.OkayToContact)
+            {
+                API.UserController userController = new API.UserController(this.tdb);
+                userController.SubscribeToReleaseAnnouncements();
+            }
+
             if (!string.IsNullOrEmpty(model.RedirectUrl))
                 return Json(model.RedirectUrl);
             else

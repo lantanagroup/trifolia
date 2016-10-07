@@ -5,7 +5,7 @@
     self.LastName = ko.observable('');
     self.Phone = ko.observable('');
     self.Email = ko.observable('');
-    self.OkayToContact = ko.observable(false);
+    self.OkayToContact = ko.observable(true);
     self.Organization = ko.observable('');
     self.OrganizationType = ko.observable('');
     self.RedirectUrl = ko.observable(redirectUrl);
