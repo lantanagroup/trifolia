@@ -25,6 +25,21 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string MailChimpReleaseAnnouncementList
+        {
+            get { return ConfigurationManager.AppSettings["MailChimpReleaseAnnouncementList"]; }
+        }
+
+        public static string MailChimpBaseUrl
+        {
+            get { return ConfigurationManager.AppSettings["MailChimpBaseUrl"]; }
+        }
+
+        public static string MailChimpApiKey
+        {
+            get { return ConfigurationManager.AppSettings["MailChimpApiKey"]; }
+        }
+
         public static string LatestFhirIGPublisherLocation
         {
             get { return ConfigurationManager.AppSettings["LatestFhirIGPublisherLocation"]; }

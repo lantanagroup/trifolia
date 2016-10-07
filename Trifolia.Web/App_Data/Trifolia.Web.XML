@@ -544,6 +544,23 @@
             Gets configuration information used by the client-side application
             </summary>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.IsSubscribedReleaseAnnouncements">
+            <summary>
+            Checks the status of the currently logged-in user on the configured mail chimp release announcements list
+            </summary>
+            <returns>true if the user is susbcribed, false if they WERE subscribed, but are now unsubscribed, null if they have not subscribed before</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.UnsubscribeReleaseAnnouncement">
+            <summary>
+            Unsubscribes the current user from the configured release announcement list
+            </summary>
+            <remarks>Only unsubscribes the user if they are already subscribed</remarks>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.SubscribeToReleaseAnnouncements">
+            <summary>
+            Subscribes the current user to the configured release announcements list
+            </summary>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.UserController.SearchUsers(System.String)">
             <summary>
             Searches for users

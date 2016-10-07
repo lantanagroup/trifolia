@@ -1,16 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Http;
 using Trifolia.Authorization;
 using Trifolia.DB;
 using Trifolia.Web.Models.User;
+using System.Text;
+using System.Security.Cryptography;
+using Trifolia.Config;
+using Trifolia.Logging;
+using Newtonsoft.Json;
+using System.IO;
+using System.Dynamic;
 
 namespace Trifolia.Web.Controllers.API
 {
     public class UserController : ApiController
     {
+        private const string MailChimpReleaseAnnouncementStatusUrlFormat = "{0}/lists/{1}/members/{2}";
+        private const string MailChimpSubscribeReleaseAnnouncementUrlFormat = "{0}/lists/{1}/members/";
         private IObjectRepository tdb;
 
         #region Constructors
@@ -28,12 +38,218 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
+        private string GetEmailMD5(string email)
+        {
+            byte[] emailBytes = Encoding.ASCII.GetBytes(email);
+            MD5 md5 = MD5.Create();
+            byte[] emailMD5 = md5.ComputeHash(emailBytes);
+
+            StringBuilder emailMD5Text = new StringBuilder();
+            for (int i = 0; i < emailMD5.Length; i++)
+                emailMD5Text.Append(emailMD5[i].ToString("X2"));
+
+            return emailMD5Text.ToString();
+        }
+
+        /// <summary>
+        /// Checks the status of the currently logged-in user on the configured mail chimp release announcements list
+        /// </summary>
+        /// <returns>true if the user is susbcribed, false if they WERE subscribed, but are now unsubscribed, null if they have not subscribed before</returns>
+        [HttpGet, Route("api/User/Me/ReleaseAnnouncement"), SecurableAction]
+        public bool? IsSubscribedReleaseAnnouncements()
+        {
+            if (string.IsNullOrEmpty(AppSettings.MailChimpApiKey))
+            {
+                Log.For(this).Error("MailChimpAuthentication appSetting key is not configured. This API method should not be getting called.");
+                throw new NotSupportedException("Release announcements has not been configured for this installation of Trifolia");
+            }
+
+            if (string.IsNullOrEmpty(AppSettings.MailChimpBaseUrl))
+            {
+                Log.For(this).Error("MailChimpBaseUrl appSetting key is not configured. This API method should not be getting called.");
+                throw new NotSupportedException("Release announcements has not been configured for this installation of Trifolia");
+            }
+
+            if (string.IsNullOrEmpty(AppSettings.MailChimpReleaseAnnouncementList))
+            {
+                Log.For(this).Error("MailChimpReleaseAnnouncementList appSetting key is not configured. This API method should not be getting called.");
+                throw new NotSupportedException("Release announcements has not been configured for this installation of Trifolia");
+            }
+
+            var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+            string emailMD5Text = this.GetEmailMD5(currentUser.Email);
+            string url = string.Format(MailChimpReleaseAnnouncementStatusUrlFormat, AppSettings.MailChimpBaseUrl, AppSettings.MailChimpReleaseAnnouncementList, emailMD5Text);
+
+            WebRequest request = HttpWebRequest.Create(url);
+            request.Method = "GET";
+            request.Headers["Authorization"] = "Basic " + System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes("trifolia:" + AppSettings.MailChimpApiKey));
+
+            HttpWebResponse response = null;
+
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    using (StreamReader sr = new StreamReader(response.GetResponseStream()))
+                    {
+                        dynamic responseObj = JsonConvert.DeserializeObject(sr.ReadToEnd());
+
+                        if (responseObj.status == "subscribed" || responseObj.status == "pending")
+                            return true;
+                        else
+                            return false;
+                    }
+                }
+            }
+            catch (WebException wex)
+            {
+                HttpWebResponse exceptionResponse = (HttpWebResponse)wex.Response;
+
+                if (exceptionResponse.StatusCode == HttpStatusCode.NotFound)
+                    return null;
+                else
+                {
+                    Log.For(this).Error("Unexpected error while communicating with Mail Chimp", wex);
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.For(this).Error("Unexpected error while communicating with Mail Chimp", ex);
+                throw;
+            }
+
+            Log.For(this).Error("Unexpected response from MailChimp received (expected either 404 NotFound or 200 OK), actual is: " + response.StatusCode);
+            throw new Exception("Unexpected response from configured release announcement list");
+        }
+
+        /// <summary>
+        /// Unsubscribes the current user from the configured release announcement list
+        /// </summary>
+        /// <remarks>Only unsubscribes the user if they are already subscribed</remarks>
+        [HttpDelete, Route("api/User/Me/ReleaseAnnouncement"), SecurableAction]
+        public void UnsubscribeReleaseAnnouncement()
+        {
+            bool? isSubscribed = this.IsSubscribedReleaseAnnouncements();
+
+            if (isSubscribed == null || isSubscribed == false)
+                return;
+
+            var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+            string emailMD5Text = this.GetEmailMD5(currentUser.Email);
+            string url = string.Format(MailChimpReleaseAnnouncementStatusUrlFormat, AppSettings.MailChimpBaseUrl, AppSettings.MailChimpReleaseAnnouncementList, emailMD5Text);
+
+            dynamic model = new ExpandoObject();
+            model.status = "unsubscribed";
+
+            HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(url);
+            request.KeepAlive = false;
+            request.ProtocolVersion = HttpVersion.Version10;
+            request.Method = "PATCH";
+            request.ContentType = "application/json";
+            request.Headers["Authorization"] = "Basic " + System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes("trifolia:" + AppSettings.MailChimpApiKey));
+
+            string modelJson = JsonConvert.SerializeObject(model);
+            byte[] modelBytes = Encoding.ASCII.GetBytes(modelJson);
+            request.ContentLength = modelBytes.Length;
+
+            Stream requestStream = request.GetRequestStream();
+            requestStream.Write(modelBytes, 0, modelBytes.Length);
+            requestStream.Close();
+
+            HttpWebResponse response = null;
+
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+            }
+            catch (Exception ex)
+            {
+                Log.For(this).Error("Unexpected error occurred while communicating with Mail Chimp", ex);
+                throw;
+            }
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Log.For(this).Error("Unexpected status code when susbcribing the current user to the configured release announcements list: " + response.StatusCode);
+                throw new Exception("Unexpected response from release announcement list");
+            }
+        }
+
+        /// <summary>
+        /// Subscribes the current user to the configured release announcements list
+        /// </summary>
+        [HttpPost, Route("api/User/Me/ReleaseAnnouncement"), SecurableAction]
+        public void SubscribeToReleaseAnnouncements()
+        {
+            bool? isSubscribed = this.IsSubscribedReleaseAnnouncements();
+            var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+            HttpWebRequest request = null;
+            dynamic model = new ExpandoObject();
+
+            if (isSubscribed == null)
+            {
+                string url = string.Format(MailChimpSubscribeReleaseAnnouncementUrlFormat, AppSettings.MailChimpBaseUrl, AppSettings.MailChimpReleaseAnnouncementList);
+                request = (HttpWebRequest) HttpWebRequest.Create(url);
+                request.Method = "POST";
+
+                model.email_address = currentUser.Email;
+                model.status = "subscribed";
+                model.merge_fields = new ExpandoObject();
+                model.merge_fields.FNAME = currentUser.FirstName;
+                model.merge_fields.LNAME = currentUser.LastName;
+            }
+            else if (isSubscribed == false)
+            {
+                string emailMD5Text = this.GetEmailMD5(currentUser.Email);
+                string url = string.Format(MailChimpReleaseAnnouncementStatusUrlFormat, AppSettings.MailChimpBaseUrl, AppSettings.MailChimpReleaseAnnouncementList, emailMD5Text);
+                request = (HttpWebRequest)HttpWebRequest.Create(url);
+                request.Method = "PATCH";
+
+                model.status = "subscribed";
+            }
+
+            string modelJson = JsonConvert.SerializeObject(model);
+            byte[] modelBytes = Encoding.ASCII.GetBytes(modelJson);
+
+            request.KeepAlive = false;
+            request.ProtocolVersion = HttpVersion.Version10;
+            request.ContentLength = modelBytes.Length;
+            request.ContentType = "application/json";
+            request.Headers["Authorization"] = "Basic " + System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes("trifolia:" + AppSettings.MailChimpApiKey));
+
+            Stream requestStream = request.GetRequestStream();
+
+            requestStream.Write(modelBytes, 0, modelBytes.Length);
+            requestStream.Close();
+
+            HttpWebResponse response = null;
+
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+            }
+            catch (Exception ex)
+            {
+                Log.For(this).Error("Unexpected error occurred while communicating with Mail Chimp", ex);
+                throw;
+            }
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Log.For(this).Error("Unexpected status code when susbcribing the current user to the configured release announcements list: " + response.StatusCode);
+                throw new Exception("Unexpected response from release announcement list");
+            }
+        }
+
         /// <summary>
         /// Searches for users
         /// </summary>
         /// <param name="searchText">The text to search for.</param>
         /// <returns></returns>
-        [HttpGet, Route("api/User/Search"), SecurableAction()]
+        [HttpGet, Route("api/User/Search"), SecurableAction]
         public IEnumerable<SearchUserModel> SearchUsers(string searchText)
         {
             searchText = searchText.ToLower();
