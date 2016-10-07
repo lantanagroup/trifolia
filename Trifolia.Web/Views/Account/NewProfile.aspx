@@ -39,10 +39,6 @@
                 <select class="form-control" data-bind="value: OrganizationType, options: $parent.OrgTypes" />
             </div>
 
-            <div class="form-group">
-                <input type="checkbox" data-bind="checked: OkayToContact" /> It is OK to contact me.
-            </div>
-
             <div class="btn-group">
                 <button type="button" class="btn btn-primary" data-bind="click: $parent.SaveChanges, enable: validation.isValid">Save</button>
                 <a href="/Account/LogOff" class="btn btn-default">Cancel</a>

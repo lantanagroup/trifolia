@@ -55,34 +55,35 @@ var myProfileViewModel = function (loadDataUrl, saveDataUrl) {
         'Vendor',
         'Other'
     ];
+    self.releaseAnnouncementsSubscription = ko.observable(null);
 
     var validProfile = ko.validatedObservable(self.model);
 
     self.isValidProfile = ko.computed(function () {
         return validProfile.isValid();
     });
-    
-    $.ajax({
-        url: self.dataUrl,
-        cache: false,
-        contentType: 'application/json; charset=utf-8',
-        success: function (aModel) {
-            self.model.loadJs(aModel);
-            self.model.dirtyFlag = ko.dirtyFlag(self.model);
 
-            if (aModel.openIdConfigUrl) {
-                $.ajax({
-                    url: aModel.openIdConfigUrl,
-                    success: function (results) {
-                        self.openIdConfig(JSON.stringify(results, null, '\t'));
-                    },
-                    error: function (err) {
-                        alert('Error getting open id configuration');
-                    }
-                });
+    self.getReleaseAnnouncementSubscription = function () {
+        $.ajax({
+            url: '/api/User/Me/ReleaseAnnouncement',
+            success: self.releaseAnnouncementsSubscription,
+            error: function (err) {
+                console.log(err);
+                alert('Error getting release announcement subscription status');
             }
-        }
-    });
+        });
+    };
+
+    self.toggleReleaseAnnouncementSubscription = function () {
+        $.ajax({
+            url: '/api/User/Me/ReleaseAnnouncement',
+            method: self.releaseAnnouncementsSubscription() == true ? 'DELETE' : 'POST',
+            success: self.getReleaseAnnouncementSubscription,
+            error: function (err) {
+                alert('Error toggling release announcement subscription');
+            }
+        });
+    };
 
     self.saveChanges = function () {
         if (!self.isValidProfile()) {
@@ -116,4 +117,28 @@ var myProfileViewModel = function (loadDataUrl, saveDataUrl) {
             }
         });
     };
+
+    $.ajax({
+        url: self.dataUrl,
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        success: function (aModel) {
+            self.model.loadJs(aModel);
+            self.model.dirtyFlag = ko.dirtyFlag(self.model);
+
+            if (aModel.openIdConfigUrl) {
+                $.ajax({
+                    url: aModel.openIdConfigUrl,
+                    success: function (results) {
+                        self.openIdConfig(JSON.stringify(results, null, '\t'));
+                    },
+                    error: function (err) {
+                        alert('Error getting open id configuration');
+                    }
+                });
+            }
+        }
+    });
+
+    self.getReleaseAnnouncementSubscription();
 };

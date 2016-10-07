@@ -17,78 +17,90 @@
     <h2>My Profile</h2>
 
     <div id="mainBody">
-        <p style="font-style: italic">This information, including name, email address, and phone number, is collected from users that voluntarily enter the information in the process of authoring templates.  It is stored in a manner appropriate to the nature of the data and is used only for purposes related to the authoring and maintenance of the templates entered by the user. The information collected is never provided to any other company for that company's independent use.</p>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="font-style: italic">This information, including name, email address, and phone number, is collected from users that voluntarily enter the information in the process of authoring templates.  It is stored in a manner appropriate to the nature of the data and is used only for purposes related to the authoring and maintenance of the templates entered by the user. The information collected is never provided to any other company for that company's independent use.</p>
 
-        <div class="form-group">
-            <label>User Name:</label>
-            <input type="text" class="form-control" data-bind="value: model.userName" readonly="readonly" />
-        </div>
+                <div class="form-group">
+                    <label>User Name:</label>
+                    <input type="text" class="form-control" data-bind="value: model.userName" readonly="readonly" />
+                </div>
 
-        <div class="form-group">
-            <label>First Name</label>
-            <input type="text" class="form-control" data-bind="value: model.firstName" />
-        </div>
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" data-bind="value: model.firstName" />
+                </div>
 
-        <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" class="form-control" data-bind="value: model.lastName" />
-        </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" data-bind="value: model.lastName" />
+                </div>
 
-        <div class="form-group">
-            <label>Phone</label>
-            <input type="text" class="form-control" data-bind="value: model.phone" />
-        </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" class="form-control" data-bind="value: model.phone" />
+                </div>
 
-        <div class="form-group">
-            <label>Email</label>
-            <input type="text" class="form-control" data-bind="value: model.email" />
-        </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control" data-bind="value: model.email" />
+                </div>
 
-        <div class="form-group">
-            <label>Organization</label>
-            <input type="text" class="form-control" data-bind="value: model.organization" />
-        </div>
+                <div class="form-group">
+                    <label>Organization</label>
+                    <input type="text" class="form-control" data-bind="value: model.organization" />
+                </div>
 
-        <div class="form-group">
-            <label>Organization Type</label>
-            <select class="form-control" data-bind="value: model.organizationType, options: orgTypes, optionsCaption: 'Select'"></select>
-        </div>
+                <div class="form-group">
+                    <label>Organization Type</label>
+                    <select class="form-control" data-bind="value: model.organizationType, options: orgTypes, optionsCaption: 'Select'"></select>
+                </div>
 
-        <div class="form-group">
-            <input type="checkbox" data-bind="checked: model.okayToContact" /> It is OK to contact me.
-        </div>
-
-        <p>
-            <button type="button" class="btn btn-primary" data-bind="click: saveChanges, enable: model.validation.isValid">Save</button>
-        </p>
-        
-        <!-- ko if: model.openIdConfigUrl() -->
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">OpenID Configuration</div>
-                <div class="panel-body">
-                    <p><strong>Url:</strong> <span data-bind="text: model.openIdConfigUrl"></span></p>
-
-                    <!-- ko if: openIdConfig() -->
+                <div class="form-group">    
+                    <label>Release Announcements</label>
                     <p>
-                        <pre data-bind="text: openIdConfig"></pre>
+                        <!-- ko if: releaseAnnouncementsSubscription() == true -->
+                        <button type="button" class="btn btn-default" data-bind="click: toggleReleaseAnnouncementSubscription">Unsubscribe</button>
+                        <!-- /ko -->
+                        <!-- ko if: releaseAnnouncementsSubscription() != true -->
+                        <button type="button" class="btn btn-default" data-bind="click: toggleReleaseAnnouncementSubscription">Subscribe</button>
+                        <!-- /ko -->
                     </p>
-                    <!-- /ko -->
                 </div>
-            </div>
-        </div>
-        <!-- /ko -->
 
-        <!-- ko if: model.authToken() -->
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Current User OAuth Token</div>
-                <div class="panel-body">
-                    <pre data-bind="text: model.authToken"></pre>
+                <p>
+                    <button type="button" class="btn btn-primary" data-bind="click: saveChanges, enable: model.validation.isValid">Save</button>
+                </p>
+            </div>
+        
+            <!-- ko if: model.openIdConfigUrl() -->
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">OpenID Configuration</div>
+                    <div class="panel-body">
+                        <p><strong>Url:</strong> <span data-bind="text: model.openIdConfigUrl"></span></p>
+
+                        <!-- ko if: openIdConfig() -->
+                        <p>
+                            <pre data-bind="text: openIdConfig"></pre>
+                        </p>
+                        <!-- /ko -->
+                    </div>
                 </div>
             </div>
+            <!-- /ko -->
+
+            <!-- ko if: model.authToken() -->
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Current User OAuth Token</div>
+                    <div class="panel-body">
+                        <pre data-bind="text: model.authToken"></pre>
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
         </div>
-        <!-- /ko -->
     </div>
 
     <script type="text/javascript">
