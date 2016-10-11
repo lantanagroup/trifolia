@@ -56,12 +56,27 @@ var myProfileViewModel = function (loadDataUrl, saveDataUrl) {
         'Other'
     ];
     self.releaseAnnouncementsSubscription = ko.observable(null);
+    self.enableReleaseAnnouncement = ko.observable(false);
 
     var validProfile = ko.validatedObservable(self.model);
 
     self.isValidProfile = ko.computed(function () {
         return validProfile.isValid();
     });
+
+    self.getEnableReleaseAnnouncement = function (callback) {
+        $.ajax({
+            url: '/api/Config/ReleaseAnnouncement',
+            success: function (enableReleaseAnnouncement) {
+                self.enableReleaseAnnouncement(enableReleaseAnnouncement);
+                callback();
+            },
+            error: function (err) {
+                console.log(err);
+                alert('Error determining if release announcements are supported');
+            }
+        });
+    };
 
     self.getReleaseAnnouncementSubscription = function () {
         $.ajax({
@@ -140,5 +155,9 @@ var myProfileViewModel = function (loadDataUrl, saveDataUrl) {
         }
     });
 
-    self.getReleaseAnnouncementSubscription();
+    self.getEnableReleaseAnnouncement(function () {
+        if (self.enableReleaseAnnouncement()) {
+            self.getReleaseAnnouncementSubscription();      // Only check the release announcement subscription if it is enabled
+        }
+    });
 };

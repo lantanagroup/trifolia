@@ -56,6 +56,7 @@
                     <select class="form-control" data-bind="value: model.organizationType, options: orgTypes, optionsCaption: 'Select'"></select>
                 </div>
 
+                <!-- ko if: enableReleaseAnnouncement() -->
                 <div class="form-group">    
                     <label>Release Announcements</label>
                     <p>
@@ -67,6 +68,7 @@
                         <!-- /ko -->
                     </p>
                 </div>
+                <!-- /ko -->
 
                 <p>
                     <button type="button" class="btn btn-primary" data-bind="click: saveChanges, enable: model.validation.isValid">Save</button>

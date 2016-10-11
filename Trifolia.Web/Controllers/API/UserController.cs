@@ -51,6 +51,14 @@ namespace Trifolia.Web.Controllers.API
             return emailMD5Text.ToString();
         }
 
+        [HttpGet, Route("api/Config/ReleaseAnnouncement"), AllowAnonymous]
+        public bool IsReleaseAnnouncementsSupported()
+        {
+            return !string.IsNullOrEmpty(AppSettings.MailChimpApiKey) &&
+                !string.IsNullOrEmpty(AppSettings.MailChimpBaseUrl) &&
+                !string.IsNullOrEmpty(AppSettings.MailChimpReleaseAnnouncementList);
+        }
+
         /// <summary>
         /// Checks the status of the currently logged-in user on the configured mail chimp release announcements list
         /// </summary>
@@ -188,6 +196,9 @@ namespace Trifolia.Web.Controllers.API
             var currentUser = CheckPoint.Instance.GetUser(this.tdb);
             HttpWebRequest request = null;
             dynamic model = new ExpandoObject();
+
+            if (isSubscribed == true)
+                return;
 
             if (isSubscribed == null)
             {

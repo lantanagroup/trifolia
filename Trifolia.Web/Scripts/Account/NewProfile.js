@@ -33,6 +33,7 @@ newProfileViewModel = function (redirectUrl) {
         'Vendor',
         'Other'
     ];
+    self.enableReleaseAnnouncement = ko.observable(false);
 
     self.SaveChanges = function () {
         if (!self.Model.isValid()) {
@@ -60,4 +61,16 @@ newProfileViewModel = function (redirectUrl) {
             }
         });
     };
+
+    // Initialization
+    $.ajax({
+        url: '/api/Config/ReleaseAnnouncement',
+        success: function (enableReleaseAnnouncement) {
+            self.enableReleaseAnnouncement(enableReleaseAnnouncement);
+        },
+        error: function (err) {
+            console.log(err);
+            alert('Error determining if release announcements are supported');
+        }
+    });
 };

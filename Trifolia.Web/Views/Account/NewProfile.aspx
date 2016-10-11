@@ -36,13 +36,15 @@
             </div>
 
             <div class="form-group">
-                <select class="form-control" data-bind="value: OrganizationType, options: $parent.OrgTypes" />
+                <select class="form-control" data-bind="value: OrganizationType, options: $parent.OrgTypes"></select>
             </div>
 
+            <!-- ko if: $root.enableReleaseAnnouncement() -->
             <div class="form-group">
                 <label>Release Announcements</label>
                 <input type="checkbox" data-bind="checked: OkayToContact" /> Subscribe me to release announcements.
             </div>
+            <!-- /ko -->
 
             <div class="btn-group">
                 <button type="button" class="btn btn-primary" data-bind="click: $parent.SaveChanges, enable: validation.isValid">Save</button>
