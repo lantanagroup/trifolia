@@ -265,7 +265,7 @@ namespace Trifolia.Web.Controllers
             // as a cookie to the authorization request so that we know where they were trying to
             // go after authorization is complete
             if (!string.IsNullOrEmpty(this.Request.Params[RETURN_URL_PARAM_NAME]))
-                r.Cookies.Add(new HttpCookie(AUTH_RETURN_URL_COOKIE_NAME, this.Request.Params[RETURN_URL_PARAM_NAME]));
+                r.Cookies.Set(new HttpCookie(AUTH_RETURN_URL_COOKIE_NAME, this.Request.Params[RETURN_URL_PARAM_NAME]));
             
             return r.AsActionResultMvc5();
         }
