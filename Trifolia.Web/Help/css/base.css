@@ -11,18 +11,6 @@ body {
 	padding: 0;
 }
 
-.rvps2 {
-	margin-top: 10px;
-}
-
-table {
-	border-collapse: collapse;
-}
-
-table td {
-	padding: 5px !important;
-}
-
 #topic_header, #topic_footer,
 #toc_header, #toc_footer  {
 	padding: 10px;

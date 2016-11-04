@@ -62,3 +62,4 @@ _ReSharper*/
 .vs/
 packages/
 Trifolia.Web/appSettings.user.config
+Trifolia.Web/trifolia.log.xml

@@ -85,7 +85,7 @@
 </td>
 <td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">m..n, where m &gt; 1 </span></p>
 <p class="rvps2"><span class="rvts6">and n ≥ m</span></p>
-<p class="rvps2"><span class="rvts27">Forms</span></p>
+<p class="rvps2"><span class="rvts33">Forms</span></p>
 <p class="rvps2"><span class="rvts6">1..1</span></p>
 <p class="rvps2"><span class="rvts6">1..*</span></p>
 <p class="rvps2"><span class="rvts6">1..some number</span></p>
@@ -95,14 +95,14 @@
 </td>
 <td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">If the context node </span><span class="rvts25">a</span><span class="rvts6"> is present, and the specified node </span><span class="rvts25">b</span><span class="rvts6"> is absent, or is present more than n times, validation ought to yield an error message.</span></p>
 <p class="rvps2"><span class="rvts6">The lower bound of 1 indicates to the human reader that absence is an absolute error.</span></p>
-<p class="rvps2"><a class="rvts11" href="ConstraintCardinality.html#Examples">Examples</a><span class="rvts30">1</span></p>
+<p class="rvps2"><a class="rvts11" href="ConstraintCardinality.html#Examples">Examples</a><span class="rvts36">1</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">SHOULD</span></p>
 </td>
 <td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">0 .. n, where n ≥ 0</span></p>
-<p class="rvps2"><span class="rvts27">Forms</span></p>
+<p class="rvps2"><span class="rvts33">Forms</span></p>
 <p class="rvps2"><span class="rvts6">0..1</span></p>
 <p class="rvps2"><span class="rvts6">0..*</span></p>
 <p class="rvps2"><span class="rvts6">0..some number</span></p>
@@ -118,7 +118,7 @@
 <td height="145" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">MAY</span></p>
 </td>
 <td height="145" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">0 .. n, where n ≥ 0</span></p>
-<p class="rvps2"><span class="rvts27">Forms</span></p>
+<p class="rvps2"><span class="rvts33">Forms</span></p>
 <p class="rvps2"><span class="rvts6">0..1</span></p>
 <p class="rvps2"><span class="rvts6">0..*</span></p>
 <p class="rvps2"><span class="rvts6">0..some number</span></p>
@@ -154,7 +154,7 @@
 </table>
 </div>
 <h2 class="rvps5"><a name="Examples"></a>
-<span class="rvts0"><span class="rvts26">Examples</span></span><span class="rvts0"><span class="rvts31">1</span></span></h2>
+<span class="rvts0"><span class="rvts26">Examples</span></span><span class="rvts0"><span class="rvts37">1</span></span></h2>
 <p class="rvps2"><span class="rvts25">Scenario</span></p>
 <p class="rvps2"><span class="rvts6">An observation template has the constraint SHALL 1..1 effectiveTime</span></p>
 <p class="rvps2"><span class="rvts25">Result</span></p>
@@ -164,7 +164,7 @@
 <p class="rvps2"><span class="rvts6">A "SHOULD effectiveTime" has the constraint "SHALL 1..1 high"</span></p>
 <p class="rvps2"><span class="rvts25">Result</span></p>
 <p class="rvps2"><span class="rvts6">When the context node is present (the effectiveTime), and high is not present within the context node, validation ought to produce an error message.</span></p>
-<p class="rvps2"><span class="rvts28">Note: isBranch constraints cannot be evaluated line by line as above. At least for SHALL constraints they must be evaluated as a whole.</span></p>
+<p class="rvps2"><span class="rvts34">Note: isBranch constraints cannot be evaluated line by line as above. At least for SHALL constraints they must be evaluated as a whole.</span></p>
 <hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
 <p class="rvps2"><span class="rvts25">Scenario</span></p>
 <p class="rvps2"><span class="rvts6">isBranch SHALL in the form "SHOULD 0..1 effectiveTime such that it SHALL 1..1 high"</span></p>
