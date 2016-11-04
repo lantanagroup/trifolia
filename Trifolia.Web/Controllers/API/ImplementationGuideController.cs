@@ -828,15 +828,15 @@ namespace Trifolia.Web.Controllers.API
         private bool ValidateName(IObjectRepository tdb, string igName, int? implementationGuideId = null)
         {
             List<int> ignoreIgs = GetIgnoredImplementationGuides(tdb, implementationGuideId);
-            var found = tdb.ImplementationGuides.SingleOrDefault(y => !ignoreIgs.Contains(y.Id) && y.Name.ToLower() == igName.ToLower());
-            return found == null;
+            var count = tdb.ImplementationGuides.Count(y => !ignoreIgs.Contains(y.Id) && y.Name.ToLower() == igName.ToLower());
+            return count == 0;
         }
 
         private bool ValidateIdentifier(IObjectRepository tdb, string identifier, int? implementationGuideId = null)
         {
             List<int> ignoreIgs = GetIgnoredImplementationGuides(tdb, implementationGuideId);
-            var found = tdb.ImplementationGuides.SingleOrDefault(y => !ignoreIgs.Contains(y.Id) && y.Identifier.ToLower() == identifier.ToLower());
-            return found == null;
+            var count = tdb.ImplementationGuides.Count(y => !ignoreIgs.Contains(y.Id) && y.Identifier.ToLower() == identifier.ToLower());
+            return count == 0;
         }
 
         /// <summary>
