@@ -607,7 +607,7 @@ var ImplementationGuideModel = function (data) {
 
     self.Validation = ko.validatedObservable({
         Name: self.Name.extend({ required: true, uniqueImplementationGuideName: self.Id }),
-        Identifier: self.Identifier.extend({ required: true, uniqueImplementationGuideIdentifier: self.Id }),
+        Identifier: self.Identifier.extend({ required: true }),
         TypeId: self.TypeId.extend({ required: true }),
         CardinalityZeroOrOne: self.CardinalityZeroOrOne.extend({ required: true }),
         CardinalityExactlyOne: self.CardinalityExactlyOne.extend({ required: true }),
