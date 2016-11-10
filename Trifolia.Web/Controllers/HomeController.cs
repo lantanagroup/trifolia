@@ -21,6 +21,21 @@ namespace Trifolia.Web.Controllers
             if (User.Identity.IsAuthenticated && CheckPoint.Instance.User == null)
                 return RedirectToAction("NewProfile", "Account");
 
+            return Home();
+        }
+
+        //
+        // GET: /Home/
+        public ActionResult Index()
+        {
+            if (User.Identity.IsAuthenticated)
+                return RedirectToAction("LoggedInIndex");
+
+            return Home();
+        }
+
+        private ActionResult Home()
+        {
             HomeModel model = new HomeModel();
 
             model.DisplayInternalTechSupportPanel = CheckPoint.Instance.IsDataAdmin;
@@ -37,26 +52,7 @@ namespace Trifolia.Web.Controllers
                 model.WhatsNewMessages.Add(lCurrentMessage);
             }
 
-            return View(model);
-        }
-
-        //
-        // GET: /Home/
-        public ActionResult Index()
-        {
-            if (User.Identity.IsAuthenticated)
-                return RedirectToAction("LoggedInIndex");
-
-            LogInViewModel model = new LogInViewModel();
-
-            model.DisplayInternalTechSupportPanel = CheckPoint.Instance.IsDataAdmin;
-
-            // Determine the did you know tip
-            var didYouKnowTips = Properties.Settings.Default.DidYouKnowItems;
-            int randIndex = new Random().Next(0, didYouKnowTips.Count);
-            model.DidYouKnowTip = didYouKnowTips[randIndex <= didYouKnowTips.Count - 1 ? randIndex : didYouKnowTips.Count - 1];
-
-            return View(model);
+            return View("Index", model);
         }
 
         public ActionResult Error(string message = null)

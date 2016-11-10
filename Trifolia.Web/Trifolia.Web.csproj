@@ -523,13 +523,6 @@
     <Compile Include="Unauthorized.aspx.designer.cs">
       <DependentUpon>Unauthorized.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Home\Index.aspx.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Home\Index.aspx.designer.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\Shared\Site.MVC.Master.cs">
       <DependentUpon>Site.MVC.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -860,7 +853,6 @@
     <Content Include="Views\IGManagementFiles\Files.aspx" />
     <Content Include="Views\Green\Index.aspx" />
     <Content Include="Views\Home\Index.aspx" />
-    <Content Include="Views\Home\LoggedInIndex.aspx" />
     <Content Include="Views\IGManagement\Delete.aspx" />
     <Content Include="Views\IGManagement\EditBookmarks.aspx" />
     <Content Include="Views\IGManagement\ViewIgChanges.aspx" />
@@ -914,9 +906,6 @@
     <Content Include="Images\orderedList7.png" />
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Site.MVC.Master" />
     <Content Include="Scripts\knockout\knockout.extensions.js" />
