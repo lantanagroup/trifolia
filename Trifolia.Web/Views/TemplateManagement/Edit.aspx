@@ -41,8 +41,6 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript" src="/Scripts/jquery/jquery.cookie.js"></script>
-    <script type="text/javascript" src="/Scripts/knockout/knockout.combo.js"></script>
-    <script type="text/javascript" src="/Scripts/knockout/knockout.date.js"></script>
     <script type="text/javascript" src="/Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript" src="/Scripts/TemplateEdit/templateEditGlobals.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript" src="/Scripts/TemplateEdit/templateEditViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
@@ -150,7 +148,8 @@
                                     </div>
                                     <input type="text" class="form-control" data-bind="value: IdentifierAfix, disable: DisableOidField" />
                                 </div>
-                                <span class="templateMetaDataError" data-bind="validationMessage: Oid"></span>
+                                <span class="templateMetaDataError" data-bind="validationMessage: IdentifierPrefix"></span>
+                                <span class="templateMetaDataError" data-bind="validationMessage: IdentifierAfix"></span>
 
                                 <div class="input-group bookmark-field">
                                     <div class="input-group-addon">

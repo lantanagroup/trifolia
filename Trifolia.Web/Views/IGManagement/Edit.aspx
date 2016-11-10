@@ -78,7 +78,7 @@
 
                     <div class="form-group">
                         <label>Web Readme Overview</label>
-                        <textarea style="width: 100%; height: 100px;" data-bind="value: WebReadmeOverview"></textarea>
+                        <textarea class="form-control" style="height: 100px;" data-bind="value: WebReadmeOverview"></textarea>
                         <span class="help-block">Used in the .txt README file when the web-based implementation guide is downloaded as a ZIP package.</span>
                     </div>
                     <span data-bind="validationMessage: WebReadmeOverview"></span>
@@ -433,7 +433,6 @@
     <script type="text/javascript" src="../../Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript" src="../../Scripts/sceditor/jquery.sceditor.xhtml.min.js"></script>
     <script type="text/javascript" src="../../Scripts/sceditor/sceditor.custom.js"></script>
-    <script type="text/javascript" src="../../Scripts/knockout/knockout.sceditor.js"></script>
 
     <script type="text/javascript">
         var viewModel = null;

@@ -17,7 +17,6 @@
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/javascript" src="../../Scripts/knockout/knockout.isdirty.js"></script>
     <script type="text/javascript" src="../../Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript" src="../../Scripts/GreenManagement/greenModels.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript" src="../../Scripts/GreenManagement/GreenManagementViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>

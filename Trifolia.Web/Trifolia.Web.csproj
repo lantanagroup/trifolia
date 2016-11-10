@@ -743,16 +743,6 @@
     <Content Include="Scripts\jquery\jquery.scrollTo.min.js" />
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
-    <Content Include="Scripts\knockout\knockout-2.2.1.debug.js" />
-    <Content Include="Scripts\knockout\knockout.datagrid.js" />
-    <Content Include="Scripts\knockout\knockout.date.js" />
-    <Content Include="Scripts\knockout\knockout.file.js" />
-    <Content Include="Scripts\knockout\knockout.helpContext.js" />
-    <Content Include="Scripts\knockout\knockout.highlight.js" />
-    <Content Include="Scripts\knockout\knockout.hint.js" />
-    <Content Include="Scripts\knockout\knockout.localization.js" />
-    <Content Include="Scripts\knockout\knockout.sceditor.js" />
-    <Content Include="Scripts\knockout\knockout.tooltip.js" />
     <Content Include="Scripts\knockout\knockout.validation.js" />
     <Content Include="Scripts\knockout\knockout.validation.rules.js" />
     <Content Include="Scripts\knockout\knockout.valuesetSelect.js" />
@@ -819,9 +809,7 @@
     <Content Include="Scripts\jquery\jquery.clearsearch.js" />
     <Content Include="Scripts\jquery\jquery.blockUI.js" />
     <Content Include="Scripts\knockout\knockout-2.2.1.js" />
-    <Content Include="Scripts\knockout\knockout.dialog.js" />
     <Content Include="Scripts\knockout\knockout.mapping.2.4.1.js" />
-    <Content Include="Scripts\knockout\knockout.mapping.debug.js" />
     <Content Include="Scripts\knockout\knockout.programmatic.js" />
     <Content Include="Scripts\Mvc\MicrosoftAjax.debug.js" />
     <Content Include="Scripts\Mvc\MicrosoftAjax.js" />
@@ -840,8 +828,6 @@
     <Content Include="Scripts\Type\Types.js" />
     <Content Include="Scripts\utils.js" />
     <Content Include="Scripts\vkbeautify.0.99.00.beta.js" />
-    <Content Include="Scripts\knockout\knockout.templatewithoptions.js" />
-    <Content Include="Scripts\knockout\knockout.isdirty.js" />
     <Content Include="Scripts\WebApiTestClient.js" />
     <Content Include="Styles\bootstrap-select.min.css" />
     <Content Include="Styles\bootstrap-spinedit.css" />
@@ -933,9 +919,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Site.MVC.Master" />
-    <Content Include="Scripts\knockout\knockout.combo.js" />
+    <Content Include="Scripts\knockout\knockout.extensions.js" />
     <Content Include="Scripts\knockout\knockout.templateSelect.js" />
-    <Content Include="Scripts\knockout\knockout.spinedit.js" />
     <Content Include="Scripts\q\.coverignore" />
     <Content Include="Scripts\q\.gitignore" />
     <Content Include="Scripts\q\.jshintrc" />
