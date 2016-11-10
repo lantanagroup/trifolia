@@ -253,8 +253,17 @@ namespace Trifolia.Web.Controllers.API
                     message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(htmlBody, new ContentType("text/html")));
                     message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(textBody, new ContentType("text/plain")));
 
-                    foreach (var groupManager in group.Managers)
-                        message.To.Add(new MailAddress(groupManager.User.Email));
+                    // Only send to the debug mail address if configured
+                    if (!string.IsNullOrEmpty(AppSettings.DebugMailTo))
+                    {
+                        message.Subject = "DEBUG: " + message.Subject;
+                        message.To.Add(new MailAddress(AppSettings.DebugMailTo));
+                    }
+                    else
+                    {
+                        foreach (var groupManager in group.Managers)
+                            message.To.Add(new MailAddress(groupManager.User.Email));
+                    }
 
                     client.Send(message);
 

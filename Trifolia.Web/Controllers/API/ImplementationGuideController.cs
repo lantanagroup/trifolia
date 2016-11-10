@@ -628,7 +628,8 @@ namespace Trifolia.Web.Controllers.API
 
             try
             {
-                MailMessage mailMessage = new MailMessage(AppSettings.MailFromAddress, accessManager.Email);
+                string mailTo = !string.IsNullOrEmpty(AppSettings.DebugMailTo) ? AppSettings.DebugMailTo : accessManager.Email;
+                MailMessage mailMessage = new MailMessage(AppSettings.MailFromAddress, mailTo);
                 mailMessage.Subject = string.Format("Trifolia: Request to access " + ig.NameWithVersion);
                 mailMessage.Body = string.Format("User {0} {1} ({2}) has requested access to {3} on {4} @ {5}\nThe user has requested {6} permissions.\n\nMessage from user: {7}\n\nUse this link to add them to the implementation guide: {8}",
                     currentUser.FirstName,
@@ -640,6 +641,9 @@ namespace Trifolia.Web.Controllers.API
                     edit ? "edit" : "view",
                     !string.IsNullOrEmpty(message) ? message : "None",
                     ig.GetEditUrl(true));
+
+                if (!string.IsNullOrEmpty(AppSettings.DebugMailTo))
+                    mailMessage.Subject = "DEBUG: " + mailMessage.Subject;
 
                 SmtpClient client = new SmtpClient(AppSettings.MailHost, AppSettings.MailPort);
                 client.EnableSsl = AppSettings.MailEnableSSL;

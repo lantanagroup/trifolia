@@ -25,6 +25,11 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string DebugMailTo
+        {
+            get { return ConfigurationManager.AppSettings["DebugMailTo"]; }
+        }
+
         public static string MailChimpReleaseAnnouncementList
         {
             get { return ConfigurationManager.AppSettings["MailChimpReleaseAnnouncementList"]; }
