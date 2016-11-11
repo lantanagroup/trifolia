@@ -252,6 +252,10 @@ namespace Trifolia.Web.Controllers.API
             if (authData.ContainsKey(CheckPoint.AUTH_DATA_SUPPORT_METHOD) && !string.IsNullOrEmpty(authData[CheckPoint.AUTH_DATA_SUPPORT_METHOD]))
                 Enum.TryParse<SupportTypes>(authData[CheckPoint.AUTH_DATA_SUPPORT_METHOD], out supportType);
 
+            // If the user's account doesn't specify a support method, and Trifolia is configured with a default support method, use it
+            if (supportType == SupportTypes.DEFAULT && !string.IsNullOrEmpty(AppSettings.DefaultSupportMethod))
+                Enum.TryParse<SupportTypes>(AppSettings.DefaultSupportMethod, out supportType);
+
             // If the user is configured with a specific support type, make sure it is supported by config
             // Otherwise, choose a default support type based on config
             if (supportType != SupportTypes.DEFAULT)

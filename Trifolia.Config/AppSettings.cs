@@ -205,6 +205,11 @@ namespace Trifolia.Config
             get { return ConfigurationManager.AppSettings["SupportEmailTo"]; }
         }
 
+        public static string DefaultSupportMethod
+        {
+            get { return ConfigurationManager.AppSettings["DefaultSupportMethod"]; }
+        }
+
         public static string RedirectURL
         {
             get { return ConfigurationManager.AppSettings["RedirectURL"]; }
