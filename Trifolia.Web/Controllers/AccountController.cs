@@ -356,7 +356,14 @@ namespace Trifolia.Web.Controllers
                 this.tdb.SaveChanges();
             }
 
-            string userData = string.Format("{0}={1}", CheckPoint.AUTH_DATA_OAUTH2_TOKEN, auth.AccessToken);
+            SupportTypes supportMethod = SupportTypes.DEFAULT;
+            Enum.TryParse<SupportTypes>(userInfo.app_metadata != null ? userInfo.app_metadata.support_method : "", out supportMethod);
+
+            string userData = string.Format("{0}={1};{2}={3}", 
+                CheckPoint.AUTH_DATA_OAUTH2_TOKEN,
+                auth.AccessToken,
+                CheckPoint.AUTH_DATA_SUPPORT_METHOD,
+                supportMethod);
             FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
                 2,
                 userInfo.user_id,

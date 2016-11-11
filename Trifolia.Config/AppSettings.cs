@@ -130,9 +130,14 @@ namespace Trifolia.Config
             get { return ConfigurationManager.AppSettings["PhinVadsServiceUrl"]; }
         }
 
-        public static string DefaultJiraEndpoint
+        public static string JiraLabels
         {
-            get { return ConfigurationManager.AppSettings["DefaultJiraEndpoint"]; }
+            get { return ConfigurationManager.AppSettings["JiraLabels"]; }
+        }
+
+        public static string JiraIssueEndpoint
+        {
+            get { return ConfigurationManager.AppSettings["JiraIssueEndpoint"]; }
         }
 
         public static string DefaultJiraTaskType
@@ -140,19 +145,24 @@ namespace Trifolia.Config
             get { return ConfigurationManager.AppSettings["DefaultJiraTaskType"]; }
         }
 
-        public static string DefaultJiraProject
+        public static string JiraProject
         {
-            get { return ConfigurationManager.AppSettings["DefaultJiraProject"]; }
+            get { return ConfigurationManager.AppSettings["JiraProject"]; }
         }
 
-        public static string DefaultJiraUsername
+        public static string JiraUsername
         {
-            get { return ConfigurationManager.AppSettings["DefaultJiraUsername"]; }
+            get { return ConfigurationManager.AppSettings["JiraUsername"]; }
         }
 
-        public static string DefaultJiraPassword
+        public static string JiraPassword
         {
-            get { return ConfigurationManager.AppSettings["DefaultJiraPassword"]; }
+            get { return ConfigurationManager.AppSettings["JiraPassword"]; }
+        }
+
+        public static string JiraUserEndpoint
+        {
+            get { return ConfigurationManager.AppSettings["JiraUserEndpoint"]; }
         }
 
         public static string HL7RoseTreeLocation

@@ -481,6 +481,11 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.AdminController.GetClientConfig(System.Boolean)">
+            <summary>
+            Gets configuration information used by the client-side application
+            </summary>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.RoleController.GetRoles">
             <summary>
             Gets all roles in Trifolia
@@ -538,11 +543,6 @@
             </summary>
             <param name="roleId">If specified, the role to set as the new default.</param>
             <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.RoleController.GetClientConfig(System.Boolean)">
-            <summary>
-            Gets configuration information used by the client-side application
-            </summary>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.UserController.IsSubscribedReleaseAnnouncements">
             <summary>

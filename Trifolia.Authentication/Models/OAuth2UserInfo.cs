@@ -79,6 +79,7 @@ namespace Trifolia.Authentication.Models
         public class AppMetadata
         {
             public MigratedAccount migrated_account { get; set; }
+            public string support_method { get; set; }
         }
 
         public class MigratedAccount

@@ -33,13 +33,11 @@ var SupportViewModel = function () {
     self.Config = ko.observable();
 
     self.ShowSupportLink = ko.computed(function () {
-        return self.Config() && self.Config().RedirectUrl &&
-            !(self.Config().EnableJiraSupport || self.Config().EmailConfigured);
+        return self.Config() && self.Config().Method == 'URL' && self.Config().RedirectUrl;
     });
 
     self.ShowSupportPopup = ko.computed(function () {
-        //We don't care if there's a RedirectURL set as long as JIRA or a designated email address is available.
-        return self.Config() && (self.Config().EnableJiraSupport || self.Config().EmailConfigured);
+        return self.Config() && self.Config().Method == 'POPUP';
     });
 
     $.ajax({
@@ -52,7 +50,7 @@ var SupportViewModel = function () {
 
     $.ajax({
         type: "GET",
-        url: "/api/Support/SupportMethodCheck",
+        url: "/api/Support/Config",
         success: function (data, textStatus, jqXHR) {
             self.Config(data);
         },
@@ -86,14 +84,11 @@ var SupportViewModel = function () {
             data: data,
             success: function(data, textStatus, jqXHR) {
                 if (data == 'Email sent') {
-                    alert('JIRA Support Request email successfully sent.');
-                } else if (data == "Could not submit beta user application.  Please notify the administrator") {
-                    alert('JIRA Support Request email unable to be successfully sent with error: "Could not ' +
-                        'submit beta user application.  Please notify the administrator"');
+                    alert('Support Request email successfully sent.');
                 } else {
                     alert('Successfully created JIRA support request: ' + data);
-                    self.CancelSupportRequest();
                 }
+                self.CancelSupportRequest();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 alert('There was an error submitting your support request: ' + errorThrown);

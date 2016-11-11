@@ -19,6 +19,7 @@ namespace Trifolia.Authorization
     public class CheckPoint
     {
         public const string AUTH_DATA_OAUTH2_TOKEN = "OAuth2Token";
+        public const string AUTH_DATA_SUPPORT_METHOD = "SupportMethod";
 
         #region Configuration
 
