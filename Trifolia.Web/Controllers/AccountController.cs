@@ -264,7 +264,20 @@ namespace Trifolia.Web.Controllers
             // as a cookie to the authorization request so that we know where they were trying to
             // go after authorization is complete
             if (!string.IsNullOrEmpty(this.Request.Params[RETURN_URL_PARAM_NAME]))
-                r.Cookies.Set(new HttpCookie(AUTH_RETURN_URL_COOKIE_NAME, this.Request.Params[RETURN_URL_PARAM_NAME]));
+            {
+                if (this.Request.Cookies[AUTH_RETURN_URL_COOKIE_NAME] != null)
+                {
+                    Response.Cookies[AUTH_RETURN_URL_COOKIE_NAME].Value = this.Request.Params[RETURN_URL_PARAM_NAME];
+                }
+                else
+                {
+                    HttpCookie cookie = new HttpCookie(AUTH_RETURN_URL_COOKIE_NAME);
+                    cookie.Value = this.Request.Params[RETURN_URL_PARAM_NAME];
+                    // If it takes longer than a minute to redirect back to Trifolia, they will be sent to the home page
+                    cookie.Expires = DateTime.Now.AddMinutes(1);
+                    Response.Cookies.Add(cookie);
+                }
+            }
             
             return r.AsActionResultMvc5();
         }
@@ -366,7 +379,14 @@ namespace Trifolia.Web.Controllers
             var returnUrlCookie = this.Request.Cookies[AUTH_RETURN_URL_COOKIE_NAME];
 
             if (returnUrlCookie != null && !string.IsNullOrEmpty(returnUrlCookie.Value))
+            {
+                // Set the auth return url cookie to expire immediately (24 hours ago, technically) so that the browser deletes the cookie
+                HttpCookie removeCookie = new HttpCookie(AUTH_RETURN_URL_COOKIE_NAME);
+                removeCookie.Expires = DateTime.Now.AddDays(-1d);
+                Response.Cookies.Add(removeCookie);
+
                 return Redirect(returnUrlCookie.Value);
+            }
 
             return Redirect("/");
         }
