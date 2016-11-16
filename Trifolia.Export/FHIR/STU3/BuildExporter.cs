@@ -21,6 +21,7 @@ namespace Trifolia.Export.FHIR.STU3
     public class BuildExporter
     {
         private const string STU3_FHIR_BUILD_PACKAGE = "Trifolia.Export.FHIR.STU3.package.zip";
+        private const string IG_PUBLISHER_JAR_NAME = "org.hl7.fhir.igpublisher.jar";
 
         private IObjectRepository tdb;
         private ImplementationGuide ig;
@@ -77,8 +78,6 @@ namespace Trifolia.Export.FHIR.STU3
 
             this.zip = GetPackage();
 
-            this.UpdateIGPublisher();
-
             this.AddImplementationGuide(includeVocabulary);
 
             this.AddTemplates();
@@ -120,87 +119,6 @@ namespace Trifolia.Export.FHIR.STU3
             catch (Exception ex)
             {
                 throw new Exception("Error saving/reading zip package for generated FHIR build", ex);
-            }
-        }
-
-        private bool ShouldUpdateIGPublisher()
-        {
-            // Only download the latest ig publisher if we have a location to download from and to
-            if (string.IsNullOrEmpty(AppSettings.FhirIGPublisherDownload) || string.IsNullOrEmpty(AppSettings.LatestFhirIGPublisherLocation))
-                return false;
-
-            // Always downloaded the latest IG Publisher if we don't have a "latest ig publisher" file yet
-            if (!File.Exists(AppSettings.LatestFhirIGPublisherLocation))
-                return true;
-
-            WebRequest headRequest = HttpWebRequest.Create(AppSettings.FhirIGPublisherDownload);
-            headRequest.Method = "HEAD";
-
-            var headResponse = headRequest.GetResponse();
-            long? headContentLength = !string.IsNullOrEmpty(headResponse.Headers["Content-Length"]) ? (long?) long.Parse(headResponse.Headers["Content-Length"]) : null;
-            DateTime? headLastModified = !string.IsNullOrEmpty(headResponse.Headers["Last-Modified"]) ? (DateTime?) DateTime.Parse(headResponse.Headers["Last-Modified"]) : null;
-
-            FileInfo currentLatestInfo = new FileInfo(AppSettings.LatestFhirIGPublisherLocation);
-
-            if (headContentLength == null)
-            {
-                Log.For(this).Error("HEAD request for latest FHIR IG Publisher did not return a valid content-length.");
-                return false;
-            }
-
-            if (currentLatestInfo.Length != headContentLength.Value)
-                return true;
-
-            if (headLastModified == null)
-            {
-                Log.For(this).Error("HEAD request for latest FHIR IG Publisher did not return a valid last-modified date.");
-                return false;
-            }
-
-            if (currentLatestInfo.LastWriteTime != headLastModified.Value)
-                return true;
-
-            return false;
-        }
-
-        /// <summary>
-        /// Updates the ZIP package with the latest IG publisher from the configured AppSettings.FhirIGPublisherDownload url.
-        /// </summary>
-        private void UpdateIGPublisher()
-        {
-            if (!this.ShouldUpdateIGPublisher())
-                return;
-
-            try
-            {
-                Log.For(this).Trace("Downloading latest FHIR IG Publisher jar package");
-
-                WebRequest downloadRequest = HttpWebRequest.Create(AppSettings.FhirIGPublisherDownload);
-                downloadRequest.Method = "GET";
-
-                var downloadResponse = downloadRequest.GetResponse();
-
-                if (string.IsNullOrEmpty(downloadResponse.Headers["Last-Modified"]))
-                {
-                    Log.For(this).Error("Download request for latest FHIR IG Publisher did not include a last-modified date");
-                    return;
-                }
-
-                using (var downloadStream = downloadResponse.GetResponseStream())
-                {
-                    using (FileStream fs = File.Create(AppSettings.LatestFhirIGPublisherLocation))
-                        downloadStream.CopyTo(fs);
-
-                    DateTime lastModified = DateTime.Parse(downloadResponse.Headers["Last-Modified"]);
-                    File.SetCreationTime(AppSettings.LatestFhirIGPublisherLocation, lastModified);
-                    File.SetLastWriteTime(AppSettings.LatestFhirIGPublisherLocation, lastModified);
-                }
-
-                this.zip.UpdateEntry("org.hl7.fhir.igpublisher.jar", File.ReadAllBytes(AppSettings.LatestFhirIGPublisherLocation));
-            }
-            catch (Exception ex)
-            {
-                Log.For(this).Error("Error downloading/updating FHIR IG Publisher", ex);
             }
         }
 
