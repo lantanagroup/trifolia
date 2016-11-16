@@ -51,11 +51,15 @@ namespace Trifolia.Web.Controllers.API
         {
             List<Relationship> relationships = new List<Relationship>();
             User currentUser = CheckPoint.Instance.GetUser(this.tdb);
+            var templateIds = this.tdb.ViewTemplatePermissions.Where(y => y.UserId == currentUser.Id).Select(y => y.TemplateId);
+
+            if (CheckPoint.Instance.IsDataAdmin)
+                templateIds = this.tdb.Templates.Select(y => y.Id);
 
             var publishStatus = PublishStatus.GetPublishedStatus(this.tdb);
-            var constraints = (from t in this.tdb.ViewTemplatePermissions
-                               join tc in this.tdb.TemplateConstraints on t.TemplateId equals tc.TemplateId
-                               where t.UserId == currentUser.Id && tc.ValueSetId != null
+            var constraints = (from t in templateIds
+                               join tc in this.tdb.TemplateConstraints on t equals tc.TemplateId
+                               where tc.ValueSetId == valueSetId
                                select tc)
                                .OrderBy(y => y.Template.OwningImplementationGuide.Name)
                                .ThenBy(y => y.Template.Name);
