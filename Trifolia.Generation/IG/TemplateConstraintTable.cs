@@ -107,7 +107,7 @@ namespace Trifolia.Generation.IG
                 if (this.HasSelectedCategories && !string.IsNullOrEmpty(cConstraint.Category) && !this.selectedCategories.Contains(cConstraint.Category))
                     continue;
 
-                var schemaObject = schema.Children.SingleOrDefault(y => y.Name == cConstraint.Context);
+                var schemaObject = schema != null ? schema.Children.SingleOrDefault(y => y.Name == cConstraint.Context) : null;
 
                 this.AddTemplateTableConstraint(template, t, cConstraint, 1, includeCategoryHeader, schemaObject);
             }
