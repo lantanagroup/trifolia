@@ -70,7 +70,7 @@
                         <span class="help-block">Option is only available for FHIR-based implementation guides. Export is a bundle of the ImplementationGuide resource, all StructureDefinition and all ValueSet resources (if "Include Vocabulary" is specified) that are referenced by the implementation guide.</span>
                         <!-- /ko -->
                         <!-- ko if: XmlType() == 'FHIRBuild' -->
-                        <span class="help-block">Option is only available to FHIR-based implementation guides. The export is a ZIP package containing all the necessary files to use the FHIR IG publisher to create a FHIR implementation guide using the data (profiles, value sets, etc.) stored in Trifolia.</span>
+                        <span class="help-block">Option is only available to FHIR-based implementation guides. The export is a ZIP package containing all the necessary files to use the FHIR IG publisher to create a FHIR implementation guide using the data (profiles, value sets, etc.) stored in Trifolia. To build the IG, download the FHIR IG Publisher JAR from <a href="http://build.fhir.org/downloads.html" target="_new">http://build.fhir.org/downloads.html</a>. Place the JAR file in the same directory as the other files extracted from the FHIR Build package, and run one of the "RunXXX.bat" batch files.</span>
                         <!-- /ko -->
                         <!-- ko if: XmlType() == 'DSTU' -->
                         <span class="help-block">A preliminary/draft export of the templates/profiles for the implementation guide that uses the Template DSTU standard.</span>
