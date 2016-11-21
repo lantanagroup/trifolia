@@ -104,7 +104,7 @@ namespace Trifolia.Web.Controllers.API
                             messages.Add(msg);
                         }
 
-                        if (string.IsNullOrEmpty(resource.Id))
+                        if (resource != null && string.IsNullOrEmpty(resource.Id))
                         {
                             string msg = string.Format("FHIR resource instance \"" + file.FileName + "\" does not have an \"id\" property.");
                             messages.Add(msg);
