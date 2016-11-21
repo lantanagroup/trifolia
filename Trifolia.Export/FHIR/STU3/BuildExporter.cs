@@ -39,9 +39,11 @@ namespace Trifolia.Export.FHIR.STU3
             get { return this.control; }
         }
 
+        public bool JsonFormat { get; set; }
+
         #region Constructors
 
-        public BuildExporter(IObjectRepository tdb, int implementationGuideId, IEnumerable<Template> templates = null)
+        public BuildExporter(IObjectRepository tdb, int implementationGuideId, IEnumerable<Template> templates = null, bool jsonFormat = false)
         {
             this.tdb = tdb;
 
@@ -51,6 +53,7 @@ namespace Trifolia.Export.FHIR.STU3
             this.schema = this.ig.ImplementationGuideType.GetSimpleSchema();
             this.igName = this.ig.Name.Replace(" ", "_");
             this.controlFileName = this.igName + ".json";
+            this.JsonFormat = jsonFormat;
         }
 
         public BuildExporter(int implementationGuideId)
@@ -80,7 +83,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             this.AddImplementationGuide(includeVocabulary);
 
-            this.AddTemplates();
+            this.AddProfiles();
 
             if (includeVocabulary)
                 this.AddValueSets();
@@ -135,6 +138,7 @@ namespace Trifolia.Export.FHIR.STU3
             {
                 var fileData = file.GetLatestData();
                 fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
+                string resourceContent;
                 string fileExtension = "";
 
                 try
@@ -159,8 +163,25 @@ namespace Trifolia.Export.FHIR.STU3
                 if (resource == null || string.IsNullOrEmpty(resource.Id))
                     continue;
 
-                string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString().ToLower(), resource.Id, fileExtension);
-                this.zip.AddEntry(fileName, fileData.Data);
+                try
+                {
+                    // Convert the resource to the desired format for output
+                    if (this.JsonFormat)
+                        resourceContent = FhirSerializer.SerializeResourceToJson(resource);
+                    else
+                        resourceContent = FhirSerializer.SerializeResourceToXml(resource);
+
+                    fileExtension = this.JsonFormat ? "json" : "xml";
+                    string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString().ToLower(), resource.Id, fileExtension);
+
+                    // Add the resource to the zip file
+                    this.zip.AddEntry(fileName, resourceContent);
+                }
+                catch
+                {
+                    string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString().ToLower(), resource.Id, fileExtension);
+                    this.zip.AddEntry(fileName, fileData.Data);
+                }
             }
         }
 
@@ -385,12 +406,13 @@ namespace Trifolia.Export.FHIR.STU3
                              where tc.ValueSet != null
                              select tc.ValueSet).Distinct();
             ValueSetExporter exporter = new ValueSetExporter(this.tdb);
+            string fileExtension = this.JsonFormat ? "json" : "xml";
 
             foreach (var valueSet in valueSets)
             {
                 var fhirValueSet = exporter.Convert(valueSet);
-                var fhirValueSetContent = FhirSerializer.SerializeResourceToXml(fhirValueSet);
-                var fhirValueSetFileName = string.Format("resources/valueset/{0}.xml", valueSet.Id);
+                var fhirValueSetContent = this.JsonFormat ? FhirSerializer.SerializeResourceToJson(fhirValueSet) : FhirSerializer.SerializeResourceToXml(fhirValueSet);
+                var fhirValueSetFileName = string.Format("resources/valueset/{0}.{1}", valueSet.Id, fileExtension);
 
                 // Add the value set file to the package
                 this.zip.AddEntry(fhirValueSetFileName, fhirValueSetContent);
@@ -411,15 +433,16 @@ namespace Trifolia.Export.FHIR.STU3
             ImplementationGuideExporter igExporter = new ImplementationGuideExporter(this.tdb, this.schema, "http", "test.com");
             var fhirIg = igExporter.Convert(this.ig, includeVocabulary: includeVocabulary);
 
-            var fhirIgContent = FhirSerializer.SerializeResourceToXml(fhirIg);
-            string fhirIgFileName = string.Format("resources/implementationguide/ImplementationGuide_{0}.xml", ig.Id);
+            var fhirIgContent = this.JsonFormat ? FhirSerializer.SerializeResourceToJson(fhirIg) : FhirSerializer.SerializeResourceToXml(fhirIg);
+            string fileExtension = this.JsonFormat ? "json" : "xml";
+            string fhirIgFileName = string.Format("resources/implementationguide/ImplementationGuide_{0}.{1}", ig.Id, fileExtension);
 
             this.control.source = "implementationguide/ImplementationGuide_" + ig.Id.ToString() + ".xml";
 
             this.zip.AddEntry(fhirIgFileName, fhirIgContent);
         }
 
-        private void AddTemplates()
+        private void AddProfiles()
         {
             List<TemplateType> templateTypes = this.templates.Select(y => y.TemplateType).Distinct().ToList();
 
@@ -435,8 +458,9 @@ namespace Trifolia.Export.FHIR.STU3
 
                 StructureDefinitionExporter sdExporter = new StructureDefinitionExporter(this.tdb, "http", "test.com");
                 var strucDef = sdExporter.Convert(template, templateSchema);
-                var strucDefContent = FhirSerializer.SerializeResourceToXml(strucDef);
-                string strucDefFileName = "resources/structuredefinition/" + template.FhirId() + ".xml";
+                var strucDefContent = this.JsonFormat ? FhirSerializer.SerializeResourceToJson(strucDef) : FhirSerializer.SerializeResourceToXml(strucDef);
+                string fileExtension = this.JsonFormat ? "json" : "xml";
+                string strucDefFileName = "resources/structuredefinition/" + template.FhirId() + "." + fileExtension;
                 this.zip.AddEntry(strucDefFileName, strucDefContent);
 
                 control.resources.Add(location, new Models.Control.ResourceReference("instance-template-sd-no-example.html", "StructureDefinition_" + template.FhirId() + ".html"));

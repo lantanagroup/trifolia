@@ -75,6 +75,7 @@ namespace Trifolia.Web.Controllers.API
             switch (model.XmlType)
             {
                 case XMLSettingsModel.ExportTypes.FHIRBuild:
+                case XMLSettingsModel.ExportTypes.FHIRBuildJSON:
                     // Check that the implementation guide has a base identifier/url
                     if (string.IsNullOrEmpty(ig.Identifier))
                         messages.Add("Implementation guide does not have a base identifier/url.");
@@ -260,8 +261,11 @@ namespace Trifolia.Web.Controllers.API
             {
                 export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIR, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
             }
-            else if (model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuild)
+            else if (model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuild || model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuildJSON)
             {
+                if (model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuildJSON)
+                    returnJson = true;
+
                 export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIRBuild, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
                 contentType = ZIP_MIME_TYPE;
                 fileName = string.Format("{0}.zip", ig.GetDisplayName(true));

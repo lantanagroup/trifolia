@@ -56,7 +56,8 @@
                             <option value="Proprietary">Trifolia XML</option>
                             <!-- ko if: IsFhir() -->
                             <option value="FHIR">FHIR XML</option>
-                            <option value="FHIRBuild">FHIR Build Package</option>
+                            <option value="FHIRBuild">FHIR Build Package (XML)</option>
+                            <option value="FHIRBuildJSON">FHIR Build Package (JSON)</option>
                             <!-- /ko -->
                             <option value="JSON">Data Snapshot (JSON)</option>
                             <!-- ko if: ImplementationGuideType() == 'CDA' -->

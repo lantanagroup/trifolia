@@ -30,7 +30,7 @@ namespace Trifolia.Plugins.FHIR
                     DecorExporter decorExporter = new DecorExporter(templates, tdb, igSettings.ImplementationGuideId);
                     return ConvertToBytes(decorExporter.GenerateXML());
                 case ExportFormats.FHIRBuild:
-                    BuildExporter buildExporter = new BuildExporter(tdb, igSettings.ImplementationGuideId, templates);
+                    BuildExporter buildExporter = new BuildExporter(tdb, igSettings.ImplementationGuideId, templates, returnJson);
                     var export = buildExporter.Export(includeVocabulary);
                     return export;
                 default:
