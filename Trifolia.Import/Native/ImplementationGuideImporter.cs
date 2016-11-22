@@ -234,6 +234,46 @@ namespace Trifolia.Import.Native
                 igSettings.SaveSetting(IGSettingsManager.SettingProperty.Categories, categoriesString);
         }
 
+        private void UpdateFiles(ImplementationGuide implementationGuide, ImportImplementationGuide importImplementationGuide)
+        {
+            var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+            string currentUserName = string.Format("{0} {1} ({2})", currentUser.FirstName, currentUser.LastName, currentUser.Email);
+
+            foreach (var importFile in importImplementationGuide.File)
+            {
+                if (string.IsNullOrEmpty(importFile.name))
+                    continue;
+
+                var foundFile = implementationGuide.Files.SingleOrDefault(y => y.FileName.ToLower() == importFile.name.ToLower());
+
+                if (foundFile == null)
+                {
+                    foundFile = new ImplementationGuideFile();
+                    foundFile.FileName = importFile.name;
+                    foundFile.ImplementationGuide = implementationGuide;
+                    this.tdb.ImplementationGuideFiles.AddObject(foundFile);
+                }
+
+                var latestData = foundFile.Versions.Count > 0 ? foundFile.GetLatestData() : null;
+                byte[] content = Convert.FromBase64String(importFile.Content);
+
+                if (latestData == null || latestData.Data.Length != content.Length)
+                {
+                    latestData = new ImplementationGuideFileData();
+                    latestData.ImplementationGuideFile = foundFile;
+                    latestData.Data = content;
+                    latestData.UpdatedDate = DateTime.Now;
+                    latestData.UpdatedBy = currentUserName;
+                    this.tdb.ImplementationGuideFileDatas.AddObject(latestData);
+                }
+
+                // Update properties of the file
+                foundFile.MimeType = importFile.mimeType;
+                foundFile.ContentType = importFile.type.ToString();
+                foundFile.Description = importFile.Description;
+            }
+        }
+
         public ImplementationGuide Import(ImportImplementationGuide importImplementationGuide)
         {
             var implementationGuide = FindImplementationGuide(importImplementationGuide.name, importImplementationGuide.version);
@@ -307,6 +347,9 @@ namespace Trifolia.Import.Native
 
             // Update categories
             this.UpdateCategories(implementationGuide, igSettings, importImplementationGuide);
+
+            // Update files
+            this.UpdateFiles(implementationGuide, importImplementationGuide);
 
             if (foundPreviousVersionIg != null && foundPreviousVersionIg.PublishStatus != PublishStatus.GetPublishedStatus(this.tdb))
             {
