@@ -87,6 +87,9 @@
     <script type="text/html" id="resource.html">
         <h4 title="{{fileName}}">{{resource.name || resource.title || fileName}}</h4>
         <p ng-if="resource.description">{{resource.description}}</p>
+        <div class="panel panel-default" ng-if="details">
+            <div class="panel-body" ng-bind-html="details"></div>
+        </div>
         <div class="row">
             <div class="col-md-6">
                 <h5>JSON</h5>
@@ -96,7 +99,7 @@
             <div class="col-md-6">
                 <h5>XML</h5>
                 <copy-button></copy-button>
-                <pre>{{resourceInfo.XmlContent}}</pre>
+                <pre>{{xml}}</pre>
             </div>
         </div>
     </script>
@@ -667,6 +670,7 @@
     <script type="text/javascript" src="/Scripts/graphlib.core.min.js"></script>
     <script type="text/javascript" src="/Scripts/dagre.core.min.js"></script>
     <script type="text/javascript" src="/Scripts/joint.layout.DirectedGraph.min.js"></script>
+    <script type="text/javascript" src="/Scripts/vkbeautify.0.99.00.beta.js"></script>
     
     <script type="text/javascript" src="/Scripts/IG/View.js"></script>
 </body>

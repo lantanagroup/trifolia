@@ -49,17 +49,26 @@ igViewApp.config(function ($routeProvider, hljsServiceProvider) {
         });
 });
 
-igViewApp.controller('ResourceCtrl', function ($scope, $routeParams) {
+igViewApp.controller('ResourceCtrl', function ($scope, $routeParams, $sce) {
     $scope.fileName = $routeParams.fileName;
 
     $scope.$watch('Model', function (model) {
-        $scope.resourceInfo = _.find($scope.Model.FHIRResources, function (fhirResource) {
+        if (!model) {
+            return;
+        }
+
+        $scope.resourceInfo = _.find(model.FHIRResources, function (fhirResource) {
             return fhirResource.Name == $routeParams.fileName;
         });
 
         if ($scope.resourceInfo) {
             $scope.resource = JSON.parse($scope.resourceInfo.JsonContent);
             $scope.json = JSON.stringify($scope.resource, null, '\t');
+            $scope.xml = vkbeautify.xml($scope.resourceInfo.XmlContent);
+
+            if ($scope.resource.text && $scope.resource.text.div) {
+                $scope.details = $sce.trustAsHtml($scope.resource.text.div);
+            }
         }
     }, true);
 });

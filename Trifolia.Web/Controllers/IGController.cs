@@ -76,6 +76,7 @@ namespace Trifolia.Web.Controllers
                 { "/Scripts/angular/angular-highlight.min.js", "js\\angular-highlight.min.js" },
                 { "/Scripts/jquery/jquery-highlight-5.js", "js\\jquery-highlight-5.js" },
                 { "/Scripts/IG/View.js", "js\\IGView.js" },
+                { "/Scripts/vkbeautify.0.99.00.beta.js", "js\\vkbeautify.0.99.00.beta.js" },
 
                 // Joint.JS for UML diagram
                 { "/Scripts/joint.min.js", "js\\joint.min.js" },
