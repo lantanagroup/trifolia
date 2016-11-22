@@ -782,10 +782,12 @@
     <Content Include="Scripts\Report\TemplateUsage.js" />
     <Content Include="Scripts\Report\TemplateValidation.js" />
     <Content Include="Scripts\Admin\Roles.js" />
-    <Content Include="Scripts\sceditor\jquery.sceditor.js" />
     <Content Include="Scripts\sceditor\jquery.sceditor.min.js" />
-    <Content Include="Scripts\sceditor\jquery.sceditor.xhtml.js" />
     <Content Include="Scripts\sceditor\jquery.sceditor.xhtml.min.js" />
+    <Content Include="Scripts\sceditor\plugins\bbcode.js" />
+    <Content Include="Scripts\sceditor\plugins\format.js" />
+    <Content Include="Scripts\sceditor\plugins\undo.js" />
+    <Content Include="Scripts\sceditor\plugins\xhtml.js" />
     <Content Include="Scripts\sceditor\sceditor.custom.js" />
     <Content Include="Scripts\Schema\DataTypesViewModel.js" />
     <Content Include="Scripts\Sha1.js" />
