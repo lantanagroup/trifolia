@@ -1,4 +1,8 @@
-﻿using System;
+﻿extern alias fhir_dstu1;
+extern alias fhir_dstu2;
+extern alias fhir_stu3;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -21,6 +25,7 @@ using Trifolia.Config;
 using Trifolia.Generation.IG;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Generation.Versioning;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -395,23 +400,25 @@ namespace Trifolia.Web.Controllers.API
         
         private static string GetIGFileContentTypeDisplay(string contentType)
         {
-            switch (contentType)
+            ImplementationGuideFileTypes igFileType = ImplementationGuideFileTypes.Unknown;
+            Enum.TryParse<ImplementationGuideFileTypes>(contentType, out igFileType);
+
+            switch (igFileType)
             {
-                case "ImplementationGuide":
+                case ImplementationGuideFileTypes.Schematron:
+                case ImplementationGuideFileTypes.Vocabulary:
+                    return igFileType.ToString();
+                case ImplementationGuideFileTypes.ImplementationGuide:
                     return "Implementation Guide Document";
-                case "Schematron":
-                    return "Schematron";
-                case "SchematronHelper":
+                case ImplementationGuideFileTypes.SchematronHelper:
                     return "Schematron Helper";
-                case "Vocabulary":
-                    return "Vocabulary";
-                case "DeliverableSample":
+                case ImplementationGuideFileTypes.DeliverableSample:
                     return "Sample (deliverable)";
-                case "GoodSample":
+                case ImplementationGuideFileTypes.GoodSample:
                     return "Test Sample (good)";
-                case "BadSample":
+                case ImplementationGuideFileTypes.BadSample:
                     return "Test Sample (bad)";
-                case "FHIRResourceInstance":
+                case ImplementationGuideFileTypes.FHIRResourceInstance:
                     return "FHIR Resource Instance (XML or JSON)";
                 default:
                     return contentType;
@@ -1499,6 +1506,7 @@ namespace Trifolia.Web.Controllers.API
             {
                 WIKIParser wikiParser = new WIKIParser(this.tdb);
                 IGSettingsManager igManager = new IGSettingsManager(this.tdb, implementationGuideId);
+                var igTypePlugin = IGTypePluginFactory.GetPlugin(ig.ImplementationGuideType);
                 var firstTemplateType = ig.ImplementationGuideType.TemplateTypes.OrderBy(y => y.OutputOrder).FirstOrDefault();
 
                 model = new ViewDataModel()
@@ -1522,6 +1530,23 @@ namespace Trifolia.Web.Controllers.API
                                              Content = igs.Content,
                                              Level = igs.Level
                                          }).ToList();
+
+                // Include any FHIR Resource Instance attachments with the IG
+                foreach (var fhirResourceInstanceFile in ig.Files.Where(y => y.ContentType == "FHIRResourceInstance"))
+                {
+                    var fileData = fhirResourceInstanceFile.GetLatestData();
+                    string fileContent = System.Text.Encoding.UTF8.GetString(fileData.Data);
+
+                    ViewDataModel.FHIRResource newFhirResource = new ViewDataModel.FHIRResource()
+                    {
+                        Name = fhirResourceInstanceFile.FileName,
+                        JsonContent = igTypePlugin.GetFHIRResourceInstanceJson(fileContent),
+                        XmlContent = igTypePlugin.GetFHIRResourceInstanceXml(fileContent)
+                    };
+
+                    if (!string.IsNullOrEmpty(newFhirResource.JsonContent) || !string.IsNullOrEmpty(newFhirResource.XmlContent))
+                        model.FHIRResources.Add(newFhirResource);
+                }
 
                 // Create the value set models
                 var valueSets = ig.GetValueSets(this.tdb);

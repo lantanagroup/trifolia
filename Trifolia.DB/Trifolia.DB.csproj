@@ -90,6 +90,7 @@
     <Compile Include="IFilterOrganization.cs" />
     <Compile Include="ImplementationGuideExtensions.cs" />
     <Compile Include="ImplementationGuideFileExtension.cs" />
+    <Compile Include="ImplementationGuideFileTypes.cs" />
     <Compile Include="ImplementationGuideTypeExtension.cs" />
     <Compile Include="IObjectRepository.cs" />
     <Compile Include="ITemplate.cs" />
