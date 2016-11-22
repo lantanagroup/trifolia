@@ -90,12 +90,12 @@
         <div class="row">
             <div class="col-md-6">
                 <h5>JSON</h5>
-                <copy-button />
+                <copy-button></copy-button>
                 <pre>{{json}}</pre>
             </div>
             <div class="col-md-6">
                 <h5>XML</h5>
-                <copy-button />
+                <copy-button></copy-button>
                 <pre>{{resourceInfo.XmlContent}}</pre>
             </div>
         </div>
