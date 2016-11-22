@@ -120,7 +120,7 @@ namespace Trifolia.Import.FHIR.STU3
                 foreach (var cc in template.ChildConstraints.ToList())
                     this.tdb.TemplateConstraints.DeleteObject(cc);
 
-                ElementNavigator navigator = new ElementNavigator(strucDef.Differential.Element);
+                ElementDefinitionNavigator navigator = new ElementDefinitionNavigator(strucDef.Differential.Element);
                 TemplateConstraint current = null;
 
                 if (navigator.MoveToFirstChild() && navigator.MoveToFirstChild())

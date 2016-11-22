@@ -37,5 +37,46 @@ namespace Trifolia.Plugins.FHIR
                     throw new Exception("Invalid export format for the specified implementation guide type");
             }
         }
+
+        private fhir_stu3.Hl7.Fhir.Model.Resource GetFHIRResource(string content)
+        {
+            try
+            {
+                return fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromXml(content);
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                return fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromJson(content);
+            }
+            catch
+            {
+            }
+
+            return null;
+        }
+
+        public string GetFHIRResourceInstanceJson(string content)
+        {
+            var resource = GetFHIRResource(content);
+
+            if (resource != null)
+                return fhir_stu3.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToJson(resource);
+
+            return null;
+        }
+
+        public string GetFHIRResourceInstanceXml(string content)
+        {
+            var resource = GetFHIRResource(content);
+
+            if (resource != null)
+                return fhir_stu3.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToXml(resource);
+
+            return null;
+        }
     }
 }

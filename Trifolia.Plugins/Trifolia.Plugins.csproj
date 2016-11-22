@@ -78,6 +78,10 @@
       <HintPath>..\libraries\Hl7.Fhir.STU3.Specification.dll</HintPath>
       <Aliases>fhir_stu3</Aliases>
     </Reference>
+    <Reference Include="Hl7.FluentPath">
+      <HintPath>..\libraries\Hl7.FluentPath.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
     <Reference Include="LantanaGroup.ValidationUtility">
       <HintPath>..\libraries\LantanaGroup.ValidationUtility.dll</HintPath>
     </Reference>

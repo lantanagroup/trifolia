@@ -37,5 +37,15 @@ namespace Trifolia.Plugins.FHIR
                     throw new Exception("Invalid export format for the specified implementation guide type");
             }
         }
+
+        public string GetFHIRResourceInstanceJson(string content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetFHIRResourceInstanceXml(string content)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

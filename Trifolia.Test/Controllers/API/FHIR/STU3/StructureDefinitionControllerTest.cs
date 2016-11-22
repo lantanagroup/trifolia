@@ -123,8 +123,14 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
             mockRepo.InitializeFHIR3Repository();
             mockRepo.InitializeLCG();
 
+            var parserSettings = new ParserSettings();
+            parserSettings.AcceptUnknownMembers = true;
+            parserSettings.AllowUnrecognizedEnums = true;
+            parserSettings.DisallowXsiAttributesOnRoot = false;
+
             var strucDefJson = Helper.GetSampleContents("Trifolia.Test.DocSamples.FHIR.STU3.cqif-questionnaire-strucdef.json");
-            StructureDefinition strucDef = (StructureDefinition)FhirParser.ParseResourceFromJson(strucDefJson);
+            var fhirJsonParser = new FhirJsonParser(parserSettings);
+            StructureDefinition strucDef = fhirJsonParser.Parse<StructureDefinition>(strucDefJson);
 
             HttpRequestMessage request = new HttpRequestMessage();
             request.RequestUri = new Uri("http://localhost:8080/api/FHIR3/StructureDefinition");
@@ -153,8 +159,14 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
             mockRepo.InitializeFHIR3Repository();
             mockRepo.InitializeLCG();
 
+            var parserSettings = new ParserSettings();
+            parserSettings.AcceptUnknownMembers = true;
+            parserSettings.AllowUnrecognizedEnums = true;
+            parserSettings.DisallowXsiAttributesOnRoot = false;
+
             var strucDefJson = Helper.GetSampleContents("Trifolia.Test.DocSamples.FHIR.STU3.cqif-questionnaire-strucdef.json");
-            StructureDefinition strucDef = (StructureDefinition)FhirParser.ParseResourceFromJson(strucDefJson);
+            var fhirJsonParser = new FhirJsonParser(parserSettings);
+            StructureDefinition strucDef = fhirJsonParser.Parse<StructureDefinition>(strucDefJson);
             strucDef.Id = "cqif-questionnaire";
 
             HttpRequestMessage request = new HttpRequestMessage();

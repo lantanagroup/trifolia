@@ -20,7 +20,14 @@ namespace Trifolia.Shared.FHIR.Profiles.STU3
 
             using (StreamReader profileReader = new StreamReader(resourceStream))
             {
-                Bundle profileBundle = (Bundle)FhirParser.ParseFromXml(profileReader.ReadToEnd());
+                var parserSettings = new ParserSettings();
+                parserSettings.AcceptUnknownMembers = true;
+                parserSettings.AllowUnrecognizedEnums = true;
+                parserSettings.DisallowXsiAttributesOnRoot = false;
+
+                var parser = new FhirXmlParser(parserSettings);
+                Bundle profileBundle = parser.Parse<Bundle>(profileReader.ReadToEnd());
+
                 AppDomain.CurrentDomain.SetData("fhir_stu3_profile_bundle", profileBundle);
                 return profileBundle;
             }

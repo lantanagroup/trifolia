@@ -132,6 +132,12 @@ namespace Trifolia.Export.FHIR.STU3
         /// <remarks>Uses the mime-type of the file to determine if the attached file is xml or json.</remarks>
         private void AddResourceInstances()
         {
+            var parserSettings = new fhir_stu3.Hl7.Fhir.Serialization.ParserSettings();
+            parserSettings.AcceptUnknownMembers = true;
+            parserSettings.AllowUnrecognizedEnums = true;
+            parserSettings.DisallowXsiAttributesOnRoot = false;
+            var fhirXmlParser = new FhirXmlParser(parserSettings);
+            var fhirJsonParser = new FhirJsonParser(parserSettings);
 
             // Check that each FHIR resource instance is valid and has the required fields
             foreach (var file in ig.Files)
@@ -147,12 +153,12 @@ namespace Trifolia.Export.FHIR.STU3
 
                     if (file.MimeType == "application/xml" || file.MimeType == "text/xml")
                     {
-                        resource = FhirParser.ParseResourceFromXml(fileContent);
+                        resource = fhirXmlParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
                         fileExtension = "xml";
                     }
-                    else if (file.MimeType == "application/json")
+                    else if (file.MimeType == "application/json" || file.MimeType == "binary/octet-stream")
                     {
-                        resource = FhirParser.ParseResourceFromJson(fileContent);
+                        resource = fhirJsonParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
                         fileExtension = "json";
                     }
                 }
@@ -196,6 +202,12 @@ namespace Trifolia.Export.FHIR.STU3
             var templateExamples = (from t in this.templates
                                     join ts in this.tdb.TemplateSamples on t.Id equals ts.TemplateId
                                     select new { Template = t, Sample = ts });
+            var parserSettings = new fhir_stu3.Hl7.Fhir.Serialization.ParserSettings();
+            parserSettings.AcceptUnknownMembers = true;
+            parserSettings.AllowUnrecognizedEnums = true;
+            parserSettings.DisallowXsiAttributesOnRoot = false;
+            var fhirXmlParser = new FhirXmlParser(parserSettings);
+            var fhirJsonParser = new FhirJsonParser(parserSettings);
 
             foreach (var templateExample in templateExamples)
             {
@@ -204,7 +216,7 @@ namespace Trifolia.Export.FHIR.STU3
 
                 try
                 {
-                    resource = FhirParser.ParseResourceFromXml(templateExample.Sample.XmlSample);
+                    resource = fhirXmlParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(templateExample.Sample.XmlSample);
                     fileExtension = "xml";
                 }
                 catch
@@ -215,7 +227,7 @@ namespace Trifolia.Export.FHIR.STU3
                 {
                     if (resource == null)
                     {
-                        resource = FhirParser.ParseResourceFromJson(templateExample.Sample.XmlSample);
+                        resource = fhirJsonParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(templateExample.Sample.XmlSample);
                         fileExtension = "json";
                     }
                 }

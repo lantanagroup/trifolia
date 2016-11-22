@@ -77,6 +77,13 @@ namespace Trifolia.Export.FHIR.STU3
 
         public FhirImplementationGuide Convert(ImplementationGuide ig, SummaryType? summaryType = null, bool includeVocabulary = true)
         {
+            var parserSettings = new fhir_stu3.Hl7.Fhir.Serialization.ParserSettings();
+            parserSettings.AcceptUnknownMembers = true;
+            parserSettings.AllowUnrecognizedEnums = true;
+            parserSettings.DisallowXsiAttributesOnRoot = false;
+            var fhirXmlParser = new FhirXmlParser(parserSettings);
+            var fhirJsonParser = new FhirJsonParser(parserSettings);
+
             var fhirImplementationGuide = new FhirImplementationGuide()
             {
                 Id = ig.Id.ToString(),
@@ -150,9 +157,9 @@ namespace Trifolia.Export.FHIR.STU3
                         string fileContent = System.Text.Encoding.UTF8.GetString(fileData.Data);
 
                         if (file.MimeType == "application/xml" || file.MimeType == "text/xml")
-                            resource = FhirParser.ParseResourceFromXml(fileContent);
+                            resource = fhirXmlParser.Parse<Resource>(fileContent);
                         else if (file.MimeType == "application/json")
-                            resource = FhirParser.ParseResourceFromJson(fileContent);
+                            resource = fhirJsonParser.Parse<Resource>(fileContent);
                     }
                     catch
                     {
@@ -185,7 +192,7 @@ namespace Trifolia.Export.FHIR.STU3
 
                     try
                     {
-                        resource = FhirParser.ParseResourceFromXml(templateExample.Sample.XmlSample);
+                        resource = fhirXmlParser.Parse<Resource>(templateExample.Sample.XmlSample);
                     }
                     catch
                     {
@@ -194,7 +201,7 @@ namespace Trifolia.Export.FHIR.STU3
                     try
                     {
                         if (resource == null)
-                            resource = FhirParser.ParseResourceFromJson(templateExample.Sample.XmlSample);
+                            resource = fhirJsonParser.Parse<Resource>(templateExample.Sample.XmlSample);
                     }
                     catch
                     {

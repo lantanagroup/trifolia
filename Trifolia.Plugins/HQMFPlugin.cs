@@ -200,5 +200,15 @@ namespace Trifolia.Plugins
             DefaultSampleGenerator sampleGenerator = DefaultSampleGenerator.CreateDefaultSampleGenerator(tdb, template);
             return sampleGenerator.GenerateSample();
         }
+
+        public string GetFHIRResourceInstanceXml(string content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetFHIRResourceInstanceJson(string content)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

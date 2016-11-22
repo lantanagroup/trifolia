@@ -66,6 +66,13 @@ namespace Trifolia.Web.Controllers.API
                              join tid in model.TemplateIds on t.Id equals tid
                              select t);
 
+            var parserSettings = new fhir_stu3.Hl7.Fhir.Serialization.ParserSettings();
+            parserSettings.AcceptUnknownMembers = true;
+            parserSettings.AllowUnrecognizedEnums = true;
+            parserSettings.DisallowXsiAttributesOnRoot = false;
+            var fhirXmlParser = new fhir_stu3.Hl7.Fhir.Serialization.FhirXmlParser(parserSettings);
+            var fhirJsonParser = new fhir_stu3.Hl7.Fhir.Serialization.FhirJsonParser(parserSettings);
+
             if (ig == null)
             {
                 messages.Add("Could not find implementation guide with id " + model.ImplementationGuideId);
@@ -85,24 +92,27 @@ namespace Trifolia.Web.Controllers.API
                     {
                         var fileData = file.GetLatestData();
                         fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
+                        string fileContent = System.Text.Encoding.UTF8.GetString(fileData.Data);
 
                         try
                         {
-                            string fileContent = System.Text.Encoding.UTF8.GetString(fileData.Data);
-
+                            resource = fhirXmlParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
+                        }
+                        catch (Exception ex)
+                        {
                             if (file.MimeType == "application/xml" || file.MimeType == "text/xml")
-                                resource = fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromXml(fileContent);
-                            else if (file.MimeType == "application/json")
-                                resource = fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromJson(fileContent);
-                        }
-                        catch
-                        {
+                                messages.Add("FHIR Resource instance \"" + file.FileName + "\" cannot be parsed as valid XML: " + ex.Message);
                         }
 
-                        if (resource == null)
+                        try
                         {
-                            string msg = string.Format("FHIR resource instance \"" + file.FileName + "\" cannot be parsed as a valid XML or JSON resource.");
-                            messages.Add(msg);
+                            if (resource == null)
+                                resource = fhirJsonParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (file.MimeType == "binary/octet-stream" || file.MimeType == "application/json")
+                                messages.Add("FHIR Resource instance \"" + file.FileName + "\" cannot be parsed as valid JSON: " + ex.Message);
                         }
 
                         if (resource != null && string.IsNullOrEmpty(resource.Id))
@@ -123,7 +133,7 @@ namespace Trifolia.Web.Controllers.API
 
                         try
                         {
-                            resource = fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromXml(templateExample.Sample.XmlSample);
+                            resource = fhirXmlParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(templateExample.Sample.XmlSample);
                         }
                         catch
                         {
@@ -132,7 +142,7 @@ namespace Trifolia.Web.Controllers.API
                         try
                         {
                             if (resource == null)
-                                resource = fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromJson(templateExample.Sample.XmlSample);
+                                resource = fhirJsonParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(templateExample.Sample.XmlSample);
                         }
                         catch
                         {

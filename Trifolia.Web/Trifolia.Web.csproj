@@ -125,6 +125,10 @@
       <HintPath>..\libraries\Hl7.Fhir.STU3.Specification.dll</HintPath>
       <Aliases>fhir_stu3</Aliases>
     </Reference>
+    <Reference Include="Hl7.FluentPath">
+      <HintPath>..\libraries\Hl7.FluentPath.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
     </Reference>
