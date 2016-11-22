@@ -17,6 +17,7 @@ namespace Trifolia.Web.Models.IG
             this.CodeSystems = new List<CodeSystem>();
             this.TemplateTypes = new List<TemplateType>();
             this.Volume1Sections = new List<Section>();
+            this.FHIRResources = new List<FHIRResource>();
         }
 
         public int ImplementationGuideId { get; set; }
@@ -34,6 +35,14 @@ namespace Trifolia.Web.Models.IG
         public List<Template> Templates { get; set; }
         public List<TemplateType> TemplateTypes { get; set; }
         public List<Section> Volume1Sections { get; set; }
+        public List<FHIRResource> FHIRResources { get; set; }
+
+        public class FHIRResource
+        {
+            public string Name { get; set; }
+            public string JsonContent { get; set; }
+            public string XmlContent { get; set; }
+        }
 
         public class Template
         {

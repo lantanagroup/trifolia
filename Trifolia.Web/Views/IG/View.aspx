@@ -77,6 +77,30 @@
         </div>
     </div>
 
+    <script type="text/html" id="resources.html">
+        <h4>Resources instance in this implementation guide</h4>
+        <ul>
+            <li ng-repeat="r in Model.FHIRResources"><a href="#/resources/{{r.Name}}">{{r.Name}}</a></li>
+        </ul>
+    </script>
+
+    <script type="text/html" id="resource.html">
+        <h4 title="{{fileName}}">{{resource.name || resource.title || fileName}}</h4>
+        <p ng-if="resource.description">{{resource.description}}</p>
+        <div class="row">
+            <div class="col-md-6">
+                <h5>JSON</h5>
+                <copy-button />
+                <pre>{{json}}</pre>
+            </div>
+            <div class="col-md-6">
+                <h5>XML</h5>
+                <copy-button />
+                <pre>{{resourceInfo.XmlContent}}</pre>
+            </div>
+        </div>
+    </script>
+
     <script type="text/html" id="template.html">
         <div ng-if="Template">
             <h1 class="page-header">
@@ -257,7 +281,7 @@
     </script>
 
     <script type="text/html" id="volume2.html">
-        <h1 class="page-header">Templates</h1>
+        <h1 class="page-header">Templates/Profiles</h1>
 
         <!--
         <p>Description of templates chapter here</p>
@@ -265,10 +289,15 @@
 
         <accordion close-others="true">
             <accordion-group heading="Template Hierarchy" is-open="Volume2Modes.TemplateHierarchy">
-                <div class="alert alert-info">Use the + and - to expand/collapse the hierarchy of the templates.</div>
+                <div class="alert alert-info">Use the + and - to expand/collapse the hierarchy of the templates/profiles.</div>
                 <div class="col-md-12 template-hierarchy">
                     <ul>
-                        <li ng-repeat="template in TemplateHierarchy[0].Templates | orderBy: 'Name'" ng-include="'template_hierarchy.html'"></li>
+                        <li ng-repeat="rootHierarchy in TemplateHierarchy">
+                            {{rootHierarchy.Name}}
+                            <ul>
+                                <li ng-repeat="template in rootHierarchy.Templates | orderBy: 'Name'" ng-include="'template_hierarchy.html'"></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </accordion-group>
@@ -339,7 +368,7 @@
     <script type="text/html" id="search.html">
         <h1 class="page-header">Search Results</h1>
 
-        <h2>Templates</h2>
+        <h2>Templates/Profiles</h2>
         <div class="search-template" ng-repeat="srt in SearchResults.Templates | orderBy: 'Priority' | orderBy: 'Name'">
             <p><strong><a href="#/volume2/{{srt.Template.Bookmark}}">{{srt.Name}} ({{srt.Template.Identifier}})</a></strong></p>
             <p class="search-description" ng-bind-html="GetHtml(srt.Template.Description)"></p>
@@ -374,7 +403,8 @@
 
         <h3>Table of Contents</h3>
         <h4><span class="glyphicon glyphicon-book"></span> <a href="#/volume1">Overview</a></h4>
-        <h4><span class="glyphicon glyphicon-list-alt"></span> <a href="#/volume2">Templates</a></h4>
+        <h4><span class="glyphicon glyphicon-list-alt"></span> <a href="#/volume2">Templates/Profiles</a></h4>
+        <h4 ng-if="Model.FHIRResources && Model.FHIRResources.length > 0"><span class="glyphicon glyphicon-registration-mark"></span> <a href="#/resources">Resources</a></h4>
         <h4><span class="glyphicon glyphicon-list"></span> <a href="#/valuesets">Value sets in this guide</a></h4>
         <h4><span class="glyphicon glyphicon-list"></span> <a href="#/codesystems">Code systems in this guide</a></h4>
     </script>
@@ -605,13 +635,13 @@
                 </select>
             </div>
             <div class="form-group" ng-if="AllowDataChanges">
-                <label>Parent templates</label>
+                <label>Parent templates/profiles</label>
                 <select class="form-control" ng-repeat="pt in Options.ParentTemplates" ng-options="t.Id as t.Name for t in Templates" ng-model="Options.ParentTemplates[$index]">
                     <option value="">SELECT</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Use tabs when viewing templates?</label>
+                <label>Use tabs when viewing templates/profiles?</label>
                 <select class="form-control" ng-model="Options.TemplateTabs" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]">
                 </select>
             </div>

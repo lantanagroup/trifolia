@@ -37,9 +37,64 @@ igViewApp.config(function ($routeProvider, hljsServiceProvider) {
         .when('/search', {
             templateUrl: 'search.html'
         })
+        .when('/resources', {
+            templateUrl: 'resources.html'
+        })
+        .when('/resources/:fileName', {
+            templateUrl: 'resource.html',
+            controller: 'ResourceCtrl'
+        })
         .otherwise({
             redirectTo: '/overview'
         });
+});
+
+igViewApp.controller('ResourceCtrl', function ($scope, $routeParams) {
+    $scope.fileName = $routeParams.fileName;
+
+    $scope.$watch('Model', function (model) {
+        $scope.resourceInfo = _.find($scope.Model.FHIRResources, function (fhirResource) {
+            return fhirResource.Name == $routeParams.fileName;
+        });
+
+        if ($scope.resourceInfo) {
+            $scope.resource = JSON.parse($scope.resourceInfo.JsonContent);
+            $scope.json = JSON.stringify($scope.resource, null, '\t');
+        }
+    }, true);
+});
+
+igViewApp.directive('copyButton', function () {
+    var copyText = function(element) {
+        var doc = document, range, selection;
+        if (doc.body.createTextRange) {
+            range = document.body.createTextRange();
+            range.moveToElementText(element);
+            range.select();
+            document.execCommand('copy');
+        } else if (window.getSelection) {
+            selection = window.getSelection();
+            range = document.createRange();
+            range.selectNodeContents(element);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand('copy');
+        }
+
+        window.getSelection().removeAllRanges();
+    };
+
+    return {
+        restrict: 'E',
+        scope: {},
+        template: '<i ng-click="copy()" class="glyphicon glyphicon-export"></i>',
+        link: function (scope, element) {
+            scope.copy = function () {
+                var parent = $(element).parent().find('pre');
+                copyText(parent[0]);
+            };
+        }
+    };
 });
 
 igViewApp.directive('fixHtmlContent', function ($location, $compile, $anchorScroll) {
