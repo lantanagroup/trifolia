@@ -900,7 +900,7 @@ var TemplateModel = function (data, viewModel) {
             return;
         }
 
-        if (!self.IdentifierAfix() || oldValue.toLowerCase() == self.IdentifierAfix().toLowerCase()) {
+        if (!self.IdentifierAfix() || (oldValue && oldValue.toLowerCase() == self.IdentifierAfix().toLowerCase())) {
             self.IdentifierAfix(newValue);
         }
 
