@@ -40,9 +40,15 @@ namespace Trifolia.Plugins.FHIR
 
         private fhir_stu3.Hl7.Fhir.Model.Resource GetFHIRResource(string content)
         {
+            var parserSettings = new fhir_stu3.Hl7.Fhir.Serialization.ParserSettings();
+            parserSettings.AcceptUnknownMembers = true;
+            parserSettings.AllowUnrecognizedEnums = true;
+            parserSettings.DisallowXsiAttributesOnRoot = false;
+
             try
             {
-                return fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromXml(content);
+                var xmlParser = new fhir_stu3.Hl7.Fhir.Serialization.FhirXmlParser(parserSettings);
+                return xmlParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(content);
             }
             catch
             {
@@ -50,7 +56,8 @@ namespace Trifolia.Plugins.FHIR
 
             try
             {
-                return fhir_stu3.Hl7.Fhir.Serialization.FhirParser.ParseResourceFromJson(content);
+                var jsonParser = new fhir_stu3.Hl7.Fhir.Serialization.FhirJsonParser(parserSettings);
+                return jsonParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(content);
             }
             catch
             {
