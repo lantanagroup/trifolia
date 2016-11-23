@@ -453,9 +453,6 @@
     <Compile Include="Models\TerminologyManagement\Relationship.cs" />
     <Compile Include="Models\TerminologyManagement\SaveValueSetConceptsModel.cs" />
     <Compile Include="Models\TerminologyManagement\EditValueSetModel.cs" />
-    <Compile Include="Models\TerminologyManagement\ImportCheckRequest.cs" />
-    <Compile Include="Models\TerminologyManagement\ImportCheckResponse.cs" />
-    <Compile Include="Models\TerminologyManagement\ImportValueSetChange.cs" />
     <Compile Include="Models\TerminologyManagement\SaveValueSetModel.cs" />
     <Compile Include="Models\TerminologyManagement\ValueSetItems.cs" />
     <Compile Include="Models\TerminologyManagement\ValueSetItem.cs" />

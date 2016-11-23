@@ -6,11 +6,11 @@ using System.Text;
 using Trifolia.Shared;
 using Trifolia.DB;
 
-namespace Trifolia.Shared.ImportExport
+namespace Trifolia.Import.Terminology.External
 {
     public abstract class BaseValueSetImportProcess<T,V> : IValueSetImportProcessor<T,V>
-            where T : Model.ImportValueSet
-            where V : Model.ImportValueSetMember
+            where T : ImportValueSet
+            where V : ImportValueSetMember
     {
         protected abstract T BaseFindValueSet(IObjectRepository tdb, string oid);
 
@@ -21,11 +21,11 @@ namespace Trifolia.Shared.ImportExport
             return this.BaseFindValueSet(tdb, oid);
         }
 
-        public void SaveValueSet(IObjectRepository tdb, Model.ImportValueSet valueSet)
+        public void SaveValueSet(IObjectRepository tdb, ImportValueSet valueSet)
         {
             ValueSet tdbValueSet = FindOrAddValueSet(tdb, valueSet);
 
-            foreach (Model.ImportValueSetMember cImportMember in valueSet.Members)
+            foreach (ImportValueSetMember cImportMember in valueSet.Members)
             {
                 FindOrAddValueSetMember(tdb, tdbValueSet, cImportMember);
             }
@@ -33,7 +33,7 @@ namespace Trifolia.Shared.ImportExport
 
         #endregion
 
-        protected string DetermineValueSetStatus(Model.ImportValueSet importValueSet, ValueSet currentValueSet)
+        protected string DetermineValueSetStatus(ImportValueSet importValueSet, ValueSet currentValueSet)
         {
             if (currentValueSet == null)
             {
@@ -53,7 +53,7 @@ namespace Trifolia.Shared.ImportExport
             return "None";
         }
 
-        protected string DetermineValueSetMemberStatus(Model.ImportValueSetMember importValueSetMember, ValueSetMember currentMember)
+        protected string DetermineValueSetMemberStatus(ImportValueSetMember importValueSetMember, ValueSetMember currentMember)
         {
             if (currentMember == null)
             {
@@ -77,7 +77,7 @@ namespace Trifolia.Shared.ImportExport
 
         #region Model population
 
-        private ValueSet FindOrAddValueSet(IObjectRepository tdb, Model.ImportValueSet valueSet)
+        private ValueSet FindOrAddValueSet(IObjectRepository tdb, ImportValueSet valueSet)
         {
             ValueSet foundValueSet = tdb.ValueSets.SingleOrDefault(y => y.Oid == valueSet.Oid);
 
@@ -112,7 +112,7 @@ namespace Trifolia.Shared.ImportExport
             return foundValueSet;
         }
 
-        private void FindOrAddValueSetMember(IObjectRepository tdb, ValueSet tdbValueSet, Model.ImportValueSetMember valueSetMember)
+        private void FindOrAddValueSetMember(IObjectRepository tdb, ValueSet tdbValueSet, ImportValueSetMember valueSetMember)
         {
             if (valueSetMember.ImportStatus == "None")
                 return; 

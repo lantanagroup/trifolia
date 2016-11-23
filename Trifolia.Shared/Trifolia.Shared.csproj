@@ -68,10 +68,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="VadsClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libraries\VadsClient.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FHIR\Profiles\STU3\ProfileHelper.cs" />
@@ -96,13 +92,6 @@
     <Compile Include="SimpleSchemaObjectExtension.cs" />
     <Compile Include="StringWriterWithEncoding.cs" />
     <Compile Include="CustomXmlResolver.cs" />
-    <Compile Include="ImportExport\BaseValueSetImportProcess.cs" />
-    <Compile Include="ImportExport\ExternalSourceConnectionException.cs" />
-    <Compile Include="ImportExport\HL7RIMValueSetImportProcessor.cs" />
-    <Compile Include="ImportExport\IValueSetImportProcessor.cs" />
-    <Compile Include="ImportExport\Model\ImportValueSet.cs" />
-    <Compile Include="ImportExport\Model\ImportValueSetMember.cs" />
-    <Compile Include="ImportExport\PhinVadsValueSetImportProcessor.cs" />
     <Compile Include="ImportExport\TrifoliaExport.cs" />
     <Compile Include="LookupGreenTemplate.cs" />
     <Compile Include="Helper.cs" />

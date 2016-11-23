@@ -7,11 +7,11 @@ using System.Xml;
 using Trifolia.Logging;
 using Trifolia.DB;
 
-namespace Trifolia.Shared.ImportExport
+namespace Trifolia.Import.Terminology.External
 {
     public class HL7RIMValueSetImportProcessor<T,V> : BaseValueSetImportProcess<T,V>
-            where T : Model.ImportValueSet
-            where V : Model.ImportValueSetMember
+            where T : ImportValueSet
+            where V : ImportValueSetMember
     {
         private XmlDocument sourceDoc;
         private XmlNamespaceManager nsManager;
@@ -80,8 +80,8 @@ namespace Trifolia.Shared.ImportExport
             return importValueSet;
         }
 
-        private void PopulateMembers<X>(Model.ImportValueSet importValueSet, XmlNode versionNode, ValueSet currentValueSet)
-            where X : Model.ImportValueSetMember
+        private void PopulateMembers<X>(ImportValueSet importValueSet, XmlNode versionNode, ValueSet currentValueSet)
+            where X : ImportValueSetMember
         {
             string includingValueSetName = versionNode.ParentNode.Attributes["name"].Value;
 
@@ -120,7 +120,7 @@ namespace Trifolia.Shared.ImportExport
             }
         }
 
-        private void PopulateCodeSystemMembers(Model.ImportValueSet importValueSet, DateTime? versionDate, XmlNodeList contentNodes, ValueSet currentValueSet, string specialization = null)
+        private void PopulateCodeSystemMembers(ImportValueSet importValueSet, DateTime? versionDate, XmlNodeList contentNodes, ValueSet currentValueSet, string specialization = null)
         {
             foreach (XmlNode cContentNode in contentNodes)
             {
@@ -129,7 +129,7 @@ namespace Trifolia.Shared.ImportExport
             }
         }
 
-        private void PopulateCodeSystemMembers(Model.ImportValueSet importValueSet, DateTime? versionDate, string codeSystemOid, ValueSet currentValueSet, string specialization = null, string relationshipType = null)
+        private void PopulateCodeSystemMembers(ImportValueSet importValueSet, DateTime? versionDate, string codeSystemOid, ValueSet currentValueSet, string specialization = null, string relationshipType = null)
         {
             string codeSystemXpath = string.Format("/mif:vocabularyModel/mif:codeSystem[@codeSystemId='{0}']", codeSystemOid);
             XmlNode codeSystemNode = this.sourceDoc.SelectSingleNode(codeSystemXpath, this.nsManager);
@@ -167,7 +167,7 @@ namespace Trifolia.Shared.ImportExport
             }
         }
 
-        private void PopulateContentMembers(Model.ImportValueSet importValueSet, DateTime? versionDate, XmlNodeList contentNodes, ValueSet currentValueSet)
+        private void PopulateContentMembers(ImportValueSet importValueSet, DateTime? versionDate, XmlNodeList contentNodes, ValueSet currentValueSet)
         {
             foreach (XmlNode cContentNode in contentNodes)
             {
@@ -204,7 +204,7 @@ namespace Trifolia.Shared.ImportExport
             }
         }
 
-        private void AddImportMember(Model.ImportValueSet importValueSet, DateTime? versionDate, ValueSet currentValueSet, Model.ImportValueSetMember importValueSetMember, bool includeHead, string relationshipType)
+        private void AddImportMember(ImportValueSet importValueSet, DateTime? versionDate, ValueSet currentValueSet, ImportValueSetMember importValueSetMember, bool includeHead, string relationshipType)
         {
             if (includeHead)
             {
@@ -224,7 +224,7 @@ namespace Trifolia.Shared.ImportExport
             }
         }
 
-        private void PopulateConceptFields(Model.ImportValueSetMember importMember)
+        private void PopulateConceptFields(ImportValueSetMember importMember)
         {
             string codeSystemXpath = string.Format("/mif:vocabularyModel/mif:codeSystem[@codeSystemId='{0}']", importMember.CodeSystemOid);
             XmlNode codeSystemNode = this.sourceDoc.SelectSingleNode(codeSystemXpath, this.nsManager);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Trifolia.Shared.ImportExport.Model
+namespace Trifolia.Import.Terminology.External
 {
     public class ImportValueSet
     {

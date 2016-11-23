@@ -10,11 +10,11 @@ using Trifolia.DB;
 using VadsClient;
 using Trifolia.Config;
 
-namespace Trifolia.Shared.ImportExport
+namespace Trifolia.Import.Terminology.External
 {
     public class PhinVadsValueSetImportProcessor<T,V> : BaseValueSetImportProcess<T,V>
-            where T : Model.ImportValueSet
-            where V : Model.ImportValueSetMember
+            where T : ImportValueSet
+            where V : ImportValueSetMember
     {
         private const int MEMBER_PAGE_SIZE = 5000;
 

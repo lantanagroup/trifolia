@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Trifolia.Web.Models.TerminologyManagement
+namespace Trifolia.Import.Terminology.Excel
 {
     public class ImportCheckResponse
     {

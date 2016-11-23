@@ -5,14 +5,14 @@ using System.Text;
 
 using Trifolia.DB;
 
-namespace Trifolia.Shared.ImportExport
+namespace Trifolia.Import.Terminology.External
 {
     public interface IValueSetImportProcessor<T, V>
-            where T : Model.ImportValueSet
-            where V : Model.ImportValueSetMember
+            where T : ImportValueSet
+            where V : ImportValueSetMember
     {
         T FindValueSet(IObjectRepository tdb, string oid);
 
-        void SaveValueSet(IObjectRepository tdb, Model.ImportValueSet valueSet);
+        void SaveValueSet(IObjectRepository tdb, ImportValueSet valueSet);
     }
 }
