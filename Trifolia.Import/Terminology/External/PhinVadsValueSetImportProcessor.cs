@@ -20,6 +20,11 @@ namespace Trifolia.Import.Terminology.External
 
         protected override T BaseFindValueSet(IObjectRepository tdb, string oid)
         {
+            if (string.IsNullOrEmpty(oid))
+                throw new ArgumentNullException("oid");
+
+            oid = oid.Trim();       // Remove trailing spaces
+
             hessiancsharp.client.CHessianProxyFactory factory = new hessiancsharp.client.CHessianProxyFactory();
             VocabService vocabService = (VocabService)factory.Create(typeof(VocabService), AppSettings.PhinVadsServiceUrl);
             ValueSetResultDto valueSetResults = null;
@@ -34,8 +39,13 @@ namespace Trifolia.Import.Terminology.External
                 if (valueSetResults == null || valueSetResults.totalResults != 1)
                     return null;
 
+                string searchOid = oid;
+
+                if (!searchOid.StartsWith("urn:oid:"))
+                    searchOid = "urn:oid:" + searchOid;
+
                 VadsClient.ValueSet valueSetResult = valueSetResults.valueSet[0];
-                Trifolia.DB.ValueSet currentValueSet = tdb.ValueSets.SingleOrDefault(y => y.Oid == oid);
+                Trifolia.DB.ValueSet currentValueSet = tdb.ValueSets.SingleOrDefault(y => y.Oid == searchOid);
 
                 T importValueSet = CreateImportValueSet(currentValueSet, valueSetResult);
 
@@ -61,7 +71,12 @@ namespace Trifolia.Import.Terminology.External
                         }
                         else
                         {
-                            CodeSystemResultDto codeSystemResults = vocabService.getCodeSystemByOid(importValueSetMember.CodeSystemOid);
+                            string vadsCodeSystemOid = importValueSetMember.CodeSystemOid;
+
+                            if (vadsCodeSystemOid.StartsWith("urn:oid:"))
+                                vadsCodeSystemOid = vadsCodeSystemOid.Substring(8);
+
+                            CodeSystemResultDto codeSystemResults = vocabService.getCodeSystemByOid(vadsCodeSystemOid);
                             string codeSystemName = codeSystemResults.codeSystems[0].name;
 
                             importValueSetMember.CodeSystemName = codeSystemName;
@@ -96,7 +111,7 @@ namespace Trifolia.Import.Terminology.External
         {
             T importValueSet = Activator.CreateInstance<T>();
             
-            importValueSet.Oid = vadsValueSet.oid;
+            importValueSet.Oid = string.Format("urn:oid:{0}", vadsValueSet.oid);
             importValueSet.Code = vadsValueSet.code;
             importValueSet.Description = vadsValueSet.definitionText;
             importValueSet.Name = vadsValueSet.name;
@@ -108,14 +123,16 @@ namespace Trifolia.Import.Terminology.External
 
         private V CreateImportValueSetMember(Trifolia.DB.ValueSet currentValueSet, VadsClient.ValueSetConcept vadsConcept)
         {
+            string trifCodeSystemOid = string.Format("urn:oid:{0}", vadsConcept.codeSystemOid);
+
             ValueSetMember currentMember = currentValueSet != null ? 
-                currentValueSet.Members.SingleOrDefault(y => y.Code == vadsConcept.conceptCode && y.CodeSystem.Oid == vadsConcept.codeSystemOid) :
+                currentValueSet.Members.SingleOrDefault(y => y.Code == vadsConcept.conceptCode && y.CodeSystem.Oid == trifCodeSystemOid) :
                 null;
 
             V importValueSetMember = Activator.CreateInstance<V>();
 
             importValueSetMember.Code = vadsConcept.conceptCode;
-            importValueSetMember.CodeSystemOid = vadsConcept.codeSystemOid;
+            importValueSetMember.CodeSystemOid = trifCodeSystemOid;
             importValueSetMember.DisplayName = vadsConcept.codeSystemConceptName;
             importValueSetMember.Status = ConvertStatus(vadsConcept.status);
             importValueSetMember.StatusDate = vadsConcept.statusDate;
