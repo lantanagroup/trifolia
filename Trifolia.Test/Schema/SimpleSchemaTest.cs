@@ -95,10 +95,75 @@ namespace Trifolia.Test.Schema
         public void MyTestCleanup()
         {
         }
-        
+
         #endregion
 
-        [TestMethod]
+        #region Schema Choice
+
+        /// <summary>
+        /// Test that the term "body" is used in the name of the choice element when the common term "body" is found among the choice options.
+        /// The cardinality and conformance of children should be set to null/empty, since they cannot change the conf/card of the choice itself.
+        /// </summary>
+        [TestMethod, TestCategory("Schema")]
+        [DeploymentItem("Schemas\\", "Schemas\\")]
+        public void TestSchemaChoice_Component2()
+        {
+            var component2 = this.cdaSchema.FindFromType("Component2");
+            Assert.IsNotNull(component2);
+            Assert.IsNotNull(component2.Children);
+            Assert.AreEqual(7, component2.Children.Count);
+            Assert.AreEqual("bodyChoice", component2.Children[6].Name);
+            Assert.IsTrue(component2.Children[6].IsChoice);
+            Assert.IsNotNull(component2.Children[6].Children);
+            Assert.AreEqual(2, component2.Children[6].Children.Count);
+
+            var childOne = component2.Children[6].Children[0];
+            Assert.AreEqual("nonXMLBody", childOne.Name);
+            Assert.IsNull(childOne.Cardinality);
+            Assert.IsNull(childOne.Conformance);
+
+            var childTwo = component2.Children[6].Children[1];
+            Assert.AreEqual("structuredBody", childTwo.Name);
+            Assert.IsNull(childTwo.Cardinality);
+            Assert.IsNull(childTwo.Conformance);
+        }
+
+        /// <summary>
+        /// Test that "choice" is used as the choice element's name when no common term is found among the choice options
+        /// </summary>
+        [TestMethod, TestCategory("Schema")]
+        [DeploymentItem("Schemas\\", "Schemas\\")]
+        public void TestSchemaChoice_CDA_Entry()
+        {
+            var entry = this.cdaSchema.FindFromType("Entry");
+            Assert.IsNotNull(entry);
+            Assert.IsNotNull(entry.Children);
+            Assert.AreEqual(7, entry.Children.Count);
+            Assert.AreEqual("choice", entry.Children[6].Name);
+        }
+
+        /// <summary>
+        /// Test that "deceased[x]" and "multiple[x]" are used as the choice element's names
+        /// </summary>
+        [TestMethod, TestCategory("Schema")]
+        [DeploymentItem("Schemas\\", "Schemas\\")]
+        public void TestSchemaChoice_FHIR_Patient()
+        {
+            var patient = this.fhirSchema.FindFromType("Patient");
+            Assert.IsNotNull(patient);
+            Assert.IsNotNull(patient.Children);
+            Assert.AreEqual(23, patient.Children.Count);
+            Assert.AreEqual("deceased[x]", patient.Children[11].Name);
+            Assert.IsNotNull(patient.Children[11].Children);
+            Assert.AreEqual(2, patient.Children[11].Children.Count);
+            Assert.AreEqual("multiple[x]", patient.Children[14].Name);
+            Assert.IsNotNull(patient.Children[14].Children);
+            Assert.AreEqual(2, patient.Children[14].Children.Count);
+        }
+
+        #endregion
+
+        [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestFhirPatient()
         {
@@ -108,17 +173,15 @@ namespace Trifolia.Test.Schema
             Assert.IsNotNull(contact);
 
             // Test patient model
-            Assert.AreEqual(25, patient.Children.Count, "Patient should have 25 children");
+            Assert.AreEqual(23, patient.Children.Count, "Patient should have 23 children (some being choices)");
 
             Assert.AreEqual("telecom", patient.Children[8].Name, "Patient's 9th child should be \"telecom\"");
             Assert.AreEqual("Contact", patient.Children[8].DataType, "Patient's 9th child (telecom) should have a data type of \"Contact\"");
             Assert.AreEqual(6, patient.Children[8].Children.Count, "Patient's 9th child (telecom) should have 6 children");
             Assert.AreEqual("value", patient.Children[8].Children[3].Name, "Patient's 9th child (telecom), should have a 4th child named \"value\"");
 
-            Assert.AreEqual("contact", patient.Children[18].Name, "Patient's 19th child should be \"contact\"");
-            Assert.AreEqual("Patient.Contact", patient.Children[18].DataType, "Patient's 19th (contact) child should have a data type of \"Patient.Contact\"");
-            Assert.AreEqual(9, patient.Children[18].Children.Count, "Patient's 19th child (contact) should have 9 children");
-            Assert.AreEqual("relationship", patient.Children[18].Children[3].Name, "Patient's 19th child (telecom), should have a 4th child named \"relationship\"");
+            Assert.AreEqual("communication", patient.Children[18].Name, "Patient's 19th child should be \"contact\"");
+            Assert.AreEqual("CodeableConcept", patient.Children[18].DataType, "Patient's 19th (contact) child should have a data type of \"Patient.Contact\"");
 
             // Test patient contact model
             Assert.AreEqual(9, contact.Children.Count, "Patient.Contact should have 9 children");
@@ -128,7 +191,7 @@ namespace Trifolia.Test.Schema
         /// <summary>
         /// Tests that the IVL_TS is properly populated with @nullFlavor, @value, low/@nullFlavor and low/@value
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void FindFromTypeTest()
         {
@@ -137,7 +200,10 @@ namespace Trifolia.Test.Schema
             Assert.IsTrue(actual.Children.Exists(y => y.Name == "nullFlavor" && y.IsAttribute), "Could not find @nullFlavor attribute on IVL_TS");
             Assert.IsTrue(actual.Children.Exists(y => y.Name == "value" && y.IsAttribute), "Could not find @value attribute on IVL_TS");
 
-            SimpleSchema.SchemaObject lowSchemaObject = actual.Children.SingleOrDefault(y => y.Name == "low" && !y.IsAttribute);
+            var choiceSchemaObject = actual.Children.SingleOrDefault(y => y.Name == "choice" && y.IsChoice);
+            Assert.IsNotNull(choiceSchemaObject, "Expected to find a choice");
+
+            SimpleSchema.SchemaObject lowSchemaObject = choiceSchemaObject.Children.SingleOrDefault(y => y.Name == "low" && !y.IsAttribute);
             Assert.IsNotNull(lowSchemaObject, "Could not find <low> within IVL_TS");
             Assert.IsTrue(lowSchemaObject.Children.Exists(y => y.Name == "nullFlavor" && y.IsAttribute), "Could now find low/@nullFlavor within IVL_TS");
             Assert.IsTrue(lowSchemaObject.Children.Exists(y => y.Name == "value" && y.IsAttribute), "Could now find low/@value within IVL_TS");
@@ -146,7 +212,7 @@ namespace Trifolia.Test.Schema
         /// <summary>
         /// Tests that using SimpleSchema with the CDA schema returns derived types for the TS and CS types.
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void GetDerivedTypesTest()
         {
@@ -165,7 +231,7 @@ namespace Trifolia.Test.Schema
         /// <remarks>
         /// Tests multi-level requests, ie: An id within a ClinicalDocument, a @root within an id within an ClinicalDocument.
         /// </remarks>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void FindFromPathTest()
         {
@@ -197,7 +263,7 @@ namespace Trifolia.Test.Schema
         /// <remarks>
         /// Tests that the Observation schema returned contains children and that one of the children is an id element.
         /// </remarks>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void GetSchemaFromContext()
         {

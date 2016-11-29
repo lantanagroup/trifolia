@@ -93,11 +93,11 @@ namespace Trifolia.Test.Generation.Schematron
 
             // Template 1
             Template t1 = tdb.GenerateTemplate("urn:oid:1.2.3.4", docType, "Test Template", owningImplementationGuide: ig1);
-            tdb.GenerateConstraint(t1, null, null, "title", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(t1, null, null, "title", "SHALL", "1..1");
 
             // Template 2
             Template t2 = tdb.GenerateTemplate("urn:oid:1.2.3.4.1", docType, "Test Template", owningImplementationGuide: ig1);
-            TemplateConstraint t2_tc1 = tdb.GenerateConstraint(t2, null, null, "title", "SHALL", "1..1");
+            TemplateConstraint t2_tc1 = tdb.AddConstraintToTemplate(t2, null, null, "title", "SHALL", "1..1");
             t2_tc1.Schematron = "count(cda:title)";
 
             TemplateConstraint t2_tc2 = tdb.GeneratePrimitive(t2, null, "SHALL", "This is a test primitive");
@@ -106,13 +106,13 @@ namespace Trifolia.Test.Generation.Schematron
 
             // Template 3
             Template t3 = tdb.GenerateTemplate("urn:oid:1.2.3.4.2", docType, "Test Template", owningImplementationGuide: ig1);
-            tdb.GenerateConstraint(t1, null, null, "title", "SHOULD", "1..1");
+            tdb.AddConstraintToTemplate(t1, null, null, "title", "SHOULD", "1..1");
 
             // Template 4
             Template t4 = tdb.GenerateTemplate("urn:oid:1.2.3.4.3", docType, "Test Template", owningImplementationGuide: ig1);
-            TemplateConstraint t4_p1 = tdb.GenerateConstraint(t4, null, null, "entryRelationship", "SHALL", "1..1", null, null, null, null, null, null, null, true);
-            TemplateConstraint t4_p2 = tdb.GenerateConstraint(t4, t4_p1, null, "@typeCode", "SHALL", "1..1", null, null, "DRIV");
-            TemplateConstraint t4_p3 = tdb.GenerateConstraint(t4, t4_p1, null, "observation", "SHALL", "1..1", null, null, "DRIV", null, null, null, null, true);
+            TemplateConstraint t4_p1 = tdb.AddConstraintToTemplate(t4, null, null, "entryRelationship", "SHALL", "1..1", null, null, null, null, null, null, null, true);
+            TemplateConstraint t4_p2 = tdb.AddConstraintToTemplate(t4, t4_p1, null, "@typeCode", "SHALL", "1..1", null, null, "DRIV");
+            TemplateConstraint t4_p3 = tdb.AddConstraintToTemplate(t4, t4_p1, null, "observation", "SHALL", "1..1", null, null, "DRIV", null, null, null, null, true);
 
             // Template 5: Test line-feed replacement
             Template t5 = tdb.GenerateTemplate("urn:oid:1.2.3.4.4", docType, "Test Template", owningImplementationGuide: ig1);
@@ -120,18 +120,18 @@ namespace Trifolia.Test.Generation.Schematron
 
             // Template 6: Implied template and contained template
             Template t6 = tdb.GenerateTemplate("urn:oid:1.2.3.1.1.1", docType, "Test Template", owningImplementationGuide: ig2, impliedTemplate: t5);
-            TemplateConstraint t6_p1 = tdb.GenerateConstraint(t6, null, null, "code", "SHALL", "1..1");
-            TemplateConstraint t6_p2 = tdb.GenerateConstraint(t6, null, null, "entryRelationship", "SHALL", "1..1");
-            TemplateConstraint t6_p2_1 = tdb.GenerateConstraint(t6, t6_p2, t4, "observation", "SHALL", "1..1");
+            TemplateConstraint t6_p1 = tdb.AddConstraintToTemplate(t6, null, null, "code", "SHALL", "1..1");
+            TemplateConstraint t6_p2 = tdb.AddConstraintToTemplate(t6, null, null, "entryRelationship", "SHALL", "1..1");
+            TemplateConstraint t6_p2_1 = tdb.AddConstraintToTemplate(t6, t6_p2, t4, "observation", "SHALL", "1..1");
 
             // Template 7: MAY parent with SHALL primitive
             Template t7 = tdb.GenerateTemplate("urn:oid:1.2.3.4.5", docType, "Test Template", owningImplementationGuide: ig1);
-            TemplateConstraint t7_p1 = tdb.GenerateConstraint(t7, null, null, "entry", "MAY", "0..1", isBranch: true);
+            TemplateConstraint t7_p1 = tdb.AddConstraintToTemplate(t7, null, null, "entry", "MAY", "0..1", isBranch: true);
             TemplateConstraint t7_p1_1 = tdb.GeneratePrimitive(t7, t7_p1, "SHALL", "This entry SHALl contain some custom stuff", "count(test) > 1", isPrimitiveSchRooted: true, isInheritable: true);
 
             // Template 8: Code constraint with compound SHALL/SHOULD (element conformance / value conformance)
             Template t8 = tdb.GenerateTemplate("urn:oid:1.2.3.4.6", entType, "Test Template", owningImplementationGuide: ig1);
-            TemplateConstraint t8_p1 = tdb.GenerateConstraint(t8, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", valueSet: vs1);
+            TemplateConstraint t8_p1 = tdb.AddConstraintToTemplate(t8, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", valueSet: vs1);
 
 
             // Add namespaces to the manager
@@ -151,14 +151,14 @@ namespace Trifolia.Test.Generation.Schematron
 
         #region Generic Tests
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_PrimitiveRootedWithinBranch()
         {
             var asserts = schDoc.XPathSelectElements("//sch:pattern[@id='p-urn-oid-1.2.3.4.5-errors']/sch:rule[@id='r-urn-oid-1.2.3.4.5-errors-abstract']/sch:assert", nsManager);
             Assert.AreEqual(1, asserts.Count(), "Expected to find one error assertion for template urn:oid:1.2.3.4.5's rooted custom schematron");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_CompoundConformanceNarrative()
         {
             var warningPattern = schDoc.XPathSelectElement("//sch:pattern[@id='p-urn-oid-1.2.3.4.6-warnings']", nsManager);
@@ -174,7 +174,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// Tests that when creating a SchematronGenerator with NO inferred templates, the templates that are referenced via an implied 
         /// or contained relationship are not included in the output.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_NotInferred()
         {
             SchematronGenerator generator = new SchematronGenerator(tdb, ig2, ig2.ChildTemplates.ToList(), false);
@@ -199,7 +199,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Tests that when asking to include inferred templates in the implementation guide, both the implied and 
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_Inferred()
         {
             SchematronGenerator generator = new SchematronGenerator(tdb, ig2, ig2.GetRecursiveTemplates(tdb), false);
@@ -225,7 +225,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Ensure that line-feed characters are replaced with spaces
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_LineFeed()
         {
             bool foundLineFeed = schContent.Contains("&#xA;") || schContent.Contains("&amp;#xA;");
@@ -236,7 +236,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Tests that the resulting document includes a pattern for the first template.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_HasPattern()
         {
             bool foundPattern = schDoc.XPathSelectElements("//sch:pattern[@id='p-oid-1.2.3.4-errors']", nsManager) != null;
@@ -246,7 +246,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Tests that the generated schematron document has a phase element for errors
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_HasErrorsPhase()
         {
             bool foundPattern = schDoc.XPathSelectElements("//sch:phase[@id='errors']", nsManager) != null;
@@ -256,7 +256,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Tests that the generated schematron document has a phase element for warnings
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_HasWarningsPhase()
         {
             bool foundPattern = schDoc.XPathSelectElements("//sch:phase[@id='warnings']", nsManager) != null;
@@ -266,7 +266,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Tests that a computable constraint without predefined schematron generates new schematron and includes it in the document.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_Computable_NoSchematron()
         {
             XElement assert = schDoc.XPathSelectElement("//sch:assert[@id='a-1-1']", nsManager);
@@ -281,7 +281,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Tests that a computable constraint with pre-defined schematron outputs the predefined schematron, rather than generating new schematron.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_Computable_WithSchematron()
         {
             XElement assert = schDoc.XPathSelectElement("//sch:assert[@id='a-1-2-c']", nsManager);
@@ -296,7 +296,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Tests that when a primitive constraint has no pre-defined schematron, it outputs a comment in the resulting schematron document.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_Primitive_NoSchematron()
         {
             var comments = (from node in schDoc.Elements().DescendantNodesAndSelf()
@@ -312,7 +312,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Tests that when a constraint is primitive and has pre-defined schematron, that the predefined schematron is output, rather than generated new.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_Primitive_WithSchematron()
         {
             XElement assert = schDoc.XPathSelectElement("//sch:assert[@id='a-1-4-c']", nsManager);
@@ -328,7 +328,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// tests that a computable constraint shows up in the correct error pattern.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_Computable_Error()
         {
             XElement assert = schDoc.XPathSelectElement("//sch:assert[@id='a-1-1']", nsManager);
@@ -344,7 +344,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Tests that a computable constraint shows up in the correct warning pattern.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_Computable_Warning()
         {
             XElement assert = schDoc.XPathSelectElement("//sch:assert[@id='a-1-5']", nsManager);
@@ -357,7 +357,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.IsNotNull(warningEntry, "Expected to find constraint 5 as part of a warning pattern.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_SHALLwithSHOULDvalueset()
         {
             //// Template 5: Test "SHALL code SHOULD valueset"
@@ -371,7 +371,7 @@ namespace Trifolia.Test.Generation.Schematron
             // Template 5: Test "SHALL code SHOULD valueset"
             Template t5 = tdb.GenerateTemplate("urn:oid:1.2.3.4.4", docType, "Test Template", ig, null, null, null);
             //these two constraints should generate 4 assertions, 2 errors, 2 warnings
-            TemplateConstraint t5_p1 = tdb.GenerateConstraint(t5, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", valueSet: vs1);
+            TemplateConstraint t5_p1 = tdb.AddConstraintToTemplate(t5, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", valueSet: vs1);
 
             // Add namespaces to the manager
             nsManager.AddNamespace("sch", "http://purl.oclc.org/dsdl/schematron");
@@ -422,7 +422,7 @@ namespace Trifolia.Test.Generation.Schematron
             //Assert.AreEqual("p-oid-1.2.3.4.4-warnings", pattern2.Attribute("name").Value);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void GenerateTest_SHALLwithSHOULDvalue()
         {
             // Implementation Guide
@@ -430,7 +430,7 @@ namespace Trifolia.Test.Generation.Schematron
             // Template 5: Test "SHALL code SHOULD valueset"
             Template t5 = tdb.GenerateTemplate("urn:oid:1.2.3.4.4", docType, "Test Template", ig, null, null, null);
             //these two constraints should generate 4 assertions, 2 errors, 2 warnings
-            TemplateConstraint t5_p2 = tdb.GenerateConstraint(t5, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", value: "1234-X");
+            TemplateConstraint t5_p2 = tdb.AddConstraintToTemplate(t5, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", value: "1234-X");
 
             // Add namespaces to the manager
             nsManager.AddNamespace("sch", "http://purl.oclc.org/dsdl/schematron");
@@ -464,7 +464,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual("count(cda:code[@code='1234-X'])=1", warningPattern.Rules[0].Assertions[0].Test, "Wrong assertion test generated for warning pattern.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void SerializeSchematronTest()
         {
             SchematronDocumentSerializer sds = new SchematronDocumentSerializer();
@@ -521,21 +521,21 @@ namespace Trifolia.Test.Generation.Schematron
 
         #region Branch Context Builder
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ShouldWithShallChildSiblingShould_BuildBranchContext_GivenRootElement()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
             Template template = tdb.GenerateTemplate("urn:oid:2.16.840.1.113883.10.20.22.4.48", entType, "Advance Directive Observation", consolidationIg, "observation", "Observation");
             CodeSystem hl7PT = tdb.FindOrCreateCodeSystem("HL7ParticipationType", "2.16.840.1.113883.5.90");
 
-            TemplateConstraint tc8662 = tdb.GenerateConstraint(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
-            TemplateConstraint tc8663 = tdb.GenerateConstraint(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
-            TemplateConstraint tc8664 = tdb.GenerateConstraint(template, tc8662, null, "templateId", "SHALL", "1..1", isBranchIdentifier: true);
-            TemplateConstraint tc10486 = tdb.GenerateConstraint(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58", isBranchIdentifier: true);
-            TemplateConstraint tc8665 = tdb.GenerateConstraint(template, tc8662, null, "time", "SHOULD", "0..1");
+            TemplateConstraint tc8662 = tdb.AddConstraintToTemplate(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
+            TemplateConstraint tc8663 = tdb.AddConstraintToTemplate(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
+            TemplateConstraint tc8664 = tdb.AddConstraintToTemplate(template, tc8662, null, "templateId", "SHALL", "1..1", isBranchIdentifier: true);
+            TemplateConstraint tc10486 = tdb.AddConstraintToTemplate(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58", isBranchIdentifier: true);
+            TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
             // TODO: Need to have flag for primitive schematron... where does the schematron go? rooted from template or from the parent?
             TemplateConstraint tc8666 = tdb.GeneratePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
-            TemplateConstraint tc8825 = tdb.GenerateConstraint(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
+            TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
 
             DocumentTemplateElement element = null;
             DocumentTemplateElementAttribute attribute = null;
@@ -554,15 +554,15 @@ namespace Trifolia.Test.Generation.Schematron
 
         #region Context and Branching Tests
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void TemplateApplyToNonDefaultContext()
         {
             ImplementationGuide qrdaIg = tdb.FindOrAddImplementationGuide(cdaType, "QRDA");
             Template template = tdb.GenerateTemplate("urn:oid:2.16.234234", entType, "Fulfill", qrdaIg, "sdtc:inFulfillmentOf1", "sdtc:inFulfillmentOf1");
-            tdb.GenerateConstraint(template, null, null, "@typeCode", "SHALL", "1..1", value: "FLFS", displayName: "Fulfills");
-            var c2 = tdb.GenerateConstraint(template, null, null, "sdtc:templateId", "SHALL", "1..1", isBranch: true);
-            tdb.GenerateConstraint(template, c2, null, "@root", "SHALL", "1..1", isBranchIdentifier: true, value: "urn:oid:2.16.234234");
-            tdb.GenerateConstraint(template, null, null, "sdtc:actReference", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(template, null, null, "@typeCode", "SHALL", "1..1", value: "FLFS", displayName: "Fulfills");
+            var c2 = tdb.AddConstraintToTemplate(template, null, null, "sdtc:templateId", "SHALL", "1..1", isBranch: true);
+            tdb.AddConstraintToTemplate(template, c2, null, "@root", "SHALL", "1..1", isBranchIdentifier: true, value: "urn:oid:2.16.234234");
+            tdb.AddConstraintToTemplate(template, null, null, "sdtc:actReference", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -601,23 +601,23 @@ namespace Trifolia.Test.Generation.Schematron
   </sch:pattern>
          */
         /// </remarks>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ShouldWithShallChild_DefaultIdentifiers()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
             Template template = tdb.GenerateTemplate("urn:oid:2.16.840.1.113883.10.20.22.4.48", entType, "Advance Directive Observation", consolidationIg, "observation", "Observation");
             CodeSystem hl7PT = tdb.FindOrCreateCodeSystem("HL7ParticipationType", "2.16.840.1.113883.5.90");
 
-            TemplateConstraint tc8662 = tdb.GenerateConstraint(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
-            TemplateConstraint tc8663 = tdb.GenerateConstraint(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem:hl7PT, isBranchIdentifier:true);
-            TemplateConstraint tc8664 = tdb.GenerateConstraint(template, tc8662, null, "templateId", "SHALL", "1..1", isBranchIdentifier:true);
-            TemplateConstraint tc10486 = tdb.GenerateConstraint(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58", isBranchIdentifier:true);
-            TemplateConstraint tc8665 = tdb.GenerateConstraint(template, tc8662, null, "time", "SHOULD", "0..1");
-            TemplateConstraint tc8668 = tdb.GenerateConstraint(template, null, null, "code", "SHOULD", "0..1");
-            TemplateConstraint tc8669 = tdb.GenerateConstraint(template, tc8668, null, "@code", "SHALL", "1..1");
+            TemplateConstraint tc8662 = tdb.AddConstraintToTemplate(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
+            TemplateConstraint tc8663 = tdb.AddConstraintToTemplate(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem:hl7PT, isBranchIdentifier:true);
+            TemplateConstraint tc8664 = tdb.AddConstraintToTemplate(template, tc8662, null, "templateId", "SHALL", "1..1", isBranchIdentifier:true);
+            TemplateConstraint tc10486 = tdb.AddConstraintToTemplate(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58", isBranchIdentifier:true);
+            TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
+            TemplateConstraint tc8668 = tdb.AddConstraintToTemplate(template, null, null, "code", "SHOULD", "0..1");
+            TemplateConstraint tc8669 = tdb.AddConstraintToTemplate(template, tc8668, null, "@code", "SHALL", "1..1");
             // TODO: Need to have flag for primitive schematron... where does the schematron go? rooted from template or from the parent?
             TemplateConstraint tc8666 = tdb.GeneratePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
-            TemplateConstraint tc8825 = tdb.GenerateConstraint(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
+            TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -674,22 +674,22 @@ namespace Trifolia.Test.Generation.Schematron
   </sch:pattern>
          */
         /// </remarks>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ShouldWithShallChild_DefaultIdentifiers_PrimitiveIsRooted()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
             Template template = tdb.GenerateTemplate("urn:oid:2.16.840.1.113883.10.20.22.4.48", entType, "Advance Directive Observation", consolidationIg, "observation", "Observation");
             CodeSystem hl7PT = tdb.FindOrCreateCodeSystem("HL7ParticipationType", "2.16.840.1.113883.5.90");
 
-            TemplateConstraint tc8662 = tdb.GenerateConstraint(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
-            TemplateConstraint tc8663 = tdb.GenerateConstraint(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
-            TemplateConstraint tc8664 = tdb.GenerateConstraint(template, tc8662, null, "templateId", "SHALL", "1..1", isBranchIdentifier: true);
-            TemplateConstraint tc10486 = tdb.GenerateConstraint(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58", isBranchIdentifier: true);
-            TemplateConstraint tc8665 = tdb.GenerateConstraint(template, tc8662, null, "time", "SHOULD", "0..1");
-            TemplateConstraint tc8668 = tdb.GenerateConstraint(template, null, null, "code", "SHOULD", "0..1");
-            TemplateConstraint tc8669 = tdb.GenerateConstraint(template, tc8668, null, "@code", "SHALL", "1..1");
+            TemplateConstraint tc8662 = tdb.AddConstraintToTemplate(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
+            TemplateConstraint tc8663 = tdb.AddConstraintToTemplate(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
+            TemplateConstraint tc8664 = tdb.AddConstraintToTemplate(template, tc8662, null, "templateId", "SHALL", "1..1", isBranchIdentifier: true);
+            TemplateConstraint tc10486 = tdb.AddConstraintToTemplate(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58", isBranchIdentifier: true);
+            TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
+            TemplateConstraint tc8668 = tdb.AddConstraintToTemplate(template, null, null, "code", "SHOULD", "0..1");
+            TemplateConstraint tc8669 = tdb.AddConstraintToTemplate(template, tc8668, null, "@code", "SHALL", "1..1");
             TemplateConstraint tc8666 = tdb.GeneratePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)", schematronTest:"some random test", isPrimitiveSchRooted:true);
-            TemplateConstraint tc8825 = tdb.GenerateConstraint(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
+            TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -740,22 +740,22 @@ namespace Trifolia.Test.Generation.Schematron
   </sch:pattern>
          */
         /// </remarks>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ShouldWithShallChild_DefaultIdentifiers_PrimitiveIsNotRooted()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
             Template template = tdb.GenerateTemplate("urn:oid:2.16.840.1.113883.10.20.22.4.48", entType, "Advance Directive Observation", consolidationIg, "observation", "Observation");
             CodeSystem hl7PT = tdb.FindOrCreateCodeSystem("HL7ParticipationType", "2.16.840.1.113883.5.90");
 
-            TemplateConstraint tc8662 = tdb.GenerateConstraint(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
-            TemplateConstraint tc8663 = tdb.GenerateConstraint(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
-            TemplateConstraint tc8664 = tdb.GenerateConstraint(template, tc8662, null, "templateId", "SHALL", "1..1", isBranchIdentifier: true);
-            TemplateConstraint tc10486 = tdb.GenerateConstraint(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58", isBranchIdentifier: true);
-            TemplateConstraint tc8665 = tdb.GenerateConstraint(template, tc8662, null, "time", "SHOULD", "0..1");
-            TemplateConstraint tc8668 = tdb.GenerateConstraint(template, null, null, "code", "SHOULD", "0..1");
-            TemplateConstraint tc8669 = tdb.GenerateConstraint(template, tc8668, null, "@code", "SHALL", "1..1");
+            TemplateConstraint tc8662 = tdb.AddConstraintToTemplate(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
+            TemplateConstraint tc8663 = tdb.AddConstraintToTemplate(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
+            TemplateConstraint tc8664 = tdb.AddConstraintToTemplate(template, tc8662, null, "templateId", "SHALL", "1..1", isBranchIdentifier: true);
+            TemplateConstraint tc10486 = tdb.AddConstraintToTemplate(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58", isBranchIdentifier: true);
+            TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
+            TemplateConstraint tc8668 = tdb.AddConstraintToTemplate(template, null, null, "code", "SHOULD", "0..1");
+            TemplateConstraint tc8669 = tdb.AddConstraintToTemplate(template, tc8668, null, "@code", "SHALL", "1..1");
             TemplateConstraint tc8666 = tdb.GeneratePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)", schematronTest: "some random test", isPrimitiveSchRooted: false);
-            TemplateConstraint tc8825 = tdb.GenerateConstraint(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
+            TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -815,7 +815,7 @@ namespace Trifolia.Test.Generation.Schematron
   </sch:pattern>
          */
         /// </remarks>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ShouldWithShallChild_FixedIdentifiers()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -823,19 +823,19 @@ namespace Trifolia.Test.Generation.Schematron
             CodeSystem hl7PT = tdb.FindOrCreateCodeSystem("HL7ParticipationType", "2.16.840.1.113883.5.90");
 
             //1 warning in template
-            TemplateConstraint tc8662 = tdb.GenerateConstraint(template, null, null, "participant", "SHOULD", "1..*", isBranch: true); 
-            TemplateConstraint tc8663 = tdb.GenerateConstraint(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
+            TemplateConstraint tc8662 = tdb.AddConstraintToTemplate(template, null, null, "participant", "SHOULD", "1..*", isBranch: true); 
+            TemplateConstraint tc8663 = tdb.AddConstraintToTemplate(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
             //1 warning in branch context
-            TemplateConstraint tc8664 = tdb.GenerateConstraint(template, tc8662, null, "templateId", "SHALL", "1..1");
+            TemplateConstraint tc8664 = tdb.AddConstraintToTemplate(template, tc8662, null, "templateId", "SHALL", "1..1");
             //1 warning branch context
-            TemplateConstraint tc10486 = tdb.GenerateConstraint(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58");
+            TemplateConstraint tc10486 = tdb.AddConstraintToTemplate(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58");
             //1 warning in branch context
-            TemplateConstraint tc8665 = tdb.GenerateConstraint(template, tc8662, null, "time", "SHOULD", "0..1");
+            TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
             //1 error in branch context
             // TODO: Need to have flag for primitive schematron... where does the schematron go? rooted from template or from the parent?
             TemplateConstraint tc8666 = tdb.GeneratePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
             // 1 warning in branch context
-            TemplateConstraint tc8825 = tdb.GenerateConstraint(template, tc8662, null, "participantRole", "SHALL", "1..1");
+            TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1");
 
             //expect = 1 warning in template context for the branch, 5 warnings in branch context, 2 errors (1 default rule of '.')
 
@@ -880,7 +880,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// <summary>
         /// Test a non branch that has a should with a shall child
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ShouldWithShallChild_NoBranch()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -888,9 +888,9 @@ namespace Trifolia.Test.Generation.Schematron
             CodeSystem hl7PT = tdb.FindOrCreateCodeSystem("HL7ParticipationType", "2.16.840.1.113883.5.90");
 
             //1 warning in template
-            TemplateConstraint tc8662 = tdb.GenerateConstraint(template, null, null, "authenticator", "SHOULD", "0..1");
+            TemplateConstraint tc8662 = tdb.AddConstraintToTemplate(template, null, null, "authenticator", "SHOULD", "0..1");
             //1 error in template
-            TemplateConstraint tc8664 = tdb.GenerateConstraint(template, tc8662, null, "signatureCode", "SHALL", "1..1");
+            TemplateConstraint tc8664 = tdb.AddConstraintToTemplate(template, tc8662, null, "signatureCode", "SHALL", "1..1");
 
             //expect = 1 warning, 1 error 
 
@@ -943,7 +943,7 @@ namespace Trifolia.Test.Generation.Schematron
   </sch:pattern>
          */
         /// </remarks>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ShallWithShallChild_FixedIdentifiers()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -951,18 +951,18 @@ namespace Trifolia.Test.Generation.Schematron
             CodeSystem hl7PT = tdb.FindOrCreateCodeSystem("HL7ParticipationType", "2.16.840.1.113883.5.90");
 
             //1 error in template rules
-            TemplateConstraint tc8662 = tdb.GenerateConstraint(template, null, null, "participant", "SHALL", "1..*", isBranch: true);            
-            TemplateConstraint tc8663 = tdb.GenerateConstraint(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
+            TemplateConstraint tc8662 = tdb.AddConstraintToTemplate(template, null, null, "participant", "SHALL", "1..*", isBranch: true);            
+            TemplateConstraint tc8663 = tdb.AddConstraintToTemplate(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
             //1 error in branch rules
-            TemplateConstraint tc8664 = tdb.GenerateConstraint(template, tc8662, null, "templateId", "SHALL", "1..1");
+            TemplateConstraint tc8664 = tdb.AddConstraintToTemplate(template, tc8662, null, "templateId", "SHALL", "1..1");
             //1 error in branch rules
-            TemplateConstraint tc10486 = tdb.GenerateConstraint(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58");
+            TemplateConstraint tc10486 = tdb.AddConstraintToTemplate(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58");
             //1 warning in branch rules
-            TemplateConstraint tc8665 = tdb.GenerateConstraint(template, tc8662, null, "time", "SHOULD", "0..1");
+            TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
             //1 error in branch rules
             TemplateConstraint tc8666 = tdb.GeneratePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
             //1 error in branch rules
-            TemplateConstraint tc8825 = tdb.GenerateConstraint(template, tc8662, null, "participantRole", "SHALL", "1..1");
+            TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1");
             //sum = 3 error rules in branch context, 2 warning rules in branch context, 1 error rule in template rules, 1 warning rule in template rules (default '.')
 
             Phase errorPhase = new Phase();
@@ -1042,7 +1042,7 @@ namespace Trifolia.Test.Generation.Schematron
   </sch:pattern>
          */
         /// </remarks>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void TwoShouldsWithShallChildrenAndTopLevelConstraints()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1052,46 +1052,46 @@ namespace Trifolia.Test.Generation.Schematron
 
             // Top-level constraints which don't have parents
             //1 error in template rule
-            TemplateConstraint tc8648 = tdb.GenerateConstraint(template, null, null, "@classCode", "SHALL", "1..1", value:"OBS");
+            TemplateConstraint tc8648 = tdb.AddConstraintToTemplate(template, null, null, "@classCode", "SHALL", "1..1", value:"OBS");
             //1 error in template rule
-            TemplateConstraint tc8649 = tdb.GenerateConstraint(template, null, null, "@moodCode", "SHALL", "1..1", value:"EVN");
+            TemplateConstraint tc8649 = tdb.AddConstraintToTemplate(template, null, null, "@moodCode", "SHALL", "1..1", value:"EVN");
             //1 error in template rule
-            TemplateConstraint tc8654 = tdb.GenerateConstraint(template, null, null, "id", "SHALL", "1..*", value:"EVN");
+            TemplateConstraint tc8654 = tdb.AddConstraintToTemplate(template, null, null, "id", "SHALL", "1..*", value:"EVN");
             //3 error rules in template
 
             // First SHOULD parent
             //1 warning in template rule
-            TemplateConstraint tc8662 = tdb.GenerateConstraint(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
-            TemplateConstraint tc8663 = tdb.GenerateConstraint(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
+            TemplateConstraint tc8662 = tdb.AddConstraintToTemplate(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
+            TemplateConstraint tc8663 = tdb.AddConstraintToTemplate(template, tc8662, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
             //1 warning in branch rule
-            TemplateConstraint tc8664 = tdb.GenerateConstraint(template, tc8662, null, "templateId", "SHALL", "1..1");
+            TemplateConstraint tc8664 = tdb.AddConstraintToTemplate(template, tc8662, null, "templateId", "SHALL", "1..1");
             //1 warning in branch rule
-            TemplateConstraint tc10486 = tdb.GenerateConstraint(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58");
+            TemplateConstraint tc10486 = tdb.AddConstraintToTemplate(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58");
             //1 warning in branch rule
-            TemplateConstraint tc8665 = tdb.GenerateConstraint(template, tc8662, null, "time", "SHOULD", "0..1");
+            TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
             //1 warning in branch rule
             // TODO: Need to have flag for primitive schematron... where does the schematron go? rooted from template or from the parent?
             TemplateConstraint tc8666 = tdb.GeneratePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
             //1 warning in branch rule
-            TemplateConstraint tc8825 = tdb.GenerateConstraint(template, tc8662, null, "participantRole", "SHALL", "1..1");
+            TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1");
             //5 warning rules in branch, 1 warning in template
 
             // Second SHOULD parent
             //1 warning in template rule
-            TemplateConstraint tc8667 = tdb.GenerateConstraint(template, null, null, "participant", "SHOULD", "1..1", isBranch: true);
-            TemplateConstraint tc8668 = tdb.GenerateConstraint(template, tc8667, null, "@typeCode", "SHALL", "1..1", value: "CST", displayName: "Custodian", isBranchIdentifier: true);
+            TemplateConstraint tc8667 = tdb.AddConstraintToTemplate(template, null, null, "participant", "SHOULD", "1..1", isBranch: true);
+            TemplateConstraint tc8668 = tdb.AddConstraintToTemplate(template, tc8667, null, "@typeCode", "SHALL", "1..1", value: "CST", displayName: "Custodian", isBranchIdentifier: true);
             //1 warning in branch rule
-            TemplateConstraint tc8669 = tdb.GenerateConstraint(template, tc8667, null, "participantRole", "SHALL", "1..1");
+            TemplateConstraint tc8669 = tdb.AddConstraintToTemplate(template, tc8667, null, "participantRole", "SHALL", "1..1");
             //1 warning in branch rule
-            TemplateConstraint tc8670 = tdb.GenerateConstraint(template, tc8669, null, "@classCode", "SHALL", "1..1", value: "AGNT", displayName: "Agent", codeSystem: roleClass);
+            TemplateConstraint tc8670 = tdb.AddConstraintToTemplate(template, tc8669, null, "@classCode", "SHALL", "1..1", value: "AGNT", displayName: "Agent", codeSystem: roleClass);
             //1 warning in branch rule
-            TemplateConstraint tc8671 = tdb.GenerateConstraint(template, tc8669, null, "addr", "SHOULD", "0..1");
+            TemplateConstraint tc8671 = tdb.AddConstraintToTemplate(template, tc8669, null, "addr", "SHOULD", "0..1");
             //1 warning in branch rule
-            TemplateConstraint tc8672 = tdb.GenerateConstraint(template, tc8669, null, "telecom", "SHOULD", "0..1");
+            TemplateConstraint tc8672 = tdb.AddConstraintToTemplate(template, tc8669, null, "telecom", "SHOULD", "0..1");
             //1 warning in branch rule
-            TemplateConstraint tc8824 = tdb.GenerateConstraint(template, tc8669, null, "playingEntity", "SHALL", "1..1");
+            TemplateConstraint tc8824 = tdb.AddConstraintToTemplate(template, tc8669, null, "playingEntity", "SHALL", "1..1");
             //1 warning in branch rule
-            TemplateConstraint tc8673 = tdb.GenerateConstraint(template, tc8824, null, "name", "SHALL", "1..1");
+            TemplateConstraint tc8673 = tdb.AddConstraintToTemplate(template, tc8824, null, "name", "SHALL", "1..1");
             //1 warning in branch rule
             TemplateConstraint tc8674 = tdb.GeneratePrimitive(template, tc8673, "SHALL", "he name of the agent who can provide a copy of the Advance Directive SHALL be recorded in the name element inside the playingEntity element");
             //7 warnings in branch, 1 warning in template
@@ -1161,7 +1161,7 @@ namespace Trifolia.Test.Generation.Schematron
   </sch:pattern>
          */
         /// </remarks>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void MayWithShouldAndShallChild()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1169,19 +1169,19 @@ namespace Trifolia.Test.Generation.Schematron
             CodeSystem hl7PT = tdb.FindOrCreateCodeSystem("HL7ParticipationType", "2.16.840.1.113883.5.90");
 
             //0 warning in template rules
-            TemplateConstraint tc8662 = tdb.GenerateConstraint(template, null, null, "participant", "MAY", "1..*");
+            TemplateConstraint tc8662 = tdb.AddConstraintToTemplate(template, null, null, "participant", "MAY", "1..*");
             //1 warning in template rules
-            TemplateConstraint tc8663 = tdb.GenerateConstraint(template, tc8662, null, "@typeCode", "SHOULD", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT);
+            TemplateConstraint tc8663 = tdb.AddConstraintToTemplate(template, tc8662, null, "@typeCode", "SHOULD", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT);
             //1 error in template rules
-            TemplateConstraint tc8664 = tdb.GenerateConstraint(template, null, null, "templateId", "SHALL", "1..1");
+            TemplateConstraint tc8664 = tdb.AddConstraintToTemplate(template, null, null, "templateId", "SHALL", "1..1");
             //1 error in template rules
-            TemplateConstraint tc10486 = tdb.GenerateConstraint(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58");
+            TemplateConstraint tc10486 = tdb.AddConstraintToTemplate(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58");
             //1 warning in template rules
-            TemplateConstraint tc8665 = tdb.GenerateConstraint(template, tc8662, null, "time", "SHOULD", "0..1");
+            TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
             //0 warning in template rules
-            TemplateConstraint tc8666 = tdb.GenerateConstraint(template, null, null, "code", "MAY", "1..1");
+            TemplateConstraint tc8666 = tdb.AddConstraintToTemplate(template, null, null, "code", "MAY", "1..1");
             //1 warning in tempalte rules
-            TemplateConstraint tc8667 = tdb.GenerateConstraint(template, tc8666, null, "@code", "SHALL", "1..1");
+            TemplateConstraint tc8667 = tdb.AddConstraintToTemplate(template, tc8666, null, "@code", "SHALL", "1..1");
             //sum = 2 error rules in template context, 2 warning rules in template context
 
             Phase errorPhase = new Phase();
@@ -1217,7 +1217,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// We would expect only a test in the template context for author, assignedAuthor, id, id/@root, time.
         /// We would not expect any tests in the branch context since there are no children.
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void BranchWithNonBranchParent_NoChildConstraintsInBranch()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1226,14 +1226,14 @@ namespace Trifolia.Test.Generation.Schematron
             CodeSystem roleClass = tdb.FindOrCreateCodeSystem("RoleClass", "2.16.840.1.113883.5.110");
             
             //1 test in template error
-            TemplateConstraint tc5444 = tdb.GenerateConstraint(template, null, null, "author", "SHALL", "1..*");
+            TemplateConstraint tc5444 = tdb.AddConstraintToTemplate(template, null, null, "author", "SHALL", "1..*");
             //1 test in template error
-            TemplateConstraint tc5448 = tdb.GenerateConstraint(template, tc5444, null, "assignedAuthor", "SHALL", "1..1");
+            TemplateConstraint tc5448 = tdb.AddConstraintToTemplate(template, tc5444, null, "assignedAuthor", "SHALL", "1..1");
             //1 test in template error
-            TemplateConstraint tc5449 = tdb.GenerateConstraint(template, tc5448, null, "id", "SHALL", "1..1", isBranch:true);
-            TemplateConstraint tc16786 = tdb.GenerateConstraint(template, tc5449, null, "@root", "SHALL", "1..1", isBranchIdentifier:true);
+            TemplateConstraint tc5449 = tdb.AddConstraintToTemplate(template, tc5448, null, "id", "SHALL", "1..1", isBranch:true);
+            TemplateConstraint tc16786 = tdb.AddConstraintToTemplate(template, tc5449, null, "@root", "SHALL", "1..1", isBranchIdentifier:true);
             //1 test in template error
-            TemplateConstraint tc5445 = tdb.GenerateConstraint(template, tc5444, null, "time", "SHALL", "1..1");
+            TemplateConstraint tc5445 = tdb.AddConstraintToTemplate(template, tc5444, null, "time", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1270,7 +1270,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// We would expect tests in the template context for author, assignedAuthor, id, id/@root, time.
         /// We would expect a test in the branch context for time.
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void BranchWithNonBranchParent_ChildConstraintsInBranch()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1279,14 +1279,14 @@ namespace Trifolia.Test.Generation.Schematron
             CodeSystem roleClass = tdb.FindOrCreateCodeSystem("RoleClass", "2.16.840.1.113883.5.110");
 
             //1 test in template error
-            TemplateConstraint tc5444 = tdb.GenerateConstraint(template, null, null, "author", "SHALL", "1..*");
+            TemplateConstraint tc5444 = tdb.AddConstraintToTemplate(template, null, null, "author", "SHALL", "1..*");
             //1 test in template error
-            TemplateConstraint tc5448 = tdb.GenerateConstraint(template, tc5444, null, "assignedAuthor", "SHALL", "1..1");
+            TemplateConstraint tc5448 = tdb.AddConstraintToTemplate(template, tc5444, null, "assignedAuthor", "SHALL", "1..1");
             //1 test in template error
-            TemplateConstraint tc5449 = tdb.GenerateConstraint(template, tc5448, null, "id", "SHALL", "1..1", isBranch: true);
-            TemplateConstraint tc16786 = tdb.GenerateConstraint(template, tc5449, null, "@root", "SHALL", "1..1", isBranchIdentifier: true);
+            TemplateConstraint tc5449 = tdb.AddConstraintToTemplate(template, tc5448, null, "id", "SHALL", "1..1", isBranch: true);
+            TemplateConstraint tc16786 = tdb.AddConstraintToTemplate(template, tc5449, null, "@root", "SHALL", "1..1", isBranchIdentifier: true);
             //1 test in branch error
-            TemplateConstraint tc5445 = tdb.GenerateConstraint(template, tc5449, null, "time", "SHALL", "1..1");
+            TemplateConstraint tc5445 = tdb.AddConstraintToTemplate(template, tc5449, null, "time", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1330,7 +1330,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// We would expect a test in the branch 1 context for time.
         /// We would expect a test in the branch 2 context for code.
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void BranchWithinBranch_ChildConstraintsInBothBranches()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1339,19 +1339,19 @@ namespace Trifolia.Test.Generation.Schematron
             CodeSystem roleClass = tdb.FindOrCreateCodeSystem("RoleClass", "2.16.840.1.113883.5.110");
 
             //1 test in template error
-            TemplateConstraint tc5444 = tdb.GenerateConstraint(template, null, null, "author", "SHALL", "1..*");
+            TemplateConstraint tc5444 = tdb.AddConstraintToTemplate(template, null, null, "author", "SHALL", "1..*");
             //1 test in template error
-            TemplateConstraint tc5448 = tdb.GenerateConstraint(template, tc5444, null, "assignedAuthor", "SHALL", "1..1");
+            TemplateConstraint tc5448 = tdb.AddConstraintToTemplate(template, tc5444, null, "assignedAuthor", "SHALL", "1..1");
             //1 test in template error
-            TemplateConstraint tc5449 = tdb.GenerateConstraint(template, tc5448, null, "id", "SHALL", "1..1", isBranch: true);
-            TemplateConstraint tc16786 = tdb.GenerateConstraint(template, tc5449, null, "@root", "SHALL", "1..1", value: "1.2.3.4", isBranchIdentifier: true);
+            TemplateConstraint tc5449 = tdb.AddConstraintToTemplate(template, tc5448, null, "id", "SHALL", "1..1", isBranch: true);
+            TemplateConstraint tc16786 = tdb.AddConstraintToTemplate(template, tc5449, null, "@root", "SHALL", "1..1", value: "1.2.3.4", isBranchIdentifier: true);
             //1 test in 1st branch error
-            TemplateConstraint tc5445 = tdb.GenerateConstraint(template, tc5449, null, "time", "SHALL", "1..1");
+            TemplateConstraint tc5445 = tdb.AddConstraintToTemplate(template, tc5449, null, "time", "SHALL", "1..1");
             //1 test in 1st branch error
-            TemplateConstraint tc1 = tdb.GenerateConstraint(template, tc5449, null, "id", "SHALL", "1..1", isBranch: true);
-            TemplateConstraint tc2 = tdb.GenerateConstraint(template, tc1, null, "@root", "SHALL", "1..1", value: "2.3.4.5", isBranchIdentifier: true);
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(template, tc5449, null, "id", "SHALL", "1..1", isBranch: true);
+            TemplateConstraint tc2 = tdb.AddConstraintToTemplate(template, tc1, null, "@root", "SHALL", "1..1", value: "2.3.4.5", isBranchIdentifier: true);
             //1 test in 2nd branch error
-            TemplateConstraint tc3 = tdb.GenerateConstraint(template, tc1, null, "time", "SHALL", "1..1");
+            TemplateConstraint tc3 = tdb.AddConstraintToTemplate(template, tc1, null, "time", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1388,7 +1388,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual(templateWarningRules.Assertions[0].Test, ".", "Expected to find default warning (.)");
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void BranchWithIdentifier_IdentifierCustomSchematron()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1421,7 +1421,7 @@ namespace Trifolia.Test.Generation.Schematron
         ///         This externalDocument SHOULD contain 0..1 text (CONF:1-12997).
         ///            This text is the title of the eMeasure (CONF:1-12998). 
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void BranchWithinGrandparentBranch_WithPrimitives()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1467,7 +1467,7 @@ namespace Trifolia.Test.Generation.Schematron
 
         #region Assertions within Branches
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void AssertionWithinBranch_TestAssertionWithParentAsIdentifier()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1475,11 +1475,11 @@ namespace Trifolia.Test.Generation.Schematron
             CodeSystem hl7PT = tdb.FindOrCreateCodeSystem("HL7ParticipationType", "2.16.840.1.113883.5.90");
 
             //1 warning in template context
-            TemplateConstraint tc1 = tdb.GenerateConstraint(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
-            TemplateConstraint tc2 = tdb.GenerateConstraint(template, tc1, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);            
-            TemplateConstraint tc2_1 = tdb.GenerateConstraint(template, tc1, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
+            TemplateConstraint tc2 = tdb.AddConstraintToTemplate(template, tc1, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);            
+            TemplateConstraint tc2_1 = tdb.AddConstraintToTemplate(template, tc1, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
             //1 warning in branch context
-            TemplateConstraint tc2_1_1 = tdb.GenerateConstraint(template, tc2_1, null, "code", "SHALL", "1..1");
+            TemplateConstraint tc2_1_1 = tdb.AddConstraintToTemplate(template, tc2_1, null, "code", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1516,7 +1516,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.IsNotNull(codeAssert, "Expected to find an assertion for the participantRole's code that includes the participantRole in the xpath");
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void AssertionWithinBranch_TestAssertionWithBranchWithMayChild()
         {
             ImplementationGuide consolidationIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1524,11 +1524,11 @@ namespace Trifolia.Test.Generation.Schematron
             CodeSystem hl7PT = tdb.FindOrCreateCodeSystem("HL7ParticipationType", "2.16.840.1.113883.5.90");
 
             //1 warning in template context
-            TemplateConstraint tc1 = tdb.GenerateConstraint(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
-            TemplateConstraint tc2 = tdb.GenerateConstraint(template, tc1, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
-            TemplateConstraint tc2_1 = tdb.GenerateConstraint(template, tc1, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(template, null, null, "participant", "SHOULD", "1..*", isBranch: true);
+            TemplateConstraint tc2 = tdb.AddConstraintToTemplate(template, tc1, null, "@typeCode", "SHALL", "1..1", value: "VRF", displayName: "Verifier", codeSystem: hl7PT, isBranchIdentifier: true);
+            TemplateConstraint tc2_1 = tdb.AddConstraintToTemplate(template, tc1, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
             //no warning in branch context
-            TemplateConstraint tc2_1_1 = tdb.GenerateConstraint(template, tc2_1, null, "code", "MAY", "0..1");
+            TemplateConstraint tc2_1_1 = tdb.AddConstraintToTemplate(template, tc2_1, null, "code", "MAY", "0..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1553,7 +1553,7 @@ namespace Trifolia.Test.Generation.Schematron
         #endregion
 
         #region Closed templates with child template id's
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ClosedTemplateWithOneChildTemplate()
         {
             ImplementationGuide myIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1561,9 +1561,9 @@ namespace Trifolia.Test.Generation.Schematron
             parentTemplate.IsOpen = false;
             Template childTemplate = tdb.GenerateTemplate("urn:oid:2.3.4.5", entType, "child", myIg, "observation");
             childTemplate.IsOpen = false;
-            TemplateConstraint constraintParent = tdb.GenerateConstraint(parentTemplate, null, null, "organizer", "SHALL", "1..1");
-            TemplateConstraint tc1 = tdb.GenerateConstraint(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
-            TemplateConstraint constraintChild = tdb.GenerateConstraint(parentTemplate, constraintParent, childTemplate, "observation", "SHALL", "1..1");
+            TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
+            TemplateConstraint constraintChild = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, childTemplate, "observation", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1578,7 +1578,7 @@ namespace Trifolia.Test.Generation.Schematron
      
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ClosedTemplateWithTwoChildTemplates()
         {
             ImplementationGuide myIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1588,10 +1588,10 @@ namespace Trifolia.Test.Generation.Schematron
             childTemplate1.IsOpen = false;
             Template childTemplate2 = tdb.GenerateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "observation");
             childTemplate2.IsOpen = false;
-            TemplateConstraint constraintParent = tdb.GenerateConstraint(parentTemplate, null, null, "organizer", "SHALL", "1..1");
-            TemplateConstraint tc1 = tdb.GenerateConstraint(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
-            TemplateConstraint constraintChild1 = tdb.GenerateConstraint(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
-            TemplateConstraint constraintChild2 = tdb.GenerateConstraint(parentTemplate, constraintParent, childTemplate2, "observation", "SHALL", "1..1");
+            TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
+            TemplateConstraint constraintChild1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
+            TemplateConstraint constraintChild2 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, childTemplate2, "observation", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1605,7 +1605,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual("count(.//cda:templateId[@root != '1.2.3.4' and @root != '2.3.4.5.1' and @root != '2.3.4.5.2'])=0", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ClosedTemplateWithOneChildTemplateAndOneNestedChildTemplate()
         {
             ImplementationGuide myIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1615,10 +1615,10 @@ namespace Trifolia.Test.Generation.Schematron
             childTemplate1.IsOpen = false;
             Template childTemplate2 = tdb.GenerateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "organizer");
             childTemplate2.IsOpen = false;
-            TemplateConstraint constraintParent = tdb.GenerateConstraint(parentTemplate, null, null, "organizer", "SHALL", "1..1");
-            TemplateConstraint tc1 = tdb.GenerateConstraint(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
-            TemplateConstraint constraintChild1 = tdb.GenerateConstraint(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
-            TemplateConstraint constraintChild2 = tdb.GenerateConstraint(childTemplate1, constraintChild1, childTemplate2, "organizer", "SHALL", "1..1");
+            TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
+            TemplateConstraint constraintChild1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
+            TemplateConstraint constraintChild2 = tdb.AddConstraintToTemplate(childTemplate1, constraintChild1, childTemplate2, "organizer", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1632,7 +1632,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual("count(.//cda:templateId[@root != '1.2.3.4' and @root != '2.3.4.5.1' and @root != '2.3.4.5.2'])=0", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ClosedTemplateWithOneChildTemplateAndOneImpliedTemplate()
         {
             ImplementationGuide myIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1642,9 +1642,9 @@ namespace Trifolia.Test.Generation.Schematron
             implTemplate.IsOpen = false;
             Template childTemplate1 = tdb.GenerateTemplate("urn:oid:2.3.4.5.1", entType, "child", myIg, "observation", impliedTemplate:implTemplate);
             childTemplate1.IsOpen = false;
-            TemplateConstraint constraintParent = tdb.GenerateConstraint(parentTemplate, null, null, "organizer", "SHALL", "1..1");
-            TemplateConstraint tc1 = tdb.GenerateConstraint(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
-            TemplateConstraint constraintChild1 = tdb.GenerateConstraint(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
+            TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
+            TemplateConstraint constraintChild1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1658,7 +1658,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual("count(.//cda:templateId[@root != '1.2.3.4' and @root != '2.3.4.5.1' and @root != '2.3.4.5.2'])=0", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ClosedTemplateWithTwoChildTemplatesAndTwoNestedChildTemplates()
         {
             ImplementationGuide myIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1672,12 +1672,12 @@ namespace Trifolia.Test.Generation.Schematron
             childTemplate2.IsOpen = false;
             Template grandChildTemplate2 = tdb.GenerateTemplate("urn:oid:3.4.5.6.2", entType, "child", myIg, "organizer");
             grandChildTemplate2.IsOpen = false;
-            TemplateConstraint constraintParent = tdb.GenerateConstraint(parentTemplate, null, null, "organizer", "SHALL", "1..1");
-            TemplateConstraint tc1 = tdb.GenerateConstraint(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
-            TemplateConstraint constraintChild1 = tdb.GenerateConstraint(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
-            TemplateConstraint constraintChild2 = tdb.GenerateConstraint(parentTemplate, constraintParent, childTemplate2, "observation", "SHALL", "1..1");
-            TemplateConstraint constraintChild3 = tdb.GenerateConstraint(childTemplate1, constraintParent, grandChildTemplate1, "organizer", "SHALL", "1..1");
-            TemplateConstraint constraintChild4 = tdb.GenerateConstraint(childTemplate2, constraintParent, grandChildTemplate2, "organizer", "SHALL", "1..1");
+            TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
+            TemplateConstraint constraintChild1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
+            TemplateConstraint constraintChild2 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, childTemplate2, "observation", "SHALL", "1..1");
+            TemplateConstraint constraintChild3 = tdb.AddConstraintToTemplate(childTemplate1, constraintParent, grandChildTemplate1, "organizer", "SHALL", "1..1");
+            TemplateConstraint constraintChild4 = tdb.AddConstraintToTemplate(childTemplate2, constraintParent, grandChildTemplate2, "organizer", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1691,7 +1691,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual("count(.//cda:templateId[@root != '1.2.3.4' and @root != '2.3.4.5.1' and @root != '3.4.5.6.1' and @root != '2.3.4.5.2' and @root != '3.4.5.6.2'])=0", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void ClosedTemplateWithTwoChildTemplateAndTwoNestedRepeatedChildTemplates()
         {
             ImplementationGuide myIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
@@ -1703,12 +1703,12 @@ namespace Trifolia.Test.Generation.Schematron
             grandChildTemplate1.IsOpen = false;
             Template childTemplate2 = tdb.GenerateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "observation");
             childTemplate2.IsOpen = false;
-            TemplateConstraint constraintParent = tdb.GenerateConstraint(parentTemplate, null, null, "organizer", "SHALL", "1..1");
-            TemplateConstraint tc1 = tdb.GenerateConstraint(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
-            TemplateConstraint constraintChild1 = tdb.GenerateConstraint(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
-            TemplateConstraint constraintChild2 = tdb.GenerateConstraint(parentTemplate, constraintParent, childTemplate2, "observation", "SHALL", "1..1");
-            TemplateConstraint constraintChild3 = tdb.GenerateConstraint(childTemplate1, constraintParent, grandChildTemplate1, "organizer", "SHALL", "1..1");
-            TemplateConstraint constraintChild4 = tdb.GenerateConstraint(childTemplate2, constraintParent, grandChildTemplate1, "organizer", "SHALL", "1..1");
+            TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
+            TemplateConstraint constraintChild1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
+            TemplateConstraint constraintChild2 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, childTemplate2, "observation", "SHALL", "1..1");
+            TemplateConstraint constraintChild3 = tdb.AddConstraintToTemplate(childTemplate1, constraintParent, grandChildTemplate1, "organizer", "SHALL", "1..1");
+            TemplateConstraint constraintChild4 = tdb.AddConstraintToTemplate(childTemplate2, constraintParent, grandChildTemplate1, "organizer", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1722,14 +1722,14 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual("count(.//cda:templateId[@root != '1.2.3.4' and @root != '2.3.4.5.1' and @root != '3.4.5.6.1' and @root != '2.3.4.5.2'])=0", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void CallClosedTemplateGeneratorWithOpenTemplate()
         {
             ImplementationGuide myIg = tdb.FindOrAddImplementationGuide(cdaType, "Consolidation");
             Template parentTemplate = tdb.GenerateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer");
             parentTemplate.IsOpen = true;
-            TemplateConstraint constraintParent = tdb.GenerateConstraint(parentTemplate, null, null, "organizer", "SHALL", "1..1");
-            TemplateConstraint tc1 = tdb.GenerateConstraint(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
+            TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1750,13 +1750,13 @@ namespace Trifolia.Test.Generation.Schematron
         /// Tests that an implementation guide with a single template that is a document-level template produces a
         /// schematron pattern that checks that documents validated against the schematron have that top-level template oid
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void OneDocumentLevelTemplates()
         {
             ImplementationGuide myIg = tdb.FindOrAddImplementationGuide(cdaType, "OneDocumentLevelTemplates");
             Template parentTemplate = tdb.GenerateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "organizer");
-            TemplateConstraint constraintParent = tdb.GenerateConstraint(parentTemplate, null, null, "organizer", "SHALL", "1..1");
-            TemplateConstraint tc1 = tdb.GenerateConstraint(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
+            TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1776,17 +1776,17 @@ namespace Trifolia.Test.Generation.Schematron
         /// Tests that an implementation guide with two document-level templates produces a pattern that checks either template A or template B's oid
         /// is specified at the document/header-level
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void TwoDocumentLevelTemplates()
         {
             ImplementationGuide myIg = tdb.FindOrAddImplementationGuide(cdaType, "TwoDocumentLevelTemplates");
             myIg.ChildTemplates.Clear();
             Template parentTemplate1 = tdb.GenerateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "organizer");
             Template parentTemplate2 = tdb.GenerateTemplate("urn:oid:1.2.3.4.1", docType, "Parent", myIg, "organizer");
-            TemplateConstraint constraintParent1 = tdb.GenerateConstraint(parentTemplate1, null, null, "organizer", "SHALL", "1..1");
-            TemplateConstraint constraintParent2 = tdb.GenerateConstraint(parentTemplate2, null, null, "organizer", "SHALL", "1..1");
-            TemplateConstraint tc1 = tdb.GenerateConstraint(parentTemplate1, constraintParent1, null, "component", "SHALL", "1..1");
-            TemplateConstraint tc2 = tdb.GenerateConstraint(parentTemplate2, constraintParent2, null, "component", "SHALL", "1..1");
+            TemplateConstraint constraintParent1 = tdb.AddConstraintToTemplate(parentTemplate1, null, null, "organizer", "SHALL", "1..1");
+            TemplateConstraint constraintParent2 = tdb.AddConstraintToTemplate(parentTemplate2, null, null, "organizer", "SHALL", "1..1");
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate1, constraintParent1, null, "component", "SHALL", "1..1");
+            TemplateConstraint tc2 = tdb.AddConstraintToTemplate(parentTemplate2, constraintParent2, null, "component", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1808,17 +1808,17 @@ namespace Trifolia.Test.Generation.Schematron
         /// Tests that an implementation guide with one top-level template and two child-level templates produces a schematron rule
         /// that ensures the top-level document templateid is specified
         /// </summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void OneDocumentLevelTemplatesWithTwoChildTemplates()
         {
             ImplementationGuide myIg = tdb.FindOrAddImplementationGuide(cdaType, "OneDocumentLevelTemplatesWithTwoChildTemplates");
             Template parentTemplate = tdb.GenerateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "ClinicalDocument");
             Template childTemplate1 = tdb.GenerateTemplate("urn:oid:2.3.4.5.1", secType, "child", myIg, "section");
             Template childTemplate2 = tdb.GenerateTemplate("urn:oid:2.3.4.5.2", secType, "child", myIg, "section");
-            TemplateConstraint constraintParent = tdb.GenerateConstraint(parentTemplate, null, null, "component", "SHALL", "1..1");
-            TemplateConstraint tc1 = tdb.GenerateConstraint(parentTemplate, constraintParent, null, "section", "SHALL", "1..1");
-            TemplateConstraint constraintChild1 = tdb.GenerateConstraint(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
-            TemplateConstraint constraintChild2 = tdb.GenerateConstraint(parentTemplate, constraintParent, childTemplate2, "observation", "SHALL", "1..1");
+            TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "component", "SHALL", "1..1");
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "section", "SHALL", "1..1");
+            TemplateConstraint constraintChild1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, childTemplate1, "observation", "SHALL", "1..1");
+            TemplateConstraint constraintChild2 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, childTemplate2, "observation", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();
@@ -1834,15 +1834,15 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual("cda:templateId[@root='1.2.3.4']", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
         }
 
-        [TestMethod()]
+        [TestMethod, TestCategory("Schematron")]
         public void OneDocumentLevelTemplateThatImpliesAnotherTemplate()
         {
             ImplementationGuide myIg = tdb.FindOrAddImplementationGuide(cdaType, "OneDocumentLevelTemplateThatImpliesAnotherTemplate");
             myIg.ChildTemplates.Clear();
             Template implTemplate = tdb.GenerateTemplate("urn:oid:1.2.3.4.1", docType, "Parent", myIg, "organizer" );
             Template parentTemplate1 = tdb.GenerateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "organizer", impliedTemplate: implTemplate);
-            TemplateConstraint constraintParent1 = tdb.GenerateConstraint(parentTemplate1, null, null, "organizer", "SHALL", "1..1");
-            TemplateConstraint tc1 = tdb.GenerateConstraint(parentTemplate1, constraintParent1, null, "component", "SHALL", "1..1");
+            TemplateConstraint constraintParent1 = tdb.AddConstraintToTemplate(parentTemplate1, null, null, "organizer", "SHALL", "1..1");
+            TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate1, constraintParent1, null, "component", "SHALL", "1..1");
 
             Phase errorPhase = new Phase();
             Phase warningPhase = new Phase();

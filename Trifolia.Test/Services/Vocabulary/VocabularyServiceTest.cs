@@ -62,12 +62,12 @@ namespace Trifolia.Test.Services.Vocabulary
         /// that contains two sheets (one for the "Affected Value Sets" and one for the "Value Set Members"), and that each sheet contains
         /// column width definitions, header rows, and the correct number of rows
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabularySpreadsheet()
         {
             Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
-            this.tdb.GenerateConstraint(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
-            this.tdb.GenerateConstraint(t, null, null, "value", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs2);
+            this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
+            this.tdb.AddConstraintToTemplate(t, null, null, "value", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs2);
 
             VocabService service = new VocabService(this.tdb);
             byte[] spreadsheetBytes = service.GetImplementationGuideVocabularySpreadsheet(this.ig.Id, 100);
@@ -155,11 +155,11 @@ namespace Trifolia.Test.Services.Vocabulary
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_NoStaticValuesets()
         {
             Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
-            TemplateConstraint tc = this.tdb.GenerateConstraint(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
+            TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = false;
 
             VocabService service = new VocabService(this.tdb);
@@ -171,11 +171,11 @@ namespace Trifolia.Test.Services.Vocabulary
             Assert.AreEqual(0, doc.DocumentElement.ChildNodes.Count);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_StaticValuesetNoDate()
         {
             Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
-            TemplateConstraint tc = this.tdb.GenerateConstraint(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
+            TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = true;
 
             VocabService service = new VocabService(this.tdb);
@@ -196,11 +196,11 @@ namespace Trifolia.Test.Services.Vocabulary
             Assert.IsNotNull(exportValueSet.SelectSingleNode("voc:code[@value='3']", nsManager));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_StaticValuesetWithDate1()
         {
             Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
-            TemplateConstraint tc = this.tdb.GenerateConstraint(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
+            TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = true;
             tc.ValueSetDate = DateTime.Parse("1/1/2000");
 
@@ -221,11 +221,11 @@ namespace Trifolia.Test.Services.Vocabulary
             Assert.IsNotNull(exportValueSet.SelectSingleNode("voc:code[@value='2']", nsManager));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_StaticValuesetWithDate2()
         {
             Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
-            TemplateConstraint tc = this.tdb.GenerateConstraint(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
+            TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = true;
             tc.ValueSetDate = DateTime.Parse("1/1/2001");
 
@@ -246,11 +246,11 @@ namespace Trifolia.Test.Services.Vocabulary
             Assert.IsNotNull(exportValueSet.SelectSingleNode("voc:code[@value='3']", nsManager));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_StaticValuesetWithDate3()
         {
             Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
-            TemplateConstraint tc = this.tdb.GenerateConstraint(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
+            TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = true;
             tc.ValueSetDate = DateTime.Parse("1/1/2002");
 
@@ -272,11 +272,11 @@ namespace Trifolia.Test.Services.Vocabulary
             Assert.IsNotNull(exportValueSet.SelectSingleNode("voc:code[@value='3']", nsManager));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_Valueset3()
         {
             Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
-            TemplateConstraint tc = this.tdb.GenerateConstraint(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs3);
+            TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs3);
             tc.IsStatic = true;
 
             VocabService service = new VocabService(this.tdb);

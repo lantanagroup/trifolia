@@ -65,6 +65,14 @@ namespace Trifolia.DB
             }
         }
 
+        bool IConstraint.IsChoice
+        {
+            get
+            {
+                return this.IsChoice;
+            }
+        }
+
         #endregion
 
         #region Properties

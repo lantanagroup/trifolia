@@ -1075,13 +1075,13 @@ namespace Trifolia.Test
         /// <param name="codeSystem">The code system associated with the constraint.</param>
         /// <param name="description">The description of the constraint.</param>
         /// <returns>A new instance of TemplateConstraint that has been added to the specified Template's child constraints and to the mock object repository.</returns>
-        public TemplateConstraint GenerateConstraint(
+        public TemplateConstraint AddConstraintToTemplate(
             Template template, 
-            TemplateConstraint parentConstraint, 
-            Template containedTemplate, 
-            string context, 
-            string conformance, 
-            string cardinality, 
+            TemplateConstraint parentConstraint = null, 
+            Template containedTemplate = null, 
+            string context = null, 
+            string conformance = null, 
+            string cardinality = null, 
             string dataType = null, 
             string valueConformance = null, 
             string value = null, 
@@ -1093,7 +1093,8 @@ namespace Trifolia.Test
             bool? isBranchIdentifier = null,
             bool isPrimitiveSchRooted = false,
             int? number = null,
-            string category = null)
+            string category = null,
+            bool isChoice = false)
         {
             if (template == null)
                 throw new ArgumentNullException("template");
@@ -1107,7 +1108,8 @@ namespace Trifolia.Test
                 ValueConformance = valueConformance,
                 TemplateId = template.Id,
                 IsSchRooted = isPrimitiveSchRooted,
-                Category = category
+                Category = category,
+                IsChoice = isChoice
             };
 
             if (number == null)
@@ -1684,6 +1686,33 @@ namespace Trifolia.Test
         #endregion
     }
 
+    public static class TemplateConstraintExtensions
+    {
+        public static TemplateConstraint AddChildConstraintToTemplate(
+            this TemplateConstraint parentConstraint,
+            MockObjectRepository tdb,
+            Template template,
+            Template containedTemplate = null,
+            string context = null,
+            string conformance = null,
+            string cardinality = null,
+            string dataType = null,
+            string valueConformance = null,
+            string value = null,
+            string displayName = null,
+            ValueSet valueSet = null,
+            CodeSystem codeSystem = null,
+            string description = null,
+            bool? isBranch = null,
+            bool? isBranchIdentifier = null,
+            bool isPrimitiveSchRooted = false,
+            int? number = null,
+            string category = null)
+        {
+            return tdb.AddConstraintToTemplate(template, parentConstraint, containedTemplate, context, conformance, cardinality, dataType, valueConformance, value, displayName, valueSet, codeSystem, description, isBranch, isBranchIdentifier, isPrimitiveSchRooted, number, category);
+        }
+    }
+
     #region MockDbSet
 
     public class MockDbSet<T> : IObjectSet<T> where T : EntityObject
@@ -1769,7 +1798,6 @@ namespace Trifolia.Test
         {
             get { return theEnumerableQuery; }
         }
-
 
         public System.Linq.Expressions.Expression Expression
         {

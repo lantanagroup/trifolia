@@ -7884,7 +7884,7 @@ namespace Trifolia.DB
         /// <param name="isHeading">Initial value of the IsHeading property.</param>
         /// <param name="isModifier">Initial value of the IsModifier property.</param>
         /// <param name="mustSupport">Initial value of the MustSupport property.</param>
-        /// <param name="isChoice">Initial value of the isChoice property.</param>
+        /// <param name="isChoice">Initial value of the IsChoice property.</param>
         public static TemplateConstraint CreateTemplateConstraint(global::System.Int32 id, global::System.Int32 templateId, global::System.Int32 order, global::System.Boolean isBranch, global::System.Boolean isPrimitive, global::System.Boolean isInheritable, global::System.Boolean isBranchIdentifier, global::System.Boolean isSchRooted, global::System.Boolean isHeading, global::System.Boolean isModifier, global::System.Boolean mustSupport, global::System.Boolean isChoice)
         {
             TemplateConstraint templateConstraint = new TemplateConstraint();
@@ -7899,7 +7899,7 @@ namespace Trifolia.DB
             templateConstraint.IsHeading = isHeading;
             templateConstraint.IsModifier = isModifier;
             templateConstraint.MustSupport = mustSupport;
-            templateConstraint.isChoice = isChoice;
+            templateConstraint.IsChoice = isChoice;
             return templateConstraint;
         }
 
@@ -8707,24 +8707,24 @@ namespace Trifolia.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Boolean isChoice
+        public global::System.Boolean IsChoice
         {
             get
             {
-                return _isChoice;
+                return _IsChoice;
             }
             set
             {
-                OnisChoiceChanging(value);
-                ReportPropertyChanging("isChoice");
-                _isChoice = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("isChoice");
-                OnisChoiceChanged();
+                OnIsChoiceChanging(value);
+                ReportPropertyChanging("IsChoice");
+                _IsChoice = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsChoice");
+                OnIsChoiceChanged();
             }
         }
-        private global::System.Boolean _isChoice;
-        partial void OnisChoiceChanging(global::System.Boolean value);
-        partial void OnisChoiceChanged();
+        private global::System.Boolean _IsChoice;
+        partial void OnIsChoiceChanging(global::System.Boolean value);
+        partial void OnIsChoiceChanged();
 
         #endregion
 

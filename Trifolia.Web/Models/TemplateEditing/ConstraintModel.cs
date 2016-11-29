@@ -52,6 +52,8 @@ namespace Trifolia.Web.Models.TemplateEditing
         public bool IsSchRooted { get; set; }
         public bool IsInheritable { get; set; }
 
+        public bool IsChoice { get; set; }
+
         public List<ConstraintModel> Children { get; set; }
 
         IEnumerable<IConstraint> IConstraint.Children

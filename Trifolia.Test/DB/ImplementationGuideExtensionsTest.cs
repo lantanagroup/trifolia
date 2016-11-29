@@ -208,8 +208,8 @@ namespace Trifolia.Test.DB
             // Version 1, create the template
             var implementationGuide1 = tdb.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "IG V1");
             var template1 = tdb.GenerateTemplate("1.2.3.4", "Document", "Doc Template V1", implementationGuide1, "ClinicalDocument", "ClinicalDocument");
-            var tc1 = tdb.GenerateConstraint(template1, null, null, "entryRelationship", "SHALL", "1..1");
-            tdb.GenerateConstraint(template1, tc1, exTemplate1, "observation", "SHALL", "1..1");
+            var tc1 = tdb.AddConstraintToTemplate(template1, null, null, "entryRelationship", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(template1, tc1, exTemplate1, "observation", "SHALL", "1..1");
 
             // Version 2, deprecate the template, remove contained external template
             var implementationGuide2 = tdb.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "IG V2", previousVersion: implementationGuide1);
@@ -258,8 +258,8 @@ namespace Trifolia.Test.DB
             // Version 1, create the template
             var implementationGuide1 = tdb.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "IG V1");
             var template1 = tdb.GenerateTemplate("1.2.3.4", "Document", "Doc Template V1", implementationGuide1, "ClinicalDocument", "ClinicalDocument");
-            var tc1 = tdb.GenerateConstraint(template1, null, null, "entryRelationship", "SHALL", "1..1");
-            tdb.GenerateConstraint(template1, tc1, exTemplate1, "observation", "SHALL", "1..1");
+            var tc1 = tdb.AddConstraintToTemplate(template1, null, null, "entryRelationship", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(template1, tc1, exTemplate1, "observation", "SHALL", "1..1");
 
             // Version 2, deprecate the template, remove contained external template
             var implementationGuide2 = tdb.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "IG V2", previousVersion: implementationGuide1);

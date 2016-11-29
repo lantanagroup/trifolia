@@ -240,6 +240,7 @@ namespace Trifolia.Web.Controllers.API
                 Category = constraint.Category,
                 IsModifier = constraint.IsModifier,
                 MustSupport = constraint.MustSupport,
+                IsChoice = constraint.IsChoice,
 
                 NarrativeProseHtml = fc.GetPlainText(false, false, false)
             };
@@ -262,7 +263,7 @@ namespace Trifolia.Web.Controllers.API
         }
 
         [HttpGet, Route("api/Template/Edit/Schema/{implementationGuideId}")]
-        public IEnumerable<SchemaNode> GetSchemaNodes(int implementationGuideId, string parentType = null, bool includeAttributes = true)
+        public IEnumerable<SchemaNode> GetSchemaNodesByType(int implementationGuideId, string parentType = null, string path = null, bool includeAttributes = true)
         {
             if (!CheckPoint.Instance.GrantViewImplementationGuide(implementationGuideId))
                 throw new AuthorizationException("You do not have permission to view this implementation guide");
@@ -281,6 +282,21 @@ namespace Trifolia.Web.Controllers.API
                 children = schema.Children[0].Children;
             }
 
+            if (!string.IsNullOrEmpty(path))
+            {
+                string[] pathSplit = path.Split('/');
+
+                foreach (string nextPath in pathSplit)
+                {
+                    var child = children.SingleOrDefault(y => y.Name == nextPath);
+
+                    if (child == null)
+                        throw new ArgumentException("Path specified could not be found within type");
+
+                    children = child.Children;
+                }
+            }
+
             var ret = (from s in children
                        where includeAttributes || !s.IsAttribute
                        select new SchemaNode()
@@ -289,6 +305,7 @@ namespace Trifolia.Web.Controllers.API
                            Conformance = s.Conformance,
                            Cardinality = s.Cardinality,
                            DataType = s.DataType,
+                           IsChoice = s.IsChoice,
                            HasChildren = s.Children.Where(y => includeAttributes || !y.IsAttribute).Count() > 0
                        });
 
@@ -677,6 +694,9 @@ namespace Trifolia.Web.Controllers.API
 
                 if (constraint.MustSupport != constraintModel.MustSupport)
                     constraint.MustSupport = constraintModel.MustSupport;
+
+                if (constraint.IsChoice != constraintModel.IsChoice)
+                    constraint.IsChoice = constraintModel.IsChoice;
 
                 // Recurse through child constraints
                 SaveConstraints(tdb, template, constraintModel.Children, constraint);

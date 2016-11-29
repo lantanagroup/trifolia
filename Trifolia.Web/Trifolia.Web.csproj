@@ -458,6 +458,7 @@
     <Compile Include="Models\TerminologyManagement\ValueSetItem.cs" />
     <Compile Include="Models\TerminologyManagement\ValueSetModel.cs" />
     <Compile Include="Models\Type\ListItemModel.cs" />
+    <Compile Include="Models\Type\SchemaChoiceModel.cs" />
     <Compile Include="Models\Type\TypeModel.cs" />
     <Compile Include="Models\Validation\IValidationRule.cs" />
     <Compile Include="Models\Validation\RuleValidationResult.cs" />
@@ -822,6 +823,7 @@
     <Content Include="Scripts\TerminologyManagement\ImportExternal.js" />
     <Content Include="Scripts\TerminologyManagement\View.js" />
     <Content Include="Scripts\Type\EditType.js" />
+    <Content Include="Scripts\Type\SchemaChoices.js" />
     <Content Include="Scripts\Type\Types.js" />
     <Content Include="Scripts\utils.js" />
     <Content Include="Scripts\vkbeautify.0.99.00.beta.js" />
@@ -865,6 +867,7 @@
     <Content Include="Views\IGManagement\Edit.aspx" />
     <Content Include="Views\IGManagement\View.aspx" />
     <Content Include="Views\IGTypeManagement\EditType.aspx" />
+    <Content Include="Views\IGTypeManagement\SchemaChoices.aspx" />
     <Content Include="Views\IG\View.aspx" />
     <Content Include="Views\Import\Index.aspx" />
     <Content Include="Styles\LocalizationDemo\Index.aspx" />

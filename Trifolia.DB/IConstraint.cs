@@ -40,6 +40,7 @@ namespace Trifolia.DB
         string Label { get; }
         bool IsHeading { get; }
         string HeadingDescription { get; }
+        bool IsChoice { get; }
     }
 
     public static class IConstraintExtensions

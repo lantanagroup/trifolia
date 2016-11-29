@@ -89,6 +89,7 @@ namespace Trifolia.Web.Models.IG
             public string DataType { get; set; }
             public string ValueSetIdentifier { get; set; }
             public string ValueSetDate { get; set; }
+            public bool IsChoice { get; set; }
             public TemplateReference ContainedTemplate { get; set; }
 
             public List<Constraint> Constraints { get; set; }

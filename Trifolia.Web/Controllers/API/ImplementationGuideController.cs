@@ -1691,23 +1691,27 @@ namespace Trifolia.Web.Controllers.API
         {
             foreach (var constraint in constraints.OrderBy(y => y.Order))
             {
-                if(templateSchema != null && schemaObject == null) schemaObject = templateSchema.Children.SingleOrDefault(y => y.Name == constraint.Context);
+                var theConstraint = constraint;
 
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, constraint, "#/volume2/", "#/valuesets/#", true, true, true, false);
+                // TODO: Possible bug? Should schemaObject always be re-set? Remove schemaObject == null from if()
+                if (templateSchema != null && schemaObject == null)
+                    schemaObject = templateSchema.Children.SingleOrDefault(y => y.Name == constraint.Context);
 
-                //TODO: toss in the check against the schema done in TemplateConstraintTable.cs
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, theConstraint, "#/volume2/", "#/valuesets/#", true, true, true, false);
+
                 var newConstraintModel = new ViewDataModel.Constraint()
                 {
-                    Number = string.Format("{0}-{1}", constraint.Template.OwningImplementationGuideId, constraint.Number),
+                    Number = string.Format("{0}-{1}", theConstraint.Template.OwningImplementationGuideId, theConstraint.Number),
                     Narrative = fc.GetHtml(wikiParser, string.Empty, 1, true),
-                    Conformance = constraint.Conformance,
-                    Cardinality = constraint.Cardinality,
-                    Context = constraint.Context,
-                    DataType = constraint.DataType,
-                    Value = constraint.Value,
-                    ValueSetIdentifier = constraint.ValueSet != null ? constraint.ValueSet.Oid : null,
-                    ValueSetDate = constraint.ValueSetDate != null ? constraint.ValueSetDate.Value.ToShortDateString() : null,
-                    ContainedTemplate = constraint.ContainedTemplateId != null ? new ViewDataModel.TemplateReference(constraint.ContainedTemplate) : null
+                    Conformance = theConstraint.Conformance,
+                    Cardinality = theConstraint.Cardinality,
+                    Context = theConstraint.Context,
+                    DataType = theConstraint.DataType,
+                    Value = theConstraint.Value,
+                    ValueSetIdentifier = theConstraint.ValueSet != null ? theConstraint.ValueSet.Oid : null,
+                    ValueSetDate = theConstraint.ValueSetDate != null ? theConstraint.ValueSetDate.Value.ToShortDateString() : null,
+                    ContainedTemplate = theConstraint.ContainedTemplateId != null ? new ViewDataModel.TemplateReference(theConstraint.ContainedTemplate) : null,
+                    IsChoice = theConstraint.IsChoice
                 };
 
                 var isFhir = constraint.Template.ImplementationGuideType.SchemaURI == ImplementationGuideType.FHIR_NS;
@@ -1723,7 +1727,7 @@ namespace Trifolia.Web.Controllers.API
                     null;
 
                 // Recursively add child constraints
-                CreateConstraints(wikiParser, igManager, constraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
+                CreateConstraints(wikiParser, igManager, theConstraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
             }
         }
 

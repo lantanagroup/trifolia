@@ -47,24 +47,24 @@ namespace Trifolia.Test.Generation.Schematron
             this.ig = this.tdb.FindOrAddImplementationGuide(cdaIgType, "Test IG");
 
             var template = this.tdb.GenerateTemplate("urn:oid:1.2.3.4", docType, "Test Template", ig, "ClinicalDocument", "ClinicalDocument");
-            this.tdb.GenerateConstraint(template, null, null, "code", "SHALL", "1..1");
-            this.tdb.GenerateConstraint(template, null, null, "value", "SHOULD", "0..1", category: "CAT1");
-            this.tdb.GenerateConstraint(template, null, null, "value", "SHALL", "1..1", category: "CAT2");
+            this.tdb.AddConstraintToTemplate(template, null, null, "code", "SHALL", "1..1");
+            this.tdb.AddConstraintToTemplate(template, null, null, "value", "SHOULD", "0..1", category: "CAT1");
+            this.tdb.AddConstraintToTemplate(template, null, null, "value", "SHALL", "1..1", category: "CAT2");
 
-            var b1 = this.tdb.GenerateConstraint(template, null, null, "entryRelationship", "SHALL", "1..1", isBranch: true);
-            this.tdb.GenerateConstraint(template, b1, null, "@typeCode", "SHALL", "1..1", value: "REFR", isBranchIdentifier: true);
-            this.tdb.GenerateConstraint(template, b1, null, "observation", "SHALL", "1..1");
+            var b1 = this.tdb.AddConstraintToTemplate(template, null, null, "entryRelationship", "SHALL", "1..1", isBranch: true);
+            this.tdb.AddConstraintToTemplate(template, b1, null, "@typeCode", "SHALL", "1..1", value: "REFR", isBranchIdentifier: true);
+            this.tdb.AddConstraintToTemplate(template, b1, null, "observation", "SHALL", "1..1");
 
-            var b2 = this.tdb.GenerateConstraint(template, null, null, "entryRelationship", "SHALL", "1..1", isBranch: true, category: "CAT1");
-            this.tdb.GenerateConstraint(template, b2, null, "@typeCode", "SHALL", "1..1", value: "SUBJ", isBranchIdentifier: true);
-            this.tdb.GenerateConstraint(template, b2, null, "observation", "SHALL", "1..1");
+            var b2 = this.tdb.AddConstraintToTemplate(template, null, null, "entryRelationship", "SHALL", "1..1", isBranch: true, category: "CAT1");
+            this.tdb.AddConstraintToTemplate(template, b2, null, "@typeCode", "SHALL", "1..1", value: "SUBJ", isBranchIdentifier: true);
+            this.tdb.AddConstraintToTemplate(template, b2, null, "observation", "SHALL", "1..1");
 
-            var b3 = this.tdb.GenerateConstraint(template, null, null, "entryRelationship", "SHALL", "1..1", isBranch: true, category: "CAT2");
-            this.tdb.GenerateConstraint(template, b3, null, "@typeCode", "SHALL", "1..1", value: "XXXX", isBranchIdentifier: true);
-            this.tdb.GenerateConstraint(template, b3, null, "observation", "SHALL", "1..1");
+            var b3 = this.tdb.AddConstraintToTemplate(template, null, null, "entryRelationship", "SHALL", "1..1", isBranch: true, category: "CAT2");
+            this.tdb.AddConstraintToTemplate(template, b3, null, "@typeCode", "SHALL", "1..1", value: "XXXX", isBranchIdentifier: true);
+            this.tdb.AddConstraintToTemplate(template, b3, null, "observation", "SHALL", "1..1");
 
             // Category 1&2 constraint
-            this.tdb.GenerateConstraint(template, null, null, "effectiveTime", "SHALL", "1..1", category: "CAT1,CAT2");
+            this.tdb.AddConstraintToTemplate(template, null, null, "effectiveTime", "SHALL", "1..1", category: "CAT1,CAT2");
         }
 
         #region Additional test attributes
@@ -89,7 +89,7 @@ namespace Trifolia.Test.Generation.Schematron
         //
         #endregion
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void ExportWithoutCategoriesSelected()
         {
             SchematronGenerator generator = new SchematronGenerator(this.tdb, this.ig, this.tdb.Templates.ToList(), true);
@@ -130,7 +130,7 @@ namespace Trifolia.Test.Generation.Schematron
             AssertXML.XPathExists(errorPattern, nsManager, "sch:rule[@id='r-urn-oid-1.2.3.4-10-branch-10-errors']/sch:assert[@id='a-1-12-branch-10']", "Did not find child constraint's assertion for branch 3");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void ExportCategory1()
         {
             List<string> categories = new List<string>();
@@ -174,7 +174,7 @@ namespace Trifolia.Test.Generation.Schematron
             AssertXML.XPathNotExists(errorPattern, nsManager, "sch:rule[@id='r-urn-oid-1.2.3.4-10-branch-10-errors']/sch:assert[@id='a-1-12-branch-10']", "Did not find child constraint's assertion for branch 3");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void ExportCategory3()
         {
             List<string> categories = new List<string>();

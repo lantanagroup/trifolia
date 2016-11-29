@@ -130,6 +130,11 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
         private void AddTemplateConstraint(TemplateConstraint constraint, int level, bool aCreateLinksForValueSets, bool includeNotes)
         {
+            // Skip the child constraints if this is a choice there is only one child constraint. This constraint
+            // adopts the constraint narrative of the child constraint when there is only one option.
+            if (constraint.IsChoice && constraint.ChildConstraints.Count == 1)
+                constraint = constraint.ChildConstraints.First();
+
             // TODO: May be able to make this more efficient
             List<TemplateConstraint> childConstraints = allConstraints
                 .Where(y => y.ParentConstraintId == constraint.Id)

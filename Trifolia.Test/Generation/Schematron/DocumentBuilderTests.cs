@@ -11,7 +11,7 @@ namespace Schematron.Test.Generation.Schematron
     [TestClass]
     public class DocumentBuilderTests
     {
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void EmptyDocument_NoException()
         {
             SchematronDocument lDocument = new SchematronDocument();
@@ -32,7 +32,7 @@ namespace Schematron.Test.Generation.Schematron
             Assert.IsNull(lPhaseNode, "Phase node was not located in the document");
         }
         
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void PartialDocument_PartialSerializedDocumentCreated()
         {
             Phase lMockPhase1 = new Phase();
@@ -60,7 +60,7 @@ namespace Schematron.Test.Generation.Schematron
             Assert.IsNull(lActiveNode, "Active node was not created properly on Phase node");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Schematron")]
         public void ValidSchematronDocument_1Rule_1Assertion_ValidSchematronDocumentEmitted()
         {
             Assertion lMockAssertion = new Assertion();

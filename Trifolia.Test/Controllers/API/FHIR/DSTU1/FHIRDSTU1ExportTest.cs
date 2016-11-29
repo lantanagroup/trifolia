@@ -51,7 +51,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU1
             Assert.IsNotNull(FHIRDSTU1ExportTest.exportedXml);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("FHIR1")]
         public void ValidateProfileFHIRDSTU1()
         {
             string profileSch = Helper.GetSampleContents(PROFILE_SCH);

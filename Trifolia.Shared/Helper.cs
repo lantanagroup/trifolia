@@ -16,6 +16,80 @@ namespace Trifolia.Shared
 {
     public class Helper
     {
+        public static List<string[]> GetXmlChoiceNameWords(XmlSchemaChoice schemaChoice)
+        {
+            List<string[]> choiceWords = new List<string[]>();
+
+            foreach (var choice in schemaChoice.Items)
+            {
+                XmlSchemaElement choiceElement = choice as XmlSchemaElement;
+
+                if (choiceElement == null)
+                    break;
+
+                string name = choiceElement.Name != null ? choiceElement.Name : choiceElement.QualifiedName.Name;
+                string[] words = GetWords(name);
+                choiceWords.Add(words);
+            }
+
+            return choiceWords;
+        }
+
+        public static string[] GetWords(string text)
+        {
+            return Regex.Replace(Regex.Replace(text, @"(\P{Ll})(\P{Ll}\p{Ll})", "$1-$2"), @"(\p{Ll})(\P{Ll})", "$1-$2").Split('-');
+        }
+
+        public static string FindCommonWord(List<string[]> choiceWords)
+        {
+            // Find all words in all choices that are the same, regardless of case sensitivity
+            var commonWords = (from cw1 in choiceWords
+                               from cw2 in choiceWords
+                               from w1 in cw1
+                               from w2 in cw2
+                               where cw1 != cw2 && w1.ToLower() == w2.ToLower() && !Object.ReferenceEquals(cw1, cw2)
+                               select new { ChoiceWordIndex = choiceWords.IndexOf(cw1), Word = w1 })
+                .GroupBy(d => new { d.ChoiceWordIndex, d.Word })
+                .Select(m => new { ChoiceWordIndex = m.Key.ChoiceWordIndex, Word = m.Key.Word.ToLower() });
+
+            // Compact the list to only distinct words for each choice
+            var distinctWords = commonWords
+                .GroupBy(y => y.Word)
+                .Select(y => y.Key);
+
+            // Select one of the words that is found in ALL of the choice items
+            var selectedWord = distinctWords
+                .Where(y => commonWords.Count(z => z.Word == y) == choiceWords.Count)
+                .FirstOrDefault();
+
+            return selectedWord;
+        }
+
+        public static string GetChoiceCommonName(XmlSchemaChoice choice, string ns)
+        {
+            // TODO: Handle possibility of multiple <xsd:choice> within a single sequence. Name the element differently accordingly.
+            List<string[]> choiceWords = GetXmlChoiceNameWords(choice);
+            return GetChoiceCommonName(choiceWords, ns);
+        }
+
+        public static string GetChoiceCommonName(List<string[]> optionNames, string ns)
+        {
+            string name = FindCommonWord(optionNames);
+            return GetChoiceCommonName(name, ns);
+        }
+
+        public static string GetChoiceCommonName(string name, string ns)
+        {
+            if (string.IsNullOrEmpty(name))
+                name = "choice";
+            else if (ns == "http://hl7.org/fhir")     // Use [x] for FHIR
+                name += "[x]";
+            else
+                name += "Choice";
+
+            return name;
+        }
+
         public static string GetSchemasDirectory(string igTypeName)
         {
             string basePath = ".\\";

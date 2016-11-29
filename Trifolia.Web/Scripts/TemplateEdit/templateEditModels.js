@@ -19,6 +19,15 @@ var NodeModel = function (data, parent, viewModel) {
     self.Conformance = ko.observable('');
     self.Cardinality = ko.observable('');
     self.DataType = ko.observable('');
+    self.IsChoice = ko.observable(false);
+
+    self.IsValid = ko.computed(function () {
+        return !self.Constraint() || self.Constraint().IsValid();
+    });
+
+    self.IsChildOfChoice = function () {
+        return self.Parent() && self.Parent().IsChoice();
+    };
 
     /* Properties: Computable */
     self.DisplayValue = ko.computed(function () {
@@ -173,6 +182,7 @@ var NodeModel = function (data, parent, viewModel) {
             constraint.Context(node.DisplayContext());
             constraint.Conformance(node.DisplayConformance());
             constraint.Cardinality(node.DisplayCardinality());
+            constraint.IsChoice(node.IsChoice());
             constraint.IsPrimitive(false);
 
             // Set as branch identifier if parent is a branch root, default conformance is SHALL
@@ -209,7 +219,7 @@ var ConstraintModel = function (data, parent, viewModel) {
         include: ['Id', 'Number', 'Context', 'Conformance', 'Cardinality', 'DataType', 'Children', 'IsBranch', 'IsBranchIdentifier', 'PrimitiveText',
             'ContainedTemplateId', 'ValueConformance', 'Binding', 'Value', 'ValueConformance', 'ValueDisplayName', 'ValueSetId', 'ValueSetDate',
             'ValueCodeSystemId', 'Description', 'Notes', 'Label', 'IsPrimitive', 'IsHeading', 'HeadingDescription', 'IsSchRooted', 'IsInheritable',
-            'Schematron', 'IsNew', 'Category', 'DisplayNumber'],
+            'Schematron', 'IsNew', 'Category', 'DisplayNumber', 'MustSupport', 'IsModifier', 'IsChoice'],
         ignore: ['Parent', 'BindingType', 'IsValueSetStatic', 'Order', 'IsAutomaticSchematron', 'IsStatic'],
         Children: {
             create: function (options) {
@@ -256,6 +266,15 @@ var ConstraintModel = function (data, parent, viewModel) {
     self.Category = ko.observable('');
     self.IsModifier = ko.observable(false);
     self.MustSupport = ko.observable(true);
+    self.IsChoice = ko.observable(false);
+
+    self.IsChildOfChoice = ko.computed(function () {
+        if (!self.Parent() || !self.Parent().IsChoice()) {
+            return false;
+        }
+
+        return true;
+    });
     
     self.Categories = ko.computed({
         read: function () {
@@ -597,14 +616,33 @@ var ConstraintModel = function (data, parent, viewModel) {
         }
     });
 
-    var validation = ko.validatedObservable({
-        Cardinality: self.Cardinality.extend({ required: { message: 'Cardinality is required.' }, maxLength: 8, constraintCardinalityFormat: self.IsModifier })
-    });
+    var validationOptions = {
+        Cardinality: self.Cardinality.extend({ maxLength: 8, constraintCardinalityRequired: self.IsChildOfChoice, constraintCardinalityFormat: self.IsModifier })
+    }
+
+    var validation = ko.validatedObservable(validationOptions);
 
     self.IsValid = ko.computed(function () {
         return validation.isValid();
     });
 
+    self.ValidationMessages = ko.computed(function () {
+        var messages = [];
+
+        var addMessage = function (obj) {
+            if (!obj || !obj.isValid || obj.isValid() || !obj.error) {
+                return;
+            }
+
+            messages.push(obj.error());
+        };
+
+        for (var i in validationOptions) {
+            addMessage(validationOptions[i]);
+        }
+
+        return messages.join('<br/>\n');
+    });
 };
 
 var TemplateExtensionModel = function (data, parent) {

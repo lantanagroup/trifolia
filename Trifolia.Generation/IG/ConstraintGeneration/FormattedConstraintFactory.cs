@@ -14,7 +14,8 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         private static Dictionary<DateTime, Type> versions = new Dictionary<DateTime, Type>()
         {
             { new DateTime(2014, 4, 21), typeof(FormattedConstraint20150421) },
-            { new DateTime(2014, 4, 15), typeof(FormattedConstraint20140415) }
+            { new DateTime(2014, 4, 15), typeof(FormattedConstraint20140415) },
+            { new DateTime(2016, 11, 28), typeof(FormattedConstraint20161128) }
         };
 
         public static IFormattedConstraint NewFormattedConstraint(

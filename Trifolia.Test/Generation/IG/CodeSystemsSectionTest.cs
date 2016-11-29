@@ -67,7 +67,7 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         ///A test for GetSection
         ///</summary>
-        [TestMethod()]
+        [TestMethod, TestCategory("MSWord")]
         public void GetCodeSystemsSectionTest()
         {
             CodeSystemsSection actual = CodeSystemsSection.GetSection();

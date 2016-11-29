@@ -81,9 +81,9 @@ namespace Trifolia.Test.Generation.XML
             IGSettingsManager igSettings = new IGSettingsManager(tdb, ig.Id);
 
             Template template = tdb.GenerateTemplate("1.2.3.4", "Document", "Test Template", ig, "observation", "Observation", "Test Description", "Test Notes", org);
-            var tc1 = tdb.GenerateConstraint(template, null, null, "entryRelationship", "SHALL", "1..1");
-            var tc2 = tdb.GenerateConstraint(template, tc1, null, "observation", "SHOULD", "0..1");
-            var tc3 = tdb.GenerateConstraint(template, tc2, null, "value", "SHALL", "1..1", "CD", value: "4321", displayName: "Test");
+            var tc1 = tdb.AddConstraintToTemplate(template, null, null, "entryRelationship", "SHALL", "1..1");
+            var tc2 = tdb.AddConstraintToTemplate(template, tc1, null, "observation", "SHOULD", "0..1");
+            var tc3 = tdb.AddConstraintToTemplate(template, tc2, null, "value", "SHALL", "1..1", "CD", value: "4321", displayName: "Test");
             tc3.Description = "Test description";
             tc3.Label = "Test Label";
             var tc4 = tdb.GeneratePrimitive(template, null, "SHALL", "This is a test");

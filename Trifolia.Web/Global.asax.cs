@@ -41,6 +41,12 @@ namespace Trifolia.Web
             );
 
             routes.MapRoute(
+                name: "Edit IG Type Schema Choices",
+                url: "IGTypeManagement/SchemaChoice/{implementationGuideTypeId}",
+                defaults: new { controller = "IGTypeManagement", action = "EditSchemaChoices" }
+            );
+
+            routes.MapRoute(
                 name: "Import Terminology from External Source",
                 url: "TerminologyManagement/Import/External",
                 defaults: new { controller = "TerminologyManagement", action = "ImportExternal" }

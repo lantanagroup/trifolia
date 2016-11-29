@@ -1039,6 +1039,21 @@
             it registers as a change event when auditing, regardless if the value is different.
             </remarks>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.TypeController.GetSchemaChoices(System.Int32)">
+            <summary>
+            Gets all choices available within the specified implementation guide type's schema
+            This returns the model that should be used to POST the schema choices back to the server for changing the
+            schema choice names.
+            </summary>
+            <param name="implementationGuideTypeId">The ID of the implementation guide type whose schema should be searched for choices</param>
+            <returns>System.Collections.Generic.IEnumerable&lt;Trifoliw.Web.Models.Type.SchemaChoiceModel&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TypeController.SaveSchemaChoices(System.Int32,Trifolia.Web.Models.Type.SchemaChoiceModel[])">
+            <summary>
+            Saves all choices to the specified schema
+            </summary>
+            <param name="implementationGuideTypeId">The implementation guide type that the choices should be saved for</param>
+        </member>
         <member name="M:Trifolia.Web.Controllers.SchemaTypesController.GetAll(System.Int32)">
             <summary>
             Gets all of the types in a schema regardless if they are prefered or not

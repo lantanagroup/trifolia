@@ -2052,7 +2052,7 @@ warning 6002: The table/view 'templatedb.dbo.v_userSecurables' does not have a p
           <Property Type="String" Name="DisplayNumber" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="IsModifier" Nullable="false" />
           <Property Type="Boolean" Name="MustSupport" Nullable="false" />
-          <Property Name="isChoice" Type="Boolean" Nullable="false" />
+          <Property Name="IsChoice" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TemplateType">
           <Key>
@@ -3269,7 +3269,7 @@ warning 6002: The table/view 'templatedb.dbo.v_userSecurables' does not have a p
           <EntitySetMapping Name="TemplateConstraints">
             <EntityTypeMapping TypeName="Trifolia.DB.TemplateConstraint">
               <MappingFragment StoreEntitySet="template_constraint">
-                <ScalarProperty Name="isChoice" ColumnName="isChoice" />
+                <ScalarProperty Name="IsChoice" ColumnName="isChoice" />
                 <ScalarProperty Name="MustSupport" ColumnName="mustSupport" />
                 <ScalarProperty Name="IsModifier" ColumnName="isModifier" />
                 <ScalarProperty Name="DisplayNumber" ColumnName="displayNumber" />

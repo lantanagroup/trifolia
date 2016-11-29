@@ -126,13 +126,13 @@ namespace Trifolia.Test.Generation.Green
         {
             ImplementationGuide ig = this.mockRepo.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Testing");
             Template docTemplate = this.mockRepo.GenerateTemplate("5.4.3.2.1", "Document", "Testing Collapsed", ig, "ClinicalDocument", "ClinicalDocument");
-            var recordTarget = this.mockRepo.GenerateConstraint(docTemplate, null, null, "recordTarget", "SHALL", "1..*");
-            var patientRole = this.mockRepo.GenerateConstraint(docTemplate, recordTarget, null, "patientRole", "SHALL", "1..1");
-            var patient = this.mockRepo.GenerateConstraint(docTemplate, patientRole, null, "patient", "SHALL", "1..1");
-            var patientGender = this.mockRepo.GenerateConstraint(docTemplate, patient, null, "administrativeGenderCode", "SHALL", "1..1");
-            var patientName = this.mockRepo.GenerateConstraint(docTemplate, patient, null, "name", "SHALL", "1..1");
-            var patientFirstName = this.mockRepo.GenerateConstraint(docTemplate, patientName, null, "given", "SHALL", "1..1");
-            var patientLastName = this.mockRepo.GenerateConstraint(docTemplate, patientName, null, "family", "SHALL", "1..1");
+            var recordTarget = this.mockRepo.AddConstraintToTemplate(docTemplate, null, null, "recordTarget", "SHALL", "1..*");
+            var patientRole = this.mockRepo.AddConstraintToTemplate(docTemplate, recordTarget, null, "patientRole", "SHALL", "1..1");
+            var patient = this.mockRepo.AddConstraintToTemplate(docTemplate, patientRole, null, "patient", "SHALL", "1..1");
+            var patientGender = this.mockRepo.AddConstraintToTemplate(docTemplate, patient, null, "administrativeGenderCode", "SHALL", "1..1");
+            var patientName = this.mockRepo.AddConstraintToTemplate(docTemplate, patient, null, "name", "SHALL", "1..1");
+            var patientFirstName = this.mockRepo.AddConstraintToTemplate(docTemplate, patientName, null, "given", "SHALL", "1..1");
+            var patientLastName = this.mockRepo.AddConstraintToTemplate(docTemplate, patientName, null, "family", "SHALL", "1..1");
 
             GreenTemplate greenDocTemplate = CreateGreenTemplate(docTemplate, "myGreenDoc");
             string patientXpath = "recordTarget/patientRole/patient";
@@ -193,13 +193,13 @@ namespace Trifolia.Test.Generation.Green
         {
             ImplementationGuide ig = this.mockRepo.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Testing");
             Template docTemplate = this.mockRepo.GenerateTemplate("5.4.3.2.1", "Document", "Testing Collapsed", ig, "ClinicalDocument", "ClinicalDocument");
-            var recordTarget = this.mockRepo.GenerateConstraint(docTemplate, null, null, "recordTarget", "SHALL", "1..*");
-            var patientRole = this.mockRepo.GenerateConstraint(docTemplate, recordTarget, null, "patientRole", "SHALL", "1..1");
-            var patient = this.mockRepo.GenerateConstraint(docTemplate, patientRole, null, "patient", "SHALL", "1..1");
-            var patientGender = this.mockRepo.GenerateConstraint(docTemplate, patient, null, "administrativeGenderCode", "SHALL", "1..1");
-            var patientName = this.mockRepo.GenerateConstraint(docTemplate, patient, null, "name", "SHALL", "1..1");
-            var patientFirstName = this.mockRepo.GenerateConstraint(docTemplate, patientName, null, "given", "SHALL", "1..1");
-            var patientLastName = this.mockRepo.GenerateConstraint(docTemplate, patientName, null, "family", "SHALL", "1..1");
+            var recordTarget = this.mockRepo.AddConstraintToTemplate(docTemplate, null, null, "recordTarget", "SHALL", "1..*");
+            var patientRole = this.mockRepo.AddConstraintToTemplate(docTemplate, recordTarget, null, "patientRole", "SHALL", "1..1");
+            var patient = this.mockRepo.AddConstraintToTemplate(docTemplate, patientRole, null, "patient", "SHALL", "1..1");
+            var patientGender = this.mockRepo.AddConstraintToTemplate(docTemplate, patient, null, "administrativeGenderCode", "SHALL", "1..1");
+            var patientName = this.mockRepo.AddConstraintToTemplate(docTemplate, patient, null, "name", "SHALL", "1..1");
+            var patientFirstName = this.mockRepo.AddConstraintToTemplate(docTemplate, patientName, null, "given", "SHALL", "1..1");
+            var patientLastName = this.mockRepo.AddConstraintToTemplate(docTemplate, patientName, null, "family", "SHALL", "1..1");
 
             GreenTemplate greenDocTemplate = CreateGreenTemplate(docTemplate, "myGreenDoc");
             string recordTargetXpath = "recordTarget";
