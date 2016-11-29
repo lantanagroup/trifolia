@@ -73,6 +73,7 @@
     <Compile Include="IG\ConstraintGenerationFactory.cs" />
     <Compile Include="IG\ConstraintGeneration\ConsolidatedGeneration.cs" />
     <Compile Include="IG\ConstraintGeneration\ConstraintPart.cs" />
+    <Compile Include="IG\ConstraintGeneration\FormattedConstraint20161128.cs" />
     <Compile Include="IG\ConstraintGeneration\FormattedConstraint20150421.cs" />
     <Compile Include="IG\ConstraintGeneration\FormattedConstraint.cs" />
     <Compile Include="IG\ConstraintGeneration\FormattedConstraint20140415.cs" />
@@ -179,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="IG\ConstraintGeneration\README.md" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

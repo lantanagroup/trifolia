@@ -115,6 +115,11 @@ namespace Trifolia.Generation.IG
 
         private void AddTemplateTableConstraint(Template template, Table table, TemplateConstraint constraint, int level, bool includeCategoryHeader, SimpleSchema.SchemaObject schemaObject)
         {
+            // Skip the child constraints if this is a choice there is only one child constraint. This constraint
+            // adopts the constraint narrative of the child constraint when there is only one option.
+            if (constraint.IsChoice && constraint.ChildConstraints.Count == 1)
+                constraint = constraint.ChildConstraints.First();
+
             if (constraint.IsPrimitive != true && !string.IsNullOrEmpty(constraint.Context))
             {
                 string xpath = constraint.Context;

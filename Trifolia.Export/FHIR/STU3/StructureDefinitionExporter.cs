@@ -113,6 +113,7 @@ namespace Trifolia.Export.FHIR.STU3
                 return;
 
             string newSliceName = null;
+
             if (constraint.IsBranch)
                 newSliceName = string.Format("{0}_slice_pos{1}", constraint.Context, constraint.Order);
 
@@ -129,6 +130,12 @@ namespace Trifolia.Export.FHIR.STU3
                 Name = constraint.IsBranch ? newSliceName : sliceName,
                 Definition = constraintFormatter.GetPlainText(false, false, false)
             };
+
+            if (constraint.IsChoice)
+            {
+                newElementDef.Slicing = new ElementDefinition.SlicingComponent();
+                newElementDef.Slicing.Discriminator = new string[] { "@type" };
+            }
 
             // Cardinality
             if (!string.IsNullOrEmpty(constraint.Cardinality))

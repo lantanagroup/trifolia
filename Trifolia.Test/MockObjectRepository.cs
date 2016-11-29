@@ -1093,7 +1093,8 @@ namespace Trifolia.Test
             bool? isBranchIdentifier = null,
             bool isPrimitiveSchRooted = false,
             int? number = null,
-            string category = null)
+            string category = null,
+            bool isChoice = false)
         {
             if (template == null)
                 throw new ArgumentNullException("template");
@@ -1107,7 +1108,8 @@ namespace Trifolia.Test
                 ValueConformance = valueConformance,
                 TemplateId = template.Id,
                 IsSchRooted = isPrimitiveSchRooted,
-                Category = category
+                Category = category,
+                IsChoice = isChoice
             };
 
             if (number == null)
