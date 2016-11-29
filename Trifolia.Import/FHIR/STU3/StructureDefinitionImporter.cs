@@ -66,8 +66,7 @@ namespace Trifolia.Import.FHIR.STU3
                 {
                     OwningImplementationGuide = unassignedImplementationGuide,
                     ImplementationGuideType = this.implementationGuideType,
-                    Author = this.tdb.Users.Single(y => y.UserName == STU3Helper.DEFAULT_USER_NAME && y.Organization.Name == STU3Helper.DEFAULT_ORG_NAME),
-                    Organization = this.tdb.Organizations.Single(y => y.Name == STU3Helper.DEFAULT_ORG_NAME),
+                    Author = this.tdb.Users.Single(y => y.UserName == STU3Helper.DEFAULT_USER_NAME),
                     IsOpen = true
                 };
             }
@@ -121,7 +120,7 @@ namespace Trifolia.Import.FHIR.STU3
                 foreach (var cc in template.ChildConstraints.ToList())
                     this.tdb.TemplateConstraints.DeleteObject(cc);
 
-                ElementNavigator navigator = new ElementNavigator(strucDef.Differential.Element);
+                ElementDefinitionNavigator navigator = new ElementDefinitionNavigator(strucDef.Differential.Element);
                 TemplateConstraint current = null;
 
                 if (navigator.MoveToFirstChild() && navigator.MoveToFirstChild())

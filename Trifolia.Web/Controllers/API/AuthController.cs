@@ -23,7 +23,7 @@ namespace Trifolia.Web.Controllers.API
         }
 
         public AuthController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }
@@ -43,6 +43,7 @@ namespace Trifolia.Web.Controllers.API
 
             WhoAmIModel model = new WhoAmIModel()
             {
+                Id = user.Id,
                 Name = string.Format("{0} {1}", user.FirstName, user.LastName),
                 UserName = user.UserName,
                 Email = user.Email

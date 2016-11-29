@@ -1,0 +1,29 @@
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'group_manager')
+BEGIN
+	CREATE TABLE [dbo].[group_manager](
+		[id] [int] IDENTITY(1,1) NOT NULL,
+		[groupId] [int] NOT NULL,
+		[userId] [int] NOT NULL,
+	 CONSTRAINT [PK_group_manager] PRIMARY KEY CLUSTERED 
+	( [id] ASC ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY])
+
+	ALTER TABLE dbo.group_manager ADD CONSTRAINT
+	FK_group_manager_group FOREIGN KEY
+	(
+	groupId
+	) REFERENCES dbo.[group]
+	(
+	id
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+	ALTER TABLE dbo.group_manager ADD CONSTRAINT
+	FK_group_manager_user FOREIGN KEY
+	(
+	userId
+	) REFERENCES dbo.[user]
+	(
+	id
+	) ON UPDATE  NO ACTION 
+	ON DELETE  NO ACTION 
+END

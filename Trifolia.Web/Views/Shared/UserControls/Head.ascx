@@ -29,24 +29,13 @@
 <script type="text/javascript" src="/Scripts/knockout/knockout.mapping.2.4.1.js"></script>
 <script type="text/javascript" src="/Scripts/knockout/knockout.programmatic.js"></script>
 <script type="text/javascript" src="/Scripts/knockout/knockout.validation.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-<script type="text/javascript" src="/Scripts/knockout/knockout.hint.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-<script type="text/javascript" src="/Scripts/knockout/knockout.helpContext.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-<script type="text/javascript" src="/Scripts/knockout/knockout.tooltip.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-<script type="text/javascript" src="/Scripts/knockout/knockout.localization.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-<script type="text/javascript" src="/Scripts/knockout/knockout.highlight.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 <script type="text/javascript" src="/Scripts/knockout/knockout.templateSelect.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 <script type="text/javascript" src="/Scripts/knockout/knockout.valuesetSelect.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-<script type="text/javascript" src="/Scripts/knockout/knockout.spinedit.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-<script type="text/javascript" src="/Scripts/knockout/knockout.file.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-<script type="text/javascript" src="/Scripts/knockout/knockout.date.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+<script type="text/javascript" src="/Scripts/knockout/knockout.validation.rules.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+<script type="text/javascript" src="/Scripts/knockout/knockout.extensions.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 
 <script type="text/javascript" src="/Scripts/Sha1.js"></script>
 <script type="text/javascript" src="/Scripts/q/q.js"></script>
-
-<!-- Custom Trifolia knockout bindings -->
-<script type="text/javascript" src="/Scripts/knockout/knockout.datagrid.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-<script type="text/javascript" src="/Scripts/knockout/knockout.file.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-<script type="text/javascript" src="/Scripts/knockout/knockout.validation.rules.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 
 <!-- Application Scripts -->
 <script type="text/javascript" src="/Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>

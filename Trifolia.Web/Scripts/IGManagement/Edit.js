@@ -1,10 +1,10 @@
-﻿ko.validation.rules['uniqueName'] = {
+﻿ko.validation.rules['uniqueImplementationGuideName'] = {
     validator: function (val, otherVal) {
         var implementationGuideId = otherVal();
         var ret = false;
 
         $.ajax({
-            url: '/api/ImplementationGuide/Edit/Name/Validate?implementationGuideId=' + implementationGuideId + '&igName=' + encodeURIComponent(val),
+            url: '/api/ImplementationGuide/Validate/Name?implementationGuideId=' + implementationGuideId + '&igName=' + encodeURIComponent(val),
             async: false,
             cache: false,
             success: function (isValid) {
@@ -15,6 +15,25 @@
         return ret;
     },
     message: 'The name specified is already in use'
+};
+
+ko.validation.rules['uniqueImplementationGuideIdentifier'] = {
+    validator: function (val, otherVal) {
+        var implementationGuideId = otherVal();
+        var ret = false;
+
+        $.ajax({
+            url: '/api/ImplementationGuide/Validate/Identifier?implementationGuideId=' + implementationGuideId + '&identifier=' + encodeURIComponent(val),
+            async: false,
+            cache: false,
+            success: function (isValid) {
+                ret = isValid;
+            }
+        });
+
+        return ret;
+    },
+    message: 'The identifier specified is already in use'
 };
 
 ko.validation.rules['categoryText'] = {
@@ -70,17 +89,13 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
     self.CurrentCustomSchematronIndex = ko.observable();
     self.CurrentSection = ko.observable();
     self.CurrentSectionIndex = ko.observable();
-    self.MyOrganizationInfo = ko.observable();
-    self.MyOrganizationSearchResults = ko.observableArray([]);
-    self.MySelectedGroups = ko.observableArray();
-    self.MySelectedUsers = ko.observableArray();
-    self.MyOrganizationSearchText = ko.observable();
-    self.OtherOrganizationSelected = ko.observable();
-    self.OtherOrganizationSearchText = ko.observable();
-    self.OtherOrganizationSearchResults = ko.observableArray([]);
-    self.SelectedOtherOrganizationUsers = ko.observableArray([]);
+    self.PermissionSearchResults = ko.observableArray([]);
+    self.PermissionSearchText = ko.observable();
+    self.NewSelectedGroups = ko.observableArray();
+    self.NewSelectedUsers = ko.observableArray();
     self.AddPermissionType = ko.observable();
     self.NewCategory = ko.observable();
+    self.Organizations = ko.observableArray([]);
 
     self.NewCategoryValid = ko.validatedObservable({
         NewCategory: self.NewCategory.extend({ categoryText: true })
@@ -145,43 +160,24 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
 
     self.ShowAddPermission = function (type) {
         self.AddPermissionType(type);
-        self.MySelectedGroups([]);
-        self.MySelectedUsers([]);
-        self.MyOrganizationSearchResults([]);
-        self.MyOrganizationSearchText('');
-        self.OtherOrganizationSearchResults([]);
-        self.OtherOrganizationSearchText('');
-        self.OtherOrganizationSelected(null);
-        self.SelectedOtherOrganizationUsers([]);
+        self.NewSelectedGroups([]);
+        self.NewSelectedUsers([]);
+        self.PermissionSearchResults([]);
+        self.PermissionSearchText('');
 
         $('#addPermissionDialog').modal('show');
     };
 
-    self.SearchMyOrganization = function () {
-        var params = '?organizationId=' + self.MyOrganizationInfo().MyOrganizationId() + '&includeGroups=false&searchText=' + encodeURIComponent(self.MyOrganizationSearchText());
+    self.SearchPermissions = function () {
+        var params = '?includeGroups=true&searchText=' + encodeURIComponent(self.PermissionSearchText());
 
         $.ajax({
-            url: '/api/ImplementationGuide/Edit/User/Search' + params,
+            url: '/api/ImplementationGuide/Edit/Permission/Search' + params,
             success: function (results) {
-                self.MyOrganizationSearchResults([]);
+                self.PermissionSearchResults([]);
                 ko.utils.arrayForEach(results, function (result) {
                     var newUserModel = new UserModel(result);
-                    self.MyOrganizationSearchResults.push(newUserModel);
-                });
-            }
-        });
-    };
-
-    self.SearchOtherOrganization = function () {
-        var params = '?organizationId=' + self.OtherOrganizationSelected() + '&includeGroups=true&searchText=' + encodeURIComponent(self.OtherOrganizationSearchText());
-
-        $.ajax({
-            url: '/api/ImplementationGuide/Edit/User/Search' + params,
-            success: function (results) {
-                self.OtherOrganizationSearchResults([]);
-                ko.utils.arrayForEach(results, function (result) {
-                    var newUserModel = new UserModel(result);
-                    self.OtherOrganizationSearchResults.push(newUserModel);
+                    self.PermissionSearchResults.push(newUserModel);
                 });
             }
         });
@@ -207,7 +203,7 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
         };
 
         // My Organization Groups
-        ko.utils.arrayForEach(self.MySelectedGroups(), function (uniqueId) {
+        ko.utils.arrayForEach(self.NewSelectedGroups(), function (uniqueId) {
             var permission = ko.utils.arrayFirst(self.MyOrganizationInfo().MyGroups(), function (group) {
                 return group.UniqueId() == uniqueId;
             });
@@ -215,16 +211,8 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
         });
 
         // My Organization Users (search results)
-        ko.utils.arrayForEach(self.MySelectedUsers(), function (uniqueId) {
-            var permission = ko.utils.arrayFirst(self.MyOrganizationSearchResults(), function (user) {
-                return user.UniqueId() == uniqueId;
-            });
-            addPermission(permission);
-        });
-
-        // Other Organization Users (search results)
-        ko.utils.arrayForEach(self.SelectedOtherOrganizationUsers(), function (uniqueId) {
-            var permission = ko.utils.arrayFirst(self.OtherOrganizationSearchResults(), function (user) {
+        ko.utils.arrayForEach(self.NewSelectedUsers(), function (uniqueId) {
+            var permission = ko.utils.arrayFirst(self.PermissionSearchResults(), function (user) {
                 return user.UniqueId() == uniqueId;
             });
             addPermission(permission);
@@ -390,20 +378,19 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
     };
 
     self.Initialize = function (afterSave) {
-        $.ajax({
-            url: '/api/ImplementationGuide/Edit/User',
-            success: function (results) {
-                var orgInfo = new OrganizationInfoModel(results);
-                self.MyOrganizationInfo(orgInfo);
-            }
-        });
-
         $.blockUI({ message: 'Loading...' });
         $.ajax({
             url: '/api/Type',
             async: false,
             success: function (results) {
                 ko.mapping.fromJS({ ImplementationGuideTypes: results }, {}, self);
+            }
+        });
+
+        $.ajax({
+            url: '/api/Organization',
+            success: function (results) {
+                ko.mapping.fromJS({ Organizations: results }, {}, self);
             }
         });
 
@@ -523,6 +510,7 @@ var ImplementationGuideModel = function (data) {
     };
 
     self.Id = ko.observable();
+    self.Identifier = ko.observable();
     self.Name = ko.observable();
     self.DisplayName = ko.observable();
     self.WebDisplayName = ko.observable();
@@ -618,7 +606,8 @@ var ImplementationGuideModel = function (data) {
     });
 
     self.Validation = ko.validatedObservable({
-        Name: self.Name.extend({ required: true, uniqueName: self.Id }),
+        Name: self.Name.extend({ required: true, uniqueImplementationGuideName: self.Id }),
+        Identifier: self.Identifier.extend({ required: true }),
         TypeId: self.TypeId.extend({ required: true }),
         CardinalityZeroOrOne: self.CardinalityZeroOrOne.extend({ required: true }),
         CardinalityExactlyOne: self.CardinalityExactlyOne.extend({ required: true }),
@@ -687,23 +676,6 @@ var UserModel = function (data) {
     self.Type = ko.observable();
     self.Name = ko.observable();
     self.IsDefault = ko.observable(false);
-
-    ko.mapping.fromJS(data, mapping, self);
-};
-
-var OrganizationInfoModel = function (data) {
-    var self = this;
-    var mapping = {
-        MyGroups: {
-            create: function (options) {
-                return new UserModel(options.data);
-            }
-        }
-    };
-
-    self.MyOrganizationId = ko.observable();
-    self.MyGroups = ko.observableArray([]);
-    self.OtherOrganizations = ko.observableArray([]);
 
     ko.mapping.fromJS(data, mapping, self);
 };

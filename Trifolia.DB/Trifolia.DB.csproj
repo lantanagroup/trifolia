@@ -16,7 +16,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -90,6 +90,7 @@
     <Compile Include="IFilterOrganization.cs" />
     <Compile Include="ImplementationGuideExtensions.cs" />
     <Compile Include="ImplementationGuideFileExtension.cs" />
+    <Compile Include="ImplementationGuideFileTypes.cs" />
     <Compile Include="ImplementationGuideTypeExtension.cs" />
     <Compile Include="IObjectRepository.cs" />
     <Compile Include="ITemplate.cs" />
@@ -132,6 +133,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Trifolia.Config\Trifolia.Config.csproj">
+      <Project>{3fce87c4-71b6-4feb-a9ee-c6d64fdcc477}</Project>
+      <Name>Trifolia.Config</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
       <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>
       <Name>Trifolia.Logging</Name>

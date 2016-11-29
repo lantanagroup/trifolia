@@ -366,9 +366,9 @@ namespace Trifolia.Import.Native
             }
 
             // If the object is changed, make sure the user has permissions to the implementation guide
-            if (this.tdb is TemplateDatabaseDataSource)
+            if (this.tdb is TrifoliaDatabase)
             {
-                var dataSource = this.tdb as TemplateDatabaseDataSource;
+                var dataSource = this.tdb as TrifoliaDatabase;
                 var templateState = dataSource.ObjectStateManager.GetObjectStateEntry(template).State;
 
                 if (templateState == System.Data.Entity.EntityState.Unchanged)

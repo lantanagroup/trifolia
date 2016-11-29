@@ -56,7 +56,6 @@
 						<xs:attribute name="contextType" type="xs:string"/>
 						<xs:attribute name="isOpen" type="xs:boolean"/>
 						<xs:attribute name="impliedTemplateOid" type="xs:string"/>
-						<xs:attribute name="organizationName" type="xs:string"/>
 						<xs:attribute name="publishStatus" type="xs:string"/>
 					</xs:complexType>
 				</xs:element>
@@ -128,6 +127,69 @@
 									</xs:choice>
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="File" maxOccurs="unbounded" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Files that are attached to the implemnetation guide. Content is base64 encoded.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Description" type="xs:string"/>
+										<xs:element minOccurs="1" name="Content" type="xs:string"/>
+									</xs:sequence>
+									<xs:attribute name="type" use="required">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Schhematron">
+												<xs:annotation>
+												<xs:documentation>Schematron validation rules (.sch) file</xs:documentation>
+												</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="ImplementationGuide">
+												<xs:annotation>
+												<xs:documentation>A snapshot (JSON) of the implementation guide at a specific point in time.</xs:documentation>
+												</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="SchhematronHelper">
+												<xs:annotation>
+												<xs:documentation>Files used by a "Schematron" file to assist in executing the validation rules (ex: other .xml files that are components of the overall .sch validation)</xs:documentation>
+												</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="Vocabulary">
+												<xs:annotation>
+												<xs:documentation>Vocabulary xml or xlsx files</xs:documentation>
+												</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="DeliverableSample">
+												<xs:annotation>
+												<xs:documentation>A sample that should be included in publication packages</xs:documentation>
+												</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="GoodSample">
+												<xs:annotation>
+												<xs:documentation>A sample used for testing that produces no errors from validation</xs:documentation>
+												</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="BadSample">
+												<xs:annotation>
+												<xs:documentation>A sample that includes errors for testing</xs:documentation>
+												</xs:annotation>
+												</xs:enumeration>
+												<xs:enumeration value="FHIRResourceInstance">
+												<xs:annotation>
+												<xs:documentation>FHIR resource instances that are used by the implementation guide (such as OperationDefinition, SearchParameter, etc.)</xs:documentation>
+												</xs:annotation>
+												</xs:enumeration>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="mimeType" type="xs:string" use="required"/>
+									<xs:attribute name="name" type="xs:string" use="required">
+										<xs:annotation>
+											<xs:documentation>The name of the file, generally including the extension (ex: myFile.xml)</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
 						</xs:sequence>
 						<xs:attribute name="name" use="required"/>
 						<xs:attribute name="type" use="required"/>
@@ -136,6 +198,7 @@
 							type="lcg:ImplementationGuideStatus" use="optional"/>
 						<xs:attribute name="displayName"/>
 						<xs:attribute name="webDisplayName"/>
+						<xs:attribute name="organizationName"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

@@ -1,5 +1,6 @@
 ﻿extern alias fhir_dstu1;
 extern alias fhir_dstu2;
+extern alias fhir_stu3;
 
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using Ionic.Zip;
 using Trifolia.Shared.Plugins;
 using System.Web;
+using Microsoft.AspNet.WebApi.MessageHandlers.Compression.Attributes;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -33,13 +35,17 @@ namespace Trifolia.Web.Controllers.API
     {
         private IObjectRepository tdb;
         private const string MSWordExportSettingsPropertyName = "MSWordExportSettingsJson";
+        private const string DOCX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        private const string XML_MIME_TYPE = "application/xml";
+        private const string JSON_MIME_TYPE = "application/json";
+        private const string ZIP_MIME_TYPE = "application/zip";
+        private const string XLSX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
         #region CTOR
 
         public ExportController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
-
         }
 
         public ExportController(IObjectRepository tdb)
@@ -51,8 +57,117 @@ namespace Trifolia.Web.Controllers.API
 
         #region XML
 
+        [HttpPost, Route("api/Export/XML/Validate"), SecurableAction(SecurableNames.EXPORT_XML)]
+        public IEnumerable<string> ValidateXml(XMLSettingsModel model)
+        {
+            List<string> messages = new List<string>();
+            ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == model.ImplementationGuideId);
+            var templates = (from t in this.tdb.Templates
+                             join tid in model.TemplateIds on t.Id equals tid
+                             select t);
+
+            var parserSettings = new fhir_stu3.Hl7.Fhir.Serialization.ParserSettings();
+            parserSettings.AcceptUnknownMembers = true;
+            parserSettings.AllowUnrecognizedEnums = true;
+            parserSettings.DisallowXsiAttributesOnRoot = false;
+            var fhirXmlParser = new fhir_stu3.Hl7.Fhir.Serialization.FhirXmlParser(parserSettings);
+            var fhirJsonParser = new fhir_stu3.Hl7.Fhir.Serialization.FhirJsonParser(parserSettings);
+
+            if (ig == null)
+            {
+                messages.Add("Could not find implementation guide with id " + model.ImplementationGuideId);
+                return messages;
+            }
+
+            switch (model.XmlType)
+            {
+                case XMLSettingsModel.ExportTypes.FHIRBuild:
+                case XMLSettingsModel.ExportTypes.FHIRBuildJSON:
+                    // Check that the implementation guide has a base identifier/url
+                    if (string.IsNullOrEmpty(ig.Identifier))
+                        messages.Add("Implementation guide does not have a base identifier/url.");
+
+                    // Check that each FHIR resource instance is valid and has the required fields
+                    foreach (var file in ig.Files)
+                    {
+                        var fileData = file.GetLatestData();
+                        fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
+                        string fileContent = System.Text.Encoding.UTF8.GetString(fileData.Data);
+
+                        try
+                        {
+                            resource = fhirXmlParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (file.MimeType == "application/xml" || file.MimeType == "text/xml")
+                                messages.Add("FHIR Resource instance \"" + file.FileName + "\" cannot be parsed as valid XML: " + ex.Message);
+                        }
+
+                        try
+                        {
+                            if (resource == null)
+                                resource = fhirJsonParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (file.MimeType == "binary/octet-stream" || file.MimeType == "application/json")
+                                messages.Add("FHIR Resource instance \"" + file.FileName + "\" cannot be parsed as valid JSON: " + ex.Message);
+                        }
+
+                        if (resource != null && string.IsNullOrEmpty(resource.Id))
+                        {
+                            string msg = string.Format("FHIR resource instance \"" + file.FileName + "\" does not have an \"id\" property.");
+                            messages.Add(msg);
+                        }
+                    }
+
+                    // Validate that each of the samples associated with profiles has the required fields
+                    var templateExamples = (from t in templates
+                                        join ts in this.tdb.TemplateSamples on t.Id equals ts.TemplateId
+                                        select new { Template = t, Sample = ts });
+
+                    foreach (var templateExample in templateExamples)
+                    {
+                        fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
+
+                        try
+                        {
+                            resource = fhirXmlParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(templateExample.Sample.XmlSample);
+                        }
+                        catch
+                        {
+                        }
+
+                        try
+                        {
+                            if (resource == null)
+                                resource = fhirJsonParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(templateExample.Sample.XmlSample);
+                        }
+                        catch
+                        {
+                        }
+
+                        if (resource == null)
+                        {
+                            string msg = string.Format("Profile sample \"" + templateExample.Sample.Name + "\" cannot be parsed as a valid XML or JSON resource.");
+                            messages.Add(msg);
+                        }
+                        else if (string.IsNullOrEmpty(resource.Id))
+                        {
+                            string msg = string.Format("Profile sample \"" + templateExample.Sample.Name + "\" does not have an \"id\" property.");
+                            messages.Add(msg);
+                        }
+                    }
+
+                    break;
+            }
+
+            return messages;
+        }
+
         [HttpGet, Route("api/Export/{implementationGuideId}/XML"), SecurableAction(SecurableNames.EXPORT_XML)]
-        public XMLModel Xml(int implementationGuideId, bool dy = false)
+        public XMLModel Xml(int implementationGuideId)
         {
             if (!CheckPoint.Instance.GrantViewImplementationGuide(implementationGuideId))
                 throw new AuthorizationException("You do not have permissions to this implementation guide.");
@@ -110,11 +225,17 @@ namespace Trifolia.Web.Controllers.API
             catch (Exception ex)
             {
                 Log.For(this).Error("Error creating Trifolia export", ex);
-                throw ex;
+                throw;
             }
         }
 
-        [HttpPost, Route("api/Export/XML"), SecurableAction(SecurableNames.EXPORT_XML)]
+        /// <summary>
+        /// Exports data from Trifolia using the export format specified in the export model.
+        /// </summary>
+        /// <param name="model">Settings/information on what XML format should be generated.</param>
+        /// <returns>HttpResponseMessage</returns>
+        /// <remarks>Compression is disabled for this Web API endpoint because there are problems with the FHIRBuild export being zipped/compressed, and then WebAPI tries to re-compress the content and fails.</remarks>
+        [HttpPost, Route("api/Export/XML"), SecurableAction(SecurableNames.EXPORT_XML), Compression(Enabled = false)]
         public HttpResponseMessage ExportXML(XMLSettingsModel model)
         {
             if (model == null)
@@ -131,8 +252,9 @@ namespace Trifolia.Web.Controllers.API
             List<Template> templates = this.tdb.Templates.Where(y => model.TemplateIds.Contains(y.Id)).ToList();
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, model.ImplementationGuideId);
             string fileName = string.Format("{0}.xml", ig.GetDisplayName(true));
-            string export = string.Empty;
-            bool returnJson = Request.Headers.Accept.Count(y => y.MediaType == "application/json") == 1;
+            string contentType = XML_MIME_TYPE;
+            byte[] export = null;
+            bool returnJson = Request.Headers.Accept.Count(y => y.MediaType == JSON_MIME_TYPE) == 1;
             bool includeVocabulary = model.IncludeVocabulary == true;
             var igTypePlugin = IGTypePluginFactory.GetPlugin(ig.ImplementationGuideType);
             var schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, ig.ImplementationGuideType);
@@ -149,6 +271,15 @@ namespace Trifolia.Web.Controllers.API
             {
                 export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIR, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
             }
+            else if (model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuild || model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuildJSON)
+            {
+                if (model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuildJSON)
+                    returnJson = true;
+
+                export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIRBuild, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
+                contentType = ZIP_MIME_TYPE;
+                fileName = string.Format("{0}.zip", ig.GetDisplayName(true));
+            }
             else if (model.XmlType == XMLSettingsModel.ExportTypes.JSON)
             {
                 ImplementationGuideController ctrl = new ImplementationGuideController(this.tdb);
@@ -157,14 +288,14 @@ namespace Trifolia.Web.Controllers.API
                 // Serialize the data to JSON
                 var jsonSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                 jsonSerializer.MaxJsonLength = Int32.MaxValue;
-                export = jsonSerializer.Serialize(dataModel);
+                export = System.Text.Encoding.UTF8.GetBytes(jsonSerializer.Serialize(dataModel));
 
                 // Set the filename to JSON
                 fileName = string.Format("{0}.json", ig.GetDisplayName(true));
+                contentType = JSON_MIME_TYPE;
             }
 
-            byte[] data = System.Text.ASCIIEncoding.UTF8.GetBytes(export);
-            return GetExportResponse(fileName, data);
+            return GetExportResponse(fileName, contentType, export);
         }
 
         #endregion
@@ -202,21 +333,21 @@ namespace Trifolia.Web.Controllers.API
                 case VocabularySettingsModel.ExportFormatTypes.SVS:
                 case VocabularySettingsModel.ExportFormatTypes.FHIR:
                     fileType = "xml";
-                    contentType = "text/xml";
+                    contentType = XML_MIME_TYPE;
                     string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, model.MaximumMembers, (int)model.ExportFormat, model.Encoding);
                     Encoding encoding = Encoding.GetEncoding(model.Encoding);
                     data = encoding.GetBytes(vocXml);
                     break;
                 case VocabularySettingsModel.ExportFormatTypes.Excel:
                     fileType = "xlsx";
-                    contentType = "application/octet-stream";
+                    contentType = XLSX_MIME_TYPE;
                     data = service.GetImplementationGuideVocabularySpreadsheet(model.ImplementationGuideId, model.MaximumMembers);
                     break;
             }
 
             string fileName = string.Format("{0}.{1}", ig.GetDisplayName(true), fileType);
 
-            return GetExportResponse(fileName, data);
+            return GetExportResponse(fileName, contentType, data);
         }
 
         [HttpGet, Route("api/Export/{implementationGuideId}/ValueSet"), SecurableAction()]
@@ -300,7 +431,7 @@ namespace Trifolia.Web.Controllers.API
             byte[] data = ASCIIEncoding.UTF8.GetBytes(schematronResult);
             string fileName = string.Format("{0}.sch", ig.GetDisplayName(true));
 
-            return GetExportResponse(fileName, data);
+            return GetExportResponse(fileName, XML_MIME_TYPE, data);
         }
 
         #endregion
@@ -395,7 +526,7 @@ namespace Trifolia.Web.Controllers.API
                 c.IncludeNotes = exportSettings.IncludeNotes;
                 c.SelectedCategories = exportSettings.SelectedCategories;
             });
-            
+
             if (exportSettings.ValueSetOid != null && exportSettings.ValueSetOid.Count > 0)
             {
                 Dictionary<string, int> valueSetMemberMaximums = new Dictionary<string, int>();
@@ -423,7 +554,7 @@ namespace Trifolia.Web.Controllers.API
 
             byte[] data = generator.GetDocument();
 
-            return GetExportResponse(fileName, data);
+            return GetExportResponse(fileName, DOCX_MIME_TYPE, data);
         }
 
         #endregion
@@ -481,7 +612,7 @@ namespace Trifolia.Web.Controllers.API
                     string packageFileName = string.Format("{0}_green.zip", ig.GetDisplayName(true));
                     byte[] data = ms.ToArray();
 
-                    return GetExportResponse(packageFileName, data);
+                    return GetExportResponse(packageFileName, ZIP_MIME_TYPE, data);
                 }
             }
         }
@@ -510,7 +641,7 @@ namespace Trifolia.Web.Controllers.API
             return VocabularyOutputType.Default;
         }
 
-        private HttpResponseMessage GetExportResponse(string fileName, byte[] data) 
+        private HttpResponseMessage GetExportResponse(string fileName, string contentType, byte[] data)
         {
             Array.ForEach(Path.GetInvalidFileNameChars(),
                 c => fileName = fileName.Replace(c.ToString(), String.Empty));
@@ -520,9 +651,10 @@ namespace Trifolia.Web.Controllers.API
                 .Replace(",", string.Empty);
 
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new StreamContent(new MemoryStream(data));
+            response.Content = new ByteArrayContent(data);
             response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
             response.Content.Headers.ContentDisposition.FileName = fileName;
+            response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
             return response;
         }
 

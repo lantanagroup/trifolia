@@ -168,9 +168,9 @@ namespace Trifolia.Export.FHIR.STU3
                 switch (schemaObject.DataType)
                 {
                     case "CodeableConcept":
-                        var fixedCodeableConcept = new CodeableConcept();
+                        var patternCodeableConcept = new CodeableConcept();
                         var coding = new Coding();
-                        fixedCodeableConcept.Coding.Add(coding);
+                        patternCodeableConcept.Coding.Add(coding);
 
                         if (!string.IsNullOrEmpty(constraint.Value))
                             coding.Code = constraint.Value;
@@ -180,32 +180,32 @@ namespace Trifolia.Export.FHIR.STU3
 
                         if (!string.IsNullOrEmpty(constraint.DisplayName))
                             coding.Display = constraint.DisplayName;
-
-                        newElementDef.Fixed = fixedCodeableConcept;
+                        
+                        newElementDef.Pattern = patternCodeableConcept;
                         break;
                     case "Coding":
-                        var fixedCoding = new Coding();
+                        var patternCoding = new Coding();
 
                         if (!string.IsNullOrEmpty(constraint.Value))
-                            fixedCoding.Code = constraint.Value;
+                            patternCoding.Code = constraint.Value;
 
                         if (constraint.CodeSystem != null)
-                            fixedCoding.System = constraint.CodeSystem.Oid;
+                            patternCoding.System = constraint.CodeSystem.Oid;
 
                         if (!string.IsNullOrEmpty(constraint.DisplayName))
-                            fixedCoding.Display = constraint.DisplayName;
+                            patternCoding.Display = constraint.DisplayName;
 
-                        newElementDef.Fixed = fixedCoding;
+                        newElementDef.Pattern = patternCoding;
                         break;
                     case "code":
-                        var fixedCode = new Code();
-                        fixedCode.Value = !string.IsNullOrEmpty(constraint.Value) ? constraint.Value : constraint.DisplayName;
-                        newElementDef.Fixed = fixedCode;
+                        var paternCode = new Code();
+                        paternCode.Value = !string.IsNullOrEmpty(constraint.Value) ? constraint.Value : constraint.DisplayName;
+                        newElementDef.Pattern = paternCode;
                         break;
                     default:
-                        var fixedString = new FhirString();
-                        fixedString.Value = !string.IsNullOrEmpty(constraint.Value) ? constraint.Value : constraint.DisplayName;
-                        newElementDef.Fixed = fixedString;
+                        var patternString = new FhirString();
+                        patternString.Value = !string.IsNullOrEmpty(constraint.Value) ? constraint.Value : constraint.DisplayName;
+                        newElementDef.Pattern = patternString;
                         break;
                 }
             }
@@ -245,18 +245,13 @@ namespace Trifolia.Export.FHIR.STU3
 
         public StructureDefinition Convert(Template template, SimpleSchema schema, SummaryType? summaryType = null)
         {
-            string id = template.Id.ToString();
-
-            if (template.Oid.StartsWith("http://") || template.Oid.StartsWith("https://"))
-                id = template.Oid.Substring(template.Oid.LastIndexOf("/") + 1);
-
             var fhirStructureDef = new fhir_stu3.Hl7.Fhir.Model.StructureDefinition()
             {
-                Id = id,
+                Id = template.FhirId(),
                 Name = template.Name,
                 Description = !string.IsNullOrEmpty(template.Description) ? new Markdown(template.Description) : null,
                 Kind = StructureDefinition.StructureDefinitionKind.Resource,
-                Url = template.Oid,
+                Url = template.FhirUrl(),
                 Type = template.TemplateType.RootContextType,
                 Context = new List<string> { template.PrimaryContextType },
                 ContextType = template.PrimaryContextType == "Extension" ? StructureDefinition.ExtensionContext.Extension : StructureDefinition.ExtensionContext.Resource,

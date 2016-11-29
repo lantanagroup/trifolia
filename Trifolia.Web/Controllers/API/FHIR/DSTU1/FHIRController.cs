@@ -40,7 +40,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
         }
 
         public FHIRController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

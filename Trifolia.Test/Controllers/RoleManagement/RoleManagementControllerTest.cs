@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using System.Data.Entity.Core.Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -16,7 +15,7 @@ namespace Trifolia.Test.Controllers.RoleManagement
     public class RoleManagementControllerTest
     {
         MockObjectRepository mockRepo = new MockObjectRepository();
-        AdminController controller = null;
+        RoleController controller = null;
 
         private int roleUserId = 0;
         private int roleAdminId = 0;
@@ -24,7 +23,7 @@ namespace Trifolia.Test.Controllers.RoleManagement
         [TestInitialize]
         public void Setup()
         {
-            this.controller = new AdminController(mockRepo);
+            this.controller = new RoleController(mockRepo);
 
             // Setup test data
             roleUserId = mockRepo.FindOrAddRole("user").Id;

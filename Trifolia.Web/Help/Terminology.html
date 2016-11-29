@@ -69,33 +69,33 @@
 		
 <p></p>
 <p class="rvps2"><span class="rvts6">Below is some information about how value sets and code systems are used in Trifolia exports.</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Value Set Members</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Value Set Members</span></span></h2>
 <p class="rvps2"><span class="rvts6">A number of terminology services allow one value set to contain another value set. Trifolia does not support this function; it treats value sets as though they are fully expanded.</span></p>
 <p class="rvps2"><span class="rvts6">As a result, when Trifolia represents a value set that contains another value set, it simply contains all of the members of the contained value set. This represents a fully expanded view of the value set.</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Value Set Status &amp; Date</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Value Set Status &amp; Date</span></span></h2>
 <p class="rvps2"><span class="rvts6">Each member of a value set contains status and date fields. Trifolia uses these fields to determine which members should be exported to XML and MS Word output.</span></p>
-<p class="rvps2"><span class="rvts18">Calculated Date</span></p>
+<p class="rvps2"><span class="rvts20">Calculated Date</span></p>
 <p class="rvps2"><span class="rvts6">For each member of a value set, Trifolia calculates a date that is used (along with the member's status) to determine whether to include that member in an export. The date is derived using this priority:</span></p>
 <ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">If the constraint includes a value set binding date, it is used.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">If no value set binding date is present, the implementation guide's publish date is used.</span></li>
 <li value="3" class="rvps2"><span class="rvts6">If no implementation guide publish date is available, the XML or MS Word export date is used.</span></li>
 </ol>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Status</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Status</span></span></h2>
 <p class="rvps2"><span class="rvts6">Once the date is calculated, the status and date together are used to determine whether the member is included in the export as follows:</span></p>
 <ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">The member is included in the export if the status is Unspecified (empty) or the calculated date is prior to the date for the member's active status.</span></li>
 <li class="rvps2"><span class="rvts6">The member is excluded from the export the calculated date falls on or after the member's Inactive status date.</span></li>
 </ul>
-<p class="rvps2"><span class="rvts19">Example</span></p>
+<p class="rvps2"><span class="rvts29">Example</span></p>
 <p class="rvps2"><span class="rvts6">Given the following value set:</span></p>
 <div class="rvps2"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
 <tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Code</span></p>
+<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts20">Code</span></p>
 </td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Status</span></p>
+<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts20">Status</span></p>
 </td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Date</span></p>
+<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts20">Date</span></p>
 </td>
 </tr>
 <tr valign="top">
@@ -143,7 +143,7 @@
 <li class="rvps2"><span class="rvts6">Value 1</span></li>
 <li class="rvps2"><span class="rvts6">Value 3</span></li>
 </ul>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Code Systems and Value Sets</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Code Systems and Value Sets</span></span></h2>
 <p class="rvps2"><span class="rvts6">Trifolia creates a relationship between a code system and a value set member. It does not currently track members of code systems outside of this relationship. Code systems are only used to reference a name/identifier combination.</span></p>
 <p class="rvps2"><span class="rvts6">A code system is referenced in one of the following ways:</span></p>
 <ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
@@ -151,9 +151,9 @@
 <li class="rvps2"><span class="rvts6">A constraint indicates that an element/attribute in a template/profile must be selected from a code system</span></li>
 <li class="rvps2"><span class="rvts6">A constraint, in combination with the constraint value, indicates that the value is a member of a specified code system</span></li>
 </ul>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Vocabulary XML</span></span></h2>
-<p class="rvps2"><span class="rvts6">Vocabulary XML is used for Schematron validation. Only a value set with a Binding value of </span><span class="rvts18">static</span><span class="rvts6"> is validated by the Schematron.</span></p>
-<p class="rvps2"><span class="rvts6">When you export vocabulary XML, only a value set with a Binding value of </span><span class="rvts18">static</span><span class="rvts6"> is incuded. A value set with a Binding value of </span><span class="rvts18">unspecified</span><span class="rvts6"> (empty) or </span><span class="rvts18">dynamic</span><span class="rvts6"> is ignored.</span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Vocabulary XML</span></span></h2>
+<p class="rvps2"><span class="rvts6">Vocabulary XML is used for Schematron validation. Only a value set with a Binding value of </span><span class="rvts20">static</span><span class="rvts6"> is validated by the Schematron.</span></p>
+<p class="rvps2"><span class="rvts6">When you export vocabulary XML, only a value set with a Binding value of </span><span class="rvts20">static</span><span class="rvts6"> is incuded. A value set with a Binding value of </span><span class="rvts20">unspecified</span><span class="rvts6"> (empty) or </span><span class="rvts20">dynamic</span><span class="rvts6"> is ignored.</span></p>
 <p></p>
 </div>
 	

@@ -26,7 +26,7 @@ namespace Trifolia.Web.Controllers
 
         public ImportController()
         {
-            this.tdb = new TemplateDatabaseDataSource();
+            this.tdb = DBContext.Create();
         }
 
         public ImportController(IObjectRepository tdb)

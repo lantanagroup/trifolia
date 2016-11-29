@@ -810,7 +810,11 @@ var TemplateModel = function (data, viewModel) {
                 return '';
             }
 
-            if (identifier.indexOf('http://') == 0 || identifier.indexOf('https://') == 0) {
+            var baseIdentifier = viewModel.ImplementationGuideBaseIdentifier();
+
+            if (baseIdentifier && identifier.indexOf(baseIdentifier) == 0) {
+                prefix = baseIdentifier;
+            } else if (identifier.indexOf('http://') == 0 || identifier.indexOf('https://') == 0) {
                 prefix = identifier.substring(0, identifier.lastIndexOf('/') + 1);
             } else if (identifier.indexOf('urn:oid:') == 0) {
                 prefix = identifier.substring(0, 8);
@@ -844,13 +848,15 @@ var TemplateModel = function (data, viewModel) {
 
     var validation = ko.validatedObservable({
         Name: self.Name.extend({ required: { message: 'Name is required.' }, maxLength: 255 }),
-        Oid: self.Oid.extend({ required: { message: 'ID is required.' }, maxLength: 255, templateOidFormat: true, templateIdentifierUnique: self.Id}),
+        Oid: self.Oid.extend({ required: { message: 'Identifier is required.' }, maxLength: 255, templateOidFormat: true, templateIdentifierUnique: self.Id}),
         Bookmark: self.Bookmark.extend({ required: { message: 'Bookmark is required.' }, maxLength: 40 }),
         IsOpen: self.IsOpen.extend({ required: { message: 'Extensibility is required.' } }),
         TemplateTypeId: self.TemplateTypeId.extend({ required: { message: 'Template/Profile Type is required.' } }),
         PrimaryContext: self.PrimaryContext.extend({ required: { message: 'Primary Context is required.' } }),
         PrimaryContextType: self.PrimaryContextType.extend({ required: { message: 'Primary Context Type is required.' } }),
-        OwningImplementationGuideId: self.OwningImplementationGuideId.extend({ required: { message: 'Owning Implementation Guide is required.' } })
+        OwningImplementationGuideId: self.OwningImplementationGuideId.extend({ required: { message: 'Owning Implementation Guide is required.' } }),
+        IdentifierPrefix: self.IdentifierPrefix.extend({ required: { message: 'Identifier\'s prefix is required.' } }),
+        IdentifierAfix: self.IdentifierAfix.extend({ required: { message: 'Identifier\s afix is required.' } })
     });
 
     self.AddExtension = function () {
@@ -924,11 +930,26 @@ var TemplateModel = function (data, viewModel) {
         return self.Locked() || !self.IsValid();
     });
 
+    var templateBookmarkChanged = function (newValue, oldValue) {
+        var baseIdentifier = viewModel.ImplementationGuideBaseIdentifier();
+        var isUrl = baseIdentifier ? baseIdentifier.indexOf('http://') == 0 || baseIdentifier.indexOf('https://') == 0 : false;
+
+        if (!isUrl) {
+            return;
+        }
+
+        if (!self.IdentifierAfix() || (oldValue && oldValue.toLowerCase() == self.IdentifierAfix().toLowerCase())) {
+            self.IdentifierAfix(newValue);
+        }
+
+        templateChanged();
+    };
+
     /* Methods */
     self.SubscribeChanges = function () {
         self.Name.subscribe(templateChanged);
         self.Oid.subscribe(templateChanged);
-        self.Bookmark.subscribe(templateChanged);
+        self.Bookmark.subscribeChanged(templateBookmarkChanged);
         self.IsOpen.subscribe(templateChanged);
         self.TemplateTypeId.subscribe(templateChanged);
         self.PrimaryContext.subscribe(templateChanged);

@@ -101,5 +101,10 @@ namespace Trifolia.Plugins.FHIR
             DefaultSampleGenerator sampleGenerator = DefaultSampleGenerator.CreateDefaultSampleGenerator(tdb, template);
             return sampleGenerator.GenerateSample();
         }
+
+        protected byte[] ConvertToBytes(string content)
+        {
+            return System.Text.Encoding.UTF8.GetBytes(content);
+        }
     }
 }

@@ -54,6 +54,10 @@
       <HintPath>..\libraries\Hl7.Fhir.STU3.Specification.dll</HintPath>
       <Aliases>fhir_stu3</Aliases>
     </Reference>
+    <Reference Include="Hl7.FluentPath">
+      <HintPath>..\libraries\Hl7.FluentPath.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -76,17 +80,17 @@
     <Compile Include="FHIR\STU3Helper.cs" />
     <Compile Include="FHIR\SummaryType.cs" />
     <Compile Include="FHIR\TemplateConstraintExtensions.cs" />
-    <Compile Include="FilterOrganizationHelper.cs" />
     <Compile Include="HttpWebClient.cs" />
     <Compile Include="IdentifierHelper.cs" />
+    <Compile Include="JiraIssue.cs" />
+    <Compile Include="JIRAIssueData.cs" />
+    <Compile Include="JiraUserSearchResponse.cs" />
     <Compile Include="Plugins\IGTypePluginFactory.cs" />
     <Compile Include="Plugins\IIGTypePlugin.cs" />
     <Compile Include="ImplementationGuideExtension.cs" />
     <Compile Include="ImplementationGuideTypeExtension.cs" />
     <Compile Include="ImportExport\Model\TemplateExport.Designer.cs" />
     <Compile Include="IWebClient.cs" />
-    <Compile Include="JIRAProxy.cs" />
-    <Compile Include="JiraSoapServiceService.cs" />
     <Compile Include="LookupPublishStatus.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="PublishStatuses.cs" />
@@ -113,6 +117,7 @@
     <Compile Include="LookupValueSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleSchema.cs" />
+    <Compile Include="SupportTypes.cs" />
     <Compile Include="TemplateConstraintExtensions.cs" />
     <Compile Include="TemplateExtensions.cs" />
     <Compile Include="TemplateValidationResult.cs" />
@@ -125,7 +130,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Properties\DataSources\TemplateDatabaseDataSource.datasource" />
     <None Include="ImportExport\Model\TemplateExport.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -21,8 +21,23 @@ namespace Trifolia.Web.Controllers
             if (User.Identity.IsAuthenticated && CheckPoint.Instance.User == null)
                 return RedirectToAction("NewProfile", "Account");
 
+            return Home();
+        }
+
+        //
+        // GET: /Home/
+        public ActionResult Index()
+        {
+            if (User.Identity.IsAuthenticated)
+                return RedirectToAction("LoggedInIndex");
+
+            return Home();
+        }
+
+        private ActionResult Home()
+        {
             HomeModel model = new HomeModel();
-            
+
             model.DisplayInternalTechSupportPanel = CheckPoint.Instance.IsDataAdmin;
 
             // Determine the did you know tip
@@ -37,34 +52,7 @@ namespace Trifolia.Web.Controllers
                 model.WhatsNewMessages.Add(lCurrentMessage);
             }
 
-            return View(model);
-        }
-
-        //
-        // GET: /Home/
-        public ActionResult Index()
-        {
-            if (User.Identity.IsAuthenticated)
-                return RedirectToAction("LoggedInIndex");
-
-            LogInViewModel model = new LogInViewModel();
-            string redirectUrl = string.Format("{0}://{1}/Account/DoHL7Login",
-                Request.Url.Scheme,
-                Request.Url.Authority);
-
-            model.DisplayInternalTechSupportPanel = CheckPoint.Instance.IsDataAdmin;
-
-            // Determine the HL7 login link
-            model.HL7LoginLink = string.Format(AppSettings.HL7LoginUrlFormat,
-                AppSettings.HL7ApiKey,
-                redirectUrl);
-
-            // Determine the did you know tip
-            var didYouKnowTips = Properties.Settings.Default.DidYouKnowItems;
-            int randIndex = new Random().Next(0, didYouKnowTips.Count);
-            model.DidYouKnowTip = didYouKnowTips[randIndex <= didYouKnowTips.Count - 1 ? randIndex : didYouKnowTips.Count - 1];
-
-            return View(model);
+            return View("Index", model);
         }
 
         public ActionResult Error(string message = null)

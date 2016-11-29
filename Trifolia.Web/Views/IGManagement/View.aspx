@@ -112,6 +112,10 @@
             <!-- ko if: ViewWebIG() && WebPublications().length > 0 -->
             <li><a href="#webPublications" data-toggle="tab">Web Publications</a></li>
             <!-- /ko -->
+            <!-- ko if: $root.FhirXml() || $root.FhirJson() -->
+            <li><a href="#fhirXml" data-toggle="tab">FHIR XML</a></li>
+            <li><a href="#fhirJson" data-toggle="tab">FHIR JSON</a></li>
+            <!-- /ko -->
         </ul>
 
         <div class="tab-content">
@@ -367,6 +371,20 @@
                 </ul>
             </div>
             <!-- /ko -->
+
+            <!-- FHIR XML -->
+            <!-- ko if: FhirXml() -->
+            <div class="tab-pane" id="fhirXml">
+                <pre data-bind="text: FhirXml"></pre>
+            </div>
+            <!-- /ko -->
+
+            <!-- FHIR JSON -->
+            <!-- ko if: FhirJson() -->
+            <div class="tab-pane" id="fhirJson">
+                <pre data-bind="text: FhirJson"></pre>
+            </div>
+            <!-- /ko -->
         </div>
 
         <div id="publishDateSelector" class="modal fade">
@@ -397,6 +415,7 @@
         <!-- /.modal -->
     </div>
     
+    <script src="/Scripts/vkbeautify.0.99.00.beta.js"></script>
     <script type="text/javascript" src="../../Scripts/IGManagement/View.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript">
         var viewModel = null;

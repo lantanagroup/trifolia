@@ -1,25 +1,25 @@
-﻿<%@ Page Title="Trifolia Workbench - Home" Language="C#" MasterPageFile="~/Views/Shared/Site.MVC.Master" CodeBehind="~/Views/Home/Index.aspx.cs" Inherits="Trifolia.Web.Views.Home.Index" %>
-
-<asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
-</asp:Content>
+﻿<%@ Page Title="Trifolia Workbench - Home" Language="C#" MasterPageFile="~/Views/Shared/Site.MVC.Master" Inherits="System.Web.Mvc.ViewPage<Trifolia.Web.Models.HomeModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>
-        Welcome to Trifolia Workbench!
-    </h2>
-    <h3>
-        HL7 Members can login and non-members can register to use Trifolia Workbench
-        <a href="<%# Model.HL7LoginLink %>">here.</a>
-    </h3>
 
-    <% if (Model.DisplayInternalTechSupportPanel) { %>
-    <div class="panel">
-        <div class="panel-body">Technical issues can be reported <a href="https://jira.lantanagroup.com/browse/TDBMGMT" target="_support"></a></div>
-    </div>
-    <% } %>
+    <h2>Welcome to Trifolia Workbench!</h2>
 
-    <div class="panel">
-        <div class="panel-heading">Did you know?</div>
-        <div class="panel-body"><%# Model.DidYouKnowTip %></div>
-    </div>
+    <p>
+        <strong>Did you know?</strong>
+        <br />
+        <label><%= Model.DidYouKnowTip %></label>
+    </p>
+
+    <div id="whatsnew"></div>
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
+    <script type="text/javascript" src="/Scripts/Home/LoggedIn.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+    <script type="text/javascript">
+        var versionNumber = "<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>";
+
+        $(document).ready(function () {
+            LoadWhatsNew(versionNumber);
+        });
+    </script>
 </asp:Content>

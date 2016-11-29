@@ -1,4 +1,8 @@
-﻿using System;
+﻿extern alias fhir_dstu1;
+extern alias fhir_dstu2;
+extern alias fhir_stu3;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -21,6 +25,7 @@ using Trifolia.Config;
 using Trifolia.Generation.IG;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Generation.Versioning;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -31,7 +36,7 @@ namespace Trifolia.Web.Controllers.API
         #region Constructor
 
         public ImplementationGuideController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
         }
 
@@ -42,6 +47,10 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
+        /// <summary>
+        /// Returns a list of implementation guides that are editable by the current user
+        /// </summary>
+        /// <returns>IEnumerable&lt;Trifolia.Web.Models.IGManagement.IGListItem&gt;</returns>
         [HttpGet, Route("api/ImplementationGuide/Editable"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_LIST)]
         public IEnumerable<IGListItem> GetEditableImplementationGuides()
         {
@@ -60,6 +69,7 @@ namespace Trifolia.Web.Controllers.API
                     select new IGListItem()
                     {
                         Id = ig.Id,
+                        Identifier = ig.Identifier,
                         Name = ig.NameWithVersion,
                         IsPublished = ig.IsPublished(),
                         Namespace = ig.ImplementationGuideType.SchemaURI
@@ -67,6 +77,12 @@ namespace Trifolia.Web.Controllers.API
                     .OrderBy(y => y.Name);
         }
 
+        /// <summary>
+        /// Returns all implementation guides that the current usre has access to.
+        /// Includes some additional information, such as a URL for the implementation guide to perform an operation based on the listMode sepecified, and whether the current user has access to edit the IG.
+        /// </summary>
+        /// <param name="listMode">What type of URL to return for the implementation guide</param>
+        /// <returns>Trifolia.Web.Models.IGManagement.ListModel</returns>
         [HttpGet, Route("api/ImplementationGuide"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_LIST)]
         public ListModel GetImplementationGuides(IGListModes listMode = IGListModes.Default)
         {
@@ -122,6 +138,12 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
+        /// <summary>
+        /// Gets the template types defined for the implementation guide. Any customizations to the template type's name and description for the specified
+        /// implementation guide is returned here.
+        /// </summary>
+        /// <param name="implementationGuideId">The id of the implementation guide</param>
+        /// <returns>IEnumerable&lt;Trifolia.Web.Models.IGManagement.TemplateTypeListItem&gt;</returns>
         [HttpGet, Route("api/ImplementationGuide/{implementationGuideId}/TemplateType")]
         public IEnumerable<TemplateTypeListItem> GetTemplateTypes(int implementationGuideId)
         {
@@ -143,6 +165,10 @@ namespace Trifolia.Web.Controllers.API
                     });
         }
 
+        /// <summary>
+        /// Gets all template types for all IGs
+        /// </summary>
+        /// <returns>IEnumerable&lt;Trifolia.Web.Models.IGManagement.TemplateTypeListItem&gt;</returns>
         [HttpGet, Route("api/ImplementationGuide/All/TemplateType"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_LIST)]
         public IEnumerable<TemplateTypeListItem> GetTemplateTypes()
         {
@@ -371,6 +397,33 @@ namespace Trifolia.Web.Controllers.API
 
             return primitives;
         }
+        
+        private static string GetIGFileContentTypeDisplay(string contentType)
+        {
+            ImplementationGuideFileTypes igFileType = ImplementationGuideFileTypes.Unknown;
+            Enum.TryParse<ImplementationGuideFileTypes>(contentType, out igFileType);
+
+            switch (igFileType)
+            {
+                case ImplementationGuideFileTypes.Schematron:
+                case ImplementationGuideFileTypes.Vocabulary:
+                    return igFileType.ToString();
+                case ImplementationGuideFileTypes.ImplementationGuide:
+                    return "Implementation Guide Document";
+                case ImplementationGuideFileTypes.SchematronHelper:
+                    return "Schematron Helper";
+                case ImplementationGuideFileTypes.DeliverableSample:
+                    return "Sample (deliverable)";
+                case ImplementationGuideFileTypes.GoodSample:
+                    return "Test Sample (good)";
+                case ImplementationGuideFileTypes.BadSample:
+                    return "Test Sample (bad)";
+                case ImplementationGuideFileTypes.FHIRResourceInstance:
+                    return "FHIR Resource Instance (XML or JSON)";
+                default:
+                    return contentType;
+            }
+        }
 
         [HttpGet, Route("api/ImplementationGuide/{implementationGuideId}/File"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_FILE_VIEW)]
         public IEnumerable<ImplementationGuideFileModel> GetImplementationGuideFiles(int implementationGuideId)
@@ -394,36 +447,9 @@ namespace Trifolia.Web.Controllers.API
                     VersionId = latestVersion.Id,
                     Date = latestVersion.UpdatedDate,
                     Description = currentFile.Description,
-                    Name = currentFile.FileName
+                    Name = currentFile.FileName,
+                    Type = GetIGFileContentTypeDisplay(currentFile.ContentType)
                 };
-
-                switch (currentFile.ContentType)
-                {
-                    case "ImplementationGuide":
-                        newItem.Type = "Implementation Guide Document";
-                        break;
-                    case "Schematron":
-                        newItem.Type = "Schematron";
-                        break;
-                    case "SchematronHelper":
-                        newItem.Type = "Schematron Helper";
-                        break;
-                    case "Vocabulary":
-                        newItem.Type = "Vocabulary";
-                        break;
-                    case "DeliverableSample":
-                        newItem.Type = "Sample (deliverable)";
-                        break;
-                    case "GoodSample":
-                        newItem.Type = "Test Sample (good)";
-                        break;
-                    case "BadSample":
-                        newItem.Type = "Test Sample (bad)";
-                        break;
-                    default:
-                        newItem.Type = currentFile.ContentType;
-                        break;
-                }
 
                 retFiles.Add(newItem);
             }
@@ -609,19 +635,22 @@ namespace Trifolia.Web.Controllers.API
 
             try
             {
-                MailMessage mailMessage = new MailMessage(AppSettings.MailFromAddress, accessManager.Email);
+                string mailTo = !string.IsNullOrEmpty(AppSettings.DebugMailTo) ? AppSettings.DebugMailTo : accessManager.Email;
+                MailMessage mailMessage = new MailMessage(AppSettings.MailFromAddress, mailTo);
                 mailMessage.Subject = string.Format("Trifolia: Request to access " + ig.NameWithVersion);
-                mailMessage.Body = string.Format("User {0} {1} ({2}) from organization {3} has requested access to {4} on {5} @ {6}\nThe user has requested {7} permissions.\n\nMessage from user: {8}\n\nUse this link to add them to the implementation guide: {9}",
+                mailMessage.Body = string.Format("User {0} {1} ({2}) has requested access to {3} on {4} @ {5}\nThe user has requested {6} permissions.\n\nMessage from user: {7}\n\nUse this link to add them to the implementation guide: {8}",
                     currentUser.FirstName,
                     currentUser.LastName,
                     currentUser.Email,
-                    currentUser.Organization.Name,
                     ig.GetDisplayName(),
                     DateTime.Now.ToShortDateString(),
                     DateTime.Now.ToShortTimeString(),
                     edit ? "edit" : "view",
                     !string.IsNullOrEmpty(message) ? message : "None",
                     ig.GetEditUrl(true));
+
+                if (!string.IsNullOrEmpty(AppSettings.DebugMailTo))
+                    mailMessage.Subject = "DEBUG: " + mailMessage.Subject;
 
                 SmtpClient client = new SmtpClient(AppSettings.MailHost, AppSettings.MailPort);
                 client.EnableSsl = AppSettings.MailEnableSSL;
@@ -683,16 +712,19 @@ namespace Trifolia.Web.Controllers.API
             return result;
         }
 
+        /// <summary>
+        /// Returns all information related to an implementation guide to be edited
+        /// </summary>
+        /// <param name="implementationGuideId">The id of the implementation guide</param>
+        /// <returns>Trifolia.Web.Models.IGManagement.EditModel</returns>
         [HttpGet, Route("api/ImplementationGuide/Edit/{implementationGuideId?}"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
         public EditModel Edit(int? implementationGuideId = null)
         {
             if (implementationGuideId != null && !CheckPoint.Instance.GrantEditImplementationGuide(implementationGuideId.Value))
                 throw new AuthorizationException("You do not have permissions to edit this implementation guide!");
 
-            EditModel model = new EditModel()
-            {
-                OrganizationId = CheckPoint.Instance.User.OrganizationId
-            };
+            ImplementationGuide implementationGuide = implementationGuideId != null ? this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId) : null;
+            EditModel model = new EditModel();
 
             if (implementationGuideId != null)
             {
@@ -729,37 +761,11 @@ namespace Trifolia.Web.Controllers.API
                 model.CardinalityZeroOrOne = "zero or one [0..1]";
             }
 
-            // Always load default permissions for both pre-existing implementation guides and new IGs
-            Organization org = implementationGuideId != null ?
-                this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId).Organization :
-                CheckPoint.Instance.GetUser(this.tdb).Organization;
-
-            foreach (OrganizationDefaultPermission cDefaultPerm in org.DefaultPermissions)
-            {
-                EditModel.Permission newDefaultPermission = new EditModel.Permission()
-                {
-                    Id = cDefaultPerm.PrimaryId(),
-                    Type = cDefaultPerm.MemberType()
-                };
-
-                if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.EntireOrganization)
-                    newDefaultPermission.Name = string.Format("Entire Organization ({0})", cDefaultPerm.Organization.Name);
-                else if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.Group)
-                    newDefaultPermission.Name = string.Format("{0} ({1})", cDefaultPerm.Group.Name, cDefaultPerm.Group.Organization.Name);
-                else if (newDefaultPermission.Type == Models.PermissionManagement.PermissionTypes.User)
-                    newDefaultPermission.Name = string.Format("{0} {1} ({2})", cDefaultPerm.User.FirstName, cDefaultPerm.User.LastName, cDefaultPerm.User.Organization.Name);
-
-                if (cDefaultPerm.Permission == "View")
-                    model.DefaultViewPermissions.Add(newDefaultPermission);
-                else if (cDefaultPerm.Permission == "Edit")
-                    model.DefaultEditPermissions.Add(newDefaultPermission);
-            }
-
             User me = CheckPoint.Instance.GetUser(this.tdb);
             EditModel.Permission newUserDefaultPermission = new EditModel.Permission()
             {
                 Id = me.Id,
-                Name = string.Format("{0} {1} ({2})", me.FirstName, me.LastName, me.Organization.Name),
+                Name = string.Format("{0} {1} ({2})", me.FirstName, me.LastName, me.Email),
                 Type = Models.PermissionManagement.PermissionTypes.User
             };
 
@@ -773,34 +779,75 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
-        [HttpGet, Route("api/ImplementationGuide/Edit/Name/Validate")]
+        /// <summary>
+        /// Validates that the specified name is unique.
+        /// </summary>
+        /// <param name="igName">The name to validate</param>
+        /// <param name="implementationGuideId">If an implementation guide id is specified here, it will ignore the implementation guide as part of validation so that validation doesn't fail against itself.</param>
+        /// <returns>bool</returns>
+        [HttpGet, Route("api/ImplementationGuide/Validate/Name")]
         public bool ValidateName(string igName, int? implementationGuideId = null)
         {
+            if (string.IsNullOrEmpty(igName))
+                return false;
+
             return this.ValidateName(this.tdb, igName, implementationGuideId);
+        }
+
+        /// <summary>
+        /// Validates that the specified identifier is unique.
+        /// </summary>
+        /// <param name="identifier">The identifier to validate</param>
+        /// <param name="implementationGuideId">If an implementation guide id is specified here, it will ignore the implementation guide as part of validation so that validation doesn't fail against itself.</param>
+        /// <returns>bool</returns>
+        [HttpGet, Route("api/ImplementationGuide/Validate/Identifier")]
+        public bool ValidateIdentifier(string identifier, int? implementationGuideId)
+        {
+            if (string.IsNullOrEmpty(identifier))
+                return false;
+
+            return this.ValidateIdentifier(this.tdb, identifier, implementationGuideId);
+        }
+
+        private List<int> GetIgnoredImplementationGuides(IObjectRepository tdb, int? implementationGuideId = null)
+        {
+            List<int> ignoreIgs = new List<int>();
+
+            if (implementationGuideId != null)
+            {
+
+                // Ignore names for previous versions of the specified implementation guide
+                var current = tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId);
+                while (current != null)
+                {
+                    ignoreIgs.Add(current.Id);
+                    current = tdb.ImplementationGuides.SingleOrDefault(y => y.Id == current.PreviousVersionImplementationGuideId);
+                }
+
+                // Ignore names for next versions of the specified implementation guide
+                current = tdb.ImplementationGuides.FirstOrDefault(y => y.PreviousVersionImplementationGuideId == implementationGuideId);
+                while (current != null)
+                {
+                    ignoreIgs.Add(current.Id);
+                    current = tdb.ImplementationGuides.FirstOrDefault(y => y.PreviousVersionImplementationGuideId == current.Id);
+                }
+            }
+
+            return ignoreIgs;
         }
 
         private bool ValidateName(IObjectRepository tdb, string igName, int? implementationGuideId = null)
         {
-            List<int> ignoreIgs = new List<int>();
+            List<int> ignoreIgs = GetIgnoredImplementationGuides(tdb, implementationGuideId);
+            var count = tdb.ImplementationGuides.Count(y => !ignoreIgs.Contains(y.Id) && y.Name.ToLower() == igName.ToLower());
+            return count == 0;
+        }
 
-            // Ignore names for previous versions of the specified implementation guide
-            var current = tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId);
-            while (current != null)
-            {
-                ignoreIgs.Add(current.Id);
-                current = tdb.ImplementationGuides.SingleOrDefault(y => y.Id == current.PreviousVersionImplementationGuideId);
-            }
-
-            // Ignore names for next versions of the specified implementation guide
-            current = tdb.ImplementationGuides.FirstOrDefault(y => y.PreviousVersionImplementationGuideId == implementationGuideId);
-            while (current != null)
-            {
-                ignoreIgs.Add(current.Id);
-                current = tdb.ImplementationGuides.FirstOrDefault(y => y.PreviousVersionImplementationGuideId == current.Id);
-            }
-
-            var found = tdb.ImplementationGuides.SingleOrDefault(y => !ignoreIgs.Contains(y.Id) && y.Name.ToLower() == igName.ToLower());
-            return found == null;
+        private bool ValidateIdentifier(IObjectRepository tdb, string identifier, int? implementationGuideId = null)
+        {
+            List<int> ignoreIgs = GetIgnoredImplementationGuides(tdb, implementationGuideId);
+            var count = tdb.ImplementationGuides.Count(y => !ignoreIgs.Contains(y.Id) && y.Identifier.ToLower() == identifier.ToLower());
+            return count == 0;
         }
 
         /// <summary>
@@ -810,11 +857,8 @@ namespace Trifolia.Web.Controllers.API
         /// <exception cref="Exception">Throws an exception if the user is not part of the list, which is intended to be handled in the calling method.</exception>
         private bool UserHasPermissions(User user, List<EditModel.Permission> permissions)
         {
-            var foundMeInOrganizations = (from p in permissions
-                                          join u in this.tdb.Users on p.Id equals u.OrganizationId
-                                          where p.Type == Models.PermissionManagement.PermissionTypes.EntireOrganization &&
-                                          u.Id == user.Id
-                                          select u);
+            if (permissions.Exists(y => y.Type == PermissionTypes.Everyone))
+                return true;
 
             var foundMeInGroups = (from p in permissions
                                    join ug in this.tdb.UserGroups on p.Id equals ug.GroupId
@@ -826,7 +870,7 @@ namespace Trifolia.Web.Controllers.API
                                    where p.Id == user.Id && p.Type == Models.PermissionManagement.PermissionTypes.User
                                    select p);
 
-            return foundMeInOrganizations.Count() > 0 || foundMeInGroups.Count() > 0 || foundMeDirectly.Count() > 0;
+            return foundMeInGroups.Count() > 0 || foundMeDirectly.Count() > 0;
         }
 
         private EditModel GetEditModel(int implementationGuideId)
@@ -838,6 +882,7 @@ namespace Trifolia.Web.Controllers.API
             EditModel model = new EditModel()
             {
                 Id = ig.Id,
+                Identifier = ig.Identifier,
                 Name = ig.Name,
                 DisplayName = ig.DisplayName,
                 WebDisplayName = ig.WebDisplayName,
@@ -914,17 +959,17 @@ namespace Trifolia.Web.Controllers.API
 
                 switch (cPermission.MemberType())
                 {
-                    case Models.PermissionManagement.PermissionTypes.EntireOrganization:
-                        newPermission.Id = cPermission.OrganizationId.Value;
-                        newPermission.Name = "Entire Organization (" + cPermission.Organization.Name + ")";
+                    case Models.PermissionManagement.PermissionTypes.Everyone:
+                        newPermission.Id = 0;
+                        newPermission.Name = "Everyone";
                         break;
                     case Models.PermissionManagement.PermissionTypes.Group:
                         newPermission.Id = cPermission.GroupId.Value;
-                        newPermission.Name = cPermission.Group.Name + " (" + cPermission.Group.Organization.Name + ")";
+                        newPermission.Name = cPermission.Group.Name;
                         break;
                     case Models.PermissionManagement.PermissionTypes.User:
                         newPermission.Id = cPermission.UserId.Value;
-                        newPermission.Name = cPermission.User.FirstName + " " + cPermission.User.LastName + " (" + cPermission.User.Organization.Name + ")";
+                        newPermission.Name = cPermission.User.FirstName + " " + cPermission.User.LastName + " (" + cPermission.User.Email + ")";
                         break;
                 }
 
@@ -937,13 +982,18 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
+        /// <summary>
+        /// Persists the implementation guide edit model specified. If the model includes a non-0 Id then the existing implementation guide
+        /// is updated with the changes specified in the model. In this case, the current user must have access to edit the implementation guide.
+        /// </summary>
+        /// <param name="aModel">The edit model to create/update</param>
+        /// <returns>int</returns>
+        /// <remarks>Returns the id of the implementation guide</remarks>
         [HttpPost, Route("api/ImplementationGuide/Save"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
         public int SaveImplementationGuide(EditModel aModel)
         {
-            using (IObjectRepository auditedTdb = DBContext.Create())
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                auditedTdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 // Use a transaction scope to make sure that any errors that occur are rolled back, even though there shouldn't be any errors
                 using (var scope = auditedTdb.BeginTransaction())
                 {
@@ -973,6 +1023,7 @@ namespace Trifolia.Web.Controllers.API
                             throw new Exception("An implementation guide with that name already exists!");
                     }
 
+                    ig.Identifier = aModel.Identifier;
                     ig.Name = aModel.Name;
                     ig.DisplayName = aModel.DisplayName;
                     ig.WebDisplayName = aModel.WebDisplayName;
@@ -1166,7 +1217,7 @@ namespace Trifolia.Web.Controllers.API
 
                 ig.Permissions.Add(BuildPermission(ig, "View", cPermission));
 
-                if (cPermission.Type != PermissionTypes.EntireOrganization)
+                if (cPermission.Type != PermissionTypes.Everyone)
                     addedViewPermissions.Add(cPermission);
             }
 
@@ -1177,7 +1228,7 @@ namespace Trifolia.Web.Controllers.API
 
                 ig.Permissions.Add(BuildPermission(ig, "Edit", cPermission));
 
-                if (cPermission.Type != PermissionTypes.EntireOrganization)
+                if (cPermission.Type != PermissionTypes.Everyone)
                 {
                     var foundAddedPermission = addedViewPermissions.SingleOrDefault(y => y.Type == cPermission.Type && y.Id == cPermission.Id);
 
@@ -1239,7 +1290,7 @@ namespace Trifolia.Web.Controllers.API
                         userEmail.User.FirstName,
                         userEmail.User.LastName,
                         userEmail.User.UserName,
-                        userEmail.User.Organization.Name,
+                        userEmail.User.Email,
                         userEmail.Permission == "Edit" ? "edit" : "view",
                         ig.GetDisplayName(),
                         userEmail.Permission == "Edit" ? "view/edit" : "view",
@@ -1269,9 +1320,7 @@ namespace Trifolia.Web.Controllers.API
                 ImplementationGuide = ig
             };
 
-            if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.EntireOrganization)
-                permission.OrganizationId = permissionModel.Id;
-            else if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.Group)
+            if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.Group)
                 permission.GroupId = permissionModel.Id;
             else if (permissionModel.Type == Models.PermissionManagement.PermissionTypes.User)
                 permission.UserId = permissionModel.Id;
@@ -1279,99 +1328,49 @@ namespace Trifolia.Web.Controllers.API
             return permission;
         }
 
-        [HttpGet, Route("api/ImplementationGuide/Edit/User"), SecurableAction()]
-        public MyOrganizationInfo GetMyOrganizationInfo(bool includeGroups = true)
-        {
-            string organizationName = CheckPoint.Instance.OrganizationName;
-            Organization organization = this.tdb.Organizations.Single(y => y.Name == organizationName);
-
-            MyOrganizationInfo model = new MyOrganizationInfo()
-            {
-                MyOrganizationId = organization.Id
-            };
-
-            model.MyGroups.Add(new MyOrganizationInfo.MemberEntry()
-            {
-                Id = model.MyOrganizationId,
-                Name = string.Format("Entire Organization ({0})", organization.Name),
-                Type = PermissionTypes.EntireOrganization
-            });
-
-            if (includeGroups)
-            {
-                foreach (var cGroup in organization.Groups)
-                {
-                    model.MyGroups.Add(new MyOrganizationInfo.MemberEntry()
-                    {
-                        Id = cGroup.Id,
-                        Type = PermissionTypes.Group,
-                        Name = string.Format("{0} ({1})", cGroup.Name, organization.Name)
-                    });
-                }
-            }
-
-            model.OtherOrganizations = (from o in this.tdb.Organizations
-                                        where o.Id != organization.Id
-                                        select new MyOrganizationInfo.OrganizationEntry()
-                                        {
-                                            Id = o.Id,
-                                            Name = o.Name
-                                        }).ToList();
-
-            return model;
-        }
-
-        [HttpGet, Route("api/ImplementationGuide/Edit/User/Search"), SecurableAction()]
-        public IEnumerable<MyOrganizationInfo.MemberEntry> SearchUsers(int organizationId, string searchText, bool includeGroups)
+        [HttpGet, Route("api/ImplementationGuide/Edit/Permission/Search"), SecurableAction()]
+        public IEnumerable<PermissionsInfoModel.MemberEntry> SearchUsers(string searchText, bool includeGroups)
         {
             searchText = searchText.ToLower();
 
-            string myOrganizationName = CheckPoint.Instance.OrganizationName;
-            Organization myOrganization = this.tdb.Organizations.Single(y => y.Name == myOrganizationName);
-            Organization organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
-            List<MyOrganizationInfo.MemberEntry> matches = new List<MyOrganizationInfo.MemberEntry>();
+            List<PermissionsInfoModel.MemberEntry> matches = new List<PermissionsInfoModel.MemberEntry>();
 
             if (!string.IsNullOrEmpty(searchText))
             {
                 matches.AddRange(
                     from u in this.tdb.Users
-                    where u.OrganizationId == organizationId && (
+                    where
                         (u.FirstName + " " + u.LastName).ToLower().Contains(searchText) ||
                         u.Email.Contains(searchText) ||
-                        u.UserName.ToLower().Contains(searchText))
-                    select new MyOrganizationInfo.MemberEntry()
+                        u.UserName.ToLower().Contains(searchText)
+                    select new PermissionsInfoModel.MemberEntry()
                     {
                         Type = PermissionTypes.User,
                         Id = u.Id,
-                        Name = (u.FirstName + " " + u.LastName + " (" + u.Organization.Name + ")")
+                        Name = u.FirstName + " " + u.LastName
                     });
             }
 
             // Only add groups if allowGroupSelection and the requested organization is not "my organization"
-            if (includeGroups && organizationId != myOrganization.Id)
+            if (includeGroups)
             {
-                // Add the "Entire Organization" option
-                if (organizationId != myOrganization.Id)
+                matches.Insert(0, new PermissionsInfoModel.MemberEntry()
                 {
-                    matches.Insert(0, new MyOrganizationInfo.MemberEntry()
-                    {
-                        Id = organizationId,
-                        Name = string.Format("Entire Organization ({0})", organization.Name),
-                        Type = PermissionTypes.EntireOrganization
-                    });
-                }
+                    Id = 0,
+                    Name = string.Format("Everyone"),
+                    Type = PermissionTypes.Everyone
+                });
 
                 if (!string.IsNullOrEmpty(searchText))
                 {
                     // TODO: Add other groups from the organization
                     matches.AddRange(
                         from g in this.tdb.Groups
-                        where g.OrganizationId == organizationId &&
-                            g.Name.ToLower().Contains(searchText)
-                        select new MyOrganizationInfo.MemberEntry()
+                        where g.Name.ToLower().Contains(searchText)
+                        select new PermissionsInfoModel.MemberEntry()
                         {
                             Id = g.Id,
-                            Name = g.Name + " (" + g.Organization.Name + ")",
+                            Name = g.Name,
                             Type = PermissionTypes.Group
                         });
                 }
@@ -1408,10 +1407,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/ImplementationGuide/Edit/Bookmark"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT_BOOKMARKS)]
         public void UpdateBookmarks(EditBookmarksModel model)
         {
-            using (IObjectRepository tdb = DBContext.Create())
+            using (IObjectRepository tdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                tdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
-
                 foreach (var currentTemplateModel in model.TemplateItems)
                 {
                     Template template = tdb.Templates.Single(y => y.Id == currentTemplateModel.Id);
@@ -1488,6 +1485,7 @@ namespace Trifolia.Web.Controllers.API
         {
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
             ViewDataModel model = null;
+            SimpleSchema schema = ig.ImplementationGuideType.GetSimpleSchema();
 
             if (fileId != null)
             {
@@ -1508,6 +1506,7 @@ namespace Trifolia.Web.Controllers.API
             {
                 WIKIParser wikiParser = new WIKIParser(this.tdb);
                 IGSettingsManager igManager = new IGSettingsManager(this.tdb, implementationGuideId);
+                var igTypePlugin = IGTypePluginFactory.GetPlugin(ig.ImplementationGuideType);
                 var firstTemplateType = ig.ImplementationGuideType.TemplateTypes.OrderBy(y => y.OutputOrder).FirstOrDefault();
 
                 model = new ViewDataModel()
@@ -1531,6 +1530,23 @@ namespace Trifolia.Web.Controllers.API
                                              Content = igs.Content,
                                              Level = igs.Level
                                          }).ToList();
+
+                // Include any FHIR Resource Instance attachments with the IG
+                foreach (var fhirResourceInstanceFile in ig.Files.Where(y => y.ContentType == "FHIRResourceInstance"))
+                {
+                    var fileData = fhirResourceInstanceFile.GetLatestData();
+                    string fileContent = System.Text.Encoding.UTF8.GetString(fileData.Data);
+
+                    ViewDataModel.FHIRResource newFhirResource = new ViewDataModel.FHIRResource()
+                    {
+                        Name = fhirResourceInstanceFile.FileName,
+                        JsonContent = igTypePlugin.GetFHIRResourceInstanceJson(fileContent),
+                        XmlContent = igTypePlugin.GetFHIRResourceInstanceXml(fileContent)
+                    };
+
+                    if (!string.IsNullOrEmpty(newFhirResource.JsonContent) || !string.IsNullOrEmpty(newFhirResource.XmlContent))
+                        model.FHIRResources.Add(newFhirResource);
+                }
 
                 // Create the value set models
                 var valueSets = ig.GetValueSets(this.tdb);
@@ -1576,6 +1592,7 @@ namespace Trifolia.Web.Controllers.API
 
                 foreach (var template in templates)
                 {
+                    var templateSchema = schema.GetSchemaFromContext(template.PrimaryContextType);
                     var newTemplateModel = new ViewDataModel.Template()
                     {
                         Identifier = template.Oid,
@@ -1645,9 +1662,11 @@ namespace Trifolia.Web.Controllers.API
 
                     model.Templates.Add(newTemplateModel);
 
+
+
                     // Create the constraint models (hierarchically)
                     var parentConstraints = template.ChildConstraints.Where(y => y.ParentConstraintId == null);
-                    CreateConstraints(wikiParser, igManager, parentConstraints, newTemplateModel.Constraints);
+                    CreateConstraints(wikiParser, igManager, parentConstraints, newTemplateModel.Constraints, templateSchema);
                 }
 
                 // Create models for template types in the IG
@@ -1668,12 +1687,15 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
-        private void CreateConstraints(WIKIParser wikiParser, IGSettingsManager igManager, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList)
+        private void CreateConstraints(WIKIParser wikiParser, IGSettingsManager igManager, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList, SimpleSchema templateSchema, SimpleSchema.SchemaObject schemaObject = null)
         {
             foreach (var constraint in constraints.OrderBy(y => y.Order))
             {
+                if(templateSchema != null && schemaObject == null) schemaObject = templateSchema.Children.SingleOrDefault(y => y.Name == constraint.Context);
+
                 IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, constraint, "#/volume2/", "#/valuesets/#", true, true, true, false);
 
+                //TODO: toss in the check against the schema done in TemplateConstraintTable.cs
                 var newConstraintModel = new ViewDataModel.Constraint()
                 {
                     Number = string.Format("{0}-{1}", constraint.Template.OwningImplementationGuideId, constraint.Number),
@@ -1688,10 +1710,20 @@ namespace Trifolia.Web.Controllers.API
                     ContainedTemplate = constraint.ContainedTemplateId != null ? new ViewDataModel.TemplateReference(constraint.ContainedTemplate) : null
                 };
 
+                var isFhir = constraint.Template.ImplementationGuideType.SchemaURI == ImplementationGuideType.FHIR_NS;
+
+                // Check if we're dealing with a FHIR constraint
+                if (isFhir && schemaObject != null)
+                    newConstraintModel.DataType = schemaObject.DataType;
+
                 parentList.Add(newConstraintModel);
 
+                var nextSchemaObject = schemaObject != null ?
+                    schemaObject.Children.SingleOrDefault(y => y.Name == constraint.Context) :
+                    null;
+
                 // Recursively add child constraints
-                CreateConstraints(wikiParser, igManager, constraint.ChildConstraints, newConstraintModel.Constraints);
+                CreateConstraints(wikiParser, igManager, constraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
             }
         }
 

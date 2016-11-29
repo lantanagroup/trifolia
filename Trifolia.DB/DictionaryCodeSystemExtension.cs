@@ -9,7 +9,7 @@ namespace Trifolia.DB
     {
         public static List<CodeSystem> GetAllCodeSystems()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.CodeSystems.ToList();
             }

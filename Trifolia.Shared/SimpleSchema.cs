@@ -722,6 +722,17 @@ namespace Trifolia.Shared
 
             #endregion
 
+            //public static List<SchemaObject> GetComplexTypesFromSchema(int implementationGuideTypeId)
+            //{
+            //    using (IObjectRepository tdb = DBContext.Create())
+            //    {
+            //        ImplementationGuideType igType = tdb.ImplementationGuideTypes.Single(y => y.Id == implementationGuideTypeId);
+            //        SimpleSchema schema = CreateSimpleSchema(Helper.GetIGSimplifiedSchemaLocation(igType));
+
+            //        return schema.ComplexTypes;
+            //    }
+            //}
+
             #region Private Methods
 
             private string GetChoiceAppInfoText(XmlSchemaAnnotation annotation)

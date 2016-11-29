@@ -9,6 +9,8 @@ using Trifolia.Shared;
 using ExportImplementationGuide = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuide;
 using ExportImplementationGuideCategory = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuideCategory;
 using ExportImplementationGuideSection = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuideVolume1Section;
+using ExportImplementationGuideFile = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuideFile;
+using ExportImplementationGuideFileType = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuideFileType;
 
 namespace Trifolia.Export.Native
 {
@@ -44,6 +46,7 @@ namespace Trifolia.Export.Native
                 status = ig.GetExportStatus(),
                 displayName = ig.DisplayName,
                 webDisplayName = ig.WebDisplayName,
+                organizationName = ig.Organization != null ? ig.Organization.Name : string.Empty,
                 WebDescription = ig.WebDescription,
                 WebReadmeOverview = ig.WebReadmeOverview,
                 Volume1 = null,
@@ -132,6 +135,25 @@ namespace Trifolia.Export.Native
                                  {
                                      name = c
                                  }).ToList();
+
+            foreach (var igFile in ig.Files)
+            {
+                var latestData = igFile.GetLatestData();
+
+                ExportImplementationGuideFile exportIgFile = new ExportImplementationGuideFile()
+                {
+                    name = igFile.FileName,
+                    mimeType = igFile.MimeType,
+                    Description = igFile.Description,
+                    Content = Convert.ToBase64String(latestData.Data)
+                };
+
+                ExportImplementationGuideFileType type = ExportImplementationGuideFileType.BadSample;
+                Enum.TryParse<ExportImplementationGuideFileType>(igFile.ContentType, out type);
+                exportIgFile.type = type;
+
+                exportIg.File.Add(exportIgFile);
+            }
 
             return exportIg;
         }

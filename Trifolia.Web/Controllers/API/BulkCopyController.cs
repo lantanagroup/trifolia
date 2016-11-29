@@ -33,7 +33,7 @@ namespace Trifolia.Web.Controllers.API
         #region Constructors
 
         public BulkCopyController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }
@@ -205,7 +205,6 @@ namespace Trifolia.Web.Controllers.API
                     ImpliedTemplate = baseTemplate.ImpliedTemplate,
                     IsOpen = baseTemplate.IsOpen,
                     Notes = baseTemplate.Notes,
-                    Organization = user.Organization,
                     OwningImplementationGuide = baseTemplate.OwningImplementationGuide,
                     Status = baseTemplate.Status,
                     TemplateType = baseTemplate.TemplateType

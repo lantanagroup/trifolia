@@ -78,6 +78,14 @@
       <HintPath>..\libraries\Hl7.Fhir.STU3.Specification.dll</HintPath>
       <Aliases>fhir_stu3</Aliases>
     </Reference>
+    <Reference Include="Hl7.FluentPath">
+      <HintPath>..\libraries\Hl7.FluentPath.dll</HintPath>
+      <Aliases>fhir_stu3</Aliases>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="LantanaGroup.ValidationUtility">
       <HintPath>..\libraries\LantanaGroup.ValidationUtility.dll</HintPath>
     </Reference>
@@ -107,13 +115,18 @@
       <DependentUpon>DECOR.xsd</DependentUpon>
     </Compile>
     <Compile Include="DECOR\TemplateExporter.cs" />
+    <Compile Include="FHIR\STU3\BuildExporter.cs" />
     <Compile Include="FHIR\STU3\ImplementationGuideExporter.cs" />
+    <Compile Include="FHIR\STU3\Models\Control.cs" />
     <Compile Include="FHIR\STU3\StructureDefinitionExporter.cs" />
+    <Compile Include="FHIR\STU3\TemplateExtensions.cs" />
     <Compile Include="FHIR\STU3\ValueSetExporter.cs" />
     <Compile Include="FHIR\DSTU1\FHIRExporter.cs" />
     <Compile Include="FHIR\DSTU2\ImplementationGuideExporter.cs" />
     <Compile Include="FHIR\DSTU2\StructureDefinitionExporter.cs" />
     <Compile Include="FHIR\DSTU2\ValueSetExporter.cs" />
+    <Compile Include="FHIR\STU3\ValueSetExtensions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Native\ImplementationGuideExtension.cs" />
     <Compile Include="Native\TemplateConstraintExtension.cs" />
     <Compile Include="Native\TemplateExporter.cs" />
@@ -133,6 +146,7 @@
     <None Include="DECOR\DECOR.xsd">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="FHIR\STU3\package.zip" />
     <None Include="packages.config" />
     <None Include="validation.xml.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -175,6 +189,7 @@
       <Name>Trifolia.Validation</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

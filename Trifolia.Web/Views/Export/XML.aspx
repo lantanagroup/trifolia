@@ -18,6 +18,20 @@
             <h2>Export XML/JSON</h2>
             <h3><a data-bind="attr: { href: '/IGManagement/View/' + ImplementationGuideId() }, text: Name"></a></h3>
 
+            <!-- ko if: Messages().length == 1 -->
+            <div class="alert alert-warning">
+                <span data-bind="text: Messages()[0]"></span><br />
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: Messages().length > 1 -->
+            <div class="alert alert-warning">
+                <ul data-bind="foreach: Messages">
+                    <li data-bind="text: $data"></li>
+                </ul>
+            </div>
+            <!-- /ko -->
+
             <input type="hidden" name="ImplementationGuideId" data-bind="value: ImplementationGuideId" />
 
             <!-- Nav tabs -->
@@ -42,18 +56,32 @@
                             <option value="Proprietary">Trifolia XML</option>
                             <!-- ko if: IsFhir() -->
                             <option value="FHIR">FHIR XML</option>
+                            <option value="FHIRBuild">FHIR Build Package (XML)</option>
+                            <option value="FHIRBuildJSON">FHIR Build Package (JSON)</option>
                             <!-- /ko -->
                             <option value="JSON">Data Snapshot (JSON)</option>
                             <!-- ko if: ImplementationGuideType() == 'CDA' -->
                             <option value="DSTU">Templates DSTU</option>
                             <!-- /ko -->
                         </select>
+                        <!-- ko if: XmlType() == 'Proprietary' -->
+                        <span class="help-block">Trifolia's native XML format that includes most (if not all) of the information captured by Trifolia's implementation guide and template/profile editors.</span>
+                        <!-- /ko -->
+                        <!-- ko if: XmlType() == 'FHIR' -->
+                        <span class="help-block">Option is only available for FHIR-based implementation guides. Export is a bundle of the ImplementationGuide resource, all StructureDefinition and all ValueSet resources (if "Include Vocabulary" is specified) that are referenced by the implementation guide.</span>
+                        <!-- /ko -->
+                        <!-- ko if: XmlType() == 'FHIRBuild' -->
+                        <span class="help-block">Option is only available to FHIR-based implementation guides. The export is a ZIP package containing all the necessary files to use the FHIR IG publisher to create a FHIR implementation guide using the data (profiles, value sets, etc.) stored in Trifolia. To build the IG, download the FHIR IG Publisher JAR from <a href="http://build.fhir.org/downloads.html" target="_new">http://build.fhir.org/downloads.html</a>. Place the JAR file in the same directory as the other files extracted from the FHIR Build package, and run one of the "RunXXX.bat" batch files.</span>
+                        <!-- /ko -->
+                        <!-- ko if: XmlType() == 'DSTU' -->
+                        <span class="help-block">A preliminary/draft export of the templates/profiles for the implementation guide that uses the Template DSTU standard.</span>
+                        <!-- /ko -->
                     </div>
 
-                    <!-- ko if: XmlType() == 'FHIR' -->
+                    <!-- ko if: XmlType() == 'FHIR' || XmlType() == 'FHIRBuild' -->
                     <div class="form-group">
                         <label>Include Vocabulary?</label>
-                        <select class="form-control" name="IncludeVocabulary">
+                        <select class="form-control" name="IncludeVocabulary" data-bind="value: IncludeVocabulary">
                             <option value="false" selected="selected">No</option>
                             <option value="true">Yes</option>
                         </select>
@@ -107,7 +135,7 @@
             </div>
     
             <div class="btn-group">
-                <button class="btn btn-primary" type="button" id="ExportButton" data-bind="click: Export">Export</button>
+                <button class="btn btn-primary" type="button" id="ExportButton" data-bind="click: Export, enable: EnableExportButton">Export</button>
                 <button class="btn btn-default" type="button" id="CancelButton" data-bind="click: Cancel">Cancel</button>
             </div>
         </div>

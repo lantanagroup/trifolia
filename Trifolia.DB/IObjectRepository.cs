@@ -12,7 +12,7 @@ namespace Trifolia.DB
 {
     public interface IObjectRepository :IDisposable
     {
-        void AuditChanges(string auditUserName, string auditOrganization, string auditIP);
+        void AuditChanges(string auditUserName, string auditIP);
 
         IObjectSet<AuditEntry> AuditEntries { get; }
         IObjectSet<CodeSystem> CodeSystems { get; }
@@ -48,14 +48,13 @@ namespace Trifolia.DB
         IObjectSet<ViewTemplatePermission> ViewTemplatePermissions { get; }
         IObjectSet<ViewImplementationGuidePermission> ViewImplementationGuidePermissions { get; }
         IObjectSet<ViewUserSecurable> ViewUserSecurables { get; }
-        IObjectSet<OrganizationDefaultPermission> OrganizationDefaultPermissions { get; }
         IObjectSet<ViewImplementationGuideTemplate> ViewImplementationGuideTemplates { get; }
         IObjectSet<TemplateConstraintSample> TemplateConstraintSamples { get; }
         IObjectSet<TemplateSample> TemplateSamples { get; }
         IObjectSet<ViewIGAuditTrail> ViewIGAuditTrails { get; }
         IObjectSet<ImplementationGuideSection> ImplementationGuideSections { get; }
         IObjectSet<TemplateExtension> TemplateExtensions { get; }
-
+        IObjectSet<GroupManager> GroupManagers { get; }
         ObjectResult<SearchValueSetResult> SearchValueSet(Nullable<global::System.Int32> userId, global::System.String searchText, Nullable<global::System.Int32> count, Nullable<global::System.Int32> page, global::System.String orderProperty, Nullable<global::System.Boolean> orderDesc);
         IEnumerable<Nullable<global::System.Int32>> GetImplementationGuideTemplates(Nullable<global::System.Int32> implementationGuideId, Nullable<global::System.Boolean> inferred, Nullable<global::System.Int32> parentTemplateId);
         IEnumerable<Nullable<global::System.Int32>> GetImplementationGuideTemplates(Nullable<global::System.Int32> implementationGuideId, Nullable<global::System.Boolean> inferred, Nullable<global::System.Int32> parentTemplateId, string[] categories);

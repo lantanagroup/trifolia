@@ -24,7 +24,7 @@ namespace Trifolia.Web.Controllers
         }
 
         public PermissionManagementController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         { }
 
         #endregion

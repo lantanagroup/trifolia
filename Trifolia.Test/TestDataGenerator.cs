@@ -34,7 +34,7 @@ namespace Trifolia.Test
             mockRepo.FindOrAddImplementationGuide(igType, "Test IG 2", testOrg);
             mockRepo.FindOrAddImplementationGuide(igType, "Test IG 3", internalOrg);
 
-            Template template1 = mockRepo.GenerateTemplate("1.2.3.4.5", docType, "Test Template 1", ig, null, null, "Test Description 2", "Test Note 1", internalOrg);
+            Template template1 = mockRepo.GenerateTemplate("1.2.3.4.5", docType, "Test Template 1", ig, null, null, "Test Description 2", "Test Note 1");
             template1.Notes = "This is a test note";
 
             // Basic constraint, nothing special
@@ -51,19 +51,19 @@ namespace Trifolia.Test
             TemplateConstraint t1tc3_1 = mockRepo.AddConstraintToTemplate(template1, t1tc3, null, "@code", "SHALL", "1..1", "CE", "SHALL", null, null, t1tc3_vs);
             t1tc3_1.IsStatic = true;
 
-            Template template2 = mockRepo.GenerateTemplate("1.2.3.4.5.6", docType, "Test Template 2", ig, null, null, "Test Description 1", "Test Note 2", internalOrg);
+            Template template2 = mockRepo.GenerateTemplate("1.2.3.4.5.6", docType, "Test Template 2", ig, null, null, "Test Description 1", "Test Note 2");
             template2.ImpliedTemplate = template1;
 
             // Constraint with a child
             TemplateConstraint t2tc1 = mockRepo.AddConstraintToTemplate(template2, null, null, "code", "SHALL", "1..1");
 
-            Template template3 = mockRepo.GenerateTemplate("1.2.3.4.5.6.7", docType, "Test Template 3", ig, null, null, "Test Description 3", "Test Note 3", internalOrg);
+            Template template3 = mockRepo.GenerateTemplate("1.2.3.4.5.6.7", docType, "Test Template 3", ig, null, null, "Test Description 3", "Test Note 3");
 
             TemplateConstraint t3tc1 = mockRepo.AddConstraintToTemplate(template3, null, template2, null, "SHALL", "1..1");
             TemplateConstraint t3tc2 = mockRepo.AddConstraintToTemplate(template3, null, null, "entry", "SHALL", "1..1");
             TemplateConstraint t3tc2_1 = mockRepo.AddConstraintToTemplate(template3, t3tc2, template2, "observation", "SHALL", "1..1");
 
-            Template template4 = mockRepo.GenerateTemplate("8.2234.19.234.11", docType, "Test Constraint Description Template", ig, null, null, null, null, testOrg);
+            Template template4 = mockRepo.GenerateTemplate("8.2234.19.234.11", docType, "Test Constraint Description Template", ig, null, null, null, null);
             mockRepo.AddConstraintToTemplate(template4, null, null, "code", "SHALL", "1..1", "CD", null, null, null, null, null, "Test constraint description");
 
             return mockRepo;

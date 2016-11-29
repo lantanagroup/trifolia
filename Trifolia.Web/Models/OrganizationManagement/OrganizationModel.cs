@@ -16,8 +16,6 @@ namespace Trifolia.Web.Models.OrganizationManagement
 
         public OrganizationModel()
         {
-            this.Groups = new List<OrganizationGroup>();
-            this.Users = new List<OrganizationUser>();
         }
 
         #endregion
@@ -33,12 +31,6 @@ namespace Trifolia.Web.Models.OrganizationManagement
         /// Gets or sets the organization name
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Gets all OrganizationGroups in the current collection, or adds the passed in groups to the collection
-        /// </summary>
-        public List<OrganizationGroup> Groups { get; set; }
-        public List<OrganizationUser> Users { get; set; }
         
         #endregion
     }

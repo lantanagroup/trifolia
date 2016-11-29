@@ -9,7 +9,7 @@ namespace Trifolia.DB
     {
         public static IQueryable<ViewIGAuditTrail> GetImplementationGuideAuditEntries(int implementationGuideId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.ViewIGAuditTrails.Where(y => y.ImplementationGuideId == implementationGuideId);
             }

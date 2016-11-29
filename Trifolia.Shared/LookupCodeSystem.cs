@@ -38,7 +38,7 @@ namespace Trifolia.Shared
 
         public static List<LookupCodeSystem> GetCodeSystems()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return (from cs in tdb.CodeSystems
                         select new LookupCodeSystem()

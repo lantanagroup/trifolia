@@ -12,6 +12,10 @@
     self.Categories = ko.observableArray([]);
     self.SelectedCategories = ko.observableArray([]);
     self.XmlType = ko.observable('Proprietary');
+    self.IncludeVocabulary = ko.observable(false);
+    self.Messages = ko.observableArray();
+    self.IsValidated = ko.observable(false);
+    self.IsLoaded = ko.observable(false);
 
     self.IsFhir = ko.computed(function () {
         return _.some(trifoliaConfig.FhirIgTypes, function (fhirIgType) {
@@ -19,11 +23,40 @@
         });
     });
 
-    var templatesLoaded = false;
+    self.EnableExportButton = ko.computed(function () {
+        return self.IsLoaded() && self.IsValidated();
+    });
 
-    self.RefreshTemplates = function () {
-        templatesLoaded = false;
+    var validate = function () {
+        var exportSettingsModel = {
+            TemplateIds: [],
+            IncludeVocabulary: self.IncludeVocabulary(),
+            XmlType: self.XmlType(),
+            ImplementationGuideId: self.ImplementationGuideId()
+        };
 
+        exportSettingsModel.TemplateIds = _.map(self.Templates(), function (template) {
+            return template.Id();
+        });
+
+        self.IsValidated(false);
+
+        $.ajax({
+            method: 'POST',
+            url: '/api/Export/XML/Validate',
+            data: exportSettingsModel,
+            success: function (messages) {
+                self.Messages(messages);
+                self.IsValidated(true);
+            },
+            error: function (err, err2, err3) {
+                self.Messages([err3]);
+            }
+        });
+    };
+
+    var loadTemplates = function () {
+        var deferred = Q.defer();
         var url = '/api/ImplementationGuide/' + implementationGuideId + '/Template?inferred=' + self.IncludeInferred();
 
         for (var i in self.ParentTemplateIds()) {
@@ -44,9 +77,31 @@
             url: url,
             success: function (results) {
                 ko.mapping.fromJS({ Templates: results }, {}, self);
-                templatesLoaded = true;
+                deferred.resolve();
+            },
+            error: function (err) {
+                deferred.reject(err);
             }
         });
+
+        return deferred.promise;
+    };
+
+    var loadImplementationGuide = function () {
+        var deferred = Q.defer();
+
+        $.ajax({
+            url: '/api/Export/' + implementationGuideId + '/XML',
+            success: function (data) {
+                ko.mapping.fromJS(data, {}, self);
+                deferred.resolve();
+            },
+            error: function (err) {
+                deferred.reject(err);
+            }
+        });
+
+        return deferred.promise;
     };
 
     var parentTemplateIdChanged = function () {
@@ -62,24 +117,7 @@
             self.ParentTemplateIds.push(newParentTemplateId);
         }
 
-        if (templatesLoaded) {
-            self.RefreshTemplates();
-        }
-    };
-
-    self.ParentTemplateIds()[0].Id.subscribe(parentTemplateIdChanged);
-    self.IncludeInferred.subscribe(self.RefreshTemplates);
-    self.SelectedCategories.subscribe(self.RefreshTemplates);
-
-    self.Initialize = function () {
-        $.ajax({
-            url: '/api/Export/' + implementationGuideId + '/XML',
-            success: function (data) {
-                ko.mapping.fromJS(data, {}, self);
-            }
-        });
-
-        self.RefreshTemplates();
+        loadTemplates();
     };
 
     self.SelectAllTemplates = function () {
@@ -96,5 +134,21 @@
         location.href = self.CancelUrl();
     };
 
-    self.Initialize();
+    // Initialize the page
+    loadImplementationGuide()
+        .then(loadTemplates)
+        .then(validate)
+        .then(function () {
+            // Subscriptions
+            self.ParentTemplateIds()[0].Id.subscribe(parentTemplateIdChanged);
+            self.IncludeInferred.subscribe(loadTemplates);
+            self.SelectedCategories.subscribe(loadTemplates);
+            self.XmlType.subscribe(validate);
+
+            // Indicate the page is loaded
+            self.IsLoaded(true);
+        })
+        .catch(function (err) {
+            self.Messages([err]);
+        });
 };

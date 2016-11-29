@@ -167,10 +167,21 @@ namespace Trifolia.Web.Formatters.FHIR.STU3
 
                     if (type == typeof(Resource) || type.IsSubclassOf(typeof(Resource)))
                     {
+                        var parserSettings = new fhir_stu3.Hl7.Fhir.Serialization.ParserSettings();
+                        parserSettings.AcceptUnknownMembers = true;
+                        parserSettings.AllowUnrecognizedEnums = true;
+                        parserSettings.DisallowXsiAttributesOnRoot = false;
+
                         if (readXml)
-                            return FhirParser.ParseResourceFromXml(body);
+                        {
+                            var fhirXmlParser = new FhirXmlParser(parserSettings);
+                            return fhirXmlParser.Parse<Resource>(body);
+                        }
                         else
-                            return FhirParser.ParseResourceFromJson(body);
+                        {
+                            var fhirJsonParser = new FhirJsonParser(parserSettings);
+                            return fhirJsonParser.Parse<Resource>(body);
+                        }
                     }
                     else
                         throw new NotSupportedException(String.Format("Cannot read unsupported type {0} from body", type.Name));

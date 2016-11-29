@@ -12,7 +12,7 @@ namespace Trifolia.DB
 
         public static List<ImplementationGuideType> GetAll()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.ImplementationGuideTypes.ToList();
             }

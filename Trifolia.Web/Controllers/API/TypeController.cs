@@ -22,7 +22,7 @@ namespace Trifolia.Web.Controllers.API
         #region Constructors
 
         public TypeController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

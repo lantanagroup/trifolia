@@ -21,7 +21,7 @@ namespace Trifolia.DB
 
         public static List<ImplementationGuideFile> GetImplementationGuideSamples(int implementationGuideId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.ImplementationGuideFiles.Where(y => y.ImplementationGuideId == implementationGuideId)
                             .Where(y => y.ContentType == ContentTypeGoodSample || y.ContentType == ContentTypeBadSample)
@@ -31,7 +31,7 @@ namespace Trifolia.DB
 
         public static List<ImplementationGuideFile> GetImplementationGuideSchematrons(int implementationGuideId)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 return tdb.ImplementationGuideFiles.Where(y => y.ImplementationGuideId == implementationGuideId && y.ContentType == ContentTypeSchematron)
                             .ToList();

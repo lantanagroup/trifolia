@@ -61,7 +61,7 @@ namespace Trifolia.Test
             context.Request.Cookies.Add(faCookie);
             */
 
-            TrifoliaApiIdentity identity = new TrifoliaApiIdentity(userName, organizationName);
+            TrifoliaApiIdentity identity = new TrifoliaApiIdentity(userName);
             GenericPrincipal principal = new GenericPrincipal(identity, null);
 
             context.User = principal;

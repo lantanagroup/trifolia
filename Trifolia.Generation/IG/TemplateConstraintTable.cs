@@ -98,17 +98,22 @@ namespace Trifolia.Generation.IG
                         DocHelper.CreateRun(templateXpath))));
             t.Append(templateRow);
 
+            SimpleSchema schema = template.ImplementationGuideType.GetSimpleSchema();
+            schema = schema.GetSchemaFromContext(template.PrimaryContextType);
+
             // Start out creating the first set of rows with root (top-level) constraints (constraints that don't have children)
             foreach (TemplateConstraint cConstraint in rootConstraints.OrderBy(y => y.Order))
             {
                 if (this.HasSelectedCategories && !string.IsNullOrEmpty(cConstraint.Category) && !this.selectedCategories.Contains(cConstraint.Category))
                     continue;
 
-                this.AddTemplateTableConstraint(template, t, cConstraint, 1, includeCategoryHeader);
+                var schemaObject = schema != null ? schema.Children.SingleOrDefault(y => y.Name == cConstraint.Context) : null;
+
+                this.AddTemplateTableConstraint(template, t, cConstraint, 1, includeCategoryHeader, schemaObject);
             }
         }
 
-        private void AddTemplateTableConstraint(Template template, Table table, TemplateConstraint constraint, int level, bool includeCategoryHeader)
+        private void AddTemplateTableConstraint(Template template, Table table, TemplateConstraint constraint, int level, bool includeCategoryHeader, SimpleSchema.SchemaObject schemaObject)
         {
             if (constraint.IsPrimitive != true && !string.IsNullOrEmpty(constraint.Context))
             {
@@ -120,6 +125,11 @@ namespace Trifolia.Generation.IG
                 string fixedValueLink = string.Empty;
                 string levelSpacing = string.Empty;
                 string confNumber = constraint.GetFormattedNumber(this.igSettings.PublishDate);
+                var isFhir = constraint.Template.ImplementationGuideType.SchemaURI == ImplementationGuideType.FHIR_NS;
+
+                // Check if we're dealing with a FHIR constraint
+                if (isFhir && schemaObject != null)
+                    dataType = schemaObject.DataType;
 
                 if (constraint.ValueSet != null)
                     fixedValue = string.Format("{0} ({1})", constraint.ValueSet.Oid, constraint.ValueSet.Name);
@@ -172,8 +182,11 @@ namespace Trifolia.Generation.IG
                 if (this.HasSelectedCategories && !string.IsNullOrEmpty(cConstraint.Category) && !this.selectedCategories.Contains(cConstraint.Category))
                     continue;
 
+                var nextSchemaObject = schemaObject != null ?
+                    schemaObject.Children.SingleOrDefault(y => y.Name == cConstraint.Context) :
+                    null;
 
-                this.AddTemplateTableConstraint(template, table, cConstraint, level + 1, includeCategoryHeader);
+                this.AddTemplateTableConstraint(template, table, cConstraint, level + 1, includeCategoryHeader, nextSchemaObject);
             }
         }
 

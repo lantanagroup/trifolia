@@ -158,7 +158,7 @@ namespace Trifolia.DB
 
         public static List<ImplementationGuide> SearchImplementationGuides()
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 List<ImplementationGuide> retList = tdb.ImplementationGuides
                     .OrderBy(y => y.Name)

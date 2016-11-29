@@ -30,7 +30,7 @@ namespace Trifolia.Web.Controllers
         #region CTOR
 
         public ExportController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }
@@ -52,12 +52,6 @@ namespace Trifolia.Web.Controllers
 
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
 
-            // Check if we need to rediret the user first
-            ActionResult redirect = this.BeforeExport(ig, "MSWord");
-
-            if (redirect != null)
-                return redirect;
-
             return View("MSWord", implementationGuideId);
         }
 
@@ -69,11 +63,6 @@ namespace Trifolia.Web.Controllers
         public ActionResult XML(int implementationGuideId, bool dy = false)
         {
             var implementationGuide = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
-
-            ActionResult redirect = this.BeforeExport(implementationGuide, "Xml");
-
-            if (redirect != null)
-                return redirect;
 
             return View("Xml", implementationGuideId);
         }
@@ -90,12 +79,6 @@ namespace Trifolia.Web.Controllers
 
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
 
-            // Check if we need to rediret the user first
-            ActionResult redirect = this.BeforeExport(ig, "Vocabulary");
-
-            if (redirect != null)
-                return redirect;
-
             return View("Vocabulary", implementationGuideId);
         }
 
@@ -110,12 +93,6 @@ namespace Trifolia.Web.Controllers
                 throw new AuthorizationException("You do not have permissions to this implementation guide.");
 
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
-
-            // Check if we need to rediret the user first
-            ActionResult redirect = this.BeforeExport(ig, "Schematron");
-
-            if (redirect != null)
-                return redirect;
 
             return View("Schematron", implementationGuideId);
         }
@@ -143,36 +120,6 @@ namespace Trifolia.Web.Controllers
                 return "/";
 
             return Request.UrlReferrer.PathAndQuery;
-        }
-
-        /// <summary>
-        /// Checks if the authenticated user is from the HL7 organization.
-        /// If yes, a redirect ActionResult is returned that forwards the user to the HL7 disclaimer page.
-        /// The action result includes a redirectUrl parameter that tells HL7 to redirect the user back to trifolia.
-        /// The redirectUrl parameter of the returned ActionResult includes the retAction passed to this method
-        /// and an implementationGuideId param for the ig. 
-        /// </summary>
-        private ActionResult BeforeExport(ImplementationGuide ig, string retAction)
-        {
-            bool dy = false;
-            bool.TryParse(Request.Params["dy"], out dy);
-
-            // If the user is HL7 authenticated, they must sign a disclaimer before generating the IG
-            if (CheckPoint.Instance.OrganizationName == "HL7" && !dy)
-            {
-                Dictionary<string, string> authData = CheckPoint.Instance.GetAuthenticatedData();
-
-                string userId = authData["UserId"];
-
-                string url = HL7AuthHelper.GetComplianceUrl(
-                    Url.Action(retAction, "Export", new { implementationGuideId = ig.Id, dy = true }, Request.Url.Scheme),
-                    userId,
-                    ig.Name);
-
-                return Redirect(url);
-            }
-
-            return null;
         }
 
         #endregion

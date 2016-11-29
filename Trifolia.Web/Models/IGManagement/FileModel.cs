@@ -17,7 +17,8 @@ namespace Trifolia.Web.Models.IGManagement
             GoodSample = 5,
             BadSample = 6,
             DataSnapshot = 7,
-            Image = 8
+            Image = 8,
+            FHIRResourceInstance = 9
         }
 
         public int? FileId { get; set; }

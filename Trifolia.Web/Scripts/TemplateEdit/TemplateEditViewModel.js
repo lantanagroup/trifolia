@@ -175,9 +175,14 @@ var templateEditViewModel = function (templateId, defaults) {
         var foundTemplateType = ko.utils.arrayFirst(self.TemplateTypes(), function (templateType) {
             return templateType.Id == self.Template().TemplateTypeId();
         });
-        var isFhir = _.some(trifoliaConfig.FhirIgTypes, function (fhirIgType) {
-            return fhirIgType.Name == foundTemplateType.ImplementationGuideType;
-        });
+
+        var isFhir = false;
+
+        if (foundTemplateType) {
+            _.some(trifoliaConfig.FhirIgTypes, function (fhirIgType) {
+                return fhirIgType.Name == foundTemplateType.ImplementationGuideType;
+            });
+        }
 
         self.IsFhir(isFhir);
         self.IsFhirExtension(isFhir && foundTemplateType.RootContextType == 'Extension');
@@ -200,7 +205,11 @@ var templateEditViewModel = function (templateId, defaults) {
             initializeFhirProperties();
 
             if (!self.Template().Oid() && self.IsFhir()) {
-                self.Template().Oid(location.origin + '/api/FHIR2/StructureDefinition/');
+                if (self.ImplementationGuideBaseIdentifier()) {
+                    self.Template().IdentifierPrefix(self.ImplementationGuideBaseIdentifier());
+                } else {
+                    self.Template().IdentifierPrefix(location.origin + '/api/FHIR2/StructureDefinition/');
+                }
             }
 
             self.InitializeAppliesToNodeLevel(null)
@@ -1277,6 +1286,36 @@ var templateEditViewModel = function (templateId, defaults) {
         });
     };
 
+    self.ImplementationGuideBaseIdentifier = ko.computed(function () {
+        if (!self.Template().OwningImplementationGuideId()) {
+            return '';
+        }
+
+        var ig = _.find(self.ImplementationGuides(), function (ig) {
+            return ig.Id == self.Template().OwningImplementationGuideId();
+        });
+
+        if (!ig || !ig.Identifier) {
+            return '';
+        }
+
+        var initIdentifier = ig.Identifier;
+
+        if (initIdentifier.indexOf('http://') == 0 || initIdentifier.indexOf('https://') == 0) {
+            if (initIdentifier.lastIndexOf('/') != initIdentifier.length - 1) {
+                initIdentifier += '/';
+            }
+
+            var initIdentifierAfix = 'StructureDefinition/';
+
+            if (initIdentifier.lastIndexOf(initIdentifierAfix) != initIdentifier.length - initIdentifierAfix.length) {
+                initIdentifier += 'StructureDefinition/';
+            }
+        }
+
+        return initIdentifier;
+    });
+
     self.InitializeImplementationGuides = function () {
         var startTime = new Date().getTime();
         $.ajax({
@@ -1325,9 +1364,11 @@ var templateEditViewModel = function (templateId, defaults) {
         $.ajax({
             method: 'GET',
             url: '/api/ImplementationGuide/' + implementationGuideId + '/TemplateType',
+            async: false,       // Knockout is not recognizing changes to self.TemplateTypes sporratically when this runs async:true
             success: function (templateTypes) {
                 self.TemplateTypes(templateTypes);
-                console.log('Done loading template/profile types: ' + (new Date().getTime() - startTime) + ' milliseconds');
+
+                console.log('Done loading template/profile types (count: ' + self.TemplateTypes().length + '): ' + (new Date().getTime() - startTime) + ' milliseconds');
                 deferred.resolve(templateTypes);
             },
             error: function (err) {

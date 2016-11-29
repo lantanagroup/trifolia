@@ -15,7 +15,6 @@ namespace Trifolia.Shared.FHIR
 
         public const string DEFAULT_IG_NAME = "Unowned FHIR DSTU2 Profiles";
         public const string DEFAULT_USER_NAME = "admin";
-        public const string DEFAULT_ORG_NAME = "LCG";
         public const string STRUCDEF_NEW_IDENTIFIER_FORMAT = "https://trifolia.lantanagroup.com/Generated/{0}";
 
         public static string FormatIdentifier(string identifier)

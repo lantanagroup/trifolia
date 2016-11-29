@@ -24,7 +24,7 @@ namespace Trifolia.Web.Controllers.API
         private IObjectRepository tdb;
 
         public TemplateEditorController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }
@@ -137,7 +137,7 @@ namespace Trifolia.Web.Controllers.API
             if (lTemplate.PreviousVersion != null)
             {
                 lViewModel.PreviousVersionLink = "/TemplateManagement/View/" + lTemplate.PreviousVersion.Oid;
-                lViewModel.PreviousVersionName =  lTemplate.PreviousVersion.Name;
+                lViewModel.PreviousVersionName = lTemplate.PreviousVersion.Name;
                 lViewModel.PreviousVersionOid = lTemplate.PreviousVersion.Oid;
             }
 
@@ -385,16 +385,13 @@ namespace Trifolia.Web.Controllers.API
         {
             SaveResponse response = new SaveResponse();
 
-            using (IObjectRepository tdb = DBContext.Create())
+            using (IObjectRepository tdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
                 if (!CheckPoint.Instance.GrantEditImplementationGuide(model.Template.OwningImplementationGuideId))
                     throw new AuthorizationException("You do not have authorization to edit templates associated with the selected implementation guide");
 
                 if (model.Template.Id != null && !CheckPoint.Instance.GrantEditTemplate(model.Template.Id.Value))
                     throw new AuthorizationException("You do not have permission to edit this template");
-
-                // Audit all changes to template and constraints
-                tdb.AuditChanges(CheckPoint.Instance.UserName, CheckPoint.Instance.OrganizationName, CheckPoint.Instance.HostAddress);
 
                 Template template = SaveTemplate(tdb, model.Template);
 
@@ -471,7 +468,6 @@ namespace Trifolia.Web.Controllers.API
             {
                 User currentUser = CheckPoint.Instance.GetUser(tdb);
                 template.AuthorId = currentUser.Id;
-                template.OrganizationId = currentUser.OrganizationId;
             }
 
             ImplementationGuide ig = tdb.ImplementationGuides.Single(y => y.Id == model.OwningImplementationGuideId);

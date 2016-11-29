@@ -8,5 +8,7 @@ namespace Trifolia.Web.Models.IGManagement
     public class IGListItem : ListItem
     {
         public string Namespace { get; set; }
+
+        public string Identifier { get; set; }
     }
 }

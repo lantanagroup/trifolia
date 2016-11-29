@@ -26,16 +26,11 @@ namespace Trifolia.Powershell
             HelpMessage = "The username to authenticate calls with")]
         public string Username { get; set; }
 
-        [Parameter(
-            Mandatory = true,
-            HelpMessage = "The organization that the user belongs to")]
-        public string Organization { get; set; }
-
         protected override void ProcessRecord()
         {
             AppConfig.ConfigLocation = this.ConfigLocation;
 
-            TrifoliaApiIdentity identity = new TrifoliaApiIdentity(this.Username, this.Organization);
+            TrifoliaApiIdentity identity = new TrifoliaApiIdentity(this.Username);
             GenericPrincipal principal = new GenericPrincipal(identity, null);
             Thread.CurrentPrincipal = principal;
         }

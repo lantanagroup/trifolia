@@ -178,7 +178,7 @@ namespace Trifolia.Web.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The bookmark that is used during the export of a MS Word document. The bookmark must be unique, and not contain any special characters (including spaces, with the exception of underscores). The bookmark may not be greater than 40 characters (due to MS Word\&apos;s limitation in bookmark size)..
+        ///   Looks up a localized string similar to The short id is used during the export of a MS Word document and as the id field in FHIR&apos;s StructureDefinition resources. The short id must be unique in the implentation guide, and not contain any special characters (including spaces, with the exception of underscores). The short id may not be greater than 40 characters (due to MS Word\&apos;s limitation in bookmark size)..
         /// </summary>
         public static string TemplateEditorBookmarkTooltip {
             get {
@@ -529,7 +529,7 @@ namespace Trifolia.Web.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bookmark:.
+        ///   Looks up a localized string similar to Short Id:.
         /// </summary>
         public static string TemplateEditorMetaDataBookmarkField {
             get {
@@ -592,7 +592,7 @@ namespace Trifolia.Web.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Identifier:.
+        ///   Looks up a localized string similar to Long Id:.
         /// </summary>
         public static string TemplateEditorMetaDataOidField {
             get {
@@ -637,7 +637,7 @@ namespace Trifolia.Web.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A unique identifier for the template/profile. Must be less than 255 characters..
+        ///   Looks up a localized string similar to A unique identifier for the template/profile. Must be less than 255 characters. For FHIR, this identifier is used as the URL of the StructureDefinition resource and is best practice to use the implementation guide&apos;s base url with the short id..
         /// </summary>
         public static string TemplateEditorOidTooltip {
             get {

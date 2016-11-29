@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: InternalsVisibleTo("Trifolia.Web")]
 [assembly: InternalsVisibleTo("Trifolia.Test")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

@@ -28,7 +28,7 @@ namespace Trifolia.Web.Views.Shared
         
         protected void Page_Load(object sender, EventArgs e)
         {
-            using (TemplateDatabaseDataSource tdb = new TemplateDatabaseDataSource())
+            using (IObjectRepository tdb = DBContext.Create())
             {
                 var user = CheckPoint.Instance.GetUser(tdb);
 

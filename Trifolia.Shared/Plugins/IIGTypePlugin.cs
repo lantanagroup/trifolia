@@ -74,9 +74,13 @@ namespace Trifolia.Shared.Plugins
 
         string ParseIdentifier(string identifier);
 
-        string Export(IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<Template> templates, bool includeVocabulary, bool returnJson = true);
+        byte[] Export(IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<Template> templates, bool includeVocabulary, bool returnJson = true);
 
         string GenerateSample(IObjectRepository tdb, Template template);
+
+        string GetFHIRResourceInstanceXml(string content);
+
+        string GetFHIRResourceInstanceJson(string content);
     }
 
     public enum ExportFormats
@@ -84,6 +88,7 @@ namespace Trifolia.Shared.Plugins
         Proprietary,
         FHIR,
         TemplatesDSTU,
-        Snapshot
+        Snapshot,
+        FHIRBuild
     }
 }

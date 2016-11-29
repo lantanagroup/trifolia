@@ -51,12 +51,16 @@ namespace Trifolia.Powershell
             SimpleSchema schema = ig.ImplementationGuideType.GetSimpleSchema();
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, ig.Id);
             var templates = ig.GetRecursiveTemplates(this.tdb);
-            string export = ig.ImplementationGuideType.GetPlugin().Export(this.tdb, schema, this.Format, igSettings, null, templates, this.IncludeVocab, this.ReturnJson);
+            byte[] export = ig.ImplementationGuideType.GetPlugin().Export(this.tdb, schema, this.Format, igSettings, null, templates, this.IncludeVocab, this.ReturnJson);
 
             if (!string.IsNullOrEmpty(this.OutputFileName))
-                File.WriteAllText(this.OutputFileName, export);
+            {
+                File.WriteAllBytes(this.OutputFileName, export);
+            }
             else
+            {
                 this.WriteObject(export);
+            }
         }
     }
 }

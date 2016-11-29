@@ -52,11 +52,10 @@ code\root] powershell Install.ps1 -rootPath "Dist" -appServicePath "c:\destinati
 | -rootPath | The path to the directory that contains the install files (equivilant to the Dist directory after having run prepare_package.bat | Dist |
 | -appServicePath | The destination directory to install the all of the application files to that IIS will host the application from. The directory must already exist. | c:\trifolia |
 | -appServiceBaseUrl | The URL that Trifolia will be hosted from | http://trifolia |
-| -ADConnection | The LDAP connection string for active directory authentications erver | TestADConnectionString |
-| -ADUsername | The username that can authentication against the directory to validate credentials provided to Trifolia | TestADUser |
-| -ADPassword | The password for the user that can authentication against the directory to validate credentials provided to Trifolia | TestADPass |
 | -DBHost | The hostname of the server that has the SQL Server database on it | MSSQLSERVER |
 | -DBName | The name of the database | trifolia |
+| -ValidationKey | The validation key is used with sessions to encrypt the token used by forms authentication. This should be changed for production environments. | 87AC8F432C8DB844A4EFD024301AC1AB5808BEE9D1870689B63794D33EE3B55CDB315BB480721A107187561F388C6BEF5B623BF31E2E725FC3F3F71A32BA5DFC |
+| -DecryptionKey | The decryption key is used with sessions to decrypt the token used by forms authentication. This should be changed for production environments | E001A307CCC8B1ADEA2C55B1246CDCFE8579576997FF92E7 |
 
 ### Database Installation Script
 The database requires SQL Server 2012 or greater. If creating a brand new installation of Trifolia's database, the -new switch should be provided to the powershell script. The -new switch will trigger creating a fresh install of the database (using the scripts in the "Database\New" directory, as well as prompt the user running the install script to provide some additional information for administrative users and organizations. If the -new switch is omitted, then the "Upgrade" scripts will be executed for the version specified.

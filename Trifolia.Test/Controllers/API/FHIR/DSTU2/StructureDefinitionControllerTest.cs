@@ -182,7 +182,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             mockRepo.InitializeFHIR2Repository();
             mockRepo.InitializeLCGAndLogin();
 
-            var ig = mockRepo.FindOrAddImplementationGuide("FHIR DSTU2", "Test IG");
+            var ig = mockRepo.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU2_IG_TYPE_NAME, "Test IG");
             var template = mockRepo.GenerateTemplate("http://test.com/profile1", "Composition", "Test Composition", ig);
 
             HttpRequestMessage request = new HttpRequestMessage()

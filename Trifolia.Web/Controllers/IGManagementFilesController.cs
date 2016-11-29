@@ -25,7 +25,7 @@ namespace Trifolia.Web.Controllers
         }
 
         public IGManagementFilesController()
-            : this(new TemplateDatabaseDataSource())
+            : this(DBContext.Create())
         {
 
         }

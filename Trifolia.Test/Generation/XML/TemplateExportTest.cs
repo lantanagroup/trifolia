@@ -98,7 +98,6 @@ namespace Trifolia.Test.Generation.XML
             Assert.AreEqual(template.PrimaryContextType, export.contextType);
             Assert.AreEqual(template.Description, export.Description);
             Assert.AreEqual(template.Notes, export.Notes);
-            Assert.AreEqual(template.OrganizationName, export.organizationName);
             
             // Assert constraints
             Assert.IsNotNull(export.Constraint);
@@ -152,7 +151,6 @@ namespace Trifolia.Test.Generation.XML
             Assert.AreEqual(template.PrimaryContextType, export.contextType);
             Assert.AreEqual(template.Description, export.Description);
             Assert.AreEqual(template.Notes, export.Notes);
-            Assert.IsNull(export.organizationName);
             Assert.AreEqual(template.OwningImplementationGuide.Name, export.ImplementationGuide.name);
         }
 

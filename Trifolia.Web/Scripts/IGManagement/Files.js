@@ -24,25 +24,27 @@
     self.FileHistory = ko.observableArray([]);
 
     self.GetTypeDisplay = function (value) {
-        switch (value) {
-            case 0:
+        switch (value.toString()) {
+            case '0':
                 return 'Implementation Guide Document';
-            case 1:
+            case '1':
                 return 'Schematron';
-            case 2:
+            case '2':
                 return 'Schematron Helper';
-            case 3:
+            case '3':
                 return 'Vocabulary';
-            case 4:
+            case '4':
                 return 'Sample (deliverable)';
-            case 5:
+            case '5':
                 return 'Test Sample (good)';
-            case 6:
+            case '6':
                 return 'Test Sample (bad)';
-            case 7:
+            case '7':
                 return 'Data Snapshot (JSON)';
-            case 8:
+            case '8':
                 return 'Image';
+            case '9':
+                return 'FHIR Resource Instance (XML or JSON)';
             default:
                 return 'Unknown';
         }

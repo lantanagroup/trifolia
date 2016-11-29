@@ -103,15 +103,10 @@
                             <li><a href="/TerminologyManagement/Import/Excel">Import Value Sets</a></li>
                             <li><a href="/TerminologyManagement/Import/External">Import External Value Sets</a></li>
                             <li class="divider"></li>
-                            <!-- /ko -->
-                            <!-- ko if: HasSecurable(['OrganizationList']) -->
-                            <li><a href="/Organization/List">Organizations</a></li>
-                            <!-- /ko -->
-                            <!-- ko if: HasSecurable(['OrganizationDetails']) -->
-                            <li><a href="/Organization/My">My Organization</a></li>
-                            <!-- /ko -->
-                            <!-- ko if: HasSecurable(['Admin']) -->
-                            <li><a href="/RoleManagement/Roles">Roles</a></li>
+                            <li><a href="/Admin/Role">Roles</a></li>
+                            <li><a href="/Admin/Group">Groups</a></li>
+                            <li><a href="/Admin/User">Users</a></li>
+                            <li><a href="/Admin/Organization">Organizations</a></li>
                             <li class="divider"></li>
                             <li><a href="/IGTypeManagement/List">Implementation Guide Types</a></li>
                             <!-- /ko -->
@@ -122,7 +117,13 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-question-sign"></i> Help <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#" data-bind="click: function () { helpModel.showHelpMenu(); }">Documentation</a></li>
+                            <!-- ko if: supportViewModel.ShowSupportLink() && !supportViewModel.ShowSupportPopup() -->
+                            <li><a href="#" data-bind="attr: { href: supportViewModel.Config().RedirectUrl }" target="_blank">Support</a></li>
+                            <!-- /ko -->
+                            <!-- ko if: supportViewModel.ShowSupportPopup() -->
                             <li><a href="#" data-bind="click: function () { supportViewModel.ShowSupportRequest(); }">Support</a></li>
+                            <!-- /ko -->
+                            <li><a href="#" data-bind="if: GroupDisclaimers() && GroupDisclaimers().length > 0, click: OpenDisclaimers">Disclaimers</a></li>
                             <li><a href="#" data-bind="click: function () { $('#keyboardShortcutsDialog').modal('show'); }">Keyboard Shortcuts</a></li>
                             <% if (!string.IsNullOrEmpty(this.DatabaseLabel) || !string.IsNullOrEmpty(this.VersionLabel)) { %>
                             <li class="divider"></li>
@@ -140,6 +141,7 @@
                         <ul class="dropdown-menu">
                             <!-- ko if: Me() -->
                             <li><a href="/Account/MyProfile">My Profile</a></li>
+                            <li><a href="/Account/Groups">My Groups</a></li>
                             <li class="divider"></li>
                             <li><a href="/Account/LogOff">Logout</a></li>
                             <!-- /ko -->
@@ -248,6 +250,35 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="GroupDisclaimersDialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Disclaimers</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist" data-bind="foreach: GroupDisclaimers">
+                        <li role="presentation"><a href="#profile" data-bind="css: { active: $index() == 0 }, text: GroupName, attr: { href: '#' + GroupName().replace(/ /g, '').toLowerCase() }" aria-controls="profile" role="tab" data-toggle="tab"></a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content" data-bind="foreach: GroupDisclaimers">
+                        <div role="tabpanel" class="tab-pane" id="home" data-bind="css: { active: $index() == 0 }, attr: { id: GroupName().replace(/ /g, '').toLowerCase() }, html: Disclaimer">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
         
     <!-- Template Selector Knockout Template -->
     <script type="text/html" id="selectTemplateDialogTemplate">
@@ -434,6 +465,7 @@
         $(document).ready(function () {
             $(document).ready(function () {
                 ko.applyBindings(containerViewModel, $('#appnav')[0]);
+                ko.applyBindings(containerViewModel, $('#GroupDisclaimersDialog')[0]);
             });
 
             $(document).mousemove(function (e) {
@@ -453,6 +485,10 @@
             });
 
             $("#keyboardShortcutsDialog").modal({
+                show: false
+            });
+
+            $('#GroupDisclaimersDialog').modal({
                 show: false
             });
 

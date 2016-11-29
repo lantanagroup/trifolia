@@ -1,5 +1,6 @@
 ﻿extern alias fhir_dstu1;
 extern alias fhir_dstu2;
+extern alias fhir_stu3;
 
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,9 @@ using System.Security.Principal;
 
 using FHIR1OperationOutcome = fhir_dstu1.Hl7.Fhir.Model.OperationOutcome;
 using FHIR2OperationOutcome = fhir_dstu2.Hl7.Fhir.Model.OperationOutcome;
+using FHIR3OperationOutcome = fhir_stu3.Hl7.Fhir.Model.OperationOutcome;
+using Trifolia.Authentication.Models;
+using Trifolia.Logging;
 
 namespace Trifolia.Authorization
 {
@@ -36,7 +40,7 @@ namespace Trifolia.Authorization
 
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            if (!CheckPoint.Instance.IsAuthenticated && !CheckPoint.Instance.IsTrustedSharedSecret)
+            if (!CheckPoint.Instance.IsAuthenticated)
             {
                 if (!CheckPoint.Instance.IsAuthenticated)
                     throw new AuthorizationException("Only logged-in users have permission to perform this operation");
@@ -57,51 +61,18 @@ namespace Trifolia.Authorization
 
             if (context.Request.Headers.Authorization != null && context.Request.Headers.Authorization.Scheme == "Bearer")
             {
-                using (IObjectRepository tdb = new TemplateDatabaseDataSource())
+                using (IObjectRepository tdb = DBContext.Create())
                 {
-                    var authorizationDataBytes = System.Convert.FromBase64String(context.Request.Headers.Authorization.Parameter);
-                    var authorizationData = System.Text.Encoding.UTF8.GetString(authorizationDataBytes);
-                    string[] authSplit = authorizationData.Split('|');
+                    var userInfo = OAuth2UserInfo.GetUserInfo(context.Request.Headers.Authorization.Parameter);
+                    var foundUser = tdb.Users.SingleOrDefault(y => y.UserName == userInfo.user_id);
 
-                    if (authSplit.Length != 5)
+                    if (foundUser != null)
                     {
-                        context.ErrorResult = new UnauthorizedResult(new AuthenticationHeaderValue[0], context.Request);
-                        return Task.FromResult(0);
+                        var identity = new TrifoliaApiIdentity(foundUser.UserName);
+                        var currentPrincipal = new GenericPrincipal(identity, null);
+                        context.Principal = currentPrincipal;
+                        Thread.CurrentPrincipal = currentPrincipal;
                     }
-
-                    string userName = authSplit[0];
-                    string organizationName = authSplit[1];
-                    User user = tdb.Users.SingleOrDefault(y => y.UserName == userName && y.Organization.Name == organizationName);
-                    long timestamp = 0;
-
-                    long.TryParse(authSplit[2], out timestamp);
-                    var timestampDate = new DateTime(1970, 1, 1).AddMilliseconds(timestamp);
-                    var salt = authSplit[3];
-                    var requestHashBytes = System.Convert.FromBase64String(authSplit[4]);
-                    var requestHash = System.Text.Encoding.UTF8.GetString(requestHashBytes);
-
-                    if (user == null || timestampDate > DateTime.UtcNow.AddMinutes(ApiKeyTimeout) || timestampDate < DateTime.UtcNow.AddMinutes(ApiKeyTimeout * -1))
-                    {
-                        context.ErrorResult = new UnauthorizedResult(new AuthenticationHeaderValue[0], context.Request);
-                        return Task.FromResult(0);
-                    }
-
-                    var cryptoProvider = new System.Security.Cryptography.SHA1CryptoServiceProvider();
-                    var actualHashData = user.UserName + "|" + user.Organization.Name + "|" + timestamp + "|" + salt + "|" + user.ApiKey;
-                    var actualHashDataBytes = System.Text.Encoding.UTF8.GetBytes(actualHashData);
-                    var actualHashBytes = cryptoProvider.ComputeHash(actualHashDataBytes);
-                    var actualHash = System.Text.Encoding.UTF8.GetString(actualHashBytes);
-
-                    if (actualHash != requestHash)
-                    {
-                        context.ErrorResult = new UnauthorizedResult(new AuthenticationHeaderValue[0], context.Request);
-                        return Task.FromResult(0);
-                    }
-
-                    var identity = new TrifoliaApiIdentity(user.UserName, user.Organization.Name);
-                    var currentPrincipal = new GenericPrincipal(identity, null);
-                    context.Principal = currentPrincipal;
-                    Thread.CurrentPrincipal = currentPrincipal;
                 }
             }
 
@@ -111,10 +82,13 @@ namespace Trifolia.Authorization
         public Task ChallengeAsync(HttpAuthenticationChallengeContext context, System.Threading.CancellationToken cancellationToken)
         {
             ResultWithChallenge.ResponseType responseType = ResultWithChallenge.ResponseType.Default;
-
-            if (context.Request.RequestUri.AbsolutePath.StartsWith("/api/FHIR2"))
+            string absolutePath = context.Request.RequestUri.AbsolutePath;
+            
+            if (absolutePath.StartsWith("/api/FHIR3"))
+                responseType = ResultWithChallenge.ResponseType.FHIR3;
+            else if (absolutePath.StartsWith("/api/FHIR2"))
                 responseType = ResultWithChallenge.ResponseType.FHIR2;
-            else if (context.Request.RequestUri.AbsolutePath.StartsWith("/api/FHIR"))
+            else if (absolutePath.StartsWith("/api/FHIR"))
                 responseType = ResultWithChallenge.ResponseType.FHIR1;
 
             context.Result = new ResultWithChallenge(context.Result, responseType);
@@ -153,52 +127,57 @@ namespace Trifolia.Authorization
             }
             catch (AuthorizationException ex)
             {
+                Log.For(next).Error(ex.Message, ex);
                 errorMessage.StatusCode = HttpStatusCode.Unauthorized;
                 errorMessage.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(authenticationScheme));
                 errorString = ex.Message;
                 errorStackTrace = ex.StackTrace;
             }
-            catch (Exception ex)
-            {
-                errorMessage.StatusCode = HttpStatusCode.InternalServerError;
-                errorString = ex.Message;
-                errorStackTrace = ex.StackTrace;
-            }
+
+            List<string> locations = new List<string>();
+
+            if (!string.IsNullOrEmpty(errorStackTrace))
+                locations.Add(errorStackTrace);
 
             switch (this.responseType)
             {
                 case ResponseType.FHIR1:
                     FHIR1OperationOutcome oo1 = new FHIR1OperationOutcome();
-                    List<string> locations1 = new List<string>();
-
-                    if (!string.IsNullOrEmpty(errorStackTrace))
-                        locations1.Add(errorStackTrace);
 
                     oo1.Issue.Add(new FHIR1OperationOutcome.OperationOutcomeIssueComponent()
                     {
                         Severity = FHIR1OperationOutcome.IssueSeverity.Fatal,
                         Details = errorString,
-                        Location = locations1
+                        Location = locations
                     });
 
                     errorMessage.Content = new StringContent(fhir_dstu1.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToJson(oo1));
                     break;
                 case ResponseType.FHIR2:
                     FHIR2OperationOutcome oo2 = new FHIR2OperationOutcome();
-                    List<string> locations2 = new List<string>();
-
-                    if (!string.IsNullOrEmpty(errorStackTrace))
-                        locations2.Add(errorStackTrace);
 
                     oo2.Issue.Add(new FHIR2OperationOutcome.OperationOutcomeIssueComponent()
                     {
                         Severity = FHIR2OperationOutcome.IssueSeverity.Fatal,
                         Diagnostics = errorString,
                         Code = FHIR2OperationOutcome.IssueType.Exception,
-                        Location = locations2
+                        Location = locations
                     });
 
                     errorMessage.Content = new StringContent(fhir_dstu2.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToJson(oo2));
+                    break;
+                case ResponseType.FHIR3:
+                    FHIR3OperationOutcome oo3 = new FHIR3OperationOutcome();
+
+                    oo3.Issue.Add(new FHIR3OperationOutcome.IssueComponent()
+                    {
+                        Severity = FHIR3OperationOutcome.IssueSeverity.Fatal,
+                        Diagnostics = errorString,
+                        Code = FHIR3OperationOutcome.IssueType.Exception,
+                        Location = locations
+                    });
+
+                    errorMessage.Content = new StringContent(fhir_stu3.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToJson(oo3));
                     break;
             }
 
@@ -209,7 +188,8 @@ namespace Trifolia.Authorization
         {
             Default,
             FHIR1,
-            FHIR2
+            FHIR2,
+            FHIR3
         }
     }
 
@@ -217,17 +197,15 @@ namespace Trifolia.Authorization
     public class TrifoliaApiIdentity : MarshalByRefObject, IIdentity
     {
         private string userName;
-        private string organization;
 
         public TrifoliaApiIdentity()
         {
 
         }
 
-        public TrifoliaApiIdentity(string userName, string organization)
+        public TrifoliaApiIdentity(string userName)
         {
             this.userName = userName;
-            this.organization = organization;
         }
 
         public string AuthenticationType
@@ -243,11 +221,6 @@ namespace Trifolia.Authorization
         public string Name
         {
             get { return this.userName; }
-        }
-
-        public string OrganizationName
-        {
-            get { return this.organization; }
         }
     }
 }

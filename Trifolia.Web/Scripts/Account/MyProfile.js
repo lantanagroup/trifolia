@@ -1,12 +1,19 @@
-﻿userProfileMap = {
-    'include': ['firstName', 'lastName', 'phone', 'email', 'okayToContact', 'organization', 'organizationType']
-};
-
-userProfile = function () {
+﻿var userProfile = function () {
     var self = this;
+    var mapping = {
+        'include': [
+            'firstName',
+            'lastName',
+            'phone',
+            'email',
+            'okayToContact',
+            'organization',
+            'organizationType',
+            'authToken',
+            'openIdConfigUrl']
+    };
 
     self.userName = ko.observable('');
-    self.accountOrganization = ko.observable('');
 
     self.firstName = ko.observable('');
     self.lastName = ko.observable('');
@@ -15,7 +22,8 @@ userProfile = function () {
     self.okayToContact = ko.observable(false);
     self.organization = ko.observable('');
     self.organizationType = ko.observable('');
-    self.apiKey = ko.observable('');
+    self.authToken = ko.observable('');
+    self.openIdConfigUrl = ko.observable('');
 
     self.validation = ko.validatedObservable({
         firstName: self.firstName.extend({ required: true, maxLength: 125 }),
@@ -28,63 +36,68 @@ userProfile = function () {
     self.isValid = ko.computed(function () {
         return self.validation.isValid();
     });
+
+    self.loadJs = function (data) {
+        ko.mapping.fromJS(data, mapping, self);
+    };
 };
 
-myProfileViewModel = function (loadDataUrl, saveDataUrl) {
+var myProfileViewModel = function (loadDataUrl, saveDataUrl) {
     var self = this;
 
     self.dataUrl = loadDataUrl;
     self.saveUrl = saveDataUrl;
     self.model = new userProfile();
-    self.authorizationHeader = ko.observable('');
+    self.openIdConfig = ko.observable(null);
     self.orgTypes = [
         'Provider',
         'Regulator',
         'Vendor',
         'Other'
     ];
+    self.releaseAnnouncementsSubscription = ko.observable(null);
+    self.enableReleaseAnnouncement = ko.observable(false);
 
     var validProfile = ko.validatedObservable(self.model);
 
     self.isValidProfile = ko.computed(function () {
         return validProfile.isValid();
     });
-    
-    $.ajax({
-        url: self.dataUrl,
-        cache: false,
-        contentType: 'application/json; charset=utf-8',
-        complete: function (jqXHR, textStatus) {
-            var aModel = JSON.parse(jqXHR.responseText);
-            ko.mapping.fromJS(aModel, userProfileMap, self.model);
-            self.model.dirtyFlag = ko.dirtyFlag(self.model);
-        }
-    });
 
-    self.generateAuthorizationHeader = function () {
-        var timestamp = Date.now();
-        var salt = Math.random();
-        var properties = self.model.userName() + '|' + self.model.accountOrganization() + '|' + timestamp + '|' + salt + '|';
-        var hashContent = properties + self.model.apiKey();
-        var authBasicValue = properties + CryptoJS.SHA1(hashContent).toString(CryptoJS.enc.Base64);
-        var b64AuthBasicValue = btoa(authBasicValue.toString(CryptoJS.enc.Base64));
-        
-        self.authorizationHeader('Bearer ' + b64AuthBasicValue);
-
-        setTimeout(300000, function () {
-            self.authorizationHeader('');
+    self.getEnableReleaseAnnouncement = function (callback) {
+        $.ajax({
+            url: '/api/Config/ReleaseAnnouncement',
+            success: function (enableReleaseAnnouncement) {
+                self.enableReleaseAnnouncement(enableReleaseAnnouncement);
+                callback();
+            },
+            error: function (err) {
+                console.log(err);
+                alert('Error determining if release announcements are supported');
+            }
         });
     };
 
-    self.generateApiKey = function () {
-        var s4 = function () {
-            return Math.floor((1 + Math.random()) * 0x10000)
-              .toString(16)
-              .substring(1);
-        }
-        var guid = s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    self.getReleaseAnnouncementSubscription = function () {
+        $.ajax({
+            url: '/api/User/Me/ReleaseAnnouncement',
+            success: self.releaseAnnouncementsSubscription,
+            error: function (err) {
+                console.log(err);
+                alert('Error getting release announcement subscription status');
+            }
+        });
+    };
 
-        self.model.apiKey(guid);
+    self.toggleReleaseAnnouncementSubscription = function () {
+        $.ajax({
+            url: '/api/User/Me/ReleaseAnnouncement',
+            method: self.releaseAnnouncementsSubscription() == true ? 'DELETE' : 'POST',
+            success: self.getReleaseAnnouncementSubscription,
+            error: function (err) {
+                alert('Error toggling release announcement subscription');
+            }
+        });
     };
 
     self.saveChanges = function () {
@@ -114,9 +127,37 @@ myProfileViewModel = function (loadDataUrl, saveDataUrl) {
                 }
             },
             success: function (updatedModel) {
-                ko.mapping.fromJS(updatedModel, userProfileMap, self.model);
+                self.model.loadJs(updatedModel);
                 self.model.dirtyFlag = ko.dirtyFlag(self.model);
             }
         });
     };
+
+    $.ajax({
+        url: self.dataUrl,
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        success: function (aModel) {
+            self.model.loadJs(aModel);
+            self.model.dirtyFlag = ko.dirtyFlag(self.model);
+
+            if (aModel.openIdConfigUrl) {
+                $.ajax({
+                    url: aModel.openIdConfigUrl,
+                    success: function (results) {
+                        self.openIdConfig(JSON.stringify(results, null, '\t'));
+                    },
+                    error: function (err) {
+                        alert('Error getting open id configuration');
+                    }
+                });
+            }
+        }
+    });
+
+    self.getEnableReleaseAnnouncement(function () {
+        if (self.enableReleaseAnnouncement()) {
+            self.getReleaseAnnouncementSubscription();      // Only check the release announcement subscription if it is enabled
+        }
+    });
 };

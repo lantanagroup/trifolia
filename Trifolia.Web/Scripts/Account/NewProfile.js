@@ -5,7 +5,7 @@
     self.LastName = ko.observable('');
     self.Phone = ko.observable('');
     self.Email = ko.observable('');
-    self.OkayToContact = ko.observable(false);
+    self.OkayToContact = ko.observable(true);
     self.Organization = ko.observable('');
     self.OrganizationType = ko.observable('');
     self.RedirectUrl = ko.observable(redirectUrl);
@@ -33,6 +33,7 @@ newProfileViewModel = function (redirectUrl) {
         'Vendor',
         'Other'
     ];
+    self.enableReleaseAnnouncement = ko.observable(false);
 
     self.SaveChanges = function () {
         if (!self.Model.isValid()) {
@@ -43,19 +44,16 @@ newProfileViewModel = function (redirectUrl) {
         $('#mainBody').block('Saving changes...');
 
         var data = ko.toJS(self.Model);
-        var stringData = JSON.stringify(data);
 
         $.ajax({
             url: '/Account/CompleteProfile',
             type: 'POST',
-            dataType: 'json',
-            data: stringData,
-            contentType: 'application/json; charset=utf-8',
+            data: data,
             complete: function (jqXHR, textStatus) {
                 $("#mainBody").unblock();
 
                 if (textStatus != 'success') {
-                    showError('There was an error saving your changes; please submit a support ticket');
+                    alert('There was an error saving your changes; please submit a support ticket');
                 } else {
                     var responseRedirectUrl = JSON.parse(jqXHR.responseText);
                     location.href = responseRedirectUrl;
@@ -63,4 +61,16 @@ newProfileViewModel = function (redirectUrl) {
             }
         });
     };
+
+    // Initialization
+    $.ajax({
+        url: '/api/Config/ReleaseAnnouncement',
+        success: function (enableReleaseAnnouncement) {
+            self.enableReleaseAnnouncement(enableReleaseAnnouncement);
+        },
+        error: function (err) {
+            console.log(err);
+            alert('Error determining if release announcements are supported');
+        }
+    });
 };
