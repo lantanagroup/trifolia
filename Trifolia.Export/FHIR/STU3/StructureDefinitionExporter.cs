@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Generation.IG.ConstraintGeneration;
@@ -27,6 +28,7 @@ namespace Trifolia.Export.FHIR.STU3
         private Dictionary<string, StructureDefinition> baseProfiles = new Dictionary<string, StructureDefinition>();
         private ImplementationGuideType implementationGuideType;
         private Bundle profileBundle;
+        private Regex invalidUtf8Characters = new Regex("[^\x00-\x7F]+");
 
         public StructureDefinitionExporter(IObjectRepository tdb, string scheme, string authority)
         {
@@ -119,6 +121,10 @@ namespace Trifolia.Export.FHIR.STU3
 
             var igSettings = GetIGSettings(constraint);
             var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, constraint);
+            string definition = constraintFormatter.GetPlainText(false, false, false);
+
+            if (definition == null)
+                definition = string.Empty;
 
             ElementDefinition newElementDef = new ElementDefinition()
             {
@@ -127,8 +133,8 @@ namespace Trifolia.Export.FHIR.STU3
                 Label = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : null,
                 Comments = !string.IsNullOrEmpty(constraint.Notes) ? constraint.Notes : null,
                 Path = constraint.GetElementPath(strucDef.Type != null ? strucDef.Type.ToString() : null),
-                Name = constraint.IsBranch ? newSliceName : sliceName,
-                Definition = constraintFormatter.GetPlainText(false, false, false)
+                SliceName = constraint.IsBranch ? newSliceName : sliceName,
+                Definition = definition
             };
 
             if (constraint.IsChoice)
@@ -226,6 +232,19 @@ namespace Trifolia.Export.FHIR.STU3
                 // If there is a contained template/profile, make sure it supports a "Reference" type, and then output the profile identifier in the type
                 if (constraint.ContainedTemplate != null && newElementDef.Type.Exists(y => y.Code == "Reference" || y.Code == "Extension"))
                 {
+                    // FHIR requires that referenced profiles be represented by multiple types on a single element
+                    // TODO: There is some potential loss of properties on the second element definition
+                    if (!string.IsNullOrEmpty(sliceName))
+                    {
+                        var foundMatchingElement = strucDef.Differential.Element.SingleOrDefault(y => y.Path == newElementDef.Path && y.SliceName == newElementDef.SliceName);
+
+                        if (foundMatchingElement != null)
+                        {
+                            foundMatchingElement.Definition += " " + definition;
+                            newElementDef = foundMatchingElement;
+                        }
+                    }
+
                     bool isExtension = constraint.ContainedTemplate.PrimaryContextType == "Extension" && newElementDef.Type.Exists(y => y.Code == "Extension");
 
                     var containedTypes = new List<ElementDefinition.TypeRefComponent>();
@@ -239,8 +258,9 @@ namespace Trifolia.Export.FHIR.STU3
                 }
             }
 
-            // Add the element to the list
-            strucDef.Differential.Element.Add(newElementDef);
+            // Add the element to the list if it's new
+            if (!strucDef.Differential.Element.Contains(newElementDef))
+                strucDef.Differential.Element.Add(newElementDef);
 
             // Children
             foreach (var childConstraint in constraint.ChildConstraints.OrderBy(y => y.Order))
@@ -252,11 +272,15 @@ namespace Trifolia.Export.FHIR.STU3
 
         public StructureDefinition Convert(Template template, SimpleSchema schema, SummaryType? summaryType = null)
         {
+            string description = !string.IsNullOrEmpty(template.Description) ?
+                invalidUtf8Characters.Replace(template.Description, "") :
+                null;
+
             var fhirStructureDef = new fhir_stu3.Hl7.Fhir.Model.StructureDefinition()
             {
                 Id = template.FhirId(),
                 Name = template.Name,
-                Description = !string.IsNullOrEmpty(template.Description) ? new Markdown(template.Description) : null,
+                Description = description != null ? new Markdown(description) : null,
                 Kind = StructureDefinition.StructureDefinitionKind.Resource,
                 Url = template.FhirUrl(),
                 Type = template.TemplateType.RootContextType,
@@ -277,11 +301,11 @@ namespace Trifolia.Export.FHIR.STU3
 
             // Status
             if (template.Status == null || template.Status.IsDraft || template.Status.IsBallot)
-                fhirStructureDef.Status = ConformanceResourceStatus.Draft;
+                fhirStructureDef.Status = PublicationStatus.Draft;
             else if (template.Status.IsPublished)
-                fhirStructureDef.Status = ConformanceResourceStatus.Active;
+                fhirStructureDef.Status = PublicationStatus.Active;
             else if (template.Status.IsDraft)
-                fhirStructureDef.Status = ConformanceResourceStatus.Retired;
+                fhirStructureDef.Status = PublicationStatus.Retired;
 
             // Publisher and Contact
             if (template.Author != null)
@@ -289,7 +313,7 @@ namespace Trifolia.Export.FHIR.STU3
                 if (!string.IsNullOrEmpty(template.Author.ExternalOrganizationName))
                     fhirStructureDef.Publisher = template.Author.ExternalOrganizationName;
 
-                var newContact = new StructureDefinition.ContactComponent();
+                var newContact = new ContactDetail();
                 newContact.Name = string.Format("{0} {1}", template.Author.FirstName, template.Author.LastName);
                 newContact.Telecom.Add(new ContactPoint()
                 {
@@ -309,7 +333,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             // Base profile
             if (template.ImpliedTemplate != null)
-                fhirStructureDef.BaseDefinitionElement = new FhirUri(template.ImpliedTemplate.Oid);
+                fhirStructureDef.BaseDefinitionElement = new FhirUri(template.ImpliedTemplate.FhirUrl());
             else
                 fhirStructureDef.BaseDefinitionElement = new FhirUri(string.Format("http://hl7.org/fhir/StructureDefinition/{0}", template.TemplateType.RootContextType));
 

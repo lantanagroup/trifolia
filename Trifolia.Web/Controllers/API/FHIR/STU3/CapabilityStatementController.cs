@@ -8,7 +8,7 @@ using System.Linq;
 using Trifolia.DB;
 using Trifolia.Config;
 
-using FhirConformance = fhir_stu3.Hl7.Fhir.Model.Conformance;
+using CapabilityStatement = fhir_stu3.Hl7.Fhir.Model.CapabilityStatement;
 
 namespace Trifolia.Web.Controllers.API.FHIR.STU3
 {
@@ -17,10 +17,10 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
     public class FHIR3ConformanceController : ApiController
     {
         private IObjectRepository tdb;
-        private FhirConformance.ResourceInteractionComponent searchInteraction;
-        private FhirConformance.ResourceInteractionComponent readInteraction;
-        private FhirConformance.ResourceInteractionComponent updateInteraction;
-        private FhirConformance.ResourceInteractionComponent createInteraction;
+        private CapabilityStatement.ResourceInteractionComponent searchInteraction;
+        private CapabilityStatement.ResourceInteractionComponent readInteraction;
+        private CapabilityStatement.ResourceInteractionComponent updateInteraction;
+        private CapabilityStatement.ResourceInteractionComponent createInteraction;
 
         #region Constructors
 
@@ -28,21 +28,21 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         {
             this.tdb = tdb;
 
-            this.searchInteraction = new FhirConformance.ResourceInteractionComponent()
+            this.searchInteraction = new CapabilityStatement.ResourceInteractionComponent()
             {
-                Code = FhirConformance.TypeRestfulInteraction.SearchType
+                Code = CapabilityStatement.TypeRestfulInteraction.SearchType
             };
-            this.readInteraction = new FhirConformance.ResourceInteractionComponent()
+            this.readInteraction = new CapabilityStatement.ResourceInteractionComponent()
             {
-                Code = FhirConformance.TypeRestfulInteraction.Read
+                Code = CapabilityStatement.TypeRestfulInteraction.Read
             };
-            this.createInteraction = new FhirConformance.ResourceInteractionComponent()
+            this.createInteraction = new CapabilityStatement.ResourceInteractionComponent()
             {
-                Code = FhirConformance.TypeRestfulInteraction.Create
+                Code = CapabilityStatement.TypeRestfulInteraction.Create
             };
-            this.updateInteraction = new FhirConformance.ResourceInteractionComponent()
+            this.updateInteraction = new CapabilityStatement.ResourceInteractionComponent()
             {
-                Code = FhirConformance.TypeRestfulInteraction.Update
+                Code = CapabilityStatement.TypeRestfulInteraction.Update
             };
         }
 
@@ -54,15 +54,15 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
 
         #endregion
 
-        private FhirConformance.ResourceComponent GetImplementationGuideResourceComponent()
+        private CapabilityStatement.ResourceComponent GetImplementationGuideResourceComponent()
         {
-            var interactions = new List<FhirConformance.ResourceInteractionComponent>();
+            var interactions = new List<CapabilityStatement.ResourceInteractionComponent>();
             interactions.Add(this.searchInteraction);
             interactions.Add(this.readInteraction);
             interactions.Add(this.updateInteraction);
             interactions.Add(this.createInteraction);
 
-            var restImplementationGuide = new FhirConformance.ResourceComponent()
+            var restImplementationGuide = new CapabilityStatement.ResourceComponent()
             {
                 Type = fhir_stu3.Hl7.Fhir.Model.ResourceType.ImplementationGuide,
                 Interaction = interactions
@@ -71,13 +71,13 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             return restImplementationGuide;
         }
 
-        private FhirConformance.ResourceComponent GetStructureDefinitionResourceComponent()
+        private CapabilityStatement.ResourceComponent GetStructureDefinitionResourceComponent()
         {
-            var interactions = new List<FhirConformance.ResourceInteractionComponent>();
+            var interactions = new List<CapabilityStatement.ResourceInteractionComponent>();
             interactions.Add(this.searchInteraction);
             interactions.Add(this.readInteraction);
 
-            var restStructureDefinition = new FhirConformance.ResourceComponent()
+            var restStructureDefinition = new CapabilityStatement.ResourceComponent()
             {
                 Type = fhir_stu3.Hl7.Fhir.Model.ResourceType.StructureDefinition,
                 Interaction = interactions
@@ -86,15 +86,15 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             return restStructureDefinition;
         }
 
-        private FhirConformance.ResourceComponent GetValueSetResourceComponent()
+        private CapabilityStatement.ResourceComponent GetValueSetResourceComponent()
         {
-            var interactions = new List<FhirConformance.ResourceInteractionComponent>();
+            var interactions = new List<CapabilityStatement.ResourceInteractionComponent>();
             interactions.Add(this.searchInteraction);
             interactions.Add(this.readInteraction);
             interactions.Add(this.updateInteraction);
             interactions.Add(this.createInteraction);
 
-            var restValueSet = new FhirConformance.ResourceComponent()
+            var restValueSet = new CapabilityStatement.ResourceComponent()
             {
                 Type = fhir_stu3.Hl7.Fhir.Model.ResourceType.ValueSet,
                 Interaction = interactions
@@ -108,15 +108,17 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         /// </summary>
         /// <param name="format">The format that the response should be returned in</param>
         /// <returns>Resource&lt;Conformance&gt;</returns>
-        [HttpGet, Route("Conformance")]
+        [HttpGet]
+        [Route("CapabilityStatement")]
+        [Route("metadata")]
         public HttpResponseMessage GetConformance([FromUri(Name = "_format")] string format = null)
         {
-            FhirConformance conformance = new FhirConformance()
+            CapabilityStatement conformance = new CapabilityStatement()
             {
                 Url = string.Format("{0}://{1}/api/FHIR3/", this.Request.RequestUri.Scheme, this.Request.RequestUri.Authority)
             };
 
-            var restComponent = new FhirConformance.RestComponent();
+            var restComponent = new CapabilityStatement.RestComponent();
             conformance.Rest.Add(restComponent);
 
             restComponent.Resource.Add(GetImplementationGuideResourceComponent());

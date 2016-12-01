@@ -293,7 +293,7 @@
     <Compile Include="Controllers\API\BulkCopyController.cs" />
     <Compile Include="Controllers\API\UserController.cs" />
     <Compile Include="Controllers\API\GroupController.cs" />
-    <Compile Include="Controllers\API\FHIR\STU3\ConformanceController.cs">
+    <Compile Include="Controllers\API\FHIR\STU3\CapabilityStatementController.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\API\FHIR\STU3\ImplementationGuideController.cs">

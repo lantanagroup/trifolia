@@ -66,10 +66,16 @@ namespace Trifolia.Export.FHIR.STU3
             {
                 case ResourceType.Organization:
                     return ((fhir_stu3.Hl7.Fhir.Model.Organization)resource).Name;
-                case ResourceType.Conformance:
-                    return ((fhir_stu3.Hl7.Fhir.Model.Conformance)resource).Name;
+                case ResourceType.CapabilityStatement:
+                    return ((fhir_stu3.Hl7.Fhir.Model.CapabilityStatement)resource).Name;
                 case ResourceType.SearchParameter:
                     return ((fhir_stu3.Hl7.Fhir.Model.SearchParameter)resource).Name;
+                case ResourceType.Group:
+                    return ((fhir_stu3.Hl7.Fhir.Model.Group)resource).Name;
+                case ResourceType.Location:
+                    return ((fhir_stu3.Hl7.Fhir.Model.Location)resource).Name;
+                case ResourceType.Account:
+                    return ((fhir_stu3.Hl7.Fhir.Model.Account)resource).Name;
             }
 
             return name;
@@ -93,11 +99,11 @@ namespace Trifolia.Export.FHIR.STU3
 
             // Status
             if (ig.PublishStatus == PublishStatus.GetPublishedStatus(this.tdb))
-                fhirImplementationGuide.Status = ConformanceResourceStatus.Active;
+                fhirImplementationGuide.Status = PublicationStatus.Active;
             else if (ig.PublishStatus == PublishStatus.GetRetiredStatus(this.tdb) || ig.PublishStatus == PublishStatus.GetDeprecatedStatus(this.tdb))
-                fhirImplementationGuide.Status = ConformanceResourceStatus.Retired;
+                fhirImplementationGuide.Status = PublicationStatus.Retired;
             else
-                fhirImplementationGuide.Status = ConformanceResourceStatus.Draft;
+                fhirImplementationGuide.Status = PublicationStatus.Draft;
 
             if (summaryType == null || summaryType == SummaryType.Data)
             {
@@ -114,7 +120,7 @@ namespace Trifolia.Export.FHIR.STU3
 
                 // Add profiles to the implementation guide
                 List<Template> templates = ig.GetRecursiveTemplates(this.tdb, inferred: false);
-                var profileResources = (from t in templates
+                var profileResources = (from t in templates.OrderBy(y => y.ImpliedTemplateId)
                                         select new FhirImplementationGuide.ResourceComponent()
                                         {
                                             Example = false,

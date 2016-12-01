@@ -12,6 +12,7 @@ namespace Trifolia.Export.FHIR.STU3.Models
         public Control()
         {
             this.tool = "jekyll";
+            this.sct_edition = "http://snomed.info/sct/731000124108";
             this.paths = new Path();
 
             this.defaults = new Dictionary<string, TemplateReference>();
@@ -26,6 +27,9 @@ namespace Trifolia.Export.FHIR.STU3.Models
         public Dictionary<string, TemplateReference> defaults { get; set; }
         public string canonicalBase { get; set; }
         public string source { get; set; }
+
+        [JsonProperty(PropertyName = "sct-edition", NullValueHandling = NullValueHandling.Ignore)]
+        public string sct_edition { get; set; }
         public Dictionary<string, ResourceReference> resources { get; set; }
 
         public class Path

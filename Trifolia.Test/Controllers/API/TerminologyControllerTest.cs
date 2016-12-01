@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Trifolia.Web.Controllers.API;
 using Trifolia.Web.Models.TerminologyManagement;
+using Trifolia.Import.Terminology.Excel;
+using Trifolia.Import.Terminology;
 
 namespace Trifolia.Test.Controllers.API
 {
