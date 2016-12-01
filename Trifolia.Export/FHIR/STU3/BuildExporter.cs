@@ -238,8 +238,17 @@ namespace Trifolia.Export.FHIR.STU3
                 if (resource == null || string.IsNullOrEmpty(resource.Id))
                     continue;
 
-                string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString(), resource.Id, fileExtension);
-                this.zip.AddEntry(fileName, templateExample.Sample.XmlSample);
+                string fileNameWithoutExtension = string.Format("resources/{0}/{1}", resource.ResourceType.ToString(), resource.Id);
+                this.zip.AddEntry(fileNameWithoutExtension + fileExtension, templateExample.Sample.XmlSample);
+
+                // Add the sample to the control file
+                string keyValue = string.Format("{0}/{1}", resource.ResourceType.ToString(), fileNameWithoutExtension);
+                string baseValue = string.Format("_includes/{0}.xhtml", fileNameWithoutExtension);
+                this.control.resources.Add(keyValue, new Models.Control.ResourceReference()
+                {
+                    reference_base = "instance-template-example.html",
+                    template_base = baseValue
+                });
             }
         }
 
