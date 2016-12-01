@@ -90,6 +90,8 @@ namespace Trifolia.Export.FHIR.STU3
 
             this.AddOverviewPage();
 
+            this.AddResourcesPage();
+
             this.AddAuthorPage();
 
             this.AddDescriptionPage();
@@ -123,6 +125,28 @@ namespace Trifolia.Export.FHIR.STU3
             {
                 throw new Exception("Error saving/reading zip package for generated FHIR build", ex);
             }
+        }
+
+        private void AddResourcesPage()
+        {
+            string pageContent = @"<p>This guide defines the following profiles.</p>
+<table class=""codes"">
+    <tr>
+        <td><b>Profile Name</b></td>
+        <td><b>Description</b></td>
+    </tr>
+";
+
+            foreach (var template in this.templates)
+            {
+                string entryContentFormat = "<tr><td><a href=\"StructureDefinition_{0}.html\">{1}</a></td><td>{2}</td></tr>";
+                string description = !string.IsNullOrEmpty(template.Description) ? template.Description.RemoveInvalidUtf8Characters() : string.Empty;
+                pageContent += string.Format(entryContentFormat, template.Bookmark, template.Name, description);
+            }
+
+            pageContent += "</table>";
+
+            this.zip.AddEntry("pages\\_includes\\resources.html", pageContent);
         }
 
         /// <summary>
@@ -238,16 +262,16 @@ namespace Trifolia.Export.FHIR.STU3
                 if (resource == null || string.IsNullOrEmpty(resource.Id))
                     continue;
 
-                string fileNameWithoutExtension = string.Format("resources/{0}/{1}", resource.ResourceType.ToString(), resource.Id);
-                this.zip.AddEntry(fileNameWithoutExtension + fileExtension, templateExample.Sample.XmlSample);
+                string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString(), resource.Id, fileExtension);
+                this.zip.AddEntry(fileName, templateExample.Sample.XmlSample);
 
                 // Add the sample to the control file
-                string keyValue = string.Format("{0}/{1}", resource.ResourceType.ToString(), fileNameWithoutExtension);
-                string baseValue = string.Format("_includes/{0}.xhtml", fileNameWithoutExtension);
+                string keyValue = string.Format("{0}/{1}", resource.ResourceType.ToString(), resource.Id);
+                string baseValue = string.Format("_includes/{0}.xhtml", resource.Id);
                 this.control.resources.Add(keyValue, new Models.Control.ResourceReference()
                 {
-                    reference_base = "instance-template-example.html",
-                    template_base = baseValue
+                    template_base = "instance-template-example.html",
+                    reference_base = baseValue
                 });
             }
         }

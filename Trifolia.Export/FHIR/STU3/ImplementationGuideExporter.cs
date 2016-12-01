@@ -90,11 +90,16 @@ namespace Trifolia.Export.FHIR.STU3
             var fhirXmlParser = new FhirXmlParser(parserSettings);
             var fhirJsonParser = new FhirJsonParser(parserSettings);
 
+            string url = string.Format("ImplementationGuide/{0}", ig.Id);
+
+            if (!string.IsNullOrEmpty(ig.Identifier) && (ig.Identifier.StartsWith("http://") || ig.Identifier.StartsWith("https://")))
+                url = ig.Identifier.TrimEnd('/') + "/" + url.TrimStart('/');
+
             var fhirImplementationGuide = new FhirImplementationGuide()
             {
                 Id = ig.Id.ToString(),
                 Name = ig.Name,
-                Url = string.Format("ImplementationGuide/{0}", ig.Id)
+                Url = url
             };
 
             // Status

@@ -28,7 +28,6 @@ namespace Trifolia.Export.FHIR.STU3
         private Dictionary<string, StructureDefinition> baseProfiles = new Dictionary<string, StructureDefinition>();
         private ImplementationGuideType implementationGuideType;
         private Bundle profileBundle;
-        private Regex invalidUtf8Characters = new Regex("[^\x00-\x7F]+");
 
         public StructureDefinitionExporter(IObjectRepository tdb, string scheme, string authority)
         {
@@ -141,6 +140,7 @@ namespace Trifolia.Export.FHIR.STU3
             {
                 newElementDef.Slicing = new ElementDefinition.SlicingComponent();
                 newElementDef.Slicing.Discriminator = new string[] { "@type" };
+                newElementDef.Slicing.Rules = ElementDefinition.SlicingRules.Open;
             }
 
             // Cardinality
@@ -272,15 +272,11 @@ namespace Trifolia.Export.FHIR.STU3
 
         public StructureDefinition Convert(Template template, SimpleSchema schema, SummaryType? summaryType = null)
         {
-            string description = !string.IsNullOrEmpty(template.Description) ?
-                invalidUtf8Characters.Replace(template.Description, "") :
-                null;
-
             var fhirStructureDef = new fhir_stu3.Hl7.Fhir.Model.StructureDefinition()
             {
                 Id = template.FhirId(),
                 Name = template.Name,
-                Description = description != null ? new Markdown(description) : null,
+                Description = template.Description != null ? new Markdown(template.Description.RemoveInvalidUtf8Characters()) : null,
                 Kind = StructureDefinition.StructureDefinitionKind.Resource,
                 Url = template.FhirUrl(),
                 Type = template.TemplateType.RootContextType,

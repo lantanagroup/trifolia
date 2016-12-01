@@ -91,6 +91,7 @@
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="PublishStatuses.cs" />
     <Compile Include="SimpleSchemaObjectExtension.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="StringWriterWithEncoding.cs" />
     <Compile Include="CustomXmlResolver.cs" />
     <Compile Include="ImportExport\TrifoliaExport.cs" />

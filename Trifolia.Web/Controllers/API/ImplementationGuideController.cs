@@ -1212,7 +1212,7 @@ namespace Trifolia.Web.Controllers.API
 
             foreach (EditModel.Permission cPermission in model.ViewPermissions)
             {
-                if (ig.Permissions.SingleOrDefault(y => y.Permission == "View" && y.Type == cPermission.Type.ToString() && y.PrimaryId() == cPermission.Id) != null)
+                if (ig.Permissions.Count(y => y.Permission == "View" && y.Type == cPermission.Type.ToString() && y.PrimaryId() == cPermission.Id) > 0)
                     continue;
 
                 ig.Permissions.Add(BuildPermission(ig, "View", cPermission));
@@ -1223,7 +1223,7 @@ namespace Trifolia.Web.Controllers.API
 
             foreach (EditModel.Permission cPermission in model.EditPermissions)
             {
-                if (ig.Permissions.SingleOrDefault(y => y.Permission == "Edit" && y.Type == cPermission.Type.ToString() && y.PrimaryId() == cPermission.Id) != null)
+                if (ig.Permissions.Count(y => y.Permission == "Edit" && y.Type == cPermission.Type.ToString() && y.PrimaryId() == cPermission.Id) > 0)
                     continue;
 
                 ig.Permissions.Add(BuildPermission(ig, "Edit", cPermission));
