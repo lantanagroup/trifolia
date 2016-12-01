@@ -107,10 +107,6 @@ namespace Trifolia.DB
         /// <returns></returns>
         public List<Template> GetRecursiveTemplates(IObjectRepository tdb, List<int> parentTemplateIds = null, bool inferred = true, string[] categories = null)
         {
-            // A list of templates that will be used by GetTemplateReferences() to determine
-            // if a template has already been checked, so that an endless loop does not occur
-            List<Template> checkedTemplates = new List<Template>();
-
             if (parentTemplateIds != null && parentTemplateIds.Count > 0)
             {
                 List<int> templateIds = new List<int>();
@@ -127,6 +123,7 @@ namespace Trifolia.DB
                                  select t).ToList();
 
                 return templates
+                    .Where(y => y.Oid != "http://hl7.org/fhir/StructureDefinition/" + y.Bookmark)       // Don't return base profiles from FHIR
                     .Distinct()
                     .ToList();
             }
@@ -138,6 +135,7 @@ namespace Trifolia.DB
                                  select t).ToList();
 
                 return templates
+                    .Where(y => y.Oid != "http://hl7.org/fhir/StructureDefinition/" + y.Bookmark)       // Don't return base profiles from FHIR
                     .Distinct()
                     .OrderBy(y => y.TemplateType.Name)
                     .ThenBy(y => y.Name).ToList();
