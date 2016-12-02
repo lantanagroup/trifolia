@@ -640,7 +640,8 @@
         <!-- Analyst: Computable -->
         <div data-bind="if: IsAnalystComputable(), disableAll: $parents[1].DisableConstraintFields()" class="constraintEditorSet">
             <!-- Main Constraint Details -->
-            <!-- ko if: !$parents[$parents.length-1].CurrentNode().IsChildOfChoice() -->
+
+            <!-- ko if: !$root.CurrentNode().IsChildOfChoice() -->
             <div class="input-group input-group-sm" style="width: 100%;">
                 <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorConformanceCardinality"></div>
                 <select class="form-control input-sm" style="width: 50%;" data-bind="value: Conformance, disable: $parents[1].Template().Locked">
@@ -682,7 +683,9 @@ event: { change: $parents[1].ConstraintDataTypeChanged },
 disable: $parents[1].Template().Locked">
                 </select>
             </div>
+            <!-- /ko -->
 
+            <!-- ko if: !$root.CurrentNode().IsChoice() && !$root.CurrentNode().IsChildOfChoice() -->
             <div class="input-group input-group-sm branching">
                 <div class="input-group-addon" data-bind="text: Trifolia.Web.TemplateEditorBranchingTitle"></div>
                 <div class="form-control">
@@ -691,7 +694,8 @@ disable: $parents[1].Template().Locked">
                 </div>
             </div>
             <!-- /ko -->
-                                
+
+            <!-- ko if: !$root.CurrentNode().IsChoice() -->
             <!-- ko if: $parents[1].Categories().length > 0 -->
             <div class="input-group input-group-sm">
                 <div class="input-group-addon">Category</div>
@@ -745,6 +749,7 @@ disable: $parents[1].Template().Locked">
                     <input type="checkbox" name="Support" data-bind="checked: MustSupport"/>
                 </div>
             </div>
+            <!-- /ko -->
             <!-- /ko -->
         </div>
 
