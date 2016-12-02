@@ -21,7 +21,6 @@ namespace Trifolia.Export.FHIR.STU3
     public class BuildExporter
     {
         private const string STU3_FHIR_BUILD_PACKAGE = "Trifolia.Export.FHIR.STU3.package.zip";
-        private const string IG_PUBLISHER_JAR_NAME = "org.hl7.fhir.igpublisher.jar";
 
         private IObjectRepository tdb;
         private ImplementationGuide ig;
@@ -141,7 +140,7 @@ namespace Trifolia.Export.FHIR.STU3
             {
                 string entryContentFormat = "<tr><td><a href=\"StructureDefinition_{0}.html\">{1}</a></td><td>{2}</td></tr>";
                 string description = !string.IsNullOrEmpty(template.Description) ? template.Description.RemoveInvalidUtf8Characters() : string.Empty;
-                pageContent += string.Format(entryContentFormat, template.Bookmark, template.Name, description);
+                pageContent += string.Format(entryContentFormat, template.FhirId(), template.Name, description);
             }
 
             pageContent += "</table>";
@@ -457,7 +456,7 @@ namespace Trifolia.Export.FHIR.STU3
             {
                 var fhirValueSet = exporter.Convert(valueSet);
                 var fhirValueSetContent = this.JsonFormat ? FhirSerializer.SerializeResourceToJson(fhirValueSet) : FhirSerializer.SerializeResourceToXml(fhirValueSet);
-                var fhirValueSetFileName = string.Format("resources/valueset/{0}.{1}", valueSet.Id, fileExtension);
+                var fhirValueSetFileName = string.Format("resources/ValueSet/{0}.{1}", valueSet.Id, fileExtension);
 
                 // Add the value set file to the package
                 this.zip.AddEntry(fhirValueSetFileName, fhirValueSetContent);
