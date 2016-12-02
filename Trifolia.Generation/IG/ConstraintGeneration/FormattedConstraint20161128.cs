@@ -452,7 +452,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                 {
                     this.parts.Add(new ConstraintPart(" such that it"));
                 }
-                else if (!this.IsChoice && !this.ParentIsChoice && this.childCount == 0)
+                else if (!this.IsChoice && !this.ParentIsChoice)
                 {
                     this.parts.Add(new ConstraintPart("."));// End the constraint with a period
                 }
