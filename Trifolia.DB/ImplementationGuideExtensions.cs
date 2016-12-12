@@ -180,8 +180,11 @@ namespace Trifolia.DB
                 this.ChildTemplates.ToList().ForEach(y => y.OwningImplementationGuideId = replacementImplementationGuideId.Value);
             else
                 this.ChildTemplates.ToList().ForEach(t => t.Delete(tdb, null));
-
-            this.Files.ToList().ForEach(y => tdb.ImplementationGuideFiles.DeleteObject(y));
+            
+            this.Files.ToList().ForEach(y => {
+                y.Versions.ToList().ForEach(x => tdb.ImplementationGuideFileDatas.DeleteObject(x));
+                tdb.ImplementationGuideFiles.DeleteObject(y);
+            });
 
             this.Permissions.ToList().ForEach(y => tdb.ImplementationGuidePermissions.DeleteObject(y));
 
