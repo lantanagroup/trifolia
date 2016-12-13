@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
 using System.Web.Http.Filters;
+using Trifolia.DB.Exceptions;
 
 namespace Trifolia.Web.Formatters
 {
@@ -53,7 +54,14 @@ namespace Trifolia.Web.Formatters
 
         public override object ReadFromStream(Type type, Stream readStream, HttpContent content, IFormatterLogger formatterLogger)
         {
-            return Trifolia.Shared.ImportExport.Model.Trifolia.Deserialize(readStream);
+            try
+            {
+                return Trifolia.Shared.ImportExport.Model.Trifolia.Deserialize(readStream);
+            }
+            catch (Exception ex)
+            {
+                throw new TrifoliaModelException("Only files exported with type \"Trifolia XML\" can be imported into Trifolia at this time", ex);
+            }
         }
     }
 }

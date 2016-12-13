@@ -13,7 +13,9 @@
             <input type="file" class="form-control" data-bind="file: ImportFileInfo, fileBinaryData: ImportContent" />
         </div>
 
-        <button type="button" class="btn btn-primary" data-bind="click: Import, disable: DisableImportButton">Import Now</button>
+        <p>
+            <button type="button" class="btn btn-primary" data-bind="click: Import, disable: DisableImportButton">Import Now</button>
+        </p>
         
         <!-- ko if: IsImporting() -->
         <div class="alert alert-info">

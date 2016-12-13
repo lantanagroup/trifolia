@@ -1,30 +1,25 @@
 ﻿extern alias fhir_dstu1;
 extern alias fhir_dstu2;
 extern alias fhir_stu3;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-
-using System.Web.Http.Filters;
-using System.Web.Http.Controllers;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Net.Http;
-using System.Net;
-using System.Threading;
-using System.Net.Http.Headers;
-
+using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
+using Trifolia.Authentication.Models;
 using Trifolia.DB;
-using System.Web.Http.Results;
-using System.Security.Principal;
-
+using Trifolia.DB.Exceptions;
+using Trifolia.Logging;
 using FHIR1OperationOutcome = fhir_dstu1.Hl7.Fhir.Model.OperationOutcome;
 using FHIR2OperationOutcome = fhir_dstu2.Hl7.Fhir.Model.OperationOutcome;
 using FHIR3OperationOutcome = fhir_stu3.Hl7.Fhir.Model.OperationOutcome;
-using Trifolia.Authentication.Models;
-using Trifolia.Logging;
 
 namespace Trifolia.Authorization
 {
@@ -133,6 +128,16 @@ namespace Trifolia.Authorization
                 errorString = ex.Message;
                 errorStackTrace = ex.StackTrace;
             }
+            catch (TrifoliaModelException ex)
+            {
+                errorMessage.StatusCode = HttpStatusCode.BadRequest;
+                errorString = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                Log.For(next).Error(ex.Message, ex);
+                errorMessage.StatusCode = HttpStatusCode.InternalServerError;
+            }
 
             List<string> locations = new List<string>();
 
@@ -178,6 +183,9 @@ namespace Trifolia.Authorization
                     });
 
                     errorMessage.Content = new StringContent(fhir_stu3.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToJson(oo3));
+                    break;
+                default:
+                    errorMessage.Content = new StringContent(errorString);
                     break;
             }
 

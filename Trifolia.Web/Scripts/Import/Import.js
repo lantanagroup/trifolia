@@ -92,8 +92,17 @@ var ImportViewModel = function () {
                 self.IsImporting(false);
             },
             error: function (err, err1, err2) {
+                var msg = 'An error occurred while importing';
+
                 self.IsImporting(false);
-                alert('An error ocurred while importing');
+
+                if (err.status == 400) {
+                    msg = err.responseText;
+                }
+
+                self.ImportResults({
+                    Messages: [msg]
+                });
             }
         });
     };

@@ -85,6 +85,7 @@
       <DependentUpon>DBModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="DictionaryCodeSystemExtension.cs" />
+    <Compile Include="Exceptions\TrifoliaModelException.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="IConstraint.cs" />
     <Compile Include="IFilterOrganization.cs" />
