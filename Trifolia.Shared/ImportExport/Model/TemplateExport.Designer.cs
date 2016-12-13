@@ -2837,6 +2837,8 @@ namespace Trifolia.Shared.ImportExport.Model
         public string webDisplayName { get; set; }
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string organizationName { get; set; }
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string identifier { get; set; }
 
         public TrifoliaImplementationGuide()
         {

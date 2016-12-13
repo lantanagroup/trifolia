@@ -199,6 +199,7 @@
 						<xs:attribute name="displayName"/>
 						<xs:attribute name="webDisplayName"/>
 						<xs:attribute name="organizationName"/>
+						<xs:attribute name="identifier"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

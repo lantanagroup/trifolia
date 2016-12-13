@@ -41,6 +41,7 @@ namespace Trifolia.Export.Native
             ExportImplementationGuide exportIg = new ExportImplementationGuide()
             {
                 name = ig.Name,
+                identifier = ig.Identifier,
                 type = ig.ImplementationGuideType.Name,
                 version = ig.Version != null ? ig.Version.Value : 1,
                 status = ig.GetExportStatus(),

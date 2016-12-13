@@ -187,6 +187,9 @@ namespace Trifolia.Import.Native
             var importIgStatus = GetImportStatus(importImplementationGuide);
             var organization = !string.IsNullOrEmpty(importImplementationGuide.organizationName) ? this.tdb.Organizations.SingleOrDefault(y => y.Name.ToLower() == importImplementationGuide.organizationName.ToLower()) : null;
 
+            if (implementationGuide.Identifier != importImplementationGuide.identifier)
+                implementationGuide.Identifier = importImplementationGuide.identifier;
+
             if (implementationGuide.Organization != organization)
                 implementationGuide.Organization = organization;
 
