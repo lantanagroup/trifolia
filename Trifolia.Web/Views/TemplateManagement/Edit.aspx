@@ -608,12 +608,13 @@
                         <div data-bind="template: { name: 'appliesToNode', data: AppliesToNodes() }"></div>
                     </div>
                     <div class="modal-footer">
+                        <span class="help-block" data-bind="if: viewModel.CurrentAppliesToNode() && !viewModel.CurrentAppliesToNode().DataType()">The selection is not valid.</span>
                         <button type="button" class="btn btn-default" data-bind="click: function () {
                             viewModel.Template().PrimaryContext(viewModel.CurrentAppliesToNode().Context());
                             viewModel.Template().PrimaryContextType(viewModel.CurrentAppliesToNode().DataType());
                             viewModel.CurrentAppliesToNode(null);
                             $('#appliesToDialog').modal('hide');
-                        }">OK</button>
+                        }, disable: !viewModel.CurrentAppliesToNode() || !viewModel.CurrentAppliesToNode().DataType()">OK</button>
                         <button type="button" class="btn btn-primary" data-bind="click: function () {
                             viewModel.CurrentAppliesToNode(null);
                             $('#appliesToDialog').modal('hide');

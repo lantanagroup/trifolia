@@ -818,6 +818,22 @@ var templateEditViewModel = function (templateId, defaults) {
     }
 
     /* Private Methods */
+
+    var getNodePath = function (node) {
+        var current = node;
+        var nodePath = '';
+
+        while (current) {
+            if (nodePath) {
+                nodePath = current.Context() + '/' + nodePath;
+            } else {
+                nodePath = current.Context();
+            }
+            current = current.Parent();
+        }
+
+        return nodePath;
+    };
     
     /* Initializes a level of schema nodes in the applies-to node-set.
     * This is only used for the "Applies To" dialog functionality.
@@ -836,10 +852,14 @@ var templateEditViewModel = function (templateId, defaults) {
 
         var url = '/api/Template/Edit/Schema/' + self.Template().OwningImplementationGuideId() + '?';
 
-        if (node) {
-            url += 'parentType=' + node.DisplayDataType() + '&';
+        if (node && node.DataType()) {
+            url += 'parentType=' + encodeURIComponent(node.DataType()) + '&';
         } else if (self.Template().PrimaryContextType()) {
-            url += 'parentType=' + self.Template().PrimaryContextType() + '&';
+            url += 'parentType=' + encodeURIComponent(self.Template().PrimaryContextType()) + '&';
+
+            if (node) {
+                url += 'path=' + encodeURIComponent(getNodePath(node)) + '&';
+            }
         }
 
         // Don't include attributes
