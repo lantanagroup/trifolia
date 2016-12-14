@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Xml;
 
-using Trifolia.Generation.Schematron;
+using Trifolia.Export.Schematron;
 using Trifolia.DB;
 
 namespace Trifolia.Test.Generation.Schematron

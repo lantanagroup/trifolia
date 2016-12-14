@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Trifolia.Generation.Schematron.Model
+namespace Trifolia.Export.Schematron.Model
 {
     /// <summary>
     /// Defines a simplified model representing a standard Schemtron document

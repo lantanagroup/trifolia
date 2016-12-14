@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Trifolia.Generation.Schematron.Model
+namespace Trifolia.Export.Schematron.Model
 {
     /// <summary>
     /// Models a standard Schematron phase, which defines testing phases for a specific validation scenario

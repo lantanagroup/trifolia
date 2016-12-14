@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Trifolia.DB;
 
-namespace Trifolia.Generation.Schematron.Utilities
+namespace Trifolia.Export.Schematron.Utilities
 {
     public class TemplateUtil
     {

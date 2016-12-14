@@ -7,9 +7,9 @@ using System.Collections.Generic;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Trifolia.Generation.Schematron;
-using Trifolia.Generation.Schematron.Model;
-using Trifolia.Generation.Schematron.ConstraintToDocumentElementMap;
+using Trifolia.Export.Schematron;
+using Trifolia.Export.Schematron.Model;
+using Trifolia.Export.Schematron.ConstraintToDocumentElementMap;
 using Trifolia.Shared;
 using Trifolia.Shared.ImportExport;
 using Trifolia.Shared.ImportExport.Model;
@@ -18,7 +18,7 @@ using Template = Trifolia.DB.Template;
 using ValueSet = Trifolia.DB.ValueSet;
 using CodeSystem = Trifolia.DB.CodeSystem;
 using Trifolia.DB;
-using Trifolia.Generation.Schematron.Utilities;
+using Trifolia.Export.Schematron.Utilities;
 using Trifolia.Import.Native;
 
 namespace Trifolia.Test.Generation.Schematron

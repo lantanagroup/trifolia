@@ -132,6 +132,25 @@
     <Compile Include="Native\TemplateExporter.cs" />
     <Compile Include="Native\TemplateExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schematron\AssertionLineBuilder.cs" />
+    <Compile Include="Schematron\ConstraintParser.cs" />
+    <Compile Include="Schematron\ConstraintToDocumentElementMap\BranchHelper.cs" />
+    <Compile Include="Schematron\ConstraintToDocumentElementMap\ConstraintToDocumentElementHelper.cs" />
+    <Compile Include="Schematron\ConstraintToDocumentElementMap\ConstraintToDocumentElementMapper.cs" />
+    <Compile Include="Schematron\ContextBuilder.cs" />
+    <Compile Include="Schematron\ContextParser.cs" />
+    <Compile Include="Schematron\Model\Assertion.cs" />
+    <Compile Include="Schematron\Model\DocumentTemplate.cs" />
+    <Compile Include="Schematron\Model\DocumentTemplateElement.cs" />
+    <Compile Include="Schematron\Model\DocumentTemplateElementAttribute.cs" />
+    <Compile Include="Schematron\Model\Pattern.cs" />
+    <Compile Include="Schematron\Model\Phase.cs" />
+    <Compile Include="Schematron\Model\Rule.cs" />
+    <Compile Include="Schematron\Model\SchematronDocument.cs" />
+    <Compile Include="Schematron\SchematronDocumentSerializer.cs" />
+    <Compile Include="Schematron\SchematronGenerator.cs" />
+    <Compile Include="Schematron\TemplateContextBuilder.cs" />
+    <Compile Include="Schematron\Utilities\TemplateUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FHIR\DSTU1\TemplateExportToFHIRProfile.xslt">
@@ -183,10 +202,6 @@
     <ProjectReference Include="..\Trifolia.Terminology\Trifolia.Terminology.csproj">
       <Project>{fdb22f8f-9677-471a-8929-b8dcb59e4c60}</Project>
       <Name>Trifolia.Terminology</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Validation\Trifolia.Validation.csproj">
-      <Project>{02f2ab9f-856b-4a0c-be81-2dfa26b602b6}</Project>
-      <Name>Trifolia.Validation</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

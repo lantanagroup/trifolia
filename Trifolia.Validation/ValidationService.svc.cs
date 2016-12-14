@@ -17,7 +17,7 @@ using LantanaGroup.Schematron.ISO;
 using LantanaGroup.Schematron;
 
 using Trifolia.Shared;
-using Trifolia.Generation.Schematron;
+using Trifolia.Export.Schematron;
 using Trifolia.DB;
 using LantanaGroup.ValidationUtility;
 

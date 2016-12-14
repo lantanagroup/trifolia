@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Trifolia.Generation.Schematron.Model
+namespace Trifolia.Export.Schematron.Model
 {
     public class Rule
     {

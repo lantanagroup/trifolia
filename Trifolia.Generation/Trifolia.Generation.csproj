@@ -101,25 +101,6 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Schematron\AssertionLineBuilder.cs" />
-    <Compile Include="Schematron\ConstraintToDocumentElementMap\BranchHelper.cs" />
-    <Compile Include="Schematron\ConstraintToDocumentElementMap\ConstraintToDocumentElementHelper.cs" />
-    <Compile Include="Schematron\ConstraintToDocumentElementMap\ConstraintToDocumentElementMapper.cs" />
-    <Compile Include="Schematron\ConstraintParser.cs" />
-    <Compile Include="Schematron\ContextBuilder.cs" />
-    <Compile Include="Schematron\ContextParser.cs" />
-    <Compile Include="Schematron\Model\Assertion.cs" />
-    <Compile Include="Schematron\Model\DocumentTemplate.cs" />
-    <Compile Include="Schematron\Model\DocumentTemplateElement.cs" />
-    <Compile Include="Schematron\Model\DocumentTemplateElementAttribute.cs" />
-    <Compile Include="Schematron\Model\Pattern.cs" />
-    <Compile Include="Schematron\Model\Phase.cs" />
-    <Compile Include="Schematron\Model\Rule.cs" />
-    <Compile Include="Schematron\Model\SchematronDocument.cs" />
-    <Compile Include="Schematron\SchematronDocumentSerializer.cs" />
-    <Compile Include="Schematron\SchematronGenerator.cs" />
-    <Compile Include="Schematron\TemplateContextBuilder.cs" />
-    <Compile Include="Schematron\Utilities\TemplateUtil.cs" />
     <Compile Include="Versioning\ComparisonResult.cs" />
     <Compile Include="Versioning\VersionComparer.cs" />
   </ItemGroup>

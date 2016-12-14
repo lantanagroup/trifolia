@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Trifolia.Generation.Schematron.Model;
+using Trifolia.Export.Schematron.Model;
 using Trifolia.Shared;
 using Trifolia.DB;
 
-namespace Trifolia.Generation.Schematron
+namespace Trifolia.Export.Schematron
 {
     public enum ContextWrapper { Bracket, Slash };
 

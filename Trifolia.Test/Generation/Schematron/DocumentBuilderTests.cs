@@ -3,8 +3,8 @@ using System.Linq;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Trifolia.Generation.Schematron;
-using Trifolia.Generation.Schematron.Model;
+using Trifolia.Export.Schematron;
+using Trifolia.Export.Schematron.Model;
 
 namespace Schematron.Test.Generation.Schematron
 {

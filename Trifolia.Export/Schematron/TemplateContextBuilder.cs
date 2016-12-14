@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Text;
 using Trifolia.DB;
-using Trifolia.Generation.Schematron.ConstraintToDocumentElementMap;
-using Trifolia.Generation.Schematron.Model;
+using Trifolia.Export.Schematron.ConstraintToDocumentElementMap;
+using Trifolia.Export.Schematron.Model;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
 
-namespace Trifolia.Generation.Schematron
+namespace Trifolia.Export.Schematron
 {
     internal class TemplateContextBuilder
     {

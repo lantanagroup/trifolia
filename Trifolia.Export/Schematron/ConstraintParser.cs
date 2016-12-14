@@ -5,11 +5,11 @@ using System.Text;
 
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
-using Trifolia.Generation.Schematron.Model;
-using Trifolia.Generation.Schematron.ConstraintToDocumentElementMap;
+using Trifolia.Export.Schematron.Model;
+using Trifolia.Export.Schematron.ConstraintToDocumentElementMap;
 using Trifolia.DB;
 
-namespace Trifolia.Generation.Schematron
+namespace Trifolia.Export.Schematron
 {
     /// <summary>
     /// ConstraintParser takes a constraint and builds an AssertionLineBuilder. It knows how to map

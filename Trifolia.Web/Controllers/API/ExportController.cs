@@ -15,7 +15,7 @@ using System.Xml;
 using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
 using Trifolia.Logging;
-using Trifolia.Generation.Schematron;
+using Trifolia.Export.Schematron;
 using Trifolia.Generation.IG;
 using Trifolia.Generation.Green;
 using Trifolia.DB;

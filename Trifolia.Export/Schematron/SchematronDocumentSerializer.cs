@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
-using Trifolia.Generation.Schematron.Model;
+using Trifolia.Export.Schematron.Model;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using Trifolia.Shared;
 
-namespace Trifolia.Generation.Schematron
+namespace Trifolia.Export.Schematron
 {
     /// <summary>
     /// Creates a valid Schematron document from a list of <see cref="Rule"/> and <see cref="Assertion"/>

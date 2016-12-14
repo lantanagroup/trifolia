@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using Trifolia.DB;
-using Trifolia.Generation.Schematron.Model;
+using Trifolia.Export.Schematron.Model;
 using Trifolia.Shared.Plugins;
 
-namespace Trifolia.Generation.Schematron.ConstraintToDocumentElementMap
+namespace Trifolia.Export.Schematron.ConstraintToDocumentElementMap
 {
     static internal class ConstraintToDocumentElementHelper
     {

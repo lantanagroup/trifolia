@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Trifolia.Generation.Schematron.Model;
+using Trifolia.Export.Schematron.Model;
 using Trifolia.Shared;
 using Trifolia.DB;
 
-namespace Trifolia.Generation.Schematron.ConstraintToDocumentElementMap
+namespace Trifolia.Export.Schematron.ConstraintToDocumentElementMap
 {
     public class ConstraintToDocumentElementMapper
     {

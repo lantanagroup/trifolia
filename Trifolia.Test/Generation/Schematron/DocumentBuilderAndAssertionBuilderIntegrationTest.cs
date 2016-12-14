@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Trifolia.Generation.Schematron;
-using Trifolia.Generation.Schematron.Model;
+using Trifolia.Export.Schematron;
+using Trifolia.Export.Schematron.Model;
 using Trifolia.Shared;
 using Trifolia.DB;
 

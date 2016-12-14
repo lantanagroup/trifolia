@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 using Trifolia.Shared;
 using Trifolia.Generation.IG;
-using Trifolia.Generation.Schematron;
+using Trifolia.Export.Schematron;
 using Trifolia.Generation.Green;
 using Trifolia.Authentication;
 using Trifolia.Shared.ImportExport;

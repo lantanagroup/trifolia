@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Trifolia.Generation.Schematron.Model
+namespace Trifolia.Export.Schematron.Model
 {
     /// <summary>
     /// Defines a standard Schematron assertion

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using Trifolia.DB;
 using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Generation.Schematron.Model;
-using Trifolia.Generation.Schematron.Utilities;
+using Trifolia.Export.Schematron.Model;
+using Trifolia.Export.Schematron.Utilities;
 using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
 
-namespace Trifolia.Generation.Schematron
+namespace Trifolia.Export.Schematron
 {
     public class SchematronGenerator
     {
