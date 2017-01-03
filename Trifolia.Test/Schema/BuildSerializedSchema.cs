@@ -108,7 +108,7 @@ namespace Trifolia.Test.Schema
             Assert.AreEqual("0..*", patientName.Cardinality);
             Assert.AreEqual("MAY", patientName.Conformance);
             Assert.AreEqual(true, patientName.Mixed);
-            Assert.AreEqual(5, patientName.Children.Count, "Expected patient to have 5 children (some are choices)");
+            Assert.AreEqual(8, patientName.Children.Count, "Expected patient to have 8 children");       // TODO: Schema Choice support temporarily removed from non-FHIR schemas
             Assert.IsTrue(patientName.Children.Count(y => string.IsNullOrEmpty(y.Name) || y.Name.Length <= 1) == 0);
             Assert.AreEqual(SimpleSchema.ObjectTypes.Element, patientRole.Type);
         }
@@ -139,10 +139,15 @@ namespace Trifolia.Test.Schema
             var foundEntryRelationship = cdaSchema.Children.SingleOrDefault(y => y.Name == "entryRelationship" && !y.IsAttribute);
             Assert.IsNotNull(foundEntryRelationship);
 
+            /* TODO: Schema Choice support temporarily removed from non-FHIR schemas
             var foundChoice = foundEntryRelationship.Children.SingleOrDefault(y => y.Name == "choice" && !y.IsAttribute);
             Assert.IsNotNull(foundChoice);
 
             var foundObservation = foundChoice.Children.SingleOrDefault(y => y.Name == "observation" && !y.IsAttribute);
+            Assert.IsNotNull(foundObservation);
+            */
+
+            var foundObservation = foundEntryRelationship.Children.SingleOrDefault(y => y.Name == "observation" && !y.IsAttribute);
             Assert.IsNotNull(foundObservation);
 
             Assert.IsNotNull(cdaSchema);
@@ -174,10 +179,15 @@ namespace Trifolia.Test.Schema
             var foundEntryRelationship = cdaSchema.Children.SingleOrDefault(y => y.Name == "entryRelationship" && !y.IsAttribute);
             Assert.IsNotNull(foundEntryRelationship);
 
+            /* TODO: Schema Choice support temporarily removed from non-FHIR schemas
             var foundChoice = foundEntryRelationship.Children.SingleOrDefault(y => y.Name == "choice" && !y.IsAttribute);
             Assert.IsNotNull(foundChoice);
 
             var foundObservation = foundChoice.Children.SingleOrDefault(y => y.Name == "observation" && !y.IsAttribute);
+            Assert.IsNotNull(foundObservation);
+            */
+
+            var foundObservation = foundEntryRelationship.Children.SingleOrDefault(y => y.Name == "observation" && !y.IsAttribute);
             Assert.IsNotNull(foundObservation);
 
             Assert.IsNotNull(cdaSchema);

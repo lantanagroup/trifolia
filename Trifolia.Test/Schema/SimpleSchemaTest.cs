@@ -106,6 +106,7 @@ namespace Trifolia.Test.Schema
         /// </summary>
         [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
+        [Ignore]
         public void TestSchemaChoice_Component2()
         {
             var component2 = this.cdaSchema.FindFromType("Component2");
@@ -133,6 +134,7 @@ namespace Trifolia.Test.Schema
         /// </summary>
         [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
+        [Ignore]
         public void TestSchemaChoice_CDA_Entry()
         {
             var entry = this.cdaSchema.FindFromType("Entry");
@@ -200,10 +202,17 @@ namespace Trifolia.Test.Schema
             Assert.IsTrue(actual.Children.Exists(y => y.Name == "nullFlavor" && y.IsAttribute), "Could not find @nullFlavor attribute on IVL_TS");
             Assert.IsTrue(actual.Children.Exists(y => y.Name == "value" && y.IsAttribute), "Could not find @value attribute on IVL_TS");
 
+            /* TODO: Schema Choice support temporarily removed from non-FHIR schemas
             var choiceSchemaObject = actual.Children.SingleOrDefault(y => y.Name == "choice" && y.IsChoice);
             Assert.IsNotNull(choiceSchemaObject, "Expected to find a choice");
 
             SimpleSchema.SchemaObject lowSchemaObject = choiceSchemaObject.Children.SingleOrDefault(y => y.Name == "low" && !y.IsAttribute);
+            Assert.IsNotNull(lowSchemaObject, "Could not find <low> within IVL_TS");
+            Assert.IsTrue(lowSchemaObject.Children.Exists(y => y.Name == "nullFlavor" && y.IsAttribute), "Could now find low/@nullFlavor within IVL_TS");
+            Assert.IsTrue(lowSchemaObject.Children.Exists(y => y.Name == "value" && y.IsAttribute), "Could now find low/@value within IVL_TS");
+            */
+
+            SimpleSchema.SchemaObject lowSchemaObject = actual.Children.SingleOrDefault(y => y.Name == "low" && !y.IsAttribute);
             Assert.IsNotNull(lowSchemaObject, "Could not find <low> within IVL_TS");
             Assert.IsTrue(lowSchemaObject.Children.Exists(y => y.Name == "nullFlavor" && y.IsAttribute), "Could now find low/@nullFlavor within IVL_TS");
             Assert.IsTrue(lowSchemaObject.Children.Exists(y => y.Name == "value" && y.IsAttribute), "Could now find low/@value within IVL_TS");

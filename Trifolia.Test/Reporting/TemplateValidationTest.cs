@@ -33,8 +33,13 @@ namespace Trifolia.Test.Reporting
             tdb.AddConstraintToTemplate(newTemplate, null, null, "title", "SHALL", "1..1");
             tdb.AddConstraintToTemplate(newTemplate, null, null, "text", "SHALL", "1..1");
             var tc2 = tdb.AddConstraintToTemplate(newTemplate, null, null, "entry", "SHALL", "1..1");
+
+            /* TODO: Schema Choice support temporarily removed from non-FHIR schemas
             var tc2Choice = tdb.AddConstraintToTemplate(newTemplate, tc2, null, "choice", "SHALL", "1..1");
             tdb.AddConstraintToTemplate(newTemplate, tc2Choice, null, "observation", "SHALL", "1..1");
+            */
+            
+            tdb.AddConstraintToTemplate(newTemplate, tc2, null, "observation", "SHALL", "1..1");
 
             List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();
 
@@ -48,12 +53,19 @@ namespace Trifolia.Test.Reporting
             Template newTemplate = tdb.GenerateTemplate("1.2.3.4", tdb.FindTemplateType("CDA", "Document"), "Test 1", this.ig, "observation", "Observation");
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, context: "effectiveTime", conformance: "SHALL", cardinality: "1..1", dataType: "IVL_TS");
 
+            /* TODO: Schema Choice support temporarily removed from non-FHIR schemas
             var tc1Choice = tc1.AddChildConstraintToTemplate(tdb, newTemplate, context: "choice");   // effectiveTime.choice
 
             tc1Choice
                 .AddChildConstraintToTemplate(tdb, newTemplate, null, "low", "SHALL", "1..1");       // effectiveTime.choice.low
             tc1Choice
                 .AddChildConstraintToTemplate(tdb, newTemplate, null, "high", "SHALL", "1..1");      // effectiveTime.choice.high
+                */
+
+            tc1
+                .AddChildConstraintToTemplate(tdb, newTemplate, null, "low", "SHALL", "1..1");       // effectiveTime.low
+            tc1
+                .AddChildConstraintToTemplate(tdb, newTemplate, null, "high", "SHALL", "1..1");      // effectiveTime.high
 
             List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();
 
@@ -111,10 +123,17 @@ namespace Trifolia.Test.Reporting
             tdb.AddConstraintToTemplate(containedTemplate, null, null, "effectiveTime", "SHALL", "1..1");
 
             Template containingTemplate = tdb.GenerateTemplate("4.3.2.1", tdb.FindTemplateType("CDA", "Document"), "Test 1", this.ig, "observation", "Observation");
+
+            /* TODO: Schema Choice support temporarily removed from non-FHIR schemas
             var tc1 = tdb
                 .AddConstraintToTemplate(containingTemplate, context: "entryRelationship", conformance: "SHALL", cardinality: "1..1")   // entryRelationship
                 .AddChildConstraintToTemplate(tdb, containingTemplate, context: "choice", conformance: "SHALL", cardinality: "1..1")         // entryRelationship.choice
                 .AddChildConstraintToTemplate(tdb, containingTemplate, containedTemplate, "observation", "SHALL", "1..1");                   // entryRelationship.choice.observation
+                */
+
+            var tc1 = tdb
+                .AddConstraintToTemplate(containingTemplate, context: "entryRelationship", conformance: "SHALL", cardinality: "1..1")   // entryRelationship
+                .AddChildConstraintToTemplate(tdb, containingTemplate, containedTemplate, "observation", "SHALL", "1..1");                   // entryRelationship.observation
 
             List<TemplateValidationResult> errors = containingTemplate.ValidateTemplate();
 
@@ -129,9 +148,15 @@ namespace Trifolia.Test.Reporting
             tdb.AddConstraintToTemplate(containedTemplate, null, null, "effectiveTime", "SHALL", "1..1");
 
             Template containingTemplate = tdb.GenerateTemplate("4.3.2.1", tdb.FindTemplateType("CDA", "Document"), "Test 1", this.ig, "observation", "Observation");
+
+            /* TODO: Schema Choice support temporarily removed from non-FHIR schemas
             var tc1 = tdb.AddConstraintToTemplate(containingTemplate, null, null, "entryRelationship", "SHALL", "1..1");
             var tc1Choice = tdb.AddConstraintToTemplate(containingTemplate, tc1, null, "choice", "SHALL", "1..1");
             tdb.AddConstraintToTemplate(containingTemplate, tc1Choice, containedTemplate, "substanceAdministration", "SHALL", "1..1");
+            */
+
+            var tc1 = tdb.AddConstraintToTemplate(containingTemplate, null, null, "entryRelationship", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(containingTemplate, tc1, containedTemplate, "substanceAdministration", "SHALL", "1..1");
 
             List<TemplateValidationResult> errors = containingTemplate.ValidateTemplate();
 
@@ -184,6 +209,7 @@ namespace Trifolia.Test.Reporting
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "value", "SHALL", "1..1", dataType: "CD");
             tdb.AddConstraintToTemplate(newTemplate, tc1, null, "@code", "SHALL", "1..1");
 
+            /* TODO: Schema Choice support temporarily removed from non-FHIR schemas
             var tc2 = tdb.AddConstraintToTemplate(newTemplate, null, null, "entryRelationship", "SHALL", "1..1");
             var tc2Choice = tdb.AddConstraintToTemplate(newTemplate, tc2, null, "choice", "SHALL", "1..1");
             tdb.AddConstraintToTemplate(newTemplate, tc2Choice, null, "observation", "SHALL", "1..1");
@@ -191,6 +217,14 @@ namespace Trifolia.Test.Reporting
             var tc3 = tdb.AddConstraintToTemplate(newTemplate, null, null, "entryRelationship", "SHALL", "1..1");
             var tc3Choice = tdb.AddConstraintToTemplate(newTemplate, tc3, null, "choice", "SHALL", "1..1");
             var tc4 = tdb.AddConstraintToTemplate(newTemplate, tc3Choice, null, "observation", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(newTemplate, tc4, null, "value", "SHALL", "1..1");
+            */
+
+            var tc2 = tdb.AddConstraintToTemplate(newTemplate, null, null, "entryRelationship", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(newTemplate, tc2, null, "observation", "SHALL", "1..1");
+
+            var tc3 = tdb.AddConstraintToTemplate(newTemplate, null, null, "entryRelationship", "SHALL", "1..1");
+            var tc4 = tdb.AddConstraintToTemplate(newTemplate, tc3, null, "observation", "SHALL", "1..1");
             tdb.AddConstraintToTemplate(newTemplate, tc4, null, "value", "SHALL", "1..1");
 
             List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();

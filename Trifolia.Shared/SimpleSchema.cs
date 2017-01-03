@@ -441,6 +441,8 @@ namespace Trifolia.Shared
         [Serializable]
         public class SchemaObject
         {
+            private const string FHIR_NS = "http://hl7.org/fhir";
+
             #region Private Fields
 
             private ObjectTypes type = ObjectTypes.ComplexType;
@@ -802,22 +804,44 @@ namespace Trifolia.Shared
 
             private void InitializeXmlChoice(SchemaObject parent, XmlSchemaChoice choice, bool update = false)
             {
-                SchemaObject choiceObject = new SchemaObject(this.simpleSchema, choice, false);
-                choiceObject.Parent = parent;
-                parent.Children.Add(choiceObject);
-
-                foreach (XmlSchemaObject cChoiceObject in choice.Items)
+                // Only processing choice's as IsChoice when dealing with FHIR schemas.
+                // All other schemas currently used by Trifolia have some issues with IsChoice to figure out first.
+                if (this.SimpleSchema.Schema.TargetNamespace == FHIR_NS)
                 {
-                    XmlSchemaElement cChoiceElement = cChoiceObject as XmlSchemaElement;
-                    XmlSchemaSequence cChoiceSequence = cChoiceObject as XmlSchemaSequence;
+                    SchemaObject choiceObject = new SchemaObject(this.simpleSchema, choice, false);
+                    choiceObject.Parent = parent;
+                    parent.Children.Add(choiceObject);
 
-                    if (cChoiceElement != null)
+                    foreach (XmlSchemaObject cChoiceObject in choice.Items)
                     {
-                        this.simpleSchema.InitializeElement(choiceObject, cChoiceElement, update);
+                        XmlSchemaElement cChoiceElement = cChoiceObject as XmlSchemaElement;
+                        XmlSchemaSequence cChoiceSequence = cChoiceObject as XmlSchemaSequence;
+
+                        if (cChoiceElement != null)
+                        {
+                            this.simpleSchema.InitializeElement(choiceObject, cChoiceElement, update);
+                        }
+                        else if (cChoiceSequence != null)
+                        {
+                            InitializeXmlSequence(choiceObject, cChoiceSequence, update);
+                        }
                     }
-                    else if (cChoiceSequence != null)
+                }
+                else
+                {
+                    foreach (XmlSchemaObject cChoiceObject in choice.Items)
                     {
-                        InitializeXmlSequence(choiceObject, cChoiceSequence, update);
+                        XmlSchemaElement cChoiceElement = cChoiceObject as XmlSchemaElement;
+                        XmlSchemaSequence cChoiceSequence = cChoiceObject as XmlSchemaSequence;
+
+                        if (cChoiceElement != null)
+                        {
+                            this.simpleSchema.InitializeElement(parent, cChoiceElement, update);
+                        }
+                        else if (cChoiceSequence != null)
+                        {
+                            InitializeXmlSequence(parent, cChoiceSequence, update);
+                        }
                     }
                 }
             }
