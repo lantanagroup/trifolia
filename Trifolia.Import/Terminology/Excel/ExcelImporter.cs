@@ -112,6 +112,18 @@ namespace Trifolia.Import.Terminology.Excel
                 var name = GetCellValue(nameCell, wbPart);
                 var oid = GetCellValue(oidCell, wbPart);
 
+                if (string.IsNullOrEmpty(oid))
+                {
+                    response.Errors.Add(string.Format("Row {0} on valueset sheet does not specify an identifier for the value set", row.RowIndex.Value));
+                    continue;
+                }
+
+                if (!oid.StartsWith("http://") && !oid.StartsWith("https://") && !oid.StartsWith("urn:oid:"))
+                {
+                    response.Errors.Add(string.Format("Row {0}'s identifier on valueset sheet must be correctly formatted as one of: http[s]://XXXX or urn:oid:XXXX", row.RowIndex.Value));
+                    continue;
+                }
+
                 ImportValueSetChange change = new ImportValueSetChange();
                 ValueSet foundValueSet = this.tdb.ValueSets.SingleOrDefault(y => y.Oid == oid);
 
@@ -164,6 +176,30 @@ namespace Trifolia.Import.Terminology.Excel
                 string codeSystemOid = GetCellValue(codeSystemOidCell, wbPart);
                 string status = GetCellValue(statusCell, wbPart);
                 string statusDateText = GetCellValue(statusDateCell, wbPart);
+
+                if (string.IsNullOrEmpty(valuesetOid))
+                {
+                    response.Errors.Add(string.Format("Row {0}'s value set identifier on concepts sheet is not identifier", row.RowIndex.Value));
+                    continue;
+                }
+
+                if (!valuesetOid.StartsWith("http://") && !valuesetOid.StartsWith("https://") && !valuesetOid.StartsWith("urn:oid:"))
+                {
+                    response.Errors.Add(string.Format("Row {0}'s value set identifier on concepts sheet must be correctly formatted as one of: http[s]://XXXX or urn:oid:XXXX", row.RowIndex.Value));
+                    continue;
+                }
+
+                if (string.IsNullOrEmpty(codeSystemOid))
+                {
+                    response.Errors.Add(string.Format("Row {0}'s code system identifier on the concept sheet is not specified", row.RowIndex.Value));
+                    continue;
+                }
+
+                if (!codeSystemOid.StartsWith("http://") && !codeSystemOid.StartsWith("https://") && !codeSystemOid.StartsWith("urn:oid:"))
+                {
+                    response.Errors.Add(string.Format("Row {0}'s code system identifier on concepts sheet must be correctly formatted as one of: http[s]://XXXX or urn:oid:XXXX", row.RowIndex.Value));
+                    continue;
+                }
 
                 var foundValuesetChange = response.ValueSets.SingleOrDefault(y => y.Oid == valuesetOid);
                 var foundCodeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid == codeSystemOid);

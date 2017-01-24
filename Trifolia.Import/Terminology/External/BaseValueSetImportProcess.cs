@@ -157,7 +157,7 @@ namespace Trifolia.Import.Terminology.External
 
             // If we haven't added the code system as part of this save, search the database for the code system
             if (foundCodeSystem == null)
-                foundCodeSystem = tdb.CodeSystems.SingleOrDefault(y => y.Oid == codeSystemOid);
+                foundCodeSystem = tdb.CodeSystems.FirstOrDefault(y => y.Oid == codeSystemOid);
 
             // If no code system was found that we added recently, and it was not found in the database, create a new one
             if (foundCodeSystem == null)
