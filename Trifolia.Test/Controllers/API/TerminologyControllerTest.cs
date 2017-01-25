@@ -27,7 +27,7 @@ namespace Trifolia.Test.Controllers.API
             Assert.AreEqual(response.Errors.Count, 1, "Expected an error related to code system not being found");
 
             // Code system is found, first valueset is not found, to be added
-            var codesystem = tdb.FindOrCreateCodeSystem("Test Code System", "4.3.2.1");
+            var codesystem = tdb.FindOrCreateCodeSystem("Test Code System", "urn:oid:4.3.2.1");
             response = controller.CheckExcelImport(request);
             Assert.AreEqual(response.Errors.Count, 0);
             Assert.AreEqual(response.ValueSets.Count, 2);
@@ -35,7 +35,7 @@ namespace Trifolia.Test.Controllers.API
             Assert.AreEqual(response.ValueSets[0].ChangeType, ImportValueSetChange.ChangeTypes.Add);
 
             // First valueset is found, name to be updated
-            var valueset = tdb.FindOrCreateValueSet("Value Set", "1.2.3.4");
+            var valueset = tdb.FindOrCreateValueSet("Value Set", "urn:oid:1.2.3.4");
             response = controller.CheckExcelImport(request);
             Assert.AreEqual(response.Errors.Count, 0);
             Assert.AreEqual(response.ValueSets.Count, 2);

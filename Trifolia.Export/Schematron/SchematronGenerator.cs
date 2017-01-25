@@ -26,6 +26,7 @@ namespace Trifolia.Export.Schematron
         private IIGTypePlugin igTypePlugin;
         private List<string> categories;
         private string defaultSchematron;
+        private TemplateContextBuilder templateContextBuilder;
 
         /// <summary>
         /// Creates a new instance of SchematronGenerator.
@@ -48,9 +49,11 @@ namespace Trifolia.Export.Schematron
             this.vocabularyOutputType = vocabularyOutputType;
             this.includeCustom = includeCustom;
             this.vocFileName = vocFileName;
-            this.igTypePlugin = ig.ImplementationGuideType.GetPlugin();
             this.categories = categories;
             this.defaultSchematron = defaultSchematron;
+
+            this.igTypePlugin = this.ig.ImplementationGuideType.GetPlugin();
+            this.templateContextBuilder = new TemplateContextBuilder(this.ig.ImplementationGuideType.SchemaPrefix, this.igTypePlugin.TemplateIdentifierXpath, this.igTypePlugin.TemplateVersionIdentifierXpath);
 
             constraintNumbers = (from t in templates
                                  join tc in rep.TemplateConstraints on t.Id equals tc.TemplateId
@@ -243,11 +246,7 @@ namespace Trifolia.Export.Schematron
 
             if (!string.IsNullOrEmpty(test))
             {
-                string templateContext = TemplateContextBuilder.BuildContextString(
-                    this.ig.ImplementationGuideType.SchemaPrefix,
-                    this.igTypePlugin.TemplateIdentifierXpath,
-                    this.igTypePlugin.TemplateVersionIdentifierXpath,
-                    aClosedTemplate);
+                string templateContext = this.templateContextBuilder.BuildContextString(aClosedTemplate);
 
                 newPattern = new Pattern()
                 {
@@ -491,11 +490,7 @@ namespace Trifolia.Export.Schematron
                                                select c).Where(c => IsBranchDescendent(c)).OrderBy(c => c.Id);            
             string templateContext = string.Empty;
 
-            templateContext = TemplateContextBuilder.BuildContextString(
-                this.ig.ImplementationGuideType.SchemaPrefix,
-                this.igTypePlugin.TemplateIdentifierXpath,
-                this.igTypePlugin.TemplateVersionIdentifierXpath,
-                template);
+            templateContext = this.templateContextBuilder.BuildContextString(template);
 
             Pattern ErrorPattern = null;
             ErrorPattern = GeneratePattern(Conformance.SHALL, requiredConformance, errorPhase, patternErrorId, ruleErrorId, templateContext, impliedPatternErrorId, impliedRuleErrorId, isImplied);
@@ -634,7 +629,7 @@ namespace Trifolia.Export.Schematron
                 if (!AlreadyGeneratedRoots.Contains(root.Id))
                 {
                     AlreadyGeneratedRoots.Add(root.Id);
-                    string context = TemplateContextBuilder.CreateFullBranchedParentContext(this.ig.ImplementationGuideType.SchemaPrefix, aTemplate, root);
+                    string context = this.templateContextBuilder.CreateFullBranchedParentContext(aTemplate, root);
                     var rule = new Rule();
                     rule.Id = string.Format(ruleErrorId, root.Number);
                     rule.Context = context;

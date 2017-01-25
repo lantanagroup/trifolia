@@ -24,6 +24,13 @@ namespace Trifolia.Test
         public const string DEFAULT_CDA_IG_TYPE_NAME = "CDA";
         public const string DEFAULT_HQMF_R2_IG_TYPE_NAME = "HQMF R2";
         public const string DEFAULT_USERNAME = "admin";
+
+        public const string DEFAULT_CDA_DOC_TYPE = "Document";
+        public const string DEFAULT_CDA_SECTION_TYPE = "Section";
+        public const string DEFAULT_CDA_ENTRY_TYPE = "Entry";
+        public const string DEFAULT_CDA_SUBENTRY_TYPE = "Subentry";
+        public const string DEFAULT_CDA_UNSPECIFIED_TYPE = "Unspecified";
+
         public const string ADMIN_ROLE = "admin";
 
         public MockObjectRepository()
@@ -68,15 +75,18 @@ namespace Trifolia.Test
                 SecurableNames.VALUESET_LIST, SecurableNames.WEB_IG);
         }
 
+        /// <summary>
+        /// Creates the ImplementationGuideType for CDA, as well as 5 template types (Document, Section, Entry, Subentry, Unspecified)
+        /// </summary>
         public void InitializeCDARepository()
         {
             ImplementationGuideType cdaType = this.FindOrCreateImplementationGuideType(DEFAULT_CDA_IG_TYPE_NAME, "cda.xsd", "cda", "urn:hl7-org:v3");
 
-            this.FindOrCreateTemplateType(cdaType, "Document", "ClinicalDocument", "ClinicalDocument", 1);
-            this.FindOrCreateTemplateType(cdaType, "Section", "section", "Section", 2);
-            this.FindOrCreateTemplateType(cdaType, "Entry", "entry", "Entry", 3);
-            this.FindOrCreateTemplateType(cdaType, "Subentry", "entry", "Entry", 4);
-            this.FindOrCreateTemplateType(cdaType, "Unspecified", "", "", 4);
+            this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_DOC_TYPE, "ClinicalDocument", "ClinicalDocument", 1);
+            this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_SECTION_TYPE, "section", "Section", 2);
+            this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_ENTRY_TYPE, "entry", "Entry", 3);
+            this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_SUBENTRY_TYPE, "entry", "Entry", 4);
+            this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_UNSPECIFIED_TYPE, "", "", 4);
         }
 
         public void InitializeFHIRRepository()

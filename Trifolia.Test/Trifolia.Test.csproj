@@ -159,6 +159,7 @@
     <Compile Include="Extensions\TemplateConstraintTest.cs" />
     <Compile Include="Generation\IG\FormattedConstraintSchemaChoiceTest.cs" />
     <Compile Include="Generation\Schematron\CategorizedConstraintsTests.cs" />
+    <Compile Include="Generation\Schematron\TemplateContextBuilderTest.cs" />
     <Compile Include="Generation\XML\DecorTests.cs" />
     <Compile Include="Generation\XML\FHIRExporterTest.cs" />
     <Compile Include="Generation\XML\FHIRImporterTest.cs" />

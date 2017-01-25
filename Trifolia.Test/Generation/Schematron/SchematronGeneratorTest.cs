@@ -546,7 +546,8 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual(parentElement.ElementName, tc10486.ParentConstraint.Context, "Failed to properly parse the constraint to a document element.");
             Assert.AreEqual(attribute.AttributeName, tc10486.Context.Replace("@", ""), "Failed to properly parse the constraint to a document element.");
 
-            string path = TemplateContextBuilder.CreateFullBranchedParentContext(cdaType.SchemaPrefix, template, tc8662);
+            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(consolidationIg.ImplementationGuideType);
+            string path = contextBuilder.CreateFullBranchedParentContext(template, tc8662);
             string expectedPath = "cda:observation[cda:templateId[@root='2.16.840.1.113883.10.20.22.4.48']]/cda:participant[@typeCode='VRF'][cda:templateId[@root='2.16.840.1.113883.10.20.1.58']][cda:participantRole]";
             Assert.AreEqual(expectedPath, path, "Invalid path returned from ConstraintToDocumentElementMapper");
         }

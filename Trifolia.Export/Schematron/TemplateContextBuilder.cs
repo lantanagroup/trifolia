@@ -10,9 +10,29 @@ namespace Trifolia.Export.Schematron
 {
     internal class TemplateContextBuilder
     {
-        public static string BuildContextString(string aPrefix, string templateIdentifierXpath, string templateVersionIdentifierXpath, Template aTemplate)
+        public TemplateContextBuilder(string prefix, string templateIdentifierXpathFormat, string templateVersionIdentifierXpathFormat)
         {
-            string schemaPrefix = aPrefix;
+            this.Prefix = prefix;
+            this.TemplateIdentifierXpathFormat = templateIdentifierXpathFormat;
+            this.TemplateVersionIdentifierXpathFormat = templateVersionIdentifierXpathFormat;
+        }
+
+        public TemplateContextBuilder(ImplementationGuideType igType)
+        {
+            var plugin = igType.GetPlugin();
+
+            this.Prefix = igType.SchemaPrefix;
+            this.TemplateIdentifierXpathFormat = plugin.TemplateIdentifierXpath;
+            this.TemplateVersionIdentifierXpathFormat = plugin.TemplateVersionIdentifierXpath;
+        }
+
+        public string Prefix { get; set; }
+        public string TemplateIdentifierXpathFormat { get; set; }
+        public string TemplateVersionIdentifierXpathFormat { get; set; }
+
+        public string BuildContextString(Template aTemplate)
+        {
+            string schemaPrefix = this.Prefix;
 
             if (!string.IsNullOrEmpty(schemaPrefix) && !schemaPrefix.EndsWith(":"))
                 schemaPrefix += ":";
@@ -33,8 +53,8 @@ namespace Trifolia.Export.Schematron
             string extension;
             string urn;
 
-            string identifierFormat = "[" + templateIdentifierXpath + "]";
-            string versionIdentifierFormat = "[" + templateVersionIdentifierXpath + "]";
+            string identifierFormat = "[" + this.TemplateIdentifierXpathFormat + "]";
+            string versionIdentifierFormat = "[" + this.TemplateVersionIdentifierXpathFormat + "]";
 
             if (IdentifierHelper.GetIdentifierOID(aTemplate.Oid, out oid))
             {
@@ -65,18 +85,13 @@ namespace Trifolia.Export.Schematron
         /// <param name="aTemplate"></param>
         /// <param name="aTemplateConstraint"></param>
         /// <returns></returns>
-        public static string CreateFullBranchedParentContext(string aPrefix, Template aTemplate, TemplateConstraint aTemplateConstraint)
+        public string CreateFullBranchedParentContext(Template aTemplate, TemplateConstraint aTemplateConstraint)
         {
             TemplateConstraint current = aTemplateConstraint;
             var igTypePlugin = aTemplate.ImplementationGuideType.GetPlugin();
 
-            string templateContext = TemplateContextBuilder.BuildContextString(
-                aPrefix,
-                igTypePlugin.TemplateIdentifierXpath,
-                igTypePlugin.TemplateVersionIdentifierXpath,
-                aTemplate) + "/";
-
-            return templateContext + CreateFullBranchedParentContext(aPrefix, aTemplateConstraint, isTarget: true);
+            string templateContext = this.BuildContextString(aTemplate) + "/";
+            return templateContext + CreateFullBranchedParentContext(aTemplateConstraint, isTarget: true);
         }
 
         /// <summary>
@@ -89,12 +104,12 @@ namespace Trifolia.Export.Schematron
         /// <param name="aPerspectiveConstraint"></param>
         /// <param name="aIgnoreParent">Specifies whether to walk the the parent tree</param>
         /// <returns></returns>
-        private static string CreateFullBranchedParentContext(string aPrefix, TemplateConstraint aTemplateConstraint, TemplateConstraint aPerspectiveConstraint = null, bool aIgnoreParent = false, bool isTarget = false)
+        private string CreateFullBranchedParentContext(TemplateConstraint aTemplateConstraint, TemplateConstraint aPerspectiveConstraint = null, bool aIgnoreParent = false, bool isTarget = false)
         {
             string constraintParentContext = string.Empty;
             if (aTemplateConstraint.Parent != null && !aIgnoreParent)
             {
-                constraintParentContext = CreateFullBranchedParentContext(aPrefix, aTemplateConstraint.ParentConstraint, aTemplateConstraint);
+                constraintParentContext = CreateFullBranchedParentContext(aTemplateConstraint.ParentConstraint, aTemplateConstraint);
             }
 
             DocumentTemplateElement element = null;
@@ -111,10 +126,10 @@ namespace Trifolia.Export.Schematron
             {
                 element.IsBranch = aTemplateConstraint.IsBranch;
                 element.IsBranchIdentifier = aTemplateConstraint.IsBranchIdentifier;
-                ConstraintToDocumentElementHelper.AddElementValueAndDataType(aPrefix, element, aTemplateConstraint);
+                ConstraintToDocumentElementHelper.AddElementValueAndDataType(this.Prefix, element, aTemplateConstraint);
             }
 
-            ContextBuilder builder = ContextBuilder.CreateFromElementAndAttribute(element, attribute, aPrefix);
+            ContextBuilder builder = ContextBuilder.CreateFromElementAndAttribute(element, attribute, this.Prefix);
             StringBuilder childStrings = new StringBuilder();
             foreach (var child in aTemplateConstraint.ChildConstraints)
             {
@@ -122,7 +137,7 @@ namespace Trifolia.Export.Schematron
                 {
                     if (child.IsBranchIdentifier == true)
                     {
-                        childStrings.Append(CreateFullBranchedParentContext(aPrefix, child, aIgnoreParent:true));
+                        childStrings.Append(CreateFullBranchedParentContext(child, aIgnoreParent:true));
                     }
                 }
             }

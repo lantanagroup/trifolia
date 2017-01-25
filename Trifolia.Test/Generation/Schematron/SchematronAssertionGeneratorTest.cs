@@ -2170,7 +2170,8 @@ namespace Trifolia.Test.Generation.Schematron
             var root = ruleRepo.AddConstraintToTemplate(template, id, null, "@root", "SHALL", "1..1", isBranchIdentifier: true, value: "2.16.840.1.113883.3.2074.1", displayName: "CMS EHR Certification Number");
             var extension = ruleRepo.AddConstraintToTemplate(template, id, null, "@extension", "SHALL", "1..1");
 
-            string actual = TemplateContextBuilder.CreateFullBranchedParentContext("cda", template, id);
+            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(ig.ImplementationGuideType);
+            string actual = contextBuilder.CreateFullBranchedParentContext(template, id);
             string expected = "cda:ClinicalDocument[cda:templateId[@root='2.16.92.3.1.5.2.34']]/cda:participant/cda:associatedEntity/cda:id[@root='2.16.840.1.113883.3.2074.1']";
 
             Assert.AreEqual(expected, actual);
