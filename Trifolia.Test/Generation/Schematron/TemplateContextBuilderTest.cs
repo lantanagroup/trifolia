@@ -69,10 +69,10 @@ namespace Trifolia.Test.Generation.Schematron
 
             var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
             var docTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_DOC_TYPE);
-            var ig = tdb.FindOrAddImplementationGuide(igType, "Test IG");
+            var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
             TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
 
-            Template template = tdb.GenerateTemplate("urn:oid:1.2.3.4", docTemplateType, "Test Template", ig);
+            Template template = tdb.CreateTemplate("urn:oid:1.2.3.4", docTemplateType, "Test Template", ig);
             var contextString = tcb.BuildContextString(template);
 
             Assert.AreEqual("cda:ClinicalDocument[cda:templateId[@root='1.2.3.4']]", contextString);
@@ -90,10 +90,10 @@ namespace Trifolia.Test.Generation.Schematron
 
             var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
             var docTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_DOC_TYPE);
-            var ig = tdb.FindOrAddImplementationGuide(igType, "Test IG");
+            var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
             TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
 
-            Template template = tdb.GenerateTemplate("urn:hl7ii:1.2.3.4:1234", docTemplateType, "Test Template", ig);
+            Template template = tdb.CreateTemplate("urn:hl7ii:1.2.3.4:1234", docTemplateType, "Test Template", ig);
             var contextString = tcb.BuildContextString(template);
 
             Assert.AreEqual("cda:ClinicalDocument[cda:templateId[@root='1.2.3.4' and @extension = '1234']]", contextString);
@@ -113,10 +113,10 @@ namespace Trifolia.Test.Generation.Schematron
 
             var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
             var docTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_DOC_TYPE);
-            var ig = tdb.FindOrAddImplementationGuide(igType, "Test IG");
+            var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
             TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
 
-            Template template = tdb.GenerateTemplate("http://test.com/doc/test", docTemplateType, "Test Template", ig);
+            Template template = tdb.CreateTemplate("http://test.com/doc/test", docTemplateType, "Test Template", ig);
             var contextString = tcb.BuildContextString(template);
 
             Assert.AreEqual("cda:ClinicalDocument[cda:templateId[@root='http://test.com/doc/test']]", contextString);
@@ -133,10 +133,10 @@ namespace Trifolia.Test.Generation.Schematron
 
             var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
             var unspecifiedTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_UNSPECIFIED_TYPE);
-            var ig = tdb.FindOrAddImplementationGuide(igType, "Test IG");
+            var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
             TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
 
-            Template template = tdb.GenerateTemplate("urn:oid:1.2.3.4", unspecifiedTemplateType, "Test Template", ig, "addr", "AD");
+            Template template = tdb.CreateTemplate("urn:oid:1.2.3.4", unspecifiedTemplateType, "Test Template", ig, "addr", "AD");
             var contextString = tcb.BuildContextString(template);
 
             Assert.AreEqual("cda:addr[cda:templateId[@root='1.2.3.4']]", contextString);

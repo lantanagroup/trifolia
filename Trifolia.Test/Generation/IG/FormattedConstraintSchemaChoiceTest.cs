@@ -21,7 +21,7 @@ namespace Trifolia.Test.Generation.IG
             this.tdb.InitializeFHIR3Repository();
 
             var fhirIgType = this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_FHIR_STU3_IG_TYPE_NAME);
-            this.fhirIg = this.tdb.FindOrAddImplementationGuide(fhirIgType, "Test FHIR IG");
+            this.fhirIg = this.tdb.FindOrCreateImplementationGuide(fhirIgType, "Test FHIR IG");
             this.fhirIgSettings = new IGSettingsManager(this.tdb, this.fhirIg.Id);
         }
 
@@ -29,7 +29,7 @@ namespace Trifolia.Test.Generation.IG
         public void SingleChild()
         {
             var templateType = this.tdb.FindOrCreateTemplateType(this.fhirIg.ImplementationGuideType, "Observation");
-            var template = this.tdb.GenerateTemplate("http://test.com", templateType, "Test Observation", this.fhirIg);
+            var template = this.tdb.CreateTemplate("http://test.com", templateType, "Test Observation", this.fhirIg);
             var c1 = this.tdb.AddConstraintToTemplate(template, null, null, "effective[x]", "SHALL", "1..1", isChoice: true);
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, null, "effectiveDateTime");
 
@@ -47,7 +47,7 @@ namespace Trifolia.Test.Generation.IG
         public void MultipleChildren()
         {
             var templateType = this.tdb.FindOrCreateTemplateType(this.fhirIg.ImplementationGuideType, "Observation");
-            var template = this.tdb.GenerateTemplate("http://test.com", templateType, "Test Observation", this.fhirIg);
+            var template = this.tdb.CreateTemplate("http://test.com", templateType, "Test Observation", this.fhirIg);
             var c1 = this.tdb.AddConstraintToTemplate(template, null, null, "effective[x]", "SHALL", "1..1", isChoice: true);
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, null, "effectiveDateTime");
             var c3 = this.tdb.AddConstraintToTemplate(template, c1, null, "effectivePeriod");
@@ -70,7 +70,7 @@ namespace Trifolia.Test.Generation.IG
         public void SingleChildWithValueSetBinding()
         {
             var templateType = this.tdb.FindOrCreateTemplateType(this.fhirIg.ImplementationGuideType, "Extension");
-            var template = this.tdb.GenerateTemplate("http://test.com", templateType, "Test Extension", this.fhirIg);
+            var template = this.tdb.CreateTemplate("http://test.com", templateType, "Test Extension", this.fhirIg);
             var valueSet = this.tdb.FindOrCreateValueSet("Test Value Set", "urn:oid:1.2.3.4");
             var c1 = this.tdb.AddConstraintToTemplate(template, null, null, "value[x]", "SHALL", "1..1", isChoice: true);
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, null, "valueCodeableConcept", valueSet: valueSet);
@@ -89,7 +89,7 @@ namespace Trifolia.Test.Generation.IG
         public void SingleChildWithCodeSystemBinding()
         {
             var templateType = this.tdb.FindOrCreateTemplateType(this.fhirIg.ImplementationGuideType, "Extension");
-            var template = this.tdb.GenerateTemplate("http://test.com", templateType, "Test Extension", this.fhirIg);
+            var template = this.tdb.CreateTemplate("http://test.com", templateType, "Test Extension", this.fhirIg);
             var codeSystem = this.tdb.FindOrCreateCodeSystem("Test Code System", "urn:oid:4.3.2.1");
             var c1 = this.tdb.AddConstraintToTemplate(template, null, null, "value[x]", "SHALL", "1..1", isChoice: true);
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, null, "valueCodeableConcept", codeSystem: codeSystem);
@@ -108,7 +108,7 @@ namespace Trifolia.Test.Generation.IG
         public void SingleChildWithSingleValueBinding()
         {
             var templateType = this.tdb.FindOrCreateTemplateType(this.fhirIg.ImplementationGuideType, "Extension");
-            var template = this.tdb.GenerateTemplate("http://test.com", templateType, "Test Extension", this.fhirIg);
+            var template = this.tdb.CreateTemplate("http://test.com", templateType, "Test Extension", this.fhirIg);
             var c1 = this.tdb.AddConstraintToTemplate(template, null, null, "value[x]", "SHALL", "1..1", isChoice: true);
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, null, "valueCodeableConcept", value: "1234-x", displayName: "Test Value");
 
@@ -127,8 +127,8 @@ namespace Trifolia.Test.Generation.IG
         {
             var templateType = this.tdb.FindOrCreateTemplateType(this.fhirIg.ImplementationGuideType, "Extension");
             var templateType2 = this.tdb.FindOrCreateTemplateType(this.fhirIg.ImplementationGuideType, "Observation");
-            var template = this.tdb.GenerateTemplate("http://test.com", templateType, "Test Extension", this.fhirIg);
-            var template2 = this.tdb.GenerateTemplate("http://test2.com", templateType2, "Test Observation", this.fhirIg);
+            var template = this.tdb.CreateTemplate("http://test.com", templateType, "Test Extension", this.fhirIg);
+            var template2 = this.tdb.CreateTemplate("http://test2.com", templateType2, "Test Observation", this.fhirIg);
             var c1 = this.tdb.AddConstraintToTemplate(template, null, null, "value[x]", "SHALL", "1..1", isChoice: true);
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, template2, "valueReference");
 

@@ -52,10 +52,10 @@ namespace Trifolia.Test.Generation.Schematron
             ImplementationGuideType hqmfType = ruleRepo.FindOrCreateImplementationGuideType(MockObjectRepository.DEFAULT_HQMF_R2_IG_TYPE_NAME, "schemas\\EMeasure.xsd", "hqmf", "urn:hl7-org:v3");
 
             // CDA IG
-            ImplementationGuide cdaIg = ruleRepo.FindOrAddImplementationGuide(cdaType, "Test CDA IG");
+            ImplementationGuide cdaIg = ruleRepo.FindOrCreateImplementationGuide(cdaType, "Test CDA IG");
 
             // HQMF IG
-            ImplementationGuide hqmfIg = ruleRepo.FindOrAddImplementationGuide(hqmfType, "Test HQMF IG");
+            ImplementationGuide hqmfIg = ruleRepo.FindOrCreateImplementationGuide(hqmfType, "Test HQMF IG");
 
             // CDA Template Type
             TemplateType cdaDocType = ruleRepo.FindOrCreateTemplateType(cdaType, "document", "ClinicalDocument", "ClinicalDocument", 1);
@@ -77,12 +77,12 @@ namespace Trifolia.Test.Generation.Schematron
             ruleRepo.FindOrCreateValueSetMember(vs1, cs1, "4321", "Test Member 2");
 
             // CDA Template
-            Template cdaTemplate1 = ruleRepo.GenerateTemplate("urn:oid:1.2.3.4.5", cdaDocType, "Test Document Template", cdaIg);
-            Template cdaTemplate2 = ruleRepo.GenerateTemplate("urn:oid:5.4.3.2.1", cdaDocType, "Test Referenced Document Template", cdaIg);
+            Template cdaTemplate1 = ruleRepo.CreateTemplate("urn:oid:1.2.3.4.5", cdaDocType, "Test Document Template", cdaIg);
+            Template cdaTemplate2 = ruleRepo.CreateTemplate("urn:oid:5.4.3.2.1", cdaDocType, "Test Referenced Document Template", cdaIg);
 
             // HQMF Template
-            Template hqmfTemplate1 = ruleRepo.GenerateTemplate("urn:oid:3.2.1.4.5", hqmfDocType, "Template HQMF Doc Template", hqmfIg);
-            Template hqmfTemplate2 = ruleRepo.GenerateTemplate("urn:oid:3.2.1.4.5.1", hqmfDocType, "Template HQMF Doc Template 2", hqmfIg);
+            Template hqmfTemplate1 = ruleRepo.CreateTemplate("urn:oid:3.2.1.4.5", hqmfDocType, "Template HQMF Doc Template", hqmfIg);
+            Template hqmfTemplate2 = ruleRepo.CreateTemplate("urn:oid:3.2.1.4.5.1", hqmfDocType, "Template HQMF Doc Template 2", hqmfIg);
 
             // Rule #1
             AddConstraintForRule(1,
@@ -492,7 +492,7 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint p89_3 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p89_1, null, "observation", "SHALL", "1..1", isBranchIdentifier:true);
             TemplateConstraint p89_4 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p89_3, null, "@classCode", "SHALL", "1..1", null, null, "OBS", isBranchIdentifier: true);
             TemplateConstraint p89_5 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p89_3, null, "statusCode", "SHALL", "1..1", isBranchIdentifier:true);
-            TemplateConstraint p89_6 = ruleRepo.GeneratePrimitive(cdaTemplate1, p89_3, "SHALL", "Test primitive constraint", null, false);
+            TemplateConstraint p89_6 = ruleRepo.CreatePrimitive(cdaTemplate1, p89_3, "SHALL", "Test primitive constraint", null, false);
             TemplateConstraint p89_7 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p89_5, null, "@code", "SHALL", "1..1", null, null, "active", isBranchIdentifier: true);
             TemplateConstraint p89_8 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p89_3, null, "code", "SHALL", "1..1", isBranchIdentifier: true);
             AddConstraintForRule(89,p89_1);
@@ -2160,8 +2160,8 @@ namespace Trifolia.Test.Generation.Schematron
         [TestMethod, TestCategory("Schematron")]
         public void TestParticipant1()
         {
-            var ig = ruleRepo.FindOrAddImplementationGuide("CDA", "Test IG");
-            var template = ruleRepo.GenerateTemplate("urn:oid:2.16.92.3.1.5.2.34", "document", "Test Template", ig, "ClinicalDocument", "ClinicalDocument");
+            var ig = ruleRepo.FindOrCreateImplementationGuide("CDA", "Test IG");
+            var template = ruleRepo.CreateTemplate("urn:oid:2.16.92.3.1.5.2.34", "document", "Test Template", ig, "ClinicalDocument", "ClinicalDocument");
 
             var participant = ruleRepo.AddConstraintToTemplate(template, null, null, "participant", "MAY", "0..*");
             var associatedEntity = ruleRepo.AddConstraintToTemplate(template, participant, null, "associatedEntity", "SHALL", "1..1");

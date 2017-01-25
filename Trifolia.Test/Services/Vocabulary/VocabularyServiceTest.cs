@@ -54,7 +54,7 @@ namespace Trifolia.Test.Services.Vocabulary
             this.tdb.FindOrCreateValueSetMember(this.vs3, cs, "4", "Four", valueSetStatus: "active");
             this.tdb.FindOrCreateValueSetMember(this.vs3, cs, "5", "Five");
 
-            this.ig = this.tdb.FindOrAddImplementationGuide("CDA", "Test IG");
+            this.ig = this.tdb.FindOrCreateImplementationGuide("CDA", "Test IG");
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Trifolia.Test.Services.Vocabulary
         [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabularySpreadsheet()
         {
-            Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
+            Template t = this.tdb.CreateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
             this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             this.tdb.AddConstraintToTemplate(t, null, null, "value", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs2);
 
@@ -158,7 +158,7 @@ namespace Trifolia.Test.Services.Vocabulary
         [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_NoStaticValuesets()
         {
-            Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
+            Template t = this.tdb.CreateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
             TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = false;
 
@@ -174,7 +174,7 @@ namespace Trifolia.Test.Services.Vocabulary
         [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_StaticValuesetNoDate()
         {
-            Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
+            Template t = this.tdb.CreateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
             TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = true;
 
@@ -199,7 +199,7 @@ namespace Trifolia.Test.Services.Vocabulary
         [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_StaticValuesetWithDate1()
         {
-            Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
+            Template t = this.tdb.CreateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
             TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = true;
             tc.ValueSetDate = DateTime.Parse("1/1/2000");
@@ -224,7 +224,7 @@ namespace Trifolia.Test.Services.Vocabulary
         [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_StaticValuesetWithDate2()
         {
-            Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
+            Template t = this.tdb.CreateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
             TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = true;
             tc.ValueSetDate = DateTime.Parse("1/1/2001");
@@ -249,7 +249,7 @@ namespace Trifolia.Test.Services.Vocabulary
         [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_StaticValuesetWithDate3()
         {
-            Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
+            Template t = this.tdb.CreateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
             TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = true;
             tc.ValueSetDate = DateTime.Parse("1/1/2002");
@@ -275,7 +275,7 @@ namespace Trifolia.Test.Services.Vocabulary
         [TestMethod, TestCategory("Terminology")]
         public void GetImplementationGuideVocabulary_Valueset3()
         {
-            Template t = this.tdb.GenerateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
+            Template t = this.tdb.CreateTemplate("1.2.3.4.5", "Document", "Test Template 1", this.ig);
             TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs3);
             tc.IsStatic = true;
 

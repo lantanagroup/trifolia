@@ -47,7 +47,7 @@ namespace Trifolia.Test.Generation.Green
         {
             this.mockRepo = new MockObjectRepository();
             this.mockRepo.InitializeCDARepository();
-            this.mockRepo.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Dev Test IG");
+            this.mockRepo.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Dev Test IG");
 
             string importXml = Helper.GetSampleContents("Trifolia.Test.DocSamples.sample2.xml");
             TemplateImporter importer = new TemplateImporter(this.mockRepo);
@@ -124,8 +124,8 @@ namespace Trifolia.Test.Generation.Green
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void BuildGreenSchemaTest_CollapsedConstraint1()
         {
-            ImplementationGuide ig = this.mockRepo.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Testing");
-            Template docTemplate = this.mockRepo.GenerateTemplate("5.4.3.2.1", "Document", "Testing Collapsed", ig, "ClinicalDocument", "ClinicalDocument");
+            ImplementationGuide ig = this.mockRepo.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Testing");
+            Template docTemplate = this.mockRepo.CreateTemplate("5.4.3.2.1", "Document", "Testing Collapsed", ig, "ClinicalDocument", "ClinicalDocument");
             var recordTarget = this.mockRepo.AddConstraintToTemplate(docTemplate, null, null, "recordTarget", "SHALL", "1..*");
             var patientRole = this.mockRepo.AddConstraintToTemplate(docTemplate, recordTarget, null, "patientRole", "SHALL", "1..1");
             var patient = this.mockRepo.AddConstraintToTemplate(docTemplate, patientRole, null, "patient", "SHALL", "1..1");
@@ -139,7 +139,7 @@ namespace Trifolia.Test.Generation.Green
             var greenPatient = CreateGreenConstraint(greenDocTemplate, patient, null, "Patient", "patient", patientXpath);
 
             string genderXpath = "recordTarget/patientRole/patient/administrativeGenderCode";
-            var ceDataType = this.mockRepo.FindOrAddDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "CE");
+            var ceDataType = this.mockRepo.FindOrCreateDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "CE");
             var greenPatientGender = CreateGreenConstraint(greenDocTemplate, patientGender, greenPatient, "Gender", "gender", genderXpath, ceDataType);
 
             GreenSchemaPackage package = GreenSchemaGenerator.Generate(mockRepo, docTemplate);
@@ -191,8 +191,8 @@ namespace Trifolia.Test.Generation.Green
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void BuildGreenSchemaTest_CollapsedConstraint2()
         {
-            ImplementationGuide ig = this.mockRepo.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Testing");
-            Template docTemplate = this.mockRepo.GenerateTemplate("5.4.3.2.1", "Document", "Testing Collapsed", ig, "ClinicalDocument", "ClinicalDocument");
+            ImplementationGuide ig = this.mockRepo.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Testing");
+            Template docTemplate = this.mockRepo.CreateTemplate("5.4.3.2.1", "Document", "Testing Collapsed", ig, "ClinicalDocument", "ClinicalDocument");
             var recordTarget = this.mockRepo.AddConstraintToTemplate(docTemplate, null, null, "recordTarget", "SHALL", "1..*");
             var patientRole = this.mockRepo.AddConstraintToTemplate(docTemplate, recordTarget, null, "patientRole", "SHALL", "1..1");
             var patient = this.mockRepo.AddConstraintToTemplate(docTemplate, patientRole, null, "patient", "SHALL", "1..1");
@@ -206,14 +206,14 @@ namespace Trifolia.Test.Generation.Green
             var greenRecordTarget = CreateGreenConstraint(greenDocTemplate, recordTarget, null, "Patient", "patient", recordTargetXpath);
 
             string genderXpath = "recordTarget/patientRole/patient/administrativeGenderCode";
-            var ceDataType = this.mockRepo.FindOrAddDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "CE");
+            var ceDataType = this.mockRepo.FindOrCreateDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "CE");
             var greenPatientGender = CreateGreenConstraint(greenDocTemplate, patientGender, greenRecordTarget, "Gender", "gender", genderXpath, ceDataType);
 
             string nameXpath = "recordTarget/patientRole/patient/name";
             var greenPatientName = CreateGreenConstraint(greenDocTemplate, patientName, greenRecordTarget, "Name", "name", nameXpath);
 
             string firstNameXpath = "recordTarget/patientRole/patient/name/given";
-            var stDataType = this.mockRepo.FindOrAddDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "ST");
+            var stDataType = this.mockRepo.FindOrCreateDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "ST");
             var greenPatientFirstName = CreateGreenConstraint(greenDocTemplate, patientFirstName, greenPatientName, "First", "first", firstNameXpath, stDataType);
 
             string lastNameXpath = "recordTarget/patientRole/patient/name/family";
@@ -278,7 +278,7 @@ namespace Trifolia.Test.Generation.Green
         [DeploymentItem("Schemas\\", "Schemas\\")]
         public void BuildGreenSchemaTest_Basic()
         {
-            var ivlts_dt = this.mockRepo.FindOrAddDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "IVL_TS");
+            var ivlts_dt = this.mockRepo.FindOrCreateDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "IVL_TS");
 
             Template docTemplate = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4");
             Template baseSectionTemplate = this.mockRepo.Templates.Single(y => y.Oid == "urn:oid:1.2.3.4.1");
@@ -297,7 +297,7 @@ namespace Trifolia.Test.Generation.Green
 
             GreenTemplate greenEntryTemplate = CreateGreenTemplate(entryTemplate, "myEntry");
             string hemoglobinXpath = "value";
-            var cdDataType = this.mockRepo.FindOrAddDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "CD");
+            var cdDataType = this.mockRepo.FindOrCreateDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "CD");
             var greenEntry = CreateGreenConstraint(greenEntryTemplate, this.mockRepo.TemplateConstraints.Single(y => y.Number == 39714), null, "Hemoglobin", "hemoglobin", hemoglobinXpath, cdDataType);
 
             GreenSchemaPackage package = GreenSchemaGenerator.Generate(mockRepo, docTemplate);
@@ -384,7 +384,7 @@ namespace Trifolia.Test.Generation.Green
 
             GreenTemplate greenEntryTemplate = CreateGreenTemplate(entryTemplate, "myEntry");
             string hemoglobinXpath = "value";
-            var cdDataType = this.mockRepo.FindOrAddDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "CD");
+            var cdDataType = this.mockRepo.FindOrCreateDataType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "CD");
             var greenEntry = CreateGreenConstraint(greenEntryTemplate, this.mockRepo.TemplateConstraints.Single(y => y.Number == 39714), null, "Hemoglobin", "hemoglobin", hemoglobinXpath, cdDataType);
 
             GreenSchemaPackage package = GreenSchemaGenerator.Generate(mockRepo, docTemplate, true);

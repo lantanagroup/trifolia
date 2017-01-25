@@ -102,7 +102,7 @@ namespace Trifolia.Test.Import
             MockObjectRepository tdb = new MockObjectRepository();
             tdb.InitializeCDARepository();
 
-            var implementationGuide = tdb.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Test IG");
+            var implementationGuide = tdb.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Test IG");
 
             string importXml =
                 "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +

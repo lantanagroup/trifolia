@@ -26,8 +26,8 @@ namespace Trifolia.Test.Controllers.RoleManagement
             this.controller = new RoleController(mockRepo);
 
             // Setup test data
-            roleUserId = mockRepo.FindOrAddRole("user").Id;
-            roleAdminId = mockRepo.FindOrAddRole("admin").Id;
+            roleUserId = mockRepo.FindOrCreateRole("user").Id;
+            roleAdminId = mockRepo.FindOrCreateRole("admin").Id;
         }
 
         [TestMethod]

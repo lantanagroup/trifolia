@@ -25,13 +25,13 @@ namespace Trifolia.Test.Export.FHIR
             this.tdb.InitializeFHIR3Repository();
 
             var fhirIgType = this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_FHIR_STU3_IG_TYPE_NAME);
-            this.fhirIg = this.tdb.FindOrAddImplementationGuide(fhirIgType, "Test IG");
+            this.fhirIg = this.tdb.FindOrCreateImplementationGuide(fhirIgType, "Test IG");
 
             string schemaLocation = Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(fhirIgType);
             schema = SimpleSchema.CreateSimpleSchema(schemaLocation);
 
             var templateType = tdb.FindTemplateType(MockObjectRepository.DEFAULT_FHIR_STU3_IG_TYPE_NAME, RESOURCE_TYPE_OBS);
-            this.template = tdb.GenerateTemplate("http://test.com", templateType, "Test Observation", fhirIg, RESOURCE_TYPE_OBS, RESOURCE_TYPE_OBS, DESCRIPTION);
+            this.template = tdb.CreateTemplate("http://test.com", templateType, "Test Observation", fhirIg, RESOURCE_TYPE_OBS, RESOURCE_TYPE_OBS, DESCRIPTION);
             var c1 = tdb.AddConstraintToTemplate(this.template, null, null, "extension");
             var c2 = tdb.AddConstraintToTemplate(this.template, c1, null, "value[x]", isChoice: true);
             var c3 = tdb.AddConstraintToTemplate(this.template, c2, null, "valueCodeableConcept", value: "1234-x", displayName: "test single-value binding");

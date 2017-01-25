@@ -22,21 +22,21 @@ namespace Trifolia.Test.Generation.Versioning
 
             cdaType = this.mockRepo.FindOrCreateImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, string.Empty, string.Empty, string.Empty);
             documentType = this.mockRepo.FindOrCreateTemplateType(cdaType, "Document Templates", "ClinicalDocument", "ClinicalDocument", 1);
-            ig = this.mockRepo.FindOrAddImplementationGuide(cdaType, "Test");
+            ig = this.mockRepo.FindOrCreateImplementationGuide(cdaType, "Test");
         }
 
         [TestMethod]
         public void VersionComparerTest1()
         {
-            Template parentTemplate = this.mockRepo.GenerateTemplate("3.2.1.4.3", this.documentType, "Parent Template", this.ig);
+            Template parentTemplate = this.mockRepo.CreateTemplate("3.2.1.4.3", this.documentType, "Parent Template", this.ig);
 
-            Template aTemplate = this.mockRepo.GenerateTemplate("1.2.3.4", this.documentType, "Test Template", this.ig, description: "Test Description 1");
+            Template aTemplate = this.mockRepo.CreateTemplate("1.2.3.4", this.documentType, "Test Template", this.ig, description: "Test Description 1");
             aTemplate.IsOpen = false;
             this.mockRepo.AddConstraintToTemplate(aTemplate, null, null, "id", "SHALL", "1..1", number: 1);
             this.mockRepo.AddConstraintToTemplate(aTemplate, null, null, "effectiveTime", "SHALL", "1..1", number: 2);
             this.mockRepo.AddConstraintToTemplate(aTemplate, null, null, "entryRelationship", "SHALL", "1..1", number: 3);
 
-            Template bTemplate = this.mockRepo.GenerateTemplate("4.3.2.1", this.documentType, "New Test Template", this.ig, description: "Test Description 2", impliedTemplate: parentTemplate);
+            Template bTemplate = this.mockRepo.CreateTemplate("4.3.2.1", this.documentType, "New Test Template", this.ig, description: "Test Description 2", impliedTemplate: parentTemplate);
             bTemplate.IsOpen = true;
             this.mockRepo.AddConstraintToTemplate(bTemplate, null, null, "id", "SHALL", "1..*", number: 1);
             this.mockRepo.AddConstraintToTemplate(bTemplate, null, null, "entryRelationship", "SHALL", "1..1", number: 3);

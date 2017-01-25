@@ -17,8 +17,8 @@ namespace Trifolia.Test
         {
             MockObjectRepository mockRepo = new MockObjectRepository();
 
-            Organization internalOrg = mockRepo.FindOrAddOrganization("Lantana");
-            Organization testOrg = mockRepo.FindOrAddOrganization("Test Organization");
+            Organization internalOrg = mockRepo.FindOrCreateOrganization("Lantana");
+            Organization testOrg = mockRepo.FindOrCreateOrganization("Test Organization");
 
             ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType("CDA", "CDA.xsd", "cda", "urn:hl7-org:v3");
 
@@ -30,11 +30,11 @@ namespace Trifolia.Test
 
             mockRepo.FindOrCreateValueSet("Test Value Set", "9.8.7.6.5.4.3.2.1");
 
-            ImplementationGuide ig = mockRepo.FindOrAddImplementationGuide(igType, "Test Implementation Guide", internalOrg);
-            mockRepo.FindOrAddImplementationGuide(igType, "Test IG 2", testOrg);
-            mockRepo.FindOrAddImplementationGuide(igType, "Test IG 3", internalOrg);
+            ImplementationGuide ig = mockRepo.FindOrCreateImplementationGuide(igType, "Test Implementation Guide", internalOrg);
+            mockRepo.FindOrCreateImplementationGuide(igType, "Test IG 2", testOrg);
+            mockRepo.FindOrCreateImplementationGuide(igType, "Test IG 3", internalOrg);
 
-            Template template1 = mockRepo.GenerateTemplate("1.2.3.4.5", docType, "Test Template 1", ig, null, null, "Test Description 2", "Test Note 1");
+            Template template1 = mockRepo.CreateTemplate("1.2.3.4.5", docType, "Test Template 1", ig, null, null, "Test Description 2", "Test Note 1");
             template1.Notes = "This is a test note";
 
             // Basic constraint, nothing special
@@ -51,19 +51,19 @@ namespace Trifolia.Test
             TemplateConstraint t1tc3_1 = mockRepo.AddConstraintToTemplate(template1, t1tc3, null, "@code", "SHALL", "1..1", "CE", "SHALL", null, null, t1tc3_vs);
             t1tc3_1.IsStatic = true;
 
-            Template template2 = mockRepo.GenerateTemplate("1.2.3.4.5.6", docType, "Test Template 2", ig, null, null, "Test Description 1", "Test Note 2");
+            Template template2 = mockRepo.CreateTemplate("1.2.3.4.5.6", docType, "Test Template 2", ig, null, null, "Test Description 1", "Test Note 2");
             template2.ImpliedTemplate = template1;
 
             // Constraint with a child
             TemplateConstraint t2tc1 = mockRepo.AddConstraintToTemplate(template2, null, null, "code", "SHALL", "1..1");
 
-            Template template3 = mockRepo.GenerateTemplate("1.2.3.4.5.6.7", docType, "Test Template 3", ig, null, null, "Test Description 3", "Test Note 3");
+            Template template3 = mockRepo.CreateTemplate("1.2.3.4.5.6.7", docType, "Test Template 3", ig, null, null, "Test Description 3", "Test Note 3");
 
             TemplateConstraint t3tc1 = mockRepo.AddConstraintToTemplate(template3, null, template2, null, "SHALL", "1..1");
             TemplateConstraint t3tc2 = mockRepo.AddConstraintToTemplate(template3, null, null, "entry", "SHALL", "1..1");
             TemplateConstraint t3tc2_1 = mockRepo.AddConstraintToTemplate(template3, t3tc2, template2, "observation", "SHALL", "1..1");
 
-            Template template4 = mockRepo.GenerateTemplate("8.2234.19.234.11", docType, "Test Constraint Description Template", ig, null, null, null, null);
+            Template template4 = mockRepo.CreateTemplate("8.2234.19.234.11", docType, "Test Constraint Description Template", ig, null, null, null, null);
             mockRepo.AddConstraintToTemplate(template4, null, null, "code", "SHALL", "1..1", "CD", null, null, null, null, null, "Test constraint description");
 
             return mockRepo;
@@ -92,12 +92,12 @@ namespace Trifolia.Test
 
             ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType("CDA", "CDA.xsd", "cda", "urn:hl7-org:v3");
 
-            ImplementationGuide ig = mockRepo.FindOrAddImplementationGuide(igType, "The IG");
+            ImplementationGuide ig = mockRepo.FindOrCreateImplementationGuide(igType, "The IG");
 
             TemplateType docType = mockRepo.FindOrCreateTemplateType(igType, "Document", "ClinicalDocument", "ClinicalDocument", 1);
 
-            Template template1 = mockRepo.GenerateTemplate("1.2.3.4.5.6", docType, "Test Template 1", ig, null, null, "Test Description 1", "Test Notes 1");
-            Template template2 = mockRepo.GenerateTemplate("1.2.3.4.5.6.5", docType, "Test Template 2", ig, null, null, "Test Description 2", "Test Notes 2");
+            Template template1 = mockRepo.CreateTemplate("1.2.3.4.5.6", docType, "Test Template 1", ig, null, null, "Test Description 1", "Test Notes 1");
+            Template template2 = mockRepo.CreateTemplate("1.2.3.4.5.6.5", docType, "Test Template 2", ig, null, null, "Test Description 2", "Test Notes 2");
 
             mockRepo.AddConstraintToTemplate(template1, null, null, "value", "SHALL", "1..1", null, null, null, null, null, null);
             mockRepo.AddConstraintToTemplate(template1, null, null, "@classCode", "SHALL", "1..1", null, null, "OBS", "Observation", null, mockRepo.CodeSystems.Single(y => y.Id == 2));
@@ -109,7 +109,7 @@ namespace Trifolia.Test
             mockRepo.AddConstraintToTemplate(template1, null, null, "code/@code", "SHALL", "1..1", "CD", "SHALL", "1234-X", "Test Disp", null, mockRepo.CodeSystems.Single(y => y.Id == 1));
             mockRepo.AddConstraintToTemplate(template1, null, null, "code", "SHALL", "1..1", "CD", "SHALL", "1234-X", "Test Disp", null, mockRepo.CodeSystems.Single(y => y.Id == 1));
 
-            Template template3 = mockRepo.GenerateTemplate("1.2.3.4.5.6.7", docType, "Test Template 3", ig, null, null, "Test Description 3", "");
+            Template template3 = mockRepo.CreateTemplate("1.2.3.4.5.6.7", docType, "Test Template 3", ig, null, null, "Test Description 3", "");
 
             TemplateConstraint template3_c1 = mockRepo.AddConstraintToTemplate(template3, null, null, "code", "SHALL", "1..1");
             template3_c1.Category = "TestCategory";
@@ -147,13 +147,13 @@ namespace Trifolia.Test
             TemplateType docType = mockRepo.FindOrCreateTemplateType(igType, "Document", "ClinicalDocument", "ClinicalDocument", 1);
             TemplateType sectionType = mockRepo.FindOrCreateTemplateType(igType, "Section", "section", "Section", 2);
 
-            mockRepo.GenerateDataType(igType, "II");
-            mockRepo.GenerateDataType(igType, "INT");
-            mockRepo.GenerateDataType(igType, "TS");
-            mockRepo.GenerateDataType(igType, "CE");
+            mockRepo.FindOrCreateDataType(igType, "II");
+            mockRepo.FindOrCreateDataType(igType, "INT");
+            mockRepo.FindOrCreateDataType(igType, "TS");
+            mockRepo.FindOrCreateDataType(igType, "CE");
 
-            ImplementationGuide ig1 = mockRepo.FindOrAddImplementationGuide(igType, "Test IG 1");
-            Template t1 = mockRepo.GenerateTemplate("urn:oid:1.2.3.4", docType, "Test Template 1", ig1, null, null, null);
+            ImplementationGuide ig1 = mockRepo.FindOrCreateImplementationGuide(igType, "Test IG 1");
+            Template t1 = mockRepo.CreateTemplate("urn:oid:1.2.3.4", docType, "Test Template 1", ig1, null, null, null);
 
             TemplateConstraint tc1 = mockRepo.AddConstraintToTemplate(t1, null, null, "code", "SHALL", "1..1", "CE");
             TemplateConstraint tc1_1 = mockRepo.AddConstraintToTemplate(t1, tc1, null, "@code", "SHALL", "1..1", null, "SHALL", "1234-x", "Test Doc Code", null, null);
@@ -166,25 +166,6 @@ namespace Trifolia.Test
             TemplateConstraint tc4_1_2 = mockRepo.AddConstraintToTemplate(t1, tc4_1, null, "patient", "SHALL", "1..1", null);
             TemplateConstraint tc4_1_2_1 = mockRepo.AddConstraintToTemplate(t1, tc4_1_2, null, "birthTime", "SHALL", "1..1", "TS");
             TemplateConstraint tc4_1_2_2 = mockRepo.AddConstraintToTemplate(t1, tc4_1_2, null, "administrativeGenderCode", "SHALL", "1..1", "CE");
-
-            // Green Info
-
-            GreenTemplate gt1 = new GreenTemplate()
-            {
-                Id = 1,
-                Template = t1,
-                TemplateId = t1.Id,
-                Name = "Test Green Template 1"
-            };
-            mockRepo.GreenTemplates.AddObject(gt1);
-            t1.GreenTemplates.Add(gt1);
-
-            GreenConstraint gc1 = mockRepo.GenerateGreenConstraint(gt1, tc2, null, 1, "VersionSet", true);
-            GreenConstraint gc2 = mockRepo.GenerateGreenConstraint(gt1, tc3, null, 2, "VersionNumber", true);
-            GreenConstraint gc3 = mockRepo.GenerateGreenConstraint(gt1, tc4, null, 3, "Patient", false);
-            GreenConstraint gc4 = mockRepo.GenerateGreenConstraint(gt1, tc4_1_1, gc3, 1, "Id", true);
-            GreenConstraint gc5 = mockRepo.GenerateGreenConstraint(gt1, tc4_1_2_1, gc3, 2, "BirthDate", true);
-            GreenConstraint gc6 = mockRepo.GenerateGreenConstraint(gt1, tc4_1_2_2, gc3, 3, "Gender", true);
 
             return mockRepo;
         }

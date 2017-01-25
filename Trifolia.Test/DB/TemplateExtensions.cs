@@ -14,9 +14,9 @@ namespace Trifolia.Test.DB
         {
             MockObjectRepository mockDb = new MockObjectRepository();
             mockDb.InitializeCDARepository();
-            var ig = mockDb.FindOrAddImplementationGuide("CDA", "My Test IG");
+            var ig = mockDb.FindOrCreateImplementationGuide("CDA", "My Test IG");
 
-            var template1 = mockDb.GenerateTemplate("1.2.3.4.1", "Document", "My Test Template", ig);
+            var template1 = mockDb.CreateTemplate("1.2.3.4.1", "Document", "My Test Template", ig);
             template1.AuthorId = 2;
 
             mockDb.AddConstraintToTemplate(template1, null, null, "recordTarget", "SHALL", "1..1");

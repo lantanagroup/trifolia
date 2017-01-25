@@ -29,8 +29,8 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             mockRepo.InitializeFHIR2Repository();
             mockRepo.InitializeLCG();
 
-            var ig = mockRepo.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU2_IG_TYPE_NAME, "Test IG");
-            var template = mockRepo.GenerateTemplate("http://test.com/fhir/test", "Composition", "Test Composition", ig, "Composition", "Composition");
+            var ig = mockRepo.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU2_IG_TYPE_NAME, "Test IG");
+            var template = mockRepo.CreateTemplate("http://test.com/fhir/test", "Composition", "Test Composition", ig, "Composition", "Composition");
             template.Extensions.Add(new Trifolia.DB.TemplateExtension()
             {
                 Identifier = "http://test.com/extension",
@@ -182,8 +182,8 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             mockRepo.InitializeFHIR2Repository();
             mockRepo.InitializeLCGAndLogin();
 
-            var ig = mockRepo.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU2_IG_TYPE_NAME, "Test IG");
-            var template = mockRepo.GenerateTemplate("http://test.com/profile1", "Composition", "Test Composition", ig);
+            var ig = mockRepo.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU2_IG_TYPE_NAME, "Test IG");
+            var template = mockRepo.CreateTemplate("http://test.com/profile1", "Composition", "Test Composition", ig);
 
             HttpRequestMessage request = new HttpRequestMessage()
             {

@@ -44,9 +44,9 @@ namespace Trifolia.Test.Generation.Schematron
 
             var cdaIgType = this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
             var docType = this.tdb.FindTemplateType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Document");
-            this.ig = this.tdb.FindOrAddImplementationGuide(cdaIgType, "Test IG");
+            this.ig = this.tdb.FindOrCreateImplementationGuide(cdaIgType, "Test IG");
 
-            var template = this.tdb.GenerateTemplate("urn:oid:1.2.3.4", docType, "Test Template", ig, "ClinicalDocument", "ClinicalDocument");
+            var template = this.tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Test Template", ig, "ClinicalDocument", "ClinicalDocument");
             this.tdb.AddConstraintToTemplate(template, null, null, "code", "SHALL", "1..1");
             this.tdb.AddConstraintToTemplate(template, null, null, "value", "SHOULD", "0..1", category: "CAT1");
             this.tdb.AddConstraintToTemplate(template, null, null, "value", "SHALL", "1..1", category: "CAT2");

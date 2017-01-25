@@ -29,11 +29,11 @@ namespace Trifolia.Test.Generation
 
             ImplementationGuideType cdaType = this.tdb.FindOrCreateImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "cda.xsd", "cda", "urn:hl7-org:v3");
             TemplateType docType = this.tdb.FindOrCreateTemplateType(cdaType, "Document Templates", "ClinicalDocument", "ClinicalDocument", 1);
-            ImplementationGuide ig = this.tdb.FindOrAddImplementationGuide(cdaType, "Test IG");
+            ImplementationGuide ig = this.tdb.FindOrCreateImplementationGuide(cdaType, "Test IG");
 
-            this.template1 = this.tdb.GenerateTemplate("1.2.3.4.5", docType, "Test Template 1", ig);
+            this.template1 = this.tdb.CreateTemplate("1.2.3.4.5", docType, "Test Template 1", ig);
             this.template1.Bookmark = "TEST_TEMPLATE1";
-            this.template2 = this.tdb.GenerateTemplate("5.4.3.2.1", docType, "Test Template 2", ig);
+            this.template2 = this.tdb.CreateTemplate("5.4.3.2.1", docType, "Test Template 2", ig);
             this.template2.Bookmark = "TEST_TEMPLATE2";
 
             MemoryStream ms = new MemoryStream();

@@ -69,38 +69,38 @@ namespace Trifolia.Test.Services.Validation
             tdb.FindOrCreateValueSetMember(vs1, cs1, "4321", "Test Member 2");
 
             // Implementation Guide
-            ImplementationGuide ig1 = tdb.FindOrAddImplementationGuide(cdaType, "Test Implementation Guide 1", publishDate: new DateTime(2012, 1, 1));
+            ImplementationGuide ig1 = tdb.FindOrCreateImplementationGuide(cdaType, "Test Implementation Guide 1", publishDate: new DateTime(2012, 1, 1));
 
             // IG Files
             byte[] testSchBytes = Helper.GetSampleContentBytes("Trifolia.Test.DocSamples.test.sch");
 
-            ImplementationGuideFile testSchFile = tdb.GenerateImplementationGuideFile(ig1, "test.sch", ImplementationGuideFile.ContentTypeSchematron, "text/xml", content:testSchBytes);
+            ImplementationGuideFile testSchFile = tdb.CreateImplementationGuideFile(ig1, "test.sch", ImplementationGuideFile.ContentTypeSchematron, "text/xml", content:testSchBytes);
             this.testSchFileId = testSchFile.Id;
 
-            tdb.GenerateImplementationGuideFile(ig1, "voc.xml", ImplementationGuideFile.ContentTypeVocabulary, "text/xml", content: testSchBytes);
-            tdb.GenerateImplementationGuideFile(ig1, "test1_template1.ent", ImplementationGuideFile.ContentTypeSchematronHelper, "text/xml", content: testSchBytes);
+            tdb.CreateImplementationGuideFile(ig1, "voc.xml", ImplementationGuideFile.ContentTypeVocabulary, "text/xml", content: testSchBytes);
+            tdb.CreateImplementationGuideFile(ig1, "test1_template1.ent", ImplementationGuideFile.ContentTypeSchematronHelper, "text/xml", content: testSchBytes);
 
-            ImplementationGuide ig2 = tdb.FindOrAddImplementationGuide(cdaType, "Test Implementation Guide 2");
+            ImplementationGuide ig2 = tdb.FindOrCreateImplementationGuide(cdaType, "Test Implementation Guide 2");
 
             // Template 1
-            Template t1 = tdb.GenerateTemplate("urn:oid:1.2.3.4", docType, "Test Template", ig1, null, null, null);
+            Template t1 = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Test Template", ig1, null, null, null);
             tdb.AddConstraintToTemplate(t1, null, null, "title", "SHALL", "1..1");
 
             // Template 2
-            Template t2 = tdb.GenerateTemplate("urn:oid:1.2.3.4.1", docType, "Test Template", ig1, null, null, null);
+            Template t2 = tdb.CreateTemplate("urn:oid:1.2.3.4.1", docType, "Test Template", ig1, null, null, null);
             TemplateConstraint t2_tc1 = tdb.AddConstraintToTemplate(t2, null, null, "title", "SHALL", "1..1");
             t2_tc1.Schematron = "count(cda:title)";
 
-            TemplateConstraint t2_tc2 = tdb.GeneratePrimitive(t2, null, "SHALL", "This is a test primitive");
+            TemplateConstraint t2_tc2 = tdb.CreatePrimitive(t2, null, "SHALL", "This is a test primitive");
 
-            tdb.GeneratePrimitive(t2, null, "SHALL", "This is test primitive #2", "count(cda:title) &gt; 0");
+            tdb.CreatePrimitive(t2, null, "SHALL", "This is test primitive #2", "count(cda:title) &gt; 0");
 
             // Template 3
-            Template t3 = tdb.GenerateTemplate("urn:oid:1.2.3.4.2", docType, "Test Template", ig2, null, null, null);
+            Template t3 = tdb.CreateTemplate("urn:oid:1.2.3.4.2", docType, "Test Template", ig2, null, null, null);
             tdb.AddConstraintToTemplate(t1, null, null, "title", "SHOULD", "1..1");
 
             // Template 4
-            Template t4 = tdb.GenerateTemplate("urn:oid:1.2.3.4.3", docType, "Test Template", ig2, null, null, null);
+            Template t4 = tdb.CreateTemplate("urn:oid:1.2.3.4.3", docType, "Test Template", ig2, null, null, null);
             TemplateConstraint t4_p1 = tdb.AddConstraintToTemplate(t4, null, null, "entryRelationship", "SHALL", "1..1", null, null, null, null, null, null, null, true);
             TemplateConstraint t4_p2 = tdb.AddConstraintToTemplate(t4, t4_p1, null, "@typeCode", "SHALL", "1..1", null, null, "DRIV");
             TemplateConstraint t4_p3 = tdb.AddConstraintToTemplate(t4, t4_p1, null, "observation", "SHALL", "1..1", null, null, "DRIV", null, null, null, null, true);

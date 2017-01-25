@@ -62,11 +62,11 @@ namespace Trifolia.Test
             });
 
             // Add the default admin role
-            var adminRole = this.FindOrAddRole(ADMIN_ROLE);
+            var adminRole = this.FindOrCreateRole(ADMIN_ROLE);
             adminRole.IsAdmin = true;
 
             // Add all securables to the system
-            this.FindOrAddSecurables(SecurableNames.ADMIN, SecurableNames.CODESYSTEM_EDIT, SecurableNames.CODESYSTEM_LIST, SecurableNames.EXPORT_GREEN, SecurableNames.EXPORT_SCHEMATRON, 
+            this.FindOrCreateSecurables(SecurableNames.ADMIN, SecurableNames.CODESYSTEM_EDIT, SecurableNames.CODESYSTEM_LIST, SecurableNames.EXPORT_GREEN, SecurableNames.EXPORT_SCHEMATRON, 
                 SecurableNames.EXPORT_VOCAB, SecurableNames.EXPORT_WORD, SecurableNames.EXPORT_XML, SecurableNames.GREEN_MODEL, SecurableNames.IMPLEMENTATIONGUIDE_AUDIT_TRAIL, 
                 SecurableNames.IMPLEMENTATIONGUIDE_EDIT, SecurableNames.IMPLEMENTATIONGUIDE_EDIT_BOOKMARKS, SecurableNames.IMPLEMENTATIONGUIDE_FILE_MANAGEMENT, SecurableNames.IMPLEMENTATIONGUIDE_FILE_VIEW, 
                 SecurableNames.IMPLEMENTATIONGUIDE_LIST, SecurableNames.IMPLEMENTATIONGUIDE_NOTES, SecurableNames.IMPLEMENTATIONGUIDE_PRIMITIVES, SecurableNames.LANDING_PAGE, SecurableNames.ORGANIZATION_DETAILS, 
@@ -156,7 +156,7 @@ namespace Trifolia.Test
             this.FindOrCreateTemplateType(fhirType, "ImplementationGuide", "ImplementationGuide", "ImplementationGuide", 5);
             this.FindOrCreateTemplateType(fhirType, "ValueSet", "ValueSet", "ValueSet", 6);
 
-            this.FindOrAddImplementationGuide(fhirType, "Unowned FHIR DSTU2 Profiles");
+            this.FindOrCreateImplementationGuide(fhirType, "Unowned FHIR DSTU2 Profiles");
         }
 
         public void InitializeFHIR3Repository()
@@ -275,13 +275,13 @@ namespace Trifolia.Test
             this.FindOrCreateTemplateType(fhirType, "ValueSet");
             this.FindOrCreateTemplateType(fhirType, "VisionPrescription");
 
-            this.FindOrAddImplementationGuide(fhirType, "Unowned FHIR STU3 Profiles");
+            this.FindOrCreateImplementationGuide(fhirType, "Unowned FHIR STU3 Profiles");
         }
 
         public void InitializeLCG()
         {
-            var org = this.FindOrAddOrganization(DEFAULT_ORGANIZATION);
-            this.FindOrAddUser(DEFAULT_USERNAME);
+            var org = this.FindOrCreateOrganization(DEFAULT_ORGANIZATION);
+            this.FindOrCreateUser(DEFAULT_USERNAME);
             this.AssociateUserWithRole(DEFAULT_USERNAME, ADMIN_ROLE);
         }
 
@@ -702,7 +702,7 @@ namespace Trifolia.Test
 
         #region Generic Test Data Generation
 
-        public Organization FindOrAddOrganization(string name, string contactName = null, string contactEmail = null, string contactPhone = null)
+        public Organization FindOrCreateOrganization(string name, string contactName = null, string contactEmail = null, string contactPhone = null)
         {
             Organization foundOrganization = this.organizations.SingleOrDefault(y => y.Name == name);
 
@@ -722,7 +722,7 @@ namespace Trifolia.Test
             return foundOrganization;
         }
 
-        public Template GenerateTemplate(
+        public Template CreateTemplate(
             string oid, 
             string typeName, 
             string title, 
@@ -742,7 +742,7 @@ namespace Trifolia.Test
             if (!string.IsNullOrEmpty(status))
                 publishStatus = this.publishStatuses.Single(y => y.Status == status);
 
-            var template = GenerateTemplate(oid, templateType, title, owningImplementationGuide, primaryContext, primaryContextType, description, notes, impliedTemplate, publishStatus);
+            var template = CreateTemplate(oid, templateType, title, owningImplementationGuide, primaryContext, primaryContextType, description, notes, impliedTemplate, publishStatus);
 
             if (previousVersion != null)
                 template.SetPreviousVersion(previousVersion);
@@ -761,7 +761,7 @@ namespace Trifolia.Test
         /// <param name="notes">The notes of the template</param>
         /// <param name="owningImplementationGuide">The implementation guide that owns the template.</param>
         /// <returns>A new instance of Template that has been appropriately added to the mock object repository.</returns>
-        public Template GenerateTemplate(string oid, TemplateType type, string title, ImplementationGuide owningImplementationGuide, string primaryContext = null, string primaryContextType = null, string description = null, string notes = null, Template impliedTemplate = null, PublishStatus status = null)
+        public Template CreateTemplate(string oid, TemplateType type, string title, ImplementationGuide owningImplementationGuide, string primaryContext = null, string primaryContextType = null, string description = null, string notes = null, Template impliedTemplate = null, PublishStatus status = null)
         {
             if (string.IsNullOrEmpty(oid))
                 throw new ArgumentNullException("oid");
@@ -828,54 +828,12 @@ namespace Trifolia.Test
         }
 
         /// <summary>
-        /// Creates a new instance of a GreenConstraint, associates it to the TemplateConstraint and adds it to the object context.
-        /// </summary>
-        /// <param name="gt">Required. The green template of the green constraint.</param>
-        /// <param name="tc">Required. The TemplateConstraint that the green constraint should be based on.</param>
-        /// <param name="parent">The parent green constraint, if any.</param>
-        /// <param name="order">The order of green constraint within the green template.</param>
-        /// <param name="name">Required. The business name for the green constraint.</param>
-        /// <param name="isEditable">Whether or not the green constraint is an XML-editable constraint.</param>
-        /// <returns>A new instance of GreenConstraint that has been appropriately added to the mock object repository.</returns>
-        public GreenConstraint GenerateGreenConstraint(GreenTemplate gt, TemplateConstraint tc, GreenConstraint parent, int order, string name, bool isEditable)
-        {
-            if (gt == null)
-                throw new ArgumentNullException("gt");
-
-            if (tc == null)
-                throw new ArgumentNullException("tc");
-
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
-
-            GreenConstraint gc = new GreenConstraint()
-            {
-                Id = this.GreenConstraints.DefaultIfEmpty().Max(y => y != null ? y.Id : 0) + 1,
-                GreenTemplate = gt,
-                GreenTemplateId = gt.Id,
-                TemplateConstraint = tc,
-                TemplateConstraintId = tc.Id,
-                ParentGreenConstraint = parent != null ? parent : null,
-                ParentGreenConstraintId = parent != null ? new Nullable<int>(parent.Id) : null,
-                Order = order,
-                Name = name,
-                IsEditable = isEditable
-            };
-
-            this.GreenConstraints.AddObject(gc);
-            tc.GreenConstraints.Add(gc);
-            gt.ChildGreenConstraints.Add(gc);
-
-            return gc;
-        }
-
-        /// <summary>
         /// Generates a data-type for the specified name that can be used by the green libraries.
         /// </summary>
         /// <param name="igType">The implementation guide type for the data type</param>
         /// <param name="name">The name of the data-type</param>
         /// <returns>A new instance of DataType that has been appropriately added to the mock object repository.</returns>
-        public ImplementationGuideTypeDataType GenerateDataType(ImplementationGuideType igType, string name)
+        public ImplementationGuideTypeDataType FindOrCreateDataType(ImplementationGuideType igType, string name)
         {
             ImplementationGuideTypeDataType dt = this.ImplementationGuideTypeDataTypes.SingleOrDefault(y => y.ImplementationGuideTypeId == igType.Id && y.DataTypeName == name);
 
@@ -970,11 +928,11 @@ namespace Trifolia.Test
             return type;
         }
 
-        public ImplementationGuide FindOrAddImplementationGuide(string igTypeName, string title, Organization organization = null, DateTime? publishDate = null, ImplementationGuide previousVersion = null)
+        public ImplementationGuide FindOrCreateImplementationGuide(string igTypeName, string title, Organization organization = null, DateTime? publishDate = null, ImplementationGuide previousVersion = null)
         {
             ImplementationGuideType igType = this.FindImplementationGuideType(igTypeName);
 
-            var ig = FindOrAddImplementationGuide(igType, title, organization, publishDate);
+            var ig = FindOrCreateImplementationGuide(igType, title, organization, publishDate);
 
             if (previousVersion != null)
                 ig.SetPreviousVersion(previousVersion);
@@ -991,7 +949,7 @@ namespace Trifolia.Test
         /// <param name="organization">The organization for the implementation guide.</param>
         /// <param name="publishDate">The publishing date for the implementation guide.</param>
         /// <returns>A new instance of an implementation guide that has been added to the mock object repository.</returns>
-        public ImplementationGuide FindOrAddImplementationGuide(ImplementationGuideType igType, string title, Organization organization = null, DateTime? publishDate = null)
+        public ImplementationGuide FindOrCreateImplementationGuide(ImplementationGuideType igType, string title, Organization organization = null, DateTime? publishDate = null)
         {
             if (igType == null)
                 throw new ArgumentNullException("igType");
@@ -1002,7 +960,7 @@ namespace Trifolia.Test
             ImplementationGuide ig = this.implementationGuides.SingleOrDefault(y => y.ImplementationGuideType == igType && y.Name.ToLower() == title.ToLower());
 
             if (organization == null)
-                organization = this.FindOrAddOrganization(DEFAULT_ORGANIZATION);
+                organization = this.FindOrCreateOrganization(DEFAULT_ORGANIZATION);
 
             if (ig == null)
             {
@@ -1025,7 +983,7 @@ namespace Trifolia.Test
             return ig;
         }
 
-        public TemplateConstraint GeneratePrimitive(
+        public TemplateConstraint CreatePrimitive(
             Template template, 
             TemplateConstraint parent, 
             string conformanceText, 
@@ -1303,7 +1261,7 @@ namespace Trifolia.Test
             return member;
         }
 
-        public ImplementationGuideFile GenerateImplementationGuideFile(ImplementationGuide ig, string fileName, string contentType, string mimeType, int? expectedErrorCount=null, byte[] content=null)
+        public ImplementationGuideFile CreateImplementationGuideFile(ImplementationGuide ig, string fileName, string contentType, string mimeType, int? expectedErrorCount=null, byte[] content=null)
         {
             ImplementationGuideFile igf = new ImplementationGuideFile()
             {
@@ -1318,7 +1276,7 @@ namespace Trifolia.Test
 
             if (content != null)
             {
-                this.GenerateImplementationGuideFileData(igf, content);
+                this.CreateImplementationGuideFileData(igf, content);
             }
 
             this.ImplementationGuideFiles.AddObject(igf);
@@ -1327,7 +1285,7 @@ namespace Trifolia.Test
             return igf;
         }
 
-        public ImplementationGuideFileData GenerateImplementationGuideFileData(ImplementationGuideFile igFile, byte[] content, string note=null, DateTime? updatedDate = null)
+        public ImplementationGuideFileData CreateImplementationGuideFileData(ImplementationGuideFile igFile, byte[] content, string note=null, DateTime? updatedDate = null)
         {
             ImplementationGuideFileData igFileData = new ImplementationGuideFileData()
             {
@@ -1346,7 +1304,7 @@ namespace Trifolia.Test
             return igFileData;
         }
 
-        public User FindOrAddUser(string username)
+        public User FindOrCreateUser(string username)
         {
             User foundUser = this.Users.SingleOrDefault(y => y.UserName.ToLower() == username.ToLower());
 
@@ -1364,7 +1322,7 @@ namespace Trifolia.Test
             return newUser;
         }
 
-        public Role FindOrAddRole(string roleName)
+        public Role FindOrCreateRole(string roleName)
         {
             Role role = this.Roles.SingleOrDefault(y => y.Name.ToLower() == roleName.ToLower());
 
@@ -1382,20 +1340,20 @@ namespace Trifolia.Test
             return role;
         }
 
-        public void AddRole(string roleName, params string[] securables)
+        public void CreateRole(string roleName, params string[] securables)
         {
-            Role role = FindOrAddRole(roleName);
+            Role role = FindOrCreateRole(roleName);
 
             AssociateSecurableToRole(roleName, securables);
         }
 
         public void AssociateSecurableToRole(string roleName, params string[] securables)
         {
-            Role role = FindOrAddRole(roleName);
+            Role role = FindOrCreateRole(roleName);
 
             foreach (string cSecurable in securables)
             {
-                AppSecurable securable = FindOrAddSecurable(cSecurable);
+                AppSecurable securable = FindOrCreateSecurable(cSecurable);
 
                 RoleAppSecurable newRoleAppSecurable = new RoleAppSecurable()
                 {
@@ -1413,11 +1371,11 @@ namespace Trifolia.Test
 
         public void RemoveSecurableFromRole(string roleName, params string[] securables)
         {
-            Role role = FindOrAddRole(roleName);
+            Role role = FindOrCreateRole(roleName);
 
             foreach (string cSecurable in securables)
             {
-                AppSecurable securable = FindOrAddSecurable(cSecurable);
+                AppSecurable securable = FindOrCreateSecurable(cSecurable);
 
                 RoleAppSecurable foundRoleSecurable = this.RoleAppSecurables.Single(y => y.Role == role && y.AppSecurable == securable);
 
@@ -1450,7 +1408,7 @@ namespace Trifolia.Test
             this.UserRoles.AddObject(newUserRole);
         }
 
-        public AppSecurable FindOrAddSecurable(string securableName, string description = null)
+        public AppSecurable FindOrCreateSecurable(string securableName, string description = null)
         {
             AppSecurable securable = this.AppSecurables.SingleOrDefault(y => y.Name.ToLower() == securableName.ToLower());
 
@@ -1469,11 +1427,11 @@ namespace Trifolia.Test
             return securable;
         }
 
-        public void FindOrAddSecurables(params string[] securableNames)
+        public void FindOrCreateSecurables(params string[] securableNames)
         {
             foreach (string securableName in securableNames)
             {
-                this.FindOrAddSecurable(securableName);
+                this.FindOrCreateSecurable(securableName);
             }
         }
 
@@ -1493,7 +1451,7 @@ namespace Trifolia.Test
             ig.Permissions.Add(newPerm);
         }
 
-        public ImplementationGuideTypeDataType FindOrAddDataType(string igTypeName, string dataTypeName)
+        public ImplementationGuideTypeDataType FindOrCreateDataType(string igTypeName, string dataTypeName)
         {
             var igType = this.FindImplementationGuideType(igTypeName);
             var dataType = igType.DataTypes.SingleOrDefault(y => y.DataTypeName == dataTypeName);

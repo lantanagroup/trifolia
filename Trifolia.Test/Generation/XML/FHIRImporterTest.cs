@@ -13,7 +13,7 @@ namespace Trifolia.Test.Generation.XML
             MockObjectRepository tdb = new MockObjectRepository();
             tdb.InitializeFHIRRepository();
 
-            tdb.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU1_IG_TYPE_NAME, "Unowned FHIR DSTU1 Profiles");
+            tdb.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU1_IG_TYPE_NAME, "Unowned FHIR DSTU1 Profiles");
 
             string bundleXml = Helper.GetSampleContents("Trifolia.Test.DocSamples.FHIR.DSTU1.bundle.xml");
             FHIRImporter importer = new FHIRImporter(tdb, false);

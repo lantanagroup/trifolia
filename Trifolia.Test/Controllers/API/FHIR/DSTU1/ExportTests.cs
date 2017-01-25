@@ -22,7 +22,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU1
             this.tdb.InitializeFHIRRepository();
             this.tdb.InitializeLCGAndLogin();
 
-            this.ig = this.tdb.FindOrAddImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU1_IG_TYPE_NAME, "Test IG");
+            this.ig = this.tdb.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU1_IG_TYPE_NAME, "Test IG");
         }
 
         [TestMethod, TestCategory("FHIR1")]
@@ -30,8 +30,8 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU1
         {
             // Setup data for the test
             var cs = this.tdb.FindOrCreateCodeSystem("Test Code System", "http://test.com/codesystem");
-            var template1 = this.tdb.GenerateTemplate("http://test.com/composition", "Composition", "Test Composition", this.ig, "Composition", "Composition");
-            var template2 = this.tdb.GenerateTemplate("http://test.com/section", "List", "Test Section", this.ig, "List", "List");
+            var template1 = this.tdb.CreateTemplate("http://test.com/composition", "Composition", "Test Composition", this.ig, "Composition", "Composition");
+            var template2 = this.tdb.CreateTemplate("http://test.com/section", "List", "Test Section", this.ig, "List", "List");
             var sectionConstraint = this.tdb.AddConstraintToTemplate(template1, null, null, "section", "SHALL", "1..1", isBranch: true);
             this.tdb.AddConstraintToTemplate(template1, sectionConstraint, null, "code", "SHALL", "1..1", null, null, "1234-x", "Test Code", null, cs, isBranchIdentifier: true);
             this.tdb.AddConstraintToTemplate(template1, sectionConstraint, template2, "content", "SHALL", "1..1");
