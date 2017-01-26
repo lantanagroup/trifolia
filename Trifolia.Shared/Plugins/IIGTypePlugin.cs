@@ -38,23 +38,28 @@ namespace Trifolia.Shared.Plugins
         string ClosedTemplateXpath { get; }
 
         /// <summary>
-        /// The format string for schematron to identify an unversioned template.
+        /// The name of the element that is used to identifier a template in the schema
         /// </summary>
         /// <remarks>
-        /// {0} = schema prefix (including :)
-        /// {1} = template identifier root
+        /// Example: "templateId" in "cda:templateId"
         /// </remarks>
-        string TemplateIdentifierXpath { get; }
+        string TemplateIdentifierElementName { get; }
 
         /// <summary>
-        /// The format string for schematron to identify a versioned template.
+        /// The child element or attribute of the identifier element that represents the identifier's root
         /// </summary>
         /// <remarks>
-        /// {0} = schema prefix (including :)
-        /// {1} = template identifier root
-        /// {2} = template identifier extension
+        /// Example: "@root" in "cda:templateId/@root"
         /// </remarks>
-        string TemplateVersionIdentifierXpath { get; }
+        string TemplateIdentifierRootName { get; }
+
+        /// <summary>
+        /// The child element or attribute of the identifier element that represents the identifier's extension
+        /// </summary>
+        /// <remarks>
+        /// Example: "@extension" in "cda:templateId/@extension"
+        /// </remarks>
+        string TemplateIdentifierExtensionName { get; }
 
         /// <summary>
         /// Fills the sample element with data commonly used by the implementation guide type, if the data doesn't already exist

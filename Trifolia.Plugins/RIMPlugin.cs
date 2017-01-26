@@ -12,20 +12,19 @@ namespace Trifolia.Plugins
 {
     public class RIMPlugin : IIGTypePlugin
     {
-        public string TemplateIdentifierXpath
+        public string TemplateIdentifierElementName
         {
-            get
-            {
-                return "{0}templateId[@root='{1}']";
-            }
+            get { return "templateId"; }
         }
 
-        public string TemplateVersionIdentifierXpath
+        public string TemplateIdentifierRootName
         {
-            get
-            {
-                return "{0}templateId[@root='{1}' and @extension = '{2}']";
-            }
+            get { return "@root"; }
+        }
+
+        public string TemplateIdentifierExtensionName
+        {
+            get { return "@extension"; }
         }
 
         public string ClosedTemplateXpath

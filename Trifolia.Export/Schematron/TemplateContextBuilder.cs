@@ -10,73 +10,119 @@ namespace Trifolia.Export.Schematron
 {
     internal class TemplateContextBuilder
     {
-        public TemplateContextBuilder(string prefix, string templateIdentifierXpathFormat, string templateVersionIdentifierXpathFormat)
-        {
-            this.Prefix = prefix;
-            this.TemplateIdentifierXpathFormat = templateIdentifierXpathFormat;
-            this.TemplateVersionIdentifierXpathFormat = templateVersionIdentifierXpathFormat;
-        }
+        private IIGTypePlugin Plugin;
 
-        public TemplateContextBuilder(ImplementationGuideType igType)
+        public TemplateContextBuilder(ImplementationGuideType igType, string prefix = null)
         {
-            var plugin = igType.GetPlugin();
+            this.Plugin = igType.GetPlugin();
+            this.Prefix = !string.IsNullOrEmpty(prefix) ? prefix : igType.SchemaPrefix;
 
-            this.Prefix = igType.SchemaPrefix;
-            this.TemplateIdentifierXpathFormat = plugin.TemplateIdentifierXpath;
-            this.TemplateVersionIdentifierXpathFormat = plugin.TemplateVersionIdentifierXpath;
+            if (!string.IsNullOrEmpty(this.Prefix) && this.Prefix.EndsWith(":"))
+                this.Prefix = this.Prefix.Substring(0, this.Prefix.Length-1);
         }
 
         public string Prefix { get; set; }
-        public string TemplateIdentifierXpathFormat { get; set; }
-        public string TemplateVersionIdentifierXpathFormat { get; set; }
 
-        public string BuildContextString(Template aTemplate)
+        public string BuildContextString(Template template)
         {
-            string schemaPrefix = this.Prefix;
+            return BuildContextWithIdentifierElement(template.Oid, template.PrimaryContext);
+        }
 
-            if (!string.IsNullOrEmpty(schemaPrefix) && !schemaPrefix.EndsWith(":"))
-                schemaPrefix += ":";
+        public string BuildContextString(string templateIdentifier, string primaryContext = null)
+        {
+            return BuildContextWithIdentifierElement(templateIdentifier, primaryContext);
+        }
 
-            StringBuilder context = new StringBuilder();
-            string templateContext = aTemplate.PrimaryContext;
+        /// <summary>
+        /// Creates a rule context for a template where the template does not have the identifier element
+        /// </summary>
+        /// <remarks>
+        /// Example: Where the "AD" type template does not have "templateId" on it.
+        /// Example: Where a profiled FHIR element does not have "meta/profile" on it.
+        /// </remarks>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        private string BuildContextWithoutIdentifierElement(string templateIdentifier, string primaryContext = null)
+        {
+            return string.Empty;
+        }
 
-            if (string.IsNullOrEmpty(templateContext))
-                templateContext = aTemplate.TemplateType.RootContext;
+        /// <summary>
+        /// Ensures that the element name in the plugin has the appropriate prefixes.
+        /// </summary>
+        /// <remarks>
+        /// The element name may include multiple levels in the form of xpath. Ensures that each level has a prefix as well.
+        /// Ex: templateId/item becomes hqmf:templateId/hqmf:item
+        /// </remarks>
+        private string GetTemplateIdentifierElementName()
+        {
+            string[] elementNameSplit = this.Plugin.TemplateIdentifierElementName.Split('/');
 
-            if (!string.IsNullOrEmpty(templateContext) && templateContext.IndexOf(':') < 0)
-                templateContext = schemaPrefix + templateContext;
-
-            context.Append(templateContext);
-
-            string oid;
-            string root;
-            string extension;
-            string urn;
-
-            string identifierFormat = "[" + this.TemplateIdentifierXpathFormat + "]";
-            string versionIdentifierFormat = "[" + this.TemplateVersionIdentifierXpathFormat + "]";
-
-            if (IdentifierHelper.GetIdentifierOID(aTemplate.Oid, out oid))
+            for (var i = 0; i < elementNameSplit.Length; i++)
             {
-                context.Append(string.Format(identifierFormat, schemaPrefix, oid));
+                if (!elementNameSplit[i].Contains(":"))
+                    elementNameSplit[i] = this.Prefix + ":" + elementNameSplit[i];
             }
-            else if (IdentifierHelper.GetIdentifierII(aTemplate.Oid, out root, out extension))
+
+            return string.Join("/", elementNameSplit);
+        }
+
+        /// <summary>
+        /// Creates a rule context for a template where the template DOES have an identifier element
+        /// </summary>
+        /// <remarks>
+        /// Example: Where "ClinicalDocument" has a "templateId" element
+        /// Example: Where a FHIR element DOES have "meta/profile"
+        /// </remarks>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        private string BuildContextWithIdentifierElement(string templateIdentifier, string primaryContext = null)
+        {
+            string contextFormat = "{0}";
+            string root = null;
+            string extension = null;
+
+            if (!string.IsNullOrEmpty(primaryContext))
             {
-                if (string.IsNullOrEmpty(extension))
-                    context.Append(string.Format(identifierFormat, schemaPrefix, root));
+                if (primaryContext.Contains(":"))       // primaryContext already contains prefix
+                    contextFormat = string.Format("{0}[{{0}}]", primaryContext);
                 else
-                    context.Append(string.Format(versionIdentifierFormat, schemaPrefix, root, extension));
+                    contextFormat = string.Format("{0}:{1}[{{0}}]", this.Prefix, primaryContext);
             }
-            else if (IdentifierHelper.GetIdentifierURL(aTemplate.Oid, out urn))
+
+            if (string.IsNullOrEmpty(this.Plugin.TemplateIdentifierElementName))
+                throw new Exception("Plugin for implementation guide type is not configured properly: Does not specify a TemplateIdentifierElementName");
+
+            if (string.IsNullOrEmpty(this.Plugin.TemplateIdentifierRootName))
+                throw new Exception("Plugin for implementation guide type is not configured properly: Does not specify a TemplateIdentifierRootName");
+            
+            if (IdentifierHelper.IsIdentifierOID(templateIdentifier))
+                IdentifierHelper.GetIdentifierOID(templateIdentifier, out root);
+            else if (IdentifierHelper.IsIdentifierII(templateIdentifier))
+                IdentifierHelper.GetIdentifierII(templateIdentifier, out root, out extension);
+            else if (IdentifierHelper.IsIdentifierURL(templateIdentifier))
+                IdentifierHelper.GetIdentifierURL(templateIdentifier, out root);
+            else
+                throw new Exception("Unexpected/invalid identifier for template found when processing template reference for template identifier xpath");
+
+            if (!string.IsNullOrEmpty(extension) && !string.IsNullOrEmpty(this.Plugin.TemplateIdentifierExtensionName))
             {
-                context.Append(string.Format(identifierFormat, schemaPrefix, urn));
+                string predicate = string.Format("{0}[{1}='{3}' and {2}='{4}']",
+                    this.GetTemplateIdentifierElementName(),
+                    this.Plugin.TemplateIdentifierRootName,
+                    this.Plugin.TemplateIdentifierExtensionName,
+                    root,
+                    extension);
+                return string.Format(contextFormat, predicate);
             }
             else
             {
-                throw new Exception("Unexpected/invalid identifier for template found when processing template reference for closed template identifier xpath");
+                string predicate = string.Format("{0}[{1}='{2}']",
+                    this.GetTemplateIdentifierElementName(),
+                    this.Plugin.TemplateIdentifierRootName,
+                    root);
+                return string.Format(contextFormat, predicate);
             }
-
-            return context.ToString();
         }
 
         /// <summary>

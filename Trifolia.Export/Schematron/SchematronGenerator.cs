@@ -53,7 +53,7 @@ namespace Trifolia.Export.Schematron
             this.defaultSchematron = defaultSchematron;
 
             this.igTypePlugin = this.ig.ImplementationGuideType.GetPlugin();
-            this.templateContextBuilder = new TemplateContextBuilder(this.ig.ImplementationGuideType.SchemaPrefix, this.igTypePlugin.TemplateIdentifierXpath, this.igTypePlugin.TemplateVersionIdentifierXpath);
+            this.templateContextBuilder = new TemplateContextBuilder(ig.ImplementationGuideType);
 
             constraintNumbers = (from t in templates
                                  join tc in rep.TemplateConstraints on t.Id equals tc.TemplateId
@@ -143,44 +143,16 @@ namespace Trifolia.Export.Schematron
             documentLevelTemplates.ToList().RemoveAll(t => t.Status != null && t.Status.Status == lDeprecatedStatus);
 
             List<string> requiredTemplates = new List<string>();
+            TemplateContextBuilder tcb = new TemplateContextBuilder(aImplementationGuide.ImplementationGuideType);
 
             foreach (var template in documentLevelTemplates)
             {
-                string xpath = GenerateDocumentTemplateIdentifierXpath(template.Oid);
+                string xpath = tcb.BuildContextString(template);
                 requiredTemplates.Add(xpath);
             }
 
             return string.Join(" or ", requiredTemplates);
         }
-
-        private string GenerateDocumentTemplateIdentifierXpath(string templateIdentifier)
-        {
-            string oid;
-            string root;
-            string extension;
-            string urn;
-
-            if (IdentifierHelper.GetIdentifierOID(templateIdentifier, out oid))
-            {
-                return string.Format(this.igTypePlugin.TemplateIdentifierXpath, this.schemaPrefix, oid);
-            }
-            else if (IdentifierHelper.GetIdentifierII(templateIdentifier, out root, out extension))
-            {
-                if (string.IsNullOrEmpty(extension))
-                    return string.Format(this.igTypePlugin.TemplateIdentifierXpath, this.schemaPrefix, root);
-                else
-                    return string.Format(this.igTypePlugin.TemplateVersionIdentifierXpath, this.schemaPrefix, root, extension);
-            }
-            else if (IdentifierHelper.GetIdentifierURL(templateIdentifier, out urn))
-            {
-                return string.Format(this.igTypePlugin.TemplateIdentifierXpath, this.schemaPrefix, urn);
-            }
-            else
-            {
-                throw new Exception("Unexpected/invalid identifier for template found when processing template reference for closed template identifier xpath");
-            }
-        }
-
 
         public Pattern AddDocumentLevelTemplateConstraints(ImplementationGuide aImplementationGuide, Phase aPhase)
         {

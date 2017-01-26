@@ -28,12 +28,14 @@ namespace Trifolia.Export.Schematron
         private string prefix;
         private VocabularyOutputType vocabularyOutputType = VocabularyOutputType.Default;
         private IIGTypePlugin igTypePlugin = null;
+        private ImplementationGuideType igType = null;
 
         public ConstraintParser(IObjectRepository tdb, IConstraint constraint, ImplementationGuideType igType, string valueSetFile = "voc.xml", VocabularyOutputType vocabularyOutputType = VocabularyOutputType.Default)
         {
             this.tdb = tdb;
             this.constraint = constraint;
             this.valueSetFile = valueSetFile;
+            this.igType = igType;
             this.igTypePlugin = igType.GetPlugin();
 
             if (this.constraint.ValueSetId != null)
@@ -72,7 +74,7 @@ namespace Trifolia.Export.Schematron
             ConstraintToDocumentElementHelper.AddElementValueAndDataType(this.prefix, aElement, aTemplateConstraint);
 
             //create builders
-            var builder = new AssertionLineBuilder(aElement, this.igTypePlugin.TemplateIdentifierXpath, this.igTypePlugin.TemplateVersionIdentifierXpath, this.prefix);
+            var builder = new AssertionLineBuilder(aElement, this.igType);
 
             if (aGenerateContext)
             {
@@ -128,12 +130,12 @@ namespace Trifolia.Export.Schematron
 
             if (element != null)
             {
-                asb = new AssertionLineBuilder(element, this.igTypePlugin.TemplateIdentifierXpath, this.igTypePlugin.TemplateVersionIdentifierXpath, this.prefix);
+                asb = new AssertionLineBuilder(element, this.igType);
                 if (aConstraint.ContainedTemplateId != null)
                 {
                     var containedTemplate = this.tdb.Templates.Single(y => y.Id == aConstraint.ContainedTemplateId.Value);
                     if (containedTemplate != null)
-                        asb.ContainsTemplate(containedTemplate.Oid);
+                        asb.ContainsTemplate(containedTemplate.Oid, containedTemplate.PrimaryContext);
                 }
             }
             else if (attribute != null)
@@ -142,7 +144,7 @@ namespace Trifolia.Export.Schematron
                 {
                     attribute.SingleValue = aConstraint.Value;
                 }
-                asb = new AssertionLineBuilder(attribute, this.igTypePlugin.TemplateIdentifierXpath, this.igTypePlugin.TemplateVersionIdentifierXpath);
+                asb = new AssertionLineBuilder(attribute, this.igType);
             }
             else
             {
@@ -225,7 +227,7 @@ namespace Trifolia.Export.Schematron
             }
             else
             {
-                asb = new AssertionLineBuilder(aAttribute, this.igTypePlugin.TemplateIdentifierXpath, this.igTypePlugin.TemplateVersionIdentifierXpath, this.prefix);
+                asb = new AssertionLineBuilder(aAttribute, this.igType);
 
                 if (aConstraint.Parent != null)
                 {
@@ -282,8 +284,6 @@ namespace Trifolia.Export.Schematron
             
             string parentContext = 
                 CreateParentContextForElement(parentElement, element, currentConstraint);
-
-            
 
             AssertionLineBuilder asb = null;
             AssertionLineBuilder branchedRootAsb = null;

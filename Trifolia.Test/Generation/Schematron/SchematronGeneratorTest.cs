@@ -1770,7 +1770,7 @@ namespace Trifolia.Test.Generation.Schematron
             var pattern = errorPhase.ActivePatterns.Where(p => p.ID == "p-DOCUMENT-TEMPLATE").FirstOrDefault();
             Assert.IsNotNull(pattern, "No pattern found with Id of " + "p-DOCUMENT-TEMPLATE");
             Assert.AreEqual("cda:ClinicalDocument", pattern.Rules[0].Context, "Incorrect context generated");
-            Assert.AreEqual("cda:templateId[@root='1.2.3.4']", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
+            Assert.AreEqual("cda:organizer[cda:templateId[@root='1.2.3.4']]", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
         }
 
         /// <summary>
@@ -1802,7 +1802,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.IsNotNull(pattern, "No pattern found with Id of " + "p-DOCUMENT-TEMPLATE");
             
             Assert.AreEqual("cda:ClinicalDocument", pattern.Rules[0].Context, "Incorrect context generated");
-            Assert.AreEqual("cda:templateId[@root='1.2.3.4'] or cda:templateId[@root='1.2.3.4.1']", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
+            Assert.AreEqual("cda:organizer[cda:templateId[@root='1.2.3.4']] or cda:organizer[cda:templateId[@root='1.2.3.4.1']]", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
         }
 
         /// <summary>
@@ -1832,7 +1832,7 @@ namespace Trifolia.Test.Generation.Schematron
             var pattern = errorPhase.ActivePatterns.Where(p => p.ID == "p-DOCUMENT-TEMPLATE").FirstOrDefault();
             Assert.IsNotNull(pattern, "No pattern found with Id of " + "p-DOCUMENT-TEMPLATE");
             Assert.AreEqual("cda:ClinicalDocument", pattern.Rules[0].Context, "Incorrect context generated");
-            Assert.AreEqual("cda:templateId[@root='1.2.3.4']", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
+            Assert.AreEqual("cda:ClinicalDocument[cda:templateId[@root='1.2.3.4']]", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
         }
 
         [TestMethod, TestCategory("Schematron")]
@@ -1854,7 +1854,7 @@ namespace Trifolia.Test.Generation.Schematron
             var pattern = errorPhase.ActivePatterns.Where(p => p.ID == "p-DOCUMENT-TEMPLATE").FirstOrDefault();
             Assert.IsNotNull(pattern, "No pattern found with Id of " + "p-DOCUMENT-TEMPLATE");
             Assert.AreEqual("cda:ClinicalDocument", pattern.Rules[0].Context, "Incorrect context generated");
-            Assert.AreEqual("cda:templateId[@root='1.2.3.4.1'] or cda:templateId[@root='1.2.3.4']", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
+            Assert.AreEqual("cda:organizer[cda:templateId[@root='1.2.3.4.1']] or cda:organizer[cda:templateId[@root='1.2.3.4']]", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
         }
 
         #endregion

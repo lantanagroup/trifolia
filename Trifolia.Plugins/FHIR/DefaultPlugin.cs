@@ -10,20 +10,19 @@ namespace Trifolia.Plugins.FHIR
 {
     public class DefaultPlugin
     {
-        public string TemplateIdentifierXpath
+        public string TemplateIdentifierElementName
         {
-            get
-            {
-                return "{0}meta/{0}profile[@value='{1}']";
-            }
+            get { return "meta/profile"; }
         }
 
-        public string TemplateVersionIdentifierXpath
+        public string TemplateIdentifierRootName
         {
-            get
-            {
-                return "{0}meta/{0}profile[@value='{1}']";
-            }
+            get { return "@value"; }
+        }
+
+        public string TemplateIdentifierExtensionName
+        {
+            get { return null; }
         }
 
         public string ClosedTemplateXpath

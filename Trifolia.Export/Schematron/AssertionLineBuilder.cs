@@ -6,6 +6,7 @@ using System.Text;
 using Trifolia.Export.Schematron.Model;
 using Trifolia.Shared;
 using Trifolia.DB;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.Schematron
 {
@@ -36,10 +37,10 @@ namespace Trifolia.Export.Schematron
         string _valueSetOid;
         string _valueSetFileName;
         string _containedTemplateOid;
+        string _containedTemplatePrimaryContext;
         string _prefix;
-        string _templateIdentifierXpath;
-        string _templateVersionIdentifierXpath;
         string _parentContext;
+        ImplementationGuideType _igType;
         Dictionary<DocumentTemplateElement, AssertionLineBuilder> _childElementAssertionBuilders = new Dictionary<DocumentTemplateElement, AssertionLineBuilder>();
         bool _isBranchRoot;
         bool _outputPathOnly;
@@ -49,26 +50,29 @@ namespace Trifolia.Export.Schematron
         #endregion
 
         #region ctor
-        protected AssertionLineBuilder(string prefix, string templateIdentifierXpath, string templateVersionIdentifierXpath)
+        protected AssertionLineBuilder(ImplementationGuideType igType, string prefix)
         {
-            if (!string.IsNullOrEmpty(prefix))
-                this._prefix = prefix;
-
-            this._templateIdentifierXpath = templateIdentifierXpath;
-            this._templateVersionIdentifierXpath = templateVersionIdentifierXpath;
+            this._prefix = prefix;
+            this._igType = igType;
         }
 
-        public AssertionLineBuilder(DocumentTemplateElement aElement, string templateIdentifierXpath, string templateVersionIdentifierXpath, string prefix=null)
-            : this(prefix, templateIdentifierXpath, templateVersionIdentifierXpath)
+        public AssertionLineBuilder(DocumentTemplateElement aElement, ImplementationGuideType igType, string prefix = null)
+            : this(igType, igType.SchemaPrefix)
         {
             _element = aElement;
+
+            if (!string.IsNullOrEmpty(prefix))
+                this._prefix = prefix;
         }
 
-        public AssertionLineBuilder(DocumentTemplateElementAttribute aAttribute, string templateIdentifierXpath, string templateVersionIdentifierXpath, string prefix=null)
-            : this(prefix, templateIdentifierXpath, templateVersionIdentifierXpath)
+        public AssertionLineBuilder(DocumentTemplateElementAttribute aAttribute, ImplementationGuideType igType, string prefix = null)
+            : this(igType, igType.SchemaPrefix)
         {
             _attribute = aAttribute;
             _element = _attribute.Element;
+
+            if (!string.IsNullOrEmpty(prefix))
+                this._prefix = prefix;
         }
         #endregion
 
@@ -137,9 +141,10 @@ namespace Trifolia.Export.Schematron
             return this;
         }
 
-        public AssertionLineBuilder ContainsTemplate(string aContainedTemplateOid)
+        public AssertionLineBuilder ContainsTemplate(string aContainedTemplateOid, string aContainedTemplatePrimaryContext = null)
         {
             _containedTemplateOid = aContainedTemplateOid;
+            _containedTemplatePrimaryContext = aContainedTemplatePrimaryContext;
             return this;
         }
 
@@ -170,6 +175,7 @@ namespace Trifolia.Export.Schematron
         #endregion
 
         #region Private Utility Functions
+
         private void BuildCardinalityAndConformance(StringBuilder sb)
         {
             if (_cardinality != null)
@@ -383,27 +389,20 @@ namespace Trifolia.Export.Schematron
             //add context to string
             var context = this.GetFormattedContext();
 
-            if (!string.IsNullOrEmpty(context))
+            if (!string.IsNullOrEmpty(context) && this.IsComplexContext(context))
             {
-                if (this.IsComplexContext(context))
+                sb.Replace(Sentinels.CONTEXT_TOKEN, context);
+                if (!_cardinality.IsZeroToMany())  //no need to put brackets b/c if it's zero to many then the brackets are inserted in the cardinality function
                 {
-                    sb.Replace(Sentinels.CONTEXT_TOKEN, context);
-                    if (!_cardinality.IsZeroToMany())  //no need to put brackets b/c if it's zero to many then the brackets are inserted in the cardinality function
+                    var prefixWrapper = "[";
+                    var postfixWrapper = "]";
+                    if (_contextWrapper == ContextWrapper.Slash)
                     {
-                        var prefixWrapper = "[";
-                        var postfixWrapper = "]";
-                        if (_contextWrapper == ContextWrapper.Slash)
-                        {
-                            prefixWrapper = "/";
-                            postfixWrapper = string.Empty;
-                        }
-                        sb.Replace(Sentinels.ELEMENT_TOKEN, string.Format("{0}{1}", prefixWrapper, Sentinels.ELEMENT_TOKEN));
-                        sb.Replace(Sentinels.VALUESET_TOKEN, string.Format("{0}{1}", Sentinels.VALUESET_TOKEN, postfixWrapper));
+                        prefixWrapper = "/";
+                        postfixWrapper = string.Empty;
                     }
-                }
-                else
-                {
-                    sb.Replace(Sentinels.CONTEXT_TOKEN, context);
+                    sb.Replace(Sentinels.ELEMENT_TOKEN, string.Format("{0}{1}", prefixWrapper, Sentinels.ELEMENT_TOKEN));
+                    sb.Replace(Sentinels.VALUESET_TOKEN, string.Format("{0}{1}", Sentinels.VALUESET_TOKEN, postfixWrapper));
                 }
             }
             else
@@ -462,38 +461,9 @@ namespace Trifolia.Export.Schematron
             //do we have a template id?
             if (!string.IsNullOrEmpty(_containedTemplateOid))
             {
-                string oid;
-                string root;
-                string extension;
-                string urn;
-
-                if (IdentifierHelper.GetIdentifierOID(_containedTemplateOid, out oid))
-                {
-                    string format = "[" + this._templateIdentifierXpath + "]";
-                    elementAssert = elementAssert + string.Format(format, this.GetFormattedPrefix(), oid);
-                }
-                else if (IdentifierHelper.GetIdentifierII(_containedTemplateOid, out root, out extension))
-                {
-                    if (string.IsNullOrEmpty(extension))
-                    {
-                        string format = "[" + this._templateIdentifierXpath + "]";
-                        elementAssert = elementAssert + string.Format(format, this.GetFormattedPrefix(), root);
-                    }
-                    else
-                    {
-                        string format = "[" + this._templateVersionIdentifierXpath + "]";
-                        elementAssert = elementAssert + string.Format(format, this.GetFormattedPrefix(), root, extension);
-                    }
-                }
-                else if (IdentifierHelper.GetIdentifierURL(_containedTemplateOid, out urn))
-                {
-                    string format = "[" + this._templateIdentifierXpath + "]";
-                    elementAssert = elementAssert + string.Format(format, this.GetFormattedPrefix(), urn);
-                }
-                else
-                {
-                    throw new Exception("Unexpected/invalid identifier for template found when processing contained template reference");
-                }
+                TemplateContextBuilder tcb = new TemplateContextBuilder(this._igType, this._prefix);
+                string containedTemplateContext = tcb.BuildContextString(this._containedTemplateOid);
+                elementAssert += "[" + containedTemplateContext + "]";
             }
 
             sb.Replace(Sentinels.ELEMENT_TOKEN, elementAssert);
@@ -700,6 +670,7 @@ namespace Trifolia.Export.Schematron
         #endregion
 
         #region Overrides
+
         public void OverrideShouldZeroToAnything()
         {
             if ((_conformance == Conformance.SHOULD || _conformance == Conformance.SHOULD_NOT)

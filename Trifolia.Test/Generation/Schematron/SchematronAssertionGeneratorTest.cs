@@ -2130,7 +2130,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule143()
         {
             string actual = GenerateAssertionForRule(143);
-            string expected = "count(hqmf:observationCriteria[hqmf:templateId[hqmf:item[@root='3.2.1.4.5.1']]])=1";
+            string expected = "count(hqmf:observationCriteria[hqmf:templateId/hqmf:item[@root='3.2.1.4.5.1']])=1";
 
             Assert.AreEqual(expected, actual);
         }

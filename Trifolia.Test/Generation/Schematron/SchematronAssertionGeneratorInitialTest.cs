@@ -15,8 +15,16 @@ namespace Trifolia.Test.Generation.Schematron
     [DeploymentItem("Trifolia.Plugins.dll")]
 	public class SchematronAssertionGeneratorInitialTest
     {
-        private const string templateIdentifierXpath = "{0}templateId[@root='{1}']";
-        private const string templateVersionIdentifierXpath = "{0}templateId[@root='{1}' and @extension = '{2}']";
+        private ImplementationGuideType igType;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            MockObjectRepository tdb = new MockObjectRepository();
+            tdb.InitializeCDARepository();
+
+            this.igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+        }
 
         /// <summary>
 		/// Generates schematron assert for single element within the cda doc
@@ -31,7 +39,7 @@ namespace Trifolia.Test.Generation.Schematron
 			//add element to doc
 			cdaDocumentTemplate.AddElement(element);
 			//create schematron assertion line builder
-			var builder = new AssertionLineBuilder(element, templateIdentifierXpath, templateVersionIdentifierXpath, "cda");
+			var builder = new AssertionLineBuilder(element, this.igType);
 			//define cardinality and conformance
 			var cardinality = CardinalityParser.Parse("1..1");
 			var conformance = ConformanceParser.Parse("SHALL");
@@ -56,7 +64,7 @@ namespace Trifolia.Test.Generation.Schematron
             //add element to doc
             cdaDocumentTemplate.AddElement(element);
             //create schematron assertion line builder
-            var builder = new AssertionLineBuilder(element, templateIdentifierXpath, templateVersionIdentifierXpath, "cda");
+            var builder = new AssertionLineBuilder(element, this.igType);
             //define cardinality and conformance
             var cardinality = CardinalityParser.Parse("1..1");
             var conformance = ConformanceParser.Parse("SHALL");
@@ -83,7 +91,7 @@ namespace Trifolia.Test.Generation.Schematron
             //add element to doc
             cdaDocumentTemplate.AddElement(element);
             //create schematron assertion line builder
-            var builder = new AssertionLineBuilder(element, templateIdentifierXpath, templateVersionIdentifierXpath, "cda");
+            var builder = new AssertionLineBuilder(element, this.igType);
             //define cardinality and conformance
             var cardinality = CardinalityParser.Parse("1..1");
             var conformance = ConformanceParser.Parse("SHALL");
@@ -108,7 +116,7 @@ namespace Trifolia.Test.Generation.Schematron
 			//add element to doc
 			cdaDocumentTemplate.AddElement(element);
 			//create schematron assertion line builder
-            var builder = new AssertionLineBuilder(element, templateIdentifierXpath, templateVersionIdentifierXpath);
+            var builder = new AssertionLineBuilder(element, this.igType);
 			//define cardinality and conformance
 			var cardinality = CardinalityParser.Parse("0..*");
 			var conformance = ConformanceParser.Parse("SHALL");
@@ -116,7 +124,7 @@ namespace Trifolia.Test.Generation.Schematron
 			builder.ConformsTo(conformance).WithCardinality(cardinality);
 			//generate string
 			string assertion = builder.ToString();
-            string expected = "not(code) or code";
+            string expected = "not(cda:code) or cda:code";
 			//did we generate the correct string?
 			Assert.IsTrue(assertion == expected, "The generated assertion was not correct. Expected '{0}', Actual '{1}'.", expected, assertion);
 		}
@@ -133,7 +141,7 @@ namespace Trifolia.Test.Generation.Schematron
 		{
 			var attr = new DocumentTemplateElementAttribute("code");
 			//create schematron assertion line builder, build one at a time (regular interface, see above for fluent interface)
-            var builder = new AssertionLineBuilder(attr, templateIdentifierXpath, templateVersionIdentifierXpath);
+            var builder = new AssertionLineBuilder(attr, this.igType);
 			//define cardinality 
 			var cardinality = CardinalityParser.Parse("1..1");
 			//add cardinality for the element
@@ -157,7 +165,7 @@ namespace Trifolia.Test.Generation.Schematron
         {
             var attr = new DocumentTemplateElementAttribute("code", "57024-2");
             //create schematron assertion line builder, build one at a time (regular interface, see above for fluent interface)
-            var builder = new AssertionLineBuilder(attr, templateIdentifierXpath, templateVersionIdentifierXpath);
+            var builder = new AssertionLineBuilder(attr, this.igType);
             //define cardinality 
             var cardinality = CardinalityParser.Parse("1..1");
             //add cardinality for the element
@@ -181,7 +189,7 @@ namespace Trifolia.Test.Generation.Schematron
 		{
             var attr = new DocumentTemplateElementAttribute("code", "57024-2") { DataType = "CE" };
 			//create schematron assertion line builder, build one at a time (regular interface, see above for fluent interface)
-			var builder = new AssertionLineBuilder(attr, templateIdentifierXpath, templateVersionIdentifierXpath);
+			var builder = new AssertionLineBuilder(attr, this.igType);
 			//define cardinality 
 			var cardinality = CardinalityParser.Parse("1..1");
 			//add cardinality for the element
@@ -228,7 +236,7 @@ namespace Trifolia.Test.Generation.Schematron
 			//need to have cardinality on both parent and child elements?
 			//how do we tell it to generate cda: on context as in below? 
 			var cardinality = CardinalityParser.Parse("1..1");
-            var builder = new AssertionLineBuilder(element, templateIdentifierXpath, templateVersionIdentifierXpath).WithCardinality(cardinality).ConformsTo(Conformance.SHALL).WithinContext(@"cda:");
+            var builder = new AssertionLineBuilder(element, this.igType).WithCardinality(cardinality).ConformsTo(Conformance.SHALL).WithinContext(@"cda:");
 			var assertion = builder.ToString();
 			var expectedAssertion = @"count(cda:state)=1";
 			Assert.IsTrue(assertion == expectedAssertion, 
@@ -257,7 +265,7 @@ namespace Trifolia.Test.Generation.Schematron
 							   .AddElement(new DocumentTemplateElement("performer")
 							   .AddElement(new DocumentTemplateElement("assignedEntity")
 							   .AddElement(idElement)))))));
-            var builder = new AssertionLineBuilder(nullFlavorAttribute, templateIdentifierXpath, templateVersionIdentifierXpath);
+            var builder = new AssertionLineBuilder(nullFlavorAttribute, this.igType);
 			builder.ConformsTo(ConformanceParser.Parse("SHALL")).WithCardinality(CardinalityParser.Parse("1..1")).WithinContext("cda:");
 			var assertion = builder.ToString();
 			var expectedAssertion = @"cda:id[@nullFlavor='NI']";
@@ -278,7 +286,7 @@ namespace Trifolia.Test.Generation.Schematron
 			doc.ChildElements[0].AddAttribute(new DocumentTemplateElementAttribute("moodCode", "EVN"));
 
 			var contextBuilder = new ContextBuilder(doc.ChildElements[0], "cda");
-			var assertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].Attributes[0], templateIdentifierXpath, templateVersionIdentifierXpath, "cda");  //"EVN/@moodCode"
+			var assertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].Attributes[0], this.igType);  //"EVN/@moodCode"
 			var assertion = assertionBuilder.WithCardinality(CardinalityParser.Parse("1..1")).ConformsTo(Conformance.SHALL).ToString();
 			var expected = "cda:observation[@classCode='OBS']";
 			Assert.IsTrue(assertion == expected, "Assertion string was not correct. Expected '{0}', Actual '{1}'", expected, assertion);
@@ -293,7 +301,7 @@ namespace Trifolia.Test.Generation.Schematron
 			doc.ChildElements[0].AddElement(new DocumentTemplateElement("id"));
 
             var contextBuilder = new ContextBuilder(doc.ChildElements[0].ChildElements[0], "cda");
-			var assertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].ChildElements[0], templateIdentifierXpath, templateVersionIdentifierXpath);  //"id"
+			var assertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].ChildElements[0], this.igType);  //"id"
 			var assertion = assertionBuilder.WithCardinality(CardinalityParser.Parse("1..*")).WithinContext("cda:").ConformsTo(Conformance.SHALL).ToString();
 			var expected = "count(cda:id) > 0";
 			Assert.IsTrue(assertion == expected, "Assertion string was not correct. Expected '{0}', Actual '{1}'", expected, assertion);
@@ -304,7 +312,7 @@ namespace Trifolia.Test.Generation.Schematron
         {
             var attr = new DocumentTemplateElementAttribute("moodCode", "EVN");
             //create schematron assertion line builder, build one at a time (regular interface, see above for fluent interface)
-            var builder = new AssertionLineBuilder(attr, templateIdentifierXpath, templateVersionIdentifierXpath);
+            var builder = new AssertionLineBuilder(attr, this.igType);
             //define cardinality 
             var cardinality = CardinalityParser.Parse("1..1");
             //add cardinality for the element
@@ -327,7 +335,7 @@ namespace Trifolia.Test.Generation.Schematron
         {
             var attr = new DocumentTemplateElementAttribute("moodCode", "EVN");
             //create schematron assertion line builder, build one at a time (regular interface, see above for fluent interface)
-            var builder = new AssertionLineBuilder(attr, templateIdentifierXpath, templateVersionIdentifierXpath);
+            var builder = new AssertionLineBuilder(attr, this.igType);
             //define cardinality 
             var cardinality = CardinalityParser.Parse("1..1");
             //add cardinality for the element
@@ -368,9 +376,9 @@ namespace Trifolia.Test.Generation.Schematron
 			var expectedFqContext = "cda:observation[templateId/@root='2.16.840.1.113883.10.20.22.4.48']";
 			Assert.IsTrue(relativeContext == expectedRelativeContext, "Relative context was not correct. Expected '{0}', Actual '{1}'", expectedRelativeContext, relativeContext);
 			Assert.IsTrue(fqContext == expectedFqContext, "Fully Qualified context was not correct. Expected '{0}', Actual '{1}'", expectedFqContext, fqContext);
-            var childAssertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].ChildElements[1].ChildElements[0], templateIdentifierXpath, templateVersionIdentifierXpath);  //high
+            var childAssertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].ChildElements[1].ChildElements[0], this.igType);  //high
 			childAssertionBuilder.WithCardinality(CardinalityParser.Parse("1..1")).ConformsTo(Conformance.SHALL).WithinContext("cda:");
-            var assertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].ChildElements[1], templateIdentifierXpath, templateVersionIdentifierXpath);  //effectiveTime
+            var assertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].ChildElements[1], this.igType);  //effectiveTime
 			var assertion = assertionBuilder.WithCardinality(CardinalityParser.Parse("1..1")).WithinContext("cda:").ConformsTo(Conformance.SHALL).WithChildElementBuilder(childAssertionBuilder).ToString();
 			var expected = "count(cda:effectiveTime[count(cda:high)=1])=1";
 			Assert.IsTrue(assertion == expected, "Assertion string was not correct. Expected '{0}', Actual '{1}'", expected, assertion);
@@ -407,29 +415,29 @@ namespace Trifolia.Test.Generation.Schematron
 			playingEntityElement.AddElement(nameElement);
 
 
-            var participantRoleChildAssertionBuilder = new AssertionLineBuilder(participantRoleElement, templateIdentifierXpath, templateVersionIdentifierXpath)
+            var participantRoleChildAssertionBuilder = new AssertionLineBuilder(participantRoleElement, this.igType)
 														   .WithinContext("cda:")
 														   .WithCardinality(CardinalityParser.Parse("1..1"))
 														   .ConformsTo(Conformance.SHALL);
-            var addrChildAssertionBuilder = new AssertionLineBuilder(addrElement, templateIdentifierXpath, templateVersionIdentifierXpath)
+            var addrChildAssertionBuilder = new AssertionLineBuilder(addrElement, this.igType)
 														   .WithinContext("cda:")
 														   .WithCardinality(CardinalityParser.Parse("0..1"))
 														   .ConformsTo(Conformance.SHALL);
-            var telecomChildAssertionBuilder = new AssertionLineBuilder(telecomElement, templateIdentifierXpath, templateVersionIdentifierXpath)
+            var telecomChildAssertionBuilder = new AssertionLineBuilder(telecomElement, this.igType)
 														   .WithinContext("cda:")
 														   .WithCardinality(CardinalityParser.Parse("0..1"))
 														   .ConformsTo(Conformance.SHALL);
-            var nameChildAssertionBuilder = new AssertionLineBuilder(nameElement, templateIdentifierXpath, templateVersionIdentifierXpath)
+            var nameChildAssertionBuilder = new AssertionLineBuilder(nameElement, this.igType)
 														   .WithinContext("cda:")
 														   .WithCardinality(CardinalityParser.Parse("1..1"))
 														   .ConformsTo(Conformance.SHALL);
-            var playingEntityChildAssertionBuilder = new AssertionLineBuilder(playingEntityElement, templateIdentifierXpath, templateVersionIdentifierXpath)
+            var playingEntityChildAssertionBuilder = new AssertionLineBuilder(playingEntityElement, this.igType)
 														   .WithinContext("cda:")
 														   .WithCardinality(CardinalityParser.Parse("1..1"))
 														   .WithChildElementBuilder(nameChildAssertionBuilder)   //nested child assertion builder
 														   .ConformsTo(Conformance.SHALL);
 
-            var assertionBuilder = new AssertionLineBuilder(participantElement, templateIdentifierXpath, templateVersionIdentifierXpath);  //participant
+            var assertionBuilder = new AssertionLineBuilder(participantElement, this.igType);  //participant
 			var assertion = assertionBuilder
 								.WithCardinality(CardinalityParser.Parse("1..1"))
 								.WithinContext("cda:")
@@ -457,12 +465,12 @@ namespace Trifolia.Test.Generation.Schematron
             //add element to doc
             cdaDocumentTemplate.AddElement(element);
             //create schematron assertion line builder
-            var builder = new AssertionLineBuilder(element, templateIdentifierXpath, templateVersionIdentifierXpath, "ema");
+            var builder = new AssertionLineBuilder(element, this.igType, "ema");
             //define cardinality and conformance
             var cardinality = CardinalityParser.Parse("1..1");
             var conformance = ConformanceParser.Parse("SHALL");
             //add element (context comes from doc), conformance, cardinality through fluent interface
-            builder.ConformsTo(conformance).WithCardinality(cardinality).ContainsTemplate("urn:oid:4.3.2.1");
+            builder.ConformsTo(conformance).WithCardinality(cardinality).ContainsTemplate("urn:oid:4.3.2.1", "Section");
             //generate string
             string assertion = builder.ToString();
             string expected = @"count(ema:encounter[ema:templateId[@root='4.3.2.1']])=1";
@@ -477,7 +485,7 @@ namespace Trifolia.Test.Generation.Schematron
             attr.SingleValue = "OBS";
             attr.DataType = "CD";
             //create schematron assertion line builder, build one at a time (regular interface, see above for fluent interface)
-            var builder = new AssertionLineBuilder(attr, templateIdentifierXpath, templateVersionIdentifierXpath);
+            var builder = new AssertionLineBuilder(attr, this.igType);
             //define cardinality 
             var cardinality = CardinalityParser.Parse("1..1");
             //add cardinality for the element
@@ -498,7 +506,7 @@ namespace Trifolia.Test.Generation.Schematron
         {
             var element = new DocumentTemplateElement("administrativeGenderCode");
             //create schematron assertion line builder, build one at a time (regular interface, see above for fluent interface)
-            var builder = new AssertionLineBuilder(element, templateIdentifierXpath, templateVersionIdentifierXpath);
+            var builder = new AssertionLineBuilder(element, this.igType);
             //define cardinality 
             var cardinality = CardinalityParser.Parse("1..1");
             //add cardinality for the element
@@ -511,7 +519,7 @@ namespace Trifolia.Test.Generation.Schematron
             //generate string
             string assertion = builder.ToString();
             //did we generate the correct string? 
-            string expected = @"count(administrativeGenderCode[@code=document('4.3.2.1.xml')/svs:RetrieveValueSetResponse/svs:ValueSet[@id='4.3.2.1']/svs:ConceptList/svs:Concept/@code])=1";
+            string expected = @"count(cda:administrativeGenderCode[@code=document('4.3.2.1.xml')/svs:RetrieveValueSetResponse/svs:ValueSet[@id='4.3.2.1']/svs:ConceptList/svs:Concept/@code])=1";
             Assert.IsTrue(assertion == expected, "Assertion string was not correct. Expected '{0}', Actual '{1}'.", expected, assertion);
         }
     }

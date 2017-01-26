@@ -9,16 +9,25 @@ using Trifolia.Export.Schematron;
 using Trifolia.Export.Schematron.Model;
 using Trifolia.Shared;
 using Trifolia.DB;
+using Trifolia.Test;
 
 namespace Schematron.Test.Generation.Schematron
 {
     [TestClass]
     public class DocumentBuilderAndAssertionBuilderIntegrationTest
     {
-        private const string templateIdentifierXpath = "{0}templateId[@root='{1}']";
-        private const string templateVersionIdentifierXpath = "{0}templateId[@root='{1}' and @extension = '{2}']";
+        private ImplementationGuideType igType = null;
 
-        [TestMethod]
+        [TestInitialize]
+        public void Setup()
+        {
+            MockObjectRepository tdb = new MockObjectRepository();
+            tdb.InitializeCDARepository();
+
+            this.igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+        }
+
+        [TestMethod, TestCategory("Schematron")]
         public void BuildAdvanceDirectiveObservationDocument_1stLevelOnly()
         {
             var sectionCount = 1;
@@ -56,14 +65,14 @@ namespace Schematron.Test.Generation.Schematron
             var rule = new Rule();
             rule.Context = contextBuilder.GetFullyQualifiedContextString();
 
-            var assertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].Attributes[0], templateIdentifierXpath, templateVersionIdentifierXpath);  //"OBS"            
+            var assertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].Attributes[0], this.igType);  //"OBS"            
             rule.Assertions.Add(new Assertion()
             {
                 AssertionMessage = "SHALL contain 1..1 @classCode='OBS' Observation (CodeSystem: HL7ActClass 2.16.840.1.113883.5.6) (CONF:8648).",
                 Test             = assertionBuilder.WithCardinality(CardinalityParser.Parse("1..1")).WithinContext(contextBuilder.GetRelativeContextString()).ConformsTo(Conformance.SHALL).ToString()
             });
 
-            assertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].Attributes[1], templateIdentifierXpath, templateVersionIdentifierXpath);  //"EVN"
+            assertionBuilder = new AssertionLineBuilder(doc.ChildElements[0].Attributes[1], this.igType);  //"EVN"
             rule.Assertions.Add(new Assertion()
             {
                 AssertionMessage = "SHALL contain 1..1 @moodCode='EVN' Event (CodeSystem: ActMood 2.16.840.1.113883.5.1001) (CONF:8649).",
@@ -78,7 +87,7 @@ namespace Schematron.Test.Generation.Schematron
             rule = new Rule();
             contextBuilder = new ContextBuilder(doc.ChildElements[1], "cda");
             rule.Context = contextBuilder.GetFullyQualifiedContextString();
-            assertionBuilder = new AssertionLineBuilder(doc.ChildElements[1], templateIdentifierXpath, templateVersionIdentifierXpath);  //"templateId[@rootCode]"
+            assertionBuilder = new AssertionLineBuilder(doc.ChildElements[1], this.igType);  //"templateId[@rootCode]"
             rule.Assertions.Add(new Assertion()
             {
                 AssertionMessage = "SHALL contain 1..1 @root='2.16.840.1.113883.10.20.22.4.48' (CONF:10485).",
@@ -95,7 +104,7 @@ namespace Schematron.Test.Generation.Schematron
             rule = new Rule();
             contextBuilder = new ContextBuilder(doc.ChildElements[2], "cda");
             rule.Context = contextBuilder.GetFullyQualifiedContextString();
-            assertionBuilder = new AssertionLineBuilder(doc.ChildElements[2], templateIdentifierXpath, templateVersionIdentifierXpath);  //"1..* id"
+            assertionBuilder = new AssertionLineBuilder(doc.ChildElements[2], this.igType);  //"1..* id"
             rule.Assertions.Add(new Assertion()
             {
                 AssertionMessage = "SHALL contain 1..* id (CONF:8654)",
@@ -112,7 +121,7 @@ namespace Schematron.Test.Generation.Schematron
             rule = new Rule();
             contextBuilder = new ContextBuilder(doc.ChildElements[3], "cda");
             rule.Context = contextBuilder.GetFullyQualifiedContextString();
-            assertionBuilder = new AssertionLineBuilder(doc.ChildElements[3], templateIdentifierXpath, templateVersionIdentifierXpath);  //"1..1 code @xsi:type='CE' valueset = 2.16.840.1.113883.1.11.20.2"
+            assertionBuilder = new AssertionLineBuilder(doc.ChildElements[3], this.igType);  //"1..1 code @xsi:type='CE' valueset = 2.16.840.1.113883.1.11.20.2"
             rule.Assertions.Add(new Assertion()
             {
                 AssertionMessage = "SHALL contain 1..1 code with @xsi:type='CE', where the @code SHOULD be selected from ValueSet AdvanceDirectiveTypeCode 2.16.840.1.113883.1.11.20.2 STATIC 2006-10-17 (CONF:8651).",
@@ -129,7 +138,7 @@ namespace Schematron.Test.Generation.Schematron
             rule = new Rule();
             contextBuilder = new ContextBuilder(doc.ChildElements[3], "cda");
             rule.Context = contextBuilder.GetFullyQualifiedContextString();
-            assertionBuilder = new AssertionLineBuilder(doc.ChildElements[3], templateIdentifierXpath, templateVersionIdentifierXpath);  //"1..1 statusCode @code='completed' valueset = 2.16.840.1.113883.1.11.20.2"
+            assertionBuilder = new AssertionLineBuilder(doc.ChildElements[3], this.igType);  //"1..1 statusCode @code='completed' valueset = 2.16.840.1.113883.1.11.20.2"
             rule.Assertions.Add(new Assertion()
             {
                 AssertionMessage = "SHALL contain 1..1 code with @xsi:type='CE', where the @code SHOULD be selected from ValueSet AdvanceDirectiveTypeCode 2.16.840.1.113883.1.11.20.2 STATIC 2006-10-17 (CONF:8651).",
@@ -146,19 +155,19 @@ namespace Schematron.Test.Generation.Schematron
             rule = new Rule();
             contextBuilder = new ContextBuilder(doc.ChildElements[1].Attributes[0], "cda");
             rule.Context = contextBuilder.GetFullyQualifiedContextString();
-            var childtemplateIdElementAssertionBuilder = new AssertionLineBuilder(templateIdElement.Attributes[0], templateIdentifierXpath, templateVersionIdentifierXpath)  //templateId/@root
+            var childtemplateIdElementAssertionBuilder = new AssertionLineBuilder(templateIdElement.Attributes[0], this.igType)  //templateId/@root
                 .WithCardinality(CardinalityParser.Parse("1..1"))
                 .ConformsTo(Conformance.SHALL)
                 .WithinContext("cda:");
-            var childParticipantElementAssertionBuilder = new AssertionLineBuilder(participantRoleElement, templateIdentifierXpath, templateVersionIdentifierXpath)
+            var childParticipantElementAssertionBuilder = new AssertionLineBuilder(participantRoleElement, this.igType)
                 .WithCardinality(CardinalityParser.Parse("1..*"))
                 .ConformsTo(Conformance.SHALL)
                 .WithinContext("cda:");
-            var childTimeElementAssertionBuilder = new AssertionLineBuilder(timeElement, templateIdentifierXpath, templateVersionIdentifierXpath)
+            var childTimeElementAssertionBuilder = new AssertionLineBuilder(timeElement, this.igType)
                 .WithCardinality(CardinalityParser.Parse("0..1"))
                 .ConformsTo(Conformance.SHOULD)
                 .WithinContext("cda:");
-            assertionBuilder = new AssertionLineBuilder(participantElement, templateIdentifierXpath, templateVersionIdentifierXpath);  //participant
+            assertionBuilder = new AssertionLineBuilder(participantElement, this.igType);  //participant
             rule.Assertions.Add(new Assertion()
             {
                 AssertionMessage = "should contain 1..* participant (CONF:8662), participant should contain 0..1 time (CONF:8665), the data type of Observation/participant/time in a verification SHALL be TS (time stamp) (CONF:8666), participant shall contain 1..1 participantRole (CONF:8825), participant shall contain 1..1 @typeCode=VRF 'Verifier' (CodeSystem: 2.16.840.1.113883.5.90) (CONF:8663), participant shall contain 1..1 templateId (CONF:8664), templateId shall contain 1..1 @root=2.16.840.1.113883.10.20.1.58 (CONF:10486)",
