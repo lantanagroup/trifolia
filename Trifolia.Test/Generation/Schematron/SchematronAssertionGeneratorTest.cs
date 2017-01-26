@@ -13,6 +13,7 @@ namespace Trifolia.Test.Generation.Schematron
 {
     [TestClass]
     [DeploymentItem("Trifolia.Plugins.dll")]
+    [DeploymentItem("Schemas\\", "Schemas\\")]
 	public class SchematronAssertionGeneratorTest
     {
         private static MockObjectRepository ruleRepo = new MockObjectRepository();

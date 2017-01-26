@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Trifolia.DB;
 using Trifolia.Export.Schematron.ConstraintToDocumentElementMap;
@@ -10,26 +11,56 @@ namespace Trifolia.Export.Schematron
 {
     internal class TemplateContextBuilder
     {
-        private IIGTypePlugin Plugin;
+        private IIGTypePlugin plugin;
+        private ImplementationGuideType igType;
+        private string prefix;
 
         public TemplateContextBuilder(ImplementationGuideType igType, string prefix = null)
         {
-            this.Plugin = igType.GetPlugin();
-            this.Prefix = !string.IsNullOrEmpty(prefix) ? prefix : igType.SchemaPrefix;
+            this.igType = igType;
+            this.plugin = this.igType.GetPlugin();
+            this.prefix = !string.IsNullOrEmpty(prefix) ? prefix : igType.SchemaPrefix;
 
-            if (!string.IsNullOrEmpty(this.Prefix) && this.Prefix.EndsWith(":"))
-                this.Prefix = this.Prefix.Substring(0, this.Prefix.Length-1);
+            if (!string.IsNullOrEmpty(this.prefix) && this.prefix.EndsWith(":"))
+                this.prefix = this.prefix.Substring(0, this.prefix.Length-1);
         }
-
-        public string Prefix { get; set; }
 
         public string BuildContextString(Template template)
         {
-            return BuildContextWithIdentifierElement(template.Oid, template.PrimaryContext);
+            return BuildContextString(template.Oid, template.PrimaryContext, template.PrimaryContextType);
         }
 
-        public string BuildContextString(string templateIdentifier, string primaryContext = null)
+        public string BuildContextString(string templateIdentifier, string primaryContext = null, string primaryContextType = null)
         {
+            if (!string.IsNullOrEmpty(primaryContextType))
+            {
+                SimpleSchema igSchema = this.igType.GetSimpleSchema();
+                igSchema = igSchema.GetSchemaFromContext(primaryContextType);
+
+                if (igSchema != null)
+                {
+                    string[] identifierElementNameSplit = this.plugin.TemplateIdentifierElementName.Split('/');
+                    var currentChildren = igSchema.Children;
+                    bool identifierExists = true;
+
+                    foreach (var identifierElementNamePart in identifierElementNameSplit)
+                    {
+                        var foundChildElement = currentChildren.SingleOrDefault(y => y.Name.ToLower() == identifierElementNamePart.ToLower());
+
+                        if (foundChildElement == null)
+                        {
+                            identifierExists = false;
+                            break;
+                        }
+
+                        currentChildren = foundChildElement.Children;
+                    }
+
+                    if (!identifierExists)
+                        return BuildContextWithoutIdentifierElement(templateIdentifier, primaryContext);
+                }
+            }
+
             return BuildContextWithIdentifierElement(templateIdentifier, primaryContext);
         }
 
@@ -56,12 +87,12 @@ namespace Trifolia.Export.Schematron
         /// </remarks>
         private string GetTemplateIdentifierElementName()
         {
-            string[] elementNameSplit = this.Plugin.TemplateIdentifierElementName.Split('/');
+            string[] elementNameSplit = this.plugin.TemplateIdentifierElementName.Split('/');
 
             for (var i = 0; i < elementNameSplit.Length; i++)
             {
                 if (!elementNameSplit[i].Contains(":"))
-                    elementNameSplit[i] = this.Prefix + ":" + elementNameSplit[i];
+                    elementNameSplit[i] = this.prefix + ":" + elementNameSplit[i];
             }
 
             return string.Join("/", elementNameSplit);
@@ -87,13 +118,13 @@ namespace Trifolia.Export.Schematron
                 if (primaryContext.Contains(":"))       // primaryContext already contains prefix
                     contextFormat = string.Format("{0}[{{0}}]", primaryContext);
                 else
-                    contextFormat = string.Format("{0}:{1}[{{0}}]", this.Prefix, primaryContext);
+                    contextFormat = string.Format("{0}:{1}[{{0}}]", this.prefix, primaryContext);
             }
 
-            if (string.IsNullOrEmpty(this.Plugin.TemplateIdentifierElementName))
+            if (string.IsNullOrEmpty(this.plugin.TemplateIdentifierElementName))
                 throw new Exception("Plugin for implementation guide type is not configured properly: Does not specify a TemplateIdentifierElementName");
 
-            if (string.IsNullOrEmpty(this.Plugin.TemplateIdentifierRootName))
+            if (string.IsNullOrEmpty(this.plugin.TemplateIdentifierRootName))
                 throw new Exception("Plugin for implementation guide type is not configured properly: Does not specify a TemplateIdentifierRootName");
             
             if (IdentifierHelper.IsIdentifierOID(templateIdentifier))
@@ -105,12 +136,12 @@ namespace Trifolia.Export.Schematron
             else
                 throw new Exception("Unexpected/invalid identifier for template found when processing template reference for template identifier xpath");
 
-            if (!string.IsNullOrEmpty(extension) && !string.IsNullOrEmpty(this.Plugin.TemplateIdentifierExtensionName))
+            if (!string.IsNullOrEmpty(extension) && !string.IsNullOrEmpty(this.plugin.TemplateIdentifierExtensionName))
             {
                 string predicate = string.Format("{0}[{1}='{3}' and {2}='{4}']",
                     this.GetTemplateIdentifierElementName(),
-                    this.Plugin.TemplateIdentifierRootName,
-                    this.Plugin.TemplateIdentifierExtensionName,
+                    this.plugin.TemplateIdentifierRootName,
+                    this.plugin.TemplateIdentifierExtensionName,
                     root,
                     extension);
                 return string.Format(contextFormat, predicate);
@@ -119,7 +150,7 @@ namespace Trifolia.Export.Schematron
             {
                 string predicate = string.Format("{0}[{1}='{2}']",
                     this.GetTemplateIdentifierElementName(),
-                    this.Plugin.TemplateIdentifierRootName,
+                    this.plugin.TemplateIdentifierRootName,
                     root);
                 return string.Format(contextFormat, predicate);
             }
@@ -172,10 +203,10 @@ namespace Trifolia.Export.Schematron
             {
                 element.IsBranch = aTemplateConstraint.IsBranch;
                 element.IsBranchIdentifier = aTemplateConstraint.IsBranchIdentifier;
-                ConstraintToDocumentElementHelper.AddElementValueAndDataType(this.Prefix, element, aTemplateConstraint);
+                ConstraintToDocumentElementHelper.AddElementValueAndDataType(this.prefix, element, aTemplateConstraint);
             }
 
-            ContextBuilder builder = ContextBuilder.CreateFromElementAndAttribute(element, attribute, this.Prefix);
+            ContextBuilder builder = ContextBuilder.CreateFromElementAndAttribute(element, attribute, this.prefix);
             StringBuilder childStrings = new StringBuilder();
             foreach (var child in aTemplateConstraint.ChildConstraints)
             {

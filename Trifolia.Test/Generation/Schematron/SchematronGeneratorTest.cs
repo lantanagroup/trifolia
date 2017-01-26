@@ -25,6 +25,7 @@ namespace Trifolia.Test.Generation.Schematron
 {
     [TestClass]
     [DeploymentItem("Trifolia.Plugins.dll")]
+    [DeploymentItem("Schemas\\", "Schemas\\")]
     public class SchematronGeneratorTest
     {
         private static MockObjectRepository tdb = new MockObjectRepository();
@@ -92,11 +93,11 @@ namespace Trifolia.Test.Generation.Schematron
             ig2 = tdb.FindOrCreateImplementationGuide(cdaType, "Test 2 Implementation Guide");
 
             // Template 1
-            Template t1 = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Test Template", owningImplementationGuide: ig1);
+            Template t1 = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Test Template", ig1, "ClinicalDocument", "ClinicalDocument");
             tdb.AddConstraintToTemplate(t1, null, null, "title", "SHALL", "1..1");
 
             // Template 2
-            Template t2 = tdb.CreateTemplate("urn:oid:1.2.3.4.1", docType, "Test Template", owningImplementationGuide: ig1);
+            Template t2 = tdb.CreateTemplate("urn:oid:1.2.3.4.1", docType, "Test Template", ig1, "ClinicalDocument", "ClinicalDocument");
             TemplateConstraint t2_tc1 = tdb.AddConstraintToTemplate(t2, null, null, "title", "SHALL", "1..1");
             t2_tc1.Schematron = "count(cda:title)";
 
@@ -105,17 +106,17 @@ namespace Trifolia.Test.Generation.Schematron
             tdb.CreatePrimitive(t2, null, "SHALL", "This is test primitive #2", "count(cda:title) &gt; 0");
 
             // Template 3
-            Template t3 = tdb.CreateTemplate("urn:oid:1.2.3.4.2", docType, "Test Template", owningImplementationGuide: ig1);
+            Template t3 = tdb.CreateTemplate("urn:oid:1.2.3.4.2", docType, "Test Template", ig1, "ClinicalDocument", "ClinicalDocument");
             tdb.AddConstraintToTemplate(t1, null, null, "title", "SHOULD", "1..1");
 
             // Template 4
-            Template t4 = tdb.CreateTemplate("urn:oid:1.2.3.4.3", docType, "Test Template", owningImplementationGuide: ig1);
+            Template t4 = tdb.CreateTemplate("urn:oid:1.2.3.4.3", docType, "Test Template", ig1, "ClinicalDocument", "ClinicalDocument");
             TemplateConstraint t4_p1 = tdb.AddConstraintToTemplate(t4, null, null, "entryRelationship", "SHALL", "1..1", null, null, null, null, null, null, null, true);
             TemplateConstraint t4_p2 = tdb.AddConstraintToTemplate(t4, t4_p1, null, "@typeCode", "SHALL", "1..1", null, null, "DRIV");
             TemplateConstraint t4_p3 = tdb.AddConstraintToTemplate(t4, t4_p1, null, "observation", "SHALL", "1..1", null, null, "DRIV", null, null, null, null, true);
 
             // Template 5: Test line-feed replacement
-            Template t5 = tdb.CreateTemplate("urn:oid:1.2.3.4.4", docType, "Test Template", owningImplementationGuide: ig1);
+            Template t5 = tdb.CreateTemplate("urn:oid:1.2.3.4.4", docType, "Test Template", ig1, "ClinicalDocument", "ClinicalDocument");
             TemplateConstraint t5_p1 = tdb.CreatePrimitive(t5, null, "SHALL", "Testing line-feed character in custom schematron", "count(cda:test)&#xA; = 1");
 
             // Template 6: Implied template and contained template
@@ -125,12 +126,12 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint t6_p2_1 = tdb.AddConstraintToTemplate(t6, t6_p2, t4, "observation", "SHALL", "1..1");
 
             // Template 7: MAY parent with SHALL primitive
-            Template t7 = tdb.CreateTemplate("urn:oid:1.2.3.4.5", docType, "Test Template", owningImplementationGuide: ig1);
+            Template t7 = tdb.CreateTemplate("urn:oid:1.2.3.4.5", docType, "Test Template", ig1, "ClinicalDocument", "ClinicalDocument");
             TemplateConstraint t7_p1 = tdb.AddConstraintToTemplate(t7, null, null, "entry", "MAY", "0..1", isBranch: true);
             TemplateConstraint t7_p1_1 = tdb.CreatePrimitive(t7, t7_p1, "SHALL", "This entry SHALl contain some custom stuff", "count(test) > 1", isPrimitiveSchRooted: true, isInheritable: true);
 
             // Template 8: Code constraint with compound SHALL/SHOULD (element conformance / value conformance)
-            Template t8 = tdb.CreateTemplate("urn:oid:1.2.3.4.6", entType, "Test Template", owningImplementationGuide: ig1);
+            Template t8 = tdb.CreateTemplate("urn:oid:1.2.3.4.6", entType, "Test Template", ig1, "ClinicalDocument", "ClinicalDocument");
             TemplateConstraint t8_p1 = tdb.AddConstraintToTemplate(t8, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", valueSet: vs1);
 
 
@@ -1558,9 +1559,9 @@ namespace Trifolia.Test.Generation.Schematron
         public void ClosedTemplateWithOneChildTemplate()
         {
             ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "Consolidation");
-            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer");
+            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer", "Organizer");
             parentTemplate.IsOpen = false;
-            Template childTemplate = tdb.CreateTemplate("urn:oid:2.3.4.5", entType, "child", myIg, "observation");
+            Template childTemplate = tdb.CreateTemplate("urn:oid:2.3.4.5", entType, "child", myIg, "observation", "Observation");
             childTemplate.IsOpen = false;
             TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
             TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
@@ -1583,11 +1584,11 @@ namespace Trifolia.Test.Generation.Schematron
         public void ClosedTemplateWithTwoChildTemplates()
         {
             ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "Consolidation");
-            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer");
+            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer", "Organizer");
             parentTemplate.IsOpen = false;
-            Template childTemplate1 = tdb.CreateTemplate("urn:oid:2.3.4.5.1", entType, "child", myIg, "observation");
+            Template childTemplate1 = tdb.CreateTemplate("urn:oid:2.3.4.5.1", entType, "child", myIg, "observation", "Observation");
             childTemplate1.IsOpen = false;
-            Template childTemplate2 = tdb.CreateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "observation");
+            Template childTemplate2 = tdb.CreateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "observation", "Observation");
             childTemplate2.IsOpen = false;
             TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
             TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
@@ -1610,11 +1611,11 @@ namespace Trifolia.Test.Generation.Schematron
         public void ClosedTemplateWithOneChildTemplateAndOneNestedChildTemplate()
         {
             ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "Consolidation");
-            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer");
+            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer", "Organizer");
             parentTemplate.IsOpen = false;
-            Template childTemplate1 = tdb.CreateTemplate("urn:oid:2.3.4.5.1", entType, "child", myIg, "observation");
+            Template childTemplate1 = tdb.CreateTemplate("urn:oid:2.3.4.5.1", entType, "child", myIg, "observation", "Observation");
             childTemplate1.IsOpen = false;
-            Template childTemplate2 = tdb.CreateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "organizer");
+            Template childTemplate2 = tdb.CreateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "organizer", "Organizer");
             childTemplate2.IsOpen = false;
             TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
             TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
@@ -1637,9 +1638,9 @@ namespace Trifolia.Test.Generation.Schematron
         public void ClosedTemplateWithOneChildTemplateAndOneImpliedTemplate()
         {
             ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "Consolidation");
-            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer");
+            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer", "Organizer");
             parentTemplate.IsOpen = false;
-            Template implTemplate = tdb.CreateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "organizer");
+            Template implTemplate = tdb.CreateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "organizer", "Organizer");
             implTemplate.IsOpen = false;
             Template childTemplate1 = tdb.CreateTemplate("urn:oid:2.3.4.5.1", entType, "child", myIg, "observation", impliedTemplate:implTemplate);
             childTemplate1.IsOpen = false;
@@ -1663,15 +1664,15 @@ namespace Trifolia.Test.Generation.Schematron
         public void ClosedTemplateWithTwoChildTemplatesAndTwoNestedChildTemplates()
         {
             ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "Consolidation");
-            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer");
+            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer", "Organizer");
             parentTemplate.IsOpen = false;
-            Template childTemplate1 = tdb.CreateTemplate("urn:oid:2.3.4.5.1", entType, "child", myIg, "observation");
+            Template childTemplate1 = tdb.CreateTemplate("urn:oid:2.3.4.5.1", entType, "child", myIg, "observation", "Observation");
             childTemplate1.IsOpen = false;
-            Template grandChildTemplate1 = tdb.CreateTemplate("urn:oid:3.4.5.6.1", entType, "child", myIg, "organizer");
+            Template grandChildTemplate1 = tdb.CreateTemplate("urn:oid:3.4.5.6.1", entType, "child", myIg, "organizer", "Organizer");
             grandChildTemplate1.IsOpen = false;
-            Template childTemplate2 = tdb.CreateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "observation");
+            Template childTemplate2 = tdb.CreateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "observation", "Observation");
             childTemplate2.IsOpen = false;
-            Template grandChildTemplate2 = tdb.CreateTemplate("urn:oid:3.4.5.6.2", entType, "child", myIg, "organizer");
+            Template grandChildTemplate2 = tdb.CreateTemplate("urn:oid:3.4.5.6.2", entType, "child", myIg, "organizer", "Organizer");
             grandChildTemplate2.IsOpen = false;
             TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
             TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
@@ -1696,13 +1697,13 @@ namespace Trifolia.Test.Generation.Schematron
         public void ClosedTemplateWithTwoChildTemplateAndTwoNestedRepeatedChildTemplates()
         {
             ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "Consolidation");
-            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer");
+            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer", "Organizer");
             parentTemplate.IsOpen = false;
-            Template childTemplate1 = tdb.CreateTemplate("urn:oid:2.3.4.5.1", entType, "child", myIg, "observation");
+            Template childTemplate1 = tdb.CreateTemplate("urn:oid:2.3.4.5.1", entType, "child", myIg, "observation", "Observation");
             childTemplate1.IsOpen = false;
-            Template grandChildTemplate1 = tdb.CreateTemplate("urn:oid:3.4.5.6.1", entType, "child", myIg, "organizer");
+            Template grandChildTemplate1 = tdb.CreateTemplate("urn:oid:3.4.5.6.1", entType, "child", myIg, "organizer", "Organizer");
             grandChildTemplate1.IsOpen = false;
-            Template childTemplate2 = tdb.CreateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "observation");
+            Template childTemplate2 = tdb.CreateTemplate("urn:oid:2.3.4.5.2", entType, "child", myIg, "observation", "Observation");
             childTemplate2.IsOpen = false;
             TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
             TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
@@ -1727,7 +1728,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void CallClosedTemplateGeneratorWithOpenTemplate()
         {
             ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "Consolidation");
-            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer");
+            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entType, "Parent", myIg, "organizer", "Organizer");
             parentTemplate.IsOpen = true;
             TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
             TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
@@ -1755,7 +1756,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void OneDocumentLevelTemplates()
         {
             ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "OneDocumentLevelTemplates");
-            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "organizer");
+            Template parentTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "organizer", "Organizer");
             TemplateConstraint constraintParent = tdb.AddConstraintToTemplate(parentTemplate, null, null, "organizer", "SHALL", "1..1");
             TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate, constraintParent, null, "component", "SHALL", "1..1");
 
@@ -1782,8 +1783,8 @@ namespace Trifolia.Test.Generation.Schematron
         {
             ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "TwoDocumentLevelTemplates");
             myIg.ChildTemplates.Clear();
-            Template parentTemplate1 = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "organizer");
-            Template parentTemplate2 = tdb.CreateTemplate("urn:oid:1.2.3.4.1", docType, "Parent", myIg, "organizer");
+            Template parentTemplate1 = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "organizer", "Organizer");
+            Template parentTemplate2 = tdb.CreateTemplate("urn:oid:1.2.3.4.1", docType, "Parent", myIg, "organizer", "Organizer");
             TemplateConstraint constraintParent1 = tdb.AddConstraintToTemplate(parentTemplate1, null, null, "organizer", "SHALL", "1..1");
             TemplateConstraint constraintParent2 = tdb.AddConstraintToTemplate(parentTemplate2, null, null, "organizer", "SHALL", "1..1");
             TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate1, constraintParent1, null, "component", "SHALL", "1..1");
@@ -1840,7 +1841,7 @@ namespace Trifolia.Test.Generation.Schematron
         {
             ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "OneDocumentLevelTemplateThatImpliesAnotherTemplate");
             myIg.ChildTemplates.Clear();
-            Template implTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4.1", docType, "Parent", myIg, "organizer" );
+            Template implTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4.1", docType, "Parent", myIg, "organizer", "Organizer" );
             Template parentTemplate1 = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "organizer", impliedTemplate: implTemplate);
             TemplateConstraint constraintParent1 = tdb.AddConstraintToTemplate(parentTemplate1, null, null, "organizer", "SHALL", "1..1");
             TemplateConstraint tc1 = tdb.AddConstraintToTemplate(parentTemplate1, constraintParent1, null, "component", "SHALL", "1..1");

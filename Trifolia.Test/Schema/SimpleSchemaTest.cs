@@ -106,9 +106,10 @@ namespace Trifolia.Test.Schema
         /// </summary>
         [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
-        [Ignore]
         public void TestSchemaChoice_Component2()
         {
+            Assert.Inconclusive("Schema Choice is not currently supported for CDA");
+
             var component2 = this.cdaSchema.FindFromType("Component2");
             Assert.IsNotNull(component2);
             Assert.IsNotNull(component2.Children);
@@ -134,9 +135,10 @@ namespace Trifolia.Test.Schema
         /// </summary>
         [TestMethod, TestCategory("Schema")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
-        [Ignore]
         public void TestSchemaChoice_CDA_Entry()
         {
+            Assert.Inconclusive("Schema Choice is not currently supported for CDA");
+
             var entry = this.cdaSchema.FindFromType("Entry");
             Assert.IsNotNull(entry);
             Assert.IsNotNull(entry.Children);
