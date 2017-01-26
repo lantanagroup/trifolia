@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Trifolia.DB;
@@ -27,41 +28,50 @@ namespace Trifolia.Export.Schematron
 
         public string BuildContextString(Template template)
         {
-            return BuildContextString(template.Oid, template.PrimaryContext, template.PrimaryContextType);
+            if (!IdentifierExistsForContext(template.PrimaryContextType))
+                return BuildContextWithoutIdentifierElement(template);
+
+            return BuildContextWithIdentifierElement(template.Oid, template.PrimaryContext);
         }
 
         public string BuildContextString(string templateIdentifier, string primaryContext = null, string primaryContextType = null)
         {
-            if (!string.IsNullOrEmpty(primaryContextType))
+            return BuildContextWithIdentifierElement(templateIdentifier, primaryContext);
+        }
+
+        private bool IdentifierExistsForContext(string primaryContextType)
+        {
+            // Assume identifier exists if we aren't given a context type
+            if (string.IsNullOrEmpty(primaryContextType))
+                return true;
+
+            SimpleSchema igSchema = this.igType.GetSimpleSchema();
+            igSchema = igSchema.GetSchemaFromContext(primaryContextType);
+
+            if (igSchema != null)
             {
-                SimpleSchema igSchema = this.igType.GetSimpleSchema();
-                igSchema = igSchema.GetSchemaFromContext(primaryContextType);
+                string[] identifierElementNameSplit = this.plugin.TemplateIdentifierElementName.Split('/');
+                var currentChildren = igSchema.Children;
+                bool identifierExists = true;
 
-                if (igSchema != null)
+                foreach (var identifierElementNamePart in identifierElementNameSplit)
                 {
-                    string[] identifierElementNameSplit = this.plugin.TemplateIdentifierElementName.Split('/');
-                    var currentChildren = igSchema.Children;
-                    bool identifierExists = true;
+                    var foundChildElement = currentChildren.SingleOrDefault(y => y.Name.ToLower() == identifierElementNamePart.ToLower());
 
-                    foreach (var identifierElementNamePart in identifierElementNameSplit)
+                    if (foundChildElement == null)
                     {
-                        var foundChildElement = currentChildren.SingleOrDefault(y => y.Name.ToLower() == identifierElementNamePart.ToLower());
-
-                        if (foundChildElement == null)
-                        {
-                            identifierExists = false;
-                            break;
-                        }
-
-                        currentChildren = foundChildElement.Children;
+                        identifierExists = false;
+                        break;
                     }
 
-                    if (!identifierExists)
-                        return BuildContextWithoutIdentifierElement(templateIdentifier, primaryContext);
+                    currentChildren = foundChildElement.Children;
                 }
+
+                return identifierExists;
             }
 
-            return BuildContextWithIdentifierElement(templateIdentifier, primaryContext);
+            // Assume identifier exists if we aren't given a context type
+            return true;
         }
 
         /// <summary>
@@ -73,9 +83,44 @@ namespace Trifolia.Export.Schematron
         /// </remarks>
         /// <param name="template"></param>
         /// <returns></returns>
-        private string BuildContextWithoutIdentifierElement(string templateIdentifier, string primaryContext = null)
+        private string BuildContextWithoutIdentifierElement(Template template)
         {
-            return string.Empty;
+            if (template.ContainingConstraints.Count == 0)
+            {
+                if (!template.PrimaryContext.Contains(":"))
+                    return string.Format("{0}:{1}", this.prefix, template.PrimaryContext);
+
+                return template.PrimaryContext;
+            }
+
+            List<string> containmentContexts = new List<string>();
+
+            foreach (var containingConstraint in template.ContainingConstraints)
+            {
+                if (string.IsNullOrEmpty(containingConstraint.Context))
+                    continue;
+
+                string containmentContext = string.Empty;
+                var currentConstraint = containingConstraint;
+
+                while (currentConstraint != null)
+                {
+                    if (!string.IsNullOrEmpty(containmentContext))
+                        containmentContext = "/" + containmentContext;
+
+                    string constraintContext = currentConstraint.Context;
+
+                    if (!constraintContext.Contains(":"))
+                        constraintContext = string.Format("{0}:{1}", this.prefix, constraintContext);
+
+                    containmentContext = constraintContext + containmentContext;
+                    currentConstraint = currentConstraint.ParentConstraint;
+                }
+
+                containmentContexts.Add(containmentContext);
+            }
+
+            return string.Join(" or ", containmentContexts);
         }
 
         /// <summary>

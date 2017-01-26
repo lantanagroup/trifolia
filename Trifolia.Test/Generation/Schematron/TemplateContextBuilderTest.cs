@@ -82,7 +82,7 @@ namespace Trifolia.Test.Generation.Schematron
         /// Tests that building the rule xpath (context) for a CDA template representing an addr[AD] produces the correct results.
         /// </summary>
         [TestMethod, TestCategory("Schematron")]
-        public void TestBuildContextStringForAddress()
+        public void TestBuildContextStringForAddress_NotContained()
         {
             MockObjectRepository tdb = new MockObjectRepository();
             tdb.InitializeCDARepository();
@@ -94,9 +94,67 @@ namespace Trifolia.Test.Generation.Schematron
 
             Template template = tdb.CreateTemplate("urn:oid:1.2.3.4", unspecifiedTemplateType, "Test Template", ig, "addr", "AD");
             var contextString = tcb.BuildContextString(template);
+            
+            Assert.AreEqual("cda:addr", contextString);
+        }
 
-            Assert.Inconclusive("Need to finish implementing");
-            //Assert.AreEqual("cda:addr[cda:templateId[@root='1.2.3.4']]", contextString);
+        /// <summary>
+        /// Tests that building the rule xpath (context) for a CDA template representing an addr[AD] produces the correct results.
+        /// </summary>
+        [TestMethod, TestCategory("Schematron")]
+        public void TestBuildContextStringForAddress_ContainedByOne()
+        {
+            MockObjectRepository tdb = new MockObjectRepository();
+            tdb.InitializeCDARepository();
+
+            var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            var unspecifiedTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_UNSPECIFIED_TYPE);
+            var docTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
+            TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
+
+            Template addrTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", unspecifiedTemplateType, "Test Address Template", ig, "addr", "AD");
+            Template containingTemplate = tdb.CreateTemplate("urn:oid:4.3.2.1", docTemplateType, "Test Doc Template", ig, "ClinicalDocument", "ClinicalDocument");
+            var c1 = tdb.AddConstraintToTemplate(containingTemplate, null, null, "recordTarget", "SHALL", "1..1");
+            var c2 = tdb.AddConstraintToTemplate(containingTemplate, c1, null, "patientRole", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(containingTemplate, c2, addrTemplate, "addr", "SHALL", "1..1");
+
+            var contextString = tcb.BuildContextString(addrTemplate);
+
+            Assert.AreEqual("cda:recordTarget/cda:patientRole/cda:addr", contextString);
+        }
+
+        /// <summary>
+        /// Tests that building the rule xpath (context) for a CDA template representing an addr[AD] produces the correct results.
+        /// </summary>
+        [TestMethod, TestCategory("Schematron")]
+        public void TestBuildContextStringForAddress_ContainedByMultiple()
+        {
+            MockObjectRepository tdb = new MockObjectRepository();
+            tdb.InitializeCDARepository();
+
+            var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            var unspecifiedTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_UNSPECIFIED_TYPE);
+            var docTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            var entryTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_ENTRY_TYPE);
+            var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
+            TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
+
+            Template addrTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", unspecifiedTemplateType, "Test Address Template", ig, "addr", "AD");
+
+            Template containingTemplate1 = tdb.CreateTemplate("urn:oid:4.3.2.1", docTemplateType, "Test Doc Template", ig, "ClinicalDocument", "ClinicalDocument");
+            var c1_1 = tdb.AddConstraintToTemplate(containingTemplate1, null, null, "recordTarget", "SHALL", "1..1");
+            var c1_2 = tdb.AddConstraintToTemplate(containingTemplate1, c1_1, null, "patientRole", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(containingTemplate1, c1_2, addrTemplate, "addr", "SHALL", "1..1");
+
+            Template containingTemplate2 = tdb.CreateTemplate("urn:oid:3.2.1.4", entryTemplateType, "Test Entry Template", ig, "observation", "Observation");
+            var c2_1 = tdb.AddConstraintToTemplate(containingTemplate2, null, null, "participant", "SHALL", "1..1");
+            var c2_2 = tdb.AddConstraintToTemplate(containingTemplate2, c2_1, null, "participantRole", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(containingTemplate2, c2_2, addrTemplate, "addr", "SHALL", "1..1");
+
+            var contextString = tcb.BuildContextString(addrTemplate);
+
+            Assert.AreEqual("cda:recordTarget/cda:patientRole/cda:addr or cda:participant/cda:participantRole/cda:addr", contextString);
         }
     }
 }
