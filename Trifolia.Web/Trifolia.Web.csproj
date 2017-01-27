@@ -789,6 +789,7 @@
     <Content Include="Scripts\sceditor\sceditor.custom.js" />
     <Content Include="Scripts\Schema\DataTypesViewModel.js" />
     <Content Include="Scripts\Sha1.js" />
+    <Content Include="Scripts\TemplateEdit\newTemplateEditor.js" />
     <Content Include="Scripts\TemplateEdit\templateEditGlobals.js" />
     <Content Include="Scripts\TemplateEdit\templateEditModels.js" />
     <Content Include="Scripts\TemplateEdit\TemplateEditViewModel.js" />
@@ -886,6 +887,7 @@
     <Content Include="Views\TemplateManagement\Copy.aspx" />
     <Content Include="Views\TemplateManagement\List.aspx" />
     <Content Include="Views\TemplateManagement\Move.aspx" />
+    <Content Include="Views\TemplateManagement\NewEditor.aspx" />
     <Content Include="Views\TemplateManagement\PublishSettings.aspx" />
     <Content Include="Views\TemplateManagement\View.aspx" />
     <Content Include="Views\TerminologyManagement\Browse.aspx" />
