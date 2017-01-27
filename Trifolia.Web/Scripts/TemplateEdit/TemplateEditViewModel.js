@@ -1067,9 +1067,10 @@ var templateEditViewModel = function (templateId, defaults) {
                             } else {
                                 // Look for constraints that haven't been matched to a node, and create a node for them
                                 var foundNode = false;
+                                var nodes = nodeList();
 
-                                for (var y = 0; y < nodeList().length; y++) {
-                                    if (nodeList()[y].Constraint() == childConstraint) {
+                                for (var y = 0; y < nodes.length; y++) {
+                                    if (nodes[y].Constraint() == childConstraint) {
                                         foundNode = true;
                                         break;
                                     }
@@ -1101,21 +1102,6 @@ var templateEditViewModel = function (templateId, defaults) {
                     deferred.resolve();
                 }
             });
-        } else if (node && node.Constraint()) {
-            for (var x in node.Constraint().Children()) {
-                var constraint = node.Constraint().Children()[x];
-                var newNode = createNode();
-                newNode.Constraint(constraint);
-                newNode.HasChildren(constraint.Children().length > 0);
-            };
-
-            node.AreChildrenLoaded(true);
-
-            // Tell knockout to update the node list observables
-            nodeList.valueHasMutated();
-
-            // Done, notify
-            deferred.resolve();
         } else {
             deferred.resolve();
         }
