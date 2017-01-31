@@ -462,7 +462,7 @@ copy-button {
 }
 
 /* Web based IG */
-p table, td{
+p table td{
     border: 1px solid #000;
     empty-cells: show;
 }
