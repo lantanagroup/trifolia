@@ -16,6 +16,7 @@ namespace Trifolia.Test.Schema
     ///to contain all SimpleSchemaTest Unit Tests
     ///</summary>
     [TestClass()]
+    [DeploymentItem("Schemas\\", "Schemas\\")]
     public class SimpleSchemaTest
     {
         private SimpleSchema eMeasureSchema = null;
@@ -105,7 +106,6 @@ namespace Trifolia.Test.Schema
         /// The cardinality and conformance of children should be set to null/empty, since they cannot change the conf/card of the choice itself.
         /// </summary>
         [TestMethod, TestCategory("Schema")]
-        [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestSchemaChoice_Component2()
         {
             Assert.Inconclusive("Schema Choice is not currently supported for CDA");
@@ -134,7 +134,6 @@ namespace Trifolia.Test.Schema
         /// Test that "choice" is used as the choice element's name when no common term is found among the choice options
         /// </summary>
         [TestMethod, TestCategory("Schema")]
-        [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestSchemaChoice_CDA_Entry()
         {
             Assert.Inconclusive("Schema Choice is not currently supported for CDA");
@@ -150,7 +149,6 @@ namespace Trifolia.Test.Schema
         /// Test that "deceased[x]" and "multiple[x]" are used as the choice element's names
         /// </summary>
         [TestMethod, TestCategory("Schema")]
-        [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestSchemaChoice_FHIR_Patient()
         {
             var patient = this.fhirSchema.FindFromType("Patient");
@@ -168,7 +166,6 @@ namespace Trifolia.Test.Schema
         #endregion
 
         [TestMethod, TestCategory("Schema")]
-        [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestFhirPatient()
         {
             var patient = this.fhirSchema.FindFromType("Patient");
@@ -196,7 +193,6 @@ namespace Trifolia.Test.Schema
         /// Tests that the IVL_TS is properly populated with @nullFlavor, @value, low/@nullFlavor and low/@value
         /// </summary>
         [TestMethod, TestCategory("Schema")]
-        [DeploymentItem("Schemas\\", "Schemas\\")]
         public void FindFromTypeTest()
         {
             string type = "IVL_TS";
@@ -224,7 +220,6 @@ namespace Trifolia.Test.Schema
         /// Tests that using SimpleSchema with the CDA schema returns derived types for the TS and CS types.
         /// </summary>
         [TestMethod, TestCategory("Schema")]
-        [DeploymentItem("Schemas\\", "Schemas\\")]
         public void GetDerivedTypesTest()
         {
             List<SimpleSchema.SchemaObject> actual = this.cdaSchema.GetDerivedTypes("TS");
@@ -243,7 +238,6 @@ namespace Trifolia.Test.Schema
         /// Tests multi-level requests, ie: An id within a ClinicalDocument, a @root within an id within an ClinicalDocument.
         /// </remarks>
         [TestMethod, TestCategory("Schema")]
-        [DeploymentItem("Schemas\\", "Schemas\\")]
         public void FindFromPathTest()
         {
             SimpleSchema.SchemaObject documentObj = this.cdaSchema.FindFromPath("ClinicalDocument[ClinicalDocument]");
@@ -275,7 +269,6 @@ namespace Trifolia.Test.Schema
         /// Tests that the Observation schema returned contains children and that one of the children is an id element.
         /// </remarks>
         [TestMethod, TestCategory("Schema")]
-        [DeploymentItem("Schemas\\", "Schemas\\")]
         public void GetSchemaFromContext()
         {
             SimpleSchema observationSchema = this.cdaSchema.GetSchemaFromContext("Observation");
@@ -286,6 +279,21 @@ namespace Trifolia.Test.Schema
             List<SimpleSchema.SchemaObject> observationIds = observationSchema.Children.Where(y => y.Name == "id" && y.IsAttribute == false).ToList();
             Assert.AreNotEqual(0, observationIds.Count, "Expected the returned schema to have a child id element.");
             Assert.AreEqual(1, observationIds.Count, "Expected the returned schema to have only one child id element.");
+        }
+
+        [TestMethod, TestCategory("Schema")]
+        public void TestObservationDataTypes()
+        {
+            SimpleSchema observationSchema = this.cdaSchema.GetSchemaFromContext("Observation");
+            var children = observationSchema.Children;
+
+            Assert.AreEqual(30, children.Count);
+
+            var methodCodeChild = children.Single(y => y.Name == "methodCode" && !y.IsAttribute);
+            Assert.AreEqual("CE", methodCodeChild.DataType);
+
+            var targetSiteCodeChild = children.Single(y => y.Name == "targetSiteCode" && !y.IsAttribute);
+            Assert.AreEqual("CD", targetSiteCodeChild.DataType);
         }
     }
 }

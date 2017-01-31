@@ -352,6 +352,9 @@ namespace Trifolia.Shared
                 Type = ObjectTypes.ComplexType
             };
 
+            if (newSimpleObject.DataType != null && newSimpleObject.DataType.Contains("SET"))
+                Console.WriteLine("Test");
+
             // TODO: More complicated logic to determine if a restriction is being applied
             if (this.complexTypes.Count(y => y.Name == newSimpleObject.Name) > 0)
                 return this.complexTypes.SingleOrDefault(y => y.Name == newSimpleObject.Name);
@@ -413,6 +416,9 @@ namespace Trifolia.Shared
                     null,
                 Type = ObjectTypes.Element
             };
+
+            if (newSimpleObject.DataType != null && newSimpleObject.DataType.Contains("SET"))
+                Console.WriteLine("Test");
 
             // Make sure the element doesn't already exist
             var foundExisting = siblings.SingleOrDefault(y => y.Name == newSimpleObject.Name);

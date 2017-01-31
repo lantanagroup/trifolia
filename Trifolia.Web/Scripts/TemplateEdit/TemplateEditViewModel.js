@@ -910,9 +910,9 @@ var templateEditViewModel = function (templateId, defaults) {
         }
 
         if (node && node.DisplayDataType()) {
-            url += '?parentType=' + node.DisplayDataType();
+            url += '?parentType=' + encodeURIComponent(node.DisplayDataType());
         } else if (self.Template().PrimaryContextType()) {
-            url += '?parentType=' + self.Template().PrimaryContextType();
+            url += '?parentType=' + encodeURIComponent(self.Template().PrimaryContextType());
         }
 
         var createNode = function (item) {

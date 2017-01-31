@@ -270,17 +270,30 @@ namespace Trifolia.Web.Controllers.API
 
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
             SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, ig.ImplementationGuideType);
-            List<SimpleSchema.SchemaObject> children;
+            List<SimpleSchema.SchemaObject> children = null;
+
+            if (schema == null)
+            {
+                Logging.Log.For(this).Error("Request for schema nodes by type did not find a schema for implementation guide id " + implementationGuideId);
+                return new List<SchemaNode>();
+            }
 
             if (!string.IsNullOrEmpty(parentType))
             {
                 schema = schema.GetSchemaFromContext(parentType);
-                children = schema.Children;
+
+                if (schema != null)
+                    children = schema.Children;
+                else
+                    Logging.Log.For(this).Warn("Schema for implementation guide type " + ig.ImplementationGuideType.Name + " did not find a parent type of " + parentType);
             }
             else
             {
                 children = schema.Children[0].Children;
             }
+
+            if (children == null)
+                return new List<SchemaNode>();
 
             if (!string.IsNullOrEmpty(path))
             {
