@@ -460,3 +460,9 @@ copy-button {
     right: 20px;
     cursor: pointer;
 }
+
+/* Web based IG */
+p table, td{
+    border: 1px solid #000;
+    empty-cells: show;
+}
