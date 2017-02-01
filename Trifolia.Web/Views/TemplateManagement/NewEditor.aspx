@@ -1,114 +1,432 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.MVC.Master" Inherits="System.Web.Mvc.ViewPage<Trifolia.Web.Models.TemplateManagement.EditModel>" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        body > .container-fluid {
+            padding: 5px;
+        }
+
+        body > .container-fluid > .main {
+            padding: inherit;
+        }
+
+        .editor > div:first-child > .tab-content > .tab-pane {
+            padding: 5px;
+        }
+
+        /* Meta Data Tab */
+        .editor > div:first-child > .tab-content > .tab-pane:first-child > .col-md-6:first-child {
+            padding-left: 5px;
+        }
+
+        .editor > div:first-child > .tab-content > .tab-pane:first-child > .col-md-6:last-child {
+            padding-right: 5px;
+        }
+
+        .editor > div:first-child > .tab-content > .tab-pane:first-child textarea {
+            height: 150px;
+        }
+
+        .editor > div:first-child > .tab-content > .tab-pane:first-child .input-group {
+            width: 100%;
+        }
+
+        .editor > div:first-child > .tab-content > .tab-pane:first-child .input-group-addon {
+            min-width: 125px;
+            text-align: left;
+        }
+
+        .constraint-body {
+            width: 65%;
+        }
+
+        .constraint-properties {
+            margin-left: 5px;
+            width: 35%;
+        }
+        
+        .constraint-properties .panel {
+            height: 100%;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .constraint-properties > .panel > .panel-heading {
+            height: 33px;
+            line-height: 12px;
+            background-color: #888;
+            color: white;
+        }
+
+        .constraint-properties > .panel > .panel-body {
+            background-color: #F3F3F3;
+            height: 100%;
+            padding: 5px;
+        }
+
+        .constraint-properties > .panel > .panel-body .form-group {
+            margin-bottom: 5px;
+        }
+
+        .constraint-properties .branching,
+        .constraint-properties .branching .form-control {
+            height: 55px;
+        }
+
+        .constraint-properties .input-group > .input-group-addon:first-child {
+            min-width: 125px;
+            text-align: left;
+        }
+
+        .constraint-container {
+            display: inline-flex;
+            width: 100%;
+        }
+
+        .ui-widget-header {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .constraint-properties hr {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-top: 1px solid gray;
+        }
+
+        .constraint-properties sub {
+            bottom: 1.1em;
+        }
+
+        .constraint-properties sub:first-child {
+            bottom: .7em;
+        }
+    </style>
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="KeyboardShortcuts" runat="server">
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div ng-app="NewEditor" ng-controller="EditorController" ng-init="init(<%= Model.TemplateIdString %>, <%= Model.DefaultImplementationGuideIdString %>)">
-        <h2>New Template Editor</h2>
+    <div class="editor" ng-app="NewEditor" ng-controller="EditorController" ng-init="init(<%= Model.TemplateIdString %>, <%= Model.DefaultImplementationGuideIdString %>)">
+        <tabset>
+            <tab heading="Meta Data">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Name:</div>
+                            <input type="text" class="form-control" ng-model="template.Name" />
+                        </div>
+                    </div>
+                    <div class="long-id form-group">
+                        <div class="input-group identifier-field">
+                            <div class="input-group-addon">
+                                <span>Long Id:</span>
+                                <div title="" class="glyphicon glyphicon-question-sign clickable"></div>
+                            </div>
+                            <input class="form-control" type="text" />
+                            <div class="input-group-btn">
+                                <button class="dropdown-toggle btn btn-default" type="button" href="#" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="#">urn:oid:1.3.6.1.4.1.19376.1.4.1.7</a></li>
+                                    <li><a href="#">http://localhost:49366/api/FHIR2/StructureDefinition</a></li>
+                                    <!-- ko if: !$parent.IsFhir() -->
+                                    <li><a href="#">urn:oid:</a></li>
+                                    <li><a href="#">urn:hl7ii:</a></li>
+                                    <!-- /ko -->
+                                </ul>
+                            </div>
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Short Id:</div>
+                            <input type="text" class="form-control" ng-model="template.Bookmark" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Implied Template/Profile:</div>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Extensibility:</div>
+                            <select class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Status:</div>
+                            <select class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Description:</div>
+                            <textarea class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Notes:</div>
+                            <textarea class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Implementation Guide</div>
+                            <input type="text" class="form-control" readonly="readonly" value="{{template.OwningImplementationGuideId | implementationGuideName}}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Type:</div>
+                            <input type="text" class="form-control" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Applies To:</div>
+                            <input type="text" class="form-control" readonly="readonly" />
+                        </div>
+                        <span class="help-block"><a href="">Move</a> the template/profile to change the Implementation Guide, Type, or Applies To fields.</span>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Authored By:</div>
+                            <input type="text" class="form-control" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Organization:</div>
+                            <input type="text" class="form-control" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+            </tab>
+            <tab heading="Constraints">
+                <div class="constraint-container">
+                    <div class="constraint-body">
+                        <div id="constraintsGrid" ig-tree-grid="gridOptions"></div>
+                    </div>
+                    <div class="constraint-properties">
+                        <div class="panel panel-default panel-sm">
+                            <div class="panel-heading">Properties</div>
+                            <div class="panel-body">
+                                <sub>General</sub>
+
+                                <!-- Conf/Card -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm" style="width: 100%;">
+                                        <div class="input-group-addon">Conf/Card:</div>
+                                        <select class="form-control input-sm" style="width: 50%;">
+                                            <option>SHALL</option>
+                                            <option>SHOULD</option>
+                                            <option>MAY</option>
+                                            <option>SHALL NOT</option>
+                                            <option>SHOULD NOT</option>
+                                            <option>MAY NOT</option>
+                                        </select>
+                                        <div class="input-group input-group-sm cardinality" style="width:50%; padding-top: 0px">
+                                            <input class="span2 form-control" id="appendedInputButton" size="16" type="text">
+                                            <div class="input-group-btn">
+                                                <a class="dropdown-toggle btn btn-primary btn-sm" data-toggle="dropdown" href="#">
+                                                    <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li><a href="#">0..0</a></li>
+                                                    <li><a href="#">0..1</a></li>
+                                                    <li><a href="#">0..*</a></li>
+                                                    <li><a href="#">1..1</a></li>
+                                                    <li><a href="#">1..*</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Data Type -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <span>Data Type:</span>
+                                            <span class="glyphicon glyphicon-question-sign clickable"></span>
+                                        </div>
+                                        <select class="form-control input-sm">
+                                            <option value="">DEFAULT</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Branching -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm branching">
+                                        <div class="input-group-addon">Branch/Slice:</div>
+                                        <div class="form-control">
+                                            <input type="checkbox" name="Branching">&nbsp;<span>Root</span><br>
+                                            <input type="checkbox" name="Branching">&nbsp;<span>Identifier/Discriminator</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Contained Template/Profile -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">Template/Profile:</div>
+                                        <input type="text" class="form-control" />
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-sm">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-sm">
+                                                ...
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr />
+                                <sub>Bindings</sub>
+
+                                <!-- Binding Type -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            Binding Type:
+                                            <i class="glyphicon glyphicon-question-sign clickable"></i>
+                                        </div>
+                                        <select class="form-control input-sm">
+                                            <option value="None">None</option>
+                                            <option value="SingleValue">Single Value</option>
+                                            <option value="ValueSet">Value Set</option>
+                                            <option value="CodeSystem">Code System</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <hr />
+                                <sub>Publishing</sub>
+
+                                <!-- Description -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon" title="Exported before constraint">Description:</div>
+                                        <textarea class="form-control input-sm" style="height: 50px;"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Label -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon" title="Exported at end of constraint">Label:</div>
+                                        <input type="text" class="form-control input-sm" />
+                                    </div>
+                                </div>
+
+                                <!-- Heading -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            Heading&nbsp;
+                                            <input type="checkbox" />
+                                        </div>
+                                        <textarea class="form-control input-sm" style="height: 50px;" placeholder="Heading Description"></textarea>
+                                    </div>
+                                </div>
+
+                                <hr />
+                                <sub>Schematron</sub>
+
+                                <!-- Auto Generate -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            Auto Generate
+                                        </div>
+                                        <select class="form-control">
+                                            <option value="true">Yes</option>
+                                            <option value="false">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Inheritable -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            Inheritable
+                                        </div>
+                                        <select class="form-control">
+                                            <option value="true">Yes</option>
+                                            <option value="false">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Rooted -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            Rooted
+                                        </div>
+                                        <select class="form-control">
+                                            <option value="true">Yes</option>
+                                            <option value="false">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Custom Schematron -->
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            Custom Schematron
+                                        </div>
+                                        <textarea class="form-control input-sm" style="height: 50px"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+            <tab heading="Validation">
+
+            </tab>
+            <tab heading="Preview">
+
+            </tab>
+        </tabset>
+
+        <div class="row">
+            <div class="col-md-6">
+                <pre>{{template | json}}</pre>
+            </div>
+            <div class="col-md-6">
+                <pre>{{nodes | json}}</pre>
+            </div>
+        </div>
     </div>
-
-    <tabset>
-        <tab heading="Meta Data">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Name:</div>
-                        <input type="text" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Long Id:</div>
-                        <input type="text" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Short Id:</div>
-                        <input type="text" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Implied Template/Profile:</div>
-                        <input type="text" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Extensibility:</div>
-                        <select class="form-control"></select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Status:</div>
-                        <select class="form-control"></select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Description:</div>
-                        <textarea class="form-control" height="100"></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Notes:</div>
-                        <textarea class="form-control" height="100"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Implementation Guide</div>
-                        <input type="text" class="form-control" readonly="readonly" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Type:</div>
-                        <input type="text" class="form-control" readonly="readonly" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Applies To:</div>
-                        <input type="text" class="form-control" readonly="readonly" />
-                    </div>
-                    <span class="help-block"><a href="">Move</a> the template/profile to change the Implementation Guide, Type, or Applies To fields.</span>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Authored By:</div>
-                        <input type="text" class="form-control" readonly="readonly" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Organization:</div>
-                        <input type="text" class="form-control" readonly="readonly" />
-                    </div>
-                </div>
-            </div>
-        </tab>
-        <tab heading="Constraints">
-        </tab>
-        <tab heading="Validation">
-
-        </tab>
-        <tab heading="Preview">
-
-        </tab>
-    </tabset>
-
-    <script type="text/javascript" src="/Scripts/angular/angular.min.js"></script>
+    
+    <script src="http://igniteui.com/js/modernizr.min.js"></script>
+    <script src="http://igniteui.com/js/angular.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/Scripts/angular/ui-bootstrap-tpls-0.12.1.min.js"></script>
     <script type="text/javascript" src="/Scripts/lodash.min.js"></script>
     <script type="text/javascript" src="/Scripts/TemplateEdit/newTemplateEditor.js"></script>
+    
+    <script src="http://cdn-na.infragistics.com/igniteui/latest/js/infragistics.core.js"></script>
+    <script src="http://cdn-na.infragistics.com/igniteui/latest/js/infragistics.lob.js"></script>
+    <script src="http://cdn-na.infragistics.com/igniteui/latest/js/extensions/igniteui-angular.js"></script>
+    <link href="http://cdn-na.infragistics.com/igniteui/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet"></link>
+    <link href="http://cdn-na.infragistics.com/igniteui/latest/css/structure/infragistics.css" rel="stylesheet"></link>
 </asp:Content>
