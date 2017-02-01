@@ -169,7 +169,7 @@
                         </thead>
                         <tbody data-bind="foreach: Templates">
                             <tr>
-                                <td><input type="checkbox" name="TemplateIds" class="templateIdCheckboxes" data-bind="value: Id" checked="checked" /></td>
+                                <td><input type="checkbox" name="TemplateIds" class="templateIdCheckboxes" data-bind="value: Id, checked: $parent.TemplateChecked(Id)" /></td>
                                 <td data-bind="text: Name"></td>
                                 <td data-bind="text: Oid"></td>
                                 <td data-bind="text: (ThisIG() ? 'Yes' : 'No')"></td>

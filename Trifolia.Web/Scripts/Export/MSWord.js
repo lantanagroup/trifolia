@@ -14,6 +14,7 @@
     self.Templates = ko.observableArray([]);
     self.ValueSets = ko.observableArray([]);
     self.AllTemplatesChecked = ko.observable(true);
+    self.TemplateChecked = ko.observable(true);
     self.MaximumValuesetMembers = ko.observable(10);
     self.GenerateValuesets = ko.observable(true);
     self.DocumentTables = ko.observable(1);
@@ -26,6 +27,7 @@
     self.SaveSettings = ko.observable(false);
     self.SelectedCategories = ko.observableArray([]);
     self.Categories = ko.observableArray([]);
+    self.TemplateIds = ko.observableArray([]);
 
     /*
     Private Variables
@@ -89,6 +91,7 @@
                     self.IncludeInferred(results.Inferred);
                     self.MaximumValuesetMembers(results.MaximumValuesetMembers);
                     self.SelectedCategories(results.SelectedCategories);
+                    self.TemplateIds(results.TemplateIds);
 
                     if (self.CanEdit()) {
                         self.IncludeNotes(results.IncludeNotes);
@@ -116,19 +119,23 @@
                             }
                         }
                     }
-
-                    if (results.TemplateIds) {
-                        $('input[name="TemplateIds"]').prop("checked", false);
-
-                        for (var i in results.TemplateIds) {
-                            $('input[name="TemplateIds"][value=' + results.TemplateIds[i] + ']').prop("checked", true);
-                        }
-                    }
                 }
+
 
                 if (cb) {
                     cb();
                 }
+
+                /*if (results && results.TemplateIds) {
+                    $('.nav-tabs a[href="#templates"]').tab('show');
+                    $('input[name="TemplateIds"]').prop("checked", false);
+
+                    for (var i in results.TemplateIds) {
+                        $('input[name="TemplateIds"][value=' + results.TemplateIds[i] + ']').prop("checked", true);
+                    }
+                    $('.nav-tabs a[href="#content"]').tab('show');
+                }*/
+
             }
         });
     };
@@ -144,6 +151,17 @@
     self.AllTemplatesChecked.subscribe(function () {
         $('.templateIdCheckboxes').prop('checked', self.AllTemplatesChecked());
     });
+
+    self.TemplateChecked = function (idObs) {
+        var templateIds = self.TemplateIds();
+        var tID = idObs();
+
+        for (var i in templateIds) {
+            if (tID == templateIds[i])
+                return true;
+        }
+        return false;
+    };
 
     self.MaximumValuesetMembers.subscribe(function () {
         for (var i in self.ValueSets()) {
