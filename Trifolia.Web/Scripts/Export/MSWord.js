@@ -156,11 +156,7 @@
         var templateIds = self.TemplateIds();
         var tID = idObs();
 
-        for (var i in templateIds) {
-            if (tID == templateIds[i])
-                return true;
-        }
-        return false;
+        return templateIds.includes(tID);
     };
 
     self.MaximumValuesetMembers.subscribe(function () {
