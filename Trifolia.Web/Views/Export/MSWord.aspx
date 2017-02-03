@@ -40,7 +40,7 @@
 
                     <div class="form-group">
                         <label>Sort Order</label>
-                        <select class="form-control" name="TemplateSortOrder">
+                        <select class="form-control" name="TemplateSortOrder" data-bind="value: TemplateSortOrder">
                             <option value="0" selected="selected">Alphabetically</option>
                             <option value="1">Alpha-Hierarchical</option>
                         </select>

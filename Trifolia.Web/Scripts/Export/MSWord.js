@@ -17,6 +17,7 @@
     self.TemplateChecked = ko.observable(true);
     self.MaximumValuesetMembers = ko.observable(10);
     self.GenerateValuesets = ko.observable(true);
+    self.TemplateSortOrder = ko.observable();
     self.DocumentTables = ko.observable(1);
     self.TemplateTables = ko.observable(1);
     self.IncludeXmlSample = ko.observable(true);
@@ -92,6 +93,7 @@
                     self.MaximumValuesetMembers(results.MaximumValuesetMembers);
                     self.SelectedCategories(results.SelectedCategories);
                     self.TemplateIds(results.TemplateIds);
+                    self.TemplateSortOrder(results.TemplateSortOrder);
 
                     if (self.CanEdit()) {
                         self.IncludeNotes(results.IncludeNotes);
