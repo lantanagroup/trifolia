@@ -52,16 +52,7 @@
         }
 
         .constraint-properties > .panel > .panel-heading {
-            height: 33px;
-            line-height: 12px;
-            background-color: #888;
-            color: white;
-        }
-
-        .constraint-properties > .panel > .panel-body {
-            background-color: #F3F3F3;
-            height: 100%;
-            padding: 5px;
+            padding: 8px;
         }
 
         .constraint-properties > .panel > .panel-body .form-group {
@@ -100,6 +91,11 @@
 
         .constraint-properties sub:first-child {
             bottom: .7em;
+        }
+
+        .tree-grid tr.highlight {
+            background-color: inherit;
+            font-weight: bold;
         }
     </style>
 </asp:Content>
@@ -215,7 +211,13 @@
             <tab heading="Constraints">
                 <div class="constraint-container">
                     <div class="constraint-body">
-                        <div id="constraintsGrid" ig-tree-grid="gridOptions"></div>
+                        <tree-grid 
+                            constraints="constraints" 
+                            template="template" 
+                            nodes="nodes" 
+                            node-selected="nodeSelected(selectedNode)" 
+                            node-expanded="nodeExpanded(node)">
+                        </tree-grid>
                     </div>
                     <div class="constraint-properties">
                         <div class="panel panel-default panel-sm">
@@ -408,13 +410,41 @@
         </tabset>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <pre>{{template | json}}</pre>
             </div>
-            <div class="col-md-6">
-                <pre>{{nodes | json}}</pre>
-            </div>
         </div>
+
+        <script type="text/html" id="treeGrid.html">
+            <div class="tree-grid">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Context</th>
+                            <th>Number</th>
+                            <th>Conf.</th>
+                            <th>Card.</th>
+                            <th>DataType</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="clickable" ng-repeat="node in flattenedNodes" ng-click="select(node)" ng-class="{ 'highlight': node.Constraint, 'danger': selectedNode == node }">
+                            <td>
+                                <span style="white-space: pre">{{getNodeTabs(node)}}</span>
+                                <i ng-if="node.HasChildren" class="glyphicon clickable" ng-class="{ 'glyphicon-plus': !node.$expanded, 'glyphicon-minus': node.$expanded }" ng-click="toggleExpand(node)"></i>
+                                {{node.Context}} ({{node.Constraint != undefined}})
+                            </td>
+                            <td>{{node.Number}}</td>
+                            <td>{{node.Conformance}}</td>
+                            <td>{{node.Cardinality}}</td>
+                            <td>{{node.DataType}}</td>
+                            <td>{{node.Value}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </script>
     </div>
     
     <script src="http://igniteui.com/js/modernizr.min.js"></script>
