@@ -5,7 +5,7 @@
     self.ImplementationGuideId = ko.observable(implementationGuideId);
     self.ParentTemplateIds = ko.observableArray([{ Id: ko.observable() }]);
     self.ImplementationGuideType = ko.observable('');
-    self.IncludeInferred = ko.observable(true);
+    self.IncludeInferred = ko.observable(false);
     self.Templates = ko.observableArray([]);
     self.CancelUrl = ko.observable();
     self.AllTemplatesSelected = ko.observable(true);

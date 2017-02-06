@@ -248,12 +248,14 @@ namespace Trifolia.Export.FHIR.STU3
                     bool isExtension = constraint.ContainedTemplate.PrimaryContextType == "Extension" && newElementDef.Type.Exists(y => y.Code == "Extension");
 
                     var containedTypes = new List<ElementDefinition.TypeRefComponent>();
-                    containedTypes.Add(new ElementDefinition.TypeRefComponent()
+                    var typeRef = new ElementDefinition.TypeRefComponent()
                     {
                         Code = isExtension ? "Extension" : "Reference",
-                        Profile = constraint.ContainedTemplate.Oid
-                    });
+                        Profile = isExtension ? constraint.ContainedTemplate.Oid : null,
+                        TargetProfile = !isExtension ? constraint.ContainedTemplate.Oid : null
+                    };
 
+                    containedTypes.Add(typeRef);
                     newElementDef.Type = containedTypes;
                 }
             }
