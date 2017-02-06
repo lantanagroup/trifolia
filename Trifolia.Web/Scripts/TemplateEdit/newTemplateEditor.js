@@ -55,7 +55,7 @@
                 });
         };
 
-        $scope.treeGridNodeSelected = function (selectedNode) {
+        $scope.nodeSelected = function (selectedNode) {
             $scope.selectedNode = selectedNode;
         };
 
@@ -228,7 +228,7 @@
             }
         };
     })
-    .directive('treeGrid', function (EditorService) {
+    .directive('treeGrid', function () {
         return {
             restrict: 'E',
             templateUrl: 'treeGrid.html',
@@ -242,6 +242,29 @@
             link: function ($scope, $element, $attributes) {
                 $scope.flattenedNodes = [];
                 $scope.selectedNode = null;
+
+                $scope.getCellDisplay = function (node, column) {
+                    if (node.Constraint) {
+                        return node.Constraint[column];
+                    }
+
+                    return node[column];
+                };
+
+                $scope.isInvalidCardinality = function (node) {
+                    if (!node.Constraint) {
+                        return false;
+                    }
+
+                    var nodeCard = node.Cardinality;
+                    var constraintCard = node.Constraint.Cardinality;
+
+                    if (nodeCard.endsWith('..1') && constraintCard.endsWith('..*')) {
+                        return 'The schema allows only one, but you have constrained the node in the schema to allow multiple';
+                    } else if (nodeCard.endsWith('..0') && !constraintCard.endsWith('..0')) {
+                        return 'The schema does not allow any';
+                    }
+                };
 
                 $scope.getNodeTabs = function (node) {
                     var tabs = '';
@@ -259,9 +282,14 @@
                     $scope.flattenedNodes = getFlattenedNodes();
                 };
 
-                $scope.select = function (node) {
-                    $scope.selectedNode = node;
-                    $scope.onNodeSelected({ selectedNode: node });
+                $scope.toggleSelect = function (node) {
+                    if ($scope.selectedNode != node) {
+                        $scope.selectedNode = node;
+                    } else {
+                        $scope.selectedNode = null;
+                    }
+
+                    $scope.onNodeSelected({ selectedNode: $scope.selectedNode });
                 };
 
                 var getFlattenedNodes = function () {

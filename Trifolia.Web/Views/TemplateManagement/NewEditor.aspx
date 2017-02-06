@@ -221,181 +221,15 @@
                     </div>
                     <div class="constraint-properties">
                         <div class="panel panel-default panel-sm">
-                            <div class="panel-heading">Properties</div>
+                            <div class="panel-heading">
+                                <span>Properties</span>
+                                <div class="pull-right">
+                                    <button type="button" ng-show="!selectedNode || selectedNode.Constraint" class="btn btn-default btn-sm">Add Primitive Constraint</button>
+                                </div>
+                            </div>
                             <div class="panel-body">
-                                <sub>General</sub>
-
-                                <!-- Conf/Card -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm" style="width: 100%;">
-                                        <div class="input-group-addon">Conf/Card:</div>
-                                        <select class="form-control input-sm" style="width: 50%;">
-                                            <option>SHALL</option>
-                                            <option>SHOULD</option>
-                                            <option>MAY</option>
-                                            <option>SHALL NOT</option>
-                                            <option>SHOULD NOT</option>
-                                            <option>MAY NOT</option>
-                                        </select>
-                                        <div class="input-group input-group-sm cardinality" style="width:50%; padding-top: 0px">
-                                            <input class="span2 form-control" id="appendedInputButton" size="16" type="text">
-                                            <div class="input-group-btn">
-                                                <a class="dropdown-toggle btn btn-primary btn-sm" data-toggle="dropdown" href="#">
-                                                    <span class="caret"></span>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li><a href="#">0..0</a></li>
-                                                    <li><a href="#">0..1</a></li>
-                                                    <li><a href="#">0..*</a></li>
-                                                    <li><a href="#">1..1</a></li>
-                                                    <li><a href="#">1..*</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Data Type -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm">
-                                        <div class="input-group-addon">
-                                            <span>Data Type:</span>
-                                            <span class="glyphicon glyphicon-question-sign clickable"></span>
-                                        </div>
-                                        <select class="form-control input-sm">
-                                            <option value="">DEFAULT</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Branching -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm branching">
-                                        <div class="input-group-addon">Branch/Slice:</div>
-                                        <div class="form-control">
-                                            <input type="checkbox" name="Branching">&nbsp;<span>Root</span><br>
-                                            <input type="checkbox" name="Branching">&nbsp;<span>Identifier/Discriminator</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Contained Template/Profile -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm">
-                                        <div class="input-group-addon">Template/Profile:</div>
-                                        <input type="text" class="form-control" />
-                                        <div class="input-group-btn">
-                                            <button type="button" class="btn btn-default btn-sm">
-                                                <i class="glyphicon glyphicon-remove"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-default btn-sm">
-                                                ...
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr />
-                                <sub>Bindings</sub>
-
-                                <!-- Binding Type -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm">
-                                        <div class="input-group-addon">
-                                            Binding Type:
-                                            <i class="glyphicon glyphicon-question-sign clickable"></i>
-                                        </div>
-                                        <select class="form-control input-sm">
-                                            <option value="None">None</option>
-                                            <option value="SingleValue">Single Value</option>
-                                            <option value="ValueSet">Value Set</option>
-                                            <option value="CodeSystem">Code System</option>
-                                            <option value="Other">Other</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <hr />
-                                <sub>Publishing</sub>
-
-                                <!-- Description -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm">
-                                        <div class="input-group-addon" title="Exported before constraint">Description:</div>
-                                        <textarea class="form-control input-sm" style="height: 50px;"></textarea>
-                                    </div>
-                                </div>
-
-                                <!-- Label -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm">
-                                        <div class="input-group-addon" title="Exported at end of constraint">Label:</div>
-                                        <input type="text" class="form-control input-sm" />
-                                    </div>
-                                </div>
-
-                                <!-- Heading -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm">
-                                        <div class="input-group-addon">
-                                            Heading&nbsp;
-                                            <input type="checkbox" />
-                                        </div>
-                                        <textarea class="form-control input-sm" style="height: 50px;" placeholder="Heading Description"></textarea>
-                                    </div>
-                                </div>
-
-                                <hr />
-                                <sub>Schematron</sub>
-
-                                <!-- Auto Generate -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm">
-                                        <div class="input-group-addon">
-                                            Auto Generate
-                                        </div>
-                                        <select class="form-control">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Inheritable -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm">
-                                        <div class="input-group-addon">
-                                            Inheritable
-                                        </div>
-                                        <select class="form-control">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Rooted -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm">
-                                        <div class="input-group-addon">
-                                            Rooted
-                                        </div>
-                                        <select class="form-control">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Custom Schematron -->
-                                <div class="form-group">
-                                    <div class="input-group input-group-sm">
-                                        <div class="input-group-addon">
-                                            Custom Schematron
-                                        </div>
-                                        <textarea class="form-control input-sm" style="height: 50px"></textarea>
-                                    </div>
-                                </div>
+                                <div ng-if="selectedNode && selectedNode.Constraint" ng-include="'constraintPanel.html'"></div>
+                                <button type="button" ng-show="selectedNode && !selectedNode.Constraint" class="btn btn-default">Create Computable Constraint</button>
                             </div>
                         </div>
                     </div>
@@ -429,20 +263,199 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="clickable" ng-repeat="node in flattenedNodes" ng-click="select(node)" ng-class="{ 'highlight': node.Constraint, 'danger': selectedNode == node }">
+                        <tr class="clickable" ng-repeat="node in flattenedNodes" ng-click="toggleSelect(node)" ng-class="{ 'highlight': node.Constraint, 'danger': selectedNode == node }">
                             <td>
                                 <span style="white-space: pre">{{getNodeTabs(node)}}</span>
                                 <i ng-if="node.HasChildren" class="glyphicon clickable" ng-class="{ 'glyphicon-plus': !node.$expanded, 'glyphicon-minus': node.$expanded }" ng-click="toggleExpand(node)"></i>
                                 {{node.Context}} ({{node.Constraint != undefined}})
                             </td>
-                            <td>{{node.Number}}</td>
-                            <td>{{node.Conformance}}</td>
-                            <td>{{node.Cardinality}}</td>
-                            <td>{{node.DataType}}</td>
-                            <td>{{node.Value}}</td>
+                            <td>{{getCellDisplay(node, 'Number')}}</td>
+                            <td>{{getCellDisplay(node, 'Conformance')}}</td>
+                            <td>
+                                {{getCellDisplay(node, 'Cardinality')}}
+                                <i class="glyphicon glyphicon-exclamation-sign" ng-if="isInvalidCardinality(node)" title="{{isInvalidCardinality(node)}}"></i>
+                            </td>
+                            <td>{{getCellDisplay(node, 'DataType')}}</td>
+                            <td>{{getCellDisplay(node, 'Value')}}</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </script>
+
+        <script type="text/html" id="constraintPanel.html">
+            <sub>General</sub>
+
+            <!-- Conf/Card -->
+            <div class="form-group">
+                <div class="input-group input-group-sm" style="width: 100%;">
+                    <div class="input-group-addon">Conf/Card:</div>
+                    <select class="form-control input-sm" style="width: 50%;" ng-model="selectedNode.Constraint.Conformance">
+                        <option>SHALL</option>
+                        <option>SHOULD</option>
+                        <option>MAY</option>
+                        <option>SHALL NOT</option>
+                        <option>SHOULD NOT</option>
+                        <option>MAY NOT</option>
+                    </select>
+                    <div class="input-group input-group-sm cardinality" style="width:50%; padding-top: 0px">
+                        <input class="span2 form-control" id="appendedInputButton" size="16" type="text" ng-model="selectedNode.Constraint.Cardinality">
+                        <div class="input-group-btn">
+                            <a class="dropdown-toggle btn btn-primary btn-sm" data-toggle="dropdown" href="#">
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="#" ng-click="selectedNode.Constraint.Cardinality = '0..0'">0..0</a></li>
+                                <li><a href="#" ng-click="selectedNode.Constraint.Cardinality = '0..1'">0..1</a></li>
+                                <li><a href="#" ng-click="selectedNode.Constraint.Cardinality = '0..*'">0..*</a></li>
+                                <li><a href="#" ng-click="selectedNode.Constraint.Cardinality = '1..1'">1..1</a></li>
+                                <li><a href="#" ng-click="selectedNode.Constraint.Cardinality = '1..*'">1..*</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Type -->
+            <div class="form-group">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        <span>Data Type:</span>
+                        <span class="glyphicon glyphicon-question-sign clickable"></span>
+                    </div>
+                    <select class="form-control input-sm">
+                        <option value="">DEFAULT</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Branching -->
+            <div class="form-group">
+                <div class="input-group input-group-sm branching">
+                    <div class="input-group-addon">Branch/Slice:</div>
+                    <div class="form-control">
+                        <input type="checkbox" name="Branching">&nbsp;<span>Root</span><br>
+                        <input type="checkbox" name="Branching">&nbsp;<span>Identifier/Discriminator</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contained Template/Profile -->
+            <div class="form-group">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">Template/Profile:</div>
+                    <input type="text" class="form-control" />
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-sm">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </button>
+                        <button type="button" class="btn btn-default btn-sm">
+                            ...
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+            <sub>Bindings</sub>
+
+            <!-- Binding Type -->
+            <div class="form-group">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        Binding Type:
+                        <i class="glyphicon glyphicon-question-sign clickable"></i>
+                    </div>
+                    <select class="form-control input-sm">
+                        <option value="None">None</option>
+                        <option value="SingleValue">Single Value</option>
+                        <option value="ValueSet">Value Set</option>
+                        <option value="CodeSystem">Code System</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr />
+            <sub>Publishing</sub>
+
+            <!-- Description -->
+            <div class="form-group">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon" title="Exported before constraint">Description:</div>
+                    <textarea class="form-control input-sm" style="height: 50px;"></textarea>
+                </div>
+            </div>
+
+            <!-- Label -->
+            <div class="form-group">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon" title="Exported at end of constraint">Label:</div>
+                    <input type="text" class="form-control input-sm" />
+                </div>
+            </div>
+
+            <!-- Heading -->
+            <div class="form-group">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        Heading&nbsp;
+                        <input type="checkbox" />
+                    </div>
+                    <textarea class="form-control input-sm" style="height: 50px;" placeholder="Heading Description"></textarea>
+                </div>
+            </div>
+
+            <hr />
+            <sub>Schematron</sub>
+
+            <!-- Auto Generate -->
+            <div class="form-group">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        Auto Generate
+                    </div>
+                    <select class="form-control">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Inheritable -->
+            <div class="form-group">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        Inheritable
+                    </div>
+                    <select class="form-control">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Rooted -->
+            <div class="form-group">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        Rooted
+                    </div>
+                    <select class="form-control">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Custom Schematron -->
+            <div class="form-group">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        Custom Schematron
+                    </div>
+                    <textarea class="form-control input-sm" style="height: 50px"></textarea>
+                </div>
             </div>
         </script>
     </div>
