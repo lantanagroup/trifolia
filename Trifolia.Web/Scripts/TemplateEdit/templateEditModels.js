@@ -586,7 +586,7 @@ var ConstraintModel = function (data, parent, viewModel) {
 
         if (newValue == 'SingleValue') {
             if (singleValueHasValue && confirm('Do you want to remove the values from the "Code System", "Value Set", "Binding Date", and "Value Conformance" fields?')) {
-                self.ValueCodeSystemId("");
+                self.ValueCodeSystemId(null);
                 self.ValueSetId("");
                 self.ValueSetDate("");
                 self.ValueConformance("");
@@ -596,7 +596,7 @@ var ConstraintModel = function (data, parent, viewModel) {
             if (valueSetHasValue && confirm('Do you want to remove the values from the "Code", "Display" and "Code System" fields?')) {
                 self.Value("");
                 self.ValueDisplayName("");
-                self.ValueCodeSystemId("");
+                self.ValueCodeSystemId(null);
             }
         } else if (newValue == 'CodeSystem') {
             if (codeSystemHasValue && confirm('Do you want to remove the values from the "Code", "Display", and "Value Set" fields?')) {
@@ -609,9 +609,9 @@ var ConstraintModel = function (data, parent, viewModel) {
                 self.Value("");
                 self.ValueDisplayName("");
                 self.ValueSetId("");
-                self.ValueCodeSystemId("");
+                self.ValueCodeSystemId(null);
                 self.ValueSetDate("");
-                self.Binding("");
+                self.Binding(null);
             }
         }
     });
