@@ -56,12 +56,12 @@ namespace Trifolia.Web.Controllers.API
                 throw new Exception("Cannot delete implementation guide type that is associated with templates.");
 
             implementationGuideType.DataTypes.ToList().ForEach(y => {
-                this.tdb.ImplementationGuideTypeDataTypes.DeleteObject(y);
+                this.tdb.ImplementationGuideTypeDataTypes.Remove(y);
             });
             implementationGuideType.TemplateTypes.ToList().ForEach(y => {
-                this.tdb.TemplateTypes.DeleteObject(y); 
+                this.tdb.TemplateTypes.Remove(y); 
             });
-            this.tdb.ImplementationGuideTypes.DeleteObject(implementationGuideType);
+            this.tdb.ImplementationGuideTypes.Remove(implementationGuideType);
 
             string directory = Shared.Helper.GetSchemasDirectory(implementationGuideType.Name);
             Directory.Delete(directory, true);
@@ -142,7 +142,7 @@ namespace Trifolia.Web.Controllers.API
                 if (model.Id != null)
                     igType = this.tdb.ImplementationGuideTypes.Single(y => y.Id == model.Id);
                 else
-                    this.tdb.ImplementationGuideTypes.AddObject(igType);
+                    this.tdb.ImplementationGuideTypes.Add(igType);
 
                 if (igType.Name != model.Name)
                 {
@@ -169,7 +169,7 @@ namespace Trifolia.Web.Controllers.API
                 foreach (var templateTypeModel in model.DeletedTemplateTypes)
                 {
                     var templateType = igType.TemplateTypes.Single(y => y.Id == templateTypeModel.Id);
-                    this.tdb.TemplateTypes.DeleteObject(templateType);
+                    this.tdb.TemplateTypes.Remove(templateType);
                 }
 
                 foreach (var templateTypeModel in model.TemplateTypes)
@@ -188,13 +188,13 @@ namespace Trifolia.Web.Controllers.API
                         ImplementationGuideType = igType,
                         DataTypeName = current
                     };
-                    this.tdb.ImplementationGuideTypeDataTypes.AddObject(newDataType);
+                    this.tdb.ImplementationGuideTypeDataTypes.Add(newDataType);
                 }
 
                 foreach (var current in deleteDataTypes)
                 {
-                    current.green_constraint.ToList().ForEach(y => { y.ImplementationGuideTypeDataType = null; });
-                    this.tdb.ImplementationGuideTypeDataTypes.DeleteObject(current);
+                    current.GreenConstraints.ToList().ForEach(y => { y.ImplementationGuideTypeDataType = null; });
+                    this.tdb.ImplementationGuideTypeDataTypes.Remove(current);
                 }
 
                 this.tdb.SaveChanges();
@@ -513,7 +513,7 @@ namespace Trifolia.Web.Controllers.API
             else
             {
                 templateType.ImplementationGuideType = igType;
-                this.tdb.TemplateTypes.AddObject(templateType);
+                this.tdb.TemplateTypes.Add(templateType);
             }
 
             if (templateType.Name != model.Name)

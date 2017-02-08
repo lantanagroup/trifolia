@@ -198,7 +198,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
                             Organization = defaultOrganization,
                             ImplementationGuideType = igType
                         };
-                        this.tdb.ImplementationGuides.AddObject(defaultImplementationGuide);
+                        this.tdb.ImplementationGuides.Add(defaultImplementationGuide);
                     }
 
                     FHIRImporter importer = new FHIRImporter(this.tdb, shouldUpdate);

@@ -84,6 +84,7 @@ namespace Trifolia.Import.Terminology.External
             if (valueSet.ImportStatus == "None")
                 return foundValueSet;
 
+            bool changed = false;
             string name = TruncateString(valueSet.Name, 254);
             string code = TruncateString(valueSet.Code, 254);
             string oid = TruncateString(valueSet.Oid, 254);
@@ -91,22 +92,35 @@ namespace Trifolia.Import.Terminology.External
             if (foundValueSet == null)
             {
                 foundValueSet = new ValueSet();
-                tdb.ValueSets.AddObject(foundValueSet);
+                tdb.ValueSets.Add(foundValueSet);
+                changed = true;
             }
 
             if (foundValueSet.Code != code)
+            {
                 foundValueSet.Code = code;
+                changed = true;
+            }
 
             if (foundValueSet.Oid != oid)
+            {
                 foundValueSet.Oid = oid;
+                changed = true;
+            }
 
             if (foundValueSet.Description != valueSet.Description)
+            {
                 foundValueSet.Description = valueSet.Description;
+                changed = true;
+            }
 
             if (foundValueSet.Name != name)
+            {
                 foundValueSet.Name = name;
+                changed = true;
+            }
 
-            if (foundValueSet.EntityState != System.Data.Entity.EntityState.Unchanged)
+            if (changed)
                 foundValueSet.LastUpdate = DateTime.Now;
 
             return foundValueSet;
@@ -127,7 +141,7 @@ namespace Trifolia.Import.Terminology.External
             {
                 foundValueSetMember = new ValueSetMember();
                 foundValueSetMember.ValueSet = tdbValueSet;
-                tdb.ValueSetMembers.AddObject(foundValueSetMember);
+                tdb.ValueSetMembers.Add(foundValueSetMember);
             }
 
             if (foundValueSetMember.Code != code)
@@ -169,7 +183,7 @@ namespace Trifolia.Import.Terminology.External
                     LastUpdate = DateTime.Now
                 };
 
-                tdb.CodeSystems.AddObject(foundCodeSystem);
+                tdb.CodeSystems.Add(foundCodeSystem);
                 addedCodeSystems.Add(foundCodeSystem);
             }
 

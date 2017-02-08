@@ -118,7 +118,7 @@ namespace Trifolia.Export.FHIR.DSTU2
                             Oid = expContains.System,
                             Name = expContains.System
                         };
-                        this.tdb.CodeSystems.AddObject(codeSystem);
+                        this.tdb.CodeSystems.Add(codeSystem);
                     }
 
                     ValueSetMember newMember = valueSet.Members.SingleOrDefault(y => y.CodeSystem == codeSystem && y.Code == expContains.Code);

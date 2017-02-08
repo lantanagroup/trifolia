@@ -118,14 +118,14 @@ namespace Trifolia.Web.Controllers.API
                 Disclaimer = model.Disclaimer,
                 IsOpen = model.IsOpen
             };
-            this.tdb.Groups.AddObject(newGroup);
+            this.tdb.Groups.Add(newGroup);
 
             GroupManager newGroupManager = new GroupManager()
             {
                 User = CheckPoint.Instance.GetUser(this.tdb),
                 Group = newGroup
             };
-            this.tdb.GroupManagers.AddObject(newGroupManager);
+            this.tdb.GroupManagers.Add(newGroupManager);
 
             this.tdb.SaveChanges();
 
@@ -182,7 +182,7 @@ namespace Trifolia.Web.Controllers.API
             if (userGroup == null)
                 return;
 
-            this.tdb.UserGroups.DeleteObject(userGroup);
+            this.tdb.UserGroups.Remove(userGroup);
             this.tdb.SaveChanges();
         }
 
@@ -214,7 +214,7 @@ namespace Trifolia.Web.Controllers.API
 
             if (group.Managers.Count(y => y.UserId == currentUser.Id) > 0 || group.IsOpen)
             {
-                this.tdb.UserGroups.AddObject(newUserGroup);
+                this.tdb.UserGroups.Add(newUserGroup);
                 this.tdb.SaveChanges();
                 return true;
             }
@@ -308,7 +308,7 @@ namespace Trifolia.Web.Controllers.API
                     Group = group,
                     User = user
                 };
-                this.tdb.GroupManagers.AddObject(newGroupManager);
+                this.tdb.GroupManagers.Add(newGroupManager);
                 this.tdb.SaveChanges();
             }
 
@@ -342,7 +342,7 @@ namespace Trifolia.Web.Controllers.API
                     Group = group,
                     User = user
                 };
-                this.tdb.UserGroups.AddObject(newUserGroup);
+                this.tdb.UserGroups.Add(newUserGroup);
                 this.tdb.SaveChanges();
             }
 
@@ -370,7 +370,7 @@ namespace Trifolia.Web.Controllers.API
 
             if (groupManager != null)
             {
-                this.tdb.GroupManagers.DeleteObject(groupManager);
+                this.tdb.GroupManagers.Remove(groupManager);
                 this.tdb.SaveChanges();
             }
         }
@@ -396,7 +396,7 @@ namespace Trifolia.Web.Controllers.API
 
             if (userGroup != null)
             {
-                this.tdb.UserGroups.DeleteObject(userGroup);
+                this.tdb.UserGroups.Remove(userGroup);
                 this.tdb.SaveChanges();
             }
         }
@@ -489,7 +489,7 @@ namespace Trifolia.Web.Controllers.API
             if (group == null)
             {
                 group = new Group();
-                this.tdb.Groups.AddObject(group);
+                this.tdb.Groups.Add(group);
             }
 
             group.Name = model.Name;
@@ -521,20 +521,20 @@ namespace Trifolia.Web.Controllers.API
 
             group.Users.ToList().ForEach(y =>
             {
-                this.tdb.UserGroups.DeleteObject(y);
+                this.tdb.UserGroups.Remove(y);
             });
 
             group.ImplementationGuidePermissions.ToList().ForEach(y =>
             {
-                this.tdb.ImplementationGuidePermissions.DeleteObject(y);
+                this.tdb.ImplementationGuidePermissions.Remove(y);
             });
 
             group.Managers.ToList().ForEach(y =>
             {
-                this.tdb.GroupManagers.DeleteObject(y);
+                this.tdb.GroupManagers.Remove(y);
             });
 
-            this.tdb.Groups.DeleteObject(group);
+            this.tdb.Groups.Remove(group);
 
             this.tdb.SaveChanges();
         }

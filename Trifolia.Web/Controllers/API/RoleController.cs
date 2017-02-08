@@ -116,7 +116,7 @@ namespace Trifolia.Web.Controllers.API
                 AppSecurableId = securableId
             };
 
-            this.tdb.RoleAppSecurables.AddObject(newRoleAppSecurable);
+            this.tdb.RoleAppSecurables.Add(newRoleAppSecurable);
 
             this.tdb.SaveChanges();
         }
@@ -136,7 +136,7 @@ namespace Trifolia.Web.Controllers.API
                 throw new Exception(
                     string.Format("Could not find securable {0} associated with role {1}", roleId, securableId));
 
-            this.tdb.RoleAppSecurables.DeleteObject(foundRoleAppSecurable);
+            this.tdb.RoleAppSecurables.Remove(foundRoleAppSecurable);
 
             this.tdb.SaveChanges();
         }
@@ -153,7 +153,7 @@ namespace Trifolia.Web.Controllers.API
                 Name = roleName
             };
 
-            this.tdb.Roles.AddObject(newRole);
+            this.tdb.Roles.Add(newRole);
 
             this.tdb.SaveChanges();
 
@@ -176,10 +176,10 @@ namespace Trifolia.Web.Controllers.API
         {
             Role foundRole = this.tdb.Roles.Single(y => y.Id == roleId);
 
-            foundRole.Users.ToList().ForEach(ur => this.tdb.UserRoles.DeleteObject(ur));        // Remove UserRole objects associating users to this role
-            foundRole.AppSecurables.ToList().ForEach(ras => this.tdb.RoleAppSecurables.DeleteObject(ras));      // Remove RoleAppSecurable objects associated securables to the role
-            foundRole.Restrictions.ToList().ForEach(r => this.tdb.RoleRestrictions.DeleteObject(r));
-            this.tdb.Roles.DeleteObject(foundRole);     // Remove the role itself
+            foundRole.Users.ToList().ForEach(ur => this.tdb.UserRoles.Remove(ur));        // Remove UserRole objects associating users to this role
+            foundRole.AppSecurables.ToList().ForEach(ras => this.tdb.RoleAppSecurables.Remove(ras));      // Remove RoleAppSecurable objects associated securables to the role
+            foundRole.Restrictions.ToList().ForEach(r => this.tdb.RoleRestrictions.Remove(r));
+            this.tdb.Roles.Remove(foundRole);     // Remove the role itself
 
             this.tdb.SaveChanges();
         }
@@ -203,7 +203,7 @@ namespace Trifolia.Web.Controllers.API
             RoleRestriction newRoleRestriction = new RoleRestriction();
             newRoleRestriction.Role = role;
             newRoleRestriction.Organization = org;
-            this.tdb.RoleRestrictions.AddObject(newRoleRestriction);
+            this.tdb.RoleRestrictions.Add(newRoleRestriction);
 
             this.tdb.SaveChanges();
         }
@@ -221,7 +221,7 @@ namespace Trifolia.Web.Controllers.API
             Organization org = this.tdb.Organizations.Single(y => y.Id == organizationId);
             RoleRestriction roleRestriction = role.Restrictions.Single(y => y.Organization == org);
 
-            this.tdb.RoleRestrictions.DeleteObject(roleRestriction);
+            this.tdb.RoleRestrictions.Remove(roleRestriction);
 
             this.tdb.SaveChanges();
         }

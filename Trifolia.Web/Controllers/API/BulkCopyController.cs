@@ -210,7 +210,7 @@ namespace Trifolia.Web.Controllers.API
                     TemplateType = baseTemplate.TemplateType
                 };
 
-                this.tdb.Templates.AddObject(newTemplate);
+                this.tdb.Templates.Add(newTemplate);
                 results.NewTemplates.Add(new CopyResults.TemplateEntry()
                 {
                     Name = newTemplate.Name,
@@ -430,19 +430,19 @@ namespace Trifolia.Web.Controllers.API
         {
             template.GreenTemplates.ToList().ForEach(y =>
             {
-                y.ChildGreenConstraints.ToList().ForEach(x => this.tdb.GreenConstraints.DeleteObject(x));
-                this.tdb.GreenTemplates.DeleteObject(y);
+                y.ChildGreenConstraints.ToList().ForEach(x => this.tdb.GreenConstraints.Remove(x));
+                this.tdb.GreenTemplates.Remove(y);
             });
 
             template.ChildConstraints.ToList().ForEach(y =>
             {
-                y.Samples.ToList().ForEach(x => this.tdb.TemplateConstraintSamples.DeleteObject(x));
-                this.tdb.TemplateConstraints.DeleteObject(y);
+                y.Samples.ToList().ForEach(x => this.tdb.TemplateConstraintSamples.Remove(x));
+                this.tdb.TemplateConstraints.Remove(y);
             });
 
-            template.TemplateSamples.ToList().ForEach(y => this.tdb.TemplateSamples.DeleteObject(y));
+            template.TemplateSamples.ToList().ForEach(y => this.tdb.TemplateSamples.Remove(y));
 
-            this.tdb.Templates.DeleteObject(template);
+            this.tdb.Templates.Remove(template);
         }
 
         private static string GetRowField(ExcelSheet sheet, ExcelRow row, Fields field)

@@ -67,7 +67,7 @@ namespace Trifolia.Web.Controllers.API
             if (organization == null)
             {
                 organization = new Organization();
-                this.tdb.Organizations.AddObject(organization);
+                this.tdb.Organizations.Add(organization);
             }
 
             organization.Name = model.Name;
@@ -83,9 +83,9 @@ namespace Trifolia.Web.Controllers.API
             var organization = this.tdb.Organizations.Single(y => y.Id == organizationId);
 
             // Delete role restrictions associated with this org
-            organization.RoleRestrictions.ToList().ForEach(y => this.tdb.RoleRestrictions.DeleteObject(y));
+            organization.RoleRestrictions.ToList().ForEach(y => this.tdb.RoleRestrictions.Remove(y));
 
-            this.tdb.Organizations.DeleteObject(organization);
+            this.tdb.Organizations.Remove(organization);
 
             this.tdb.SaveChanges();
         }

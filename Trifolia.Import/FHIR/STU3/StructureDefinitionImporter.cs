@@ -59,7 +59,7 @@ namespace Trifolia.Import.FHIR.STU3
                         ImplementationGuideType = this.implementationGuideType,
                         Organization = this.tdb.Organizations.Single(y => y.Name == STU3Helper.DEFAULT_ORG_NAME)
                     };
-                    this.tdb.ImplementationGuides.AddObject(unassignedImplementationGuide);
+                    this.tdb.ImplementationGuides.Add(unassignedImplementationGuide);
                 }
 
                 template = new Template()
@@ -118,7 +118,7 @@ namespace Trifolia.Import.FHIR.STU3
             {
                 // Remove all current constraints from the template so that we re-create
                 foreach (var cc in template.ChildConstraints.ToList())
-                    this.tdb.TemplateConstraints.DeleteObject(cc);
+                    this.tdb.TemplateConstraints.Remove(cc);
 
                 ElementDefinitionNavigator navigator = new ElementDefinitionNavigator(strucDef.Differential.Element);
                 TemplateConstraint current = null;

@@ -333,7 +333,7 @@ namespace Trifolia.DB
             if (replacementTemplateId != null)
                 constraints.ForEach(tc => tc.ContainedTemplateId = replacementTemplateId);
             else
-                constraints.ForEach(tc => tdb.TemplateConstraints.DeleteObject(tc));
+                constraints.ForEach(tc => tdb.TemplateConstraints.Remove(tc));
 
             // Update the tempaltes to reference the selected template instead of this one
             List<Template> templates = this.ImplyingTemplates.ToList();
@@ -346,17 +346,17 @@ namespace Trifolia.DB
             // Remove the constraints (and their green constraints) associated with the template
             this.ChildConstraints.ToList().ForEach(y =>
             {
-                tdb.TemplateConstraints.DeleteObject(y);
-                y.GreenConstraints.ToList().ForEach(x => tdb.GreenConstraints.DeleteObject(x));
+                tdb.TemplateConstraints.Remove(y);
+                y.GreenConstraints.ToList().ForEach(x => tdb.GreenConstraints.Remove(x));
             });
 
             // Remove any green templates associated with this template
-            this.GreenTemplates.ToList().ForEach(y => tdb.GreenTemplates.DeleteObject(y));
+            this.GreenTemplates.ToList().ForEach(y => tdb.GreenTemplates.Remove(y));
 
             // Delete samples associated with the template
-            this.TemplateSamples.ToList().ForEach(y => tdb.TemplateSamples.DeleteObject(y));
+            this.TemplateSamples.ToList().ForEach(y => tdb.TemplateSamples.Remove(y));
 
-            tdb.Templates.DeleteObject(this);
+            tdb.Templates.Remove(this);
         }
 
         public List<Template> GetRelatedTemplates(bool includeImplied = true, bool includeContained = true)
