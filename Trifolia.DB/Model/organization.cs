@@ -12,7 +12,7 @@ namespace Trifolia.DB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Organization()
         {
-            implementationguides = new HashSet<ImplementationGuide>();
+            ImplementationGuides = new HashSet<ImplementationGuide>();
             RoleRestrictions = new HashSet<RoleRestriction>();
         }
 
@@ -44,7 +44,7 @@ namespace Trifolia.DB
         public bool IsInternal { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ImplementationGuide> implementationguides { get; set; }
+        public virtual ICollection<ImplementationGuide> ImplementationGuides { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoleRestriction> RoleRestrictions { get; set; }

@@ -373,6 +373,7 @@ namespace Trifolia.DB
             bool? orderDesc)
         {
             var command = base.Database.Connection.CreateCommand();
+            command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "SearchValueSet";
 
             if (this.Database.Connection.State != System.Data.ConnectionState.Open)
@@ -467,11 +468,8 @@ namespace Trifolia.DB
             string filterContextType, 
             string queryText)
         {
-            var command = this.Database.Connection.CreateCommand() as SqlCommand;
-
-            if (command == null)
-                throw new NotSupportedException("The database connection is not SQL");
-
+            var command = this.Database.Connection.CreateCommand();
+            command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "SearchTemplates";
 
             if (this.Database.Connection.State != System.Data.ConnectionState.Open)
@@ -574,12 +572,11 @@ namespace Trifolia.DB
             int? parentTemplateId, 
             string[] categories)
         {
-            var entityConnection = (System.Data.Entity.Core.EntityClient.EntityConnection)this.Connection;
-            IDbConnection dbConnection = entityConnection.StoreConnection;
+            IDbConnection dbConnection = this.Database.Connection;
             IDbCommand command = dbConnection.CreateCommand();
 
-            if (entityConnection.State != ConnectionState.Open)
-                entityConnection.Open();
+            if (dbConnection.State != ConnectionState.Open)
+                dbConnection.Open();
 
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "GetImplementationGuideTemplates";
@@ -611,8 +608,7 @@ namespace Trifolia.DB
             else
                 parentTemplateIdParameter.Value = DBNull.Value;
 
-            var categoriesParameter = command.CreateParameter();
-            categoriesParameter.ParameterName = "categories";
+            var categoriesParameter = new SqlParameter("categories", SqlDbType.Structured);
             command.Parameters.Add(categoriesParameter);
 
             if (categories != null)
@@ -625,10 +621,6 @@ namespace Trifolia.DB
                 }
 
                 categoriesParameter.Value = table;
-            }
-            else
-            {
-                categoriesParameter.Value = DBNull.Value;
             }
 
             using (var reader = command.ExecuteReader())

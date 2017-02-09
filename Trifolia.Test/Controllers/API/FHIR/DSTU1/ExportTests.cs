@@ -37,7 +37,8 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU1
             this.tdb.AddConstraintToTemplate(template1, sectionConstraint, template2, "content", "SHALL", "1..1");
 
             // Export the templates
-            string export = FHIRExporter.GenerateExport(this.tdb, this.tdb.Templates.ToList(), new IGSettingsManager(this.tdb, this.ig.Id));
+            var templates = this.tdb.Templates.ToList();
+            string export = FHIRExporter.GenerateExport(this.tdb, templates, new IGSettingsManager(this.tdb, this.ig.Id));
 
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(export);

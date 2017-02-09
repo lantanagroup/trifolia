@@ -16,10 +16,14 @@ namespace Trifolia.DB
         public static DbContext GetContext<TEntity>(this IDbSet<TEntity> dbSet)
             where TEntity : class
         {
-            object internalSet = dbSet
+            var internalSetProperty = dbSet
                 .GetType()
-                .GetField("_internalSet", BindingFlags.NonPublic | BindingFlags.Instance)
-                .GetValue(dbSet);
+                .GetField("_internalSet", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (internalSetProperty == null)
+                return null;
+
+            object internalSet = internalSetProperty.GetValue(dbSet);
             object internalContext = internalSet
                 .GetType()
                 .BaseType
@@ -33,26 +37,41 @@ namespace Trifolia.DB
 
         public static IEnumerable<T> WhereInclAdded<T>(this IDbSet<T> iSet, Expression<Func<T, bool>> predicate) where T : class
         {
-            return iSet.GetContext().ChangeTracker.Entries<T>()
-                .Where(y => y.State != EntityState.Deleted)
-                .Select(y => y.Entity)
-                .Where(predicate.Compile());
+            var context = iSet.GetContext();
+
+            if (context != null)
+                return iSet.GetContext().ChangeTracker.Entries<T>()
+                    .Where(y => y.State != EntityState.Deleted)
+                    .Select(y => y.Entity)
+                    .Where(predicate.Compile());
+
+            return iSet.Where(predicate.Compile());
         }
 
         public static T SingleInclAdded<T>(this IDbSet<T> iSet, Expression<Func<T, bool>> predicate) where T : class
         {
-            return iSet.GetContext().ChangeTracker.Entries<T>()
-                .Where(y => y.State != EntityState.Deleted)
-                .Select(y => y.Entity)
-                .Single(predicate.Compile());
+            var context = iSet.GetContext();
+
+            if (context != null)
+                return context.ChangeTracker.Entries<T>()
+                    .Where(y => y.State != EntityState.Deleted)
+                    .Select(y => y.Entity)
+                    .Single(predicate.Compile());
+
+            return iSet.Single(predicate.Compile());
         }
 
         public static T SingleOrDefaultInclAdded<T>(this IDbSet<T> iSet, Expression<Func<T, bool>> predicate) where T : class
         {
-            return iSet.GetContext().ChangeTracker.Entries<T>()
-                .Where(y => y.State != EntityState.Deleted)
-                .Select(y => y.Entity)
-                .SingleOrDefault(predicate.Compile());
+            var context = iSet.GetContext();
+
+            if (context != null)
+                return context.ChangeTracker.Entries<T>()
+                    .Where(y => y.State != EntityState.Deleted)
+                    .Select(y => y.Entity)
+                    .SingleOrDefault(predicate.Compile());
+
+            return iSet.SingleOrDefault(predicate.Compile());
         }
     }
 }
