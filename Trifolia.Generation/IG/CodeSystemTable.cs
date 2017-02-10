@@ -32,13 +32,13 @@ namespace Trifolia.Generation.IG
             this.tables = tables;
 
             this.codeSystems = (from t1 in this.templates
-                                join tc in this.tdb.TemplateConstraints on t1.Id equals tc.TemplateId
+                                join tc in this.tdb.TemplateConstraints.AsNoTracking() on t1.Id equals tc.TemplateId
                                 where tc.CodeSystemId != null
                                 select tc.CodeSystem).Union(
                                (from t2 in this.templates
-                                join tc in this.tdb.TemplateConstraints on t2.Id equals tc.TemplateId
-                                join vs in this.tdb.ValueSets on tc.ValueSetId equals vs.Id
-                                join vsm in this.tdb.ValueSetMembers on vs.Id equals vsm.ValueSetId
+                                join tc in this.tdb.TemplateConstraints.AsNoTracking() on t2.Id equals tc.TemplateId
+                                join vs in this.tdb.ValueSets.AsNoTracking() on tc.ValueSetId equals vs.Id
+                                join vsm in this.tdb.ValueSetMembers.AsNoTracking() on vs.Id equals vsm.ValueSetId
                                 select vsm.CodeSystem))
                                .Distinct()
                                .OrderBy(y => y.Name);
