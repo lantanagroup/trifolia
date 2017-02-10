@@ -13,7 +13,7 @@ namespace Trifolia.DB
     public partial class TrifoliaDatabase : DbContext, IObjectRepository
     {
         public TrifoliaDatabase()
-            : base("name=DBModel")
+            : base("name=TrifoliaDatabase")
         {
         }
 

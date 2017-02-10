@@ -65,6 +65,7 @@ namespace Trifolia.DB
         [Column("webDescription")]
         public string WebDescription { get; set; }
 
+        [Column("webReadmeOverview")]
         public string WebReadmeOverview { get; set; }
 
         [Column("identifier")]

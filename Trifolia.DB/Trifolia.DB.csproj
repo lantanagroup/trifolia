@@ -84,11 +84,16 @@
     <Compile Include="ImplementationGuideTypeExtension.cs" />
     <Compile Include="IObjectRepository.cs" />
     <Compile Include="ITemplate.cs" />
+    <Compile Include="Migrations\201702101932444_init.cs" />
+    <Compile Include="Migrations\201702101932444_init.Designer.cs">
+      <DependentUpon>201702101932444_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
     <Compile Include="Model\audit.cs" />
     <Compile Include="Model\codesystem.cs" />
-    <Compile Include="Model\DBModel.cs" />
+    <Compile Include="Model\TrifoliaDatabase.cs" />
     <Compile Include="Model\green_constraint.cs" />
     <Compile Include="Model\green_template.cs" />
     <Compile Include="Model\group.cs" />
@@ -148,9 +153,6 @@
     <Compile Include="ViewTemplateExtension.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -169,6 +171,17 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201702101932444_init.resx">
+      <DependentUpon>201702101932444_init.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Migrations\201702101932444_init_programmability_down.sql" />
+    <Content Include="Migrations\201702101932444_init_programmability_up.sql" />
+    <Content Include="Migrations\201702101932444_init_views_down.sql" />
+    <Content Include="Migrations\201702101932444_init_views_up.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
