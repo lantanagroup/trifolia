@@ -268,7 +268,7 @@ namespace Trifolia.Export.Schematron
 
             if (element != null && aTemplateConstraint.Parent != null)
             {
-                if (element.IsBranchIdentifier || (element.IsBranch && !isTarget))
+                if (element.IsBranchIdentifier)
                     context = "[" + context + "]";
                 else
                     context = "/" + context;

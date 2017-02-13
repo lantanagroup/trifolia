@@ -9,6 +9,7 @@ using Trifolia.Export.Schematron.Utilities;
 using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
+using System.Data.Entity;
 
 namespace Trifolia.Export.Schematron
 {
@@ -43,9 +44,18 @@ namespace Trifolia.Export.Schematron
             List<string> categories = null,
             string defaultSchematron = "not(.)")
         {
+            var templateIds = templates.Select(y => y.Id).ToList();
+
             this.rep = rep;
             this.ig = ig;
-            this.templates = templates;
+            this.templates = (from t in rep.Templates
+                              join st in templateIds on t.Id equals st
+                              select t)
+                              .Include(y => y.ImpliedTemplate)
+                              .Include(y => y.ContainingConstraints)
+                              .Include("ChildConstraints.ValueSet")
+                              .Include("ChildConstraints.CodeSystem")
+                              .AsEnumerable();
             this.vocabularyOutputType = vocabularyOutputType;
             this.includeCustom = includeCustom;
             this.vocFileName = vocFileName;
@@ -55,10 +65,11 @@ namespace Trifolia.Export.Schematron
             this.igTypePlugin = this.ig.ImplementationGuideType.GetPlugin();
             this.templateContextBuilder = new TemplateContextBuilder(ig.ImplementationGuideType);
 
-            constraintNumbers = (from t in templates
-                                 join tc in rep.TemplateConstraints on t.Id equals tc.TemplateId
+            var allConstraint = (from t in templates
+                                 from tc in t.ChildConstraints
                                  select new { tc.Id, tc.Template.OwningImplementationGuideId, tc.Number.Value })
-                                 .ToDictionary(y => y.Id, y => string.Format("{0}-{1}", y.OwningImplementationGuideId, y.Value));
+                                 .Distinct();
+            this.constraintNumbers = allConstraint.ToDictionary(y => y.Id, y => string.Format("{0}-{1}", y.OwningImplementationGuideId, y.Value));
 
             this.schemaPrefix = ig.ImplementationGuideType.SchemaPrefix;
 
@@ -915,6 +926,13 @@ namespace Trifolia.Export.Schematron
         internal string GenerateAssertion(TemplateConstraint tc)
         {
             ConstraintParser cParser = new ConstraintParser(this.rep, tc, tc.Template.ImplementationGuideType, this.vocFileName, this.vocabularyOutputType);
+
+            if (tc.ValueSet != null)
+                cParser.ValueSet = tc.ValueSet;
+
+            if (tc.CodeSystem != null)
+                cParser.CodeSystem = tc.CodeSystem;
+
             AssertionLineBuilder asb = cParser.CreateAssertionLineBuilder();
             return asb.ToString();
         }
