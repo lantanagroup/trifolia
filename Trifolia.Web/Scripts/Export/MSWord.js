@@ -158,7 +158,7 @@
         var templateIds = self.TemplateIds();
         var tID = idObs();
 
-        return templateIds.includes(tID);
+        return templateIds.indexOf(tID) >= 0;
     };
 
     self.MaximumValuesetMembers.subscribe(function () {
