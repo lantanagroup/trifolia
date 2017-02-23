@@ -947,6 +947,13 @@ var TemplateModel = function (data, viewModel) {
 
     self.permittedTemplateUsers = function (tId) {
         var users;
+
+        var sortUsers = function (a, b) {
+            if (a < b) return -1;
+            if (a > b) return 1;
+            return 0;
+        }
+
         $.ajax({
             url: "/api/Template/Permissions/" + tId,
             async: false,
@@ -954,8 +961,10 @@ var TemplateModel = function (data, viewModel) {
                 users = results;
             }
         })
-        return users;
+        return users.sort(sortUsers);
     }
+
+    
 
     /* Methods */
     self.SubscribeChanges = function () {
