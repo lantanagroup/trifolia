@@ -33,7 +33,7 @@
             }
 
             return 'Not found';
-        };
+        }
 
         return implementationGuideNameFilter;
     })
@@ -43,6 +43,11 @@
         $scope.constraints = [];
         $scope.nodes = [];
         $scope.selectedNode = null;
+        $scope.leftNavExpanded = false;
+
+        $scope.toggleLeftNav = function () {
+            $scope.leftNavExpanded = !$scope.leftNavExpanded;
+        };
 
         $scope.nodeExpanded = function (node) {
             return EditorService.getNodes($scope.template.OwningImplementationGuideId, node.DataType)
@@ -278,7 +283,7 @@
 
                 $scope.toggleExpand = function (node) {
                     node.$expanded = !node.$expanded;
-                    $scope.onNodeExpanded({ node });
+                    $scope.onNodeExpanded({ selectedNode: node });
                     $scope.flattenedNodes = getFlattenedNodes();
                 };
 

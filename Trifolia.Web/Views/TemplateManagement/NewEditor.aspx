@@ -2,6 +2,25 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
+        html,
+        body,
+        body > .container-fluid,
+        body > .container-fluid > .main,
+        body > .container-fluid > .main > .editor,
+        body > div.container-fluid > div > div > div > div > div.tab-pane:nth-child(2),
+        .constraint-container {
+            height: 100%;
+        }
+
+        body > .container-fluid > .main > .editor > div:nth-child(2) {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        body > .container-fluid > .main > .editor > div:nth-child(2) > .tab-content {
+            height: 94%;
+        }
+
         body > .container-fluid {
             padding: 5px;
         }
@@ -46,9 +65,9 @@
         }
         
         .constraint-properties .panel {
-            height: 100%;
             display: inline-block;
             width: 100%;
+            height: 100%;
         }
 
         .constraint-properties > .panel > .panel-heading {
@@ -93,9 +112,56 @@
             bottom: .7em;
         }
 
+        .tree-grid {
+            height: 100%;
+            overflow-y: auto;
+            min-width: 75%;
+            overflow-x: auto;
+        }
+
         .tree-grid tr.highlight {
             background-color: inherit;
             font-weight: bold;
+        }
+
+        /* LEFT NAVIGATION */
+
+        .editor > div:nth-child(2) {
+            margin-left: 20px;
+        }
+
+        .left-nav {
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 4px;
+            width: 25px;
+            position: fixed;
+            height: 80%;
+            z-index: 3;
+        }
+
+        .left-nav.expanded {
+            width: 50%;
+            border: 1px solid transparent;
+            border-color: #ddd;
+            background-color: white;
+        }
+
+        .left-nav > .btn {
+	        transform: rotate(90deg);
+	        transform-origin: left top 0;
+            margin-left: 17px;
+            margin-top: 3px;
+        }
+
+        .left-nav.expanded > .btn {
+            position: absolute;
+            right: 0;
+            margin-right: -157px;
+            margin-top: -1px;
+        }
+
+        .left-nav-content {
+            padding: 5px;
         }
     </style>
 </asp:Content>
@@ -105,6 +171,132 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="editor" ng-app="NewEditor" ng-controller="EditorController" ng-init="init(<%= Model.TemplateIdString %>, <%= Model.DefaultImplementationGuideIdString %>)">
+        <div class="left-nav" ng-class="{ 'expanded': leftNavExpanded }">
+            <button type="button" class="btn btn-default btn-sm" ng-click="toggleLeftNav()">Templates/Profiles</button>
+            <div class="left-nav-content" ng-show="leftNavExpanded">
+                <div class="input-group">
+                    <input type="text" placeholder="Search Text" class="form-control" />
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Identifier</th>
+                            <th>Description</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Test 1</td>
+                            <td>urn:oid:1.1.1.1</td>
+                            <td>Test Description 1</td>
+                            <td>
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-open"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Test 1</td>
+                            <td>urn:oid:1.1.1.1</td>
+                            <td>Test Description 1</td>
+                            <td>
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-open"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Test 1</td>
+                            <td>urn:oid:1.1.1.1</td>
+                            <td>Test Description 1</td>
+                            <td>
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-open"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Test 1</td>
+                            <td>urn:oid:1.1.1.1</td>
+                            <td>Test Description 1</td>
+                            <td>
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-open"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Test 1</td>
+                            <td>urn:oid:1.1.1.1</td>
+                            <td>Test Description 1</td>
+                            <td>
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-open"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Test 1</td>
+                            <td>urn:oid:1.1.1.1</td>
+                            <td>Test Description 1</td>
+                            <td>
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-open"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <tabset>
             <tab heading="Meta Data">
                 <div class="col-md-6">
@@ -242,12 +434,6 @@
 
             </tab>
         </tabset>
-
-        <div class="row">
-            <div class="col-md-12">
-                <pre>{{template | json}}</pre>
-            </div>
-        </div>
 
         <script type="text/html" id="treeGrid.html">
             <div class="tree-grid">
@@ -399,7 +585,7 @@
             <div class="form-group">
                 <div class="input-group input-group-sm">
                     <div class="input-group-addon">
-                        Heading&nbsp;
+                        Heading:&nbsp;
                         <input type="checkbox" />
                     </div>
                     <textarea class="form-control input-sm" style="height: 50px;" placeholder="Heading Description"></textarea>
@@ -413,7 +599,7 @@
             <div class="form-group">
                 <div class="input-group input-group-sm">
                     <div class="input-group-addon">
-                        Auto Generate
+                        Auto Generate:
                     </div>
                     <select class="form-control">
                         <option value="true">Yes</option>
@@ -426,7 +612,7 @@
             <div class="form-group">
                 <div class="input-group input-group-sm">
                     <div class="input-group-addon">
-                        Inheritable
+                        Inheritable:
                     </div>
                     <select class="form-control">
                         <option value="true">Yes</option>
@@ -439,7 +625,7 @@
             <div class="form-group">
                 <div class="input-group input-group-sm">
                     <div class="input-group-addon">
-                        Rooted
+                        Rooted:
                     </div>
                     <select class="form-control">
                         <option value="true">Yes</option>
@@ -452,7 +638,7 @@
             <div class="form-group">
                 <div class="input-group input-group-sm">
                     <div class="input-group-addon">
-                        Custom Schematron
+                        Schematron:
                     </div>
                     <textarea class="form-control input-sm" style="height: 50px"></textarea>
                 </div>
