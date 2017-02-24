@@ -124,6 +124,10 @@
             font-weight: bold;
         }
 
+        .is-heading select {
+            width: 50% !important;
+        }
+
         /* LEFT NAVIGATION */
 
         .editor > div:nth-child(2) {
@@ -565,6 +569,28 @@
             <hr />
             <sub>Publishing</sub>
 
+            <!-- Is Heading -->
+            <div class="form-group is-heading">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        Heading:
+                        <i class="glyphicon glyphicon-question-sign clickable"></i>
+                    </div>
+                    <select class="form-control input-sm">
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                    </select>
+                    <select class="form-control input-sm" disabled="disabled">
+                        <option value="">LEVEL</option>
+                        <option value="1">Level 1</option>
+                        <option value="2">Level 2</option>
+                        <option value="3">Level 3</option>
+                        <option value="4">Level 4</option>
+                        <option value="5">Level 5</option>
+                    </select>
+                </div>
+            </div>
+
             <!-- Description -->
             <div class="form-group">
                 <div class="input-group input-group-sm">
@@ -588,7 +614,7 @@
                         Heading:&nbsp;
                         <input type="checkbox" />
                     </div>
-                    <textarea class="form-control input-sm" style="height: 50px;" placeholder="Heading Description"></textarea>
+                    <textarea class="form-control input-sm" style="height: 50px;" placeholder="Heading Description" disabled="disabled"></textarea>
                 </div>
             </div>
 
@@ -614,7 +640,7 @@
                     <div class="input-group-addon">
                         Inheritable:
                     </div>
-                    <select class="form-control">
+                    <select class="form-control" disabled="disabled">
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                     </select>
@@ -627,9 +653,9 @@
                     <div class="input-group-addon">
                         Rooted:
                     </div>
-                    <select class="form-control">
-                        <option value="true">Yes</option>
+                    <select class="form-control" disabled="disabled">
                         <option value="false">No</option>
+                        <option value="true">Yes</option>
                     </select>
                 </div>
             </div>
@@ -640,7 +666,7 @@
                     <div class="input-group-addon">
                         Schematron:
                     </div>
-                    <textarea class="form-control input-sm" style="height: 50px"></textarea>
+                    <textarea class="form-control input-sm" style="height: 50px" disabled="disabled"></textarea>
                 </div>
             </div>
         </script>
