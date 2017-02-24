@@ -141,6 +141,9 @@ namespace Trifolia.Export.Schematron
 
             if (element != null)
             {
+                if (!string.IsNullOrEmpty(aConstraint.Value))
+                    element.Value = aConstraint.Value;
+
                 asb = new AssertionLineBuilder(element, this.igType);
                 if (aConstraint.ContainedTemplateId != null)
                 {
@@ -152,9 +155,8 @@ namespace Trifolia.Export.Schematron
             else if (attribute != null)
             {
                 if (!string.IsNullOrEmpty(aConstraint.Value))
-                {
                     attribute.SingleValue = aConstraint.Value;
-                }
+
                 asb = new AssertionLineBuilder(attribute, this.igType);
             }
             else
