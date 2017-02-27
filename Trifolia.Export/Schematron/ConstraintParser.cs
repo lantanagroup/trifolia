@@ -20,8 +20,8 @@ namespace Trifolia.Export.Schematron
         private IObjectRepository tdb;
         private IConstraint constraint;
         private string valueSetFile;
-        private ValueSet constraintValueSet;
-        private CodeSystem constraintCodeSystem;
+        private ValueSet valueSet;
+        private CodeSystem codeSystem;
         private Cardinality constraintCardinalityType = new Cardinality();
         private Conformance constraintConformanceType = new Conformance();
         private Template containedTemplate = null;
@@ -30,19 +30,30 @@ namespace Trifolia.Export.Schematron
         private IIGTypePlugin igTypePlugin = null;
         private ImplementationGuideType igType = null;
 
-        public ConstraintParser(IObjectRepository tdb, IConstraint constraint, ImplementationGuideType igType, string valueSetFile = "voc.xml", VocabularyOutputType vocabularyOutputType = VocabularyOutputType.Default)
+        public ValueSet ValueSet
+        {
+            get { return this.valueSet; }
+            set { this.valueSet = value; }
+        }
+
+        public CodeSystem CodeSystem
+        {
+            get { return this.codeSystem; }
+            set { this.codeSystem = value; }
+        }
+
+        public ConstraintParser(IObjectRepository tdb, 
+            IConstraint constraint, 
+            ImplementationGuideType igType, 
+            string valueSetFile = "voc.xml", 
+            VocabularyOutputType vocabularyOutputType = 
+            VocabularyOutputType.Default)
         {
             this.tdb = tdb;
             this.constraint = constraint;
             this.valueSetFile = valueSetFile;
             this.igType = igType;
             this.igTypePlugin = igType.GetPlugin();
-
-            if (this.constraint.ValueSetId != null)
-                this.constraintValueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
-
-            if (this.constraint.ValueCodeSystemId != null)
-                this.constraintCodeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
 
             if (!string.IsNullOrEmpty(this.constraint.Cardinality))
                 this.constraintCardinalityType = CardinalityParser.Parse(this.constraint.Cardinality);
@@ -130,6 +141,9 @@ namespace Trifolia.Export.Schematron
 
             if (element != null)
             {
+                if (!string.IsNullOrEmpty(aConstraint.Value))
+                    element.Value = aConstraint.Value;
+
                 asb = new AssertionLineBuilder(element, this.igType);
                 if (aConstraint.ContainedTemplateId != null)
                 {
@@ -141,9 +155,8 @@ namespace Trifolia.Export.Schematron
             else if (attribute != null)
             {
                 if (!string.IsNullOrEmpty(aConstraint.Value))
-                {
                     attribute.SingleValue = aConstraint.Value;
-                }
+
                 asb = new AssertionLineBuilder(attribute, this.igType);
             }
             else
@@ -207,13 +220,13 @@ namespace Trifolia.Export.Schematron
 
             // Do we have a valueset on this attribute?
             if (aConstraintValueSet != null)
-                aAttribute.ValueSet = this.igTypePlugin.ParseIdentifier(this.constraintValueSet.Oid);
+                aAttribute.ValueSet = this.igTypePlugin.ParseIdentifier(this.valueSet.Oid);
 
-            if (this.constraintCodeSystem != null)
+            if (this.codeSystem != null)
             {
                 //TODO: CDA specific logic, need to refactor this out to make more dynamic
                 if ((aAttribute.AttributeName == "code" || aAttribute.AttributeName == "value") && (aParentContext.EndsWith(this.prefix + ":code") || aParentContext.EndsWith(this.prefix + ":value")))
-                    aAttribute.CodeSystemOid = this.igTypePlugin.ParseIdentifier(this.constraintCodeSystem.Oid);
+                    aAttribute.CodeSystemOid = this.igTypePlugin.ParseIdentifier(this.codeSystem.Oid);
             }
         }
 
@@ -270,6 +283,12 @@ namespace Trifolia.Export.Schematron
         /// </returns>
         public AssertionLineBuilder CreateAssertionLineBuilder()
         {
+            if (this.valueSet == null && this.constraint.ValueSetId != null)
+                this.valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
+
+            if (this.codeSystem == null && this.constraint.ValueCodeSystemId != null)
+                this.codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
+
             IConstraint currentConstraint = this.constraint; //set current constraint, setting this as a variable allows us to move the current constraint to the parent when dealing with branches
             if (string.IsNullOrEmpty(currentConstraint.Context) 
                 && (currentConstraint.ContainedTemplateId == null)) //we can have empty context but a contained template  
@@ -291,7 +310,7 @@ namespace Trifolia.Export.Schematron
             // Determine if we should create the AssertionLineBuilder starting with an attribute or an element.
             if (attribute != null)
             {
-                DecorateAttributeFromConstraint(parentContext, attribute, currentConstraint, this.constraintValueSet);
+                DecorateAttributeFromConstraint(parentContext, attribute, currentConstraint, this.valueSet);
                 if (currentConstraint.Parent != null && currentConstraint.IsBranch)
                 {
                     branchedRootAsb = CreateBranchedRootAssertionLineBuilderFromConstraint(currentConstraint);                    
@@ -322,7 +341,7 @@ namespace Trifolia.Export.Schematron
                 ConstraintToDocumentElementHelper.AddConformance(currentConstraint, asb);
                 ConstraintToDocumentElementHelper.AddCardinality(currentConstraint, asb);
                 // Determine if we have a valueset
-                if (this.constraintValueSet != null && currentConstraint.IsValueSetStatic)
+                if (this.valueSet != null && currentConstraint.IsValueSetStatic)
                 {
                     var requireValueset = true;
 
@@ -344,7 +363,7 @@ namespace Trifolia.Export.Schematron
                             includeNullFlavor = true;
                         }
 
-                        string valueSetIdentifier = this.igTypePlugin.ParseIdentifier(this.constraintValueSet.Oid);
+                        string valueSetIdentifier = this.igTypePlugin.ParseIdentifier(this.valueSet.Oid);
                         asb.WithinValueSet(valueSetIdentifier, this.valueSetFile, this.vocabularyOutputType, includeNullFlavor);
                     }
                 }

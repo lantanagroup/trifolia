@@ -13,6 +13,7 @@ using Trifolia.Export.Schematron.ConstraintToDocumentElementMap;
 using Trifolia.Shared;
 using Trifolia.Shared.ImportExport;
 using Trifolia.Shared.ImportExport.Model;
+using ImportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
 using ImportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using Template = Trifolia.DB.Template;
 using ValueSet = Trifolia.DB.ValueSet;
@@ -20,6 +21,8 @@ using CodeSystem = Trifolia.DB.CodeSystem;
 using Trifolia.DB;
 using Trifolia.Export.Schematron.Utilities;
 using Trifolia.Import.Native;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace Trifolia.Test.Generation.Schematron
 {
@@ -552,6 +555,30 @@ namespace Trifolia.Test.Generation.Schematron
             string expectedPath = "cda:observation[cda:templateId[@root='2.16.840.1.113883.10.20.22.4.48']]/cda:participant[@typeCode='VRF'][cda:templateId[@root='2.16.840.1.113883.10.20.1.58']][cda:participantRole]";
             Assert.AreEqual(expectedPath, path, "Invalid path returned from ConstraintToDocumentElementMapper");
         }
+
+        [TestMethod, TestCategory("Schematron")]
+        public void BranchInBranchTest()
+        {
+            var tdb = new MockObjectRepository();
+            tdb.InitializeCDARepository();
+
+            var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            var entryTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_ENTRY_TYPE);
+            var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
+            TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
+
+            Template entryTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entryTemplateType, "Test Branch Template", ig, "entry", "Entry");
+            var c1 = tdb.AddConstraintToTemplate(entryTemplate, null, null, "text", "SHALL", "1..1");
+            var c2 = tdb.AddConstraintToTemplate(entryTemplate, c1, null, "table", "SHALL", "1..1", isBranch: true);
+            var c3 = tdb.AddConstraintToTemplate(entryTemplate, c2, null, "@ID", "SHALL", "1..1", isBranchIdentifier: true, value: "1234");
+            var c4 = tdb.AddConstraintToTemplate(entryTemplate, c2, null, "tbody", "SHALL", "1..1");
+            var c5 = tdb.AddConstraintToTemplate(entryTemplate, c4, null, "tr", "SHALL", "1..1", isBranch: true);
+            var c6 = tdb.AddConstraintToTemplate(entryTemplate, c5, null, "@ID", "SHALL", "1..1", isBranchIdentifier: true, value: "4321");
+
+            var actual = tcb.CreateFullBranchedParentContext(entryTemplate, c5);
+            Assert.AreEqual("cda:entry[cda:templateId[@root='1.2.3.4']]/cda:text/cda:table[@ID='1234']/cda:tbody/cda:tr[@ID='4321']", actual);
+        }
+
         #endregion
 
         #region Context and Branching Tests
@@ -1378,10 +1405,10 @@ namespace Trifolia.Test.Generation.Schematron
             Rule branch1ErrorRules = errorPattern.Rules.Where(y => y.Context == branch1Context).First();
             Assert.AreEqual(2, branch1ErrorRules.Assertions.Count(), "Expected to find 2 error assertions in the branch context. The time assertion and the template 2 assertion.");
 
-            string branch2Context = "cda:observation[cda:templateId[@root='2.16.840.1.113883.10.20.22.4.48']]/cda:author/cda:assignedAuthor[cda:id[@root='1.2.3.4']]/cda:id[@root='2.3.4.5']";
+            string branch2Context = "cda:observation[cda:templateId[@root='2.16.840.1.113883.10.20.22.4.48']]/cda:author/cda:assignedAuthor/cda:id[@root='1.2.3.4']";
             Assert.IsTrue(errorPattern.Rules.Any(y => y.Context == branch2Context), "Can't find rule for branch with context: " + branch2Context);
             Rule branch2ErrorRules = errorPattern.Rules.Where(y => y.Context == branch2Context).First();
-            Assert.AreEqual(1, branch2ErrorRules.Assertions.Count(), "Expected to find 1 error assertions in the branch context");
+            Assert.AreEqual(2, branch2ErrorRules.Assertions.Count(), "Expected to find 2 error assertions in the branch context");
 
             string warningRuleContext = "cda:observation[cda:templateId[@root='2.16.840.1.113883.10.20.22.4.48']]";
             Assert.IsTrue(warningPattern.Rules.Any(y => y.Context == warningRuleContext), "Can't find rule for warning with context: " + warningRuleContext);
@@ -1463,6 +1490,33 @@ namespace Trifolia.Test.Generation.Schematron
 
             Rule branchWarningRule = warningPattern.Rules.SingleOrDefault(y => y.Context == "cda:organizer[cda:templateId[@root='2.16.840.1.113883.10.20.24.3.98_xml']]/cda:reference[@typeCode='REFR'][cda:externalDocument[@classCode]]");
             Assert.IsNotNull(branchWarningRule, "The context for the warning branch is not correct.");
+        }
+
+        [TestMethod]
+        public void SingleValueWithinBranch()
+        {
+            MockObjectRepository tdb = new MockObjectRepository();
+            tdb.InitializeCDARepository();
+
+            Template template = ImportTemplate(tdb, "Trifolia.Test.Generation.Schematron.Data.SingleValueWithinBranch.xml");
+
+            Phase errorPhase = new Phase();
+            Phase warningPhase = new Phase();
+            SchematronGenerator generator = new SchematronGenerator(tdb, template.OwningImplementationGuide, new List<Trifolia.DB.Template>() { template }, true);
+            generator.AddTemplate(template, errorPhase, warningPhase);
+
+            string generated = generator.Generate();
+
+            var activePattern = errorPhase.ActivePatterns.First();
+            var foundRule = activePattern
+                .Rules
+                .Single(y => y.Id == "r-urn:hl7ii:2.16.840.1.1111.2:2017-04-01-5-branch-5-errors");
+            var foundAssert = foundRule
+                .Assertions
+                .Single(y => y.Id == "0-7");
+
+            string expected = "count(cda:td[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='xxx identifier'])=1";
+            Assert.AreEqual(expected, foundAssert.Test);
         }
 
         #endregion
@@ -1862,9 +1916,25 @@ namespace Trifolia.Test.Generation.Schematron
 
         private static Template ImportTemplate(IObjectRepository tdb, string location)
         {
+            string xml = Helper.GetSampleContents(location);
+            ImportModel importModel;
+
+            using (StringReader sr = new StringReader(xml))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(ImportModel));
+                importModel = (ImportModel)serializer.Deserialize(sr);
+            }
+
+            ImplementationGuideImporter igImporter = new ImplementationGuideImporter(tdb);
+
+            importModel.ImplementationGuide.ForEach(importIg =>
+            {
+                igImporter.Import(importIg);
+            });
+
             TemplateImporter importer = new TemplateImporter(tdb);
-            List<Template> importedTemplates = importer.Import(Helper.GetSampleContents(location));
-            Template template = importedTemplates[0];
+            List<Template> importedTemplates = importer.Import(importModel.Template);
+            Template template = importedTemplates.First();
 
             foreach (TemplateConstraint cConstraint in template.ChildConstraints)
             {

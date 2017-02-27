@@ -240,7 +240,9 @@ namespace Trifolia.Import.Native
         private void UpdateFiles(ImplementationGuide implementationGuide, ImportImplementationGuide importImplementationGuide)
         {
             var currentUser = CheckPoint.Instance.GetUser(this.tdb);
-            string currentUserName = string.Format("{0} {1} ({2})", currentUser.FirstName, currentUser.LastName, currentUser.Email);
+            string currentUserName = currentUser != null ? 
+                string.Format("{0} {1} ({2})", currentUser.FirstName, currentUser.LastName, currentUser.Email) :
+                "Unknown user";
 
             foreach (var importFile in importImplementationGuide.File)
             {

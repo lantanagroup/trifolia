@@ -330,7 +330,9 @@
                             <!-- ko if: Author() -->
                             <div class="input-group">
                                 <span class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorMetaDataAuthoredByField"></span>
-                                <input type="text" class="form-control" readonly="readonly" data-bind="value: Author" />
+                                <!--input type="text" class="form-control" data-bind="value: Author"/-->
+                                <select data-bind="options: permittedTemplateUsers(Id()), optionsText: function (user) { return user },
+                                                   value: Author, disable: $parent.Template().Locked()" />
                             </div>
                             <!-- /ko -->
 

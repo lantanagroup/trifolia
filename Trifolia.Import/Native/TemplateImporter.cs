@@ -573,7 +573,7 @@ namespace Trifolia.Import.Native
                         containedTemplateOid,
                         constraint.Number,
                         constraint.Template.Oid));
-                    throw new Exception("Constraint has an error.");
+                    // TODO: Eventually add add a relationship that is not bound to a template stored in the database
                 }
 
                 if (constraint.ContainedTemplate != containedTemplate)

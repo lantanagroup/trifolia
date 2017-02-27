@@ -763,7 +763,6 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint p133_5 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p133_4, cdaTemplate2, "@root", "SHALL", "1..1");
             AddConstraintForRule(133, p133_4); 
 
-
             // Rule #134
             TemplateConstraint p134_1 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, null, null, "reference", "SHALL", "1..1");  //no isBranch on parent
             TemplateConstraint p134_2 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p134_1, null, "@typeCode", "SHALL", "1..1", null, null, "REFR");

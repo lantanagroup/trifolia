@@ -945,6 +945,27 @@ var TemplateModel = function (data, viewModel) {
         templateChanged();
     };
 
+    self.permittedTemplateUsers = function (tId) {
+        var users;
+
+        var sortUsers = function (a, b) {
+            if (a < b) return -1;
+            if (a > b) return 1;
+            return 0;
+        }
+
+        $.ajax({
+            url: "/api/Template/Permissions/" + tId,
+            async: false,
+            success: function (results) {
+                users = results;
+            }
+        })
+        return users.sort(sortUsers);
+    }
+
+    
+
     /* Methods */
     self.SubscribeChanges = function () {
         self.Name.subscribe(templateChanged);
@@ -959,6 +980,7 @@ var TemplateModel = function (data, viewModel) {
         self.StatusId.subscribe(templateChanged);
         self.Description.subscribe(templateChanged);
         self.Notes.subscribe(templateChanged);
+        self.Author.subscribe(templateChanged);
 
         self.PrimaryContextType.subscribe(updatePrimaryContextType);
         self.Oid.subscribe(templateOidChanged);

@@ -314,6 +314,27 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
+        [HttpGet, Route("api/Template/Permissions/{templateId}")]
+        public List<string> GetTemplatePermissions(int templateId)
+        {
+            var userIds =  (from tp in this.tdb.ViewTemplatePermissions
+                                        where tp.TemplateId == templateId && tp.Permission == "Edit"
+                                        select tp.UserId).ToList();
+
+            var users = (from user in this.tdb.Users
+                         where userIds.Contains(user.Id)
+                         select user).ToList();
+
+
+            List<string> userNames = new List<string>();
+
+            foreach(var user in users){
+                userNames.Add(user.FirstName + ' ' + user.LastName);                
+            }
+
+            return userNames;
+        }
+
         /// <summary>
         /// Searches for templates and returns basic meta-data about the templates
         /// </summary>
