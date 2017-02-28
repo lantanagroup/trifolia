@@ -676,17 +676,6 @@ namespace Trifolia.DB.Migrations
             DropIndex("dbo.role_restriction", new[] { "roleId" });
             DropIndex("dbo.appsecurable_role", new[] { "roleId" });
             DropIndex("dbo.appsecurable_role", new[] { "appSecurableId" });
-            DropTable("dbo.v_userSecurables");
-            DropTable("dbo.v_templateusage");
-            DropTable("dbo.v_template");
-            DropTable("dbo.v_templatePermissions");
-            DropTable("dbo.v_templateList");
-            DropTable("dbo.v_latestimplementationguidefiledata");
-            DropTable("dbo.v_implementationGuideTemplates");
-            DropTable("dbo.v_implementationGuidePermissions");
-            DropTable("dbo.v_implementationguidefile");
-            DropTable("dbo.v_igaudittrail");
-            DropTable("dbo.v_constraintcount");
             DropTable("dbo.audit");
             DropTable("dbo.implementationguide_setting");
             DropTable("dbo.implementationguide_section");

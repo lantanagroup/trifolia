@@ -7,14 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		appveyor.yml = appveyor.yml
 		Install.ps1 = Install.ps1
 		Local.testsettings = Local.testsettings
+		prepare_package.bat = prepare_package.bat
 		README.md = README.md
 		TemplateDatabaseManagement.vsmdi = TemplateDatabaseManagement.vsmdi
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{A5CE38B2-FD76-4AA8-AAB2-74A4B7D9F57A}"
-	ProjectSection(SolutionItems) = preProject
-		Database\InstallDB.ps1 = Database\InstallDB.ps1
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Shared", "Trifolia.Shared\Trifolia.Shared.csproj", "{C44C370B-2BFE-4503-921F-8BA7674517AE}"
@@ -379,7 +375,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{A5CE38B2-FD76-4AA8-AAB2-74A4B7D9F57A} = {C1DF6EA4-3295-4D10-B208-7FEE96746C15}
 		{A22A62E4-E697-4618-94C9-B46626E4E6CF} = {C1DF6EA4-3295-4D10-B208-7FEE96746C15}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

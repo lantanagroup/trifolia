@@ -178,12 +178,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Migrations\201702101932444_init_programmability_down.sql" />
-    <Content Include="Migrations\201702101932444_init_programmability_up.sql" />
-    <Content Include="Migrations\201702101932444_init_views_down.sql" />
-    <Content Include="Migrations\201702101932444_init_views_up.sql" />
+    <EmbeddedResource Include="Migrations\201702101932444_init_programmability_down.sql" />
+    <EmbeddedResource Include="Migrations\201702101932444_init_programmability_up.sql" />
+    <EmbeddedResource Include="Migrations\201702101932444_init_views_down.sql" />
+    <EmbeddedResource Include="Migrations\201702101932444_init_views_up.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

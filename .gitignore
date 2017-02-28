@@ -63,3 +63,4 @@ _ReSharper*/
 packages/
 Trifolia.Web/appSettings.user.config
 Trifolia.Web/trifolia.log.xml
+Dist/
