@@ -121,7 +121,7 @@ namespace Trifolia.Test.Generation.Schematron
 
             var contextString = tcb.BuildContextString(addrTemplate);
 
-            Assert.AreEqual("cda:recordTarget/cda:patientRole/cda:addr", contextString);
+            Assert.AreEqual("cda:ClinicalDocument[cda:templateId[@root='4.3.2.1']]/cda:recordTarget/cda:patientRole/cda:addr", contextString);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Trifolia.Test.Generation.Schematron
 
             var contextString = tcb.BuildContextString(addrTemplate);
 
-            Assert.AreEqual("cda:recordTarget/cda:patientRole/cda:addr or cda:participant/cda:participantRole/cda:addr", contextString);
+            Assert.AreEqual("cda:ClinicalDocument[cda:templateId[@root='4.3.2.1']]/cda:recordTarget/cda:patientRole/cda:addr | cda:observation[cda:templateId[@root='3.2.1.4']]/cda:participant/cda:participantRole/cda:addr", contextString);
         }
     }
 }

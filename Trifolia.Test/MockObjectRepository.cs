@@ -13,6 +13,7 @@ using Trifolia.Shared;
 using Trifolia.DB;
 using Trifolia.Authorization;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Infrastructure;
 
 namespace Trifolia.Test
 {
@@ -309,6 +310,7 @@ namespace Trifolia.Test
             mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(dataQueryable.Expression);
             mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(dataQueryable.ElementType);
             mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => dataQueryable.GetEnumerator());
+            mockSet.Setup(m => m.AsNoTracking()).Returns(() => mockSet.Object);
             mockSet.Setup(d => d.Remove(It.IsAny<T>())).Callback<T>((s) => data.Remove(s));
             
             mockSet.Setup(d => d.Add(It.IsAny<T>())).Callback<T>((s) =>
@@ -1650,6 +1652,19 @@ namespace Trifolia.Test
 
         public int SaveChanges()
         {
+            foreach (var template in this.Templates)
+            {
+                // Mock the association between template and child constraints
+                foreach (var constraint in template.ChildConstraints.Where(y => y.TemplateId == 0 || y.Template == null))
+                {
+                    if (!this.TemplateConstraints.Contains(constraint))
+                        this.TemplateConstraints.Add(constraint);
+
+                    constraint.Template = template;
+                    constraint.TemplateId = template.Id;
+                }
+            }
+
             return 0;
         }
 

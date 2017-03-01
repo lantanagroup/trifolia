@@ -160,7 +160,6 @@
     <Compile Include="Controllers\API\FHIR\DSTU2\StructureDefinitionControllerTest.cs" />
     <Compile Include="Controllers\API\FHIR\STU3\ExportTests.cs" />
     <Compile Include="Controllers\API\TerminologyControllerTest.cs" />
-    <Compile Include="DB\ImplementationGuideExtensionsTest.cs" />
     <Compile Include="DB\TemplateExtensions.cs" />
     <Compile Include="Export\FHIR\STU3Tests.cs" />
     <Compile Include="Extensions\ImplementationGuideTest.cs" />
