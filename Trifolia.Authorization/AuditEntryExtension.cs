@@ -22,7 +22,7 @@ namespace Trifolia.Authorization
             newAuditEntry.SetContext(userName);
             newAuditEntry.Type = type;
             newAuditEntry.Note = note;
-            tdb.AuditEntries.AddObject(newAuditEntry);
+            tdb.AuditEntries.Add(newAuditEntry);
             return newAuditEntry;
         }
 

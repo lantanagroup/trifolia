@@ -321,7 +321,7 @@ namespace Trifolia.Web.Controllers.API
             if (user == null)
             {
                 user = new User();
-                this.tdb.Users.AddObject(user);
+                this.tdb.Users.Add(user);
 
                 // Assign the new user the default role
                 Role defaultRole = this.tdb.Roles.SingleOrDefault(y => y.IsDefault);
@@ -333,7 +333,7 @@ namespace Trifolia.Web.Controllers.API
                         User = user,
                         Role = defaultRole
                     };
-                    this.tdb.UserRoles.AddObject(userRole);
+                    this.tdb.UserRoles.Add(userRole);
                 }
             }
 
@@ -353,10 +353,10 @@ namespace Trifolia.Web.Controllers.API
         {
             var user = this.tdb.Users.Single(y => y.Id == userId);
 
-            user.Roles.ToList().ForEach(y => { this.tdb.UserRoles.DeleteObject(y); });
-            user.Groups.ToList().ForEach(y => { this.tdb.UserGroups.DeleteObject(y); });
+            user.Roles.ToList().ForEach(y => { this.tdb.UserRoles.Remove(y); });
+            user.Groups.ToList().ForEach(y => { this.tdb.UserGroups.Remove(y); });
 
-            this.tdb.Users.DeleteObject(user);
+            this.tdb.Users.Remove(user);
             this.tdb.SaveChanges();
         }
 
@@ -367,7 +367,7 @@ namespace Trifolia.Web.Controllers.API
 
             if (userRole != null)
             {
-                this.tdb.UserRoles.DeleteObject(userRole);
+                this.tdb.UserRoles.Remove(userRole);
                 this.tdb.SaveChanges();
             }
         }
@@ -384,7 +384,7 @@ namespace Trifolia.Web.Controllers.API
             UserRole userRole = new UserRole();
             userRole.User = user;
             userRole.Role = role;
-            this.tdb.UserRoles.AddObject(userRole);
+            this.tdb.UserRoles.Add(userRole);
 
             this.tdb.SaveChanges();
         }
@@ -396,7 +396,7 @@ namespace Trifolia.Web.Controllers.API
 
             if (userGroup != null)
             {
-                this.tdb.UserGroups.DeleteObject(userGroup);
+                this.tdb.UserGroups.Remove(userGroup);
                 this.tdb.SaveChanges();
             }
         }
@@ -413,7 +413,7 @@ namespace Trifolia.Web.Controllers.API
             UserGroup userGroup = new UserGroup();
             userGroup.User = user;
             userGroup.Group = group;
-            this.tdb.UserGroups.AddObject(userGroup);
+            this.tdb.UserGroups.Add(userGroup);
 
             this.tdb.SaveChanges();
         }

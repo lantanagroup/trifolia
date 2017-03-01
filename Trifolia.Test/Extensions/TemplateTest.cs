@@ -83,7 +83,7 @@ namespace Trifolia.Test.Extensions
             Template firstTemplate = repo.Templates.First();
 
             Template secondTemplate = firstTemplate.CloneTemplate(repo, user.Id);
-            repo.Templates.AddObject(secondTemplate);
+            repo.Templates.Add(secondTemplate);
             Assert.AreNotEqual(firstTemplate.Name, secondTemplate.Name, "Title for the first template should be different than the cloned template.");
             Assert.AreEqual(firstTemplate.Oid + ".1", secondTemplate.Oid, "Expected the second template's oid to have .1 added to it.");
 
@@ -102,7 +102,7 @@ namespace Trifolia.Test.Extensions
             while (count < 11)
             {
                 lastCopiedTemplate = firstTemplate.CloneTemplate(repo, user.Id);
-                repo.Templates.AddObject(lastCopiedTemplate);
+                repo.Templates.Add(lastCopiedTemplate);
                 count++;
             }
 

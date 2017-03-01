@@ -179,10 +179,10 @@ namespace Trifolia.Web.Controllers
 
             foreach (var fileData in foundFile.Versions.ToList())
             {
-                this.tdb.ImplementationGuideFileDatas.DeleteObject(fileData);
+                this.tdb.ImplementationGuideFileDatas.Remove(fileData);
             }
 
-            this.tdb.ImplementationGuideFiles.DeleteObject(foundFile);
+            this.tdb.ImplementationGuideFiles.Remove(foundFile);
         }
 
         private void UpdateFile(FileModel model)
@@ -217,7 +217,7 @@ namespace Trifolia.Web.Controllers
             ImplementationGuideFileData version = CreateFileData(model);
             newFile.Versions.Add(version);
 
-            this.tdb.ImplementationGuideFiles.AddObject(newFile);
+            this.tdb.ImplementationGuideFiles.Add(newFile);
         }
 
         private ImplementationGuideFileData CreateFileData(FileModel model)

@@ -10,7 +10,7 @@ namespace Trifolia.DB
     {
         public static void SetPreviousVersion(this ImplementationGuide ig, ImplementationGuide previousVersion)
         {
-            ig.PreviousVersion.Add(previousVersion);
+            ig.PreviousVersion = previousVersion;
             ig.PreviousVersionImplementationGuideId = previousVersion.Id;
         }
     }

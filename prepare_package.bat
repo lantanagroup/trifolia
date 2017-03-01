@@ -1,14 +1,9 @@
-set BaseDir=%~1
-set BuildConfig=%~2
+set BuildConfig=%~1
 
-IF exist "%BaseDir%Dist" ( rmdir /S /Q "%BaseDir%Dist" )
-mkdir "%BaseDir%Dist"
-del /q /s "%BaseDir%Dist\*"
-xcopy /Y "%BaseDir%Trifolia.Web\obj\%BuildConfig%\TransformWebConfig\transformed\Web.config" "%BaseDir%Trifolia.Web\obj\%BuildConfig%\Package\PackageTmp\Web.config"
+IF exist ".\Dist" ( rmdir /S /Q ".\Dist" )
+mkdir ".\Dist"
 
-xcopy /Y /E "%BaseDir%Trifolia.Web\obj\%BuildConfig%\Package\PackageTmp" "%BaseDir%Dist\Trifolia.Web\"
-xcopy /Y /E "%BaseDir%Trifolia.Web\Help" "%BaseDir%Dist\Trifolia.Web\Help\"
-
-xcopy /Y /E "%BaseDir%Database" "%BaseDir%Dist\Database\"
-
-xcopy *.ps1 "%BaseDir%Dist\"
+xcopy /Y /E ".\Trifolia.Web\obj\%BuildConfig%\Package\PackageTmp" ".\Dist\Trifolia.Web\"
+xcopy /Y ".\Trifolia.Web\obj\%BuildConfig%\TransformWebConfig\transformed\Web.config" ".\Dist\Trifolia.Web\Web.config"
+xcopy ".\packages\EntityFramework.6.1.3\tools\migrate.exe" ".\Dist\Trifolia.Web\bin\"
+xcopy ".\*.ps1" ".\Dist\"

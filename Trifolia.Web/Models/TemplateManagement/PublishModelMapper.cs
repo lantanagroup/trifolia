@@ -137,7 +137,7 @@ namespace Trifolia.Web.Models.TemplateManagement
             foreach (ConstraintSample lSample in aConstraintView.Samples.Where(s => s.Id.HasValue && s.IsDeleted))
             {
                 DB.TemplateConstraintSample lDeletedSample = _tdb.TemplateConstraintSamples.Single(tcs => tcs.Id == lSample.Id);
-                _tdb.TemplateConstraintSamples.DeleteObject(lDeletedSample);
+                _tdb.TemplateConstraintSamples.Remove(lDeletedSample);
             }
 
             foreach (ConstraintSample lSample in aConstraintView.Samples.Where(s => s.Id.HasValue && s.IsDeleted == false))
@@ -173,7 +173,7 @@ namespace Trifolia.Web.Models.TemplateManagement
             foreach (XmlSample lDeletedSample in lDeletedSamples)
             {
                 DB.TemplateSample lSample = aTemplate.TemplateSamples.Single(s => s.Id == lDeletedSample.Id);
-                _tdb.TemplateSamples.DeleteObject(lSample);
+                _tdb.TemplateSamples.Remove(lSample);
             }
 
             IEnumerable<XmlSample> lNewSamples = from x in aModel.XmlSamples

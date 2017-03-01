@@ -43,7 +43,7 @@ namespace Trifolia.Import.Terminology.Excel
                         Name = checkValueSet.Name,
                         LastUpdate = DateTime.Now
                     };
-                    this.tdb.ValueSets.AddObject(valueSet);
+                    this.tdb.ValueSets.Add(valueSet);
                 }
 
                 // Import concepts
@@ -325,7 +325,7 @@ namespace Trifolia.Import.Terminology.Excel
                     Status = checkConcept.Status,
                     StatusDate = checkConcept.StatusDate
                 };
-                this.tdb.ValueSetMembers.AddObject(member);
+                this.tdb.ValueSetMembers.Add(member);
             }
         }
     }

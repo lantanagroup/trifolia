@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 
@@ -7,28 +8,77 @@ namespace Trifolia.DB
 {
     public partial class AuditEntry
     {
-        public static List<AuditEntry> GetAllEntries()
+        private static List<Type> auditableTypes = null;
+
+        public static bool IsAuditable(object entity)
         {
-            using (IObjectRepository tdb = DBContext.Create())
+            if (auditableTypes == null)
             {
-                return tdb.AuditEntries.ToList();
+                auditableTypes = new List<System.Type>();
+                auditableTypes.Add(typeof(ImplementationGuide));
+                auditableTypes.Add(typeof(Template));
+                auditableTypes.Add(typeof(TemplateConstraint));
+                auditableTypes.Add(typeof(CodeSystem));
+                auditableTypes.Add(typeof(ValueSet));
+                auditableTypes.Add(typeof(ValueSetMember));
             }
+
+            return auditableTypes.Contains(entity.GetType());
         }
 
-        public static List<AuditEntry> GetImplementationGuideEntries(int implementationGuideId)
+        public AuditEntry() { }
+
+        public AuditEntry(object auditableEntity, DbPropertyValues current, DbPropertyValues original)
         {
-            using (IObjectRepository tdb = DBContext.Create())
-            {
-                List<AuditEntry> igEntries = tdb.AuditEntries.Where(y => y.ImplementationGuideId == implementationGuideId).ToList();
+            if (auditableEntity is Template)
+                SetPropeties(auditableEntity as Template);
+            else if (auditableEntity is TemplateConstraint)
+                SetPropeties(auditableEntity as TemplateConstraint);
+            else if (auditableEntity is ImplementationGuide)
+                SetProperties(auditableEntity as ImplementationGuide);
+            else if (auditableEntity is ValueSet)
+                SetProperties(auditableEntity as ValueSet);
+            else if (auditableEntity is ValueSetMember)
+                SetProperties(auditableEntity as ValueSetMember);
+            else if (auditableEntity is CodeSystem)
+                SetProperties(auditableEntity as CodeSystem);
 
-                // Get the template audit entries for the implementation guide
-                List<AuditEntry> relatedEntries = (from t in tdb.Templates 
-                                                   join a in tdb.AuditEntries on t.Id equals a.TemplateId
-                                                   where t.OwningImplementationGuideId == implementationGuideId
-                                                   select a).ToList();
+            SetProperties(current, original);
+        }
 
-                return igEntries.Union(relatedEntries).ToList();
-            }
+        private void SetProperties(DbPropertyValues current, DbPropertyValues original)
+        {
+            // TODO
+        }
+
+        private void SetProperties(ValueSet valueSet)
+        {
+
+        }
+
+        private void SetProperties(ValueSetMember valueSetMember)
+        {
+
+        }
+
+        private void SetProperties(CodeSystem codeSystem)
+        {
+
+        }
+
+        private void SetProperties(ImplementationGuide ig)
+        {
+
+        }
+
+        private void SetPropeties(Template template)
+        {
+
+        }
+
+        private void SetPropeties(TemplateConstraint constraint)
+        {
+
         }
     }
 }

@@ -145,7 +145,7 @@ namespace Trifolia.Web.Controllers.API
             PublishStatus lStatus = template.Status;
 
             if (lStatus == null)
-                model.Status = PublishStatuses.Draft.ToString();
+                model.Status = Shared.PublishStatuses.Draft.ToString();
             else
                 model.Status = lStatus.Status;
 
@@ -752,7 +752,7 @@ namespace Trifolia.Web.Controllers.API
                             cConstraint.Category = string.Join(",", cConstraintCategories);
                     }
 
-                    auditedTdb.Templates.AddObject(copyTemplate);
+                    auditedTdb.Templates.Add(copyTemplate);
                     auditedTdb.SaveChanges();
 
                     return new { Status = "Success", TemplateId = copyTemplate.Id };
@@ -911,7 +911,7 @@ namespace Trifolia.Web.Controllers.API
                     foreach (MoveConstraint cMoveConstraint in model.Constraints.Where(y => y.IsDeleted))
                     {
                         TemplateConstraint cConstraint = template.ChildConstraints.Single(y => y.Number == cMoveConstraint.Number);
-                        auditedTdb.TemplateConstraints.DeleteObject(cConstraint);
+                        auditedTdb.TemplateConstraints.Remove(cConstraint);
                     }
 
                     // Conf number regeneration

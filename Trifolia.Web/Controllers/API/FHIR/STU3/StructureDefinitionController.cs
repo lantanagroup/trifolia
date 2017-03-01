@@ -212,7 +212,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
             StructureDefinitionImporter importer = new StructureDefinitionImporter(this.tdb, uri.Scheme, uri.Authority);
             Template template = importer.Convert(strucDef);
-            this.tdb.Templates.AddObject(template);
+            this.tdb.Templates.Add(template);
             return template;
         }
 
@@ -303,7 +303,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             Template updatedTemplate = importer.Convert(strucDef, existingTemplate);
 
             if (existingTemplate == null)
-                this.tdb.Templates.AddObject(updatedTemplate);
+                this.tdb.Templates.Add(updatedTemplate);
 
             this.tdb.SaveChanges();
 

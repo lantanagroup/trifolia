@@ -150,7 +150,7 @@ namespace Trifolia.Export.Schematron
 
             var documentLevelTemplates = this.templates.Where(y => y.TemplateTypeId == firstTemplateType.Id);
 
-            string lDeprecatedStatus = PublishStatuses.Deprecated.ToString();
+            string lDeprecatedStatus = Shared.PublishStatuses.Deprecated.ToString();
             documentLevelTemplates.ToList().RemoveAll(t => t.Status != null && t.Status.Status == lDeprecatedStatus);
 
             List<string> requiredTemplates = new List<string>();
@@ -867,9 +867,9 @@ namespace Trifolia.Export.Schematron
             {
                 sbComment.AppendFormat("Value='{0}'. ", tc.Conformance);
             }
-            if ((tc.ValueSetReference != null) && (tc.ValueSetReference.Value != null) && (!string.IsNullOrEmpty(tc.ValueSetReference.Value.Code)))
+            if (tc.ValueSet != null && !string.IsNullOrEmpty(tc.ValueSet.Code))
             {
-                sbComment.AppendFormat("Valueset Code='{0}'. ", tc.ValueSetReference.Value.Code);
+                sbComment.AppendFormat("Valueset Code='{0}'. ", tc.ValueSet.Code);
             }
             if (!string.IsNullOrEmpty(tc.DataType))
             {

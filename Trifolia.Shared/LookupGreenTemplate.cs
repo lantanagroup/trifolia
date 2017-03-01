@@ -106,10 +106,10 @@ namespace Trifolia.Shared
                 GreenTemplate greenTemplate = tdb.GreenTemplates.Single(y => y.Id == lookupGreenTemplate.Id);
 
                 // Remove all green constraints associated with the green template
-                greenTemplate.ChildGreenConstraints.ToList().ForEach(y => tdb.GreenConstraints.DeleteObject(y));
+                greenTemplate.ChildGreenConstraints.ToList().ForEach(y => tdb.GreenConstraints.Remove(y));
 
                 // Remove the green template
-                tdb.GreenTemplates.DeleteObject(greenTemplate);
+                tdb.GreenTemplates.Remove(greenTemplate);
 
                 tdb.SaveChanges();
             }

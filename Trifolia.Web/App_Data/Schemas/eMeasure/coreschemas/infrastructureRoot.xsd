@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:ex="urn:hl7-org/v3-example" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mif="urn:hl7-org:v3/mif2" xmlns:v3="urn:hl7-org:v3" elementFormDefault="qualified">
+   <xs:annotation>
+      <xs:documentation>Source Information
+     Rendered by: RoseTree 4.2.42
+     Rendered on: 2010-01-02T22:39:47
+This model was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ Transform: $RCSfile: infrastructureRoot.xsd,v $ $Revision: 1.11 $ $Date: 2010/02/01 20:28:25 $
+ Generated using schema builder version: 3.3.1
+ RIM MIF Infrastructure Root to Schema Transform: $Id: infrastructureRoot.xsd,v 1.11 2010/02/01 20:28:25 Jingdong Li Exp $
+  Static MIF to Schema Transform: $Id: infrastructureRoot.xsd,v 1.11 2010/02/01 20:28:25 Jingdong Li Exp $
+  Package Id Conversion: $Id: infrastructureRoot.xsd,v 1.11 2010/02/01 20:28:25 Jingdong Li Exp $</xs:documentation>
+   </xs:annotation>
+   <xs:include schemaLocation="../coreschemas/voc.xsd"/>
+   <xs:include schemaLocation="datatypes-r1.1.xsd"/>
+   <xs:group name="InfrastructureRootElements">
+      <xs:sequence>
+         <xs:element name="realmCode" type="CS" minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element name="typeId" type="II" minOccurs="0"/>
+         <xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:group>
+   <xs:attributeGroup name="InfrastructureRootAttributes"/>
+</xs:schema>

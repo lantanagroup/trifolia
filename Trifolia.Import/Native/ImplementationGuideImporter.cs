@@ -61,7 +61,7 @@ namespace Trifolia.Import.Native
 
             foreach (var section in allSections)
             {
-                this.tdb.ImplementationGuideSections.DeleteObject(section);
+                this.tdb.ImplementationGuideSections.Remove(section);
             }
         }
 
@@ -106,7 +106,7 @@ namespace Trifolia.Import.Native
             // Remove all first
             foreach (var customSchematron in allCustomSchematrons)
             {
-                this.tdb.ImplementationGuideSchematronPatterns.DeleteObject(customSchematron);
+                this.tdb.ImplementationGuideSchematronPatterns.Remove(customSchematron);
             }
 
             // Add all in import as new
@@ -144,7 +144,7 @@ namespace Trifolia.Import.Native
                     };
 
                     implementationGuide.TemplateTypes.Add(foundIgTemplateType);
-                    this.tdb.ImplementationGuideTemplateTypes.AddObject(foundIgTemplateType);
+                    this.tdb.ImplementationGuideTemplateTypes.Add(foundIgTemplateType);
                 }
 
                 if (foundIgTemplateType.Name != importTemplateType.CustomName)
@@ -256,7 +256,7 @@ namespace Trifolia.Import.Native
                     foundFile = new ImplementationGuideFile();
                     foundFile.FileName = importFile.name;
                     foundFile.ImplementationGuide = implementationGuide;
-                    this.tdb.ImplementationGuideFiles.AddObject(foundFile);
+                    this.tdb.ImplementationGuideFiles.Add(foundFile);
                 }
 
                 var latestData = foundFile.Versions.Count > 0 ? foundFile.GetLatestData() : null;
@@ -269,7 +269,7 @@ namespace Trifolia.Import.Native
                     latestData.Data = content;
                     latestData.UpdatedDate = DateTime.Now;
                     latestData.UpdatedBy = currentUserName;
-                    this.tdb.ImplementationGuideFileDatas.AddObject(latestData);
+                    this.tdb.ImplementationGuideFileDatas.Add(latestData);
                 }
 
                 // Update properties of the file
@@ -300,8 +300,8 @@ namespace Trifolia.Import.Native
             {
                 foundPreviousVersionIg = FindImplementationGuide(importImplementationGuide.PreviousVersion.name, importImplementationGuide.PreviousVersion.number);
 
-                if (foundPreviousVersionIg != null && !foundPreviousVersionIg.PreviousVersion.Contains(implementationGuide))
-                    foundPreviousVersionIg.PreviousVersion.Add(implementationGuide);
+                if (implementationGuide.PreviousVersion != foundPreviousVersionIg)
+                    implementationGuide.PreviousVersion = foundPreviousVersionIg;
             }
 
             if (implementationGuide == null && foundPreviousVersionIg == null && this.tdb.ImplementationGuides.Count(y => y.Name.ToLower() == importImplementationGuide.name.ToLower()) > 0)
@@ -316,7 +316,7 @@ namespace Trifolia.Import.Native
                 implementationGuide.ImplementationGuideType = igType;
                 implementationGuide.ImplementationGuideTypeId = igType.Id;
 
-                this.tdb.ImplementationGuides.AddObject(implementationGuide);
+                this.tdb.ImplementationGuides.Add(implementationGuide);
                 igSettings = new IGSettingsManager(this.tdb);
 
                 // Add default template types to new implementation guide
@@ -382,7 +382,7 @@ namespace Trifolia.Import.Native
             // If the object is changed, make sure the user has permissions to the implementation guide
             if (this.dataSource != null)
             {
-                var igState = this.dataSource.ObjectStateManager.GetObjectStateEntry(implementationGuide);
+                var igState = this.dataSource.Entry(implementationGuide);
 
                 if (igState.State == System.Data.Entity.EntityState.Modified && !CheckPoint.Instance.GrantEditImplementationGuide(implementationGuide.Id) && !CheckPoint.Instance.IsDataAdmin)
                 {

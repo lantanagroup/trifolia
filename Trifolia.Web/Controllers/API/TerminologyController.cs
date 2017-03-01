@@ -264,11 +264,11 @@ namespace Trifolia.Web.Controllers.API
 
                 // Remove members from the valueset
                 valueSet.Members.ToList().ForEach(y => {
-                    auditedTdb.ValueSetMembers.DeleteObject(y);
+                    auditedTdb.ValueSetMembers.Remove(y);
                 });
 
                 // Delete the actual valueset
-                auditedTdb.ValueSets.DeleteObject(valueSet);
+                auditedTdb.ValueSets.Remove(valueSet);
 
                 auditedTdb.SaveChanges();
             }
@@ -319,7 +319,7 @@ namespace Trifolia.Web.Controllers.API
                     foreach (var concept in model.RemovedConcepts)
                     {
                         ValueSetMember member = valueSet.Members.Single(y => y.Id == concept.Id);
-                        auditedTdb.ValueSetMembers.DeleteObject(member);
+                        auditedTdb.ValueSetMembers.Remove(member);
                     }
                 }
 
@@ -338,7 +338,7 @@ namespace Trifolia.Web.Controllers.API
                 if (valueSet == null)
                 {
                     valueSet = new ValueSet();
-                    auditedTdb.ValueSets.AddObject(valueSet);
+                    auditedTdb.ValueSets.Add(valueSet);
                 }
 
                 // Set properties for the value set
@@ -373,7 +373,7 @@ namespace Trifolia.Web.Controllers.API
                     foreach (var concept in model.RemovedConcepts)
                     {
                         var valueSetMember = auditedTdb.ValueSetMembers.Single(y => y.Id == concept.Id && y.ValueSetId == valueSet.Id);
-                        auditedTdb.ValueSetMembers.DeleteObject(valueSetMember);
+                        auditedTdb.ValueSetMembers.Remove(valueSetMember);
                     }
                 }
 
@@ -388,7 +388,7 @@ namespace Trifolia.Web.Controllers.API
                         {
                             valueSetMember = new ValueSetMember();
                             valueSetMember.ValueSet = valueSet;
-                            auditedTdb.ValueSetMembers.AddObject(valueSetMember);
+                            auditedTdb.ValueSetMembers.Add(valueSetMember);
                         }
 
                         this.SaveConceptProperties(auditedTdb, valueSetMember, concept);
@@ -534,7 +534,7 @@ namespace Trifolia.Web.Controllers.API
             if (foundCodeSystem == null)
             {
                 foundCodeSystem = new CodeSystem();
-                this.tdb.CodeSystems.AddObject(foundCodeSystem);
+                this.tdb.CodeSystems.Add(foundCodeSystem);
             }
 
             if (foundCodeSystem.Name != item.Name)
@@ -571,10 +571,10 @@ namespace Trifolia.Web.Controllers.API
             // Remove members of the code system
             foreach (var currentMember in foundCodeSystem.Members.ToList())
             {
-                this.tdb.ValueSetMembers.DeleteObject(currentMember);
+                this.tdb.ValueSetMembers.Remove(currentMember);
             }
 
-            this.tdb.CodeSystems.DeleteObject(foundCodeSystem);
+            this.tdb.CodeSystems.Remove(foundCodeSystem);
 
             this.tdb.SaveChanges();
         }
