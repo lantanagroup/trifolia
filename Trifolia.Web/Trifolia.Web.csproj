@@ -2012,7 +2012,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Schemas\HQMF_R2\model\POQM_RM000001UV.vsd" />
-    <Content Include="App_Data\Schemas\HQMF_R2\schemas\.DS_Store" />
     <Content Include="App_Data\Schemas\HQMF_R2\schemas\EMeasure.xsd">
       <SubType>Designer</SubType>
     </Content>
