@@ -44,10 +44,10 @@ msbuild Trifolia.Web\Trifolia.Web.csproj /T:Package /p:Configuration="Install De
 ```
 3. Prepare the package
 ```
-.\prepare_package.bat .\ "Install Release"
+.\PreparePackage.ps1 -buildConfig "Install Release"
 ```
 ```
-.\prepare_package.bat .\ "Install Debug"
+.\PreparePackage.ps1 -buildConfig "Install Debug"
 ```
 4. Dist directory contains all files necessary for installation/distribution
 
