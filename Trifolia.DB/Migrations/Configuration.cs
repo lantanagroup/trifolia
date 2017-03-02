@@ -17,39 +17,39 @@ namespace Trifolia.DB.Migrations
 
             this.appSecurables = new AppSecurable[]
             {
-                new AppSecurable() { Id = 1, Name = "TemplateList", DisplayName = "List Templates", Description = "NULL" },
-                new AppSecurable() { Id = 2, Name = "IGManagementList", DisplayName = "List Implementation Guides", Description = "NULL" },
-                new AppSecurable() { Id = 3, Name = "LandingPage", DisplayName = "Landing Page", Description = "NULL" },
-                new AppSecurable() { Id = 4, Name = "ImplementationGuideEdit", DisplayName = "Edit Implementation Guide", Description = "NULL" },
-                new AppSecurable() { Id = 5, Name = "ImplementationGuideEditBookmarks", DisplayName = "Edit Implementation Guide Bookmarks", Description = "" },
-                new AppSecurable() { Id = 6, Name = "ImplementationGuideNotes", DisplayName = "View Implementation Guide Notes", Description = "NULL" },
-                new AppSecurable() { Id = 7, Name = "ImplementationGuidePrimitives", DisplayName = "View Implementation Guide Primitives", Description = "NULL" },
-                new AppSecurable() { Id = 8, Name = "ImplementationGuideAuditTrail", DisplayName = "View Implementation Guide Audit Trail", Description = "NULL" },
-                new AppSecurable() { Id = 9, Name = "ValueSetList", DisplayName = "List Value Sets", Description = "NULL" },
-                new AppSecurable() { Id = 10, Name = "ValueSetEdit", DisplayName = "Edit Value Sets", Description = "NULL" },
-                new AppSecurable() { Id = 11, Name = "CodeSystemList", DisplayName = "List Code Systems", Description = "NULL" },
-                new AppSecurable() { Id = 12, Name = "CodeSystemEdit", DisplayName = "Edit Code Systems", Description = "NULL" },
-                new AppSecurable() { Id = 13, Name = "ExportWordDocuments", DisplayName = "Export MS Word Documents", Description = "NULL" },
-                new AppSecurable() { Id = 14, Name = "ExportVocabulary", DisplayName = "Export Vocabulary", Description = "NULL" },
-                new AppSecurable() { Id = 15, Name = "ExportSchematron", DisplayName = "Export Schematron", Description = "NULL" },
-                new AppSecurable() { Id = 16, Name = "TemplateEdit", DisplayName = "Edit Templates", Description = "NULL" },
-                new AppSecurable() { Id = 17, Name = "TemplateCopy", DisplayName = "Copy Templates", Description = "NULL" },
-                new AppSecurable() { Id = 18, Name = "TemplateDelete", DisplayName = "Delete Templates", Description = "NULL" },
-                new AppSecurable() { Id = 19, Name = "Admin", DisplayName = "Admin Functions", Description = "NULL" },
-                new AppSecurable() { Id = 20, Name = "ReportTemplateReview", DisplayName = "View Template Review Report", Description = "NULL" },
-                new AppSecurable() { Id = 21, Name = "ReportTemplateCompliance", DisplayName = "View Template Compliance Report", Description = "NULL" },
-                new AppSecurable() { Id = 22, Name = "OrganizationList", DisplayName = "Organization List", Description = "NULL" },
-                new AppSecurable() { Id = 23, Name = "OrganizationDetails", DisplayName = "Organization Details", Description = "NULL" },
-                new AppSecurable() { Id = 24, Name = "PublishSettings", DisplayName = "Publish Settings", Description = "NULL" },
-                new AppSecurable() { Id = 25, Name = "ExportXML", DisplayName = "Export Templates XML", Description = "Ability to export templates to an XML format" },
-                new AppSecurable() { Id = 26, Name = "IGFileManagement", DisplayName = "IG File Management", Description = "Allows users to upload/update/remove files associated with an implementation guide." },
-                new AppSecurable() { Id = 27, Name = "IGFileView", DisplayName = "IG File View", Description = "Allows users view files associated with implementation guides they have permission to access." },
-                new AppSecurable() { Id = 28, Name = "ExportGreen", DisplayName = "Export green artifacts", Description = "NULL" },
-                new AppSecurable() { Id = 29, Name = "TerminologyOverride", DisplayName = "Terminology Override", Description = "Ability to override locked value sets and code systems." },
-                new AppSecurable() { Id = 30, Name = "GreenModel", DisplayName = "Green Modeling", Description = "Allows user to create, edit and delete green models for templates." },
-                new AppSecurable() { Id = 31, Name = "TemplateMove", DisplayName = "Move Templates", Description = "Ability to move a template from one implementation guide to another" },
-                new AppSecurable() { Id = 32, Name = "WebIG", DisplayName = "Web-based IG", Description = "Ability to view an implementation guide's web-based IG" },
-                new AppSecurable() { Id = 33, Name = "Import", DisplayName = "Import", Description = "The ability to import implementation guides and templates into Trifolia" }
+                new AppSecurable() { Name = "TemplateList", DisplayName = "List Templates", Description = "NULL" },
+                new AppSecurable() { Name = "IGManagementList", DisplayName = "List Implementation Guides", Description = "NULL" },
+                new AppSecurable() { Name = "LandingPage", DisplayName = "Landing Page", Description = "NULL" },
+                new AppSecurable() { Name = "ImplementationGuideEdit", DisplayName = "Edit Implementation Guide", Description = "NULL" },
+                new AppSecurable() { Name = "ImplementationGuideEditBookmarks", DisplayName = "Edit Implementation Guide Bookmarks", Description = "" },
+                new AppSecurable() { Name = "ImplementationGuideNotes", DisplayName = "View Implementation Guide Notes", Description = "NULL" },
+                new AppSecurable() { Name = "ImplementationGuidePrimitives", DisplayName = "View Implementation Guide Primitives", Description = "NULL" },
+                new AppSecurable() { Name = "ImplementationGuideAuditTrail", DisplayName = "View Implementation Guide Audit Trail", Description = "NULL" },
+                new AppSecurable() { Name = "ValueSetList", DisplayName = "List Value Sets", Description = "NULL" },
+                new AppSecurable() { Name = "ValueSetEdit", DisplayName = "Edit Value Sets", Description = "NULL" },
+                new AppSecurable() { Name = "CodeSystemList", DisplayName = "List Code Systems", Description = "NULL" },
+                new AppSecurable() { Name = "CodeSystemEdit", DisplayName = "Edit Code Systems", Description = "NULL" },
+                new AppSecurable() { Name = "ExportWordDocuments", DisplayName = "Export MS Word Documents", Description = "NULL" },
+                new AppSecurable() { Name = "ExportVocabulary", DisplayName = "Export Vocabulary", Description = "NULL" },
+                new AppSecurable() { Name = "ExportSchematron", DisplayName = "Export Schematron", Description = "NULL" },
+                new AppSecurable() { Name = "TemplateEdit", DisplayName = "Edit Templates", Description = "NULL" },
+                new AppSecurable() { Name = "TemplateCopy", DisplayName = "Copy Templates", Description = "NULL" },
+                new AppSecurable() { Name = "TemplateDelete", DisplayName = "Delete Templates", Description = "NULL" },
+                new AppSecurable() { Name = "Admin", DisplayName = "Admin Functions", Description = "NULL" },
+                new AppSecurable() { Name = "ReportTemplateReview", DisplayName = "View Template Review Report", Description = "NULL" },
+                new AppSecurable() { Name = "ReportTemplateCompliance", DisplayName = "View Template Compliance Report", Description = "NULL" },
+                new AppSecurable() { Name = "OrganizationList", DisplayName = "Organization List", Description = "NULL" },
+                new AppSecurable() { Name = "OrganizationDetails", DisplayName = "Organization Details", Description = "NULL" },
+                new AppSecurable() { Name = "PublishSettings", DisplayName = "Publish Settings", Description = "NULL" },
+                new AppSecurable() { Name = "ExportXML", DisplayName = "Export Templates XML", Description = "Ability to export templates to an XML format" },
+                new AppSecurable() { Name = "IGFileManagement", DisplayName = "IG File Management", Description = "Allows users to upload/update/remove files associated with an implementation guide." },
+                new AppSecurable() { Name = "IGFileView", DisplayName = "IG File View", Description = "Allows users view files associated with implementation guides they have permission to access." },
+                new AppSecurable() { Name = "ExportGreen", DisplayName = "Export green artifacts", Description = "NULL" },
+                new AppSecurable() { Name = "TerminologyOverride", DisplayName = "Terminology Override", Description = "Ability to override locked value sets and code systems." },
+                new AppSecurable() { Name = "GreenModel", DisplayName = "Green Modeling", Description = "Allows user to create, edit and delete green models for templates." },
+                new AppSecurable() { Name = "TemplateMove", DisplayName = "Move Templates", Description = "Ability to move a template from one implementation guide to another" },
+                new AppSecurable() { Name = "WebIG", DisplayName = "Web-based IG", Description = "Ability to view an implementation guide's web-based IG" },
+                new AppSecurable() { Name = "Import", DisplayName = "Import", Description = "The ability to import implementation guides and templates into Trifolia" }
             };
 
             this.roles = new Role[] {
@@ -442,7 +442,7 @@ namespace Trifolia.DB.Migrations
             this.SeedFHIRDSTU2(context);
             this.SeedFHIRSTU3(context);
 
-            context.AppSecurables.AddOrUpdate(apps => apps.Id, this.appSecurables);
+            context.AppSecurables.AddOrUpdate(apps => apps.Name, this.appSecurables);
             context.Roles.AddOrUpdate(r => r.Name, this.roles);
 
             List<RoleAppSecurable> roleAppSecurables = new List<RoleAppSecurable>();

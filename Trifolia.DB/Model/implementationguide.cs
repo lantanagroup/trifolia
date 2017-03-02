@@ -25,7 +25,7 @@ namespace Trifolia.DB
         [Column("id")]
         public int Id { get; set; }
 
-        [Column("")]
+        [Column("implementationGuideTypeId")]
         public int ImplementationGuideTypeId { get; set; }
 
         [Column("organizationId")]

@@ -13,7 +13,7 @@ namespace Trifolia.DB.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201702101932444_init"; }
+            get { return "201703021923101_init"; }
         }
         
         string IMigrationMetadata.Source

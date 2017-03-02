@@ -76,7 +76,7 @@ namespace Trifolia.DB.Migrations
                 c => new
                     {
                         id = c.Int(nullable: false, identity: true),
-                        ImplementationGuideTypeId = c.Int(nullable: false),
+                        implementationGuideTypeId = c.Int(nullable: false),
                         organizationId = c.Int(),
                         name = c.String(nullable: false, maxLength: 255),
                         publishDate = c.DateTime(),
@@ -93,11 +93,11 @@ namespace Trifolia.DB.Migrations
                     })
                 .PrimaryKey(t => t.id)
                 .ForeignKey("dbo.user", t => t.accessManagerId)
-                .ForeignKey("dbo.implementationguidetype", t => t.ImplementationGuideTypeId)
+                .ForeignKey("dbo.implementationguidetype", t => t.implementationGuideTypeId)
                 .ForeignKey("dbo.publish_status", t => t.publishStatusId)
                 .ForeignKey("dbo.implementationguide", t => t.previousVersionImplementationGuideId)
                 .ForeignKey("dbo.organization", t => t.organizationId)
-                .Index(t => t.ImplementationGuideTypeId)
+                .Index(t => t.implementationGuideTypeId)
                 .Index(t => t.organizationId)
                 .Index(t => t.publishStatusId)
                 .Index(t => t.previousVersionImplementationGuideId)
@@ -567,14 +567,14 @@ namespace Trifolia.DB.Migrations
                     })
                 .PrimaryKey(t => t.id);
 
-            this.SqlResource("Trifolia.DB.Migrations.201702101932444_init_views_up.sql");
-            this.SqlResource("Trifolia.DB.Migrations.201702101932444_init_programmability_up.sql");
+            this.SqlResource("Trifolia.DB.Migrations.201703021923101_init_views_up.sql");
+            this.SqlResource("Trifolia.DB.Migrations.201703021923101_init_programmability_up.sql");
         }
         
         public override void Down()
         {
-            this.SqlResource("Trifolia.DB.Migrations.201702101932444_init_programmability_down.sql");
-            this.SqlResource("Trifolia.DB.Migrations.201702101932444_init_views_down.sql");
+            this.SqlResource("Trifolia.DB.Migrations.201703021923101_init_views_down.sql");
+            this.SqlResource("Trifolia.DB.Migrations.201703021923101_init_programmability_down.sql");
 
             DropForeignKey("dbo.appsecurable_role", "appSecurableId", "dbo.app_securable");
             DropForeignKey("dbo.role_restriction", "roleId", "dbo.role");
@@ -604,7 +604,7 @@ namespace Trifolia.DB.Migrations
             DropForeignKey("dbo.template", "templateTypeId", "dbo.templatetype");
             DropForeignKey("dbo.implementationguide_templatetype", "templateTypeId", "dbo.templatetype");
             DropForeignKey("dbo.template", "implementationGuideTypeId", "dbo.implementationguidetype");
-            DropForeignKey("dbo.implementationguide", "ImplementationGuideTypeId", "dbo.implementationguidetype");
+            DropForeignKey("dbo.implementationguide", "implementationGuideTypeId", "dbo.implementationguidetype");
             DropForeignKey("dbo.implementationguidetype_datatype", "implementationGuideTypeId", "dbo.implementationguidetype");
             DropForeignKey("dbo.green_constraint", "igtype_datatypeId", "dbo.implementationguidetype_datatype");
             DropForeignKey("dbo.green_template", "templateId", "dbo.template");
@@ -671,7 +671,7 @@ namespace Trifolia.DB.Migrations
             DropIndex("dbo.implementationguide", new[] { "previousVersionImplementationGuideId" });
             DropIndex("dbo.implementationguide", new[] { "publishStatusId" });
             DropIndex("dbo.implementationguide", new[] { "organizationId" });
-            DropIndex("dbo.implementationguide", new[] { "ImplementationGuideTypeId" });
+            DropIndex("dbo.implementationguide", new[] { "implementationGuideTypeId" });
             DropIndex("dbo.role_restriction", new[] { "organizationId" });
             DropIndex("dbo.role_restriction", new[] { "roleId" });
             DropIndex("dbo.appsecurable_role", new[] { "roleId" });
