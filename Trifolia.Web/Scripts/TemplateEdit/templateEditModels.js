@@ -946,24 +946,26 @@ var TemplateModel = function (data, viewModel) {
     };
 
     self.permittedTemplateUsers = function (tId) {
-        var users;
-
-        var sortUsers = function (a, b) {
-            if (a < b) return -1;
-            if (a > b) return 1;
-            return 0;
-        }
+        var userInfo;
+        var users = {};
 
         $.ajax({
             url: "/api/Template/Permissions/" + tId,
             async: false,
             success: function (results) {
-                users = results;
+                userInfo = results;
             }
         })
-        return users.sort(sortUsers);
-    }
+        
+        for (var i = 0; i < userInfo.length; i++) {
+            users[i] = {
+                'fullName' : userInfo[i][0],
+                'id' : userInfo[i][1]
+            };
+        }
 
+        return users;
+    }
     
 
     /* Methods */

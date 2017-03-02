@@ -492,23 +492,9 @@ namespace Trifolia.Web.Controllers.API
             if (template.ImplementationGuideTypeId != ig.ImplementationGuideTypeId)
                 template.ImplementationGuideTypeId = ig.ImplementationGuideTypeId;
 
-            string templateAuthor = template.Author.FirstName + ' ' + template.Author.LastName;
-
-            if (templateAuthor != model.Author)
+            if (template.AuthorId != model.Id)
             {
-                template.Author.FirstName = model.Author.Substring(0, model.Author.IndexOf(' '));
-                template.Author.LastName = model.Author.Substring(model.Author.IndexOf(' ') + 1);
-
-                var email = (from user in tdb.Users
-                             where user.FirstName == template.Author.FirstName && user.LastName == template.Author.LastName
-                             select user.Email).ToList();
-                
-                var phone = (from user in tdb.Users
-                             where user.FirstName == template.Author.FirstName && user.LastName == template.Author.LastName
-                             select user.Email).ToList();
-
-                template.Author.Email = email[0];
-                template.Author.Phone = phone[0];
+                template.AuthorId = (int) model.Id;
             }
 
             if (template.Name != model.Name)
