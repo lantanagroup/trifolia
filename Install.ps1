@@ -77,8 +77,9 @@ if ($shouldWriteWebConfig) {
 Write-Host "Executing database installation/upgrade"
 $migrateBin = Join-Path $sourcePath "bin"
 $migrateCmd = Join-Path $sourcePath "bin\migrate.exe"
+$migrateDll = Join-Path $sourcePath "bin\Trifolia.DB.dll"
 
-$migrateCommand = "$migrateCmd Trifolia.DB.dll /StartUpDirectory=$migrateBin /startUpConfigurationFile:$destAppWebConfigPath /verbose"
+$migrateCommand = "$migrateCmd $migrateDll /StartUpDirectory=$migrateBin /startUpConfigurationFile:$destAppWebConfigPath /verbose"
 Write-Host $migrateCommand
 Invoke-Expression $migrateCommand
 
