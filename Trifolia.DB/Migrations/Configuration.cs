@@ -429,7 +429,7 @@ namespace Trifolia.DB.Migrations
                 new ImplementationGuideType()
                 {
                     Id = 6,
-                    Name = "FHIR DSTU3",
+                    Name = "FHIR Latest",
                     SchemaLocation = "fhir-all.xsd",
                     SchemaPrefix = "fhir",
                     SchemaURI = "http://hl7.org/fhir"
