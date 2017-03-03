@@ -51,7 +51,7 @@ namespace Trifolia.Import.FHIR.DSTU2
                         Name = DSTU2Helper.DEFAULT_IG_NAME,
                         ImplementationGuideType = this.implementationGuideType
                     };
-                    this.tdb.ImplementationGuides.AddObject(unassignedImplementationGuide);
+                    this.tdb.ImplementationGuides.Add(unassignedImplementationGuide);
                 }
 
                 template = new Template()
@@ -108,7 +108,7 @@ namespace Trifolia.Import.FHIR.DSTU2
             {
                 // Remove all current constraints from the template so that we re-create
                 foreach (var cc in template.ChildConstraints.ToList())
-                    this.tdb.TemplateConstraints.DeleteObject(cc);
+                    this.tdb.TemplateConstraints.Remove(cc);
 
                 ElementNavigator navigator = new ElementNavigator(strucDef.Differential.Element);
                 TemplateConstraint current = null;

@@ -145,7 +145,7 @@ namespace Trifolia.Web.Controllers.API
             PublishStatus lStatus = template.Status;
 
             if (lStatus == null)
-                model.Status = PublishStatuses.Draft.ToString();
+                model.Status = Shared.PublishStatuses.Draft.ToString();
             else
                 model.Status = lStatus.Status;
 
@@ -315,7 +315,7 @@ namespace Trifolia.Web.Controllers.API
         }
 
         [HttpGet, Route("api/Template/Permissions/{templateId}")]
-        public List<string> GetTemplatePermissions(int templateId)
+        public List<List<String>> GetTemplatePermissionsName(int templateId)
         {
             var userIds =  (from tp in this.tdb.ViewTemplatePermissions
                                         where tp.TemplateId == templateId && tp.Permission == "Edit"
@@ -325,14 +325,14 @@ namespace Trifolia.Web.Controllers.API
                          where userIds.Contains(user.Id)
                          select user).ToList();
 
-
-            List<string> userNames = new List<string>();
-
-            foreach(var user in users){
-                userNames.Add(user.FirstName + ' ' + user.LastName);                
+            List<List<String>> userInfo = new List<List<String>>();
+            foreach(var user in users)
+            {
+                List<String> temp = new List<String> { user.FirstName + ' ' + user.LastName, (user.Id).ToString() };
+                userInfo.Add(temp);
             }
 
-            return userNames;
+            return userInfo;
         }
 
         /// <summary>
@@ -752,7 +752,7 @@ namespace Trifolia.Web.Controllers.API
                             cConstraint.Category = string.Join(",", cConstraintCategories);
                     }
 
-                    auditedTdb.Templates.AddObject(copyTemplate);
+                    auditedTdb.Templates.Add(copyTemplate);
                     auditedTdb.SaveChanges();
 
                     return new { Status = "Success", TemplateId = copyTemplate.Id };
@@ -911,7 +911,7 @@ namespace Trifolia.Web.Controllers.API
                     foreach (MoveConstraint cMoveConstraint in model.Constraints.Where(y => y.IsDeleted))
                     {
                         TemplateConstraint cConstraint = template.ChildConstraints.Single(y => y.Number == cMoveConstraint.Number);
-                        auditedTdb.TemplateConstraints.DeleteObject(cConstraint);
+                        auditedTdb.TemplateConstraints.Remove(cConstraint);
                     }
 
                     // Conf number regeneration

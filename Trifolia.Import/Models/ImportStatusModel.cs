@@ -116,7 +116,7 @@ namespace Trifolia.Import.Models
             var dataSource = this.tdb as TrifoliaDatabase;
 
             if (dataSource != null)
-                this.ImportedImplementationGuides.Add(implementationGuide, dataSource.ObjectStateManager.GetObjectStateEntry(implementationGuide).State);
+                this.ImportedImplementationGuides.Add(implementationGuide, dataSource.Entry(implementationGuide).State);
             else
                 this.ImportedImplementationGuides.Add(implementationGuide, EntityState.Detached);
         }
@@ -130,16 +130,16 @@ namespace Trifolia.Import.Models
 
             if (dataSource != null)
             {
-                var state = dataSource.ObjectStateManager.GetObjectStateEntry(template).State;
+                var state = dataSource.Entry(template).State;
 
                 foreach (var constraint in template.ChildConstraints)
                 {
-                    var constraintState = dataSource.ObjectStateManager.GetObjectStateEntry(constraint);
+                    var constraintState = dataSource.Entry(constraint);
                     this.ImportedConstraints.Add(constraint, constraintState.State);
 
                     foreach (var constraintSample in constraint.Samples)
                     {
-                        var constraintSampleState = dataSource.ObjectStateManager.GetObjectStateEntry(constraintState);
+                        var constraintSampleState = dataSource.Entry(constraintState);
                         this.ImportedConstraintSamples.Add(constraintSample, constraintSampleState.State);
                     }
 
@@ -147,7 +147,7 @@ namespace Trifolia.Import.Models
 
                 foreach (var sample in template.TemplateSamples)
                 {
-                    var sampleState = dataSource.ObjectStateManager.GetObjectStateEntry(sample);
+                    var sampleState = dataSource.Entry(sample);
                     this.ImportedTemplateSamples.Add(sample, sampleState.State);
                 }
 

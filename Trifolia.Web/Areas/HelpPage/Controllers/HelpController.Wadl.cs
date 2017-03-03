@@ -20,7 +20,7 @@ namespace Trifolia.Web.Areas.HelpPage.Controllers
 
                 return View(apisWithHelp);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Redirect("/api/Help");
             }

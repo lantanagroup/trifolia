@@ -331,8 +331,11 @@
                             <div class="input-group">
                                 <span class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorMetaDataAuthoredByField"></span>
                                 <!--input type="text" class="form-control" data-bind="value: Author"/-->
-                                <select data-bind="options: permittedTemplateUsers(Id()), optionsText: function (user) { return user },
-                                                   value: Author, disable: $parent.Template().Locked()" />
+                                <select class="form-control" data-bind="options: permittedTemplateUsers(Id()),
+                                                                        optionsText: 'fullName',
+                                                                        optionsValue: 'id',
+                                                                        value: Author,
+                                                                        disable: $parent.Template().Locked()" />
                             </div>
                             <!-- /ko -->
 

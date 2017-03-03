@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Trifolia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.lantanagroup.com">
+  <!--The export template XML file format definition is subject to change without notice, and continued availability should not be construed as a commitment by Lantana Consulting Group LLC. Lantana Consulting Group LLC assumes no responsibility or liability including incomplete data, errors, or impacts caused by changes to this XML file format definition.-->
+  <Template contextType="Section" context="section" isOpen="true" implementationGuideType="CDA" identifier="urn:hl7ii:2.16.840.1.1111.2:2017-04-01" templateType="section" bookmark="S_Reportability_Response_Summary_Section" title="XXXXX Summary Section">
+    <ImplementationGuide name="XXXXX" />
+    <Description>This section contains the XXXXX Summary template along with nested sections Electronic Initial Case Report Section and XXXXX Coded Information Section. 
+
+All the required narrative for the nested sections is stored in the text element (section narrative block) of this top-level section. There are constraints placed on the text element and its children to ensure that the narrative is produced for consistent visualization of the content.</Description>
+    <!--
+    <Constraint isInheritable="false" isVerbose="true" context="ID" conformance="MAY" cardinality="0..1">
+      <NarrativeText>MAY contain zero or one [0..1] ID (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isInheritable="false" isVerbose="true" context="nullFlavor" conformance="MAY" cardinality="0..1">
+      <NarrativeText>MAY contain zero or one [0..1] nullFlavor (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isInheritable="false" isVerbose="true" context="classCode" conformance="MAY" cardinality="0..1">
+      <NarrativeText>MAY contain zero or one [0..1] classCode (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isInheritable="false" isVerbose="true" context="moodCode" conformance="MAY" cardinality="0..1">
+      <NarrativeText>MAY contain zero or one [0..1] moodCode (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isInheritable="false" isVerbose="true" context="realmCode" conformance="MAY" cardinality="0..*">
+      <NarrativeText>MAY contain zero or more [0..*] realmCode (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isInheritable="false" isVerbose="true" context="typeId" conformance="MAY" cardinality="0..1">
+      <NarrativeText>MAY contain zero or one [0..1] typeId (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isVerbose="false" context="templateId" conformance="SHALL" number="103" cardinality="1..1" isBranch="true">
+      <NarrativeText>SHALL contain exactly one [1..1] templateId (CONF:3315-103) such that it</NarrativeText>
+      <Constraint isBranchIdentifier="true" isVerbose="false" context="@root" conformance="SHALL" number="109" cardinality="1..1">
+        <SingleValueCode code="2.16.840.1.1111.2" />
+        <NarrativeText>SHALL contain exactly one [1..1] @root="2.16.840.1.1111.2" (CONF:3315-109).</NarrativeText>
+      </Constraint>
+      <Constraint isBranchIdentifier="true" isVerbose="false" context="@extension" conformance="SHALL" number="110" cardinality="1..1">
+        <SingleValueCode code="2017-04-01" />
+        <NarrativeText>SHALL contain exactly one [1..1] @extension="2017-04-01" (CONF:3315-110).</NarrativeText>
+      </Constraint>
+    </Constraint>
+    <Constraint isInheritable="false" isVerbose="true" context="id" conformance="MAY" cardinality="0..1">
+      <NarrativeText>MAY contain zero or one [0..1] id (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isVerbose="false" context="code" conformance="SHALL" number="104" cardinality="1..1">
+      <NarrativeText>SHALL contain exactly one [1..1] code (CONF:3315-104).</NarrativeText>
+      <Constraint isVerbose="false" context="@code" conformance="SHALL" number="111" cardinality="1..1">
+        <SingleValueCode code="55112-7" displayName="Document Summary" />
+        <NarrativeText>This code SHALL contain exactly one [1..1] @code="55112-7" Document Summary (CONF:3315-111).</NarrativeText>
+        <Notes>Can we use this code?</Notes>
+      </Constraint>
+      <Constraint isVerbose="false" context="@codeSystem" conformance="SHALL" number="112" cardinality="1..1">
+        <SingleValueCode code="2.16.840.1.113883.6.1" />
+        <CodeSystem identifier="urn:oid:2.16.840.1.113883.6.1" name="LOINC" />
+        <NarrativeText>This code SHALL contain exactly one [1..1] @codeSystem="2.16.840.1.113883.6.1" (CodeSystem: LOINC urn:oid:2.16.840.1.113883.6.1) (CONF:3315-112).</NarrativeText>
+      </Constraint>
+    </Constraint>
+    <Constraint isInheritable="false" isVerbose="true" context="title" conformance="MAY" cardinality="0..1">
+      <NarrativeText>MAY contain zero or one [0..1] title (CONF:X-X).</NarrativeText>
+    </Constraint>
+    -->
+    <Constraint isVerbose="false" context="text" conformance="SHALL" number="105" cardinality="1..1">
+      <NarrativeText>SHALL contain exactly one [1..1] text (CONF:3315-105).</NarrativeText>
+      <!--
+      <Constraint isVerbose="false" context="paragraph" conformance="SHALL" number="106" cardinality="1..1" isBranch="true">
+        <SchematronTest>cda:text[count(cda:paragraph[cda:content[@styleCode='Bold']='Summary:'])=1]</SchematronTest>
+        <NarrativeText>This text SHALL contain exactly one [1..1] paragraph (CONF:3315-106) such that it</NarrativeText>
+        <Notes>Summary:</Notes>
+        <Label />
+        <Constraint isBranchIdentifier="true" isVerbose="false" context="content" conformance="SHALL" number="107" cardinality="1..1">
+          <SingleValueCode code="Summary:" />
+          <SchematronTest>not(tested)</SchematronTest>
+          <NarrativeText>SHALL contain exactly one [1..1] content="Summary:" (CONF:3315-107).</NarrativeText>
+          <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="@styleCode" conformance="SHALL" number="116" cardinality="1..1">
+            <SingleValueCode code="Bold" />
+            <SchematronTest>not(tested)</SchematronTest>
+            <NarrativeText>This content SHALL contain exactly one [1..1] @styleCode="Bold" (CONF:3315-116).</NarrativeText>
+          </Constraint>
+        </Constraint>
+      </Constraint>
+      <Constraint isVerbose="false" context="paragraph" conformance="SHALL" number="335" cardinality="1..1" isBranch="true">
+        <SchematronTest>cda:text[count(cda:paragraph[cda:content[@ID=concat('ref_',//cda:act[cda:templateId/@root='2.16.840.1.22222.15.2.3.8']/cda:id/@root)]])=1]</SchematronTest>
+        <NarrativeText>This text SHALL contain exactly one [1..1] paragraph (CONF:3315-335) such that it</NarrativeText>
+        <Description>The text in the following paragraph is pointed to by the reference in the XXXXX Short Description template. This text must be rendered first in the narrative, much like the subject of an email.</Description>
+        <Notes>Text content of the summary paragraph</Notes>
+        <Label />
+        <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="content" conformance="SHALL" number="336" cardinality="1..1">
+          <SchematronTest>not(tested)</SchematronTest>
+          <NarrativeText>SHALL contain exactly one [1..1] content (CONF:3315-336).</NarrativeText>
+          <Label>Summary text</Label>
+          <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="@ID" conformance="SHALL" number="337" cardinality="1..1">
+            <SchematronTest>not(tested)</SchematronTest>
+            <NarrativeText>This content SHALL contain exactly one [1..1] @ID (CONF:3315-337).</NarrativeText>
+          </Constraint>
+        </Constraint>
+      </Constraint>
+      -->
+      <Constraint isVerbose="false" mustSupport="true" context="table" conformance="SHALL" number="114" cardinality="1..1" isBranch="true">
+        <NarrativeText>This text SHALL contain exactly one [1..1] table (CONF:3315-114) such that it</NarrativeText>
+        <Description>Contains data from the Electronic Initial Case Report Section, specifically the Id of the received XXX CDA document.</Description>
+        <Notes>XXX Information</Notes>
+        <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="@ID" conformance="SHALL" number="115" cardinality="1..1">
+          <SingleValueCode code="ref_2.16.840.1.22222.15.2.2.3" />
+          <NarrativeText>SHALL contain exactly one [1..1] @ID="ref_2.16.840.1.22222.15.2.2.3" (CONF:3315-115).</NarrativeText>
+          <Description>The value "ref_2.16.840.1.22222.15.2.2.3" is the concatenation of "ref_" and the templateId/@root of the Electronic Initial Case Report Section. This table contains the rendered narrative for that section.</Description>
+          <Label />
+        </Constraint>
+        <Constraint isVerbose="false" mustSupport="true" context="tbody" conformance="SHALL" number="361" cardinality="1..*">
+          <NarrativeText>SHALL contain at least one [1..*] tbody (CONF:3315-361).</NarrativeText>
+          <Constraint isVerbose="false" mustSupport="true" context="tr" conformance="SHALL" number="362" cardinality="1..1" isBranch="true">
+            <SchematronTest>cda:tbody/cda:tr/@ID='ref_2.16.840.1.22222.15.2.3.10'</SchematronTest>
+            <NarrativeText>Such tbodies SHALL contain exactly one [1..1] tr (CONF:3315-362) such that it</NarrativeText>
+            <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="@ID" conformance="SHALL" number="364" cardinality="1..1">
+              <SingleValueCode code="ref_2.16.840.1.22222.15.2.3.10" />
+              <SchematronTest>not(tested)</SchematronTest>
+              <NarrativeText>SHALL contain exactly one [1..1] @ID="ref_2.16.840.1.22222.15.2.3.10" (CONF:3315-364).</NarrativeText>
+              <Description>The value "ref_2.16.840.1.22222.15.2.3.10" is the concatenation of "ref_" and the templateId/@root of the XXX External Document Reference. This table row contains the rendered narrative for that template.</Description>
+            </Constraint>
+            <Constraint isVerbose="false" mustSupport="true" context="td" conformance="SHALL" number="365" cardinality="1..1" isBranch="true">
+              <SingleValueCode code="XXX Identifier" />
+              <NarrativeText>SHALL contain exactly one [1..1] td="XXX Identifier" (CONF:3315-365).</NarrativeText>
+            </Constraint>
+            <Constraint isVerbose="false" mustSupport="true" context="td" conformance="SHALL" number="363" cardinality="1..1">
+              <NarrativeText>SHALL contain exactly one [1..1] td (CONF:3315-363).</NarrativeText>
+              <Constraint isPrimitive="true" isVerbose="false" mustSupport="true" conformance="SHALL" number="366">
+                <SchematronTest>cda:td=//cda:externalDocument[cda:templateId/@root='2.16.840.1.22222.15.2.3.10']/cda:id/@root</SchematronTest>
+                <NarrativeText>The value contained in td SHALL equal the value contained in the id/@root element in the XXX External Document Reference template.</NarrativeText>
+              </Constraint>
+            </Constraint>
+          </Constraint>
+        </Constraint>
+      </Constraint>
+      <!--
+      <Constraint isVerbose="false" mustSupport="true" context="table" conformance="SHALL" number="367" cardinality="1..1" isBranch="true">
+        <SchematronTest>not(tested)</SchematronTest>
+        <NarrativeText>This text SHALL contain exactly one [1..1] table (CONF:3315-367) such that it</NarrativeText>
+        <Description>There *SHALL* be one table containing all the values from all the External Document Reference Organizers in the document. Each organizer has a single &lt;tbody&gt; and each reference template has a single &lt;tr&gt;.</Description>
+        <Notes>External References</Notes>
+        <Constraint isVerbose="false" mustSupport="true" context="tbody" conformance="SHALL" number="369" cardinality="1..*">
+          <NarrativeText>SHALL contain at least one [1..*] tbody (CONF:3315-369).</NarrativeText>
+          <Description>There SHALL be one &lt;tbody&gt; corresponding to each External Reference Organizer, the tbody/@ID contains the value of the id/@root of the External Reference Organizer, prefixed with "ref_".</Description>
+          <Constraint isVerbose="false" mustSupport="true" context="@ID" conformance="SHALL" number="375" cardinality="1..1">
+            <NarrativeText>Such tbodies SHALL contain exactly one [1..1] @ID (CONF:3315-375).</NarrativeText>
+          </Constraint>
+          <Constraint isVerbose="false" mustSupport="true" context="tr" conformance="SHALL" number="372" cardinality="1..*">
+            <NarrativeText>Such tbodies SHALL contain at least one [1..*] tr (CONF:3315-372).</NarrativeText>
+            <Description>There SHALL be one &lt;tr&gt; corresponding to each External Reference Organizer/External Reference template</Description>
+            <Constraint isVerbose="false" mustSupport="true" context="td" conformance="SHALL" number="373" cardinality="1..1" isBranch="true">
+              <NarrativeText>Such trs SHALL contain exactly one [1..1] td (CONF:3315-373) such that it</NarrativeText>
+              <Description>td/content/@ID contains the value of the id/@root of the  External Reference template, prefixed with "ref_". The External Reference template references this narrative.</Description>
+              <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="content" conformance="SHALL" number="377" cardinality="1..1">
+                <NarrativeText>SHALL contain exactly one [1..1] content (CONF:3315-377).</NarrativeText>
+              </Constraint>
+            </Constraint>
+            <Constraint isVerbose="false" mustSupport="true" context="td" conformance="SHALL" number="374" cardinality="1..1" isBranch="true">
+              <NarrativeText>Such trs SHALL contain exactly one [1..1] td (CONF:3315-374) such that it</NarrativeText>
+              <Description>td/linkHtml contains the reference.</Description>
+              <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="linkHtml" conformance="SHALL" number="378" cardinality="1..1">
+                <NarrativeText>SHALL contain exactly one [1..1] linkHtml (CONF:3315-378).</NarrativeText>
+              </Constraint>
+            </Constraint>
+          </Constraint>
+        </Constraint>
+      </Constraint>
+      <Constraint isVerbose="false" mustSupport="true" context="table" conformance="SHALL" number="370" cardinality="1..1" isBranch="true">
+        <SchematronTest>not(tested)</SchematronTest>
+        <NarrativeText>This text SHALL contain exactly one [1..1] table (CONF:3315-370) such that it</NarrativeText>
+        <Description>There shall be one &lt;table&gt; containing all the values from all the Additional External Document Reference Organizers in the document. Each organizer has a single &lt;tbody&gt; and each reference template has a single &lt;tr&gt;.</Description>
+        <Notes>Additional External References</Notes>
+        <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="caption" conformance="SHALL" number="371" cardinality="1..1">
+          <SingleValueCode code="Additional References" />
+          <NarrativeText>SHALL contain exactly one [1..1] caption="Additional References" (CONF:3315-371).</NarrativeText>
+        </Constraint>
+        <Constraint isVerbose="false" mustSupport="true" context="tbody" conformance="SHALL" number="379" cardinality="1..*">
+          <NarrativeText>SHALL contain at least one [1..*] tbody (CONF:3315-379).</NarrativeText>
+          <Description>There SHALL be one &lt;tbody&gt; corresponding to each Reportable Condition Information Organizer/Additional External Reference Organizer the tbody/@ID contains the value of the id/@root of the Additional External Reference Organizer, prefixed with "ref_".</Description>
+          <Constraint isVerbose="false" mustSupport="true" context="@ID" conformance="SHALL" number="383" cardinality="1..1">
+            <NarrativeText>Such tbodies SHALL contain exactly one [1..1] @ID (CONF:3315-383).</NarrativeText>
+          </Constraint>
+          <Constraint isVerbose="false" mustSupport="true" context="tr" conformance="SHALL" number="380" cardinality="1..1">
+            <NarrativeText>Such tbodies SHALL contain exactly one [1..1] tr (CONF:3315-380).</NarrativeText>
+            <Description>There SHALL be one &lt;tr&gt; corresponding to each Additional External Reference Organizer/External Reference template.</Description>
+            <Constraint isVerbose="false" mustSupport="true" context="td" conformance="SHALL" number="381" cardinality="1..1" isBranch="true">
+              <NarrativeText>This tr SHALL contain exactly one [1..1] td (CONF:3315-381) such that it</NarrativeText>
+              <Description>td/content/@ID contains the value of the id/@root of the  External Reference template, prefixed with "ref_". The External Reference template references this narrative.</Description>
+              <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="content" conformance="SHALL" number="385" cardinality="1..1">
+                <NarrativeText>SHALL contain exactly one [1..1] content (CONF:3315-385).</NarrativeText>
+              </Constraint>
+            </Constraint>
+            <Constraint isVerbose="false" mustSupport="true" context="td" conformance="SHALL" number="382" cardinality="1..1" isBranch="true">
+              <NarrativeText>This tr SHALL contain exactly one [1..1] td (CONF:3315-382) such that it</NarrativeText>
+              <Description>td/linkHtml contains the reference.</Description>
+              <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="linkHtml" conformance="SHALL" number="386" cardinality="1..1">
+                <NarrativeText>SHALL contain exactly one [1..1] linkHtml (CONF:3315-386).</NarrativeText>
+              </Constraint>
+            </Constraint>
+          </Constraint>
+        </Constraint>
+      </Constraint>
+      -->
+    </Constraint>
+    <!--
+    <Constraint isInheritable="false" isVerbose="true" context="confidentialityCode" conformance="MAY" cardinality="0..1">
+      <NarrativeText>MAY contain zero or one [0..1] confidentialityCode (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isInheritable="false" isVerbose="true" context="languageCode" conformance="MAY" cardinality="0..1">
+      <NarrativeText>MAY contain zero or one [0..1] languageCode (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isInheritable="false" isVerbose="true" context="subject" conformance="MAY" cardinality="0..1">
+      <NarrativeText>MAY contain zero or one [0..1] subject (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isInheritable="false" isVerbose="true" context="author" conformance="MAY" cardinality="0..*">
+      <NarrativeText>MAY contain zero or more [0..*] author (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isInheritable="false" isVerbose="true" context="informant" conformance="MAY" cardinality="0..*">
+      <NarrativeText>MAY contain zero or more [0..*] informant (CONF:X-X).</NarrativeText>
+    </Constraint>
+    <Constraint isVerbose="false" context="entry" conformance="SHALL" number="108" cardinality="1..1" isBranch="true">
+      <NarrativeText>SHALL contain exactly one [1..1] entry (CONF:3315-108) such that it</NarrativeText>
+      <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="act" conformance="SHALL" number="176" cardinality="1..1" containedTemplateType="Act" containedTemplateOid="urn:hl7ii:2.16.840.1.22222.15.2.3.8:2017-04-01">
+        <NarrativeText>SHALL contain exactly one [1..1] XXXXX Summary (identifier: urn:hl7ii:2.16.840.1.22222.15.2.3.8:2017-04-01) (CONF:3315-176).</NarrativeText>
+      </Constraint>
+    </Constraint>
+    <Constraint isVerbose="false" mustSupport="true" context="component" conformance="SHALL" number="117" cardinality="1..1" isBranch="true">
+      <NarrativeText>SHALL contain exactly one [1..1] component (CONF:3315-117) such that it</NarrativeText>
+      <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="section" conformance="SHALL" number="119" cardinality="1..1" containedTemplateType="Section" containedTemplateOid="urn:hl7ii:2.16.840.1.22222.15.2.2.3:2017-04-01">
+        <NarrativeText>SHALL contain exactly one [1..1] Electronic Initial Case Report Section (identifier: urn:hl7ii:2.16.840.1.22222.15.2.2.3:2017-04-01) (CONF:3315-119).</NarrativeText>
+      </Constraint>
+    </Constraint>
+    <Constraint isVerbose="false" mustSupport="true" context="component" conformance="SHALL" number="118" cardinality="1..1" isBranch="true">
+      <NarrativeText>SHALL contain exactly one [1..1] component (CONF:3315-118) such that it</NarrativeText>
+      <Constraint isBranchIdentifier="true" isVerbose="false" mustSupport="true" context="section" conformance="SHALL" number="120" cardinality="1..1" containedTemplateType="Section" containedTemplateOid="urn:hl7ii:2.16.840.1.22222.15.2.2.4:2017-04-01">
+        <NarrativeText>SHALL contain exactly one [1..1] XXXXX Coded Information Section (identifier: urn:hl7ii:2.16.840.1.22222.15.2.2.4:2017-04-01) (CONF:3315-120).</NarrativeText>
+      </Constraint>
+    </Constraint>
+    -->
+  </Template>
+  <ImplementationGuide identifier="2.16.840.1.22222.15.2" organizationName="HL7" type="CDA" name="XXXXX">
+    <CustomTemplateType templateTypeName="document">
+      <CustomName>Document-Level Templates</CustomName>
+    </CustomTemplateType>
+    <CustomTemplateType templateTypeName="section">
+      <CustomName>Section-Level Templates</CustomName>
+    </CustomTemplateType>
+    <CustomTemplateType templateTypeName="entry">
+      <CustomName>Entry-Level Templates</CustomName>
+    </CustomTemplateType>
+    <CustomTemplateType templateTypeName="subentry">
+      <CustomName>subentry</CustomName>
+    </CustomTemplateType>
+    <CustomTemplateType templateTypeName="unspecified">
+      <CustomName>Other Templates</CustomName>
+    </CustomTemplateType>
+    <CardinalityDisplay display="[0..0]" cardinality="Zero" />
+    <CardinalityDisplay display="zero or one [0..1]" cardinality="ZeroOrOne" />
+    <CardinalityDisplay display="zero or more [0..*]" cardinality="ZeroToMany" />
+    <CardinalityDisplay display="exactly one [1..1]" cardinality="One" />
+    <CardinalityDisplay display="at least one [1..*]" cardinality="OneToMany" />
+    <Category name="" />
+  </ImplementationGuide>
+</Trifolia>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3" xmlns:mif="urn:hl7-org:v3/mif" targetNamespace="urn:hl7-org:v3" elementFormDefault="qualified">
+   <xs:include schemaLocation="POQM_MT000001UV.xsd"/>
+   <xs:element name="QualityMeasureDocument" type="POQM_MT000001UV.QualityMeasureDocument"/>
+   <xs:element name="account" type="POQM_MT000002UV.Account"/>
+   <xs:element name="act" type="POQM_MT000002UV.Act"/>
+   <xs:element name="publicHealthCase" type="POQM_MT000002UV.PublicHealthCase"/>
+   <xs:element name="substanceAdministration" type="POQM_MT000002UV.SubstanceAdministration"/>
+   <xs:element name="diagnosticImage" type="POQM_MT000002UV.DiagnosticImage"/>
+   <xs:element name="document" type="POQM_MT000002UV.Document"/>
+   <xs:element name="encounter" type="POQM_MT000002UV.Encounter"/>
+   <xs:element name="exposure" type="POQM_MT000002UV.Exposure"/>
+   <xs:element name="financialContract" type="POQM_MT000002UV.FinancialContract"/>
+   <xs:element name="financialTransaction" type="POQM_MT000002UV.FinancialTransaction"/>
+   <xs:element name="invoiceElement" type="POQM_MT000002UV.InvoiceElement"/>
+   <xs:element name="observation" type="POQM_MT000002UV.Observation"/>
+   <xs:element name="procedure" type="POQM_MT000002UV.Procedure"/>
+   <xs:element name="supply" type="POQM_MT000002UV.Supply"/>
+</xs:schema>

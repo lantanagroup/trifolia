@@ -155,7 +155,7 @@ namespace Trifolia.Import.Native
                             Name = importSample.name,
                             XmlSample = importSample.Value
                         };
-                        this.tdb.TemplateSamples.AddObject(foundSample);
+                        this.tdb.TemplateSamples.Add(foundSample);
                     }
                     else
                     {
@@ -175,7 +175,7 @@ namespace Trifolia.Import.Native
                                  select ts).ToList();
 
             foreach (var deleteSample in deleteSamples)
-                this.tdb.TemplateSamples.DeleteObject(deleteSample);
+                this.tdb.TemplateSamples.Remove(deleteSample);
         }
 
         private TDBTemplate AddImportTemplate(Trifolia.Shared.ImportExport.Model.TrifoliaTemplate importTemplate)
@@ -223,7 +223,7 @@ namespace Trifolia.Import.Native
                 else 
                     template.Author = CheckPoint.Instance.GetUser(this.tdb);
 
-                this.tdb.Templates.AddObject(template);
+                this.tdb.Templates.Add(template);
             }
 
             // Find implementation guide type
@@ -337,7 +337,7 @@ namespace Trifolia.Import.Native
             foreach (var existingExtension in template.Extensions.ToList())
             {
                 if (importTemplate.Extension.Count(y => y.identifier == existingExtension.Identifier) == 0)
-                    this.tdb.TemplateExtensions.DeleteObject(existingExtension);
+                    this.tdb.TemplateExtensions.Remove(existingExtension);
             }
 
             foreach (var importExtension in importTemplate.Extension)
@@ -369,19 +369,19 @@ namespace Trifolia.Import.Native
             if (this.tdb is TrifoliaDatabase)
             {
                 var dataSource = this.tdb as TrifoliaDatabase;
-                var templateState = dataSource.ObjectStateManager.GetObjectStateEntry(template).State;
+                var templateState = dataSource.Entry(template).State;
 
                 if (templateState == System.Data.Entity.EntityState.Unchanged)
                 {
                     var constraintStates = (from c in template.ChildConstraints
-                                            where dataSource.ObjectStateManager.GetObjectStateEntry(c).State != System.Data.Entity.EntityState.Unchanged
+                                            where dataSource.Entry(c).State != System.Data.Entity.EntityState.Unchanged
                                             select c);
                     var constraintSampleStates = (from c in template.ChildConstraints
                                                   join cs in this.tdb.TemplateConstraintSamples on c equals cs.Constraint
-                                                  where dataSource.ObjectStateManager.GetObjectStateEntry(cs).State != System.Data.Entity.EntityState.Unchanged
+                                                  where dataSource.Entry(cs).State != System.Data.Entity.EntityState.Unchanged
                                                   select cs);
                     var templateSampleStates = (from s in template.TemplateSamples
-                                                where dataSource.ObjectStateManager.GetObjectStateEntry(s).State != System.Data.Entity.EntityState.Unchanged
+                                                where dataSource.Entry(s).State != System.Data.Entity.EntityState.Unchanged
                                                 select s);
 
                     if (constraintStates.Count() > 0 || constraintSampleStates.Count() > 0 || templateSampleStates.Count() > 0)
@@ -528,7 +528,7 @@ namespace Trifolia.Import.Native
                             Name = importSample.name,
                             SampleText = importSample.Value
                         };
-                        this.tdb.TemplateConstraintSamples.AddObject(newSample);
+                        this.tdb.TemplateConstraintSamples.Add(newSample);
                     }
                     else
                     {
@@ -548,7 +548,7 @@ namespace Trifolia.Import.Native
                                  select cs).ToList();
 
             foreach (var deleteSample in deleteSamples)
-                this.tdb.TemplateConstraintSamples.DeleteObject(deleteSample);
+                this.tdb.TemplateConstraintSamples.Remove(deleteSample);
         }
 
         private void UpdateConstraintContainedTemplate(TemplateConstraint constraint, string containedTemplateOid)
@@ -573,7 +573,7 @@ namespace Trifolia.Import.Native
                         containedTemplateOid,
                         constraint.Number,
                         constraint.Template.Oid));
-                    throw new Exception("Constraint has an error.");
+                    // TODO: Eventually add add a relationship that is not bound to a template stored in the database
                 }
 
                 if (constraint.ContainedTemplate != containedTemplate)
@@ -613,7 +613,7 @@ namespace Trifolia.Import.Native
                         Description = "Automatically generated by template import",
                         LastUpdate = DateTime.Now
                     };
-                    this.tdb.ValueSets.AddObject(newValueSet);
+                    this.tdb.ValueSets.Add(newValueSet);
                     foundValueSets.Add(newValueSet);
                 }
 
@@ -650,7 +650,7 @@ namespace Trifolia.Import.Native
                         Oid = importCs.identifier,
                         Description = "Automatically generated by template import"
                     };
-                    this.tdb.CodeSystems.AddObject(foundCodeSystem);
+                    this.tdb.CodeSystems.Add(foundCodeSystem);
                 }
 
                 constraint.CodeSystem = foundCodeSystem;
@@ -692,7 +692,7 @@ namespace Trifolia.Import.Native
                 constraint.DisplayNumber = importConstraint.displayNumber;
                 constraint.Template = template;
                 constraint.ParentConstraint = parentConstraint;
-                this.tdb.TemplateConstraints.AddObject(constraint);
+                this.tdb.TemplateConstraints.Add(constraint);
 
                 // TODO: Order the constraint? Or let the template re-order the constraints when it is edited?
             }

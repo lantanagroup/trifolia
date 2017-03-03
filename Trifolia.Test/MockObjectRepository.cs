@@ -7,10 +7,13 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Reflection;
+using Moq;
 
 using Trifolia.Shared;
 using Trifolia.DB;
 using Trifolia.Authorization;
+using System.Collections.ObjectModel;
+using System.Data.Entity.Infrastructure;
 
 namespace Trifolia.Test
 {
@@ -35,27 +38,27 @@ namespace Trifolia.Test
 
         public MockObjectRepository()
         {
-            this.PublishStatuses.AddObject(new PublishStatus()
+            this.PublishStatuses.Add(new PublishStatus()
             {
                 Id = 1,
                 Status = "Draft"
             });
-            this.PublishStatuses.AddObject(new PublishStatus()
+            this.PublishStatuses.Add(new PublishStatus()
             {
                 Id = 2,
                 Status = "Ballot"
             });
-            this.PublishStatuses.AddObject(new PublishStatus()
+            this.PublishStatuses.Add(new PublishStatus()
             {
                 Id = 3,
                 Status = "Published"
             });
-            this.PublishStatuses.AddObject(new PublishStatus()
+            this.PublishStatuses.Add(new PublishStatus()
             {
                 Id = 4,
                 Status = "Deprecated"
             });
-            this.PublishStatuses.AddObject(new PublishStatus()
+            this.PublishStatuses.Add(new PublishStatus()
             {
                 Id = 5,
                 Status = "Retired"
@@ -298,196 +301,314 @@ namespace Trifolia.Test
 
         }
 
-        MockDbSet<AuditEntry> auditEntries = new MockDbSet<AuditEntry>();
-        MockDbSet<Template> templates = new MockDbSet<Template>();
-        MockDbSet<CodeSystem> codeSystems = new MockDbSet<CodeSystem>();
-        MockDbSet<GreenConstraint> greenConstraints = new MockDbSet<GreenConstraint>();
-        MockDbSet<GreenTemplate> greenTemplates = new MockDbSet<GreenTemplate>();
-        MockDbSet<ImplementationGuide> implementationGuides = new MockDbSet<ImplementationGuide>();
-        MockDbSet<ImplementationGuideSetting> implementationGuideSettings = new MockDbSet<ImplementationGuideSetting>();
-        MockDbSet<TemplateConstraint> constraints = new MockDbSet<TemplateConstraint>();
-        MockDbSet<TemplateType> templateTypes = new MockDbSet<TemplateType>();
-        MockDbSet<ValueSet> valuesets = new MockDbSet<ValueSet>();
-        MockDbSet<ValueSetMember> valuesetMembers = new MockDbSet<ValueSetMember>();
-        MockDbSet<ImplementationGuideTemplateType> implementationGuideTemplateTypes = new MockDbSet<ImplementationGuideTemplateType>();
-        MockDbSet<ImplementationGuideTypeDataType> dataTypes = new MockDbSet<ImplementationGuideTypeDataType>();
-        MockDbSet<ImplementationGuideType> implementationGuideTypes = new MockDbSet<ImplementationGuideType>();
-        MockDbSet<ImplementationGuideFile> implementationGuideFiles = new MockDbSet<ImplementationGuideFile>();
-        MockDbSet<ImplementationGuideFileData> implementationGuideFileDatas = new MockDbSet<ImplementationGuideFileData>();
-        MockDbSet<Organization> organizations = new MockDbSet<Organization>();
-        MockDbSet<ImplementationGuideSchematronPattern> implementationGuideSchematronPatterns = new MockDbSet<ImplementationGuideSchematronPattern>();
-        MockDbSet<PublishStatus> publishStatuses = new MockDbSet<PublishStatus>();
-        MockDbSet<Role> roles = new MockDbSet<Role>();
-        MockDbSet<AppSecurable> appSecurables = new MockDbSet<AppSecurable>();
-        MockDbSet<RoleAppSecurable> roleAppSecurables = new MockDbSet<RoleAppSecurable>();
-        MockDbSet<UserRole> userRoles = new MockDbSet<UserRole>();
-        MockDbSet<User> users = new MockDbSet<User>();
-        MockDbSet<RoleRestriction> roleRestrictions = new MockDbSet<RoleRestriction>();
-        MockDbSet<Group> groups = new MockDbSet<Group>();
-        MockDbSet<UserGroup> userGroups = new MockDbSet<UserGroup>();
-        MockDbSet<GroupManager> groupManagers = new MockDbSet<GroupManager>();
-        MockDbSet<ImplementationGuidePermission> implementationGuidePermissions = new MockDbSet<ImplementationGuidePermission>();
-        MockDbSet<TemplateConstraintSample> templateConstraintSamples = new MockDbSet<TemplateConstraintSample>();
-        MockDbSet<TemplateSample> templateSamples = new MockDbSet<TemplateSample>();
-        MockDbSet<ImplementationGuideSection> implementationGuideSections = new MockDbSet<ImplementationGuideSection>();
-        MockDbSet<TemplateExtension> templateExtensions = new MockDbSet<TemplateExtension>();
+        private static DbSet<T> CreateMockDbSet<T>() where T: class
+        {
+            var data = new List<T>();
+            var dataQueryable = data.AsQueryable();
+            var mockSet = new Mock<DbSet<T>>();
+            mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(dataQueryable.Provider);
+            mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(dataQueryable.Expression);
+            mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(dataQueryable.ElementType);
+            mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => dataQueryable.GetEnumerator());
+            mockSet.Setup(m => m.AsNoTracking()).Returns(() => mockSet.Object);
+            mockSet.Setup(d => d.Remove(It.IsAny<T>())).Callback<T>((s) => data.Remove(s));
+            
+            mockSet.Setup(d => d.Add(It.IsAny<T>())).Callback<T>((s) =>
+            {
+                Template template = s as Template;
+                TemplateConstraint constraint = s as TemplateConstraint;
+                ImplementationGuide ig = s as ImplementationGuide;
+                ValueSet vs = s as ValueSet;
+                ValueSetMember vsm = s as ValueSetMember;
 
-        public IObjectSet<AuditEntry> AuditEntries
+                if (template != null)
+                {
+                    if (template.Id == 0)
+                        template.Id = data.Select(y => (y as Template).Id).DefaultIfEmpty(0).Max() + 1;
+
+                    if (template.OwningImplementationGuide != null && !template.OwningImplementationGuide.ChildTemplates.Contains(template))
+                        template.OwningImplementationGuide.ChildTemplates.Add(template);
+
+                    if (template.ImplementationGuideType != null && !template.ImplementationGuideType.Templates.Contains(template))
+                        template.ImplementationGuideType.Templates.Add(template);
+
+                    if (template.Status != null && !template.Status.Templates.Contains(template))
+                        template.Status.Templates.Add(template);
+
+                    if (template.ImpliedTemplate != null && !template.ImpliedTemplate.ImplyingTemplates.Contains(template))
+                        template.ImpliedTemplate.ImplyingTemplates.Add(template);
+
+                    if (template.PreviousVersion != null && !template.PreviousVersion.NextVersions.Contains(template))
+                        template.PreviousVersion.NextVersions.Add(template);
+
+                    if (template.Author != null && !template.Author.Templates.Contains(template))
+                        template.Author.Templates.Add(template);
+                }
+                
+                if (constraint != null)
+                {
+                    if (constraint.Id == 0)
+                        constraint.Id = data.Select(y => (y as TemplateConstraint).Id).DefaultIfEmpty(0).Max() + 1;
+
+                    if (constraint.CodeSystem != null && !constraint.CodeSystem.Constraints.Contains(constraint))
+                        constraint.CodeSystem.Constraints.Add(constraint);
+
+                    if (constraint.ContainedTemplate != null && !constraint.ContainedTemplate.ContainingConstraints.Contains(constraint))
+                        constraint.ContainedTemplate.ContainingConstraints.Add(constraint);
+
+                    if (constraint.ParentConstraint != null && !constraint.ParentConstraint.ChildConstraints.Contains(constraint))
+                        constraint.ParentConstraint.ChildConstraints.Add(constraint);
+
+                    if (constraint.Template != null && !constraint.Template.ChildConstraints.Contains(constraint))
+                        constraint.Template.ChildConstraints.Add(constraint);
+
+                    if (constraint.ValueSet != null && !constraint.ValueSet.Constraints.Contains(constraint))
+                        constraint.ValueSet.Constraints.Add(constraint);
+                }
+
+                if (ig != null)
+                {
+                    if (ig.Id == 0)
+                        ig.Id = data.Select(y => (y as ImplementationGuide).Id).DefaultIfEmpty(0).Max() + 1;
+
+                    if (ig.AccessManager != null && !ig.AccessManager.AccessManagerImplemntationGuides.Contains(ig))
+                        ig.AccessManager.AccessManagerImplemntationGuides.Add(ig);
+
+                    if (ig.ImplementationGuideType != null && !ig.ImplementationGuideType.ImplementationGuides.Contains(ig))
+                        ig.ImplementationGuideType.ImplementationGuides.Add(ig);
+
+                    if (ig.Organization != null && !ig.Organization.ImplementationGuides.Contains(ig))
+                        ig.Organization.ImplementationGuides.Add(ig);
+
+                    if (ig.PreviousVersion != null && !ig.PreviousVersion.NextVersions.Contains(ig))
+                        ig.PreviousVersion.NextVersions.Add(ig);
+
+                    if (ig.Organization != null && !ig.Organization.ImplementationGuides.Contains(ig))
+                        ig.Organization.ImplementationGuides.Add(ig);
+
+                    if (ig.PublishStatus != null && !ig.PublishStatus.ImplementationGuides.Contains(ig))
+                        ig.PublishStatus.ImplementationGuides.Add(ig);
+                }
+                
+                if (vs != null)
+                {
+                    if (vs.Id == 0)
+                        vs.Id = data.Select(y => (y as ValueSet).Id).DefaultIfEmpty(0).Max() + 1;
+                }
+
+                if (vsm != null)
+                {
+                    if (vsm.Id == 0)
+                        vsm.Id = data.Select(y => (y as ValueSetMember).Id).DefaultIfEmpty(0).Max() + 1;
+
+                    if (vsm.CodeSystem != null && !vsm.CodeSystem.Members.Contains(vsm))
+                        vsm.CodeSystem.Members.Add(vsm);
+
+                    if (vsm.ValueSet != null && !vsm.ValueSet.Members.Contains(vsm))
+                        vsm.ValueSet.Members.Add(vsm);
+                }
+
+                data.Add(s);
+            });
+            mockSet.Setup(d => d.AddRange(It.IsAny<IEnumerable<T>>())).Callback<IEnumerable<T>>((s) => 
+            {
+                foreach (var a in s)
+                    mockSet.Object.Add(a);
+            });
+
+            return mockSet.Object;
+        }
+
+        DbSet<AuditEntry> auditEntries = CreateMockDbSet<AuditEntry>();
+        DbSet<Template> templates = CreateMockDbSet<Template>();
+        DbSet<CodeSystem> codeSystems = CreateMockDbSet<CodeSystem>();
+        DbSet<GreenConstraint> greenConstraints = CreateMockDbSet<GreenConstraint>();
+        DbSet<GreenTemplate> greenTemplates = CreateMockDbSet<GreenTemplate>();
+        DbSet<ImplementationGuide> implementationGuides = CreateMockDbSet<ImplementationGuide>();
+        DbSet<ImplementationGuideSetting> implementationGuideSettings = CreateMockDbSet<ImplementationGuideSetting>();
+        DbSet<TemplateConstraint> constraints = CreateMockDbSet<TemplateConstraint>();
+        DbSet<TemplateType> templateTypes = CreateMockDbSet<TemplateType>();
+        DbSet<ValueSet> valuesets = CreateMockDbSet<ValueSet>();
+        DbSet<ValueSetMember> valuesetMembers = CreateMockDbSet<ValueSetMember>();
+        DbSet<ImplementationGuideTemplateType> implementationGuideTemplateTypes = CreateMockDbSet<ImplementationGuideTemplateType>();
+        DbSet<ImplementationGuideTypeDataType> dataTypes = CreateMockDbSet<ImplementationGuideTypeDataType>();
+        DbSet<ImplementationGuideType> implementationGuideTypes = CreateMockDbSet<ImplementationGuideType>();
+        DbSet<ImplementationGuideFile> implementationGuideFiles = CreateMockDbSet<ImplementationGuideFile>();
+        DbSet<ImplementationGuideFileData> implementationGuideFileDatas = CreateMockDbSet<ImplementationGuideFileData>();
+        DbSet<Organization> organizations = CreateMockDbSet<Organization>();
+        DbSet<ImplementationGuideSchematronPattern> implementationGuideSchematronPatterns = CreateMockDbSet<ImplementationGuideSchematronPattern>();
+        DbSet<PublishStatus> publishStatuses = CreateMockDbSet<PublishStatus>();
+        DbSet<Role> roles = CreateMockDbSet<Role>();
+        DbSet<AppSecurable> appSecurables = CreateMockDbSet<AppSecurable>();
+        DbSet<RoleAppSecurable> roleAppSecurables = CreateMockDbSet<RoleAppSecurable>();
+        DbSet<UserRole> userRoles = CreateMockDbSet<UserRole>();
+        DbSet<User> users = CreateMockDbSet<User>();
+        DbSet<RoleRestriction> roleRestrictions = CreateMockDbSet<RoleRestriction>();
+        DbSet<Group> groups = CreateMockDbSet<Group>();
+        DbSet<UserGroup> userGroups = CreateMockDbSet<UserGroup>();
+        DbSet<GroupManager> groupManagers = CreateMockDbSet<GroupManager>();
+        DbSet<ImplementationGuidePermission> implementationGuidePermissions = CreateMockDbSet<ImplementationGuidePermission>();
+        DbSet<TemplateConstraintSample> templateConstraintSamples = CreateMockDbSet<TemplateConstraintSample>();
+        DbSet<TemplateSample> templateSamples = CreateMockDbSet<TemplateSample>();
+        DbSet<ImplementationGuideSection> implementationGuideSections = CreateMockDbSet<ImplementationGuideSection>();
+        DbSet<TemplateExtension> templateExtensions = CreateMockDbSet<TemplateExtension>();
+
+        public DbSet<AuditEntry> AuditEntries
         {
             get { return auditEntries; }
         }
 
-        public IObjectSet<CodeSystem> CodeSystems
+        public DbSet<CodeSystem> CodeSystems
         {
             get { return codeSystems; }
         }
 
-        public IObjectSet<GreenConstraint> GreenConstraints
+        public DbSet<GreenConstraint> GreenConstraints
         {
             get { return greenConstraints; }
         }
 
-        public IObjectSet<GreenTemplate> GreenTemplates
+        public DbSet<GreenTemplate> GreenTemplates
         {
             get { return greenTemplates; }
         }
 
-        public IObjectSet<ImplementationGuide> ImplementationGuides
+        public DbSet<ImplementationGuide> ImplementationGuides
         {
             get { return implementationGuides; }
         }
 
-        public IObjectSet<ImplementationGuideSetting> ImplementationGuideSettings
+        public DbSet<ImplementationGuideSetting> ImplementationGuideSettings
         {
             get { return implementationGuideSettings; }
         }
 
-        public IObjectSet<Template> Templates
+        public DbSet<Template> Templates
         {
             get { return this.templates; }
         }
 
-        public IObjectSet<TemplateConstraint> TemplateConstraints
+        public DbSet<TemplateConstraint> TemplateConstraints
         {
             get { return constraints; }
         }
 
-        public IObjectSet<TemplateType> TemplateTypes
+        public DbSet<TemplateType> TemplateTypes
         {
             get { return templateTypes; }
         }
 
-        public IObjectSet<ValueSet> ValueSets
+        public DbSet<ValueSet> ValueSets
         {
             get { return valuesets; }
         }
 
-        public IObjectSet<ValueSetMember> ValueSetMembers
+        public DbSet<ValueSetMember> ValueSetMembers
         {
             get { return valuesetMembers; }
         }
 
-        public IObjectSet<ImplementationGuideTemplateType> ImplementationGuideTemplateTypes
+        public DbSet<ImplementationGuideTemplateType> ImplementationGuideTemplateTypes
         {
             get { return implementationGuideTemplateTypes; }
         }
 
-        public IObjectSet<ImplementationGuideTypeDataType> ImplementationGuideTypeDataTypes
+        public DbSet<ImplementationGuideTypeDataType> ImplementationGuideTypeDataTypes
         {
             get { return dataTypes; }
         }
 
-        public IObjectSet<ImplementationGuideType> ImplementationGuideTypes
+        public DbSet<ImplementationGuideType> ImplementationGuideTypes
         {
             get { return implementationGuideTypes; }
         }
 
-        public IObjectSet<ImplementationGuideFile> ImplementationGuideFiles
+        public DbSet<ImplementationGuideFile> ImplementationGuideFiles
         {
             get { return implementationGuideFiles; }
         }
 
-        public IObjectSet<ImplementationGuideFileData> ImplementationGuideFileDatas
+        public DbSet<ImplementationGuideFileData> ImplementationGuideFileDatas
         {
             get { return implementationGuideFileDatas; }
         }
 
-        public IObjectSet<Organization> Organizations
+        public DbSet<Organization> Organizations
         {
             get { return organizations; }
         }
 
-        public IObjectSet<ImplementationGuideSchematronPattern> ImplementationGuideSchematronPatterns
+        public DbSet<ImplementationGuideSchematronPattern> ImplementationGuideSchematronPatterns
         {
             get { return implementationGuideSchematronPatterns; }
         }
 
-        public IObjectSet<PublishStatus> PublishStatuses
+        public DbSet<PublishStatus> PublishStatuses
         {
             get { return publishStatuses; }
         }
 
-        public IObjectSet<Role> Roles
+        public DbSet<Role> Roles
         {
             get { return roles; }
         }
 
-        public IObjectSet<AppSecurable> AppSecurables
+        public DbSet<AppSecurable> AppSecurables
         {
             get { return appSecurables; }
         }
 
-        public IObjectSet<RoleAppSecurable> RoleAppSecurables
+        public DbSet<RoleAppSecurable> RoleAppSecurables
         {
             get { return roleAppSecurables; }
         }
 
-        public IObjectSet<UserRole> UserRoles
+        public DbSet<UserRole> UserRoles
         {
             get { return userRoles; }
         }
 
-        public IObjectSet<User> Users
+        public DbSet<User> Users
         {
             get { return users; }
         }
 
-        public IObjectSet<RoleRestriction> RoleRestrictions
+        public DbSet<RoleRestriction> RoleRestrictions
         {
             get { return roleRestrictions; }
         }
 
-        public IObjectSet<Group> Groups
+        public DbSet<Group> Groups
         {
             get { return groups; }
         }
 
-        public IObjectSet<UserGroup> UserGroups
+        public DbSet<UserGroup> UserGroups
         {
             get { return userGroups; }
         }
 
-        public IObjectSet<GroupManager> GroupManagers
+        public DbSet<GroupManager> GroupManagers
         {
             get { return this.groupManagers; }
         }
 
-        public IObjectSet<ImplementationGuidePermission> ImplementationGuidePermissions
+        public DbSet<ImplementationGuidePermission> ImplementationGuidePermissions
         {
             get { return implementationGuidePermissions; }
         }
 
-        public IObjectSet<TemplateConstraintSample> TemplateConstraintSamples
+        public DbSet<TemplateConstraintSample> TemplateConstraintSamples
         {
             get { return templateConstraintSamples; }
         }
 
-        public IObjectSet<TemplateSample> TemplateSamples
+        public DbSet<TemplateSample> TemplateSamples
         {
             get { return templateSamples; }
         }
 
-        public IObjectSet<ViewIGAuditTrail> ViewIGAuditTrails
+        public DbSet<ViewIGAuditTrail> ViewIGAuditTrails
         {
             get
             {
@@ -495,7 +616,7 @@ namespace Trifolia.Test
             }
         }
 
-        public IObjectSet<ImplementationGuideSection> ImplementationGuideSections
+        public DbSet<ImplementationGuideSection> ImplementationGuideSections
         {
             get
             {
@@ -503,7 +624,7 @@ namespace Trifolia.Test
             }
         }
 
-        public IObjectSet<TemplateExtension> TemplateExtensions
+        public DbSet<TemplateExtension> TemplateExtensions
         {
             get
             {
@@ -511,7 +632,7 @@ namespace Trifolia.Test
             }
         }
 
-        public IObjectSet<ViewTemplatePermission> ViewTemplatePermissions
+        public DbSet<ViewTemplatePermission> ViewTemplatePermissions
         {
             get
             {
@@ -536,11 +657,13 @@ namespace Trifolia.Test
                                           UserId = ug.UserId
                                       });
 
-                return new MockDbSet<ViewTemplatePermission>(results);
+                var mockDbSet = CreateMockDbSet<ViewTemplatePermission>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
             }
         }
 
-        public IObjectSet<ViewImplementationGuidePermission> ViewImplementationGuidePermissions
+        public DbSet<ViewImplementationGuidePermission> ViewImplementationGuidePermissions
         {
             get
             {
@@ -561,11 +684,13 @@ namespace Trifolia.Test
                                           UserId = ug.UserId
                                       });
 
-                return new MockDbSet<ViewImplementationGuidePermission>(results);
+                var mockDbSet = CreateMockDbSet<ViewImplementationGuidePermission>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
             }
         }
 
-        public IObjectSet<ViewImplementationGuideTemplate> ViewImplementationGuideTemplates
+        public DbSet<ViewImplementationGuideTemplate> ViewImplementationGuideTemplates
         {
             get
             {
@@ -574,7 +699,6 @@ namespace Trifolia.Test
                                select new ViewImplementationGuideTemplate()
                                {
                                    ImplementationGuideId = ig.Id,
-                                   Template = t,
                                    TemplateId = t.Id
                                })
                                .Union(
@@ -584,15 +708,16 @@ namespace Trifolia.Test
                                select new ViewImplementationGuideTemplate()
                                {
                                    ImplementationGuideId = ig.Id,
-                                   Template = t,
                                    TemplateId = t.Id
                                });
 
-                return new MockDbSet<ViewImplementationGuideTemplate>(results);                                           
+                var mockDbSet = CreateMockDbSet<ViewImplementationGuideTemplate>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
             }
         }
 
-        public IObjectSet<ViewUserSecurable> ViewUserSecurables
+        public DbSet<ViewUserSecurable> ViewUserSecurables
         {
             get
             {
@@ -605,11 +730,13 @@ namespace Trifolia.Test
                                    SecurableName = aps.Name
                                }).Distinct();
 
-                return new MockDbSet<ViewUserSecurable>(results);
+                var mockDbSet = CreateMockDbSet<ViewUserSecurable>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
             }
         }
 
-        public IObjectSet<ViewImplementationGuideFile> ViewImplementationGuideFiles
+        public DbSet<ViewImplementationGuideFile> ViewImplementationGuideFiles
         {
             get
             {
@@ -639,11 +766,13 @@ namespace Trifolia.Test
                                    UpdatedDate = igfd.UpdatedDate
                                });
 
-                return new MockDbSet<ViewImplementationGuideFile>(results);
+                var mockDbSet = CreateMockDbSet<ViewImplementationGuideFile>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
             }
         }
 
-        public IObjectSet<ViewTemplate> ViewTemplates
+        public DbSet<ViewTemplate> ViewTemplates
         {
             get
             {
@@ -670,11 +799,13 @@ namespace Trifolia.Test
                                    TemplateTypeName = t.TemplateType != null ? t.TemplateType.Name : null
                                }).Distinct();
 
-                return new MockDbSet<ViewTemplate>(results);
+                var mockDbSet = CreateMockDbSet<ViewTemplate>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
             }
         }
 
-        public IObjectSet<ViewTemplateList> ViewTemplateLists
+        public DbSet<ViewTemplateList> ViewTemplateLists
         {
             get
             {
@@ -694,7 +825,9 @@ namespace Trifolia.Test
                                    // TODO: Fill in other fields
                                }).Distinct();
 
-                return new MockDbSet<ViewTemplateList>(results);
+                var mockDbSet = CreateMockDbSet<ViewTemplateList>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
             }
         }
 
@@ -716,7 +849,7 @@ namespace Trifolia.Test
                     ContactEmail = contactEmail,
                     ContactPhone = contactPhone
                 };
-                this.Organizations.AddObject(foundOrganization);
+                this.Organizations.Add(foundOrganization);
             }
 
             return foundOrganization;
@@ -819,7 +952,7 @@ namespace Trifolia.Test
                     break;
             }
 
-            this.Templates.AddObject(template);
+            this.Templates.Add(template);
 
             if (owningImplementationGuide != null)
                 owningImplementationGuide.ChildTemplates.Add(template);
@@ -847,7 +980,7 @@ namespace Trifolia.Test
                     DataTypeName = name
                 };
 
-                this.ImplementationGuideTypeDataTypes.AddObject(dt);
+                this.ImplementationGuideTypeDataTypes.Add(dt);
                 igType.DataTypes.Add(dt);
             }
 
@@ -878,7 +1011,7 @@ namespace Trifolia.Test
                     SchemaURI = uri
                 };
 
-                this.implementationGuideTypes.AddObject(igType);
+                this.implementationGuideTypes.Add(igType);
             }
 
             return igType;
@@ -922,7 +1055,7 @@ namespace Trifolia.Test
                 };
 
                 igType.TemplateTypes.Add(type);
-                this.TemplateTypes.AddObject(type);
+                this.TemplateTypes.Add(type);
             }
 
             return type;
@@ -977,7 +1110,7 @@ namespace Trifolia.Test
                 };
 
                 igType.ImplementationGuides.Add(ig);
-                this.ImplementationGuides.AddObject(ig);
+                this.ImplementationGuides.Add(ig);
             }
 
             return ig;
@@ -1020,7 +1153,7 @@ namespace Trifolia.Test
             }
             
             template.ChildConstraints.Add(constraint);
-            this.TemplateConstraints.AddObject(constraint);
+            this.TemplateConstraints.Add(constraint);
 
             return constraint;
         }
@@ -1087,12 +1220,14 @@ namespace Trifolia.Test
 
             if (parentConstraint != null)
             {
+                parentConstraint.ChildConstraints.Add(constraint);
                 constraint.ParentConstraint = parentConstraint;
                 constraint.ParentConstraintId = parentConstraint.Id;
             }
 
             if (containedTemplate != null)
             {
+                containedTemplate.ContainingConstraints.Add(constraint);
                 constraint.ContainedTemplate = containedTemplate;
                 constraint.ContainedTemplateId = containedTemplate.Id;
             }
@@ -1111,12 +1246,14 @@ namespace Trifolia.Test
 
             if (valueSet != null)
             {
+                valueSet.Constraints.Add(constraint);
                 constraint.ValueSet = valueSet;
                 constraint.ValueSetId = valueSet.Id;
             }
 
             if (codeSystem != null)
             {
+                codeSystem.Constraints.Add(constraint);
                 constraint.CodeSystem = codeSystem;
                 constraint.CodeSystemId = codeSystem.Id;
             }
@@ -1131,7 +1268,7 @@ namespace Trifolia.Test
                 constraint.IsBranchIdentifier = isBranchIdentifier.Value;
 
             template.ChildConstraints.Add(constraint);
-            this.TemplateConstraints.AddObject(constraint);
+            this.TemplateConstraints.Add(constraint);
 
             return constraint;
         }
@@ -1166,7 +1303,7 @@ namespace Trifolia.Test
                     LastUpdate = lastUpdate != null ? lastUpdate.Value : DateTime.Now
                 };
 
-                this.CodeSystems.AddObject(codeSystem);
+                this.CodeSystems.Add(codeSystem);
             }
 
             return codeSystem;
@@ -1208,7 +1345,7 @@ namespace Trifolia.Test
                     LastUpdate = lastUpdate != null ? lastUpdate.Value : DateTime.Now
                 };
 
-                this.ValueSets.AddObject(valueSet);
+                this.ValueSets.Add(valueSet);
             }
 
             return valueSet;
@@ -1255,7 +1392,8 @@ namespace Trifolia.Test
                     StatusDate = statusDate
                 };
 
-                this.ValueSetMembers.AddObject(member);
+                this.ValueSetMembers.Add(member);
+                valueSet.Members.Add(member);
             }
 
             return member;
@@ -1279,7 +1417,7 @@ namespace Trifolia.Test
                 this.CreateImplementationGuideFileData(igf, content);
             }
 
-            this.ImplementationGuideFiles.AddObject(igf);
+            this.ImplementationGuideFiles.Add(igf);
             ig.Files.Add(igf);
 
             return igf;
@@ -1298,7 +1436,7 @@ namespace Trifolia.Test
                 UpdatedBy = "unit test"
             };
 
-            this.ImplementationGuideFileDatas.AddObject(igFileData);
+            this.ImplementationGuideFileDatas.Add(igFileData);
             igFile.Versions.Add(igFileData);
 
             return igFileData;
@@ -1317,7 +1455,7 @@ namespace Trifolia.Test
                 UserName = username
             };
 
-            this.Users.AddObject(newUser);
+            this.Users.Add(newUser);
 
             return newUser;
         }
@@ -1335,7 +1473,7 @@ namespace Trifolia.Test
                 Name = roleName
             };
 
-            this.Roles.AddObject(role);
+            this.Roles.Add(role);
 
             return role;
         }
@@ -1364,7 +1502,7 @@ namespace Trifolia.Test
                     Role = role
                 };
 
-                this.RoleAppSecurables.AddObject(newRoleAppSecurable);
+                this.RoleAppSecurables.Add(newRoleAppSecurable);
                 role.AppSecurables.Add(newRoleAppSecurable);
             }
         }
@@ -1382,7 +1520,7 @@ namespace Trifolia.Test
                 if (foundRoleSecurable != null)
                 {
                     role.AppSecurables.Remove(foundRoleSecurable);
-                    this.RoleAppSecurables.DeleteObject(foundRoleSecurable);
+                    this.RoleAppSecurables.Remove(foundRoleSecurable);
                 }
             }
         }
@@ -1405,7 +1543,7 @@ namespace Trifolia.Test
             };
 
             foundUser.Roles.Add(newUserRole);
-            this.UserRoles.AddObject(newUserRole);
+            this.UserRoles.Add(newUserRole);
         }
 
         public AppSecurable FindOrCreateSecurable(string securableName, string description = null)
@@ -1422,7 +1560,7 @@ namespace Trifolia.Test
                 Description = description
             };
 
-            this.AppSecurables.AddObject(securable);
+            this.AppSecurables.Add(securable);
 
             return securable;
         }
@@ -1447,7 +1585,7 @@ namespace Trifolia.Test
                 Type = "User"
             };
 
-            this.ImplementationGuidePermissions.AddObject(newPerm);
+            this.ImplementationGuidePermissions.Add(newPerm);
             ig.Permissions.Add(newPerm);
         }
 
@@ -1464,7 +1602,7 @@ namespace Trifolia.Test
                     ImplementationGuideType = igType
                 };
 
-                this.ImplementationGuideTypeDataTypes.AddObject(dataType);
+                this.ImplementationGuideTypeDataTypes.Add(dataType);
             }
 
             return dataType;
@@ -1496,11 +1634,6 @@ namespace Trifolia.Test
             }
         }
 
-        public void Refresh(RefreshMode refreshMode, Object entity)
-        {
-
-        }
-
         public void ChangeObjectState(object entity, System.Data.Entity.EntityState entityState)
         {
             
@@ -1519,6 +1652,19 @@ namespace Trifolia.Test
 
         public int SaveChanges()
         {
+            foreach (var template in this.Templates)
+            {
+                // Mock the association between template and child constraints
+                foreach (var constraint in template.ChildConstraints.Where(y => y.TemplateId == 0 || y.Template == null))
+                {
+                    if (!this.TemplateConstraints.Contains(constraint))
+                        this.TemplateConstraints.Add(constraint);
+
+                    constraint.Template = template;
+                    constraint.TemplateId = template.Id;
+                }
+            }
+
             return 0;
         }
 
@@ -1573,12 +1719,12 @@ namespace Trifolia.Test
             return templates.Distinct();
         }
 
-        public ObjectResult<SearchValueSetResult> SearchValueSet(Nullable<int> userId, global::System.String searchText, Nullable<global::System.Int32> count, Nullable<global::System.Int32> page, global::System.String orderProperty, Nullable<global::System.Boolean> orderDesc)
+        public IEnumerable<SearchValueSetResult> SearchValueSet(Nullable<global::System.Int32> userId, global::System.String searchText, Nullable<global::System.Int32> count, Nullable<global::System.Int32> page, global::System.String orderProperty, Nullable<global::System.Boolean> orderDesc)
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<Nullable<global::System.Int32>> IObjectRepository.GetImplementationGuideTemplates(Nullable<global::System.Int32> implementationGuideId, Nullable<global::System.Boolean> inferred, Nullable<global::System.Int32> parentTemplateId)
+        IEnumerable<Nullable<global::System.Int32>> IObjectRepository.GetImplementationGuideTemplates(Nullable<global::System.Int32> implementationGuideId, Nullable<global::System.Boolean> inferred, Nullable<global::System.Int32> parentTemplateId, string[] categories)
         {
             var implementationGuide = this.ImplementationGuides.Single(y => y.Id == implementationGuideId);
 
@@ -1610,7 +1756,7 @@ namespace Trifolia.Test
 
                         // Make sure we stop at this version of the IG, and don't look at future versions of the IG
                         if (nextCurrent.OwningImplementationGuideId != implementationGuide.Id)
-                            nextCurrent = nextCurrent.NextVersion.FirstOrDefault();
+                            nextCurrent = nextCurrent.NextVersions.FirstOrDefault();
                         else
                             nextCurrent = null;
                     }
@@ -1639,11 +1785,6 @@ namespace Trifolia.Test
             }
 
             return templates.Select(y => (int?)y.Id);
-        }
-
-        IEnumerable<Nullable<global::System.Int32>> IObjectRepository.GetImplementationGuideTemplates(Nullable<global::System.Int32> implementationGuideId, Nullable<global::System.Boolean> inferred, Nullable<global::System.Int32> parentTemplateId, string[] categories)
-        {
-            return ((IObjectRepository)this).GetImplementationGuideTemplates(implementationGuideId, inferred, parentTemplateId);
         }
 
         IEnumerable<Nullable<global::System.Int32>> IObjectRepository.SearchTemplates(Nullable<global::System.Int32> userId, Nullable<global::System.Int32> filterImplementationGuideId, global::System.String filterName, global::System.String filterIdentifier, Nullable<global::System.Int32> filterTemplateTypeId, Nullable<global::System.Int32> filterOrganizationId, global::System.String filterContextType, global::System.String queryText)
@@ -1680,134 +1821,4 @@ namespace Trifolia.Test
             return tdb.AddConstraintToTemplate(template, parentConstraint, containedTemplate, context, conformance, cardinality, dataType, valueConformance, value, displayName, valueSet, codeSystem, description, isBranch, isBranchIdentifier, isPrimitiveSchRooted, number, category);
         }
     }
-
-    #region MockDbSet
-
-    public class MockDbSet<T> : IObjectSet<T> where T : EntityObject
-    {
-        private List<T> theList;
-        private EnumerableQuery<T> theEnumerableQuery;
-
-        public MockDbSet()
-        {
-            theList = new List<T>();
-            theEnumerableQuery = new EnumerableQuery<T>(theList);
-        }
-
-        public MockDbSet(IEnumerable<T> items)
-        {
-            theList = new List<T>(items);
-            theEnumerableQuery = new EnumerableQuery<T>(theList);
-        }
-
-        public void AddObject(T entity)
-        {
-            InitializeKey(this, entity);
-            this.theList.Add(entity);
-        }
-
-        public void Attach(T entity)
-        {
-            
-        }
-
-        public void Detach(T entity)
-        {
-
-        }
-
-        public void DeleteObject(T entity)
-        {
-            this.theList.Remove(entity);
-        }
-
-        public TDerivedEntity Create<TDerivedEntity>() where TDerivedEntity : class, T
-        {
-            return default(TDerivedEntity);
-        }
-
-        public T Create()
-        {
-            return default(T);
-        }
-
-        public T Find(params object[] keyValues)
-        {
-            throw new NotImplementedException();
-        }
-
-        public System.Collections.ObjectModel.ObservableCollection<T> Local
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public T Remove(T entity)
-        {
-            this.theList.Remove(entity);
-            return entity;
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return theList.GetEnumerator();
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return theList.GetEnumerator();
-        }
-
-        public Type ElementType
-        {
-            get { return typeof(T); }
-        }
-
-        public IQueryProvider Provider
-        {
-            get { return theEnumerableQuery; }
-        }
-
-        public System.Linq.Expressions.Expression Expression
-        {
-            get { return ((IQueryable)this.theEnumerableQuery).Expression; }
-        }
-
-        private void InitializeKey(IEnumerable<EntityObject> list, EntityObject entity)
-        {
-            PropertyInfo keyProperty = null;
-
-            foreach (PropertyInfo itemProperty in entity.GetType().GetProperties())
-            {
-                EdmScalarPropertyAttribute attr = itemProperty
-                    .GetCustomAttributes(typeof(EdmScalarPropertyAttribute), false)
-                    .FirstOrDefault() as EdmScalarPropertyAttribute;
-
-                if (attr != null && attr.EntityKeyProperty && itemProperty.PropertyType == typeof(int))
-                {
-                    keyProperty = itemProperty;
-                    break;
-                }
-            }
-
-            int keyValue = (int)keyProperty.GetValue(entity);
-
-            // Need to generate a key value
-            if (keyValue <= 0)
-            {
-                int maxKeyValue = 0;
-
-                foreach (EntityObject item in list)
-                {
-                    int itemKeyValue = (int)keyProperty.GetValue(item);
-
-                    if (itemKeyValue > maxKeyValue)
-                        maxKeyValue = itemKeyValue;
-                }
-
-                keyProperty.SetValue(entity, maxKeyValue + 1);
-            }
-        }
-    }
-
-    #endregion
 }

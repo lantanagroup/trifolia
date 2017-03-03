@@ -117,10 +117,17 @@ namespace Trifolia.Export.Schematron
                     currentConstraint = currentConstraint.ParentConstraint;
                 }
 
+                // TODO: Enhance performance
+                TemplateContextBuilder tcb = new TemplateContextBuilder(containingConstraint.Template.ImplementationGuideType);
+                string templateContext = tcb.BuildContextString(containingConstraint.Template);
+
+                if (!string.IsNullOrEmpty(templateContext))
+                    containmentContext = templateContext + "/" + containmentContext;
+
                 containmentContexts.Add(containmentContext);
             }
 
-            return string.Join(" or ", containmentContexts);
+            return string.Join(" | ", containmentContexts.Distinct());
         }
 
         /// <summary>

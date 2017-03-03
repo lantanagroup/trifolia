@@ -428,12 +428,16 @@ namespace Trifolia.Web.Controllers.API
                 {
                     tdb.SaveChanges();
 
+                    // TODO: Check that ids have been updated template and constraints
+
+                    /*
                     tdb.Refresh(System.Data.Entity.Core.Objects.RefreshMode.StoreWins, template);
 
                     foreach (var constraint in template.ChildConstraints)
                     {
                         tdb.Refresh(System.Data.Entity.Core.Objects.RefreshMode.StoreWins, constraint);
                     }
+                    */
 
                     response.TemplateId = template.Id;
                     response.Constraints = GetConstraints(tdb, template);
@@ -473,7 +477,7 @@ namespace Trifolia.Web.Controllers.API
             else
             {
                 template = new Template();
-                tdb.Templates.AddObject(template);
+                tdb.Templates.Add(template);
             }
 
             // Set the properties
@@ -488,23 +492,9 @@ namespace Trifolia.Web.Controllers.API
             if (template.ImplementationGuideTypeId != ig.ImplementationGuideTypeId)
                 template.ImplementationGuideTypeId = ig.ImplementationGuideTypeId;
 
-            string templateAuthor = template.Author.FirstName + ' ' + template.Author.LastName;
-
-            if (templateAuthor != model.Author)
+            if (template.AuthorId != model.Id)
             {
-                template.Author.FirstName = model.Author.Substring(0, model.Author.IndexOf(' '));
-                template.Author.LastName = model.Author.Substring(model.Author.IndexOf(' ') + 1);
-
-                var email = (from user in tdb.Users
-                             where user.FirstName == template.Author.FirstName && user.LastName == template.Author.LastName
-                             select user.Email).ToList();
-                
-                var phone = (from user in tdb.Users
-                             where user.FirstName == template.Author.FirstName && user.LastName == template.Author.LastName
-                             select user.Email).ToList();
-
-                template.Author.Email = email[0];
-                template.Author.Phone = phone[0];
+                template.AuthorId = (int) model.Id;
             }
 
             if (template.Name != model.Name)
@@ -550,7 +540,7 @@ namespace Trifolia.Web.Controllers.API
                 var foundExtension = model.Extensions.SingleOrDefault(y => y.Identifier == extension.Identifier);
 
                 if (foundExtension == null)
-                    tdb.TemplateExtensions.DeleteObject(extension);
+                    tdb.TemplateExtensions.Remove(extension);
             }
 
             // Add/Update Extensions
@@ -586,7 +576,7 @@ namespace Trifolia.Web.Controllers.API
                     continue;
 
                 TemplateConstraint constraint = tdb.TemplateConstraints.Single(y => y.Id == constraintModel.Id);
-                tdb.TemplateConstraints.DeleteObject(constraint);
+                tdb.TemplateConstraints.Remove(constraint);
 
                 // Recursively remove child constraints
                 this.RemoveConstraints(tdb, constraintModel.Children);
@@ -611,7 +601,7 @@ namespace Trifolia.Web.Controllers.API
                 {
                     constraint = new TemplateConstraint();
                     constraint.Template = template;
-                    tdb.TemplateConstraints.AddObject(constraint);
+                    tdb.TemplateConstraints.Add(constraint);
 
                     if (parentConstraint != null)
                         constraint.ParentConstraint = parentConstraint;

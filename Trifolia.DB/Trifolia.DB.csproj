@@ -74,17 +74,6 @@
     <Compile Include="Conformance.cs" />
     <Compile Include="ConformanceParser.cs" />
     <Compile Include="DBContext.cs" />
-    <Compile Include="DBModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="DictionaryCodeSystemExtension.cs" />
     <Compile Include="Exceptions\TrifoliaModelException.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="IConstraint.cs" />
@@ -95,6 +84,57 @@
     <Compile Include="ImplementationGuideTypeExtension.cs" />
     <Compile Include="IObjectRepository.cs" />
     <Compile Include="ITemplate.cs" />
+    <Compile Include="Migrations\201703021923101_init.cs" />
+    <Compile Include="Migrations\201703021923101_init.Designer.cs">
+      <DependentUpon>201703021923101_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\appsecurable_role.cs" />
+    <Compile Include="Model\app_securable.cs" />
+    <Compile Include="Model\audit.cs" />
+    <Compile Include="Model\codesystem.cs" />
+    <Compile Include="Model\TrifoliaDatabase.cs" />
+    <Compile Include="Model\green_constraint.cs" />
+    <Compile Include="Model\green_template.cs" />
+    <Compile Include="Model\group.cs" />
+    <Compile Include="Model\group_manager.cs" />
+    <Compile Include="Model\implementationguide.cs" />
+    <Compile Include="Model\implementationguidetype.cs" />
+    <Compile Include="Model\implementationguidetype_datatype.cs" />
+    <Compile Include="Model\implementationguide_file.cs" />
+    <Compile Include="Model\implementationguide_filedata.cs" />
+    <Compile Include="Model\implementationguide_permission.cs" />
+    <Compile Include="Model\implementationguide_schpattern.cs" />
+    <Compile Include="Model\implementationguide_section.cs" />
+    <Compile Include="Model\implementationguide_setting.cs" />
+    <Compile Include="Model\implementationguide_templatetype.cs" />
+    <Compile Include="Model\organization.cs" />
+    <Compile Include="Model\publish_status.cs" />
+    <Compile Include="Model\role.cs" />
+    <Compile Include="Model\role_restriction.cs" />
+    <Compile Include="Model\searchvaluesetresult.cs" />
+    <Compile Include="Model\template.cs" />
+    <Compile Include="Model\templatetype.cs" />
+    <Compile Include="Model\template_constraint.cs" />
+    <Compile Include="Model\template_constraint_sample.cs" />
+    <Compile Include="Model\template_extension.cs" />
+    <Compile Include="Model\template_sample.cs" />
+    <Compile Include="Model\user.cs" />
+    <Compile Include="Model\user_group.cs" />
+    <Compile Include="Model\user_role.cs" />
+    <Compile Include="Model\valueset.cs" />
+    <Compile Include="Model\valueset_member.cs" />
+    <Compile Include="Model\v_constraintcount.cs" />
+    <Compile Include="Model\v_igaudittrail.cs" />
+    <Compile Include="Model\v_implementationguidefile.cs" />
+    <Compile Include="Model\v_implementationGuidePermissions.cs" />
+    <Compile Include="Model\v_implementationGuideTemplates.cs" />
+    <Compile Include="Model\v_latestimplementationguidefiledata.cs" />
+    <Compile Include="Model\v_template.cs" />
+    <Compile Include="Model\v_templateList.cs" />
+    <Compile Include="Model\v_templatePermissions.cs" />
+    <Compile Include="Model\v_templateusage.cs" />
+    <Compile Include="Model\v_userSecurables.cs" />
     <Compile Include="ObjectContextExtension.cs" />
     <Compile Include="ObjectSetExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,20 +153,6 @@
     <Compile Include="ViewTemplateExtension.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="DBModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DBModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DBModel.cs</LastGenOutput>
-      <DependentUpon>DBModel.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -146,7 +172,20 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201703021923101_init_programmability_down.sql" />
+    <EmbeddedResource Include="Migrations\201703021923101_init_programmability_up.sql" />
+    <EmbeddedResource Include="Migrations\201703021923101_init_views_down.sql" />
+    <EmbeddedResource Include="Migrations\201703021923101_init_views_up.sql" />
+    <EmbeddedResource Include="Migrations\201703021923101_init.resx">
+      <DependentUpon>201703021923101_init.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

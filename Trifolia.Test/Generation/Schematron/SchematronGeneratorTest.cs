@@ -13,6 +13,7 @@ using Trifolia.Export.Schematron.ConstraintToDocumentElementMap;
 using Trifolia.Shared;
 using Trifolia.Shared.ImportExport;
 using Trifolia.Shared.ImportExport.Model;
+using ImportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
 using ImportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using Template = Trifolia.DB.Template;
 using ValueSet = Trifolia.DB.ValueSet;
@@ -20,6 +21,8 @@ using CodeSystem = Trifolia.DB.CodeSystem;
 using Trifolia.DB;
 using Trifolia.Export.Schematron.Utilities;
 using Trifolia.Import.Native;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace Trifolia.Test.Generation.Schematron
 {
@@ -1489,6 +1492,33 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.IsNotNull(branchWarningRule, "The context for the warning branch is not correct.");
         }
 
+        [TestMethod]
+        public void SingleValueWithinBranch()
+        {
+            MockObjectRepository tdb = new MockObjectRepository();
+            tdb.InitializeCDARepository();
+
+            Template template = ImportTemplate(tdb, "Trifolia.Test.Generation.Schematron.Data.SingleValueWithinBranch.xml");
+
+            Phase errorPhase = new Phase();
+            Phase warningPhase = new Phase();
+            SchematronGenerator generator = new SchematronGenerator(tdb, template.OwningImplementationGuide, new List<Trifolia.DB.Template>() { template }, true);
+            generator.AddTemplate(template, errorPhase, warningPhase);
+
+            string generated = generator.Generate();
+
+            var activePattern = errorPhase.ActivePatterns.First();
+            var foundRule = activePattern
+                .Rules
+                .Single(y => y.Id == "r-urn:hl7ii:2.16.840.1.1111.2:2017-04-01-5-branch-5-errors");
+            var foundAssert = foundRule
+                .Assertions
+                .Single(y => y.Id == "0-7");
+
+            string expected = "count(cda:td[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='xxx identifier'])=1";
+            Assert.AreEqual(expected, foundAssert.Test);
+        }
+
         #endregion
 
         #region Assertions within Branches
@@ -1886,9 +1916,25 @@ namespace Trifolia.Test.Generation.Schematron
 
         private static Template ImportTemplate(IObjectRepository tdb, string location)
         {
+            string xml = Helper.GetSampleContents(location);
+            ImportModel importModel;
+
+            using (StringReader sr = new StringReader(xml))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(ImportModel));
+                importModel = (ImportModel)serializer.Deserialize(sr);
+            }
+
+            ImplementationGuideImporter igImporter = new ImplementationGuideImporter(tdb);
+
+            importModel.ImplementationGuide.ForEach(importIg =>
+            {
+                igImporter.Import(importIg);
+            });
+
             TemplateImporter importer = new TemplateImporter(tdb);
-            List<Template> importedTemplates = importer.Import(Helper.GetSampleContents(location));
-            Template template = importedTemplates[0];
+            List<Template> importedTemplates = importer.Import(importModel.Template);
+            Template template = importedTemplates.First();
 
             foreach (TemplateConstraint cConstraint in template.ChildConstraints)
             {

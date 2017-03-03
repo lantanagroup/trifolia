@@ -326,7 +326,7 @@ namespace Trifolia.Authorization
                     newUser.Roles.Add(newUserRole);
                 }
 
-                tdb.Users.AddObject(newUser);
+                tdb.Users.Add(newUser);
 
                 tdb.SaveChanges();
             }

@@ -124,7 +124,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             if (this.tdb.ValueSets.Count(y => y.Oid == valueSet.Oid) > 0)
                 throw new Exception("A ValueSet with that identifier already exists");
 
-            this.tdb.ValueSets.AddObject(valueSet);
+            this.tdb.ValueSets.Add(valueSet);
             this.tdb.SaveChanges();
 
             string location = string.Format("{0}://{1}/api/FHIR2/ValueSet/{2}",
@@ -152,7 +152,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             ValueSet newValueSet = exporter.Convert(fhirValueSet, valueSet: originalValueSet);
 
             if (originalValueSet == null)
-                this.tdb.ValueSets.AddObject(newValueSet);
+                this.tdb.ValueSets.Add(newValueSet);
 
             this.tdb.SaveChanges();
 

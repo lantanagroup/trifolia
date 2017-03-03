@@ -121,6 +121,7 @@ namespace Trifolia.Shared
             ImplementationGuideSetting setting = this.tdb.ImplementationGuideSettings.SingleOrDefault(y => y.ImplementationGuideId == this.ImplementationGuideId && y.PropertyName == property);
             SettingProperty predefinedProperty = SettingProperty.CardinalityZero;
             string predefinedValue = string.Empty;
+            bool removed = false;
 
             if (Enum.TryParse<SettingProperty>(property, out predefinedProperty))
             {
@@ -134,14 +135,15 @@ namespace Trifolia.Shared
 
                 setting = new ImplementationGuideSetting();
                 setting.ImplementationGuideId = this.ImplementationGuideId;
-                this.tdb.ImplementationGuideSettings.AddObject(setting);
+                this.tdb.ImplementationGuideSettings.Add(setting);
             }
             else if (predefinedValue == value)
             {
-                this.tdb.ImplementationGuideSettings.DeleteObject(setting);
+                this.tdb.ImplementationGuideSettings.Remove(setting);
+                removed = true;
             }
 
-            if (setting.EntityState != System.Data.Entity.EntityState.Deleted)
+            if (!removed)
             {
                 if (setting.PropertyName != property)
                     setting.PropertyName = property;
@@ -166,7 +168,7 @@ namespace Trifolia.Shared
             var deletedTemplateTypes = existingItems.Where(y => !this.TemplateTypes.Exists(x => x.TemplateTypeId == y.TemplateTypeId));
 
             foreach (ImplementationGuideTemplateType cIgTemplateType in deletedTemplateTypes)
-                this.tdb.ImplementationGuideTemplateTypes.DeleteObject(cIgTemplateType);
+                this.tdb.ImplementationGuideTemplateTypes.Remove(cIgTemplateType);
 
             // Update existing template types for the IG
             foreach (ImplementationGuideTemplateType cItem in updatedItems)
@@ -200,7 +202,7 @@ namespace Trifolia.Shared
                     newIgTemplateType.Name = originalTemplateType.Name;
                 }
 
-                this.tdb.ImplementationGuideTemplateTypes.AddObject(newIgTemplateType);
+                this.tdb.ImplementationGuideTemplateTypes.Add(newIgTemplateType);
             }
 
             this.tdb.SaveChanges();

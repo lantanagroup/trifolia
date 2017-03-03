@@ -67,7 +67,7 @@ namespace Trifolia.Test.Generation.Green
             };
 
             template.GreenTemplates.Add(newGreenTemplate);
-            this.mockRepo.GreenTemplates.AddObject(newGreenTemplate);
+            this.mockRepo.GreenTemplates.Add(newGreenTemplate);
 
             return newGreenTemplate;
         }
@@ -106,7 +106,7 @@ namespace Trifolia.Test.Generation.Green
             constraint.GreenConstraints.Add(newGreenConstraint);
             greenTemplate.ChildGreenConstraints.Add(newGreenConstraint);
 
-            this.mockRepo.GreenConstraints.AddObject(newGreenConstraint);
+            this.mockRepo.GreenConstraints.Add(newGreenConstraint);
 
             return newGreenConstraint;
         }

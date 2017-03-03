@@ -39,7 +39,7 @@ namespace Trifolia.DB
         /// <returns></returns>
         public List<ImplementationGuideValueSet> GetValueSets(IObjectRepository tdb, bool? isStatic = null)
         {
-            var templateIds = tdb.GetImplementationGuideTemplates(this.Id, true, null);
+            var templateIds = tdb.GetImplementationGuideTemplates(this.Id, true, null, null);
             List<ImplementationGuideValueSet> retValueSets = new List<ImplementationGuideValueSet>();
 
             var valueSetConstraints = (from tid in templateIds
@@ -170,10 +170,10 @@ namespace Trifolia.DB
         public void Delete(IObjectRepository tdb, int? replacementImplementationGuideId)
         {
             // Remove custom template types associated with the IG
-            this.TemplateTypes.ToList().ForEach(y => tdb.ImplementationGuideTemplateTypes.DeleteObject(y));
+            this.TemplateTypes.ToList().ForEach(y => tdb.ImplementationGuideTemplateTypes.Remove(y));
 
             // Remove custom settings (such as cardinality settings) associated with the IG
-            this.Settings.ToList().ForEach(y => tdb.ImplementationGuideSettings.DeleteObject(y));
+            this.Settings.ToList().ForEach(y => tdb.ImplementationGuideSettings.Remove(y));
 
             // Update the child templates of the IG to indicate the new replacing implementation guide
             if (replacementImplementationGuideId != null)
@@ -182,15 +182,15 @@ namespace Trifolia.DB
                 this.ChildTemplates.ToList().ForEach(t => t.Delete(tdb, null));
             
             this.Files.ToList().ForEach(y => {
-                y.Versions.ToList().ForEach(x => tdb.ImplementationGuideFileDatas.DeleteObject(x));
-                tdb.ImplementationGuideFiles.DeleteObject(y);
+                y.Versions.ToList().ForEach(x => tdb.ImplementationGuideFileDatas.Remove(x));
+                tdb.ImplementationGuideFiles.Remove(y);
             });
 
-            this.Permissions.ToList().ForEach(y => tdb.ImplementationGuidePermissions.DeleteObject(y));
+            this.Permissions.ToList().ForEach(y => tdb.ImplementationGuidePermissions.Remove(y));
 
-            this.SchematronPatterns.ToList().ForEach(y => tdb.ImplementationGuideSchematronPatterns.DeleteObject(y));
+            this.SchematronPatterns.ToList().ForEach(y => tdb.ImplementationGuideSchematronPatterns.Remove(y));
 
-            tdb.ImplementationGuides.DeleteObject(this);
+            tdb.ImplementationGuides.Remove(this);
         }
     }
 

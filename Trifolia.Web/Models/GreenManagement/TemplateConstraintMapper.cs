@@ -180,7 +180,7 @@ namespace Trifolia.Web.Models.GreenManagement
                     lChild.ParentGreenConstraintId = null;
                 }
 
-                _tdb.GreenConstraints.DeleteObject(lModelToDelete);
+                _tdb.GreenConstraints.Remove(lModelToDelete);
             }
             else if (aConstraint.greenConstraintId.HasValue && aConstraint.isDeleted == false)
             {
@@ -231,7 +231,7 @@ namespace Trifolia.Web.Models.GreenManagement
                     TemplateId = aModel.TemplateId
                 };
 
-                _tdb.GreenTemplates.AddObject(lTemplate);
+                _tdb.GreenTemplates.Add(lTemplate);
             }
 
             return lTemplate;

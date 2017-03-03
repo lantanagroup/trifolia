@@ -42,7 +42,7 @@ namespace Trifolia.Test.DB
             Assert.AreEqual("My Test Sample", clone1.TemplateSamples.First().Name);
             Assert.AreEqual("<test></test>", clone1.TemplateSamples.First().XmlSample);
 
-            mockDb.Templates.AddObject(clone1);
+            mockDb.Templates.Add(clone1);
 
             // Test 2
             var clone2 = template1.CloneTemplate(mockDb, 1);

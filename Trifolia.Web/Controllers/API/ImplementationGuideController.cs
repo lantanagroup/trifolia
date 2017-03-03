@@ -332,11 +332,11 @@ namespace Trifolia.Web.Controllers.API
                                {
                                    AuditDate = viat.AuditDate,
                                    ImplementationGuideId = viat.ImplementationGuideId,
-                                   ConformanceNumber = viat.conformanceNumber,
-                                   IP = viat.IP,
+                                   ConformanceNumber = viat.ConformanceNumber,
+                                   IP = viat.Ip,
                                    Note = viat.Note,
                                    TemplateName = viat.TemplateName,
-                                   Username = viat.Username,
+                                   Username = viat.UserName,
                                    Type = viat.Type
                                });
 
@@ -518,13 +518,13 @@ namespace Trifolia.Web.Controllers.API
             ImplementationGuide ig = this.tdb.ImplementationGuides.DefaultIfEmpty(null).SingleOrDefault(i => i.Id == implementationGuideId);
             if (ig == null) throw new ArgumentOutOfRangeException("Could not find an Implementation Guide with the passed in ID");
 
-            string lDraftStatus = PublishStatuses.Draft.ToString();
+            string lDraftStatus = Shared.PublishStatuses.Draft.ToString();
             PublishStatus lStatus = this.tdb.PublishStatuses.DefaultIfEmpty(null).SingleOrDefault(s => s.Status == lDraftStatus);
 
             ig.PublishStatus = lStatus;
             ig.PublishDate = null;
 
-            string lPublishedString = PublishStatuses.Published.ToString();
+            string lPublishedString = Shared.PublishStatuses.Published.ToString();
             foreach (Template lChildTemplate in ig.ChildTemplates.Where(t => t.Status == null || t.Status.Status == lPublishedString))
             {
                 lChildTemplate.Status = lStatus;
@@ -541,12 +541,12 @@ namespace Trifolia.Web.Controllers.API
 
             ImplementationGuide ig = this.tdb.ImplementationGuides.DefaultIfEmpty(null).SingleOrDefault(i => i.Id == implementationGuideId);
             if (ig == null) throw new ArgumentOutOfRangeException("Could not find an Implementation Guide with the passed in ID");
-            string lBallotStatus = PublishStatuses.Ballot.ToString();
+            string lBallotStatus = Shared.PublishStatuses.Ballot.ToString();
             PublishStatus lStatus = this.tdb.PublishStatuses.DefaultIfEmpty(null).SingleOrDefault(s => s.Status == lBallotStatus);
 
             ig.PublishStatus = lStatus;
 
-            string lDraftStatus = PublishStatuses.Draft.ToString();
+            string lDraftStatus = Shared.PublishStatuses.Draft.ToString();
             foreach (Template lChildTemplate in ig.ChildTemplates.Where(t => t.Status == null || t.Status.Status == lDraftStatus))
             {
                 lChildTemplate.Status = lStatus;
@@ -562,19 +562,19 @@ namespace Trifolia.Web.Controllers.API
                 throw new AuthorizationException("You do not have permission to edit this implementation guide");
 
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
-            string lPublishedStatus = PublishStatuses.Published.ToString();
+            string lPublishedStatus = Shared.PublishStatuses.Published.ToString();
             PublishStatus status = this.tdb.PublishStatuses.SingleOrDefault(y => y.Status == lPublishedStatus);
 
             ig.PublishDate = publishDate;
             ig.PublishStatusId = status.Id;
 
-            string lDraftStatus = PublishStatuses.Draft.ToString();
+            string lDraftStatus = Shared.PublishStatuses.Draft.ToString();
             foreach (Template lChildTemplate in ig.ChildTemplates.Where(t => t.Status == null || t.Status.Status == lDraftStatus))
             {
                 lChildTemplate.Status = status;
             }
 
-            string lBallotStatus = PublishStatuses.Ballot.ToString();
+            string lBallotStatus = Shared.PublishStatuses.Ballot.ToString();
             foreach (Template lChildTemplate in ig.ChildTemplates.Where(t => t.Status == null || t.Status.Status == lBallotStatus))
             {
                 lChildTemplate.Status = status;
@@ -591,13 +591,13 @@ namespace Trifolia.Web.Controllers.API
 
             ImplementationGuide ig = this.tdb.ImplementationGuides.DefaultIfEmpty(null).SingleOrDefault(i => i.Id == implementationGuideId);
             if (ig == null) throw new ArgumentOutOfRangeException("Could not find an Implementation Guide with the passed in ID");
-            string lDraftStatus = PublishStatuses.Draft.ToString();
+            string lDraftStatus = Shared.PublishStatuses.Draft.ToString();
             PublishStatus lStatus = this.tdb.PublishStatuses.DefaultIfEmpty(null).SingleOrDefault(s => s.Status == lDraftStatus);
 
             ig.PublishStatus = lStatus;
 
-            string lStatusString = PublishStatuses.Ballot.ToString();
-            foreach (Template lChildTemplate in ig.ChildTemplates.Where(t => t.Status == null || t.Status.Status == PublishStatuses.Ballot.ToString()))
+            string lStatusString = Shared.PublishStatuses.Ballot.ToString();
+            foreach (Template lChildTemplate in ig.ChildTemplates.Where(t => t.Status == null || t.Status.Status == Shared.PublishStatuses.Ballot.ToString()))
             {
                 lChildTemplate.Status = lStatus;
             }
@@ -1010,7 +1010,7 @@ namespace Trifolia.Web.Controllers.API
                             throw new Exception("An implementation guide with that name already exists!");
 
                         ig = new ImplementationGuide();
-                        auditedTdb.ImplementationGuides.AddObject(ig);
+                        auditedTdb.ImplementationGuides.Add(ig);
                     }
                     else
                     {
@@ -1056,7 +1056,7 @@ namespace Trifolia.Web.Controllers.API
                         .ToList()
                         .ForEach(y =>
                         {
-                            auditedTdb.ImplementationGuideSections.DeleteObject(y);
+                            auditedTdb.ImplementationGuideSections.Remove(y);
                         });
 
                     // Add and update sections that are in the model
@@ -1170,7 +1170,7 @@ namespace Trifolia.Web.Controllers.API
             foreach (int cCustomSchematronPatternId in model.DeletedCustomSchematrons)
             {
                 ImplementationGuideSchematronPattern foundSchematronPattern = ig.SchematronPatterns.Single(y => y.Id == cCustomSchematronPatternId);
-                auditedTdb.ImplementationGuideSchematronPatterns.DeleteObject(foundSchematronPattern);
+                auditedTdb.ImplementationGuideSchematronPatterns.Remove(foundSchematronPattern);
             }
 
             foreach (EditModel.CustomSchematronItem cCustomSchematron in model.CustomSchematrons)
@@ -1204,7 +1204,7 @@ namespace Trifolia.Web.Controllers.API
 
             foreach (var cRemovePermission in removePermissions)
             {
-                auditedTdb.ImplementationGuidePermissions.DeleteObject(cRemovePermission);
+                auditedTdb.ImplementationGuidePermissions.Remove(cRemovePermission);
             }
 
             var addedViewPermissions = new List<EditModel.Permission>();
