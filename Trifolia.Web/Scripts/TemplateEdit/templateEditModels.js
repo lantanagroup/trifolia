@@ -726,7 +726,7 @@ var TemplateModel = function (data, viewModel) {
     var self = this;
     var mapping = {
         include: [ 'Id', 'Name', 'Oid', 'Bookmark', 'IsOpen', 'TemplateTypeId', 'PrimaryContext', 'PrimaryContextType',
-            'OwningImplementationGuideId', 'ImpliedTemplateId', 'StatusId', 'Description', 'Notes', 'Author',
+            'OwningImplementationGuideId', 'ImpliedTemplateId', 'StatusId', 'Description', 'Notes', 'Author', 'AuthorId',
             'PreviousVersionLink', 'PreviousVersionName', 'PreviousVersionOid', 'OrganizationName', 'MoveUrl', 'TemplateTypeAbbreviation', 'Locked',
             'ContainedByTemplates', 'ImpliedByTemplates', 'Extensions' ],
         ignore: ['SubscribeChanges', 'IsValid'],
@@ -782,6 +782,8 @@ var TemplateModel = function (data, viewModel) {
     self.ImpliedByTemplates = ko.observableArray([]);
     self.Extensions = ko.observableArray([]);
     self.NewExtension = ko.observable(new TemplateExtensionModel(null, self));
+    self.AuthorId = ko.observable();
+    self.Author = ko.observable();
 
     self.IsOpenString = ko.computed({
         read: function () { return (self.IsOpen() ? "true" : "false"); },
@@ -789,7 +791,6 @@ var TemplateModel = function (data, viewModel) {
     });
     
     // Fields for information purposes only
-    self.Author = ko.observable();
     self.PreviousVersionLink = ko.observable();
     self.PreviousVersionName = ko.observable();
     self.PreviousVersionOid = ko.observable();
@@ -955,16 +956,17 @@ var TemplateModel = function (data, viewModel) {
             success: function (results) {
                 userInfo = results;
             }
-        })
-        
-        for (var i = 0; i < userInfo.length; i++) {
-            users[i] = {
-                'fullName' : userInfo[i][0],
-                'id' : userInfo[i][1]
-            };
-        }
+        });
 
-        return users;
+        userInfo.sort(function (a, b) {
+            var aL = a.Name.toLowerCase(), bL = b.Name.toLowerCase();
+
+            if (aL > bL) return 1;
+            if (aL < bL) return -1;
+            else return 0;
+        });
+
+        return userInfo;
     }
     
 

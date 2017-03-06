@@ -110,6 +110,7 @@ namespace Trifolia.Web.Controllers.API
                 Oid = lTemplate.Oid,
                 StatusId = lTemplate.StatusId,
                 TemplateTypeId = lTemplate.TemplateTypeId,
+                AuthorId = lTemplate.AuthorId,
                 Author = string.Format("{0} {1}", lTemplate.Author.FirstName, lTemplate.Author.LastName),
                 OrganizationName = lTemplate.OrganizationName,
                 MoveUrl = lTemplate.GetMoveUrl(),
@@ -486,16 +487,17 @@ namespace Trifolia.Web.Controllers.API
                 User currentUser = CheckPoint.Instance.GetUser(tdb);
                 template.AuthorId = currentUser.Id;
             }
+            else if (template.AuthorId != model.AuthorId)
+            {
+                template.AuthorId = model.AuthorId;
+            }
 
             ImplementationGuide ig = tdb.ImplementationGuides.Single(y => y.Id == model.OwningImplementationGuideId);
 
             if (template.ImplementationGuideTypeId != ig.ImplementationGuideTypeId)
                 template.ImplementationGuideTypeId = ig.ImplementationGuideTypeId;
 
-            if (template.AuthorId != model.Id)
-            {
-                template.AuthorId = (int) model.Id;
-            }
+            
 
             if (template.Name != model.Name)
                 template.Name = model.Name;

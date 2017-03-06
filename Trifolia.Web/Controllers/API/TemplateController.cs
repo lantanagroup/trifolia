@@ -18,6 +18,7 @@ using Trifolia.DB;
 using Trifolia.Logging;
 using Trifolia.Plugins;
 using Trifolia.Shared.Plugins;
+using Trifolia.Web.Models.User;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -315,24 +316,20 @@ namespace Trifolia.Web.Controllers.API
         }
 
         [HttpGet, Route("api/Template/Permissions/{templateId}")]
-        public List<List<String>> GetTemplatePermissionsName(int templateId)
+        public List<SearchUserModel> GetTemplatePermissionsName(int templateId)
         {
             var userIds =  (from tp in this.tdb.ViewTemplatePermissions
                                         where tp.TemplateId == templateId && tp.Permission == "Edit"
                                         select tp.UserId).ToList();
 
             var users = (from user in this.tdb.Users
-                         where userIds.Contains(user.Id)
-                         select user).ToList();
+                                           join u in userIds on user.Id equals u
+                                           select user)
+                                           .ToList();
 
-            List<List<String>> userInfo = new List<List<String>>();
-            foreach(var user in users)
-            {
-                List<String> temp = new List<String> { user.FirstName + ' ' + user.LastName, (user.Id).ToString() };
-                userInfo.Add(temp);
-            }
+            var usersList = users.Select(y => new SearchUserModel(y)).ToList();
 
-            return userInfo;
+            return usersList;
         }
 
         /// <summary>
