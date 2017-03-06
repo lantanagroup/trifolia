@@ -958,18 +958,15 @@ var TemplateModel = function (data, viewModel) {
             }
         });
 
-        return userInfo;
-        
-        /*
-        for (var i = 0; i < userInfo.length; i++) {
-            users[i] = {
-                'fullName' : userInfo[i][0],
-                'id' : userInfo[i][1]
-            };
-        }
+        userInfo.sort(function (a, b) {
+            var aL = a.Name.toLowerCase(), bL = b.Name.toLowerCase();
 
-        return users;
-        */
+            if (aL > bL) return 1;
+            if (aL < bL) return -1;
+            else return 0;
+        });
+
+        return userInfo;
     }
     
 

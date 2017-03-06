@@ -328,19 +328,8 @@ namespace Trifolia.Web.Controllers.API
                                            .ToList();
 
             var usersList = users.Select(y => new SearchUserModel(y)).ToList();
-            
+
             return usersList;
-
-            /*
-            List<List<String>> userInfo = new List<List<String>>();
-            foreach(var user in users)
-            {
-                List<String> temp = new List<String> { user.FirstName + ' ' + user.LastName, (user.Id).ToString() };
-                userInfo.Add(temp);
-            }
-
-            return userInfo;
-            */
         }
 
         /// <summary>
