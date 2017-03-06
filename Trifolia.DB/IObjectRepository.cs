@@ -60,8 +60,8 @@ namespace Trifolia.DB
         IEnumerable<Nullable<global::System.Int32>> SearchTemplates(Nullable<global::System.Int32> userId, Nullable<global::System.Int32> filterImplementationGuideId, global::System.String filterName, global::System.String filterIdentifier, Nullable<global::System.Int32> filterTemplateTypeId, Nullable<global::System.Int32> filterOrganizationId, global::System.String filterContextType, global::System.String queryText);
 
         void ChangeObjectState(Object entity, EntityState entityState);
-        IDbTransaction BeginTransaction();
-        IDbTransaction BeginTransaction(IsolationLevel isolationLevel);
+        DbContextTransaction BeginTransaction();
+        DbContextTransaction BeginTransaction(IsolationLevel isolationLevel);
         int SaveChanges();
         DbConnection Connection { get; }
     }

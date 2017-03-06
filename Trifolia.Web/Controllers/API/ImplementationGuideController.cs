@@ -997,130 +997,138 @@ namespace Trifolia.Web.Controllers.API
                 // Use a transaction scope to make sure that any errors that occur are rolled back, even though there shouldn't be any errors
                 using (var scope = auditedTdb.BeginTransaction())
                 {
-                    ImplementationGuide ig = null;
-                    User me = CheckPoint.Instance.GetUser(auditedTdb);
-
-                    // Validate certain aspects of the IG
-                    if (!CheckPoint.Instance.IsDataAdmin && (!this.UserHasPermissions(me, aModel.ViewPermissions) || !this.UserHasPermissions(me, aModel.EditPermissions)))
-                        throw new Exception("Saving the implementation guide with the permissions specified would remove your ability to view/edit this implementation guide. Please add yourself to view/edit permissions before saving.");
-
-                    if (aModel.Id == 0)
+                    try
                     {
-                        if (!this.ValidateName(auditedTdb, aModel.Name))
-                            throw new Exception("An implementation guide with that name already exists!");
+                        ImplementationGuide ig = null;
+                        User me = CheckPoint.Instance.GetUser(auditedTdb);
 
-                        ig = new ImplementationGuide();
-                        auditedTdb.ImplementationGuides.Add(ig);
-                    }
-                    else
-                    {
-                        ig = auditedTdb.ImplementationGuides.Single(y => y.Id == aModel.Id);
+                        // Validate certain aspects of the IG
+                        if (!CheckPoint.Instance.IsDataAdmin && (!this.UserHasPermissions(me, aModel.ViewPermissions) || !this.UserHasPermissions(me, aModel.EditPermissions)))
+                            throw new Exception("Saving the implementation guide with the permissions specified would remove your ability to view/edit this implementation guide. Please add yourself to view/edit permissions before saving.");
 
-                        if (!CheckPoint.Instance.GrantEditImplementationGuide(aModel.Id))
-                            throw new AuthorizationException("You do not have permission to edit this implementation guide");
-
-                        if (!this.ValidateName(auditedTdb, aModel.Name, aModel.Id))
-                            throw new Exception("An implementation guide with that name already exists!");
-                    }
-
-                    ig.Identifier = aModel.Identifier;
-                    ig.Name = aModel.Name;
-                    ig.DisplayName = aModel.DisplayName;
-                    ig.WebDisplayName = aModel.WebDisplayName;
-                    ig.WebDescription = aModel.WebDescription;
-                    ig.WebReadmeOverview = aModel.WebReadmeOverview;
-                    ig.ImplementationGuideType = null;
-                    ig.ImplementationGuideTypeId = aModel.TypeId.Value;
-                    ig.OrganizationId = aModel.OrganizationId;
-                    ig.AccessManagerId = aModel.AccessManagerId;
-                    ig.AllowAccessRequests = aModel.AllowAccessRequests;
-
-                    // Set the "Draft" publish status by default
-                    if (ig.PublishStatus == null)
-                        ig.PublishStatus = PublishStatus.GetDraftStatus(auditedTdb);
-
-                    if (aModel.PreviousVersionId.HasValue && ig.PreviousVersionImplementationGuideId != aModel.PreviousVersionId)
-                    {
-                        ig.PreviousVersionImplementationGuideId = aModel.PreviousVersionId;
-                        ImplementationGuide lPreviousVersion
-                            = auditedTdb.ImplementationGuides.Single(previousIg => previousIg.Id == aModel.PreviousVersionId.Value);
-
-                        if (lPreviousVersion.Version >= 1)
-                            ig.Version = lPreviousVersion.Version + 1;
-                        else
-                            ig.Version = 1;
-                    }
-
-                    // Delete sections that don't exist in the model
-                    ig.Sections.Where(y => aModel.Sections.Count(x => x.Id == y.Id) == 0)
-                        .ToList()
-                        .ForEach(y =>
+                        if (aModel.Id == 0)
                         {
-                            auditedTdb.ImplementationGuideSections.Remove(y);
-                        });
+                            if (!this.ValidateName(auditedTdb, aModel.Name))
+                                throw new Exception("An implementation guide with that name already exists!");
 
-                    // Add and update sections that are in the model
-                    foreach (var cSection in aModel.Sections)
-                    {
-                        ImplementationGuideSection dbSection = null;
-
-                        if (cSection.Id != null)
-                        {
-                            dbSection = ig.Sections.Single(y => y.Id == cSection.Id);
+                            ig = new ImplementationGuide();
+                            auditedTdb.ImplementationGuides.Add(ig);
                         }
                         else
                         {
-                            dbSection = new ImplementationGuideSection();
-                            dbSection.ImplementationGuide = ig;
+                            ig = auditedTdb.ImplementationGuides.Single(y => y.Id == aModel.Id);
+
+                            if (!CheckPoint.Instance.GrantEditImplementationGuide(aModel.Id))
+                                throw new AuthorizationException("You do not have permission to edit this implementation guide");
+
+                            if (!this.ValidateName(auditedTdb, aModel.Name, aModel.Id))
+                                throw new Exception("An implementation guide with that name already exists!");
                         }
 
-                        dbSection.Heading = cSection.Heading;
-                        dbSection.Content = cSection.Content;
-                        dbSection.Order = cSection.Order;
-                        dbSection.Level = cSection.Level;
+                        ig.Identifier = aModel.Identifier;
+                        ig.Name = aModel.Name;
+                        ig.DisplayName = aModel.DisplayName;
+                        ig.WebDisplayName = aModel.WebDisplayName;
+                        ig.WebDescription = aModel.WebDescription;
+                        ig.WebReadmeOverview = aModel.WebReadmeOverview;
+                        ig.ImplementationGuideType = null;
+                        ig.ImplementationGuideTypeId = aModel.TypeId.Value;
+                        ig.OrganizationId = aModel.OrganizationId;
+                        ig.AccessManagerId = aModel.AccessManagerId;
+                        ig.AllowAccessRequests = aModel.AllowAccessRequests;
+
+                        // Set the "Draft" publish status by default
+                        if (ig.PublishStatus == null)
+                            ig.PublishStatus = PublishStatus.GetDraftStatus(auditedTdb);
+
+                        if (aModel.PreviousVersionId.HasValue && ig.PreviousVersionImplementationGuideId != aModel.PreviousVersionId)
+                        {
+                            ig.PreviousVersionImplementationGuideId = aModel.PreviousVersionId;
+                            ImplementationGuide lPreviousVersion
+                                = auditedTdb.ImplementationGuides.Single(previousIg => previousIg.Id == aModel.PreviousVersionId.Value);
+
+                            if (lPreviousVersion.Version >= 1)
+                                ig.Version = lPreviousVersion.Version + 1;
+                            else
+                                ig.Version = 1;
+                        }
+
+                        // Delete sections that don't exist in the model
+                        ig.Sections.Where(y => aModel.Sections.Count(x => x.Id == y.Id) == 0)
+                            .ToList()
+                            .ForEach(y =>
+                            {
+                                auditedTdb.ImplementationGuideSections.Remove(y);
+                            });
+
+                        // Add and update sections that are in the model
+                        foreach (var cSection in aModel.Sections)
+                        {
+                            ImplementationGuideSection dbSection = null;
+
+                            if (cSection.Id != null)
+                            {
+                                dbSection = ig.Sections.Single(y => y.Id == cSection.Id);
+                            }
+                            else
+                            {
+                                dbSection = new ImplementationGuideSection();
+                                dbSection.ImplementationGuide = ig;
+                            }
+
+                            dbSection.Heading = cSection.Heading;
+                            dbSection.Content = cSection.Content;
+                            dbSection.Order = cSection.Order;
+                            dbSection.Level = cSection.Level;
+                        }
+
+                        this.SaveTemplateTypes(auditedTdb, ig, aModel);
+                        this.SaveCustomSchematron(auditedTdb, ig, aModel);
+                        this.SavePermissions(auditedTdb, ig, aModel);
+
+                        // Find any constraints associated with the IG that have a category that is removed
+                        var removedCategoryConstraints = (from tc in this.tdb.TemplateConstraints
+                                                          join t in this.tdb.Templates on tc.TemplateId equals t.Id
+                                                          where !string.IsNullOrEmpty(tc.Category) &&
+                                                          !aModel.Categories.Contains(tc.Category)
+                                                          select tc);
+
+                        foreach (var constraint in removedCategoryConstraints)
+                        {
+                            constraint.Category = null;
+                        }
+
+                        auditedTdb.SaveChanges();
+
+                        // Cardinality
+                        IGSettingsManager settings = new IGSettingsManager(auditedTdb, ig.Id);
+
+                        settings.SaveSetting(IGSettingsManager.SettingProperty.CardinalityAtLeastOne, aModel.CardinalityAtLeastOne);
+                        settings.SaveSetting(IGSettingsManager.SettingProperty.CardinalityOneToOne, aModel.CardinalityExactlyOne);
+                        settings.SaveSetting(IGSettingsManager.SettingProperty.CardinalityZero, aModel.CardinalityZero);
+                        settings.SaveSetting(IGSettingsManager.SettingProperty.CardinalityZeroOrMore, aModel.CardinalityZeroOrMore);
+                        settings.SaveSetting(IGSettingsManager.SettingProperty.CardinalityZeroToOne, aModel.CardinalityZeroOrOne);
+                        settings.SaveSetting(IGSettingsManager.SettingProperty.Volume1Html, aModel.Html != null ? aModel.Html : string.Empty);
+
+                        settings.SaveBoolSetting(IGSettingsManager.SettingProperty.UseConsolidatedConstraintFormat, aModel.ConsolidatedFormat);
+
+                        // Categories
+                        for (var i = 0; i < aModel.Categories.Count; i++)
+                        {
+                            aModel.Categories[i] = aModel.Categories[i].Replace(",", "");
+                        }
+
+                        settings.SaveSetting(IGSettingsManager.SettingProperty.Categories, string.Join(",", aModel.Categories));
+
+                        scope.Commit();
+
+                        return ig.Id;
                     }
-
-                    this.SaveTemplateTypes(auditedTdb, ig, aModel);
-                    this.SaveCustomSchematron(auditedTdb, ig, aModel);
-                    this.SavePermissions(auditedTdb, ig, aModel);
-
-                    // Find any constraints associated with the IG that have a category that is removed
-                    var removedCategoryConstraints = (from tc in this.tdb.TemplateConstraints
-                                                      join t in this.tdb.Templates on tc.TemplateId equals t.Id
-                                                      where !string.IsNullOrEmpty(tc.Category) &&
-                                                      !aModel.Categories.Contains(tc.Category)
-                                                      select tc);
-
-                    foreach (var constraint in removedCategoryConstraints)
+                    catch (Exception ex)
                     {
-                        constraint.Category = null;
+                        scope.Rollback();
+                        throw ex;
                     }
-
-                    auditedTdb.SaveChanges();
-
-                    // Cardinality
-                    IGSettingsManager settings = new IGSettingsManager(auditedTdb, ig.Id);
-
-                    settings.SaveSetting(IGSettingsManager.SettingProperty.CardinalityAtLeastOne, aModel.CardinalityAtLeastOne);
-                    settings.SaveSetting(IGSettingsManager.SettingProperty.CardinalityOneToOne, aModel.CardinalityExactlyOne);
-                    settings.SaveSetting(IGSettingsManager.SettingProperty.CardinalityZero, aModel.CardinalityZero);
-                    settings.SaveSetting(IGSettingsManager.SettingProperty.CardinalityZeroOrMore, aModel.CardinalityZeroOrMore);
-                    settings.SaveSetting(IGSettingsManager.SettingProperty.CardinalityZeroToOne, aModel.CardinalityZeroOrOne);
-                    settings.SaveSetting(IGSettingsManager.SettingProperty.Volume1Html, aModel.Html != null ? aModel.Html : string.Empty);
-
-                    settings.SaveBoolSetting(IGSettingsManager.SettingProperty.UseConsolidatedConstraintFormat, aModel.ConsolidatedFormat);
-
-                    // Categories
-                    for (var i = 0; i < aModel.Categories.Count; i++)
-                    {
-                        aModel.Categories[i] = aModel.Categories[i].Replace(",", "");
-                    }
-
-                    settings.SaveSetting(IGSettingsManager.SettingProperty.Categories, string.Join(",", aModel.Categories));
-
-                    scope.Commit();
-
-                    return ig.Id;
                 }
             }
         }

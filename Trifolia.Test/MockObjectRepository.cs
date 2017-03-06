@@ -1639,14 +1639,14 @@ namespace Trifolia.Test
             
         }
 
-        public System.Data.IDbTransaction BeginTransaction()
+        public DbContextTransaction BeginTransaction()
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public System.Data.IDbTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel)
+        public DbContextTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
 

@@ -31,23 +31,20 @@ namespace Trifolia.DB
 
         #region Transactions
 
-        public System.Data.IDbTransaction BeginTransaction()
+        public DbContextTransaction BeginTransaction()
         {
             if (Connection.State != System.Data.ConnectionState.Open)
-            {
                 Connection.Open();
-            }
-            return Connection.BeginTransaction();
+
+            return this.Database.BeginTransaction();
         }
 
-        public System.Data.IDbTransaction BeginTransaction
-        (System.Data.IsolationLevel isolationLevel)
+        public DbContextTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel)
         {
             if (Connection.State != System.Data.ConnectionState.Open)
-            {
                 Connection.Open();
-            }
-            return Connection.BeginTransaction(isolationLevel);
+
+            return this.Database.BeginTransaction(isolationLevel);
         }
 
         #endregion
