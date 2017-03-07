@@ -9,6 +9,7 @@ namespace Trifolia.Web.Models.TemplateEditing
     {
         public string Error { get; set; }
         public int TemplateId { get; set; }
+        public int AuthorId { get; set; }
         public IEnumerable<ConstraintModel> Constraints { get; set; }
         public IEnumerable<dynamic> ValidationResults { get; set; }
     }

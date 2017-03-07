@@ -398,6 +398,7 @@ namespace Trifolia.Web.Controllers.API
         public SaveResponse Save(SaveModel model)
         {
             SaveResponse response = new SaveResponse();
+            int? templateId = null;
 
             using (IObjectRepository tdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
@@ -428,31 +429,30 @@ namespace Trifolia.Web.Controllers.API
                 else
                 {
                     tdb.SaveChanges();
+                    templateId = template.Id;
+                }
+            }
 
-                    // TODO: Check that ids have been updated template and constraints
-
-                    /*
-                    tdb.Refresh(System.Data.Entity.Core.Objects.RefreshMode.StoreWins, template);
-
-                    foreach (var constraint in template.ChildConstraints)
-                    {
-                        tdb.Refresh(System.Data.Entity.Core.Objects.RefreshMode.StoreWins, constraint);
-                    }
-                    */
+            if (templateId != null)
+            {
+                using (IObjectRepository tdb = DBContext.Create())
+                {
+                    var template = tdb.Templates.Single(y => y.Id == templateId);
 
                     response.TemplateId = template.Id;
+                    response.AuthorId = template.AuthorId;
                     response.Constraints = GetConstraints(tdb, template);
 
                     SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, template.ImplementationGuideType);
                     schema = schema.GetSchemaFromContext(template.PrimaryContextType);
 
                     response.ValidationResults = (from vr in template.ValidateTemplate(schema)
-                                                    select new
-                                                    {
-                                                        ConstraintNumber = vr.ConstraintNumber,
-                                                        Level = vr.Level.ToString(),
-                                                        Message = vr.Message
-                                                    });
+                                                  select new
+                                                  {
+                                                      ConstraintNumber = vr.ConstraintNumber,
+                                                      Level = vr.Level.ToString(),
+                                                      Message = vr.Message
+                                                  });
                 }
             }
 
