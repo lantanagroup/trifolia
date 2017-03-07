@@ -348,4 +348,7 @@
   <data name="TemplateEditorBookmarkTooltip" xml:space="preserve">
     <value>The short id is used during the export of a MS Word document and as the id field in FHIR's StructureDefinition resources. The short id must be unique in the implentation guide, and not contain any special characters (including spaces, with the exception of underscores). The short id may not be greater than 40 characters (due to MS Word\'s limitation in bookmark size).</value>
   </data>
+  <data name="StructureDefinitionSameUrlExists" xml:space="preserve">
+    <value>A StructureDefinition with the same url already exists. To update, use PUT.</value>
+  </data>
 </root>

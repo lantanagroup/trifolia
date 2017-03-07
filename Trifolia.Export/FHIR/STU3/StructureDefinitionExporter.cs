@@ -350,7 +350,11 @@ namespace Trifolia.Export.FHIR.STU3
 
                 foreach (var constraint in template.ChildConstraints.Where(y => y.ParentConstraint == null).OrderBy(y => y.Order))
                 {
-                    var schemaObject = schema.Children.SingleOrDefault(y => y.Name == constraint.Context);
+                    SimpleSchema.SchemaObject schemaObject = null;
+
+                    if (schema != null)
+                        schemaObject = schema.Children.SingleOrDefault(y => y.Name == constraint.Context);
+
                     CreateElementDefinition(fhirStructureDef, constraint, schemaObject);
                 }
 

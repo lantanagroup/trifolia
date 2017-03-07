@@ -151,6 +151,15 @@ namespace Trifolia.Web.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A StructureDefinition with the same url already exists. To update, use PUT..
+        /// </summary>
+        public static string StructureDefinitionSameUrlExists {
+            get {
+                return ResourceManager.GetString("StructureDefinitionSameUrlExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Child Primitive.
         /// </summary>
         public static string TemplateEditorAddChildPrimitiveTooltip {
