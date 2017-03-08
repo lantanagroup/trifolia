@@ -51,7 +51,7 @@
 
                     <div class="form-group has-feedback" data-bind="css: { 'has-error': !Validation().Identifier.isValid() }">
                         <label>Identifier/Base URL</label>
-                        <input type="text" class="form-control" data-bind="value: Identifier, disable: PreviousVersionId" />
+                        <input type="text" class="form-control" data-bind="value: Identifier, disable: $parent.DisableIdentifier" />
                     </div>
                     <span data-bind="validationMessage: Identifier"></span>
 

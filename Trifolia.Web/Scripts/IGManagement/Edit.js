@@ -96,6 +96,7 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
     self.AddPermissionType = ko.observable();
     self.NewCategory = ko.observable();
     self.Organizations = ko.observableArray([]);
+    self.DisableIdentifier = ko.observable(false);
 
     self.NewCategoryValid = ko.validatedObservable({
         NewCategory: self.NewCategory.extend({ categoryText: true })
@@ -399,6 +400,11 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
             success: function (results) {
                 var model = new ImplementationGuideModel(results);
                 self.Model(model);
+                
+                // If this a new version of an IG and an identifier already exists on the IG, don't let them change it
+                if (results.PreviousVersionId) {
+                    self.DisableIdentifier(results.Identifier && results.Identifier.length > 0);
+                }
 
                 if (!self.ImplementationGuideId()) {
                     self.Model().TypeId.subscribe(self.ImplementationGuideTypeChanged);
