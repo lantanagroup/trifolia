@@ -57,64 +57,64 @@ a.rvts10, span.rvts10
  color: #008000;
  text-decoration: underline;
 }
-a.rvts11, span.rvts11
-{
- color: #0000ff;
- text-decoration: underline;
-}
-span.rvts12 /* Font Style */
+span.rvts11 /* Font Style */
 {
  font-family: 'Tahoma', 'Geneva', sans-serif;
  font-style: italic;
  color: #c0c0c0;
 }
-a.rvts13, span.rvts13 /* Font Style */
+a.rvts12, span.rvts12 /* Font Style */
 {
  font-family: 'Tahoma', 'Geneva', sans-serif;
  font-style: italic;
  color: #6666ff;
  text-decoration: underline;
 }
-span.rvts14
+span.rvts13
 {
  font-size: 12pt;
  font-family: 'Garamond';
 }
-span.rvts15
+span.rvts14
 {
  font-size: 14pt;
  font-family: 'Garamond';
  font-style: italic;
  font-weight: bold;
 }
-span.rvts16
+span.rvts15
 {
  font-size: 12pt;
  font-family: 'Garamond';
  font-weight: bold;
 }
-span.rvts17
+span.rvts16
 {
  font-size: 12pt;
  font-family: 'Garamond';
  font-style: italic;
 }
+span.rvts17
+{
+ font-size: 11pt;
+ font-family: 'Calibri';
+ font-weight: bold;
+ color: #000000;
+}
 span.rvts18
 {
  font-size: 11pt;
  font-family: 'Calibri';
- font-weight: bold;
  color: #000000;
 }
 span.rvts19
 {
- font-size: 11pt;
- font-family: 'Calibri';
- color: #000000;
-}
-span.rvts20
-{
  font-weight: bold;
+}
+a.rvts20, span.rvts20
+{
+ color: #0000ff;
+ text-decoration: underline;
 }
 span.rvts21
 {

@@ -187,15 +187,15 @@
 <p class="rvps2"><span class="rvts6">The basic steps are as follows, with details below:</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><a class="rvts11" href="BuildingaFHIRIG.html#create_ig">Create an implementation guide</a><span class="rvts6">.</span></li>
-<li value="2" class="rvps2"><a class="rvts11" href="BuildingaFHIRIG.html#create_profiles">Create profiles for the implementation guide. </a></li>
-<li value="3" class="rvps2"><a class="rvts11" href="BuildingaFHIRIG.html#ig_files">Upload "FHIR resource instances" to the implementation guide.</a></li>
-<li value="4" class="rvps2"><a class="rvts11" href="BuildingaFHIRIG.html#export">Export the implementation guide as a FHIR build package.</a></li>
+<li value="1" class="rvps2"><a class="rvts20" href="BuildingaFHIRIG.html#create_ig">Create an implementation guide</a><span class="rvts6">.</span></li>
+<li value="2" class="rvps2"><a class="rvts20" href="BuildingaFHIRIG.html#create_profiles">Create profiles for the implementation guide. </a></li>
+<li value="3" class="rvps2"><a class="rvts20" href="BuildingaFHIRIG.html#ig_files">Upload "FHIR resource instances" to the implementation guide.</a></li>
+<li value="4" class="rvps2"><a class="rvts20" href="BuildingaFHIRIG.html#export">Export the implementation guide as a FHIR build package.</a></li>
 </ol>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <h2 class="rvps5"><a name="create_ig"></a>
 <span class="rvts0"><span class="rvts21">Create an implementation guide</span></span></h2>
-<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="AuthorImplementationGuides.html">Authoring &gt; Implementation Guides</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts20" href="AuthorImplementationGuides.html">Authoring &gt; Implementation Guides</a><span class="rvts6"> for details.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">Make sure the "type" of implementation guide is set to a FHIR implementation guide type.</span></li>
@@ -206,7 +206,7 @@
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <h2 class="rvps5"><a name="create_profiles"></a>
 <span class="rvts0"><span class="rvts21">Create profiles for the implementation guide</span></span></h2>
-<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="Editor.html">Authoring &gt; Templates/Profiles &gt; Editor</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts20" href="Editor.html">Authoring &gt; Templates/Profiles &gt; Editor</a><span class="rvts6"> for details.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">Each profile must have the same base url as the implementation guide in the "long id" field.</span></li>
@@ -219,25 +219,25 @@
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <h2 class="rvps5"><a name="ig_files"></a>
 <span class="rvts0"><span class="rvts21">Upload "FHIR resource instances" to the implementation guide</span></span></h2>
-<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="ImplementationGuideFiles.html">Authoring &gt; ImplementationGuides &gt; Files</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts20" href="ImplementationGuideFiles.html">Authoring &gt; ImplementationGuides &gt; Files</a><span class="rvts6"> for details.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <p class="rvps2"><span class="rvts6">In certain cases, (such as "Conformance", "SearchParameter" and "Questionnaire") instances of resources need to be associated with the implementation guide rather than defining profiles. Add these "FHIR resource instances" to the implementation guide's files (as type "FHIR Resource Instance") so that they are included in the fhir build package when exported from Trifolia.</span></p>
 <h2 class="rvps5"><a name="export"></a>
 <span class="rvts0"><span class="rvts21">Export the implementation guide as a FHIR build package</span></span></h2>
-<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="XMLJSON.html">Exporting &gt; XML/JSON</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts20" href="XMLJSON.html">Exporting &gt; XML/JSON</a><span class="rvts6"> for details.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <p class="rvps2"><span class="rvts6">Export the implementation guide as a FHIR build package. The result is a zip package that can be run against the FHIR ig publisher.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <p class="rvps2"><span class="rvts6">Run the FHIR IG publisher by following these steps:</span></p>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">Extract the FHIR IG Package to a directory on your machine.</span></li>
-<li value="2" class="rvps2"><span class="rvts6">Download the FHIR IG Publisher jar file from the FHIR's </span><a class="rvts11" href="http://build.fhir.org/downloads.html" target="_blank">Downloads</a><span class="rvts6"> page or click </span><a class="rvts11" href="http://build.fhir.org/org.hl7.fhir.igpublisher.jar" target="_blank">here</a><span class="rvts6"> to directly download the .jar file. Store the .jar file in the same directory that the FHIR IG Package was extracted to.</span></li>
+<li value="2" class="rvps2"><span class="rvts6">Download the FHIR IG Publisher jar file from the FHIR's </span><a class="rvts20" href="http://build.fhir.org/downloads.html" target="_blank">Downloads</a><span class="rvts6"> page or click </span><a class="rvts20" href="http://build.fhir.org/org.hl7.fhir.igpublisher.jar" target="_blank">here</a><span class="rvts6"> to directly download the .jar file. Store the .jar file in the same directory that the FHIR IG Package was extracted to.</span></li>
 <li value="3" class="rvps2"><span class="rvts6">Execute the "RunIGPublisher.bat" batch script.</span></li>
 <li value="4" class="rvps2"><span class="rvts6">If using the GUI interface, select the XXXX.json file exported from the ZIP.</span></li>
 <li value="5" class="rvps2"><span class="rvts6">Press "execute".</span></li>
 </ol>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<p class="rvps2"><span class="rvts6">Note: The FHIR IG publisher is still relatively new, and being actively developed. If the latest version of the FHIR IG publisher produces errors, you should seek guidance from </span><a class="rvts11" href="http://chat.fhir.org" target="_blank">http://chat.fhir.org</a><span class="rvts6"> in the #Implementers channel.</span></p>
+<p class="rvps2"><span class="rvts6">Note: The FHIR IG publisher is still relatively new, and being actively developed. If the latest version of the FHIR IG publisher produces errors, you should seek guidance from </span><a class="rvts20" href="http://chat.fhir.org" target="_blank">http://chat.fhir.org</a><span class="rvts6"> in the #Implementers channel.</span></p>
 <p></p>
 
             </div>

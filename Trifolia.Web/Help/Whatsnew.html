@@ -183,71 +183,77 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts15">Version 4.4.0</span></span></h2>
-<p class="rvps6"><span class="rvts14">Released on ????, 2017</span></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts16">Schematron Export Improvements</span></span></h3>
-<p class="rvps2"><span class="rvts14">A number of improvements have been made to Schematron exports including: </span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Version 4.4.0</span></span></h2>
+<p class="rvps6"><span class="rvts13">Released on ????, 2017</span></p>
+<h3 class="rvps7"><span class="rvts0"><span class="rvts15">Schematron Export Improvements</span></span></h3>
+<p class="rvps2"><span class="rvts13">A number of improvements have been made to Schematron exports including: </span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts14">minor performance improvements</span></li>
-<li class="rvps2"><span class="rvts14">bug fix to generated Schematron when dealing with single-value bindings within branches</span></li>
-<li class="rvps2"><span class="rvts14">bug fix to Schematron rule context's for templates whose schema doesn't have the typical element used by the template predicate (ex: templateId)</span></li>
+<li class="rvps2"><span class="rvts13">Minor performance improvements</span></li>
+<li class="rvps2"><span class="rvts13">Bug fix to generated Schematron when dealing with single-value bindings within branches</span></li>
+<li class="rvps2"><span class="rvts13">Bug fix to Schematron rule context's for templates whose schema doesn't have the typical element used by the template predicate (ex: templateId)</span></li>
 </ul>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts16">Default field selection for exports</span></span></h3>
-<p class="rvps2"><span class="rvts14">The "Save As Default" functionality for "Export templates/profiles to MS Word" was not saving all fields. This is now fixed so that when you indicate to save your preferences as default, the selected templates/profiles </span><span class="rvts17">and </span><span class="rvts14">the sort order are persisted.</span></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts16">Development Log</span></span></h3>
+<h3 class="rvps7"><span class="rvts0"><span class="rvts15">Default field selection for exports</span></span></h3>
+<p class="rvps2"><span class="rvts13">The "Save As Default" functionality for "Export templates/profiles to MS Word" was not saving all fields. This is now fixed so that when you indicate to save your preferences as default, the selected templates/profiles </span><span class="rvts16">and </span><span class="rvts13">the sort order are persisted.</span></p>
+<h3 class="rvps7"><span class="rvts0"><span class="rvts15">Developer Improvements</span></span></h3>
+<p class="rvps2"><span class="rvts13">A number of improvements have been made to make it easier for developers to work on Trifolia, including:</span></p>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts13">Using the latest version of Entity Framework, with code-first approach. This will make it easier to modify the database, and apply those modifications during installation. It will also be easier to setup new installations of Trifolia.</span></li>
+<li class="rvps2"><span class="rvts13">Installation script improvements. Re-designing the installation script to automatically apply the database migrations, and to remove files that are no longer used by the application.</span></li>
+</ul>
+<h3 class="rvps7"><span class="rvts0"><span class="rvts15">Development Log</span></span></h3>
 <div class="rvps8"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Issue Type</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Issue Type</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Summary</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Defect</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Branch within a branch produces incorrect schematron rule context</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Summary</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Defect</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Export to MS. Word - "Save As Default" not working</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Defect</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Display errors in user-friendy way</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Branch within a branch produces incorrect schematron rule context</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Defect</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Export Templates to MS Word - Save as Default not saving unchecked templates</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Defect</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Binding does not delete once set</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Export to MS. Word - "Save As Default" not working</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Improvement</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Element with single-value binding within a branch does not test single-value</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Improvement</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Allow a template/profile's author to be changed</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Display errors in user-friendy way</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">New Feature</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts19">Schematron US Realm Addr/name etc templates need manual search and replace contexts in the Schematron file</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Export Templates to MS Word - Save as Default not saving unchecked templates</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Defect</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Binding does not delete once set</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Improvement</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Element with single-value binding within a branch does not test single-value</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Improvement</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Allow a template/profile's author to be changed</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">New Feature</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts18">Schematron US Realm Addr/name etc templates need manual search and replace contexts in the Schematron file</span></p>
 </td>
 </tr>
 </table>
