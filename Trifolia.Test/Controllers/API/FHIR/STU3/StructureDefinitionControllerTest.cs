@@ -217,7 +217,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
             Assert.IsNotNull(firstEntry.Resource);
 
             var firstStrucDef = AssertHelper.IsType<StructureDefinition>(firstEntry.Resource);
-            Assert.AreEqual("Test-Composition", firstStrucDef.Id);
+            Assert.AreEqual("Test_Composition", firstStrucDef.Id);
         }
     }
 }

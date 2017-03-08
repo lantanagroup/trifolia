@@ -44,7 +44,7 @@ namespace Trifolia.Test.Export.FHIR
             var structureDefinition = exporter.Convert(this.template, schema.GetSchemaFromContext(RESOURCE_TYPE_OBS));
 
             Assert.IsNotNull(structureDefinition);
-            Assert.AreEqual("Test-Observation", structureDefinition.Id);
+            Assert.AreEqual("Test_Observation", structureDefinition.Id);
             Assert.AreEqual("Test Observation", structureDefinition.Name);
             Assert.AreEqual(DESCRIPTION, structureDefinition.Description.Value);
             Assert.AreEqual("http://test.com", structureDefinition.Url);
