@@ -1603,16 +1603,6 @@
               Looks up a localized string similar to Our First Localized Page.
             </summary>
         </member>
-        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.RecaptchaInvalid">
-            <summary>
-              Looks up a localized string similar to The re-captcha response specified is not valid.
-            </summary>
-        </member>
-        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.RecaptchaNotSpecified">
-            <summary>
-              Looks up a localized string similar to You did not verify that you are human using the re-captcha..
-            </summary>
-        </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.StructureDefinitionSameUrlExists">
             <summary>
               Looks up a localized string similar to A StructureDefinition with the same url already exists. To update, use PUT..

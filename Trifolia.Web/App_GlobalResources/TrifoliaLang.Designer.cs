@@ -133,24 +133,6 @@ namespace Trifolia.Web.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The re-captcha response specified is not valid.
-        /// </summary>
-        public static string RecaptchaInvalid {
-            get {
-                return ResourceManager.GetString("RecaptchaInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You did not verify that you are human using the re-captcha..
-        /// </summary>
-        public static string RecaptchaNotSpecified {
-            get {
-                return ResourceManager.GetString("RecaptchaNotSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to A StructureDefinition with the same url already exists. To update, use PUT..
         /// </summary>
         public static string StructureDefinitionSameUrlExists {

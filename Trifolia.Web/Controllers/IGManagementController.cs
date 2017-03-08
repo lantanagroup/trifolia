@@ -270,6 +270,7 @@ namespace Trifolia.Web.Controllers
                 newIg.Sections.Add(newSection);
             }
 
+            this.tdb.ImplementationGuides.Add(newIg);
             this.tdb.SaveChanges();
 
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
