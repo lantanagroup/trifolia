@@ -192,24 +192,24 @@
 <li class="rvps2"><span class="rvts6">effectivePeriod</span></li>
 </ul></ul>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<p class="rvps2"><span class="rvts6">In this case, an instance of the template/profile may only contain </span><span class="rvts28">either </span><span class="rvts6">effectiveDateTime or effectivePeriod.</span></p>
+<p class="rvps2"><span class="rvts6">In this case, an instance of the template/profile may only contain </span><span class="rvts31">either </span><span class="rvts6">effectiveDateTime or effectivePeriod.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<p class="rvps2"><span class="rvts17">Valid XML Example:</span></p>
-<p class="rvps8"><span class="rvts35">&lt;Observation&gt;</span><br/><span class="rvts35"> &nbsp;&lt;effectiveDateTime value="xxx" /&gt;</span><br/><span class="rvts35">&lt;/Observation&gt;</span></p>
+<p class="rvps2"><span class="rvts20">Valid XML Example:</span></p>
+<p class="rvps9"><span class="rvts38">&lt;Observation&gt;</span><br/><span class="rvts38"> &nbsp;&lt;effectiveDateTime value="xxx" /&gt;</span><br/><span class="rvts38">&lt;/Observation&gt;</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<p class="rvps2"><span class="rvts17">Invalid XML Example:</span></p>
-<p class="rvps8"><span class="rvts35">&lt;Observation&gt;</span><br/><span class="rvts35"> &nbsp;&lt;effectiveDateTime value="xxx" /&gt;</span><br/><span class="rvts35"> &nbsp;&lt;effectivePeriod&gt;</span><br/><span class="rvts35"> &nbsp; &nbsp;&lt;from value="yyy" /&gt;</span><br/><span class="rvts35"> &nbsp; &nbsp;&lt;to value="zzz" /&gt;</span><br/><span class="rvts35"> &nbsp;&lt;/effectivePeriod&gt;</span><br/><span class="rvts35">&lt;/Observation</span></p>
-<p class="rvps9"><span class="rvts6"><br/></span></p>
-<p class="rvps9"><span class="rvts6">The Template/Profile editor </span><span class="rvts28">does </span><span class="rvts6">allow you to choose/constrain more than one option; effectively giving the implementer the choice to choose which option for themselves.</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts18">Template/Profile Editor</span></span></h2>
+<p class="rvps2"><span class="rvts20">Invalid XML Example:</span></p>
+<p class="rvps9"><span class="rvts38">&lt;Observation&gt;</span><br/><span class="rvts38"> &nbsp;&lt;effectiveDateTime value="xxx" /&gt;</span><br/><span class="rvts38"> &nbsp;&lt;effectivePeriod&gt;</span><br/><span class="rvts38"> &nbsp; &nbsp;&lt;from value="yyy" /&gt;</span><br/><span class="rvts38"> &nbsp; &nbsp;&lt;to value="zzz" /&gt;</span><br/><span class="rvts38"> &nbsp;&lt;/effectivePeriod&gt;</span><br/><span class="rvts38">&lt;/Observation</span></p>
+<p class="rvps10"><span class="rvts6"><br/></span></p>
+<p class="rvps10"><span class="rvts6">The Template/Profile editor </span><span class="rvts31">does </span><span class="rvts6">allow you to choose/constrain more than one option; effectively giving the implementer the choice to choose which option for themselves.</span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Template/Profile Editor</span></span></h2>
 <p class="rvps2"><span class="rvts6">The template/profile editor allows you to specify conformance and cardinality for the choice as a whole (ex: "effective[x]") but does not allow you to specify conformance/cardinality for the options within the choice (ex: "effectiveDateTime" and "effectivePeriod").</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts18">Narrative Generation</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Narrative Generation</span></span></h2>
 <p class="rvps2"><span class="rvts6">Here is an example of narrative generated for choice elements when multiple options are constrained/selected:</span></p>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts17">MAY </span><span class="rvts6">contain zero or one [0..1] </span><span class="rvts17">onset[x]</span><span class="rvts6">, where </span><span class="rvts17">onset[x]</span><span class="rvts6"> is one of (CONF:3272-43)</span></li>
+<li value="1" class="rvps2"><span class="rvts20">MAY </span><span class="rvts6">contain zero or one [0..1] </span><span class="rvts20">onset[x]</span><span class="rvts6">, where </span><span class="rvts20">onset[x]</span><span class="rvts6"> is one of (CONF:3272-43)</span></li>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts17">onsetDateTime </span><span class="rvts6">(CONF:3272-44)</span></li>
-<li value="2" class="rvps2"><span class="rvts6">or </span><span class="rvts17">onsetAge </span><span class="rvts6">(CONF:3272-45)</span></li>
+<li value="1" class="rvps2"><span class="rvts20">onsetDateTime </span><span class="rvts6">(CONF:3272-44)</span></li>
+<li value="2" class="rvps2"><span class="rvts6">or </span><span class="rvts20">onsetAge </span><span class="rvts6">(CONF:3272-45)</span></li>
 </ol></ol>
 <p></p>
 

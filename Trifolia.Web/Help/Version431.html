@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
-  <title>Importing</title>
+  <title>Version 4.3.1</title>
   <meta name="description" content="" /> 
   <meta name="keywords" content="">
 
@@ -19,11 +19,11 @@
 
   <!-- Twitter Card data -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Importing">
+  <meta name="twitter:title" content="Version 4.3.1">
   <meta name="twitter:description" content="">
 
   <!-- Open Graph data -->
-  <meta property="og:title" content="Importing" />
+  <meta property="og:title" content="Version 4.3.1" />
   <meta property="og:type" content="article" />
   <meta property="og:description" content="" />
   <meta property="og:site_name" content="Trifolia Workbench" /> 
@@ -161,63 +161,32 @@
 
     <article>
         <div id="topic-content" class="container-fluid" 
-		  data-hnd-id="Importing"
-		  data-hnd-context="64"
-		  data-hnd-title="Importing"
+		  data-hnd-id="Version431"
+		  data-hnd-context="77"
+		  data-hnd-title="Version 4.3.1"
 		>
             
                 <div class="navigation">
                     <ol class="breadcrumb">
-                        
+                        <li>Previous Versions</li>
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="XMLJSON.html" title="XML/JSON" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Reports.html" title="Reports" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="PreviousVersions.html" title="Previous Versions" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="PreviousVersions.html" title="Previous Versions" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Version430.html" title="Version 4.3.0" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
 
             <a id="main-content"></a>
 
-            <h2>Importing</h2>
+            <h2>Version 4.3.1</h2>
 
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Importing using the native XML format with the web interface</span></span></h2>
-<p class="rvps2"><span class="rvts6">Trifolia can import implementation guide and template/profile data via the "Import" tab. The Trifolia native XML format includes all information that Trifolia uses to generate various exports, including sample information for both templates/profiles and constraints, heading information, template type descriptions, etc. This export/import format is designed to transfer information between different installations of Trifolia.</span></p>
-<p class="rvps2"><span class="rvts6">To import this format:</span></p>
-<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts6">Select the "Import" tab from the top navigation menu</span></li>
-<li value="2" class="rvps2"><span class="rvts6">Select the file to import</span></li>
-<li value="3" class="rvps2"><span class="rvts6">Click the "Import Now" button</span></li>
-</ol>
-<p class="rvps2"><span class="rvts6">After the import is complete, you will be presented with a report indicating what was changed (or not changed) during the import. Templates/profiles shown the report can be expanded to see what constraints and samples were modified.</span></p>
-<p class="rvps2"><span class="rvts6">Here are some key things to know when importing data using this method:</span></p>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts6">The import </span><span class="rvts31">does </span><span class="rvts6">overwrite information if it already exists.</span></li>
-<li class="rvps2"><span class="rvts6">If the import includes implementation guides or templates that already exists, and changes are made to the implementation guides and templates/profiles, you must have access to edit the implementation guide and/or template, or the import will fail.</span></li>
-<li class="rvps2"><span class="rvts6">Templates/profiles, constraints and samples that already exist and are not included in the import XML file are </span><span class="rvts31">not </span><span class="rvts6">deleted. For example, if Trifolia already has templates/profiles A, B and C in "My Implementation Guide", and the import XML file only contains templates/profiles A and B, then template/profile C will still remain in "My Implementation Guide" after the import is complete.</span></li>
-</ul>
-<p class="rvps2"><span class="rvts6"><br/></span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Importing using FHIR REST interface</span></span></h2>
-<p class="rvps2"><span class="rvts6">Trifolia provides </span><span class="rvts31">some </span><span class="rvts6">(but not all) POST/PUT/DELETE functionality for FHIR profiles. Below is a list of the operations supported by Trifolia:</span></p>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts6">FHIR DSTU2 /api/FHIR2/</span></li>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps2"><span class="rvts6">POST /api/FHIR2/StructureDefinition</span></li>
-<li class="rvps2"><span class="rvts6">PUT /api/FHIR2/StructureDefinition/{id}</span></li>
-<li class="rvps2"><span class="rvts6">DELETE /api/FHIR2/StructureDefinition/{id}</span></li>
-<li class="rvps2"><span class="rvts6">POST /api/FHIR2/ValueSet</span></li>
-<li class="rvps2"><span class="rvts6">PUT /api/FHIR2/ValueSet/{id}</span></li>
-</ul>
-<li class="rvps2"><span class="rvts6">FHIR STU3 /api/FHIR3/</span></li>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps2"><span class="rvts6">POST /api/FHIR3/StructureDefinition</span></li>
-<li class="rvps2"><span class="rvts6">PUT /api/FHIR3/StructureDefinition/{id}</span></li>
-<li class="rvps2"><span class="rvts6">DELETE /api/FHIR3/StructureDefinition/{id}</span></li>
-<li class="rvps2"><span class="rvts6">POST /api/FHIR3/ValueSet</span></li>
-<li class="rvps2"><span class="rvts6">PUT /api/FHIR3/ValueSet/{id}</span></li>
-</ul></ul>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts15">Version 4.3.1</span></span></h2>
+<p class="rvps6"><span class="rvts14">Released on Friday, Jan 14, 2017</span></p>
+<h3 class="rvps7"><span class="rvts0"><span class="rvts45">Rollback of Schema Choice Support for CDA-based templates</span></span></h3>
+<p class="rvps2"><span class="rvts6">In version 4.3.0, we release preliminary support for Schema Choices for all implementation guides and templates. Through-out the last month we have identified a number of unforeseen issues with Schema Choices in CDA-based implementation guides and templates. As a result, we are rolling back these features for non-FHIR implementation guides until we can assess how to properly address the issues we have identified.</span></p>
 <p></p>
 
             </div>

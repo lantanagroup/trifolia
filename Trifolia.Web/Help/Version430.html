@@ -171,7 +171,7 @@
                         <li>Previous Versions</li>
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="PreviousVersions.html" title="Previous Versions" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="Version42x.html" title="Version 4.2.x" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="PreviousVersions.html" title="Previous Versions" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="Version431.html" title="Version 4.3.1" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Version42x.html" title="Version 4.2.x" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
@@ -183,68 +183,68 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts16">Version 4.3.0</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts15">Version 4.3.0</span></span></h2>
 <p class="rvps6"><span class="rvts14">Released on Friday, Dec 2, 2016</span></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts15">Schema Choice Support</span></span></h3>
-<p class="rvps2"><span class="rvts62">XML Schema supports a notion of "choices", where you can select one element out of several options. Prior to this release, Trifolia showed those options as though you could select more than one of the options at a time. Now, Trifolia fully supports the notion of a schema choice, by wrapping the options in a parent element (such as "effective[x]"). The conformance and cardinality is defined in the parent element and does not apply to the options within the parent element.</span></p>
-<p class="rvps2"><span class="rvts62">Narrative generation is modified so that it is clear that only one option may be used at a time. For example:</span></p>
+<h3 class="rvps7"><span class="rvts0"><span class="rvts45">Schema Choice Support</span></span></h3>
+<p class="rvps2"><span class="rvts47">XML Schema supports a notion of "choices", where you can select one element out of several options. Prior to this release, Trifolia showed those options as though you could select more than one of the options at a time. Now, Trifolia fully supports the notion of a schema choice, by wrapping the options in a parent element (such as "effective[x]"). The conformance and cardinality is defined in the parent element and does not apply to the options within the parent element.</span></p>
+<p class="rvps2"><span class="rvts47">Narrative generation is modified so that it is clear that only one option may be used at a time. For example:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts62">SHALL contain 1..1 effective[x], where effective[x] is one of:</span></li>
+<li class="rvps2"><span class="rvts47">SHALL contain 1..1 effective[x], where effective[x] is one of:</span></li>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps2"><span class="rvts62">effectiveDateTime</span></li>
-<li class="rvps2"><span class="rvts62">or effectivePeriod</span></li>
+<li class="rvps2"><span class="rvts47">effectiveDateTime</span></li>
+<li class="rvps2"><span class="rvts47">or effectivePeriod</span></li>
 </ul></ul>
-<p class="rvps2"><span class="rvts62"><br/></span></p>
-<p class="rvps2"><span class="rvts62">Note: The schematron generation engine has not been updated yet to handle schema choices. This will be done in a future (most likely the next) release.</span></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts15">FHIR Build Package</span></span></h3>
-<p class="rvps2"><span class="rvts62">The export for "FHIR Build Package" (available under Export &gt; "Templates/Profiles to XML/JSON" menu) has been updated to work with the latest version of the FHRI IG Publisher.</span></p>
+<p class="rvps2"><span class="rvts47"><br/></span></p>
+<p class="rvps2"><span class="rvts47">Note: The schematron generation engine has not been updated yet to handle schema choices. This will be done in a future (most likely the next) release.</span></p>
+<h3 class="rvps7"><span class="rvts0"><span class="rvts45">FHIR Build Package</span></span></h3>
+<p class="rvps2"><span class="rvts47">The export for "FHIR Build Package" (available under Export &gt; "Templates/Profiles to XML/JSON" menu) has been updated to work with the latest version of the FHRI IG Publisher.</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts62">Template/Profile samples are added to the control file</span></li>
-<li class="rvps2"><span class="rvts62">"sct-edition" property is added to the control file, and defaulted to the US edition</span></li>
-<li class="rvps2"><span class="rvts62">The url for the ImplementationGuide resource includes the base identifier</span></li>
-<li class="rvps2"><span class="rvts62">Invalid UTF-8 characters are automatically removed from the description</span></li>
-<li class="rvps2"><span class="rvts62">The "resources.html" include file is auto-generated by Trifolia, and includes profile descriptions</span></li>
-<li class="rvps2"><span class="rvts62">StructureDefinition exports are modified to support schema choices</span></li>
-<li class="rvps2"><span class="rvts62">The fhir-net-api is updated based on the ft-connectathon2017 branch which includes the latest updates</span></li>
+<li class="rvps2"><span class="rvts47">Template/Profile samples are added to the control file</span></li>
+<li class="rvps2"><span class="rvts47">"sct-edition" property is added to the control file, and defaulted to the US edition</span></li>
+<li class="rvps2"><span class="rvts47">The url for the ImplementationGuide resource includes the base identifier</span></li>
+<li class="rvps2"><span class="rvts47">Invalid UTF-8 characters are automatically removed from the description</span></li>
+<li class="rvps2"><span class="rvts47">The "resources.html" include file is auto-generated by Trifolia, and includes profile descriptions</span></li>
+<li class="rvps2"><span class="rvts47">StructureDefinition exports are modified to support schema choices</span></li>
+<li class="rvps2"><span class="rvts47">The fhir-net-api is updated based on the ft-connectathon2017 branch which includes the latest updates</span></li>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps2"><span class="rvts62">As a result of this, the FHIR REST API (/api/FHRI3/) has been updated to support CapabilityStatement instead of Conformance</span></li>
+<li class="rvps2"><span class="rvts47">As a result of this, the FHIR REST API (/api/FHRI3/) has been updated to support CapabilityStatement instead of Conformance</span></li>
 </ul></ul>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts19">Development Log</span></span></h3>
-<div class="rvps24"><table width="498" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse;">
+<h3 class="rvps7"><span class="rvts0"><span class="rvts22">Development Log</span></span></h3>
+<div class="rvps13"><table width="498" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse;">
 <tr valign="top">
-<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps26"><span class="rvts59">Type</span></p>
+<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps15"><span class="rvts46">Type</span></p>
 </td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps26"><span class="rvts59">Description</span></p>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps15"><span class="rvts46">Description</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts14">Feature</span></p>
 </td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps25"><span class="rvts14">UI changes for schema choices</span></p>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps14"><span class="rvts14">UI changes for schema choices</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts14">Feature</span></p>
 </td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps25"><span class="rvts14">Narrative generation updates for schema choices</span></p>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps14"><span class="rvts14">Narrative generation updates for schema choices</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts14">Improvement</span></p>
 </td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps25"><span class="rvts14">Include implementation guide files in Native XML export/import</span></p>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps14"><span class="rvts14">Include implementation guide files in Native XML export/import</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts14">Improvement</span></p>
 </td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps25"><span class="rvts14">FHIR Resource Instances in Web-based IG</span></p>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps14"><span class="rvts14">FHIR Resource Instances in Web-based IG</span></p>
 </td>
 </tr>
 <tr valign="top">
 <td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts14">Defect</span></p>
 </td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps25"><span class="rvts14">Trifolla FHIR Build: Review/resolve errors in IG Publisher for Trifolia export</span></p>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps14"><span class="rvts14">Trifolla FHIR Build: Review/resolve errors in IG Publisher for Trifolia export</span></p>
 </td>
 </tr>
 </table>
