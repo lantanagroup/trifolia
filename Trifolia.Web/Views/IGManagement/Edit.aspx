@@ -14,7 +14,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <div id="EditImplementationGuide">
-        <h2>Edit Implementation Guide</h2>
+        <h2><span data-bind="text: EditType">Add/Edit</span> Implementation Guide</h2>
     
         <div data-bind="with: Model, validationOptions: { messagesOnModified: false, insertMessages: false }">
             <!-- Nav tabs -->
@@ -31,80 +31,85 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <div class="tab-pane active" id="general">
-                    <div class="form-group has-feedback" data-bind="css: { 'has-error': !Validation().Name.isValid() }">
-                        <label>Name</label>
-                        <input type="text" class="form-control" data-bind="value: Name, disable: PreviousVersionId" />
-                        <span class="help-block" data-bind="validationMessage: Name"></span>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback" data-bind="css: { 'has-error': !Validation().Name.isValid() }">
+                                <label>Name</label>
+                                <input type="text" class="form-control" data-bind="value: Name, disable: PreviousVersionId" />
+                                <span class="help-block" data-bind="validationMessage: Name"></span>
+                            </div>
 
-                    <div class="form-group has-feedback" data-bind="css: { 'has-error': !Validation().TypeId.isValid() }">
-                        <label>Type</label>
-                        <select class="form-control" data-bind="value: TypeId, options: $parent.ImplementationGuideTypes, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select', disable: Id"></select>
-                        <span class="help-block" data-bind="validationMessage: TypeId"></span>
-                    </div>
+                            <div class="form-group has-feedback" data-bind="css: { 'has-error': !Validation().TypeId.isValid() }">
+                                <label>Type</label>
+                                <select class="form-control" data-bind="value: TypeId, options: $parent.ImplementationGuideTypes, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select', disable: Id"></select>
+                                <span class="help-block" data-bind="validationMessage: TypeId"></span>
+                            </div>
 
-                    <div class="form-group">
-                        <label>Organization</label>
-                        <select class="form-control" data-bind="value: OrganizationId, options: $parent.Organizations, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select...'"></select>
-                        <span class="help-block">The organization specified here identifies (for example) a standards body that the implementation guide will be developed under.</span>
-                    </div>
+                            <div class="form-group">
+                                <label>Organization</label>
+                                <select class="form-control" data-bind="value: OrganizationId, options: $parent.Organizations, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select...'"></select>
+                                <span class="help-block">The organization specified here identifies (for example) a standards body that the implementation guide will be developed under.</span>
+                            </div>
 
-                    <div class="form-group has-feedback" data-bind="css: { 'has-error': !Validation().Identifier.isValid() }">
-                        <label>Identifier/Base URL</label>
-                        <input type="text" class="form-control" data-bind="value: Identifier, disable: $parent.DisableIdentifier" />
-                    </div>
-                    <span data-bind="validationMessage: Identifier"></span>
+                            <div class="form-group has-feedback" data-bind="css: { 'has-error': !Validation().Identifier.isValid() }">
+                                <label>Identifier/Base URL</label>
+                                <input type="text" class="form-control" data-bind="value: Identifier, disable: $parent.DisableIdentifier" />
+                            </div>
+                            <span data-bind="validationMessage: Identifier"></span>
 
-                    <div class="form-group">
-                        <label>Display Name</label>
-                        <input type="text" class="form-control" data-bind="value: DisplayName" />
-                        <span class="help-block">Display name is used on many of the management screens, and in the DOCX export</span>
-                    </div>
-                    <span data-bind="validationMessage: DisplayName"></span>
+                            <div class="form-group">
+                                <label>Display Name</label>
+                                <input type="text" class="form-control" data-bind="value: DisplayName" />
+                                <span class="help-block">Display name is used on many of the management screens, and in the DOCX export</span>
+                            </div>
+                            <span data-bind="validationMessage: DisplayName"></span>
 
-                    <div class="form-group">
-                        <label>Web Display Name</label>
-                        <input type="text" class="form-control" data-bind="value: WebDisplayName" />
-                        <span class="help-block">Web Display Name is used only by the web-based implementation guide, in the home screen's "Welcome to the web-based implementation guide for XXX" heading</span>
-                    </div>
-                    <span data-bind="validationMessage: WebDisplayName"></span>
-
-                    <div class="form-group">
-                        <label>Web Implementation Guide Description</label>
-                        <textarea style="width: 100%; height: 300px;" data-bind="sceditor: WebDescription, value: WebDescription, imageOpts: imageOpts"></textarea>
-                        <span class="help-block">Web Implementation Guide Description is used only by the web-based implementation guide, in the home screen's "Welcome to the web-based implementation guide for XXX" heading</span>
-                    </div>
-                    <span data-bind="validationMessage: WebDescription"></span>
-
-                    <div class="form-group">
-                        <label>Web Readme Overview</label>
-                        <textarea class="form-control" style="height: 100px;" data-bind="value: WebReadmeOverview"></textarea>
-                        <span class="help-block">Used in the .txt README file when the web-based implementation guide is downloaded as a ZIP package.</span>
-                    </div>
-                    <span data-bind="validationMessage: WebReadmeOverview"></span>
+                            <div class="form-group">
+                                <label>Web Display Name</label>
+                                <input type="text" class="form-control" data-bind="value: WebDisplayName" />
+                                <span class="help-block">Web Display Name is used only by the web-based implementation guide, in the home screen's "Welcome to the web-based implementation guide for XXX" heading</span>
+                            </div>
+                            <span data-bind="validationMessage: WebDisplayName"></span>
             
-                    <div class="form-group">
-                        <label>Consolidated Format</label>
-                        <select class="form-control" data-bind="value: ConsolidatedFormatString">
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                        </select>
-                    </div>
-                    <span data-bind="validationMessage: ConsolidatedFormat"></span>
+                            <div class="form-group">
+                                <label>Consolidated Format</label>
+                                <select class="form-control" data-bind="value: ConsolidatedFormatString">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                            <span data-bind="validationMessage: ConsolidatedFormat"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Access Manager</label>
+                                <select class="form-control" data-bind="value: AccessManagerId, options: GetEditUsers(), optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select...'""></select>
+                                <span class="help-block">One of the individual users that have edit permissions to the IG. Is the user that receives emails with access requests.</span>
+                            </div>
 
-                    <div class="form-group">
-                        <label>Access Manager</label>
-                        <select class="form-control" data-bind="value: AccessManagerId, options: GetEditUsers(), optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select...'""></select>
-                        <span class="help-block">One of the individual users that have edit permissions to the IG. Is the user that receives emails with access requests.</span>
-                    </div>
+                            <div class="form-group">
+                                <label>Allow access requests?</label>
+                                <select class="form-control" data-bind="value: AllowAccessRequestsString">
+                                    <option value="true">Yes</option>
+                                    <option value="false" selected>No</option>
+                                </select>
+                                <span class="help-block">Indicates whether the implementation guide should be displayed in the list of implementation guides that users can request access to.</span>
+                            </div>
 
-                    <div class="form-group">
-                        <label>Allow access requests?</label>
-                        <select class="form-control" data-bind="value: AllowAccessRequestsString">
-                            <option value="true">Yes</option>
-                            <option value="false" selected>No</option>
-                        </select>
-                        <span class="help-block">Indicates whether the implementation guide should be displayed in the list of implementation guides that users can request access to.</span>
+                            <div class="form-group">
+                                <label>Web Implementation Guide Description</label>
+                                <textarea style="width: 100%; height: 300px;" data-bind="sceditor: WebDescription, value: WebDescription, imageOpts: imageOpts"></textarea>
+                                <span class="help-block">Web Implementation Guide Description is used only by the web-based implementation guide, in the home screen's "Welcome to the web-based implementation guide for XXX" heading</span>
+                            </div>
+                            <span data-bind="validationMessage: WebDescription"></span>
+
+                            <div class="form-group">
+                                <label>Web Readme Overview</label>
+                                <textarea class="form-control" style="height: 100px;" data-bind="value: WebReadmeOverview"></textarea>
+                                <span class="help-block">Used in the .txt README file when the web-based implementation guide is downloaded as a ZIP package.</span>
+                            </div>
+                            <span data-bind="validationMessage: WebReadmeOverview"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="tab-pane" id="templateTypes">
@@ -189,52 +194,80 @@
 
                 <div class="tab-pane" id="permissions">
                     <div class="row">
-                        <div class="col-md-10"><strong>View Permission</strong></div>
-                        <div class="col-md-2">
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-primary" data-bind="click: function () { $parent.ShowAddPermission('View'); }">Add</button>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">View Permissions</div>
+                                <table class="table table-striped">
+                                    <tbody data-bind="foreach: ViewPermissions">
+                                        <tr>
+                                            <td>
+                                                <span data-bind="text: Name"></span><span data-bind="text: $parents[1].GetPermissionTypeName(Type())"></span>
+                                            </td>
+                                            <td>
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-default btn-sm" data-bind="click: function () { $parents[1].RemovePermission('View', $data); }, disable: IsDefault">Remove</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Edit Permissions</div>
+                                <table class="table table-striped">
+                                    <tbody data-bind="foreach: EditPermissions">
+                                        <tr>
+                                            <td>
+                                                <span data-bind="text: Name"></span><span data-bind="text: $parents[1].GetPermissionTypeName(Type())"></span>
+                                            </td>
+                                            <td>
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-default btn-sm" data-bind="click: function () { $parents[1].RemovePermission('Edit', $data); }, disable: IsDefault">Remove</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </div>
-
-                    <div data-bind="foreach: ViewPermissions">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <span data-bind="text: Name"></span><span data-bind="text: $parents[1].GetPermissionTypeName(Type())"></span>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="pull-right">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-primary" data-bind="click: function () { $parents[1].RemovePermission('View', $data); }, disable: IsDefault">Remove</button>
-                                    </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Add Permissions</div>
+                                <div class="panel-body">
+                                    <form id="searchPermissionsForm" data-bind="submit: $parent.SearchPermissions">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="User Name" data-bind="value: $parent.PermissionSearchText" />
+                                                    <div class="input-group-btn">
+                                                        <button type="submit" class="btn btn-default">Search</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
+                                <!-- ko if: $parent.PermissionSearchResults().length > 0 -->
+                                <table class="table table-striped">
+                                    <tbody data-bind="foreach: $parent.PermissionSearchResults">
+                                        <tr>
+                                            <td data-bind="text: Name"></td>
+                                            <td>
+                                                <div class="pull-right">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-default btn-sm" data-bind="click: function () { $root.AddPermission('View', $data); }">Add View</button>
+                                                        <button type="button" class="btn btn-default btn-sm" data-bind="click: function () { $root.AddPermission('Edit', $data); }">Add View & Edit</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- /ko -->
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-md-10"><strong>Edit Permission</strong></div>
-                        <div class="col-md-2">
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-primary" data-bind="click: function () { $parent.ShowAddPermission('Edit'); }">Add</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ko foreach: EditPermissions -->
-                    <div class="row">
-                        <div class="col-md-10">
-                            <span data-bind="text: Name"></span><span data-bind="text: $parents[1].GetPermissionTypeName(Type())"></span>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary" data-bind="click: function () { $parents[1].RemovePermission('Edit', $data); }, disable: IsDefault">Remove</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /ko -->
                 </div>
 
                 <div class="tab-pane" id="volume1">
@@ -327,43 +360,6 @@
             <button type="button" class="btn btn-default" data-bind="click: $parent.Cancel">Cancel</button>
         </div>
 
-        <div class="modal fade" id="addPermissionDialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add Permission</h4>
-                    </div>
-                    <div class="modal-body" style="max-height: 350px; overflow-y: auto;">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="User Name" data-bind="value: PermissionSearchText" />
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-default" data-bind="click: SearchPermissions">Search</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ko foreach: PermissionSearchResults -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <input type="checkbox" name="NewSelectedUserCheckbox" data-bind="attr: { value: UniqueId }, checked: $parent.NewSelectedUsers" /> <span data-bind="    text: Name"></span>
-                            </div>
-                        </div>
-                        <!-- /ko -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-bind="click: AddPermissions">OK</button>
-                        <button type="button" class="btn btn-default" data-bind="click: CancelAddPermissions">Cancel</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal -->
-
         <div class="modal fade" id="customSchematronDialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -442,12 +438,6 @@
             ko.applyBindings(viewModel, $('#EditImplementationGuide')[0]);
 
             $('#customSchematronDialog').modal({
-                show: false,
-                keyboard: false,
-                backdrop: 'static'
-            });
-
-            $('#addPermissionDialog').modal({
                 show: false,
                 keyboard: false,
                 backdrop: 'static'
