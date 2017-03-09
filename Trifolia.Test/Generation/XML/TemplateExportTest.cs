@@ -86,7 +86,7 @@ namespace Trifolia.Test.Generation.XML
             var tc3 = tdb.AddConstraintToTemplate(template, tc2, null, "value", "SHALL", "1..1", "CD", value: "4321", displayName: "Test");
             tc3.Description = "Test description";
             tc3.Label = "Test Label";
-            var tc4 = tdb.CreatePrimitive(template, null, "SHALL", "This is a test");
+            var tc4 = tdb.AddPrimitiveToTemplate(template, null, "SHALL", "This is a test");
 
             ExportTemplate export = template.Export(tdb, igSettings);
 

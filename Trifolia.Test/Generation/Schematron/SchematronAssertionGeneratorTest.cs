@@ -493,7 +493,7 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint p89_3 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p89_1, null, "observation", "SHALL", "1..1", isBranchIdentifier:true);
             TemplateConstraint p89_4 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p89_3, null, "@classCode", "SHALL", "1..1", null, null, "OBS", isBranchIdentifier: true);
             TemplateConstraint p89_5 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p89_3, null, "statusCode", "SHALL", "1..1", isBranchIdentifier:true);
-            TemplateConstraint p89_6 = ruleRepo.CreatePrimitive(cdaTemplate1, p89_3, "SHALL", "Test primitive constraint", null, false);
+            TemplateConstraint p89_6 = ruleRepo.AddPrimitiveToTemplate(cdaTemplate1, p89_3, "SHALL", "Test primitive constraint", null, false);
             TemplateConstraint p89_7 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p89_5, null, "@code", "SHALL", "1..1", null, null, "active", isBranchIdentifier: true);
             TemplateConstraint p89_8 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p89_3, null, "code", "SHALL", "1..1", isBranchIdentifier: true);
             AddConstraintForRule(89,p89_1);

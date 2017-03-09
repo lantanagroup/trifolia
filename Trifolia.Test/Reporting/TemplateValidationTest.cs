@@ -106,7 +106,7 @@ namespace Trifolia.Test.Reporting
         public void TemplateValidationFailurePrimitiveWithoutNarrative()
         {
             Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType("CDA", "Document"), "Test 1", this.ig, "observation", "Observation");
-            var tc1 = tdb.CreatePrimitive(newTemplate, null, "SHALL", string.Empty);
+            var tc1 = tdb.AddPrimitiveToTemplate(newTemplate, null, "SHALL", string.Empty);
 
             List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();
 

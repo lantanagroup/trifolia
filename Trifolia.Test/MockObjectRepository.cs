@@ -1116,7 +1116,7 @@ namespace Trifolia.Test
             return ig;
         }
 
-        public TemplateConstraint CreatePrimitive(
+        public TemplateConstraint AddPrimitiveToTemplate(
             Template template, 
             TemplateConstraint parent, 
             string conformanceText, 

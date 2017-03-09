@@ -353,37 +353,6 @@ namespace Trifolia.Export.Schematron
             }
         }
 
-        private bool IsOptionalParent(TemplateConstraint aConstraint)
-        {
-            TemplateConstraint current = aConstraint;
-            while (current != null)
-            {
-                if (current.BusinessConformanceType != Conformance.SHALL && current.BusinessConformanceType != Conformance.SHALL_NOT)
-                {
-                    return true;
-                }
-                current = current.ParentConstraint;
-            }
-
-            return false;
-        }
-
-        private bool HasRequiredElement(TemplateConstraint aConstraint)
-        {
-            TemplateConstraint current = aConstraint;
-            while (current != null)
-            {
-                if ((current.BusinessConformanceType == Conformance.SHOULD || current.BusinessConformanceType == Conformance.SHOULD_NOT)
-                    || (current.BusinessConformanceType == Conformance.SHALL || current.BusinessConformanceType == Conformance.SHALL_NOT))
-                {
-                    return true;
-                }
-                current = current.ParentConstraint;
-            }
-
-            return false;
-        }
-
         private bool IsBranchedParent(TemplateConstraint aConstraint)
         {
             TemplateConstraint current = aConstraint;
@@ -434,43 +403,37 @@ namespace Trifolia.Export.Schematron
                 return;
 
             //realize the list so that all of them are pulled from database
-            var constraints = template.ChildConstraints.ToList(); 
+            var constraints = template.ChildConstraints.ToList();
 
             //NOTE: there are also child templates on the template class. If GetRecursiveTemplates does not flatten the heirarchy, then we'll need to walk the tree. We could do this in the linq query, but I' not certain 
             //whether the context is set explicitly in the child templates, or whether it's implied that the implementer (me) would have to discover it.
 
-            //get only SHALLS that aren't part of a branch and don't have optional parents
+            //get only SHALLS
             var requiredConformance = (from c in constraints
-                                       where (!string.IsNullOrEmpty(c.Conformance)
-                                         && (c.BusinessConformanceType == Conformance.SHALL || c.BusinessConformanceType == Conformance.SHALL_NOT))
-                                       && (!c.IsBranchIdentifier || (c.IsBranchIdentifier && !string.IsNullOrEmpty(c.Schematron)))
-                                       select c).OrderBy(c => c.Id);
+                                       where c.IsRequiredConformance() && c.IsNotBranchIdentifierOrIsValidIdentifier()
+                                       orderby c.Id
+                                       select c);
 
-            //get all SHOULDs and only SHALLs having optional parents but that aren't part of a branch
+            //get all SHOULDs
             var optionalConformance = (from c in constraints
-                                       where ((!string.IsNullOrEmpty(c.Conformance) &&
-                                         (c.BusinessConformanceType == Conformance.SHOULD ||
-                                         c.BusinessConformanceType == Conformance.SHOULD_NOT)))
-                                         && !(c.IsBranchIdentifier == true)
-                                       select c).OrderBy(c => c.Id).ToList();
+                                       where c.IsOptionalConformance() && !c.IsBranchIdentifier
+                                       orderby c.Id
+                                       select c).ToList();
 
             //add in optional value conformance on required constraints
             AddOptionalValueConformanceOnRequiredElement(optionalConformance, constraints);
 
             //get only SHALLs that are leaf level of a branch and don't have optional parents
             var branchedRequiredConformance = (from c in constraints
-                                               where (!string.IsNullOrEmpty(c.Conformance) &&
-                                                 c.BusinessConformanceType == Conformance.SHALL || c.BusinessConformanceType == Conformance.SHALL_NOT)
-                                                 && c.HasParentBranch()
-                                               select c).OrderBy(c => c.Id);
+                                               where c.IsRequiredConformance() && c.HasParentBranch()
+                                               orderby c.Id
+                                               select c);
 
             //get all SHOULDs and only SHALLs having optional parents but that are leaf level part of a branch
             var branchedOptionalConformance = (from c in constraints
-                                               where ((!string.IsNullOrEmpty(c.Conformance) &&
-                                                 (c.BusinessConformanceType == Conformance.SHOULD ||
-                                                 c.BusinessConformanceType == Conformance.SHOULD_NOT))
-                                                    || (IsOptionalParent(c) && HasRequiredElement(c)))
-                                               select c).Where(c => IsBranchDescendent(c)).OrderBy(c => c.Id);            
+                                               where (c.IsOptionalConformance() || (c.HasOptionalParent() && c.HasRequiredParent())) && c.IsBranchDescendent()
+                                               orderby c.Id
+                                               select c);
             string templateContext = string.Empty;
 
             templateContext = this.templateContextBuilder.BuildContextString(template);
@@ -482,14 +445,10 @@ namespace Trifolia.Export.Schematron
             WarningPattern = GeneratePattern(Conformance.SHOULD, optionalConformance, warningPhase, patternWarningId, ruleWarningId, templateContext, impliedPatternWarningId, impliedRuleWarningId, isImplied);
 
             if (branchedRequiredConformance.Count() > 0)
-            {
                 GenerateBranchedPattern(Conformance.SHALL, ErrorPattern, branchedRequiredConformance, constraints, template, errorPhase);
-            }
 
             if (branchedOptionalConformance.Count() > 0)
-            {
                 GenerateBranchedPattern(Conformance.SHOULD, WarningPattern, branchedOptionalConformance, constraints, template, warningPhase);
-            }
         }
 
         /// <summary>
@@ -577,7 +536,7 @@ namespace Trifolia.Export.Schematron
             Conformance minLevel = aConstraint.BusinessConformanceType;
             TemplateConstraint constraint = aConstraint;
 
-            if (!IsBranchDescendent(aConstraint) || (aConstraint.IsPrimitive && aConstraint.IsSchRooted))
+            if (!aConstraint.IsBranchDescendent() || (aConstraint.IsPrimitive && aConstraint.IsSchRooted))
                 return minLevel;
 
             while (constraint != null)
@@ -734,21 +693,6 @@ namespace Trifolia.Export.Schematron
             return pattern; //return the newly created pattern
         }
 
-        private bool IsBranchDescendent(TemplateConstraint aConstraint)
-        {
-            var current = aConstraint;
-
-            //note this checks parent, which means if aConstraint is a branch this returns false (as it is not a branch descendent but a branch root)
-            while (current.ParentConstraint != null)
-            {
-                current = current.ParentConstraint;
-                if (current.IsBranch)
-                    return true;
-            }
-
-            return false;
-        }
-
         /// <summary>
         /// Determines if a constraint should be included as an individual assertion, or if it is part of a branched parent constraint and should be ignored.
         /// </summary>
@@ -765,7 +709,7 @@ namespace Trifolia.Export.Schematron
                 bool isSchRooted = constraint.IsSchRooted && (!string.IsNullOrEmpty(constraint.Schematron) || constraint.IsPrimitive);
 
                 if (!shouldSkip && !isSchRooted)
-                    shouldSkip = IsBranchDescendent(constraint);
+                    shouldSkip = constraint.IsBranchDescendent();
             }
 
             return shouldSkip;
@@ -904,7 +848,7 @@ namespace Trifolia.Export.Schematron
 
             messages.Add(currentFc.GetPlainText(false, false, false));
 
-            if (tc.IsBranch || IsBranchDescendent(tc))
+            if (tc.IsBranch || tc.IsBranchDescendent())
             {
                 foreach (var child in tc.ChildConstraints)
                 {
@@ -953,6 +897,77 @@ namespace Trifolia.Export.Schematron
             }
 
             return false;
+        }
+
+        public static bool IsRequiredConformance(this TemplateConstraint constraint)
+        {
+            if (string.IsNullOrEmpty(constraint.Conformance))
+                return false;
+
+            return constraint.BusinessConformanceType == Conformance.SHALL || constraint.BusinessConformanceType == Conformance.SHALL_NOT;
+        }
+
+        public static bool IsOptionalConformance(this TemplateConstraint constraint)
+        {
+            if (string.IsNullOrEmpty(constraint.Conformance))
+                return false;
+
+            return constraint.BusinessConformanceType == Conformance.SHOULD || constraint.BusinessConformanceType == Conformance.SHOULD_NOT;
+        }
+
+        public static bool HasRequiredParent(this TemplateConstraint constraint)
+        {
+            TemplateConstraint current = constraint;
+            while (current != null)
+            {
+                if (constraint.IsRequiredConformance())
+                    return true;
+
+                current = current.ParentConstraint;
+            }
+
+            return false;
+        }
+
+        public static bool HasOptionalParent(this TemplateConstraint constraint)
+        {
+            TemplateConstraint current = constraint;
+            while (current != null)
+            {
+                if (current.IsOptionalConformance())
+                    return true;
+
+                current = current.ParentConstraint;
+            }
+
+            return false;
+        }
+        
+        public static bool IsBranchDescendent(this TemplateConstraint constraint)
+        {
+            var current = constraint;
+
+            //note this checks parent, which means if aConstraint is a branch this returns false (as it is not a branch descendent but a branch root)
+            while (current.ParentConstraint != null)
+            {
+                current = current.ParentConstraint;
+
+                if (current.IsBranch)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsNotBranchIdentifierOrIsValidIdentifier(this TemplateConstraint constraint)
+        {
+            if (!constraint.IsBranchIdentifier)
+                return true;
+
+            if (!string.IsNullOrEmpty(constraint.Schematron))
+                return false;
+
+            return true;
         }
     }
 }
