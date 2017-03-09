@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trifolia.DB;
+using Trifolia.Logging;
 
 namespace Trifolia.Import.Terminology.Excel
 {
@@ -23,6 +24,8 @@ namespace Trifolia.Import.Terminology.Excel
         {
             foreach (var checkValueSet in checkResponse.ValueSets)
             {
+                Log.For(this).Info("Importing excel value set {0} ({1})", checkValueSet.Name, checkValueSet.Oid);
+
                 ValueSet valueSet = null;
 
                 if (checkValueSet.ChangeType == ImportValueSetChange.ChangeTypes.None || checkValueSet.ChangeType == ImportValueSetChange.ChangeTypes.Update)

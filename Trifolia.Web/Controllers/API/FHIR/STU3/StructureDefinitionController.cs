@@ -231,9 +231,6 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         public IHttpActionResult CreateStructureDefinition(
             [FromBody] StructureDefinition strucDef)
         {
-            if (!string.IsNullOrEmpty(strucDef.Id))
-                return CreateErrorResponse(App_GlobalResources.TrifoliaLang.CreateFHIR2TemplateFailedDuplicateId);
-
             var foundProfile = this.tdb.Templates.SingleOrDefault(y => y.Oid == strucDef.Url);
 
             if (foundProfile != null)

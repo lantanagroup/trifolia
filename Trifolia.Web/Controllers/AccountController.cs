@@ -343,6 +343,8 @@ namespace Trifolia.Web.Controllers
             // profile, update trifolia so that it has the same userName/user_id.
             if (foundUser == null && userInfo.app_metadata != null && userInfo.app_metadata.migrated_account != null)
             {
+                Log.For(this).Info("Migrating user account " + userInfo.app_metadata.migrated_account);
+
                 var migratingUser = this.tdb.Users.SingleOrDefault(y =>
                     y.Id == userInfo.app_metadata.migrated_account.internalId &&
                     y.UserName == userInfo.app_metadata.migrated_account.userName);
