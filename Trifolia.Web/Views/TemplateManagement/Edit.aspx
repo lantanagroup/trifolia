@@ -150,6 +150,7 @@
                                 </div>
                                 <span class="templateMetaDataError" data-bind="validationMessage: IdentifierPrefix"></span>
                                 <span class="templateMetaDataError" data-bind="validationMessage: IdentifierAfix"></span>
+                                <span class="templateMetaDataError" data-bind="validationMessage: Oid"></span>
 
                                 <div class="input-group bookmark-field">
                                     <div class="input-group-addon">
