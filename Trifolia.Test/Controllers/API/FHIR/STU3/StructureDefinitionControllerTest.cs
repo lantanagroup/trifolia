@@ -153,41 +153,6 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
 
         [TestMethod, TestCategory("FHIR3")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
-        public void TestFailedCreate_Id()
-        {
-            MockObjectRepository mockRepo = new MockObjectRepository();
-            mockRepo.InitializeFHIR3Repository();
-            mockRepo.InitializeLCG();
-
-            var parserSettings = new ParserSettings();
-            parserSettings.AcceptUnknownMembers = true;
-            parserSettings.AllowUnrecognizedEnums = true;
-            parserSettings.DisallowXsiAttributesOnRoot = false;
-
-            var strucDefJson = Helper.GetSampleContents("Trifolia.Test.DocSamples.FHIR.STU3.cqif-questionnaire-strucdef.json");
-            var fhirJsonParser = new FhirJsonParser(parserSettings);
-            StructureDefinition strucDef = fhirJsonParser.Parse<StructureDefinition>(strucDefJson);
-            strucDef.Id = "cqif-questionnaire";
-
-            HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:8080/api/FHIR3/StructureDefinition");
-
-            HttpRequest contextRequest = new HttpRequest(null, "http://localhost:8080/api/FHIR3/StructureDefinition", null);
-            HttpResponse contextResponse = new HttpResponse(new StringWriter());
-            HttpContext.Current = new HttpContext(contextRequest, contextResponse);
-
-            FHIR3StructureDefinitionController controller = new FHIR3StructureDefinitionController(mockRepo, request);
-            var response = controller.CreateStructureDefinition(strucDef);
-            var result = AssertHelper.IsType<NegotiatedContentResult<OperationOutcome>>(response);
-
-            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
-
-            Assert.IsNotNull(result.Content);
-            Assert.AreEqual(1, result.Content.Issue.Count);
-        }
-
-        [TestMethod, TestCategory("FHIR3")]
-        [DeploymentItem("Schemas\\", "Schemas\\")]
         public void TestGetTemplates()
         {
             MockObjectRepository mockRepo = new MockObjectRepository();
