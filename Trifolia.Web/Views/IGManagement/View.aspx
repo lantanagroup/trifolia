@@ -415,7 +415,7 @@
         <!-- /.modal -->
     </div>
     
-    <script src="/Scripts/vkbeautify.0.99.00.beta.js"></script>
+    <script src="/Scripts/lib/vkbeautify.0.99.00.beta.js"></script>
     <script type="text/javascript" src="../../Scripts/IGManagement/View.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript">
         var viewModel = null;

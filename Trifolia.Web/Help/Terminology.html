@@ -1,101 +1,216 @@
-﻿<html>
-	
+
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-	<title>Terminology</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="generator" content="HelpNDoc Professional Edition 4.9.2.132">
-	<meta name="keywords" content="">
-	
-	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
-	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
-	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
-	<!--[if lte IE 8]>
-		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
-	<![endif]-->
-	<style type="text/css">
-		#topic_header
-		{
-			background-color: #EFEFEF;
-		}
-	</style>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/hnd.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function()
-		{
-			if (top.frames.length == 0)
-			{
-				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
-				top.location.href = "Trifolia.html?" + sTopicUrl;
-			}
-			else
-			{
-				var bTocSelected = false;
-				(function waitForTOC()
-				{
-					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
-					{
-						top.FrameTOC.SelectTocItem("Terminology");
-						bTocSelected = true;
-					}
-					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
-				})();
-			}
-		});
-	</script>
-	
-	</head>
 
-<body>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="favicon.ico"/>
 
-<div id="topic_header">
-			<div id="topic_header_content">
-				<h1 id="topic_header_text">Terminology</h1>
-				
-				<div id="topic_breadcrumb">
-					Getting Started &rsaquo;&rsaquo; </div>
-				</div>
-			<div id="topic_header_nav">
-				<a href="GettingStarted.html"><img src="img/arrow_up.png" alt="Parent"/></a>
-				
-				<a href="Navigation.html"><img src="img/arrow_left.png" alt="Previous"/></a>
-				
-				<a href="UserProfiles.html"><img src="img/arrow_right.png" alt="Next"/></a>
-				
-				</div>
-			<div class="clear"></div>
-		</div>
-	<div id="topic_content">
-		
+  <title>Terminology</title>
+  <meta name="description" content="" /> 
+  <meta name="keywords" content="">
+
+
+
+  <!-- Twitter Card data -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Terminology">
+  <meta name="twitter:description" content="">
+
+  <!-- Open Graph data -->
+  <meta property="og:title" content="Terminology" />
+  <meta property="og:type" content="article" />
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Trifolia Workbench" /> 
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendors/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="vendors/bootstrap-3.3.6/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="vendors/html5shiv-3.7.2/html5shiv.min.js"></script>
+      <script src="vendors/respond-1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  <!-- JsTree styles -->
+  <link href="vendors/jstree-3.3.2/themes/default/style.min.css" rel="stylesheet"/>
+
+  <!-- Hnd styles -->
+  <link href="css/layout.min.css" rel="stylesheet" />
+  <link href="css/effects.min.css" rel="stylesheet" />
+  <link href="css/theme-light-blue.min.css" rel="stylesheet" />
+  <link href="css/print.min.css" rel="stylesheet" media="print" />
+  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded #main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
+
+  <!-- Content style -->
+  <link href="css/hnd.content.css" rel="stylesheet" />
+
+  
+
+
+
+</head>
+
+<body class="md-nav-expanded">
+
+
+
+  <div id="skip-link">
+    <a href="#main-content" class="element-invisible">Skip to main content</a>
+  </div>
+
+  <header class="headroom">
+    <button class="hnd-toggle btn btn-default">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>        
+    </button>
+    <h1>Trifolia Workbench</h1>
+    
+  </header>
+
+  <nav class="md-nav-expanded">
+    <!-- Nav tabs -->
+    <ul class="tab-tabs nav nav-tabs" role="tablist">
+      <li id="nav-close"> 
+        <button class="hnd-toggle btn btn-default">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </button>
+      </li>
+      
+	  
+        <li role="presentation" class="tab active">
+            <a href="#contents" aria-controls="contents" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-list"></i>
+                Contents
+            </a>
+        </li>
+      
+        <li role="presentation" class="tab">
+            <a href="#index" aria-controls="index" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-asterisk"></i>
+                Index
+            </a>
+        </li>
+      
+        <li role="presentation" class="tab">
+            <a href="#search" aria-controls="search" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-search"></i>
+                Search
+            </a>
+        </li>
+      
+    </ul>  <!-- /Nav tabs -->
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+	  
+      <div role="tabpanel" class="tab-pane active" id="contents">
+        <div id="toc" class="tree-container unselectable"
+            data-url="_toc.json"
+            data-openlvl="1"
+        >
+            
+        </div>
+      </div>  <!-- /contents-->
+      
+      <div role="tabpanel" class="tab-pane" id="index">
+        <div id="keywords" class="tree-container unselectable"
+            data-url="_keywords.json"
+            data-openlvl="1"
+        >
+            
+        </div>
+      </div>  <!-- /index-->
+      
+      <div role="tabpanel" class="tab-pane" id="search">
+        <div class="search-content">
+          <div class="search-input">
+            <form id="search-form">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="input-search" name="input-search" placeholder="Search..." />
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>  <!-- /search-input -->
+          <div class="search-result">
+            <div id="search-info"></div>
+            <div class="tree-container unselectable" id="search-tree"></div>
+          </div>  <!-- /search-result -->
+        </div>  <!-- /search-content -->
+      </div>  <!-- /search-->
+      
+    </div>  <!-- /Tab panes -->
+
+  </nav>
+
+  <div id="main">
+
+    <article>
+        <div id="topic-content" class="container-fluid" 
+		  data-hnd-id="Terminology"
+		  data-hnd-context="10"
+		  data-hnd-title="Terminology"
+		>
+            
+                <div class="navigation">
+                    <ol class="breadcrumb">
+                        <li>Getting Started</li>
+                    </ol>
+                    <div class="nav-arrows">
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="GettingStarted.html" title="Getting Started" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="Navigation.html" title="Navigation" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="UserProfiles.html" title="User Profiles" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                    </div>
+                </div> 
+            
+
+            <a id="main-content"></a>
+
+            <h2>Terminology</h2>
+
+            <div class="main-content">
+                
 <p></p>
 <p class="rvps2"><span class="rvts6">Below is some information about how value sets and code systems are used in Trifolia exports.</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts18">Value Set Members</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Value Set Members</span></span></h2>
 <p class="rvps2"><span class="rvts6">A number of terminology services allow one value set to contain another value set. Trifolia does not support this function; it treats value sets as though they are fully expanded.</span></p>
 <p class="rvps2"><span class="rvts6">As a result, when Trifolia represents a value set that contains another value set, it simply contains all of the members of the contained value set. This represents a fully expanded view of the value set.</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts18">Value Set Status &amp; Date</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Value Set Status &amp; Date</span></span></h2>
 <p class="rvps2"><span class="rvts6">Each member of a value set contains status and date fields. Trifolia uses these fields to determine which members should be exported to XML and MS Word output.</span></p>
-<p class="rvps2"><span class="rvts17">Calculated Date</span></p>
+<p class="rvps2"><span class="rvts19">Calculated Date</span></p>
 <p class="rvps2"><span class="rvts6">For each member of a value set, Trifolia calculates a date that is used (along with the member's status) to determine whether to include that member in an export. The date is derived using this priority:</span></p>
-<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">If the constraint includes a value set binding date, it is used.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">If no value set binding date is present, the implementation guide's publish date is used.</span></li>
 <li value="3" class="rvps2"><span class="rvts6">If no implementation guide publish date is available, the XML or MS Word export date is used.</span></li>
 </ol>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts18">Status</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Status</span></span></h2>
 <p class="rvps2"><span class="rvts6">Once the date is calculated, the status and date together are used to determine whether the member is included in the export as follows:</span></p>
-<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">The member is included in the export if the status is Unspecified (empty) or the calculated date is prior to the date for the member's active status.</span></li>
 <li class="rvps2"><span class="rvts6">The member is excluded from the export the calculated date falls on or after the member's Inactive status date.</span></li>
 </ul>
-<p class="rvps2"><span class="rvts27">Example</span></p>
+<p class="rvps2"><span class="rvts30">Example</span></p>
 <p class="rvps2"><span class="rvts6">Given the following value set:</span></p>
 <div class="rvps2"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
 <tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts17">Code</span></p>
+<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Code</span></p>
 </td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts17">Status</span></p>
+<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Status</span></p>
 </td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts17">Date</span></p>
+<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Date</span></p>
 </td>
 </tr>
 <tr valign="top">
@@ -133,36 +248,77 @@
 </table>
 </div>
 <p class="rvps2"><span class="rvts6">For an export generated on 1/15/2013, the resulting list is:</span></p>
-<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">Value 1</span></li>
 <li class="rvps2"><span class="rvts6">Value 2</span></li>
 <li class="rvps2"><span class="rvts6">Value 3</span></li>
 </ul>
 <p class="rvps2"><span class="rvts6">For an export generated on 5/1/2013, the resulting list is:</span></p>
-<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">Value 1</span></li>
 <li class="rvps2"><span class="rvts6">Value 3</span></li>
 </ul>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts18">Code Systems and Value Sets</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Code Systems and Value Sets</span></span></h2>
 <p class="rvps2"><span class="rvts6">Trifolia creates a relationship between a code system and a value set member. It does not currently track members of code systems outside of this relationship. Code systems are only used to reference a name/identifier combination.</span></p>
 <p class="rvps2"><span class="rvts6">A code system is referenced in one of the following ways:</span></p>
-<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">A value set’s member is a member of a specified code system</span></li>
 <li class="rvps2"><span class="rvts6">A constraint indicates that an element/attribute in a template/profile must be selected from a code system</span></li>
 <li class="rvps2"><span class="rvts6">A constraint, in combination with the constraint value, indicates that the value is a member of a specified code system</span></li>
 </ul>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts18">Vocabulary XML</span></span></h2>
-<p class="rvps2"><span class="rvts6">Vocabulary XML is used for Schematron validation. Only a value set with a Binding value of </span><span class="rvts17">static</span><span class="rvts6"> is validated by the Schematron.</span></p>
-<p class="rvps2"><span class="rvts6">When you export vocabulary XML, only a value set with a Binding value of </span><span class="rvts17">static</span><span class="rvts6"> is incuded. A value set with a Binding value of </span><span class="rvts17">unspecified</span><span class="rvts6"> (empty) or </span><span class="rvts17">dynamic</span><span class="rvts6"> is ignored.</span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Vocabulary XML</span></span></h2>
+<p class="rvps2"><span class="rvts6">Vocabulary XML is used for Schematron validation. Only a value set with a Binding value of </span><span class="rvts19">static</span><span class="rvts6"> is validated by the Schematron.</span></p>
+<p class="rvps2"><span class="rvts6">When you export vocabulary XML, only a value set with a Binding value of </span><span class="rvts19">static</span><span class="rvts6"> is incuded. A value set with a Binding value of </span><span class="rvts19">unspecified</span><span class="rvts6"> (empty) or </span><span class="rvts19">dynamic</span><span class="rvts6"> is ignored.</span></p>
 <p></p>
-</div>
-	
-	<div id="topic_footer">
 
-			<div id="topic_footer_content">
-				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
-		</div>
-	</body>
-	
-</html>
+            </div>
+            
+            <div id="topic_footer"><div id="topic_footer_content">Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div></div>
+        </div>  <!-- /#topic-content -->
+    </article>
+
+    <footer>
+        
+    </footer>
+
+  </div>  <!-- /#main -->
+
+  <div class="mask" data-toggle="sm-nav-expanded"></div>
+
+  <!-- Scripts -->
+  <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
+  <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+  <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
+  <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
+  
+  <!-- Headroom -->
+  <script src="vendors/headroom-0.9.3/headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.3/jquery.headroom.min.js"></script>
+
+  <!-- JsTree -->
+  <script src="vendors/jstree-3.3.2/jstree.min.js"></script>
+
+  <!-- HelpNDoc scripts -->
+  <script src="_translations.js"></script>
+  <script src="js/hndsd.min.js"></script>
+  <script src="js/hndse.min.js"></script>
+  <script src="js/app.min.js"></script>
+
+  <!-- Scripts -->
+  <script>
+    $(function() {
+      // Instanciate FastClick
+      Origami.fastclick(document.body);
+      // Create the app
+      var app = new Hnd.App();
+      // Update translations
+      hnd_ut(app);
+      // Boot the app
+      app.Boot();
+    });
+  </script>
+
+  
 

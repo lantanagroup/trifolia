@@ -40,18 +40,6 @@ namespace Trifolia.Web.Controllers
 
             model.DisplayInternalTechSupportPanel = CheckPoint.Instance.IsDataAdmin;
 
-            // Determine the did you know tip
-            var didYouKnowTips = Properties.Settings.Default.DidYouKnowItems;
-            int randIndex = new Random().Next(0, didYouKnowTips.Count);
-            model.DidYouKnowTip = didYouKnowTips[randIndex <= didYouKnowTips.Count - 1 ? randIndex : didYouKnowTips.Count - 1];
-
-            StringCollection lMessages = Properties.Settings.Default.WhatsNewItems;
-
-            foreach (string lCurrentMessage in lMessages)
-            {
-                model.WhatsNewMessages.Add(lCurrentMessage);
-            }
-
             return View("Index", model);
         }
 

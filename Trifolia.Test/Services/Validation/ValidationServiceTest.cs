@@ -91,9 +91,9 @@ namespace Trifolia.Test.Services.Validation
             TemplateConstraint t2_tc1 = tdb.AddConstraintToTemplate(t2, null, null, "title", "SHALL", "1..1");
             t2_tc1.Schematron = "count(cda:title)";
 
-            TemplateConstraint t2_tc2 = tdb.CreatePrimitive(t2, null, "SHALL", "This is a test primitive");
+            TemplateConstraint t2_tc2 = tdb.AddPrimitiveToTemplate(t2, null, "SHALL", "This is a test primitive");
 
-            tdb.CreatePrimitive(t2, null, "SHALL", "This is test primitive #2", "count(cda:title) &gt; 0");
+            tdb.AddPrimitiveToTemplate(t2, null, "SHALL", "This is test primitive #2", "count(cda:title) &gt; 0");
 
             // Template 3
             Template t3 = tdb.CreateTemplate("urn:oid:1.2.3.4.2", docType, "Test Template", ig2, null, null, null);

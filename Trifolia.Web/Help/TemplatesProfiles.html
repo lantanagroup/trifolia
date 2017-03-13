@@ -1,127 +1,283 @@
-﻿<html>
-	
+
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-	<title>Templates/Profiles</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="generator" content="HelpNDoc Professional Edition 4.9.2.132">
-	<meta name="keywords" content="">
-	
-	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
-	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
-	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
-	<!--[if lte IE 8]>
-		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
-	<![endif]-->
-	<style type="text/css">
-		#topic_header
-		{
-			background-color: #EFEFEF;
-		}
-	</style>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/hnd.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function()
-		{
-			if (top.frames.length == 0)
-			{
-				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
-				top.location.href = "Trifolia.html?" + sTopicUrl;
-			}
-			else
-			{
-				var bTocSelected = false;
-				(function waitForTOC()
-				{
-					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
-					{
-						top.FrameTOC.SelectTocItem("TemplatesProfiles");
-						bTocSelected = true;
-					}
-					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
-				})();
-			}
-		});
-	</script>
-	
-	</head>
 
-<body>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="favicon.ico"/>
 
-<div id="topic_header">
-			<div id="topic_header_content">
-				<h1 id="topic_header_text">Templates/Profiles</h1>
-				
-				<div id="topic_breadcrumb">
-					Browsing &rsaquo;&rsaquo; </div>
-				</div>
-			<div id="topic_header_nav">
-				<a href="Browsing.html"><img src="img/arrow_up.png" alt="Parent"/></a>
-				
-				<a href="BrowseImplementationGuides.html"><img src="img/arrow_left.png" alt="Previous"/></a>
-				
-				<a href="BrowseTerminology.html"><img src="img/arrow_right.png" alt="Next"/></a>
-				
-				</div>
-			<div class="clear"></div>
-		</div>
-	<div id="topic_content">
-		
+  <title>Templates/Profiles</title>
+  <meta name="description" content="" /> 
+  <meta name="keywords" content="">
+
+
+
+  <!-- Twitter Card data -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Templates/Profiles">
+  <meta name="twitter:description" content="">
+
+  <!-- Open Graph data -->
+  <meta property="og:title" content="Templates/Profiles" />
+  <meta property="og:type" content="article" />
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Trifolia Workbench" /> 
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendors/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="vendors/bootstrap-3.3.6/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="vendors/html5shiv-3.7.2/html5shiv.min.js"></script>
+      <script src="vendors/respond-1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  <!-- JsTree styles -->
+  <link href="vendors/jstree-3.3.2/themes/default/style.min.css" rel="stylesheet"/>
+
+  <!-- Hnd styles -->
+  <link href="css/layout.min.css" rel="stylesheet" />
+  <link href="css/effects.min.css" rel="stylesheet" />
+  <link href="css/theme-light-blue.min.css" rel="stylesheet" />
+  <link href="css/print.min.css" rel="stylesheet" media="print" />
+  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded #main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
+
+  <!-- Content style -->
+  <link href="css/hnd.content.css" rel="stylesheet" />
+
+  
+
+
+
+</head>
+
+<body class="md-nav-expanded">
+
+
+
+  <div id="skip-link">
+    <a href="#main-content" class="element-invisible">Skip to main content</a>
+  </div>
+
+  <header class="headroom">
+    <button class="hnd-toggle btn btn-default">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>        
+    </button>
+    <h1>Trifolia Workbench</h1>
+    
+  </header>
+
+  <nav class="md-nav-expanded">
+    <!-- Nav tabs -->
+    <ul class="tab-tabs nav nav-tabs" role="tablist">
+      <li id="nav-close"> 
+        <button class="hnd-toggle btn btn-default">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </button>
+      </li>
+      
+	  
+        <li role="presentation" class="tab active">
+            <a href="#contents" aria-controls="contents" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-list"></i>
+                Contents
+            </a>
+        </li>
+      
+        <li role="presentation" class="tab">
+            <a href="#index" aria-controls="index" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-asterisk"></i>
+                Index
+            </a>
+        </li>
+      
+        <li role="presentation" class="tab">
+            <a href="#search" aria-controls="search" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-search"></i>
+                Search
+            </a>
+        </li>
+      
+    </ul>  <!-- /Nav tabs -->
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+	  
+      <div role="tabpanel" class="tab-pane active" id="contents">
+        <div id="toc" class="tree-container unselectable"
+            data-url="_toc.json"
+            data-openlvl="1"
+        >
+            
+        </div>
+      </div>  <!-- /contents-->
+      
+      <div role="tabpanel" class="tab-pane" id="index">
+        <div id="keywords" class="tree-container unselectable"
+            data-url="_keywords.json"
+            data-openlvl="1"
+        >
+            
+        </div>
+      </div>  <!-- /index-->
+      
+      <div role="tabpanel" class="tab-pane" id="search">
+        <div class="search-content">
+          <div class="search-input">
+            <form id="search-form">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="input-search" name="input-search" placeholder="Search..." />
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>  <!-- /search-input -->
+          <div class="search-result">
+            <div id="search-info"></div>
+            <div class="tree-container unselectable" id="search-tree"></div>
+          </div>  <!-- /search-result -->
+        </div>  <!-- /search-content -->
+      </div>  <!-- /search-->
+      
+    </div>  <!-- /Tab panes -->
+
+  </nav>
+
+  <div id="main">
+
+    <article>
+        <div id="topic-content" class="container-fluid" 
+		  data-hnd-id="TemplatesProfiles"
+		  data-hnd-context="21"
+		  data-hnd-title="Templates/Profiles"
+		>
+            
+                <div class="navigation">
+                    <ol class="breadcrumb">
+                        <li>Browsing</li>
+                    </ol>
+                    <div class="nav-arrows">
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="Browsing.html" title="Browsing" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="BrowseImplementationGuides.html" title="Implementation Guides" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="BrowseTerminology.html" title="Terminology" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                    </div>
+                </div> 
+            
+
+            <a id="main-content"></a>
+
+            <h2>Templates/Profiles</h2>
+
+            <div class="main-content">
+                
 <p></p>
 <p class="rvps2"><span class="rvts6">Use the Templates/Profiles page to view a list of CDA, HQMF and E-Measure templates and FHIR profiles. Use the View Template/Profile page to view the template/profile details.</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts18">Viewing a Template/Profile</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Viewing a Template/Profile</span></span></h2>
 <p class="rvps2"><span class="rvts6">There are two ways to view a template/profile:</span></p>
-<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">From the Implementation Guides list</span></li>
 <li class="rvps2"><span class="rvts6">From the Templates/Profiles list</span></li>
 </ul>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts19">View a Template/Profile from the Implementation Guides List</span></span></h3>
-<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts6">From the Browse menu, choose </span><span class="rvts17">Implementation Guides</span><span class="rvts6">.</span></li>
+<h3 class="rvps7"><span class="rvts0"><span class="rvts22">View a Template/Profile from the Implementation Guides List</span></span></h3>
+<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">From the Browse menu, choose </span><span class="rvts19">Implementation Guides</span><span class="rvts6">.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">Use the Trifolia's Automatic Lookup feature to find the implementation guide containing the template/profile you want to view. A list of implementation guides that match your search criteria appears.</span></li>
-<li value="3" class="rvps2"><span class="rvts6">In the implementation guides list, select </span><span class="rvts17">View</span><span class="rvts6"> for the implementation guide you want to view.The implementation guide appears, showing you a list of templates/profiles contained in the guide.</span></li>
-<li value="4" class="rvps2"><span class="rvts6">Review the list of templates for the type of template you want to view. Locate the template/profile you want to view and select </span><span class="rvts17">View</span><span class="rvts6">. The template/profile viewer opens, containing the template/profile details.</span></li>
+<li value="3" class="rvps2"><span class="rvts6">In the implementation guides list, select </span><span class="rvts19">View</span><span class="rvts6"> for the implementation guide you want to view.The implementation guide appears, showing you a list of templates/profiles contained in the guide.</span></li>
+<li value="4" class="rvps2"><span class="rvts6">Review the list of templates for the type of template you want to view. Locate the template/profile you want to view and select </span><span class="rvts19">View</span><span class="rvts6">. The template/profile viewer opens, containing the template/profile details.</span></li>
 </ol>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts19">View a Template/Profile from the Templates List</span></span></h3>
-<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts6">From the Browse menu, choose </span><span class="rvts17">Templates/Profiles</span><span class="rvts6">.</span></li>
+<h3 class="rvps7"><span class="rvts0"><span class="rvts22">View a Template/Profile from the Templates List</span></span></h3>
+<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">From the Browse menu, choose </span><span class="rvts19">Templates/Profiles</span><span class="rvts6">.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">Use the Trifolia's Automatic Lookup feature to find the templates/profiles you want to browse. A list of templates/profiles that match your search criteria appears.</span></li>
-<li value="3" class="rvps2"><span class="rvts6">In the Template/Profile list, choose </span><span class="rvts17">View</span><span class="rvts6"> for the desired template/profile. The template/profile viewer opens, containing the template/profile details.</span></li>
+<li value="3" class="rvps2"><span class="rvts6">In the Template/Profile list, choose </span><span class="rvts19">View</span><span class="rvts6"> for the desired template/profile. The template/profile viewer opens, containing the template/profile details.</span></li>
 </ol>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts18">Viewing the Template/Profile</span></span></h2>
-<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts17">Constraints</span><span class="rvts6"> &nbsp;- View a list of the template/profile's constraints as they appear in the implementation guide.</span></li>
-<li class="rvps2"><span class="rvts17">Samples</span><span class="rvts6"> - View a code sample attached to the template/profile. The "Samples" tab does not appear in the template/profile viewer if no samples exist for the template/profile.</span></li>
-<li class="rvps2"><span class="rvts17">Relationships</span><span class="rvts6"> - View the relationship of the current template/profile to other templates/profiles. </span></li>
-<ul style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps2"><span class="rvts17">Implied By</span><span class="rvts6"> the current template/profile - lists any templates/profiles that reference the current template/profile</span></li>
-<li class="rvps2"><span class="rvts17">Contains</span><span class="rvts6"> a template/profile - lists any templates/profiles contained within constraints in the current template/profile</span></li>
-<li class="rvps2"><span class="rvts17">Contained By</span><span class="rvts6"> a template/profile - lists any templates/profiles that reference the current template/profile</span></li>
-<li class="rvps2"><span class="rvts17">Implies</span><span class="rvts6"> a template/profile - lists a single template/profile referenced in the </span><span class="rvts17">Implies</span><span class="rvts6"> field of the current template/profile</span></li>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Viewing the Template/Profile</span></span></h2>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts19">Constraints</span><span class="rvts6"> &nbsp;- View a list of the template/profile's constraints as they appear in the implementation guide.</span></li>
+<li class="rvps2"><span class="rvts19">Samples</span><span class="rvts6"> - View a code sample attached to the template/profile. The "Samples" tab does not appear in the template/profile viewer if no samples exist for the template/profile.</span></li>
+<li class="rvps2"><span class="rvts19">Relationships</span><span class="rvts6"> - View the relationship of the current template/profile to other templates/profiles. </span></li>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><span class="rvts19">Implied By</span><span class="rvts6"> the current template/profile - lists any templates/profiles that reference the current template/profile</span></li>
+<li class="rvps2"><span class="rvts19">Contains</span><span class="rvts6"> a template/profile - lists any templates/profiles contained within constraints in the current template/profile</span></li>
+<li class="rvps2"><span class="rvts19">Contained By</span><span class="rvts6"> a template/profile - lists any templates/profiles that reference the current template/profile</span></li>
+<li class="rvps2"><span class="rvts19">Implies</span><span class="rvts6"> a template/profile - lists a single template/profile referenced in the </span><span class="rvts19">Implies</span><span class="rvts6"> field of the current template/profile</span></li>
 </ul>
-<li class="rvps2"><span class="rvts17">Changes</span><span class="rvts6"> - View changes to the template/profile. View the changes </span><span class="rvts17">Inline</span><span class="rvts6"> or as a </span><span class="rvts17">List</span><span class="rvts6">. (See below)</span></li>
+<li class="rvps2"><span class="rvts19">Changes</span><span class="rvts6"> - View changes to the template/profile. View the changes </span><span class="rvts19">Inline</span><span class="rvts6"> or as a </span><span class="rvts19">List</span><span class="rvts6">. (See below)</span></li>
 </ul>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts19">Viewing Changes - List</span></span></h3>
+<h3 class="rvps7"><span class="rvts0"><span class="rvts22">Viewing Changes - List</span></span></h3>
 <p class="rvps2"><span class="rvts6">When you view changes to a template/profile as a List, each constraint change is listed in a table. The type of change is listed as:</span></p>
-<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">Added</span></li>
 <li class="rvps2"><span class="rvts6">Modified</span></li>
 <li class="rvps2"><span class="rvts6">Removed</span></li>
 </ul>
-<p class="rvps2"><span class="rvts17">Notes</span><span class="rvts6">:</span></p>
-<ul style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: disc;">
+<p class="rvps2"><span class="rvts19">Notes</span><span class="rvts6">:</span></p>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">Unchanged constraints do not appear in the list.</span></li>
 <li class="rvps2"><span class="rvts6">Each entry contains the constraint reference number, the old narrative, and the new narrative.</span></li>
 </ul>
 <p></p>
-</div>
-	
-	<div id="topic_footer">
 
-			<div id="topic_footer_content">
-				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
-		</div>
-	</body>
-	
-</html>
+            </div>
+            
+            <div id="topic_footer"><div id="topic_footer_content">Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div></div>
+        </div>  <!-- /#topic-content -->
+    </article>
+
+    <footer>
+        
+    </footer>
+
+  </div>  <!-- /#main -->
+
+  <div class="mask" data-toggle="sm-nav-expanded"></div>
+
+  <!-- Scripts -->
+  <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
+  <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+  <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
+  <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
+  
+  <!-- Headroom -->
+  <script src="vendors/headroom-0.9.3/headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.3/jquery.headroom.min.js"></script>
+
+  <!-- JsTree -->
+  <script src="vendors/jstree-3.3.2/jstree.min.js"></script>
+
+  <!-- HelpNDoc scripts -->
+  <script src="_translations.js"></script>
+  <script src="js/hndsd.min.js"></script>
+  <script src="js/hndse.min.js"></script>
+  <script src="js/app.min.js"></script>
+
+  <!-- Scripts -->
+  <script>
+    $(function() {
+      // Instanciate FastClick
+      Origami.fastclick(document.body);
+      // Create the app
+      var app = new Hnd.App();
+      // Update translations
+      hnd_ut(app);
+      // Boot the app
+      app.Boot();
+    });
+  </script>
+
+  
 

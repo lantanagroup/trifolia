@@ -104,9 +104,9 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint t2_tc1 = tdb.AddConstraintToTemplate(t2, null, null, "title", "SHALL", "1..1");
             t2_tc1.Schematron = "count(cda:title)";
 
-            TemplateConstraint t2_tc2 = tdb.CreatePrimitive(t2, null, "SHALL", "This is a test primitive");
+            TemplateConstraint t2_tc2 = tdb.AddPrimitiveToTemplate(t2, null, "SHALL", "This is a test primitive");
 
-            tdb.CreatePrimitive(t2, null, "SHALL", "This is test primitive #2", "count(cda:title) &gt; 0");
+            tdb.AddPrimitiveToTemplate(t2, null, "SHALL", "This is test primitive #2", "count(cda:title) &gt; 0");
 
             // Template 3
             Template t3 = tdb.CreateTemplate("urn:oid:1.2.3.4.2", docType, "Test Template", ig1, "ClinicalDocument", "ClinicalDocument");
@@ -120,7 +120,7 @@ namespace Trifolia.Test.Generation.Schematron
 
             // Template 5: Test line-feed replacement
             Template t5 = tdb.CreateTemplate("urn:oid:1.2.3.4.4", docType, "Test Template", ig1, "ClinicalDocument", "ClinicalDocument");
-            TemplateConstraint t5_p1 = tdb.CreatePrimitive(t5, null, "SHALL", "Testing line-feed character in custom schematron", "count(cda:test)&#xA; = 1");
+            TemplateConstraint t5_p1 = tdb.AddPrimitiveToTemplate(t5, null, "SHALL", "Testing line-feed character in custom schematron", "count(cda:test)&#xA; = 1");
 
             // Template 6: Implied template and contained template
             Template t6 = tdb.CreateTemplate("urn:oid:1.2.3.1.1.1", docType, "Test Template", owningImplementationGuide: ig2, impliedTemplate: t5);
@@ -131,7 +131,7 @@ namespace Trifolia.Test.Generation.Schematron
             // Template 7: MAY parent with SHALL primitive
             Template t7 = tdb.CreateTemplate("urn:oid:1.2.3.4.5", docType, "Test Template", ig1, "ClinicalDocument", "ClinicalDocument");
             TemplateConstraint t7_p1 = tdb.AddConstraintToTemplate(t7, null, null, "entry", "MAY", "0..1", isBranch: true);
-            TemplateConstraint t7_p1_1 = tdb.CreatePrimitive(t7, t7_p1, "SHALL", "This entry SHALl contain some custom stuff", "count(test) > 1", isPrimitiveSchRooted: true, isInheritable: true);
+            TemplateConstraint t7_p1_1 = tdb.AddPrimitiveToTemplate(t7, t7_p1, "SHALL", "This entry SHALl contain some custom stuff", "count(test) > 1", isPrimitiveSchRooted: true, isInheritable: true);
 
             // Template 8: Code constraint with compound SHALL/SHOULD (element conformance / value conformance)
             Template t8 = tdb.CreateTemplate("urn:oid:1.2.3.4.6", entType, "Test Template", ig1, "ClinicalDocument", "ClinicalDocument");
@@ -538,7 +538,7 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint tc10486 = tdb.AddConstraintToTemplate(template, tc8664, null, "@root", "SHALL", "1..1", value: "2.16.840.1.113883.10.20.1.58", isBranchIdentifier: true);
             TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
             // TODO: Need to have flag for primitive schematron... where does the schematron go? rooted from template or from the parent?
-            TemplateConstraint tc8666 = tdb.CreatePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
+            TemplateConstraint tc8666 = tdb.AddPrimitiveToTemplate(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
             TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
 
             DocumentTemplateElement element = null;
@@ -645,7 +645,7 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint tc8668 = tdb.AddConstraintToTemplate(template, null, null, "code", "SHOULD", "0..1");
             TemplateConstraint tc8669 = tdb.AddConstraintToTemplate(template, tc8668, null, "@code", "SHALL", "1..1");
             // TODO: Need to have flag for primitive schematron... where does the schematron go? rooted from template or from the parent?
-            TemplateConstraint tc8666 = tdb.CreatePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
+            TemplateConstraint tc8666 = tdb.AddPrimitiveToTemplate(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
             TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
 
             Phase errorPhase = new Phase();
@@ -717,7 +717,7 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
             TemplateConstraint tc8668 = tdb.AddConstraintToTemplate(template, null, null, "code", "SHOULD", "0..1");
             TemplateConstraint tc8669 = tdb.AddConstraintToTemplate(template, tc8668, null, "@code", "SHALL", "1..1");
-            TemplateConstraint tc8666 = tdb.CreatePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)", schematronTest:"some random test", isPrimitiveSchRooted:true);
+            TemplateConstraint tc8666 = tdb.AddPrimitiveToTemplate(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)", schematronTest:"some random test", isPrimitiveSchRooted:true);
             TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
 
             Phase errorPhase = new Phase();
@@ -783,7 +783,7 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
             TemplateConstraint tc8668 = tdb.AddConstraintToTemplate(template, null, null, "code", "SHOULD", "0..1");
             TemplateConstraint tc8669 = tdb.AddConstraintToTemplate(template, tc8668, null, "@code", "SHALL", "1..1");
-            TemplateConstraint tc8666 = tdb.CreatePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)", schematronTest: "some random test", isPrimitiveSchRooted: false);
+            TemplateConstraint tc8666 = tdb.AddPrimitiveToTemplate(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)", schematronTest: "some random test", isPrimitiveSchRooted: false);
             TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1", isBranchIdentifier: true);
 
             Phase errorPhase = new Phase();
@@ -862,7 +862,7 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
             //1 error in branch context
             // TODO: Need to have flag for primitive schematron... where does the schematron go? rooted from template or from the parent?
-            TemplateConstraint tc8666 = tdb.CreatePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
+            TemplateConstraint tc8666 = tdb.AddPrimitiveToTemplate(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
             // 1 warning in branch context
             TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1");
 
@@ -989,7 +989,7 @@ namespace Trifolia.Test.Generation.Schematron
             //1 warning in branch rules
             TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
             //1 error in branch rules
-            TemplateConstraint tc8666 = tdb.CreatePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
+            TemplateConstraint tc8666 = tdb.AddPrimitiveToTemplate(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
             //1 error in branch rules
             TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1");
             //sum = 3 error rules in branch context, 2 warning rules in branch context, 1 error rule in template rules, 1 warning rule in template rules (default '.')
@@ -1100,7 +1100,7 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint tc8665 = tdb.AddConstraintToTemplate(template, tc8662, null, "time", "SHOULD", "0..1");
             //1 warning in branch rule
             // TODO: Need to have flag for primitive schematron... where does the schematron go? rooted from template or from the parent?
-            TemplateConstraint tc8666 = tdb.CreatePrimitive(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
+            TemplateConstraint tc8666 = tdb.AddPrimitiveToTemplate(template, tc8665, "SHALL", "The data type of Observation/participant/time in a verification SHALL be TS (time stamp)");
             //1 warning in branch rule
             TemplateConstraint tc8825 = tdb.AddConstraintToTemplate(template, tc8662, null, "participantRole", "SHALL", "1..1");
             //5 warning rules in branch, 1 warning in template
@@ -1122,7 +1122,7 @@ namespace Trifolia.Test.Generation.Schematron
             //1 warning in branch rule
             TemplateConstraint tc8673 = tdb.AddConstraintToTemplate(template, tc8824, null, "name", "SHALL", "1..1");
             //1 warning in branch rule
-            TemplateConstraint tc8674 = tdb.CreatePrimitive(template, tc8673, "SHALL", "he name of the agent who can provide a copy of the Advance Directive SHALL be recorded in the name element inside the playingEntity element");
+            TemplateConstraint tc8674 = tdb.AddPrimitiveToTemplate(template, tc8673, "SHALL", "he name of the agent who can provide a copy of the Advance Directive SHALL be recorded in the name element inside the playingEntity element");
             //7 warnings in branch, 1 warning in template
 
             //totals: 2 branchs, 1 template

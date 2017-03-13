@@ -716,7 +716,7 @@
             <summary>
             Gets a specific profile and converts it to a StructureDefinition resource.
             </summary>
-            <param name="templateId">The id of the profile/template to get</param>
+            <param name="bookmark">The id of the profile to retrieve</param>
             <param name="summary">Optional. The type of summary to respond with.</param>
             <returns>Hl7.Fhir.Model.StructureDefinition</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
@@ -738,20 +738,20 @@
             <returns>Hl7.Fhir.Model.StructureDefinition</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.STU3.FHIR3StructureDefinitionController.UpdateStructureDefinition(Hl7.Fhir.Model.StructureDefinition,System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.STU3.FHIR3StructureDefinitionController.UpdateStructureDefinition(Hl7.Fhir.Model.StructureDefinition,System.String)">
             <summary>
             Updates an existing template/profile based on the specified StructureDefinition
             </summary>
-            <param name="templateId"></param>
+            <param name="bookmark"></param>
             <param name="strucDef"></param>
             <returns>Hl7.Fhir.Model.StructureDefinition</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.STU3.FHIR3StructureDefinitionController.DeleteStructureDefinition(System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.STU3.FHIR3StructureDefinitionController.DeleteStructureDefinition(System.String)">
             <summary>
             Deletes the specified profile/template. This is a permanent deletion, and cannot be restored via _history.
             </summary>
-            <param name="templateId">The id of the profile/template to delete</param>
+            <param name="bookmark">The id of the profile/template to delete</param>
             <returns>Hl7.Fhir.Model.OperationOutcome</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_DELETE">Only users with the ability to delete templates/profiles can execute this operation</permission>
         </member>
@@ -1603,14 +1603,9 @@
               Looks up a localized string similar to Our First Localized Page.
             </summary>
         </member>
-        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.RecaptchaInvalid">
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.StructureDefinitionSameUrlExists">
             <summary>
-              Looks up a localized string similar to The re-captcha response specified is not valid.
-            </summary>
-        </member>
-        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.RecaptchaNotSpecified">
-            <summary>
-              Looks up a localized string similar to You did not verify that you are human using the re-captcha..
+              Looks up a localized string similar to A StructureDefinition with the same url already exists. To update, use PUT..
             </summary>
         </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorAddChildPrimitiveTooltip">

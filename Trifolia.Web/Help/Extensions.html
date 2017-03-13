@@ -1,80 +1,195 @@
-﻿<html>
-	
+
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-	<title>Extensions</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="generator" content="HelpNDoc Professional Edition 4.9.2.132">
-	<meta name="keywords" content="">
-	
-	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
-	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
-	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
-	<!--[if lte IE 8]>
-		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
-	<![endif]-->
-	<style type="text/css">
-		#topic_header
-		{
-			background-color: #EFEFEF;
-		}
-	</style>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/hnd.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function()
-		{
-			if (top.frames.length == 0)
-			{
-				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
-				top.location.href = "Trifolia.html?" + sTopicUrl;
-			}
-			else
-			{
-				var bTocSelected = false;
-				(function waitForTOC()
-				{
-					if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
-					{
-						top.FrameTOC.SelectTocItem("Extensions");
-						bTocSelected = true;
-					}
-					if (!bTocSelected) setTimeout(function() { waitForTOC(); }, 300);
-				})();
-			}
-		});
-	</script>
-	
-	</head>
 
-<body>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="favicon.ico"/>
 
-<div id="topic_header">
-			<div id="topic_header_content">
-				<h1 id="topic_header_text">Extensions</h1>
-				
-				<div id="topic_breadcrumb">
-					<a href="FHIR.html">FHIR</a> &rsaquo;&rsaquo; </div>
-				</div>
-			<div id="topic_header_nav">
-				<a href="FHIR.html"><img src="img/arrow_up.png" alt="Parent"/></a>
-				
-				<a href="API.html"><img src="img/arrow_left.png" alt="Previous"/></a>
-				
-				<a href="PreviousVersions.html"><img src="img/arrow_right.png" alt="Next"/></a>
-				
-				</div>
-			<div class="clear"></div>
-		</div>
-	<div id="topic_content">
-		
+  <title>Extensions</title>
+  <meta name="description" content="" /> 
+  <meta name="keywords" content="fhir">
+
+
+
+  <!-- Twitter Card data -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Extensions">
+  <meta name="twitter:description" content="">
+
+  <!-- Open Graph data -->
+  <meta property="og:title" content="Extensions" />
+  <meta property="og:type" content="article" />
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Trifolia Workbench" /> 
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendors/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="vendors/bootstrap-3.3.6/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="vendors/html5shiv-3.7.2/html5shiv.min.js"></script>
+      <script src="vendors/respond-1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  <!-- JsTree styles -->
+  <link href="vendors/jstree-3.3.2/themes/default/style.min.css" rel="stylesheet"/>
+
+  <!-- Hnd styles -->
+  <link href="css/layout.min.css" rel="stylesheet" />
+  <link href="css/effects.min.css" rel="stylesheet" />
+  <link href="css/theme-light-blue.min.css" rel="stylesheet" />
+  <link href="css/print.min.css" rel="stylesheet" media="print" />
+  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded #main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
+
+  <!-- Content style -->
+  <link href="css/hnd.content.css" rel="stylesheet" />
+
+  
+
+
+
+</head>
+
+<body class="md-nav-expanded">
+
+
+
+  <div id="skip-link">
+    <a href="#main-content" class="element-invisible">Skip to main content</a>
+  </div>
+
+  <header class="headroom">
+    <button class="hnd-toggle btn btn-default">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>        
+    </button>
+    <h1>Trifolia Workbench</h1>
+    
+  </header>
+
+  <nav class="md-nav-expanded">
+    <!-- Nav tabs -->
+    <ul class="tab-tabs nav nav-tabs" role="tablist">
+      <li id="nav-close"> 
+        <button class="hnd-toggle btn btn-default">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </button>
+      </li>
+      
+	  
+        <li role="presentation" class="tab active">
+            <a href="#contents" aria-controls="contents" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-list"></i>
+                Contents
+            </a>
+        </li>
+      
+        <li role="presentation" class="tab">
+            <a href="#index" aria-controls="index" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-asterisk"></i>
+                Index
+            </a>
+        </li>
+      
+        <li role="presentation" class="tab">
+            <a href="#search" aria-controls="search" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-search"></i>
+                Search
+            </a>
+        </li>
+      
+    </ul>  <!-- /Nav tabs -->
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+	  
+      <div role="tabpanel" class="tab-pane active" id="contents">
+        <div id="toc" class="tree-container unselectable"
+            data-url="_toc.json"
+            data-openlvl="1"
+        >
+            
+        </div>
+      </div>  <!-- /contents-->
+      
+      <div role="tabpanel" class="tab-pane" id="index">
+        <div id="keywords" class="tree-container unselectable"
+            data-url="_keywords.json"
+            data-openlvl="1"
+        >
+            
+        </div>
+      </div>  <!-- /index-->
+      
+      <div role="tabpanel" class="tab-pane" id="search">
+        <div class="search-content">
+          <div class="search-input">
+            <form id="search-form">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="input-search" name="input-search" placeholder="Search..." />
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>  <!-- /search-input -->
+          <div class="search-result">
+            <div id="search-info"></div>
+            <div class="tree-container unselectable" id="search-tree"></div>
+          </div>  <!-- /search-result -->
+        </div>  <!-- /search-content -->
+      </div>  <!-- /search-->
+      
+    </div>  <!-- /Tab panes -->
+
+  </nav>
+
+  <div id="main">
+
+    <article>
+        <div id="topic-content" class="container-fluid" 
+		  data-hnd-id="Extensions"
+		  data-hnd-context="61"
+		  data-hnd-title="Extensions"
+		>
+            
+                <div class="navigation">
+                    <ol class="breadcrumb">
+                        <li><a href="FHIR.html">FHIR</a></li>
+                    </ol>
+                    <div class="nav-arrows">
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="FHIR.html" title="FHIR" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="API.html" title="API" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="DeveloperDocs.html" title="Developer Docs" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                    </div>
+                </div> 
+            
+
+            <a id="main-content"></a>
+
+            <h2>Extensions</h2>
+
+            <div class="main-content">
+                
 <p></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts18">Re-usable Extensions</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Re-usable Extensions</span></span></h2>
 <p class="rvps2"><span class="rvts6">Trifolia supports re-usable extensions for FHIR DSTU2 implementation guides and profiles.</span></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts19">Creating a Re-usable Extension</span></span></h3>
-<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<h3 class="rvps7"><span class="rvts0"><span class="rvts22">Creating a Re-usable Extension</span></span></h3>
+<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">Create a new profile in a FHIR DSTU2 implementation guide.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">Select FHIR DSTU2: Extension for the "type" of profile.</span></li>
-<ol style="text-indent: 0px; margin-left: 48px; list-style-position: outside; list-style-type: decimal;">
+<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">Note that the Applies To button is disabled for Extension profiles.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">After selecting Extension as the type of profile, a constraint is automatically created by Trifolia for the "@url" attribute and matches the identifier specified for the extension. Any time the identifier is updated, the constraint will automatically be updated as well.</span></li>
 </ol>
@@ -83,8 +198,8 @@
 </ol>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <p class="rvps2"><span class="rvts6">Trifolia treats all profiles that are of type FHIR DSTU2: Extension as re-usable extensions. The behavior of Trifolia's template/profile editor adjusts slightly (such as disabling the Applies To selection button, and automatically adding a @url constraint) to account for requirements in the core FHIR DSTU2 standard when editing extension profiles.</span></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts19">Using a Pre-defined Extension</span></span></h3>
-<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<h3 class="rvps7"><span class="rvts0"><span class="rvts22">Using a Pre-defined Extension</span></span></h3>
+<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">Open any FHIR DSTU2 profile.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">In the constraint editor, select an "extension" element that does NOT already have a constraint defined for it.</span></li>
 <li value="3" class="rvps2"><span class="rvts6">A drop-down list shows in the constraint editor panel that provides a list of all extensions for which you have permissions.</span></li>
@@ -92,11 +207,11 @@
 <li value="5" class="rvps2"><span class="rvts6">The "extension" element is turned into a constraint, and automatically creates constraints for each of the constraints defined in the extension.</span></li>
 <li value="6" class="rvps2"><span class="rvts6">The "extension" element itself should be marked as a slice and the @url constraint within the extension should be marked as a descriminator. The conformance and cardinality is set to "SHALL 1..1" for the new extension constraint, as well as the @url descriminator.</span></li>
 </ol>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts18">Profile Extensions</span></span></h2>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Profile Extensions</span></span></h2>
 <p class="rvps2"><span class="rvts6">The profile may define extensions in addition to the constraints. These are extensions that add information to the profile as a whole, but are not required to be implemented where the profile is used/asserted.</span></p>
 <p class="rvps2"><span class="rvts6">Both FHIR DSTU1 and FHIR DSTU2 profiles support extensions on the profile.</span></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts19">Adding Extensions to a Profile</span></span></h3>
-<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<h3 class="rvps7"><span class="rvts0"><span class="rvts22">Adding Extensions to a Profile</span></span></h3>
+<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">Edit any FHIR profile.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">The bottom entry in the Extensions panel of the Template/Profile tab always represents a "new" extension.</span></li>
 <li value="3" class="rvps2"><span class="rvts6">Fill in the identifier, type, and value of the extension (all three fields are required).</span></li>
@@ -106,14 +221,55 @@
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <p class="rvps2"><span class="rvts6">Note: A future version of Trifolia will incorporate re-usable extensions in the profile extensions.</span></p>
 <p></p>
-</div>
-	
-	<div id="topic_footer">
 
-			<div id="topic_footer_content">
-				Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div>
-		</div>
-	</body>
-	
-</html>
+            </div>
+            
+            <div id="topic_footer"><div id="topic_footer_content">Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div></div>
+        </div>  <!-- /#topic-content -->
+    </article>
+
+    <footer>
+        
+    </footer>
+
+  </div>  <!-- /#main -->
+
+  <div class="mask" data-toggle="sm-nav-expanded"></div>
+
+  <!-- Scripts -->
+  <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
+  <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+  <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
+  <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
+  
+  <!-- Headroom -->
+  <script src="vendors/headroom-0.9.3/headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.3/jquery.headroom.min.js"></script>
+
+  <!-- JsTree -->
+  <script src="vendors/jstree-3.3.2/jstree.min.js"></script>
+
+  <!-- HelpNDoc scripts -->
+  <script src="_translations.js"></script>
+  <script src="js/hndsd.min.js"></script>
+  <script src="js/hndse.min.js"></script>
+  <script src="js/app.min.js"></script>
+
+  <!-- Scripts -->
+  <script>
+    $(function() {
+      // Instanciate FastClick
+      Origami.fastclick(document.body);
+      // Create the app
+      var app = new Hnd.App();
+      // Update translations
+      hnd_ut(app);
+      // Boot the app
+      app.Boot();
+    });
+  </script>
+
+  
 

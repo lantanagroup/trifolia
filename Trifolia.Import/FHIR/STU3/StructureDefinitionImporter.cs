@@ -38,12 +38,23 @@ namespace Trifolia.Import.FHIR.STU3
             this.profileBundle = ProfileHelper.GetProfileBundle();
         }
 
-        public Template Convert(StructureDefinition strucDef, Template template = null)
+        public Template Convert(StructureDefinition strucDef, Template template = null, User author = null)
         {
             if (string.IsNullOrEmpty(strucDef.Type))
                 throw new Exception("StructureDefinition.type is required");
 
             string strucDefDescription = strucDef.Description != null ? strucDef.Description.Value : null;
+
+            if (author == null)
+            {
+                author = this.tdb.Users.SingleOrDefault(y => y.UserName == STU3Helper.DEFAULT_USER_NAME);
+
+                if (author == null)
+                {
+                    Log.For(this).Error("Default user {0} could not be found to set author for template from StructureDefinition.", STU3Helper.DEFAULT_USER_NAME);
+                    throw new Exception("Default user could not be found. Trifolia is configured incorrectly.");
+                }
+            }
 
             if (template == null)
             {
@@ -66,7 +77,7 @@ namespace Trifolia.Import.FHIR.STU3
                 {
                     OwningImplementationGuide = unassignedImplementationGuide,
                     ImplementationGuideType = this.implementationGuideType,
-                    Author = this.tdb.Users.Single(y => y.UserName == STU3Helper.DEFAULT_USER_NAME),
+                    Author = author,
                     IsOpen = true
                 };
             }
@@ -108,7 +119,17 @@ namespace Trifolia.Import.FHIR.STU3
                 template.PrimaryContextType = template.TemplateType.RootContextType;
 
             // Bookmark
-            template.Bookmark = Template.GenerateBookmark(template.Name, template.TemplateType.Name.ToUpper());
+            if (string.IsNullOrEmpty(template.Bookmark))
+            {
+                template.Bookmark = Template.GenerateBookmark(template.Name, template.TemplateType.Name.ToUpper());
+
+                // Check if the bookmark already exists. If so, append a number onto the end
+                if (this.tdb.Templates.Any(y => y.Bookmark.ToLower().Trim() == template.Bookmark.ToLower().Trim()))
+                {
+                    int bookmarkCount = this.tdb.Templates.Count(y => y.Bookmark.ToLower().Trim().StartsWith(template.Bookmark.ToLower().Trim()));
+                    template.Bookmark += (bookmarkCount + 1);
+                }
+            }
 
             if (strucDef.Snapshot != null && strucDef.Differential == null)
                 throw new Exception("Trifolia does not support snapshots for DSTU2, yet");

@@ -1,0 +1,31 @@
+﻿<div class="tree-grid">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Context</th>
+                <th>Number</th>
+                <th>Conf.</th>
+                <th>Card.</th>
+                <th>DataType</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="clickable" ng-repeat="node in flattenedNodes" ng-click="toggleSelect(node)" ng-class="{ 'highlight': node.Constraint, 'danger': selectedNode == node }">
+                <td>
+                    <span style="white-space: pre">{{getNodeTabs(node)}}</span>
+                    <i ng-if="node.HasChildren" class="glyphicon clickable" ng-class="{ 'glyphicon-plus': !node.$expanded, 'glyphicon-minus': node.$expanded }" ng-click="toggleExpand(node)"></i>
+                    {{node.Context}} ({{node.Constraint != undefined}})
+                </td>
+                <td>{{getCellDisplay(node, 'Number')}}</td>
+                <td>{{getCellDisplay(node, 'Conformance')}}</td>
+                <td>
+                    {{getCellDisplay(node, 'Cardinality')}}
+                    <i class="glyphicon glyphicon-exclamation-sign" ng-if="isInvalidCardinality(node)" title="{{isInvalidCardinality(node)}}"></i>
+                </td>
+                <td>{{getCellDisplay(node, 'DataType')}}</td>
+                <td>{{getCellDisplay(node, 'Value')}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -141,12 +141,6 @@
   <data name="PageTitle" xml:space="preserve">
     <value>Our First Localized Page</value>
   </data>
-  <data name="RecaptchaInvalid" xml:space="preserve">
-    <value>The re-captcha response specified is not valid</value>
-  </data>
-  <data name="RecaptchaNotSpecified" xml:space="preserve">
-    <value>You did not verify that you are human using the re-captcha.</value>
-  </data>
   <data name="TemplateEditorOidTooltip" xml:space="preserve">
     <value>A unique identifier for the template/profile. Must be less than 255 characters. For FHIR, this identifier is used as the URL of the StructureDefinition resource and is best practice to use the implementation guide's base url with the short id.</value>
   </data>
@@ -347,5 +341,8 @@
   </data>
   <data name="TemplateEditorBookmarkTooltip" xml:space="preserve">
     <value>The short id is used during the export of a MS Word document and as the id field in FHIR's StructureDefinition resources. The short id must be unique in the implentation guide, and not contain any special characters (including spaces, with the exception of underscores). The short id may not be greater than 40 characters (due to MS Word\'s limitation in bookmark size).</value>
+  </data>
+  <data name="StructureDefinitionSameUrlExists" xml:space="preserve">
+    <value>A StructureDefinition with the same url already exists. To update, use PUT.</value>
   </data>
 </root>

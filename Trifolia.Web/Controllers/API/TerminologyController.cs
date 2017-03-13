@@ -9,6 +9,7 @@ using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Import.Terminology.Excel;
 using Trifolia.Import.Terminology.External;
+using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Terminology;
 using Trifolia.Web.Models.TerminologyManagement;
@@ -666,9 +667,13 @@ namespace Trifolia.Web.Controllers.API
             else
                 throw new Exception("Cannot identify which external soure the value set came from.");
 
-            processor.SaveValueSet(this.tdb, valueSet);
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
+            {
+                Log.For(this).Info("Importing external ({0}) value set {1} ({2})", valueSet.ImportSource, valueSet.Name, valueSet.Oid);
 
-            this.tdb.SaveChanges();
+                processor.SaveValueSet(auditedTdb, valueSet);
+                auditedTdb.SaveChanges();
+            }
         }
 
         #endregion

@@ -445,13 +445,18 @@ namespace Trifolia.DB
             while (reader.Read())
             {
                 SearchValueSetResult result = SearchValueSetResult.CreateSearchValueSetResult(
-                    reader.GetInt32(0),
-                    reader.GetInt32(1),
-                    reader.GetString(2),
-                    reader.GetString(3),
-                    reader.GetBoolean(4),
-                    reader.GetBoolean(5),
-                    reader.GetBoolean(6));
+                    reader.GetInt32(0),                                         // totalItems
+                    reader.GetInt32(1),                                         // id
+                    reader.IsDBNull(2) ? null : reader.GetString(2),            // name
+                    reader.IsDBNull(3) ? null : reader.GetString(3),            // oid
+                    reader.IsDBNull(4) ? null : reader.GetString(4),            // code
+                    reader.IsDBNull(5) ? null : reader.GetString(5),            // description
+                    reader.IsDBNull(6) ? null : (bool?)reader.GetBoolean(6),    // intensional
+                    reader.IsDBNull(7) ? null : reader.GetString(7),            // intensionalDefinition
+                    reader.IsDBNull(8) ? null : reader.GetString(8),            // source
+                    reader.GetBoolean(9),                                       // isComplete
+                    reader.GetBoolean(10),                                      // hasPublishedIg
+                    reader.GetBoolean(11));                                     // canEditPublishedIg
                 results.Add(result);
             }
 

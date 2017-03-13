@@ -91,11 +91,12 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
     self.CurrentSectionIndex = ko.observable();
     self.PermissionSearchResults = ko.observableArray([]);
     self.PermissionSearchText = ko.observable();
-    self.NewSelectedGroups = ko.observableArray();
-    self.NewSelectedUsers = ko.observableArray();
-    self.AddPermissionType = ko.observable();
     self.NewCategory = ko.observable();
     self.Organizations = ko.observableArray([]);
+    self.DisableIdentifier = ko.observable(false);
+    self.EditType = ko.computed(function () {
+        return self.Model().Id() ? 'Edit' : 'Add';
+    });
 
     self.NewCategoryValid = ko.validatedObservable({
         NewCategory: self.NewCategory.extend({ categoryText: true })
@@ -158,16 +159,6 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
         return "Unknown";
     };
 
-    self.ShowAddPermission = function (type) {
-        self.AddPermissionType(type);
-        self.NewSelectedGroups([]);
-        self.NewSelectedUsers([]);
-        self.PermissionSearchResults([]);
-        self.PermissionSearchText('');
-
-        $('#addPermissionDialog').modal('show');
-    };
-
     self.SearchPermissions = function () {
         var params = '?includeGroups=true&searchText=' + encodeURIComponent(self.PermissionSearchText());
 
@@ -183,42 +174,27 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
         });
     };
 
-    self.AddPermissions = function () {
+    self.AddPermission = function (permissionType, permission) {
         var list = null;
 
-        if (self.AddPermissionType() == 'View') {
+        if (permissionType == 'View') {
             list = self.Model().ViewPermissions;
-        } else if (self.AddPermissionType() == 'Edit') {
+        } else if (permissionType == 'Edit') {
             list = self.Model().EditPermissions;
         }
 
-        var addPermission = function (permission) {
-            var foundPermission = ko.utils.arrayFirst(list(), function (currentPermission) {
-                return currentPermission.Type() == permission.Type() && currentPermission.Id() == permission.Id();
-            });
-
-            if (!foundPermission) {
-                list.push(permission);
-            }
-        };
-
-        // My Organization Groups
-        ko.utils.arrayForEach(self.NewSelectedGroups(), function (uniqueId) {
-            var permission = ko.utils.arrayFirst(self.MyOrganizationInfo().MyGroups(), function (group) {
-                return group.UniqueId() == uniqueId;
-            });
-            addPermission(permission);
+        var foundPermission = ko.utils.arrayFirst(list(), function (currentPermission) {
+            return currentPermission.Type() == permission.Type() && currentPermission.Id() == permission.Id();
         });
 
-        // My Organization Users (search results)
-        ko.utils.arrayForEach(self.NewSelectedUsers(), function (uniqueId) {
-            var permission = ko.utils.arrayFirst(self.PermissionSearchResults(), function (user) {
-                return user.UniqueId() == uniqueId;
-            });
-            addPermission(permission);
-        });
-
-        $('#addPermissionDialog').modal('hide');
+        if (!foundPermission) {
+            list.push(permission);
+        }
+        
+        // Doesn't make sense to have an Edit permission without a View permission. Make sure there is a View permission as well.
+        if (permissionType == 'Edit') {
+            self.AddPermission('View', permission);
+        }
     };
 
     self.RemovePermission = function (type, permission) {
@@ -231,11 +207,11 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
         }
 
         list.remove(permission);
-    };
 
-    self.CancelAddPermissions = function () {
-        self.AddPermissionType(null);
-        $('#addPermissionDialog').modal('hide');
+        // Doesn't make sense to have an Edit permission without a View permission. Remove the Edit permission as well.
+        if (type == 'View') {
+            self.RemovePermission('Edit', permission);
+        }
     };
 
     self.ImplementationGuideTypeChanged = function (newImplementationGuideTypeId) {
@@ -399,6 +375,11 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
             success: function (results) {
                 var model = new ImplementationGuideModel(results);
                 self.Model(model);
+                
+                // If this a new version of an IG and an identifier already exists on the IG, don't let them change it
+                if (results.PreviousVersionId) {
+                    self.DisableIdentifier(results.Identifier && results.Identifier.length > 0);
+                }
 
                 if (!self.ImplementationGuideId()) {
                     self.Model().TypeId.subscribe(self.ImplementationGuideTypeChanged);

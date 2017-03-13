@@ -181,7 +181,7 @@ namespace Trifolia.Authorization
                         Code = FHIR3OperationOutcome.IssueType.Exception,
                         Location = locations
                     });
-
+                    
                     errorMessage.Content = new StringContent(fhir_stu3.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToJson(oo3));
                     break;
                 default:

@@ -25,16 +25,36 @@ namespace Trifolia.DB
         /// <param name="isComplete">Initial value of the IsComplete property.</param>
         /// <param name="hasPublishedIg">Initial value of the HasPublishedIg property.</param>
         /// <param name="canEditPublishedIg">Initial value of the CanEditPublishedIg property.</param>
-        public static SearchValueSetResult CreateSearchValueSetResult(global::System.Int32 totalItems, global::System.Int32 id, global::System.String oid, global::System.String name, global::System.Boolean isComplete, global::System.Boolean hasPublishedIg, global::System.Boolean canEditPublishedIg)
+        public static SearchValueSetResult CreateSearchValueSetResult(
+            int totalItems, 
+            int id,
+            string name,
+            string oid, 
+            string code,
+            string description,
+            bool? intensional,
+            string intensionalDefinition,
+            string source,
+            bool isComplete,
+            bool hasPublishedIg,
+            bool canEditPublishedIg)
         {
-            SearchValueSetResult searchValueSetResult = new SearchValueSetResult();
-            searchValueSetResult.TotalItems = totalItems;
-            searchValueSetResult.Id = id;
-            searchValueSetResult.Oid = oid;
-            searchValueSetResult.Name = name;
-            searchValueSetResult.IsComplete = isComplete;
-            searchValueSetResult.HasPublishedIg = hasPublishedIg;
-            searchValueSetResult.CanEditPublishedIg = canEditPublishedIg;
+            SearchValueSetResult searchValueSetResult = new SearchValueSetResult()
+            {
+                TotalItems = totalItems,
+                Id = id,
+                Name = name,
+                Oid = oid,
+                Code = code,
+                Description = description,
+                Intensional = intensional,
+                IntensionalDefinition = intensionalDefinition,
+                SourceUrl = source,
+                IsComplete = isComplete,
+                HasPublishedIg = hasPublishedIg,
+                CanEditPublishedIg = canEditPublishedIg
+            };
+
             return searchValueSetResult;
         }
 

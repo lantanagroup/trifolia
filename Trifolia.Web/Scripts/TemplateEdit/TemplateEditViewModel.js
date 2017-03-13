@@ -1186,6 +1186,7 @@ var templateEditViewModel = function (templateId, defaults) {
                     // Update the template id on the client so that we save against the new template going forward
                     self.TemplateId(response.TemplateId);
                     self.Template().Id(response.TemplateId);
+                    self.Template().AuthorId(response.AuthorId);
                     self.IsModified(false);
 
                     if (actionAfter == 'list') {

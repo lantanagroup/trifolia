@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Trifolia.Logging
 {
@@ -32,7 +33,7 @@ namespace Trifolia.Logging
             get 
             { 
                 lock (locker) 
-                { 
+                {
                     return _factory = _factory ?? new Log4NetLoggerFactory(); 
                 } 
             }
@@ -55,7 +56,12 @@ namespace Trifolia.Logging
                 throw new ArgumentNullException("type");
             //ILoggerFactory factory = new Log4NetLoggerFactory();
 
-            return Factory.CreateFor(type);
+            var factory = Factory.CreateFor(type);
+
+            if (Thread.CurrentPrincipal != null && Thread.CurrentPrincipal.Identity != null && !string.IsNullOrEmpty(Thread.CurrentPrincipal.Identity.Name))
+                log4net.GlobalContext.Properties["log4net:UserName"] = Thread.CurrentPrincipal.Identity.Name;
+
+            return factory;
         }
         #endregion
     }

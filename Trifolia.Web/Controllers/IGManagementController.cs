@@ -218,7 +218,8 @@ namespace Trifolia.Web.Controllers
                 PublishStatus = PublishStatus.GetDraftStatus(this.tdb),
                 Version = ig.Version + 1,
                 WebReadmeOverview = ig.WebReadmeOverview,
-                WebDescription = ig.WebDescription
+                WebDescription = ig.WebDescription,
+                Identifier = ig.Identifier
             };
 
             // Copy permissions
@@ -270,6 +271,7 @@ namespace Trifolia.Web.Controllers
                 newIg.Sections.Add(newSection);
             }
 
+            this.tdb.ImplementationGuides.Add(newIg);
             this.tdb.SaveChanges();
 
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);

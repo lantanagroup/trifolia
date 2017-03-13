@@ -40,7 +40,7 @@
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/javascript" src="/Scripts/jquery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/Scripts/lib/jquery/jquery.cookie.js"></script>
     <script type="text/javascript" src="/Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript" src="/Scripts/TemplateEdit/templateEditGlobals.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript" src="/Scripts/TemplateEdit/templateEditViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
@@ -150,6 +150,7 @@
                                 </div>
                                 <span class="templateMetaDataError" data-bind="validationMessage: IdentifierPrefix"></span>
                                 <span class="templateMetaDataError" data-bind="validationMessage: IdentifierAfix"></span>
+                                <span class="templateMetaDataError" data-bind="validationMessage: Oid"></span>
 
                                 <div class="input-group bookmark-field">
                                     <div class="input-group-addon">

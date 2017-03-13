@@ -1,15 +1,10 @@
 ﻿<%@ Page Title="Trifolia Workbench - Home" Language="C#" MasterPageFile="~/Views/Shared/Site.MVC.Master" Inherits="System.Web.Mvc.ViewPage<Trifolia.Web.Models.HomeModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-
     <h2>Welcome to Trifolia Workbench!</h2>
 
-    <p>
-        <strong>Did you know?</strong>
-        <br />
-        <label><%= Model.DidYouKnowTip %></label>
-    </p>
-
+    <div id="intro"></div>
+    <hr />
     <div id="whatsnew"></div>
 </asp:Content>
 
@@ -19,7 +14,7 @@
         var versionNumber = "<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>";
 
         $(document).ready(function () {
-            LoadWhatsNew(versionNumber);
+            loadHelpTopics(versionNumber);
         });
     </script>
 </asp:Content>

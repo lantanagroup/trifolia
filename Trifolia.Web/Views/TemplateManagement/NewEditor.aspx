@@ -18,7 +18,7 @@
         }
 
         body > .container-fluid > .main > .editor > div:nth-child(2) > .tab-content {
-            height: 94%;
+            height: 86%;
         }
 
         body > .container-fluid {
@@ -72,6 +72,13 @@
 
         .constraint-properties > .panel > .panel-heading {
             padding: 8px;
+        }
+        
+        .constraint-properties > .panel > .panel-body {
+            padding: 8px;
+            max-height: 88%;
+            overflow-y: auto;
+            width: 100%;
         }
 
         .constraint-properties > .panel > .panel-body .form-group {
@@ -174,7 +181,7 @@
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="editor" ng-app="NewEditor" ng-controller="EditorController" ng-init="init(<%= Model.TemplateIdString %>, <%= Model.DefaultImplementationGuideIdString %>)">
+    <div class="editor" ng-app="Trifolia" ng-controller="EditorController" ng-init="init(<%= Model.TemplateIdString %>, <%= Model.DefaultImplementationGuideIdString %>)">
         <div class="left-nav" ng-class="{ 'expanded': leftNavExpanded }">
             <button type="button" class="btn btn-default btn-sm" ng-click="toggleLeftNav()">Templates/Profiles</button>
             <div class="left-nav-content" ng-show="leftNavExpanded">
@@ -340,10 +347,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon">Implied Template/Profile:</div>
-                            <input type="text" class="form-control" />
-                        </div>
+                        <template-select caption="Implied Template/Profile"></template-select>
                     </div>
                     <div class="form-group">
                         <div class="input-group">
@@ -412,7 +416,7 @@
                             template="template" 
                             nodes="nodes" 
                             node-selected="nodeSelected(selectedNode)" 
-                            node-expanded="nodeExpanded(node)">
+                            node-expanded="nodeExpanded(selectedNode)">
                         </tree-grid>
                     </div>
                     <div class="constraint-properties">
@@ -424,7 +428,7 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <div ng-if="selectedNode && selectedNode.Constraint" ng-include="'constraintPanel.html'"></div>
+                                <div ng-if="selectedNode && selectedNode.Constraint" ng-include="'/Scripts/NewTemplateEditor/constraintsPanel.html'"></div>
                                 <button type="button" ng-show="selectedNode && !selectedNode.Constraint" class="btn btn-default">Create Computable Constraint</button>
                             </div>
                         </div>
@@ -439,249 +443,60 @@
             </tab>
         </tabset>
 
-        <script type="text/html" id="treeGrid.html">
-            <div class="tree-grid">
-                <table class="table table-striped">
+        <script type="text/html" id="templateSelect.html">
+            <div class="input-group" ng-class="{ 'input-group-sm': smallFields }">
+                <div class="input-group-addon">{{caption}}</div>
+                <input type="text" class="form-control" />
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="openModal()">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="clearSelection()">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </div>
+            </div>
+        </script>
+        <script type="text/html" id="templateSelectModal.html">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">{{caption}}</h3>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <form>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search Text..." ng-model="searchText" />
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default" ng-click="search()">Search</button>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table table-striped" ng-if="searchResults">
                     <thead>
                         <tr>
-                            <th>Context</th>
-                            <th>Number</th>
-                            <th>Conf.</th>
-                            <th>Card.</th>
-                            <th>DataType</th>
-                            <th>Value</th>
+                            <th>Name</th>
+                            <th>Identifier</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="clickable" ng-repeat="node in flattenedNodes" ng-click="toggleSelect(node)" ng-class="{ 'highlight': node.Constraint, 'danger': selectedNode == node }">
+                        <tr ng-repeat="r in searchResults.Items">
+                            <td>{{r.Name}}</td>
+                            <td>{{r.Oid}}</td>
                             <td>
-                                <span style="white-space: pre">{{getNodeTabs(node)}}</span>
-                                <i ng-if="node.HasChildren" class="glyphicon clickable" ng-class="{ 'glyphicon-plus': !node.$expanded, 'glyphicon-minus': node.$expanded }" ng-click="toggleExpand(node)"></i>
-                                {{node.Context}} ({{node.Constraint != undefined}})
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="select(r)">Select</button>
+                                </div>
                             </td>
-                            <td>{{getCellDisplay(node, 'Number')}}</td>
-                            <td>{{getCellDisplay(node, 'Conformance')}}</td>
-                            <td>
-                                {{getCellDisplay(node, 'Cardinality')}}
-                                <i class="glyphicon glyphicon-exclamation-sign" ng-if="isInvalidCardinality(node)" title="{{isInvalidCardinality(node)}}"></i>
-                            </td>
-                            <td>{{getCellDisplay(node, 'DataType')}}</td>
-                            <td>{{getCellDisplay(node, 'Value')}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </script>
-
-        <script type="text/html" id="constraintPanel.html">
-            <sub>General</sub>
-
-            <!-- Conf/Card -->
-            <div class="form-group">
-                <div class="input-group input-group-sm" style="width: 100%;">
-                    <div class="input-group-addon">Conf/Card:</div>
-                    <select class="form-control input-sm" style="width: 50%;" ng-model="selectedNode.Constraint.Conformance">
-                        <option>SHALL</option>
-                        <option>SHOULD</option>
-                        <option>MAY</option>
-                        <option>SHALL NOT</option>
-                        <option>SHOULD NOT</option>
-                        <option>MAY NOT</option>
-                    </select>
-                    <div class="input-group input-group-sm cardinality" style="width:50%; padding-top: 0px">
-                        <input class="span2 form-control" id="appendedInputButton" size="16" type="text" ng-model="selectedNode.Constraint.Cardinality">
-                        <div class="input-group-btn">
-                            <a class="dropdown-toggle btn btn-primary btn-sm" data-toggle="dropdown" href="#">
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                                <li><a href="#" ng-click="selectedNode.Constraint.Cardinality = '0..0'">0..0</a></li>
-                                <li><a href="#" ng-click="selectedNode.Constraint.Cardinality = '0..1'">0..1</a></li>
-                                <li><a href="#" ng-click="selectedNode.Constraint.Cardinality = '0..*'">0..*</a></li>
-                                <li><a href="#" ng-click="selectedNode.Constraint.Cardinality = '1..1'">1..1</a></li>
-                                <li><a href="#" ng-click="selectedNode.Constraint.Cardinality = '1..*'">1..*</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Data Type -->
-            <div class="form-group">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon">
-                        <span>Data Type:</span>
-                        <span class="glyphicon glyphicon-question-sign clickable"></span>
-                    </div>
-                    <select class="form-control input-sm">
-                        <option value="">DEFAULT</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Branching -->
-            <div class="form-group">
-                <div class="input-group input-group-sm branching">
-                    <div class="input-group-addon">Branch/Slice:</div>
-                    <div class="form-control">
-                        <input type="checkbox" name="Branching">&nbsp;<span>Root</span><br>
-                        <input type="checkbox" name="Branching">&nbsp;<span>Identifier/Discriminator</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contained Template/Profile -->
-            <div class="form-group">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon">Template/Profile:</div>
-                    <input type="text" class="form-control" />
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-default btn-sm">
-                            <i class="glyphicon glyphicon-remove"></i>
-                        </button>
-                        <button type="button" class="btn btn-default btn-sm">
-                            ...
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <hr />
-            <sub>Bindings</sub>
-
-            <!-- Binding Type -->
-            <div class="form-group">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon">
-                        Binding Type:
-                        <i class="glyphicon glyphicon-question-sign clickable"></i>
-                    </div>
-                    <select class="form-control input-sm">
-                        <option value="None">None</option>
-                        <option value="SingleValue">Single Value</option>
-                        <option value="ValueSet">Value Set</option>
-                        <option value="CodeSystem">Code System</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-            </div>
-
-            <hr />
-            <sub>Publishing</sub>
-
-            <!-- Is Heading -->
-            <div class="form-group is-heading">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon">
-                        Heading:
-                        <i class="glyphicon glyphicon-question-sign clickable"></i>
-                    </div>
-                    <select class="form-control input-sm">
-                        <option value="false">No</option>
-                        <option value="true">Yes</option>
-                    </select>
-                    <select class="form-control input-sm" disabled="disabled">
-                        <option value="">LEVEL</option>
-                        <option value="1">Level 1</option>
-                        <option value="2">Level 2</option>
-                        <option value="3">Level 3</option>
-                        <option value="4">Level 4</option>
-                        <option value="5">Level 5</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Description -->
-            <div class="form-group">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon" title="Exported before constraint">Description:</div>
-                    <textarea class="form-control input-sm" style="height: 50px;"></textarea>
-                </div>
-            </div>
-
-            <!-- Label -->
-            <div class="form-group">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon" title="Exported at end of constraint">Label:</div>
-                    <input type="text" class="form-control input-sm" />
-                </div>
-            </div>
-
-            <!-- Heading -->
-            <div class="form-group">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon">
-                        Heading:&nbsp;
-                        <input type="checkbox" />
-                    </div>
-                    <textarea class="form-control input-sm" style="height: 50px;" placeholder="Heading Description" disabled="disabled"></textarea>
-                </div>
-            </div>
-
-            <hr />
-            <sub>Schematron</sub>
-
-            <!-- Auto Generate -->
-            <div class="form-group">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon">
-                        Auto Generate:
-                    </div>
-                    <select class="form-control">
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Inheritable -->
-            <div class="form-group">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon">
-                        Inheritable:
-                    </div>
-                    <select class="form-control" disabled="disabled">
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Rooted -->
-            <div class="form-group">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon">
-                        Rooted:
-                    </div>
-                    <select class="form-control" disabled="disabled">
-                        <option value="false">No</option>
-                        <option value="true">Yes</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Custom Schematron -->
-            <div class="form-group">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon">
-                        Schematron:
-                    </div>
-                    <textarea class="form-control input-sm" style="height: 50px" disabled="disabled"></textarea>
-                </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning" type="button" ng-click="close()">Close</button>
             </div>
         </script>
     </div>
     
-    <script src="http://igniteui.com/js/modernizr.min.js"></script>
-    <script src="http://igniteui.com/js/angular.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/Scripts/angular/ui-bootstrap-tpls-0.12.1.min.js"></script>
-    <script type="text/javascript" src="/Scripts/lodash.min.js"></script>
-    <script type="text/javascript" src="/Scripts/TemplateEdit/newTemplateEditor.js"></script>
-    
-    <script src="http://cdn-na.infragistics.com/igniteui/latest/js/infragistics.core.js"></script>
-    <script src="http://cdn-na.infragistics.com/igniteui/latest/js/infragistics.lob.js"></script>
-    <script src="http://cdn-na.infragistics.com/igniteui/latest/js/extensions/igniteui-angular.js"></script>
-    <link href="http://cdn-na.infragistics.com/igniteui/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet"></link>
-    <link href="http://cdn-na.infragistics.com/igniteui/latest/css/structure/infragistics.css" rel="stylesheet"></link>
+    <script type="text/javascript" src="/Scripts/NewTemplateEditor/editorController.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>""></script>
 </asp:Content>

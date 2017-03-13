@@ -11,10 +11,8 @@ namespace Trifolia.Export.FHIR.STU3
     {
         public static string FhirId(this Template template)
         {
-            if (string.IsNullOrEmpty(template.Bookmark))
-                return string.Empty;
-
-            return template.Bookmark.Replace("_", "-");
+            // Method placeholder in case pre-processing needs to be performed on the bookmark before returning it as the FHRI id
+            return template.Bookmark;
         }
 
         public static string FhirUrl(this Template template)

@@ -50,34 +50,38 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
 
         #endregion
 
+        private IHttpActionResult CreateErrorResponse(string message, OperationOutcome.IssueType issueType = OperationOutcome.IssueType.Unknown)
+        {
+            OperationOutcome error = new OperationOutcome();
+            error.Issue.Add(new OperationOutcome.IssueComponent()
+            {
+                Severity = OperationOutcome.IssueSeverity.Error,
+                Code = issueType,
+                Diagnostics = message
+            });
+            
+            return Content<OperationOutcome>(HttpStatusCode.BadRequest, error);
+        }
+
         /// <summary>
         /// Gets a specific profile and converts it to a StructureDefinition resource.
         /// </summary>
-        /// <param name="templateId">The id of the profile/template to get</param>
+        /// <param name="bookmark">The id of the profile to retrieve</param>
         /// <param name="summary">Optional. The type of summary to respond with.</param>
         /// <returns>Hl7.Fhir.Model.StructureDefinition</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         [HttpGet]
-        [Route("StructureDefinition/{templateId}")]
+        [Route("StructureDefinition/{bookmark}")]
         [SecurableAction(SecurableNames.TEMPLATE_LIST)]
         public IHttpActionResult GetTemplate(
-            [FromUri] string templateId,
+            [FromUri] string bookmark,
             [FromUri(Name = "_summary")] SummaryType? summary = null)
         {
-            Template template = this.tdb.Templates.SingleOrDefault(y => y.Oid == this.Request.RequestUri.AbsoluteUri || y.Id.ToString() == templateId);
+            Template template = this.tdb.Templates.SingleOrDefault(y => y.Oid == this.Request.RequestUri.AbsoluteUri || y.Bookmark.ToLower().Trim() == bookmark.ToLower().Trim());
 
             // Return an operation outcome indicating that the profile was not found
             if (template == null)
-            {
-                OperationOutcome oo = new OperationOutcome();
-                oo.Issue.Add(new OperationOutcome.IssueComponent()
-                {
-                    Severity = OperationOutcome.IssueSeverity.Fatal,
-                    Diagnostics = "Profile was not found"
-                });
-
-                return Content<OperationOutcome>(HttpStatusCode.NotFound, oo);
-            }
+                return CreateErrorResponse(App_GlobalResources.TrifoliaLang.TemplateNotFoundMessageFormat);
 
             // Redirect the user to the Trifolia web interface if an acceptable format is text/html, and no format or summary was specified
             if (Request.Headers.Accept.Any(y => y.MediaType == "text/html") && summary == null)
@@ -207,11 +211,11 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             return Content<Bundle>(HttpStatusCode.OK, bundle);
         }
 
-        public Template CreateTemplate(StructureDefinition strucDef)
+        public Template CreateTemplate(StructureDefinition strucDef, User author = null)
         {
             var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
             StructureDefinitionImporter importer = new StructureDefinitionImporter(this.tdb, uri.Scheme, uri.Authority);
-            Template template = importer.Convert(strucDef);
+            Template template = importer.Convert(strucDef, author: author);
             this.tdb.Templates.Add(template);
             return template;
         }
@@ -227,38 +231,24 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         public IHttpActionResult CreateStructureDefinition(
             [FromBody] StructureDefinition strucDef)
         {
-            if (!string.IsNullOrEmpty(strucDef.Id))
-            {
-                OperationOutcome error = new OperationOutcome();
-                error.Issue.Add(new OperationOutcome.IssueComponent()
-                {
-                    Severity = OperationOutcome.IssueSeverity.Error,
-                    Diagnostics = App_GlobalResources.TrifoliaLang.CreateFHIR2TemplateFailedDuplicateId
-                });
-                return Content<OperationOutcome>(HttpStatusCode.BadRequest, error);
-            }
-
             var foundProfile = this.tdb.Templates.SingleOrDefault(y => y.Oid == strucDef.Url);
 
             if (foundProfile != null)
+                return CreateErrorResponse(App_GlobalResources.TrifoliaLang.StructureDefinitionSameUrlExists, OperationOutcome.IssueType.Duplicate);
+
+            Template template;
+
+            try
             {
-                OperationOutcome oo = new OperationOutcome()
-                {
-                    Issue = new List<OperationOutcome.IssueComponent> {
-                        new OperationOutcome.IssueComponent()
-                        {
-                            Severity = OperationOutcome.IssueSeverity.Error,
-                            Code = OperationOutcome.IssueType.Duplicate,
-                            Diagnostics = "A StructureDefinition with the same url already exists. To update, use PUT."
-                        }
-                    }
-                };
+                User author = CheckPoint.Instance.GetUser(this.tdb);
 
-                return Content<OperationOutcome>(HttpStatusCode.Created, oo);
+                template = CreateTemplate(strucDef, author);
+                this.tdb.SaveChanges();
             }
-
-            var template = CreateTemplate(strucDef);
-            this.tdb.SaveChanges();
+            catch (Exception ex)
+            {
+                return CreateErrorResponse(ex.Message, OperationOutcome.IssueType.Exception);
+            }
 
             string location = string.Format("{0}://{1}/api/FHIR3/StructureDefinition/{2}",
                     this.Request.RequestUri.Scheme,
@@ -280,27 +270,41 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         /// <summary>
         /// Updates an existing template/profile based on the specified StructureDefinition
         /// </summary>
-        /// <param name="templateId"></param>
+        /// <param name="bookmark"></param>
         /// <param name="strucDef"></param>
         /// <returns>Hl7.Fhir.Model.StructureDefinition</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
         [HttpPut]
-        [Route("StructureDefinition/{templateId}")]
+        [Route("StructureDefinition/{bookmark}")]
         [SecurableAction(SecurableNames.TEMPLATE_EDIT)]
         public IHttpActionResult UpdateStructureDefinition(
             [FromBody] StructureDefinition strucDef,
-            [FromUri] int templateId)
+            [FromUri] string bookmark)
         {
-            Template existingTemplate = this.tdb.Templates.SingleOrDefault(y => y.Id == templateId);
+            Template existingTemplate = this.tdb.Templates.SingleOrDefault(y => y.Bookmark.ToLower().Trim() == bookmark.ToLower().Trim());
 
-            if (!CheckPoint.Instance.GrantEditTemplate(templateId))
+            // Make sure the profile exists
+            if (existingTemplate == null)
+                return CreateErrorResponse(App_GlobalResources.TrifoliaLang.TemplateNotFoundMessageFormat);
+
+            if (!CheckPoint.Instance.GrantEditTemplate(existingTemplate.Id))
                 throw new UnauthorizedAccessException();
 
             var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);
             StructureDefinitionImporter importer = new StructureDefinitionImporter(this.tdb, uri.Scheme, uri.Authority);
             StructureDefinitionExporter exporter = new StructureDefinitionExporter(this.tdb, uri.Scheme, uri.Authority);
 
-            Template updatedTemplate = importer.Convert(strucDef, existingTemplate);
+            Template updatedTemplate;
+
+            try
+            {
+                User author = CheckPoint.Instance.GetUser(this.tdb);
+                updatedTemplate = importer.Convert(strucDef, existingTemplate, author);
+            }
+            catch (Exception ex)
+            {
+                return CreateErrorResponse(ex.Message, OperationOutcome.IssueType.Exception);
+            }
 
             if (existingTemplate == null)
                 this.tdb.Templates.Add(updatedTemplate);
@@ -325,35 +329,24 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         /// <summary>
         /// Deletes the specified profile/template. This is a permanent deletion, and cannot be restored via _history.
         /// </summary>
-        /// <param name="templateId">The id of the profile/template to delete</param>
+        /// <param name="bookmark">The id of the profile/template to delete</param>
         /// <returns>Hl7.Fhir.Model.OperationOutcome</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_DELETE">Only users with the ability to delete templates/profiles can execute this operation</permission>
         [HttpDelete]
-        [Route("StructureDefinition/{templateId}")]
+        [Route("StructureDefinition/{bookmark}")]
         [SecurableAction(SecurableNames.TEMPLATE_DELETE)]
         public IHttpActionResult DeleteStructureDefinition(
-            [FromUri] int templateId)
+            [FromUri] string bookmark)
         {
-            Template template = null;
+            Template template = this.tdb.Templates.SingleOrDefault(y => y.Bookmark.ToLower().Trim() == bookmark.ToLower().Trim());
             OperationOutcome outcome = new OperationOutcome();
             outcome.Id = "ok";
 
-            try
-            {
-                template = this.tdb.Templates.Single(y => y.Id == templateId);
-            }
-            catch
-            {
-                OperationOutcome error = new OperationOutcome();
-                error.Issue.Add(new OperationOutcome.IssueComponent()
-                {
-                    Severity = OperationOutcome.IssueSeverity.Error,
-                    Diagnostics = App_GlobalResources.TrifoliaLang.TemplateNotFoundMessageFormat
-                });
-                return Content<OperationOutcome>(HttpStatusCode.BadRequest, error);
-            }
+            // Check that the profile exists
+            if (template == null)
+                return CreateErrorResponse(App_GlobalResources.TrifoliaLang.TemplateNotFoundMessageFormat);
 
-            if (!CheckPoint.Instance.GrantEditTemplate(templateId))
+            if (!CheckPoint.Instance.GrantEditTemplate(template.Id))
                 throw new UnauthorizedAccessException();
 
             template.Delete(this.tdb, null);

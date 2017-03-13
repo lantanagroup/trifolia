@@ -223,7 +223,10 @@ namespace Trifolia.DB
 
         public override string ToString()
         {
-            return string.Format("CONF#: {0}, Context: {1}", this.Number != null ? this.Number.ToString() : "N/A", this.Context);
+            if (this.IsPrimitive)
+                return string.Format("Primitive CONF#: {0}, Narrative: {1}", this.PrimitiveText);
+
+            return string.Format("Computable CONF#: {0}, Context: {1}", this.Number != null ? this.Number.ToString() : "N/A", this.Context);
         }
     }
 }
