@@ -172,7 +172,6 @@
     </div>
 
     <script type="text/javascript" src="/Scripts/Admin/Users.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-    <script type="text/javascript" src="/Scripts/lodash.min.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript">
         var viewModel = null;
         $(document).ready(function () {

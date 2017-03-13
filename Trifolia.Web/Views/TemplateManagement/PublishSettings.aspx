@@ -225,11 +225,11 @@
         </script>
     </div>
         
-    <script type="text/javascript" src="../../Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-    <script type="text/javascript" src="../../Scripts/TemplateManagement/publishModels.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-    <script type="text/javascript" src="../../Scripts/TemplateManagement/constraintViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-    <script type="text/javascript" src="../../Scripts/TemplateManagement/PublishSettingsViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-    <script type="text/javascript" src="../../Scripts/vkbeautify.0.99.00.beta.js"></script>
+    <script type="text/javascript" src="/Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+    <script type="text/javascript" src="/Scripts/TemplateManagement/publishModels.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+    <script type="text/javascript" src="/Scripts/TemplateManagement/constraintViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+    <script type="text/javascript" src="/Scripts/TemplateManagement/PublishSettingsViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+    <script type="text/javascript" src="/Scripts/lib/vkbeautify.0.99.00.beta.js"></script>
     <script type="text/javascript">
         var viewModel = null;
 

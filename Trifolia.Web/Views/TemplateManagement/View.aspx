@@ -317,7 +317,7 @@
     </script>
 
     <script src="/Scripts/TemplateManagement/templateView.js"></script>
-    <script src="/Scripts/vkbeautify.0.99.00.beta.js"></script>
+    <script src="/Scripts/lib/vkbeautify.0.99.00.beta.js"></script>
     <script type="text/javascript">
         var viewModel;
 

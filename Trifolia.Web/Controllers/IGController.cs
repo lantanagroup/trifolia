@@ -67,24 +67,24 @@ namespace Trifolia.Web.Controllers
                 { "/Styles/joint.min.css", "css\\joint.min.css" },
 
                 // Scripts
-                { "/Scripts/jquery/jquery-1.10.2.min.js", "js\\jquery-1.10.2.min.js" },
-                { "/Scripts/bootstrap/bootstrap.js", "js\\bootstrap.js" },
-                { "/Scripts/angular/angular.min.js", "js\\angular.min.js" },
-                { "/Scripts/angular/angular-route.min.js", "js\\angular-route.min.js" },
-                { "/Scripts/angular/ui-bootstrap-tpls-0.12.1.min.js", "js\\ui-bootstrap-tpls-0.12.1.min.js" },
-                { "/Scripts/angular/highlight.min.js", "js\\highlight.min.js" },
-                { "/Scripts/angular/angular-highlight.min.js", "js\\angular-highlight.min.js" },
-                { "/Scripts/jquery/jquery-highlight-5.js", "js\\jquery-highlight-5.js" },
+                { "/Scripts/lib/jquery/jquery-1.10.2.min.js", "js\\jquery-1.10.2.min.js" },
+                { "/Scripts/lib/bootstrap/bootstrap.js", "js\\bootstrap.js" },
+                { "/Scripts/lib/angular/angular.min.js", "js\\angular.min.js" },
+                { "/Scripts/lib/angular/angular-route.min.js", "js\\angular-route.min.js" },
+                { "/Scripts/lib/angular/ui-bootstrap-tpls-0.12.1.min.js", "js\\ui-bootstrap-tpls-0.12.1.min.js" },
+                { "/Scripts/lib/angular/highlight.min.js", "js\\highlight.min.js" },
+                { "/Scripts/lib/angular/angular-highlight.min.js", "js\\angular-highlight.min.js" },
+                { "/Scripts/lib/jquery/jquery-highlight-5.js", "js\\jquery-highlight-5.js" },
                 { "/Scripts/IG/View.js", "js\\IGView.js" },
-                { "/Scripts/vkbeautify.0.99.00.beta.js", "js\\vkbeautify.0.99.00.beta.js" },
+                { "/Scripts/lib/vkbeautify.0.99.00.beta.js", "js\\vkbeautify.0.99.00.beta.js" },
 
                 // Joint.JS for UML diagram
-                { "/Scripts/joint.min.js", "js\\joint.min.js" },
-                { "/Scripts/lodash.min.js", "js\\lodash.min.js" },
-                { "/Scripts/backbone-min.js", "js\\backbone-min.js" },
-                { "/Scripts/dagre.core.min.js", "js\\dagre.core.min.js" },
-                { "/Scripts/graphlib.core.min.js", "js\\graphlib.core.min.js" },
-                { "/Scripts/joint.layout.DirectedGraph.min.js", "js\\joint.layout.DirectedGraph.min.js" }
+                { "/Scripts/lib/joint.min.js", "js\\joint.min.js" },
+                { "/Scripts/lib/lodash.min.js", "js\\lodash.min.js" },
+                { "/Scripts/lib/backbone-min.js", "js\\backbone-min.js" },
+                { "/Scripts/lib/dagre.core.min.js", "js\\dagre.core.min.js" },
+                { "/Scripts/lib/graphlib.core.min.js", "js\\graphlib.core.min.js" },
+                { "/Scripts/lib/joint.layout.DirectedGraph.min.js", "js\\joint.layout.DirectedGraph.min.js" }
             };
 
             string viewContent;

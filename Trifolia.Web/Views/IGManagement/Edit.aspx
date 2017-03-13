@@ -425,10 +425,10 @@
     </div>
     <!-- /#EditImplementationGuide -->
 
-    <script type="text/javascript" src="../../Scripts/IGManagement/Edit.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-    <script type="text/javascript" src="../../Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-    <script type="text/javascript" src="../../Scripts/sceditor/jquery.sceditor.xhtml.min.js"></script>
-    <script type="text/javascript" src="../../Scripts/sceditor/sceditor.custom.js"></script>
+    <script type="text/javascript" src="/Scripts/IGManagement/Edit.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+    <script type="text/javascript" src="/Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+    <script type="text/javascript" src="/Scripts/lib/sceditor/jquery.sceditor.xhtml.min.js"></script>
+    <script type="text/javascript" src="/Scripts/lib/sceditor/sceditor.custom.js"></script>
 
     <script type="text/javascript">
         var viewModel = null;
