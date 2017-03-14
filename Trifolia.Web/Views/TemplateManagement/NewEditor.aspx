@@ -179,6 +179,12 @@
 
         .left-nav-content {
             padding: 5px;
+            max-height: 100%;
+            overflow-y: auto;
+        }
+
+        .search-actions {
+            width: 100px;
         }
     </style>
 </asp:Content>
@@ -191,119 +197,38 @@
         <div class="left-nav" ng-class="{ 'expanded': leftNavExpanded }">
             <button type="button" class="btn btn-default btn-sm" ng-click="toggleLeftNav()">Templates/Profiles</button>
             <div class="left-nav-content" ng-show="leftNavExpanded">
-                <div class="input-group">
-                    <input type="text" placeholder="Search Text" class="form-control" />
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-primary">Search</button>
+                <form>
+                    <div class="input-group">
+                        <input type="text" placeholder="Search Text" class="form-control" ng-model="templateSearch.query" />
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-primary" ng-click="searchTemplates()">Search</button>
+                        </div>
                     </div>
-                </div>
+                </form>
 
-                <table class="table table-striped">
+                <table class="table table-striped" ng-if="templateSearch.results">
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Identifier</th>
-                            <th>Description</th>
-                            <th>&nbsp;</th>
+                            <th class="search-actions">&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Test 1</td>
-                            <td>urn:oid:1.1.1.1</td>
-                            <td>Test Description 1</td>
+                        <tr ng-repeat="t in templateSearch.results.Items">
                             <td>
-                                <div class="pull-right">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="glyphicon glyphicon-open"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="glyphicon glyphicon-new-window"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                                <p>{{t.Name}}</p>
+                                <p><small>{{t.ImplementationGuide}}</small></p>
+                                <sub ng-show="t.Description">{{t.Description}}</sub>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>Test 1</td>
-                            <td>urn:oid:1.1.1.1</td>
-                            <td>Test Description 1</td>
+                            <td>{{t.Oid}}</td>
                             <td>
                                 <div class="pull-right">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm">
+                                        <button type="button" class="btn btn-default btn-sm" title="Load in this editor window" ng-click="openTemplate(t.Id, false)">
                                             <i class="glyphicon glyphicon-open"></i>
                                         </button>
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="glyphicon glyphicon-new-window"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Test 1</td>
-                            <td>urn:oid:1.1.1.1</td>
-                            <td>Test Description 1</td>
-                            <td>
-                                <div class="pull-right">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="glyphicon glyphicon-open"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="glyphicon glyphicon-new-window"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Test 1</td>
-                            <td>urn:oid:1.1.1.1</td>
-                            <td>Test Description 1</td>
-                            <td>
-                                <div class="pull-right">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="glyphicon glyphicon-open"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="glyphicon glyphicon-new-window"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Test 1</td>
-                            <td>urn:oid:1.1.1.1</td>
-                            <td>Test Description 1</td>
-                            <td>
-                                <div class="pull-right">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="glyphicon glyphicon-open"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="glyphicon glyphicon-new-window"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Test 1</td>
-                            <td>urn:oid:1.1.1.1</td>
-                            <td>Test Description 1</td>
-                            <td>
-                                <div class="pull-right">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm">
-                                            <i class="glyphicon glyphicon-open"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-default btn-sm">
+                                        <button type="button" class="btn btn-default btn-sm" title="Load in new editor window" ng-click="openTemplate(t.Id, true)">
                                             <i class="glyphicon glyphicon-new-window"></i>
                                         </button>
                                     </div>
@@ -311,6 +236,16 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr ng-if="templateSearch.results.Items.length == 0">
+                            <td colspan="3">No results</td>
+                        </tr>
+                        <tr ng-if="templateSearch.results.Items.length > 0">
+                            <td colspan="3">
+                                Total: {{templateSearch.results.Items.length}}
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

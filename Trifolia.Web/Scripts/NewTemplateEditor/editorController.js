@@ -1,5 +1,5 @@
 ﻿angular.module('Trifolia')
-    .controller('EditorController', function ($scope, $interval, $location, EditorService, ImplementationGuideService) {
+    .controller('EditorController', function ($scope, $interval, $location, EditorService, ImplementationGuideService, TemplateService) {
         $scope.implementationGuides = [];
         $scope.template = null;
         $scope.constraints = [];
@@ -17,10 +17,30 @@
             base: null,
             ext: null
         }
+        $scope.templateSearch = {
+            query: '',
+            results: null
+        };
         $scope.isDebug = true;
 
         $scope.toggleLeftNav = function () {
             $scope.leftNavExpanded = !$scope.leftNavExpanded;
+        };
+
+        $scope.openTemplate = function (templateId, newWindow) {
+            if (!newWindow) {
+                $scope.init(templateId);
+            } else {
+                window.open('/TemplateManagement/Edit/Id/' + templateId + '/V2');
+            }
+        };
+
+        $scope.searchTemplates = function () {
+            var implementationGuideId = $scope.template ? $scope.template.OwningImplementationGuideId : null;
+            TemplateService.getTemplates(150, 1, null, true, $scope.templateSearch.query, null, null, implementationGuideId, null, null, null, null, false)
+                .then(function (results) {
+                    $scope.templateSearch.results = results;
+                });
         };
 
         $scope.nodeExpanded = function (selectedNode) {
@@ -47,6 +67,8 @@
                 })
                 .then(function (template) {
                     $scope.template = template;
+
+                    $scope.searchTemplates();
 
                     var foundIg = _.find($scope.implementationGuides, function (ig) {
                         return ig.Id == $scope.template.OwningImplementationGuideId;

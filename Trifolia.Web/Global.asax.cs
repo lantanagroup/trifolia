@@ -239,7 +239,7 @@ namespace Trifolia.Web
 
             routes.MapRoute(
                 name: "Edit Template by ID V2",
-                url: "TemplateManagement/Edit/Id/{templateId}",
+                url: "TemplateManagement/Edit/Id/{templateId}/V2",
                 defaults: new { controller = "TemplateManagement", action = "EditId", newEditor = true }
             );
 

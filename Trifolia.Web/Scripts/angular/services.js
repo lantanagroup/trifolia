@@ -70,13 +70,14 @@
     .factory('TemplateService', function ($http, $q) {
         var service = {};
 
-        service.getTemplates = function (count, page, sortProperty, sortDescending, queryText, filterName, filterOid, filterImplementationGuideId, filterTemplateTypeId, filterOrganizationId, filterContextType) {
+        service.getTemplates = function (count, page, sortProperty, sortDescending, queryText, filterName, filterOid, filterImplementationGuideId, filterTemplateTypeId, filterOrganizationId, filterContextType, inferred) {
             var params = {};
 
             params['count'] = count ? count : 50;
             params['page'] = page ? page : 1;
             params['sortProperty'] = sortProperty ? sortProperty : 'Name';
             params['sortDescending'] = sortDescending != undefined && sortDescending != null ? sortDescending : false;
+            params['inferred'] = inferred != undefined && inferred != null ? inferred : true;
 
             if (queryText) {
                 params['queryText'] = queryText;

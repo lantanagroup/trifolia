@@ -346,6 +346,7 @@ namespace Trifolia.Web.Controllers.API
         /// <param name="filterTemplateTypeId">Matches the id of the template type specified specifically to the template type of the template. Only templates with a matching type will be returned.</param>
         /// <param name="filterOrganizationId">Matches the id of the organization specified specifically to the organization of the template. Only templates with a matching organization will be returned.</param>
         /// <param name="filterContextType">Matches the context specified specifically to the context of the template. Only templates whose context type contain the specified value will be returned.</param>
+        /// <param name="inferred">Indicates if templates from other implementation guides, that are used by the filtered implementation guide, should be included. Does not apply if not filter is specified for implementation guide.</param>
         /// <returns>Trifolia.Web.Models.TemplateManagement.ListModel</returns>
         [HttpGet, Route("api/Template"), SecurableAction(SecurableNames.TEMPLATE_LIST)]
         public ListModel GetTemplates(
@@ -359,7 +360,8 @@ namespace Trifolia.Web.Controllers.API
             int? filterImplementationGuideId = null,
             int? filterTemplateTypeId = null,
             int? filterOrganizationId = null,
-            string filterContextType = null)
+            string filterContextType = null,
+            bool inferred = true)
         {
             Log.For(this).Trace("BEGIN: Getting list model for List and ListPartial");
 
@@ -386,6 +388,10 @@ namespace Trifolia.Web.Controllers.API
             var query = (from tid in templateIds
                          join vtl in tdb.ViewTemplateLists on tid equals vtl.Id
                          select vtl);
+
+            if (filterImplementationGuideId != null && !inferred)
+                query = query.Where(y => y.ImplementationGuideId == filterImplementationGuideId);
+
             int currentUserId = CheckPoint.Instance.GetUser(tdb).Id;
             var editableTemplates = (from tp in this.tdb.ViewTemplatePermissions
                                      where tp.UserId == currentUserId && tp.Permission == "Edit"
