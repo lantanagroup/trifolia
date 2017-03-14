@@ -385,6 +385,33 @@ namespace Trifolia.DB.Migrations
 
         protected override void Seed(Trifolia.DB.TrifoliaDatabase context)
         {
+            context.PublishStatuses.AddOrUpdate(ps => ps.Id,
+                new PublishStatus()
+                {
+                    Id = 1,
+                    Status = "Draft"
+                },
+                new PublishStatus()
+                {
+                    Id = 2,
+                    Status = "Ballot"
+                },
+                new PublishStatus()
+                {
+                    Id = 3,
+                    Status = "Published"
+                },
+                new PublishStatus()
+                {
+                    Id = 4,
+                    Status = "Deprecated"
+                },
+                new PublishStatus()
+                {
+                    Id = 5,
+                    Status = "Retired"
+                });
+
             context.ImplementationGuideTypes.AddOrUpdate(igt => igt.Id,
                 new ImplementationGuideType()
                 {
