@@ -1,11 +1,23 @@
 ﻿angular.module('Trifolia')
-    .controller('EditorController', function ($scope, $interval, EditorService, ImplementationGuideService) {
+    .controller('EditorController', function ($scope, $interval, $location, EditorService, ImplementationGuideService) {
         $scope.implementationGuides = [];
         $scope.template = null;
         $scope.constraints = [];
         $scope.nodes = [];
         $scope.selectedNode = null;
         $scope.leftNavExpanded = false;
+        $scope.statuses = [
+            { Id: 1, Status: 'Draft' },
+            { Id: 2, Status: 'Ballot' },
+            { Id: 3, Status: 'Published' },
+            { Id: 4, Status: 'Deprecated' },
+            { Id: 5, Status: 'Retired' }];
+        $scope.implementationGuide = null;
+        $scope.identifier = {
+            base: null,
+            ext: null
+        }
+        $scope.isDebug = true;
 
         $scope.toggleLeftNav = function () {
             $scope.leftNavExpanded = !$scope.leftNavExpanded;
@@ -30,11 +42,20 @@
             ImplementationGuideService.getEditable()
                 .then(function (implementationGuides) {
                     $scope.implementationGuides = implementationGuides;
-                });
 
-            EditorService.getTemplate(templateId)
+                    return EditorService.getTemplate(templateId);
+                })
                 .then(function (template) {
                     $scope.template = template;
+
+                    var foundIg = _.find($scope.implementationGuides, function (ig) {
+                        return ig.Id == $scope.template.OwningImplementationGuideId;
+                    });
+
+                    $scope.implementationGuide = foundIg;
+
+                    // Parse the identifier now that we have the implementation guide and template retrieved
+                    $scope.parseIdentifier($scope.template.Oid);
 
                     return EditorService.getConstraints(templateId);
                 })
@@ -47,6 +68,54 @@
                             $scope.nodes = nodes;
                         });
                 });
+        };
+
+        $scope.updateIdentifier = function () {
+            if ($scope.template) {
+                $scope.template.Oid = $scope.identifier.base + $scope.identifier.ext;
+            }
+        };
+
+        $scope.parseIdentifier = function (identifier) {
+            if (!identifier) {
+                $scope.identifier.base = null;
+                $scope.identifier.ext = null;
+                return;
+            }
+
+            var igIdentifier = $scope.implementationGuide ? $scope.implementationGuide.Identifier : null;
+
+            if (igIdentifier.indexOf('http://') == 0 || igIdentifier.indexOf('https://') == 0) {
+                if (igIdentifier.lastIndexOf('/') != igIdentifier.length - 1) {
+                    igIdentifier += '/';
+                }
+            } else if (igIdentifier.indexOf('urn:oid:') == 0 && igIdentifier.lastIndexOf('.') != igIdentifier.length - 1) {
+                igIdentifier += '.';
+            }
+
+            // See if the identifier starts with the base identifier of the implementation guide
+            if (igIdentifier && identifier.indexOf(igIdentifier) == 0) {
+                $scope.identifier.base = igIdentifier;
+                $scope.identifier.ext = identifier.substring(igIdentifier.length);
+            } else if (identifier.indexOf('urn:oid:') == 0) {
+                $scope.identifier.base = 'urn:oid:';
+                $scope.identifier.ext = identifier.substring($scope.identifier.base.length);
+            // Look for identifier that starts with urn:oid:
+            } else if (identifier.indexOf('urn:hl7ii:') == 0) {
+                $scope.identifier.base = 'urn:hl7ii:';
+                $scope.identifier.ext = identifier.substring($scope.identifier.base.length);
+            // Look for identifier that starts with http://
+            } else if (identifier.indexOf('http://') == 0) {
+                $scope.identifier.base = 'http://';
+                $scope.identifier.ext = identifier.substring($scope.identifier.base.length);
+            // Look for identifier that starts with https://
+            } else if (identifier.indexOf('https://') == 0) {
+                $scope.identifier.base = 'https://';
+                $scope.identifier.ext = identifier.substring($scope.identifier.base.length);
+            } else {
+                $scope.identifier.base = '';
+                $scope.identifier.ext = identifier;
+            }
         };
 
         var associateNodes = function (nodes, constraints) {

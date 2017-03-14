@@ -122,6 +122,7 @@ namespace Trifolia.Web.Controllers.API
                            select new ListModel.ImplementationGuideItem()
                            {
                                Id = ig.Id,
+                               Identifier = ig.Identifier,
                                Organization = ig.Organization != null ? ig.Organization.Name : string.Empty,
                                PublishDate = ig.PublishDate,
                                Title = string.Format("{0} {1}", ig.Name, ig.Version > 1 ? "V" + ig.Version.ToString() : string.Empty),

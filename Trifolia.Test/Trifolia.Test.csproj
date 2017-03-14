@@ -1652,6 +1652,9 @@
     <EmbeddedResource Include="DocSamples\ccda-on-fhir-native.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Karma\angular-mocks.js" />
+    <Content Include="karma.conf.js" />
+    <Content Include="Karma\Tests\editorControllerTests.js" />
     <EmbeddedResource Include="Generation\Schematron\Data\SingleValueWithinBranch.xml" />
     <EmbeddedResource Include="DocSamples\Camara-FHIR-IG.xml" />
     <Content Include="DocSamples\Camara_FHIR_IG.xml" />

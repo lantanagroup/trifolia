@@ -2,6 +2,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
+        /* Tabs and container divs should fill screen */
         html,
         body,
         body > .container-fluid,
@@ -34,27 +35,32 @@
         }
 
         /* Meta Data Tab */
-        .editor > div:first-child > .tab-content > .tab-pane:first-child > .col-md-6:first-child {
+        .editor > div:nth-child(2) > .tab-content > .tab-pane:first-child > .col-md-6:first-child {
             padding-left: 5px;
         }
 
-        .editor > div:first-child > .tab-content > .tab-pane:first-child > .col-md-6:last-child {
+        .editor > div:nth-child(2) > .tab-content > .tab-pane:first-child > .col-md-6:last-child {
             padding-right: 5px;
         }
+        
+        .editor .identifier-field select,
+        .editor .identifier-field input {
+            width: 50%;
+        }
 
-        .editor > div:first-child > .tab-content > .tab-pane:first-child textarea {
+        .editor > div:nth-child(2) > .tab-content > .tab-pane:first-child textarea {
             height: 150px;
         }
 
-        .editor > div:first-child > .tab-content > .tab-pane:first-child .input-group {
+        .editor > div:nth-child(2) > .tab-content > .tab-pane:first-child .input-group {
             width: 100%;
         }
 
-        .editor > div:first-child > .tab-content > .tab-pane:first-child .input-group-addon {
+        .editor > div:nth-child(2) > .tab-content > .tab-pane:first-child .input-group-addon {
             min-width: 125px;
             text-align: left;
         }
-
+        
         .constraint-body {
             width: 65%;
         }
@@ -323,21 +329,14 @@
                                 <span>Long Id:</span>
                                 <div title="" class="glyphicon glyphicon-question-sign clickable"></div>
                             </div>
-                            <input class="form-control" type="text" />
-                            <div class="input-group-btn">
-                                <button class="dropdown-toggle btn btn-default" type="button" href="#" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="#">urn:oid:1.3.6.1.4.1.19376.1.4.1.7</a></li>
-                                    <li><a href="#">http://localhost:49366/api/FHIR2/StructureDefinition</a></li>
-                                    <!-- ko if: !$parent.IsFhir() -->
-                                    <li><a href="#">urn:oid:</a></li>
-                                    <li><a href="#">urn:hl7ii:</a></li>
-                                    <!-- /ko -->
-                                </ul>
-                            </div>
-                            <input class="form-control" type="text" />
+                            <select class="form-control" ng-model="identifier.base" ng-change="updateIdentifier()">
+                                <option>{{implementationGuide.Identifier + '.'}}</option>
+                                <option ng-if="!isFhir">urn:oid:</option>
+                                <option ng-if="!isFhir">urn:hl7ii:</option>
+                                <option>http://</option>
+                                <option>https://</option>
+                            </select>
+                            <input class="form-control" type="text" ng-model="identifier.ext" ng-change="updateIdentifier()" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -352,25 +351,27 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">Extensibility:</div>
-                            <select class="form-control"></select>
+                            <select class="form-control" ng-model="template.IsOpen" ng-options="i.v as i.d for i in [{ v: true, d: 'Open' }, {v: false, d: 'Closed' }]">
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">Status:</div>
-                            <select class="form-control"></select>
+                            <select class="form-control" ng-model="template.StatusId" ng-options="s.Id as s.Status for s in statuses">
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">Description:</div>
-                            <textarea class="form-control"></textarea>
+                            <textarea class="form-control" ng-model="template.Description"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">Notes:</div>
-                            <textarea class="form-control"></textarea>
+                            <textarea class="form-control" ng-model="template.Notes"></textarea>
                         </div>
                     </div>
                 </div>
@@ -397,7 +398,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">Authored By:</div>
-                            <input type="text" class="form-control" readonly="readonly" />
+                            <select class="form-control"></select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -407,6 +408,8 @@
                         </div>
                     </div>
                 </div>
+
+                <pre ng-if="isDebug">{{template | json}}</pre>
             </tab>
             <tab heading="Constraints">
                 <div class="constraint-container">
