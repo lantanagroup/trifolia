@@ -71,7 +71,7 @@ namespace Trifolia.Web.Controllers
                 { "/Scripts/lib/bootstrap/bootstrap.js", "js\\bootstrap.js" },
                 { "/Scripts/lib/angular/angular.min.js", "js\\angular.min.js" },
                 { "/Scripts/lib/angular/angular-route.min.js", "js\\angular-route.min.js" },
-                { "/Scripts/lib/angular/ui-bootstrap-tpls-0.12.1.min.js", "js\\ui-bootstrap-tpls-0.12.1.min.js" },
+                { "/Scripts/lib/angular/ui-bootstrap-tpls-2.5.0.min.js", "js\\ui-bootstrap-tpls-2.5.0.min.js" },
                 { "/Scripts/lib/angular/highlight.min.js", "js\\highlight.min.js" },
                 { "/Scripts/lib/angular/angular-highlight.min.js", "js\\angular-highlight.min.js" },
                 { "/Scripts/lib/jquery/jquery-highlight-5.js", "js\\jquery-highlight-5.js" },

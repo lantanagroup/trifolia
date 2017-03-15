@@ -46,7 +46,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#/overview">{{Model.ImplementationGuideName}} - {{Model.Status}} {{Model.PublishDate}}</a>
+                    <a class="navbar-brand" href="#/home">{{Model.ImplementationGuideName}} - {{Model.Status}} {{Model.PublishDate}}</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -111,7 +111,7 @@
             </h1>
             <h4>
                 <span>[{{Template.Context}}: {{Template.Identifier}} ({{Template.Extensibility}})]</span>
-                <i ng-if="IsDebug" class="glyphicon glyphicon-question-sign" tooltip="{{Template}}" tooltip-placement="bottom" tooltip-trigger="click"></i>
+                <i ng-if="IsDebug" class="glyphicon glyphicon-question-sign" uib-tooltip="{{Template}}" uib-tooltip-placement="bottom" uib-tooltip-trigger="click"></i>
             </h4>
 
             <p ng-bind-html="GetHtml(Template.Description)"></p>
@@ -195,26 +195,26 @@
                 <h3 ng-if="CurrentValueSets.length > 0">Value Sets</h3>
                 <div ng-include="'template_valuesets.html'"></div>
             </div>
-            <tabset ng-if="Options.TemplateTabs">
-                <tab heading="UML Relationship Diagram">
+            <uib-tabset ng-if="Options.TemplateTabs">
+                <uib-tab heading="UML Relationship Diagram">
                     <ig-diagram template="Template" model="Model"></ig-diagram>
-                </tab>
-                <tab heading="Relationships">
+                </uib-tab>
+                <uib-tab heading="Relationships">
                     <div ng-include="'template_relationships.html'"></div>
-                </tab>
-                <tab heading="Constraints Table">
+                </uib-tab>
+                <uib-tab heading="Constraints Table">
                     <div ng-include="'template_constraint_table.html'"></div>
-                </tab>
-                <tab heading="Narrative Constraints">
+                </uib-tab>
+                <uib-tab heading="Narrative Constraints">
                     <div ng-include="'template_narrative.html'"></div>
-                </tab>
-                <tab heading="Samples" ng-if="Template.Samples.length > 0">
+                </uib-tab>
+                <uib-tab heading="Samples" ng-if="Template.Samples.length > 0">
                     <div ng-include="'template_samples.html'"></div>
-                </tab>
-                <tab heading="Value Sets" ng-if="CurrentValueSets.length > 0">
+                </uib-tab>
+                <uib-tab heading="Value Sets" ng-if="CurrentValueSets.length > 0">
                     <div ng-include="'template_valuesets.html'"></div>
-                </tab>
-            </tabset>
+                </uib-tab>
+            </uib-tabset>
         </div>
     </script>
 
@@ -290,8 +290,8 @@
         <p>Description of templates chapter here</p>
         -->
 
-        <accordion close-others="true">
-            <accordion-group heading="Template Hierarchy" is-open="Volume2Modes.TemplateHierarchy">
+        <uib-accordion close-others="true">
+            <div uib-accordion-group class="panel-default" heading="Template Hierarchy" is-open="Volume2Modes.TemplateHierarchy">
                 <div class="alert alert-info">Use the + and - to expand/collapse the hierarchy of the templates/profiles.</div>
                 <div class="col-md-12 template-hierarchy">
                     <ul>
@@ -303,8 +303,8 @@
                         </li>
                     </ul>
                 </div>
-            </accordion-group>
-            <accordion-group heading="Template List" is-open="Volume2Modes.TemplateList">
+            </div>
+            <div uib-accordion-group class="panel-default" heading="Template List" is-open="Volume2Modes.TemplateList">
                 <div class="table-responsive template-type-filter">
                     <table class="table table-filter">
                         <tbody>
@@ -356,8 +356,8 @@
                         </div>
                     </div>
                 </div>
-            </accordion-group>
-        </accordion>
+            </div>
+        </uib-accordion>
     </script>
     
     <script type="text/html" id="template_hierarchy.html">
@@ -394,25 +394,21 @@
         </p>
     </script>
 
-    <script type="text/html" id="overview.html">
+    <script type="text/html" id="home.html">
         <!-- TODO: Separate field to capture display name -->
         <h2 class="page-header">Welcome to the Web-based Implementation Guide for {{Model.ImplementationGuideDisplayName}}</h2>
 
         <p ng-bind-html="GetHtml(Model.ImplementationGuideDescription)"></p>
-        <p>The document types contained in this IG can be validated using the CDA Validator:</p>
-        <div>
-            <a href="https://www.lantanagroup.com/validator" target="_blank">https://www.lantanagroup.com/validator</a>
-        </div>
 
         <h3>Table of Contents</h3>
-        <h4><span class="glyphicon glyphicon-book"></span> <a href="#/volume1">Overview</a></h4>
-        <h4><span class="glyphicon glyphicon-list-alt"></span> <a href="#/volume2">Templates/Profiles</a></h4>
-        <h4 ng-if="Model.FHIRResources && Model.FHIRResources.length > 0"><span class="glyphicon glyphicon-registration-mark"></span> <a href="#/resources">Resources</a></h4>
-        <h4><span class="glyphicon glyphicon-list"></span> <a href="#/valuesets">Value sets in this guide</a></h4>
-        <h4><span class="glyphicon glyphicon-list"></span> <a href="#/codesystems">Code systems in this guide</a></h4>
+        <h4><span class="glyphicon glyphicon-book"></span> <a href="#overview">Overview</a></h4>
+        <h4><span class="glyphicon glyphicon-list-alt"></span> <a href="#volume2">Templates/Profiles</a></h4>
+        <h4 ng-if="Model.FHIRResources && Model.FHIRResources.length > 0"><span class="glyphicon glyphicon-registration-mark"></span> <a href="#resources">Resources</a></h4>
+        <h4><span class="glyphicon glyphicon-list"></span> <a href="#valuesets">Value sets in this guide</a></h4>
+        <h4><span class="glyphicon glyphicon-list"></span> <a href="#codesystems">Code systems in this guide</a></h4>
     </script>
 
-    <script type="text/html" id="volume1.html">
+    <script type="text/html" id="overview.html">
         <h1 class="page-header">Overview</h1>
         <div ng-if="Model.Volume1Html">
             <div ng-bind-html="GetHtml(Model.Volume1Html)"></div>
@@ -661,7 +657,7 @@
     <script type="text/javascript" src="/Scripts/lib/bootstrap/bootstrap.js"></script>
     <script type="text/javascript" src="/Scripts/lib/angular/angular.min.js"></script>
     <script type="text/javascript" src="/Scripts/lib/angular/angular-route.min.js"></script>
-    <script type="text/javascript" src="/Scripts/lib/angular/ui-bootstrap-tpls-0.12.1.min.js"></script>
+    <script type="text/javascript" src="/Scripts/lib/angular/ui-bootstrap-tpls-2.5.0.min.js"></script>
     <script type="text/javascript" src="/Scripts/lib/angular/highlight.min.js"></script>
     <script type="text/javascript" src="/Scripts/lib/angular/angular-highlight.min.js"></script>
     <script type="text/javascript" src="/Scripts/lib/lodash.min.js"></script>

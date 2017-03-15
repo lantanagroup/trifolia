@@ -1707,8 +1707,8 @@
     <Content Include="Scripts\lib\angular\angular-route.min.js" />
     <Content Include="Scripts\lib\angular\angular.min.js" />
     <Content Include="Scripts\lib\angular\highlight.min.js" />
-    <Content Include="Scripts\lib\angular\ui-bootstrap-tpls-0.12.1.min.js" />
     <Content Include="Scripts\Api\help.js" />
+    <Content Include="Scripts\lib\angular\ui-bootstrap-tpls-2.5.0.min.js" />
     <Content Include="Scripts\lib\backbone-min.js" />
     <Content Include="Scripts\lib\bootstrap\bootstrap-datepicker.js" />
     <Content Include="Scripts\lib\bootstrap\bootstrap-select.min.js" />

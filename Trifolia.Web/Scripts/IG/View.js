@@ -9,18 +9,20 @@ igViewApp.run(function ($templateCache, $anchorScroll) {
     $anchorScroll.yOffset = 20;
 });
 
-igViewApp.config(function ($routeProvider, hljsServiceProvider) {
+igViewApp.config(function ($routeProvider, $locationProvider, hljsServiceProvider) {
     hljsServiceProvider.setOptions({
         // replace tab with 4 spaces
         tabReplace: '    '
     });
 
+    $locationProvider.hashPrefix('');
+
     $routeProvider
-        .when('/overview', {
-            templateUrl: 'overview.html'
+        .when('/home', {
+            templateUrl: 'home.html'
         })
-        .when('/volume1:a?', {
-            templateUrl: 'volume1.html'
+        .when('/overview:a?', {
+            templateUrl: 'overview.html'
         })
         .when('/volume2/:templateBookmark/:constraintNumber?', {
             templateUrl: 'template.html'
@@ -382,11 +384,10 @@ igViewApp.service('DataService', function ($q, $http) {
                 lastDataUrl = url;
 
                 $http.get(url)
-                    .success(function (data) {
-                        lastData = data;
-                        deferred.resolve(data);
-                    })
-                    .error(function (data) {
+                    .then(function (results) {
+                        lastData = results.data;
+                        deferred.resolve(results.data);
+                    }, function (data) {
                         deferred.reject(data);
                     });
             }
@@ -404,11 +405,10 @@ igViewApp.service('DataService', function ($q, $http) {
             deferred.resolve(templates);
         } else {
             $http.get('/api/ImplementationGuide/' + implementationGuideId + '/Template')
-                .success(function (results) {
-                    templates = results;
-                    deferred.resolve(results);
-                })
-                .error(function (results) {
+                .then(function (results) {
+                    templates = results.data;
+                    deferred.resolve(results.data);
+                }, function (results) {
                     deferred.reject(results);
                 });
         }
@@ -419,7 +419,7 @@ igViewApp.service('DataService', function ($q, $http) {
     return service;
 });
 
-igViewApp.controller('OptionsModalCtrl', function ($scope, $modalInstance, options, templates, allowDataChanges) {
+igViewApp.controller('OptionsModalCtrl', function ($scope, $uibModalInstance, options, templates, allowDataChanges) {
     $scope.Options = JSON.parse(JSON.stringify(options));
     $scope.Templates = templates;
     $scope.AllowDataChanges = allowDataChanges;
@@ -429,11 +429,11 @@ igViewApp.controller('OptionsModalCtrl', function ($scope, $modalInstance, optio
     }
 
     $scope.Ok = function () {
-        $modalInstance.close($scope.Options);
+        $uibModalInstance.close($scope.Options);
     };
 
     $scope.Cancel = function () {
-        $modalInstance.dismiss();
+        $uibModalInstance.dismiss();
     };
 
     $scope.$watch('Options', function () {
@@ -452,9 +452,9 @@ igViewApp.controller('OptionsModalCtrl', function ($scope, $modalInstance, optio
     }, true);
 });
 
-igViewApp.controller('ViewCtrl', function ($rootScope, $scope, $http, $sce, $modal, $anchorScroll, $location, $route, $routeParams, $location, DataService) {
+igViewApp.controller('ViewCtrl', function ($rootScope, $scope, $http, $sce, $uibModal, $anchorScroll, $location, $route, $routeParams, $location, DataService) {
     $scope.BreadCrumbs = [{
-        url: '#/overview',
+        url: '#/home',
         display: 'Home'
     }];
     $scope.Volume2Modes = {
@@ -528,10 +528,10 @@ igViewApp.controller('ViewCtrl', function ($rootScope, $scope, $http, $sce, $mod
                 case 'codesystems.html':
                     breadCrumb.display = 'Code Systems';
                     break;
-                case 'overview.html':
+                case 'home.html':
                     breadCrumb.display = 'Home';
                     break;
-                case 'volume1.html':
+                case 'overview.html':
                     breadCrumb.display = 'Overview';
                     break;
                 case 'volume2.html':
@@ -613,11 +613,11 @@ igViewApp.controller('ViewCtrl', function ($rootScope, $scope, $http, $sce, $mod
 
     var updateLocation = function (selection) {
         switch (selection) {
-            case 'Overview':
-                $location.path('/overview');
+            case 'Home':
+                $location.path('/home');
                 break;
-            case 'Volume1':
-                $location.path('/volume1');
+            case 'Overview':
+                $location.path('/Overview');
                 break;
             case 'Volume2':
                 $location.path('/volume2');
@@ -640,8 +640,8 @@ igViewApp.controller('ViewCtrl', function ($rootScope, $scope, $http, $sce, $mod
         }
 
         $scope.BreadCrumbs = [{
-            url: '#/overview',
-            display: 'Overview'
+            url: '#/home',
+            display: 'Home'
         }];
         $location.path('/search');
 
@@ -803,8 +803,8 @@ igViewApp.controller('ViewCtrl', function ($rootScope, $scope, $http, $sce, $mod
 
     $scope.GetBreadCrumbLink = function (breadCrumb) {
         switch (breadCrumb) {
-            case 'Overview':
-                return '#/overview';
+            case 'Home':
+                return '#/home';
             case 'Volume1':
                 return '#/volume1';
             case 'Volume2':
@@ -1069,7 +1069,7 @@ igViewApp.controller('ViewCtrl', function ($rootScope, $scope, $http, $sce, $mod
     };
 
     $scope.EditOptions = function () {
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
             templateUrl: 'options_modal.html',
             controller: 'OptionsModalCtrl',
             size: 'sm',
