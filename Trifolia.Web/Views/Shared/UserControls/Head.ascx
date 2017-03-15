@@ -30,7 +30,7 @@
 <script type="text/javascript" src="/Scripts/lib/knockout/knockout.programmatic.js"></script>
 <script type="text/javascript" src="/Scripts/lib/knockout/knockout.validation.js"></script>
 <script type="text/javascript" src="/Scripts/lib/angular/angular.min.js"></script>
-<script type="text/javascript" src="/Scripts/lib/angular/ui-bootstrap-tpls-0.12.1.min.js"></script>
+<script type="text/javascript" src="/Scripts/lib/angular/ui-bootstrap-tpls-2.5.0.min.js"></script>
 <script type="text/javascript" src="/Scripts/knockout.templateSelect.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 <script type="text/javascript" src="/Scripts/knockout.valuesetSelect.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 <script type="text/javascript" src="/Scripts/knockout.validation.rules.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>

@@ -156,13 +156,6 @@
             z-index: 3;
         }
 
-        .left-nav.expanded {
-            width: 50%;
-            border: 1px solid transparent;
-            border-color: #ddd;
-            background-color: white;
-        }
-
         .left-nav > .btn {
 	        transform: rotate(90deg);
 	        transform-origin: left top 0;
@@ -170,19 +163,21 @@
             margin-top: 3px;
         }
 
-        .left-nav.expanded > .btn {
-            position: absolute;
-            right: 0;
-            margin-right: -157px;
-            margin-top: -1px;
+        .template-search.popover {
+            max-width: 60%;
+            top: 62px !important;
         }
 
-        .left-nav-content {
-            padding: 5px;
-            max-height: 100%;
+        .template-search.popover > .arrow {
+            margin-top: -240px;
+        }
+
+        .template-search.popover .popover-inner {
+            max-height: 30vw;
             overflow-y: auto;
         }
 
+        /* Miscellaneous */
         .search-actions {
             width: 100px;
         }
@@ -194,63 +189,11 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="editor" ng-app="Trifolia" ng-controller="EditorController" ng-init="init(<%= Model.TemplateIdString %>, <%= Model.DefaultImplementationGuideIdString %>)">
-        <div class="left-nav" ng-class="{ 'expanded': leftNavExpanded }">
-            <button type="button" class="btn btn-default btn-sm" ng-click="toggleLeftNav()">Templates/Profiles</button>
-            <div class="left-nav-content" ng-show="leftNavExpanded">
-                <form>
-                    <div class="input-group">
-                        <input type="text" placeholder="Search Text" class="form-control" ng-model="templateSearch.query" />
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-primary" ng-click="searchTemplates()">Search</button>
-                        </div>
-                    </div>
-                </form>
-
-                <table class="table table-striped" ng-if="templateSearch.results">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Identifier</th>
-                            <th class="search-actions">&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="t in templateSearch.results.Items">
-                            <td>
-                                <p>{{t.Name}}</p>
-                                <p><small>{{t.ImplementationGuide}}</small></p>
-                                <sub ng-show="t.Description">{{t.Description}}</sub>
-                            </td>
-                            <td>{{t.Oid}}</td>
-                            <td>
-                                <div class="pull-right">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm" title="Load in this editor window" ng-click="openTemplate(t.Id, false)">
-                                            <i class="glyphicon glyphicon-open"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-default btn-sm" title="Load in new editor window" ng-click="openTemplate(t.Id, true)">
-                                            <i class="glyphicon glyphicon-new-window"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr ng-if="templateSearch.results.Items.length == 0">
-                            <td colspan="3">No results</td>
-                        </tr>
-                        <tr ng-if="templateSearch.results.Items.length > 0">
-                            <td colspan="3">
-                                Total: {{templateSearch.results.Items.length}}
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+        <div class="left-nav"">
+            <button type="button" class="btn btn-default btn-sm" uib-popover-template="'/Scripts/NewTemplateEditor/templateSearch.html'" popover-placement="right" popover-append-to-body="true" popover-class="template-search" popover-trigger="'outsideClick'">Templates/Profiles</button>
         </div>
-        <tabset>
-            <tab heading="Meta Data">
+        <uib-tabset>
+            <uib-tab heading="Meta Data">
                 <div class="col-md-6">
                     <div class="form-group">
                         <div class="input-group">
@@ -345,8 +288,8 @@
                 </div>
 
                 <pre ng-if="isDebug">{{template | json}}</pre>
-            </tab>
-            <tab heading="Constraints">
+            </uib-tab>
+            <uib-tab heading="Constraints">
                 <div class="constraint-container">
                     <div class="constraint-body">
                         <tree-grid 
@@ -372,14 +315,14 @@
                         </div>
                     </div>
                 </div>
-            </tab>
-            <tab heading="Validation">
+            </uib-tab>
+            <uib-tab heading="Validation">
 
-            </tab>
-            <tab heading="Preview">
+            </uib-tab>
+            <uib-tab heading="Preview">
 
-            </tab>
-        </tabset>
+            </uib-tab>
+        </uib-tabset>
 
         <script type="text/html" id="templateSelect.html">
             <div class="input-group" ng-class="{ 'input-group-sm': smallFields }">

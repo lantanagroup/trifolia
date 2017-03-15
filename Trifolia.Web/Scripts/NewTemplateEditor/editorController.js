@@ -5,7 +5,6 @@
         $scope.constraints = [];
         $scope.nodes = [];
         $scope.selectedNode = null;
-        $scope.leftNavExpanded = false;
         $scope.statuses = [
             { Id: 1, Status: 'Draft' },
             { Id: 2, Status: 'Ballot' },
@@ -17,31 +16,7 @@
             base: null,
             ext: null
         }
-        $scope.templateSearch = {
-            query: '',
-            results: null
-        };
         $scope.isDebug = true;
-
-        $scope.toggleLeftNav = function () {
-            $scope.leftNavExpanded = !$scope.leftNavExpanded;
-        };
-
-        $scope.openTemplate = function (templateId, newWindow) {
-            if (!newWindow) {
-                $scope.init(templateId);
-            } else {
-                window.open('/TemplateManagement/Edit/Id/' + templateId + '/V2');
-            }
-        };
-
-        $scope.searchTemplates = function () {
-            var implementationGuideId = $scope.template ? $scope.template.OwningImplementationGuideId : null;
-            TemplateService.getTemplates(150, 1, null, true, $scope.templateSearch.query, null, null, implementationGuideId, null, null, null, null, false)
-                .then(function (results) {
-                    $scope.templateSearch.results = results;
-                });
-        };
 
         $scope.nodeExpanded = function (selectedNode) {
             return EditorService.getNodes($scope.template.OwningImplementationGuideId, selectedNode.DataType)
@@ -67,8 +42,6 @@
                 })
                 .then(function (template) {
                     $scope.template = template;
-
-                    $scope.searchTemplates();
 
                     var foundIg = _.find($scope.implementationGuides, function (ig) {
                         return ig.Id == $scope.template.OwningImplementationGuideId;
@@ -122,15 +95,15 @@
             } else if (identifier.indexOf('urn:oid:') == 0) {
                 $scope.identifier.base = 'urn:oid:';
                 $scope.identifier.ext = identifier.substring($scope.identifier.base.length);
-            // Look for identifier that starts with urn:oid:
+                // Look for identifier that starts with urn:oid:
             } else if (identifier.indexOf('urn:hl7ii:') == 0) {
                 $scope.identifier.base = 'urn:hl7ii:';
                 $scope.identifier.ext = identifier.substring($scope.identifier.base.length);
-            // Look for identifier that starts with http://
+                // Look for identifier that starts with http://
             } else if (identifier.indexOf('http://') == 0) {
                 $scope.identifier.base = 'http://';
                 $scope.identifier.ext = identifier.substring($scope.identifier.base.length);
-            // Look for identifier that starts with https://
+                // Look for identifier that starts with https://
             } else if (identifier.indexOf('https://') == 0) {
                 $scope.identifier.base = 'https://';
                 $scope.identifier.ext = identifier.substring($scope.identifier.base.length);
@@ -160,4 +133,32 @@
                 }
             }
         };
+    })
+    .controller('EditorTemplateSearchController', function ($scope, TemplateService) {
+        $scope.templateSearch = {
+            query: '',
+            results: null
+        };
+
+        $scope.openTemplate = function (templateId, newWindow) {
+            if (!newWindow) {
+                $scope.init(templateId);
+            } else {
+                window.open('/TemplateManagement/Edit/Id/' + templateId + '/V2');
+            }
+        };
+
+        $scope.searchTemplates = function () {
+            // $scope.template comes from parent scope
+            var implementationGuideId = $scope.template ? $scope.template.OwningImplementationGuideId : null;
+
+            TemplateService.getTemplates(150, 1, null, true, $scope.templateSearch.query, null, null, implementationGuideId, null, null, null, false)
+                .then(function (results) {
+                    $scope.templateSearch.results = results;
+                });
+        };
+
+        $scope.$watch('template.OwningImplementationGuideId', function () {
+            $scope.searchTemplates();
+        });
     });
