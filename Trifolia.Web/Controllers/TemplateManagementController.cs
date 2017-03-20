@@ -27,7 +27,7 @@ namespace Trifolia.Web.Controllers
     {
         private IObjectRepository tdb;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public TemplateManagementController(IObjectRepository tdb)
         {
@@ -37,6 +37,14 @@ namespace Trifolia.Web.Controllers
         public TemplateManagementController()
         {
             this.tdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -15,9 +15,9 @@ namespace Trifolia.Web.Controllers
 {
     public class IGManagementFilesController : Controller
     {
-        #region Constructors
-
         private IObjectRepository tdb;
+
+        #region Construct/Dispose
 
         public IGManagementFilesController(IObjectRepository tdb)
         {
@@ -28,6 +28,14 @@ namespace Trifolia.Web.Controllers
             : this(DBContext.Create())
         {
 
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

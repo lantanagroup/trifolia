@@ -16,7 +16,7 @@ namespace Trifolia.Web.Controllers
     {
         private IObjectRepository tdb;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public TerminologyManagementController(IObjectRepository tdb)
         {
@@ -27,6 +27,14 @@ namespace Trifolia.Web.Controllers
             : this(DBContext.Create())
         {
 
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

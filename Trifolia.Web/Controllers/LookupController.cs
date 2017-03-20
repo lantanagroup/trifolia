@@ -26,7 +26,7 @@ namespace Trifolia.Web.Controllers
             Edit
         }
 
-        #region Constructors
+        #region Construct/Dispose
 
         private IObjectRepository tdb;
 
@@ -39,6 +39,14 @@ namespace Trifolia.Web.Controllers
         public LookupController(IObjectRepository tdb)
         {
             this.tdb = tdb;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

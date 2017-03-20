@@ -16,7 +16,7 @@ namespace Trifolia.Web.Controllers
     {
         private IObjectRepository tdb;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public PermissionManagementController(IObjectRepository tdb)
         {
@@ -25,7 +25,16 @@ namespace Trifolia.Web.Controllers
 
         public PermissionManagementController()
             : this(DBContext.Create())
-        { }
+        {
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
+        }
 
         #endregion
 
