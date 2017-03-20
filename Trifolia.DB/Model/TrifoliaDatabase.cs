@@ -355,6 +355,27 @@ namespace Trifolia.DB
 
         #region Function Imports
 
+        private static SqlParameter CreateParameter(string name, int? value)
+        {
+            if (value.HasValue)
+                return CreateParameter(name, (object)value.Value);
+            else
+                return CreateParameter(name, (object)DBNull.Value);
+        }
+
+        private static SqlParameter CreateParameter(string name, object value)
+        {
+            var param = new SqlParameter();
+            param.ParameterName = name;
+
+            if (value == null)
+                param.Value = DBNull.Value;
+            else
+                param.Value = value;
+
+            return param;
+        }
+
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
@@ -372,67 +393,13 @@ namespace Trifolia.DB
             string orderProperty, 
             bool? orderDesc)
         {
-            // userId
-            var userIdParameter = new SqlParameter();
-            userIdParameter.ParameterName = "userId";
-
-            if (userId.HasValue)
-                userIdParameter.Value = userId.Value;
-            else
-                userIdParameter.Value = DBNull.Value;
-
-            // searchText
-            var searchTextParameter = new SqlParameter();
-            searchTextParameter.ParameterName = "searchText";
-
-            if (searchText != null)
-                searchTextParameter.Value = searchText;
-            else
-                searchTextParameter.Value = DBNull.Value;
-
-            // count
-            var countParameter = new SqlParameter();
-            countParameter.ParameterName = "count";
-
-            if (count.HasValue)
-                countParameter.Value = count.Value;
-            else
-                countParameter.Value = DBNull.Value;
-
-            // page
-            var pageParameter = new SqlParameter();
-            pageParameter.ParameterName = "page";
-
-            if (page.HasValue)
-                pageParameter.Value = page.Value;
-            else
-                pageParameter.Value = DBNull.Value;
-
-            // orderProperty
-            var orderPropertyParameter = new SqlParameter();
-            orderPropertyParameter.ParameterName = "orderProperty";
-
-            if (orderProperty != null)
-                orderPropertyParameter.Value = orderProperty;
-            else
-                orderPropertyParameter.Value = DBNull.Value;
-
-            // orderDesc
-            var orderDescParameter = new SqlParameter();
-            orderDescParameter.ParameterName = "orderDesc";
-
-            if (orderDesc.HasValue)
-                orderDescParameter.Value = orderDesc.Value;
-            else
-                orderDescParameter.Value = DBNull.Value;
-
-            var queryResults = this.Database.SqlQuery<SearchValueSetResult>("SearchValueSet @userId, @searchText, @count, @page, @orderProperty, @orderDesc", 
-                userIdParameter, 
-                searchTextParameter, 
-                countParameter, 
-                pageParameter, 
-                orderPropertyParameter, 
-                orderDescParameter);
+            var queryResults = this.Database.SqlQuery<SearchValueSetResult>("SearchValueSet @userId, @searchText, @count, @page, @orderProperty, @orderDesc",
+                CreateParameter("userId", userId),
+                CreateParameter("searchText", searchText),
+                CreateParameter("count", count),
+                CreateParameter("page", page),
+                CreateParameter("orderProperty", orderProperty),
+                CreateParameter("orderDesc", orderDesc));
             return queryResults;
         }
 
@@ -446,77 +413,14 @@ namespace Trifolia.DB
             string filterContextType, 
             string queryText)
         {
-            // userId
-            var userIdParameter = new SqlParameter();
-            userIdParameter.ParameterName = "userId";
-
-            if (userId.HasValue)
-                userIdParameter.Value = userId.Value;
-            else
-                userIdParameter.Value = DBNull.Value;
-
-            // filterImplementationGuideId
-            var filterImplementationGuideIdParameter = new SqlParameter();
-            filterImplementationGuideIdParameter.ParameterName = "filterImplementationGuideId";
-
-            if (filterImplementationGuideId.HasValue)
-                filterImplementationGuideIdParameter.Value = filterImplementationGuideId.Value;
-            else
-                filterImplementationGuideIdParameter.Value = DBNull.Value;
-
-            // filterName
-            var filterNameParameter = new SqlParameter();
-            filterNameParameter.ParameterName = "filterName";
-
-            if (filterName != null)
-                filterNameParameter.Value = filterName;
-            else
-                filterNameParameter.Value = DBNull.Value;
-
-            // filterIdentifier
-            var filterIdentifierParameter = new SqlParameter();
-            filterIdentifierParameter.ParameterName = "filterIdentifier";
-
-            if (filterIdentifier != null)
-                filterIdentifierParameter.Value = filterIdentifier;
-            else
-                filterIdentifierParameter.Value = DBNull.Value;
-
-            // filterIdentifier
-            var filterTemplateTypeIdParameter = new SqlParameter();
-            filterTemplateTypeIdParameter.ParameterName = "filterTemplateTypeId";
-
-            if (filterTemplateTypeId.HasValue)
-                filterTemplateTypeIdParameter.Value = filterTemplateTypeId.Value;
-            else
-                filterTemplateTypeIdParameter.Value = DBNull.Value;
-
-            // filterIdentifier
-            var filterOrganizationIdParameter = new SqlParameter();
-            filterOrganizationIdParameter.ParameterName = "filterOrganizationId";
-
-            if (filterOrganizationId.HasValue)
-                filterOrganizationIdParameter.Value = filterOrganizationId.Value;
-            else
-                filterOrganizationIdParameter.Value = DBNull.Value;
-
-            // filterContextType
-            var filterContextTypeParameter = new SqlParameter();
-            filterContextTypeParameter.ParameterName = "filterContextType";
-
-            if (filterContextType != null)
-                filterContextTypeParameter.Value = filterContextType;
-            else
-                filterContextTypeParameter.Value = DBNull.Value;
-
-            // queryText
-            var queryTextParameter = new SqlParameter();
-            queryTextParameter.ParameterName = "queryText";
-
-            if (queryText != null)
-                queryTextParameter.Value = queryText;
-            else
-                queryTextParameter.Value = DBNull.Value;
+            var userIdParameter = CreateParameter("userId", userId);
+            var filterImplementationGuideIdParameter = CreateParameter("filterImplementationGuideId", filterImplementationGuideId);
+            var filterNameParameter = CreateParameter("filterName", filterName);
+            var filterIdentifierParameter = CreateParameter("filterIdentifier", filterIdentifier);
+            var filterTemplateTypeIdParameter = CreateParameter("filterTemplateTypeId", filterTemplateTypeId);
+            var filterOrganizationIdParameter = CreateParameter("filterOrganizationId", filterOrganizationId);
+            var filterContextTypeParameter = CreateParameter("filterContextType", filterContextType);
+            var queryTextParameter = CreateParameter("queryText", queryText);
 
             var results = this.Database.SqlQuery<int?>("SearchTemplates @userId, @filterImplementationGuideId, @filterName, @filterIdentifier, @filterTemplateTypeId, @filterOrganizationId, @filterContextType, @queryText",
                 userIdParameter,
@@ -536,29 +440,9 @@ namespace Trifolia.DB
             int? parentTemplateId, 
             string[] categories)
         {
-            var implementationGuideIdParameter = new SqlParameter();
-            implementationGuideIdParameter.ParameterName = "implementationGuideId";
-
-            if (implementationGuideId != null)
-                implementationGuideIdParameter.Value = implementationGuideId.Value;
-            else
-                implementationGuideIdParameter.Value = DBNull.Value;
-
-            var inferredParameter = new SqlParameter();
-            inferredParameter.ParameterName = "inferred";
-
-            if (inferred != null)
-                inferredParameter.Value = inferred.Value;
-            else
-                inferredParameter.Value = DBNull.Value;
-
-            var parentTemplateIdParameter = new SqlParameter();
-            parentTemplateIdParameter.ParameterName = "parentTemplateId";
-
-            if (parentTemplateId != null)
-                parentTemplateIdParameter.Value = parentTemplateId.Value;
-            else
-                parentTemplateIdParameter.Value = DBNull.Value;
+            var implementationGuideIdParameter = CreateParameter("implementationGuideId", implementationGuideId);
+            var inferredParameter = CreateParameter("inferred", inferred);
+            var parentTemplateIdParameter = CreateParameter("parentTemplateId", parentTemplateId);
 
             var categoriesParameter = new SqlParameter("categories", SqlDbType.Structured);
             categoriesParameter.TypeName = "dbo.CategoryList";
