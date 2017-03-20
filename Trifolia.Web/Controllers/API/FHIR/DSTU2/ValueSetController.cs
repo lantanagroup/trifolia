@@ -14,6 +14,9 @@ using ValueSet = Trifolia.DB.ValueSet;
 
 namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 {
+    /// <summary>
+    /// FHIR DSTU2 ValueSet API Controller
+    /// </summary>
     [DSTU2Config]
     [RoutePrefix("api/FHIR2")]
     public class FHIR2ValueSetController : ApiController
@@ -47,8 +50,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// Gets the specified value set from Trifolia, converts it to, and returns a ValueSet resource.
         /// </summary>
         /// <param name="valueSetId">The id of the value set to search for. If specified and found, only a single ValueSet resource is returned in the Bundle.</param>
-        /// <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
-        /// <param name="summary">Optional. The type of summary to respond with.</param>
+        /// <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+        /// <param name="summary">The type of summary to respond with.</param>
         /// <returns>Hl7.Fhir.Model.ValueSet</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         [HttpGet]
@@ -71,8 +74,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// </summary>
         /// <param name="name">The name of the value set to search for</param>
         /// <param name="valueSetId">The id of the value set to search for. If specified and found, only a single ValueSet resource is returned in the Bundle.</param>
-        /// <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
-        /// <param name="summary">Optional. The type of summary to respond with.</param>
+        /// <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+        /// <param name="summary">The type of summary to respond with.</param>
         /// <returns>Hl7.Fhir.Model.Bundle&lt;Hl7.Fhir.Model.ValueSet&gt;</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         [HttpGet]
@@ -113,6 +116,12 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             return Shared.GetResponseMessage(this.Request, format, bundle);
         }
 
+        /// <summary>
+        /// Creates a new value set
+        /// </summary>
+        /// <param name="fhirValueSet">The ValueSet resource body</param>
+        /// <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("ValueSet")]
         [SecurableAction(SecurableNames.VALUESET_EDIT)]
@@ -147,6 +156,13 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             return Shared.GetResponseMessage(this.Request, format, createdFhirValueSet, statusCode: 201, headers: headers);
         }
 
+        /// <summary>
+        /// Updates the specified ValueSet.
+        /// </summary>
+        /// <param name="fhirValueSet">The ValueSet resource body.</param>
+        /// <param name="valueSetId">The id of the value set to update.</param>
+        /// <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("ValueSet/{valueSetId}")]
         [SecurableAction(SecurableNames.VALUESET_EDIT)]

@@ -783,12 +783,17 @@
             <param name="format">The format that the response should be returned in</param>
             <returns>Resource&lt;Conformance&gt;</returns>
         </member>
+        <member name="T:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2StructureDefinitionController">
+            <summary>
+            FHIR DSTU2 StructureDefinition API Controller
+            </summary>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2StructureDefinitionController.GetTemplate(System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
             Gets a specific profile and converts it to a StructureDefinition resource.
             </summary>
             <param name="templateId">The id of the profile/template to get</param>
-            <param name="summary">Optional. The type of summary to respond with.</param>
+            <param name="summary">The type of summary to respond with.</param>
             <returns>Hl7.Fhir.Model.StructureDefinition</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         </member>
@@ -798,7 +803,7 @@
             </summary>
             <param name="templateId">The id of a template/profile to search for and return in the bundle</param>
             <param name="name">The name of a template/profile to search for. Only templates/profiles that contain this specified name will be returned.</param>
-            <param name="summary">Optional. The type of summary to respond with.</param>
+            <param name="summary">The type of summary to respond with.</param>
             <returns>Hl7.Fhir.Model.Bundle</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         </member>
@@ -826,13 +831,18 @@
             <returns>Hl7.Fhir.Model.OperationOutcome</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_DELETE">Only users with the ability to delete templates/profiles can execute this operation</permission>
         </member>
+        <member name="T:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ValueSetController">
+            <summary>
+            FHIR DSTU2 ValueSet API Controller
+            </summary>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ValueSetController.GetValueSet(System.Int32,System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
             Gets the specified value set from Trifolia, converts it to, and returns a ValueSet resource.
             </summary>
             <param name="valueSetId">The id of the value set to search for. If specified and found, only a single ValueSet resource is returned in the Bundle.</param>
-            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
-            <param name="summary">Optional. The type of summary to respond with.</param>
+            <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">The type of summary to respond with.</param>
             <returns>Hl7.Fhir.Model.ValueSet</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         </member>
@@ -842,30 +852,78 @@
             </summary>
             <param name="name">The name of the value set to search for</param>
             <param name="valueSetId">The id of the value set to search for. If specified and found, only a single ValueSet resource is returned in the Bundle.</param>
-            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
-            <param name="summary">Optional. The type of summary to respond with.</param>
+            <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">The type of summary to respond with.</param>
             <returns>Hl7.Fhir.Model.Bundle&lt;Hl7.Fhir.Model.ValueSet&gt;</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ValueSetController.CreateValueSet(Hl7.Fhir.Model.ValueSet,System.String)">
+            <summary>
+            Creates a new value set
+            </summary>
+            <param name="fhirValueSet">The ValueSet resource body</param>
+            <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <returns></returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ValueSetController.UpdateValueSet(Hl7.Fhir.Model.ValueSet,System.Int32,System.String)">
+            <summary>
+            Updates the specified ValueSet.
+            </summary>
+            <param name="fhirValueSet">The ValueSet resource body.</param>
+            <param name="valueSetId">The id of the value set to update.</param>
+            <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <returns></returns>
+        </member>
+        <member name="T:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController">
+            <summary>
+            FHIR DSTU2 ImplementationGuide API Controller
+            </summary>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController.GetImplementationGuide(System.Int32,System.String,System.Nullable{Hl7.Fhir.Rest.SummaryType})">
             <summary>
-            Get the specified implementation guide in FHIR DSTU2 format
+            Get the specified implementation guide
             </summary>
             <param name="implementationGuideId">The id of the implementation guide</param>
-            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
-            <param name="summary">Optional. The type of summary to respond with.</param>
+            <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">The type of summary to respond with.</param>
             <returns>Hl7.Fhir.Model.ImplementationGuide</returns>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController.GetImplementationGuides(System.String,System.Nullable{Hl7.Fhir.Rest.SummaryType},System.String,System.Nullable{System.Int32},System.String)">
             <summary>
-            Gets implementation guides in FHIR DSTU2 format. Can specify search information, such as the name of the implementation guide and the id of the implementation guide.
+            Gets implementation guides. Can specify search information, such as the name of the implementation guide and the id of the implementation guide.
             </summary>
-            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
-            <param name="summary">Optional. The type of summary to respond with.</param>
+            <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">The type of summary to respond with.</param>
             <param name="include">Indicate what additional information should be included with the implementation guide (such as "ImplementationGuide:resource")</param>
             <param name="implementationGuideId">Specify the id of the implementation guide to search for.</param>
             <param name="name">Specifies the name of the implementation guide to search for. Implementation guides whose name *contains* this value will be returned.</param>
             <returns>Hl7.Fhir.Model.Bundle</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController.CreateImplementationGuide(Hl7.Fhir.Model.ImplementationGuide,System.String)">
+            <summary>
+            Creates a new implementation guide
+            </summary>
+            <param name="implementationGuide">The implementation guide body</param>
+            <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <returns></returns>
+            <remarks>Not implemented</remarks>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController.UpdateImplementationGuide(System.Int32,Hl7.Fhir.Model.ImplementationGuide)">
+            <summary>
+            Updates the specified implementation guide
+            </summary>
+            <param name="implementationGuideId">The id of the implementation guide to update</param>
+            <param name="implementationGuide">The implementation guide body</param>
+            <returns></returns>
+            <remarks>Not implemented</remarks>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.DSTU2.FHIR2ImplementationGuideController.DeleteImplementationGuide(System.Int32)">
+            <summary>
+            Deletes the specified implementation guide
+            </summary>
+            <param name="implementationGuideId">The id of the implementation guide</param>
+            <returns></returns>
+            <remarks>Not implemented</remarks>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.ExportController.ExportXML(Trifolia.Web.Models.Export.XMLSettingsModel)">
             <summary>
@@ -971,6 +1029,13 @@
             <param name="aModel">The edit model to create/update</param>
             <returns>int</returns>
             <remarks>Returns the id of the implementation guide</remarks>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.ImportController.ImportTrifoliaModel(Trifolia.Shared.ImportExport.Model.Trifolia)">
+            <summary>
+            Imports data from the native Trifolia format. See https://github.com/lantanagroup/trifolia/blob/master/Trifolia.Shared/ImportExport/Model/TemplateExport.xsd for the schema that is used by the import.
+            </summary>
+            <param name="model">The data to import (including implementation guides and templates)</param>
+            <returns></returns>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.OrganizationController.GetOrganizations">
             <summary>

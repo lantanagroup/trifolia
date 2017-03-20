@@ -41,6 +41,11 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
+        /// <summary>
+        /// Imports data from the native Trifolia format. See https://github.com/lantanagroup/trifolia/blob/master/Trifolia.Shared/ImportExport/Model/TemplateExport.xsd for the schema that is used by the import.
+        /// </summary>
+        /// <param name="model">The data to import (including implementation guides and templates)</param>
+        /// <returns></returns>
         [HttpPost, Route("api/Import/Trifolia"), SecurableAction(SecurableNames.IMPORT)]
         public ImportStatusModel ImportTrifoliaModel(ImportModel model)
         {
