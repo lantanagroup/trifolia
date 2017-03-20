@@ -19,10 +19,10 @@ namespace Trifolia.Web.Controllers.API
     [SecurableAction(SecurableNames.TEMPLATE_EDIT)]
     public class TemplateEditorController : ApiController
     {
-        #region Constructors
-
         private IObjectRepository tdb;
 
+        #region Construct
+        
         public TemplateEditorController()
             : this(DBContext.Create())
         {
@@ -32,6 +32,14 @@ namespace Trifolia.Web.Controllers.API
         public TemplateEditorController(IObjectRepository tdb)
         {
             this.tdb = tdb;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

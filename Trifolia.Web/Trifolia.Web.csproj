@@ -324,7 +324,6 @@
     <Compile Include="Controllers\API\TerminologyController.cs" />
     <Compile Include="Controllers\API\TrifoliaApiController.cs" />
     <Compile Include="Controllers\API\TypeController.cs" />
-    <Compile Include="Controllers\API\ValidationController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\ExportController.cs" />

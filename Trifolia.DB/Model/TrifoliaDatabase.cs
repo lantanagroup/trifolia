@@ -372,17 +372,9 @@ namespace Trifolia.DB
             string orderProperty, 
             bool? orderDesc)
         {
-            var command = base.Database.Connection.CreateCommand();
-            command.CommandType = CommandType.StoredProcedure;
-            command.CommandText = "SearchValueSet";
-
-            if (this.Database.Connection.State != System.Data.ConnectionState.Open)
-                this.Database.Connection.Open();
-
             // userId
-            var userIdParameter = command.CreateParameter();
+            var userIdParameter = new SqlParameter();
             userIdParameter.ParameterName = "userId";
-            command.Parameters.Add(userIdParameter);
 
             if (userId.HasValue)
                 userIdParameter.Value = userId.Value;
@@ -390,9 +382,8 @@ namespace Trifolia.DB
                 userIdParameter.Value = DBNull.Value;
 
             // searchText
-            var searchTextParameter = command.CreateParameter();
+            var searchTextParameter = new SqlParameter();
             searchTextParameter.ParameterName = "searchText";
-            command.Parameters.Add(searchTextParameter);
 
             if (searchText != null)
                 searchTextParameter.Value = searchText;
@@ -400,9 +391,8 @@ namespace Trifolia.DB
                 searchTextParameter.Value = DBNull.Value;
 
             // count
-            var countParameter = command.CreateParameter();
+            var countParameter = new SqlParameter();
             countParameter.ParameterName = "count";
-            command.Parameters.Add(countParameter);
 
             if (count.HasValue)
                 countParameter.Value = count.Value;
@@ -410,9 +400,8 @@ namespace Trifolia.DB
                 countParameter.Value = DBNull.Value;
 
             // page
-            var pageParameter = command.CreateParameter();
+            var pageParameter = new SqlParameter();
             pageParameter.ParameterName = "page";
-            command.Parameters.Add(pageParameter);
 
             if (page.HasValue)
                 pageParameter.Value = page.Value;
@@ -420,9 +409,8 @@ namespace Trifolia.DB
                 pageParameter.Value = DBNull.Value;
 
             // orderProperty
-            var orderPropertyParameter = command.CreateParameter();
+            var orderPropertyParameter = new SqlParameter();
             orderPropertyParameter.ParameterName = "orderProperty";
-            command.Parameters.Add(orderPropertyParameter);
 
             if (orderProperty != null)
                 orderPropertyParameter.Value = orderProperty;
@@ -430,37 +418,22 @@ namespace Trifolia.DB
                 orderPropertyParameter.Value = DBNull.Value;
 
             // orderDesc
-            var orderDescParameter = command.CreateParameter();
+            var orderDescParameter = new SqlParameter();
             orderDescParameter.ParameterName = "orderDesc";
-            command.Parameters.Add(orderDescParameter);
 
             if (orderDesc.HasValue)
                 orderDescParameter.Value = orderDesc.Value;
             else
                 orderDescParameter.Value = DBNull.Value;
 
-            var reader = command.ExecuteReader();
-            List<SearchValueSetResult> results = new List<SearchValueSetResult>();
-
-            while (reader.Read())
-            {
-                SearchValueSetResult result = SearchValueSetResult.CreateSearchValueSetResult(
-                    reader.GetInt32(0),                                         // totalItems
-                    reader.GetInt32(1),                                         // id
-                    reader.IsDBNull(2) ? null : reader.GetString(2),            // name
-                    reader.IsDBNull(3) ? null : reader.GetString(3),            // oid
-                    reader.IsDBNull(4) ? null : reader.GetString(4),            // code
-                    reader.IsDBNull(5) ? null : reader.GetString(5),            // description
-                    reader.IsDBNull(6) ? null : (bool?)reader.GetBoolean(6),    // intensional
-                    reader.IsDBNull(7) ? null : reader.GetString(7),            // intensionalDefinition
-                    reader.IsDBNull(8) ? null : reader.GetString(8),            // source
-                    reader.GetBoolean(9),                                       // isComplete
-                    reader.GetBoolean(10),                                      // hasPublishedIg
-                    reader.GetBoolean(11));                                     // canEditPublishedIg
-                results.Add(result);
-            }
-
-            return results;
+            var queryResults = this.Database.SqlQuery<SearchValueSetResult>("SearchValueSet @userId, @searchText, @count, @page, @orderProperty, @orderDesc", 
+                userIdParameter, 
+                searchTextParameter, 
+                countParameter, 
+                pageParameter, 
+                orderPropertyParameter, 
+                orderDescParameter);
+            return queryResults;
         }
 
         public IEnumerable<int?> SearchTemplates(
@@ -473,17 +446,9 @@ namespace Trifolia.DB
             string filterContextType, 
             string queryText)
         {
-            var command = this.Database.Connection.CreateCommand();
-            command.CommandType = CommandType.StoredProcedure;
-            command.CommandText = "SearchTemplates";
-
-            if (this.Database.Connection.State != System.Data.ConnectionState.Open)
-                this.Database.Connection.Open();
-
             // userId
-            var userIdParameter = command.CreateParameter();
+            var userIdParameter = new SqlParameter();
             userIdParameter.ParameterName = "userId";
-            command.Parameters.Add(userIdParameter);
 
             if (userId.HasValue)
                 userIdParameter.Value = userId.Value;
@@ -491,9 +456,8 @@ namespace Trifolia.DB
                 userIdParameter.Value = DBNull.Value;
 
             // filterImplementationGuideId
-            var filterImplementationGuideIdParameter = command.CreateParameter();
+            var filterImplementationGuideIdParameter = new SqlParameter();
             filterImplementationGuideIdParameter.ParameterName = "filterImplementationGuideId";
-            command.Parameters.Add(filterImplementationGuideIdParameter);
 
             if (filterImplementationGuideId.HasValue)
                 filterImplementationGuideIdParameter.Value = filterImplementationGuideId.Value;
@@ -501,9 +465,8 @@ namespace Trifolia.DB
                 filterImplementationGuideIdParameter.Value = DBNull.Value;
 
             // filterName
-            var filterNameParameter = command.CreateParameter();
+            var filterNameParameter = new SqlParameter();
             filterNameParameter.ParameterName = "filterName";
-            command.Parameters.Add(filterNameParameter);
 
             if (filterName != null)
                 filterNameParameter.Value = filterName;
@@ -511,9 +474,8 @@ namespace Trifolia.DB
                 filterNameParameter.Value = DBNull.Value;
 
             // filterIdentifier
-            var filterIdentifierParameter = command.CreateParameter();
+            var filterIdentifierParameter = new SqlParameter();
             filterIdentifierParameter.ParameterName = "filterIdentifier";
-            command.Parameters.Add(filterIdentifierParameter);
 
             if (filterIdentifier != null)
                 filterIdentifierParameter.Value = filterIdentifier;
@@ -521,9 +483,8 @@ namespace Trifolia.DB
                 filterIdentifierParameter.Value = DBNull.Value;
 
             // filterIdentifier
-            var filterTemplateTypeIdParameter = command.CreateParameter();
+            var filterTemplateTypeIdParameter = new SqlParameter();
             filterTemplateTypeIdParameter.ParameterName = "filterTemplateTypeId";
-            command.Parameters.Add(filterTemplateTypeIdParameter);
 
             if (filterTemplateTypeId.HasValue)
                 filterTemplateTypeIdParameter.Value = filterTemplateTypeId.Value;
@@ -531,9 +492,8 @@ namespace Trifolia.DB
                 filterTemplateTypeIdParameter.Value = DBNull.Value;
 
             // filterIdentifier
-            var filterOrganizationIdParameter = command.CreateParameter();
+            var filterOrganizationIdParameter = new SqlParameter();
             filterOrganizationIdParameter.ParameterName = "filterOrganizationId";
-            command.Parameters.Add(filterOrganizationIdParameter);
 
             if (filterOrganizationId.HasValue)
                 filterOrganizationIdParameter.Value = filterOrganizationId.Value;
@@ -541,9 +501,8 @@ namespace Trifolia.DB
                 filterOrganizationIdParameter.Value = DBNull.Value;
 
             // filterContextType
-            var filterContextTypeParameter = command.CreateParameter();
+            var filterContextTypeParameter = new SqlParameter();
             filterContextTypeParameter.ParameterName = "filterContextType";
-            command.Parameters.Add(filterContextTypeParameter);
 
             if (filterContextType != null)
                 filterContextTypeParameter.Value = filterContextType;
@@ -551,23 +510,23 @@ namespace Trifolia.DB
                 filterContextTypeParameter.Value = DBNull.Value;
 
             // queryText
-            var queryTextParameter = command.CreateParameter();
+            var queryTextParameter = new SqlParameter();
             queryTextParameter.ParameterName = "queryText";
-            command.Parameters.Add(queryTextParameter);
 
             if (queryText != null)
                 queryTextParameter.Value = queryText;
             else
                 queryTextParameter.Value = DBNull.Value;
 
-            List<int?> results = new List<int?>();
-            var reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                results.Add(reader.GetInt32(0));
-            }
-
+            var results = this.Database.SqlQuery<int?>("SearchTemplates @userId, @filterImplementationGuideId, @filterName, @filterIdentifier, @filterTemplateTypeId, @filterOrganizationId, @filterContextType, @queryText",
+                userIdParameter,
+                filterImplementationGuideIdParameter,
+                filterNameParameter,
+                filterIdentifierParameter,
+                filterTemplateTypeIdParameter,
+                filterOrganizationIdParameter,
+                filterContextTypeParameter,
+                queryTextParameter);
             return results;
         }
 
@@ -577,36 +536,24 @@ namespace Trifolia.DB
             int? parentTemplateId, 
             string[] categories)
         {
-            IDbConnection dbConnection = this.Database.Connection;
-            IDbCommand command = dbConnection.CreateCommand();
-
-            if (dbConnection.State != ConnectionState.Open)
-                dbConnection.Open();
-
-            command.CommandType = CommandType.StoredProcedure;
-            command.CommandText = "GetImplementationGuideTemplates";
-
-            var implementationGuideIdParameter = command.CreateParameter();
+            var implementationGuideIdParameter = new SqlParameter();
             implementationGuideIdParameter.ParameterName = "implementationGuideId";
-            command.Parameters.Add(implementationGuideIdParameter);
 
             if (implementationGuideId != null)
                 implementationGuideIdParameter.Value = implementationGuideId.Value;
             else
                 implementationGuideIdParameter.Value = DBNull.Value;
 
-            var inferredParameter = command.CreateParameter();
+            var inferredParameter = new SqlParameter();
             inferredParameter.ParameterName = "inferred";
-            command.Parameters.Add(inferredParameter);
 
             if (inferred != null)
                 inferredParameter.Value = inferred.Value;
             else
                 inferredParameter.Value = DBNull.Value;
 
-            var parentTemplateIdParameter = command.CreateParameter();
+            var parentTemplateIdParameter = new SqlParameter();
             parentTemplateIdParameter.ParameterName = "parentTemplateId";
-            command.Parameters.Add(parentTemplateIdParameter);
 
             if (parentTemplateId != null)
                 parentTemplateIdParameter.Value = parentTemplateId.Value;
@@ -614,7 +561,7 @@ namespace Trifolia.DB
                 parentTemplateIdParameter.Value = DBNull.Value;
 
             var categoriesParameter = new SqlParameter("categories", SqlDbType.Structured);
-            command.Parameters.Add(categoriesParameter);
+            categoriesParameter.TypeName = "dbo.CategoryList";
 
             if (categories != null)
             {
@@ -628,18 +575,12 @@ namespace Trifolia.DB
                 categoriesParameter.Value = table;
             }
 
-            using (var reader = command.ExecuteReader())
-            {
-                List<int?> returnValues = new List<int?>();
-
-                while (reader.Read())
-                {
-                    if (!reader.IsDBNull(0))
-                        returnValues.Add(reader.GetInt32(0));
-                }
-
-                return returnValues.AsEnumerable();
-            }
+            var results = this.Database.SqlQuery<int?>("GetImplementationGuideTemplates @implementationGuideId, @inferred, @parentTemplateId, @categories",
+                implementationGuideIdParameter,
+                inferredParameter,
+                parentTemplateIdParameter,
+                categoriesParameter);
+            return results;
         }
 
         #endregion

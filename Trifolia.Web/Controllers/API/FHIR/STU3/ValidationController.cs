@@ -16,6 +16,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
     {
         private IObjectRepository tdb;
 
+        #region Construct/Dispose
+
         public ValidationController()
             : this(DBContext.Create())
         {
@@ -26,6 +28,16 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         {
             this.tdb = tdb;
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
 
         /*
         [HttpPost]

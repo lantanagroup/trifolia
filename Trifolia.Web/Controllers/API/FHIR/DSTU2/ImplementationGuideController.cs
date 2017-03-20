@@ -30,7 +30,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         private IObjectRepository tdb;
         private ImplementationGuideType implementationGuideType;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public FHIR2ImplementationGuideController(IObjectRepository tdb)
         {
@@ -42,6 +42,14 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             : this(DBContext.Create())
         {
 
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

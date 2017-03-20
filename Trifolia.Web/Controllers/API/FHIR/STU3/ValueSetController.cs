@@ -21,7 +21,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
     {
         private IObjectRepository tdb;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public FHIR3ValueSetController(IObjectRepository tdb)
         {
@@ -32,6 +32,14 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             : this(DBContext.Create())
         {
 
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -41,7 +41,7 @@ namespace Trifolia.Web.Controllers.API
         private const string ZIP_MIME_TYPE = "application/zip";
         private const string XLSX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-        #region CTOR
+        #region Construct/Dispose
 
         public ExportController()
             : this(DBContext.Create())
@@ -51,6 +51,14 @@ namespace Trifolia.Web.Controllers.API
         public ExportController(IObjectRepository tdb)
         {
             this.tdb = tdb;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion
