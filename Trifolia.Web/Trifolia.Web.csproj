@@ -1738,6 +1738,14 @@
     <Content Include="Scripts\Import\Import.js" />
     <Content Include="Scripts\lib\joint.layout.DirectedGraph.min.js" />
     <Content Include="Scripts\lib\joint.min.js" />
+    <Content Include="Scripts\lib\jquery-ui\jquery-ui.css" />
+    <Content Include="Scripts\lib\jquery-ui\jquery-ui.js" />
+    <Content Include="Scripts\lib\jquery-ui\jquery-ui.min.css" />
+    <Content Include="Scripts\lib\jquery-ui\jquery-ui.min.js" />
+    <Content Include="Scripts\lib\jquery-ui\jquery-ui.structure.css" />
+    <Content Include="Scripts\lib\jquery-ui\jquery-ui.structure.min.css" />
+    <Content Include="Scripts\lib\jquery-ui\jquery-ui.theme.css" />
+    <Content Include="Scripts\lib\jquery-ui\jquery-ui.theme.min.css" />
     <Content Include="Scripts\lib\jquery\jquery-1.10.2.js" />
     <Content Include="Scripts\lib\jquery\jquery-1.10.2.min.js" />
     <Content Include="Scripts\lib\jquery\jquery-highlight-5.js" />
@@ -1951,7 +1959,9 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\lib\jquery-ui\images\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
