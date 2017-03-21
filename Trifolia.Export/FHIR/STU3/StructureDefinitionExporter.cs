@@ -177,13 +177,15 @@ namespace Trifolia.Export.FHIR.STU3
             // Single-Value Binding
             if (schemaObject != null && (!string.IsNullOrEmpty(constraint.Value) || !string.IsNullOrEmpty(constraint.DisplayName)))
             {
+                Element elementBinding = null;
+
                 hasBinding = true;
                 switch (schemaObject.DataType)
                 {
                     case "CodeableConcept":
-                        var patternCodeableConcept = new CodeableConcept();
+                        var codableConceptBinding = new CodeableConcept();
                         var coding = new Coding();
-                        patternCodeableConcept.Coding.Add(coding);
+                        codableConceptBinding.Coding.Add(coding);
 
                         if (!string.IsNullOrEmpty(constraint.Value))
                             coding.Code = constraint.Value;
@@ -193,34 +195,39 @@ namespace Trifolia.Export.FHIR.STU3
 
                         if (!string.IsNullOrEmpty(constraint.DisplayName))
                             coding.Display = constraint.DisplayName;
-                        
-                        newElementDef.Pattern = patternCodeableConcept;
+
+                        elementBinding = codableConceptBinding;
                         break;
                     case "Coding":
-                        var patternCoding = new Coding();
+                        var codingBinding = new Coding();
 
                         if (!string.IsNullOrEmpty(constraint.Value))
-                            patternCoding.Code = constraint.Value;
+                            codingBinding.Code = constraint.Value;
 
                         if (constraint.CodeSystem != null)
-                            patternCoding.System = constraint.CodeSystem.Oid;
+                            codingBinding.System = constraint.CodeSystem.Oid;
 
                         if (!string.IsNullOrEmpty(constraint.DisplayName))
-                            patternCoding.Display = constraint.DisplayName;
+                            codingBinding.Display = constraint.DisplayName;
 
-                        newElementDef.Pattern = patternCoding;
+                        elementBinding = codingBinding;
                         break;
                     case "code":
-                        var paternCode = new Code();
-                        paternCode.Value = !string.IsNullOrEmpty(constraint.Value) ? constraint.Value : constraint.DisplayName;
-                        newElementDef.Pattern = paternCode;
+                        var codeBinding = new Code();
+                        codeBinding.Value = !string.IsNullOrEmpty(constraint.Value) ? constraint.Value : constraint.DisplayName;
+                        elementBinding = codeBinding;
                         break;
                     default:
-                        var patternString = new FhirString();
-                        patternString.Value = !string.IsNullOrEmpty(constraint.Value) ? constraint.Value : constraint.DisplayName;
-                        newElementDef.Pattern = patternString;
+                        var stringBinding = new FhirString();
+                        stringBinding.Value = !string.IsNullOrEmpty(constraint.Value) ? constraint.Value : constraint.DisplayName;
+                        elementBinding = stringBinding;
                         break;
                 }
+
+                if (constraint.IsFixed)
+                    newElementDef.Fixed = elementBinding;
+                else
+                    newElementDef.Pattern = elementBinding;
             }
 
             // Add the type of the element when bound to a value set

@@ -38,6 +38,38 @@ namespace Trifolia.Import.FHIR.STU3
             this.profileBundle = ProfileHelper.GetProfileBundle();
         }
 
+        private void PopulateBinding(TemplateConstraint constraint, CodeableConcept codeableConcept)
+        {
+            if (codeableConcept != null)
+            {
+                var coding = codeableConcept.Coding != null ? codeableConcept.Coding.FirstOrDefault() : null;
+                this.PopulateBinding(constraint, coding);
+            }
+        }
+
+        private void PopulateBinding(TemplateConstraint constraint, Coding coding)
+        {
+            if (coding != null)
+            {
+                constraint.Value = coding.Code;
+                constraint.DisplayName = coding.Display;
+
+                // TODO: Handle coding.System
+            }
+        }
+
+        private void PopulateBinding(TemplateConstraint constraint, Code code)
+        {
+            if (code != null)
+                constraint.Value = code.Value;
+        }
+
+        private void PopulateBinding(TemplateConstraint constraint, FhirString fhirString)
+        {
+            if (fhirString != null)
+                constraint.Value = fhirString.Value;
+        }
+
         public Template Convert(StructureDefinition strucDef, Template template = null, User author = null)
         {
             if (string.IsNullOrEmpty(strucDef.Type))
@@ -181,6 +213,26 @@ namespace Trifolia.Import.FHIR.STU3
 
                         if (next.Conformance != conformance)
                             next.Conformance = conformance;
+
+                        // Binding
+                        if (navigator.Current.Fixed != null)
+                        {
+                            this.PopulateBinding(next, navigator.Current.Fixed as CodeableConcept);
+                            this.PopulateBinding(next, navigator.Current.Fixed as Coding);
+                            this.PopulateBinding(next, navigator.Current.Fixed as Code);
+                            this.PopulateBinding(next, navigator.Current.Fixed as FhirString);
+
+                            next.IsFixed = true;
+                        }
+                        else
+                        {
+                            this.PopulateBinding(next, navigator.Current.Pattern as CodeableConcept);
+                            this.PopulateBinding(next, navigator.Current.Pattern as Coding);
+                            this.PopulateBinding(next, navigator.Current.Pattern as Code);
+                            this.PopulateBinding(next, navigator.Current.Pattern as FhirString);
+
+                            next.IsFixed = false;
+                        }
 
                         if (navigator.MoveToFirstChild())
                         {

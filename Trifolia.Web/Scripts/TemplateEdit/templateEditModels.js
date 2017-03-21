@@ -197,7 +197,7 @@ var NodeModel = function (data, parent, viewModel) {
             }
             node.Constraint(constraint);
             constraint.ConstraintAndProseChanged();
-            constraint.SubscribeForUpdates(true);
+            constraint.SubscribeForUpdates();
         };
 
         // Make sure the parent node has a computable before creating this node's computable.
@@ -219,12 +219,12 @@ var ConstraintModel = function (data, parent, viewModel) {
         include: ['Id', 'Number', 'Context', 'Conformance', 'Cardinality', 'DataType', 'Children', 'IsBranch', 'IsBranchIdentifier', 'PrimitiveText',
             'ContainedTemplateId', 'ValueConformance', 'Binding', 'Value', 'ValueConformance', 'ValueDisplayName', 'ValueSetId', 'ValueSetDate',
             'ValueCodeSystemId', 'Description', 'Notes', 'Label', 'IsPrimitive', 'IsHeading', 'HeadingDescription', 'IsSchRooted', 'IsInheritable',
-            'Schematron', 'IsNew', 'Category', 'DisplayNumber', 'MustSupport', 'IsModifier', 'IsChoice'],
+            'Schematron', 'IsNew', 'Category', 'DisplayNumber', 'MustSupport', 'IsModifier', 'IsChoice', 'IsFixed'],
         ignore: ['Parent', 'BindingType', 'IsValueSetStatic', 'Order', 'IsAutomaticSchematron', 'IsStatic'],
         Children: {
             create: function (options) {
                 var newChildConstraint = new ConstraintModel(options.data, self, viewModel);
-                newChildConstraint.SubscribeForUpdates(true);
+                newChildConstraint.SubscribeForUpdates();
                 return newChildConstraint;
             }
         }
@@ -267,6 +267,7 @@ var ConstraintModel = function (data, parent, viewModel) {
     self.IsModifier = ko.observable(false);
     self.MustSupport = ko.observable(true);
     self.IsChoice = ko.observable(false);
+    self.IsFixed = ko.observable(false);
 
     self.IsChildOfChoice = ko.computed(function () {
         if (!self.Parent() || !self.Parent().IsChoice()) {
@@ -458,107 +459,118 @@ var ConstraintModel = function (data, parent, viewModel) {
         valueCodeSystemIdSub, valueSetDateSub, primitiveTextSub, isBranchSub,
         isBranchIdentifierSub, primitiveTextSub, bindingSub, isHeadingSub,
         headingDescriptionSub, descriptionSub, labelSub, numberSub, notesSub,
-        schematronSub, isSchRootedSub, isInheritableSub, categorySub;
+        schematronSub, isSchRootedSub, isInheritableSub, categorySub,
+        mustSupportSub, isFixedSub, isModifierSub;
 
-    self.SubscribeForUpdates = function (subscribe) {
-        if (subscribe) {
-            categorySub = self.Category.subscribe(function (newVal) {
-                console.log("Conformance (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            conformanceSub = self.Conformance.subscribe(function (newVal) {
-                console.log("Conformance (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            cardinalitySub = self.Cardinality.subscribe(function (newVal) {
-                console.log("Cardinality (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            dataTypeSub = self.DataType.subscribe(function (newVal) {
-                console.log("Data Type (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            containedTemplateIdSub = self.ContainedTemplateId.subscribe(function (newVal) {
-                console.log("Contained Template (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            valueSub = self.Value.subscribe(function (newVal) {
-                console.log("Value (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            valueDisplayNameSub = self.ValueDisplayName.subscribe(function (newVal) {
-                console.log("Value Display Name (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            valueConformanceSub = self.ValueConformance.subscribe(function (newVal) {
-                console.log("Value Conformance (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            valueSetIdSub = self.ValueSetId.subscribe(function (newVal) {
-                console.log("Value Set (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            valueCodeSystemIdSub = self.ValueCodeSystemId.subscribe(function (newVal) {
-                console.log("Code System (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            valueSetDateSub = self.ValueSetDate.subscribe(function (newVal) {
-                console.log("Value Set Date (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            primitiveTextSub = self.PrimitiveText.subscribe(function (newVal) {
-                console.log("Primitive Text (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            isBranchSub = self.IsBranch.subscribe(function (newVal) {
-                console.log("Branch Root (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            bindingSub = self.Binding.subscribe(function (newVal) {
-                console.log("Binding (and prose) changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            isBranchIdentifierSub = self.IsBranchIdentifier.subscribe(function (newVal) {
-                console.log("Branch Identifier changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            isHeadingSub = self.IsHeading.subscribe(function (newVal) {
-                console.log("Heading changed");
-                self.ConstraintChanged(newVal);
-            });
-            headingDescriptionSub = self.HeadingDescription.subscribe(function (newVal) {
-                console.log("Heading Description changed");
-                self.ConstraintChanged(newVal);
-            });
-            descriptionSub = self.Description.subscribe(function (newVal) {
-                console.log("Description changed");
-                self.ConstraintChanged(newVal);
-            });
-            labelSub = self.Label.subscribe(function (newVal) {
-                console.log("Label changed");
-                self.ConstraintAndProseChanged(newVal);
-            });
-            //numberSub = self.Number.subscribe(self.ConstraintAndProseChanged);
-            notesSub = self.Notes.subscribe(function (newVal) {
-                console.log("Notes changed");
-                self.ConstraintChanged(newVal);
-            });
-            schematronSub = self.Schematron.subscribe(function (newVal) {
-                console.log("Schematron changed");
-                self.ConstraintChanged(newVal);
-            });
-            isSchRootedSub = self.IsSchRooted.subscribe(function (newVal) {
-                console.log("SCH Rooted changed");
-                self.ConstraintChanged(newVal);
-            });
-            isInheritableSub = self.IsInheritable.subscribe(function (newVal) {
-                console.log("Inheritable changed");
-                self.ConstraintChanged(newVal);
-            });
+    self.SubscribeForUpdates = function () {
+        categorySub = self.Category.subscribe(function (newVal) {
+            console.log("Conformance (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        conformanceSub = self.Conformance.subscribe(function (newVal) {
+            console.log("Conformance (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        cardinalitySub = self.Cardinality.subscribe(function (newVal) {
+            console.log("Cardinality (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        dataTypeSub = self.DataType.subscribe(function (newVal) {
+            console.log("Data Type (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        containedTemplateIdSub = self.ContainedTemplateId.subscribe(function (newVal) {
+            console.log("Contained Template (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        valueSub = self.Value.subscribe(function (newVal) {
+            console.log("Value (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        valueDisplayNameSub = self.ValueDisplayName.subscribe(function (newVal) {
+            console.log("Value Display Name (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        valueConformanceSub = self.ValueConformance.subscribe(function (newVal) {
+            console.log("Value Conformance (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        valueSetIdSub = self.ValueSetId.subscribe(function (newVal) {
+            console.log("Value Set (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        valueCodeSystemIdSub = self.ValueCodeSystemId.subscribe(function (newVal) {
+            console.log("Code System (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        valueSetDateSub = self.ValueSetDate.subscribe(function (newVal) {
+            console.log("Value Set Date (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        primitiveTextSub = self.PrimitiveText.subscribe(function (newVal) {
+            console.log("Primitive Text (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        isBranchSub = self.IsBranch.subscribe(function (newVal) {
+            console.log("Branch Root (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        bindingSub = self.Binding.subscribe(function (newVal) {
+            console.log("Binding (and prose) changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        isBranchIdentifierSub = self.IsBranchIdentifier.subscribe(function (newVal) {
+            console.log("Branch Identifier changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        isHeadingSub = self.IsHeading.subscribe(function (newVal) {
+            console.log("Heading changed");
+            self.ConstraintChanged(newVal);
+        });
+        headingDescriptionSub = self.HeadingDescription.subscribe(function (newVal) {
+            console.log("Heading Description changed");
+            self.ConstraintChanged(newVal);
+        });
+        descriptionSub = self.Description.subscribe(function (newVal) {
+            console.log("Description changed");
+            self.ConstraintChanged(newVal);
+        });
+        labelSub = self.Label.subscribe(function (newVal) {
+            console.log("Label changed");
+            self.ConstraintAndProseChanged(newVal);
+        });
+        //numberSub = self.Number.subscribe(self.ConstraintAndProseChanged);
+        notesSub = self.Notes.subscribe(function (newVal) {
+            console.log("Notes changed");
+            self.ConstraintChanged(newVal);
+        });
+        schematronSub = self.Schematron.subscribe(function (newVal) {
+            console.log("Schematron changed");
+            self.ConstraintChanged(newVal);
+        });
+        isSchRootedSub = self.IsSchRooted.subscribe(function (newVal) {
+            console.log("SCH Rooted changed");
+            self.ConstraintChanged(newVal);
+        });
+        isInheritableSub = self.IsInheritable.subscribe(function (newVal) {
+            console.log("Inheritable changed");
+            self.ConstraintChanged(newVal);
+        });
+        mustSupportSub = self.MustSupport.subscribe(function (newVal) {
+            console.log('Must Support changed');
+            self.ConstraintChanged(newVal);
+        });
+        isFixedSub = self.IsFixed.subscribe(function (newVal) {
+            console.log('Is Fixed changed');
+            self.ConstraintChanged(newVal);
+        });
+        isModifierSub = self.IsModifier.subscribe(function (newVal) {
+            console.log('Is Modifier changed');
+            self.ConstraintChanged(newVal);
+        });
 
-            self.Conformance.subscribe(self.ConformanceChanged);
-            self.IsBranch.subscribe(self.BranchRootChanged);
-        } // else not needed.. never gets called
+        self.Conformance.subscribe(self.ConformanceChanged);
+        self.IsBranch.subscribe(self.BranchRootChanged);
     };
 
     /* Constructor */

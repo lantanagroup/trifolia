@@ -250,6 +250,7 @@ namespace Trifolia.Web.Controllers.API
                 IsModifier = constraint.IsModifier,
                 MustSupport = constraint.MustSupport,
                 IsChoice = constraint.IsChoice,
+                IsFixed = constraint.IsFixed,
 
                 NarrativeProseHtml = fc.GetPlainText(false, false, false)
             };
@@ -729,6 +730,9 @@ namespace Trifolia.Web.Controllers.API
 
                 if (constraint.IsChoice != constraintModel.IsChoice)
                     constraint.IsChoice = constraintModel.IsChoice;
+
+                if (constraint.IsFixed != constraintModel.IsFixed)
+                    constraint.IsFixed = constraintModel.IsFixed;
 
                 // Recurse through child constraints
                 SaveConstraints(tdb, template, constraintModel.Children, constraint);

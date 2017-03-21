@@ -86,7 +86,7 @@
                                         <span data-bind="html: Trifolia.Web.TemplateEditorMetaDataImplementationGuideField"></span>
                                         <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorImplementationGuideTooltip, placement: 'right' }"></div>
                                     </div>
-                                    <select id="igCombo" class="form-control" data-bind="options: $parent.ImplementationGuides, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select', value: OwningImplementationGuideId, disable: DisableTypeFields">
+                                    <select id="igCombo" class="form-control" data-bind="options: $parent.ImplementationGuides, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select', value: OwningImplementationGuideId, disable: DisableTypeFields, event: { change: $parent.ImplementationGuideChanged }">
                                     </select>
                                 </div>
                                 <span class="templateMetaDataError" data-bind="validationMessage: OwningImplementationGuideId"></span>
@@ -97,7 +97,7 @@
                                         <span data-bind="html: Trifolia.Web.TemplateEditorMetaDataTemplateTypeField"></span>
                                         <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorTemplateTypeTooltip, placement: 'right' }"></div>
                                     </div>
-                                    <select id="templateTypeId" class="form-control" data-bind="options: $parent.TemplateTypes, optionsText: 'FullName', optionsValue: 'Id', optionsCaption: 'Select', value: TemplateTypeId, disable: DisableTypeFields"></select>
+                                    <select id="templateTypeId" class="form-control" data-bind="options: $parent.TemplateTypes, optionsText: 'FullName', optionsValue: 'Id', optionsCaption: 'Select', value: TemplateTypeId, disable: DisableTypeFields, event: { change: $parent.TemplateTypeChanged }"></select>
                                 </div>
                                 <span class="templateMetaDataError" data-bind="validationMessage: TemplateTypeId"></span>
                                 <!-- /ko -->
@@ -122,7 +122,7 @@
                             <div data-bind="visible: TemplateTypeId()">
                                 <div class="input-group name-field">
                                     <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorMetaDataNameField"></div>
-                                    <input type="text" class="form-control" data-bind="value: Name, disable: DisableFields" autofocus />
+                                    <input type="text" class="form-control" data-bind="value: Name, disable: DisableFields, event: { change: $parent.RegenerateBookmark }" autofocus />
                                 </div>
                                 <span class="templateMetaDataError" data-bind="validationMessage: Name"></span>
 
@@ -180,7 +180,7 @@
                                 <!-- ko if: OwningImplementationGuideId() -->
                                 <div class="input-group publish-status-field">
                                     <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorMetaDataStatusField"></div>
-                                    <select class="form-control" data-bind="options: $parent.PublishStatuses, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select', value: StatusId, disable: DisableFields"></select>
+                                    <select class="form-control" data-bind="options: $parent.PublishStatuses, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select', value: StatusId, disable: DisableFields, event: { change: $parent.StatusChanged }"></select>
                                 </div>
                                 <!-- /ko -->
 
@@ -743,15 +743,34 @@ disable: $parents[1].Template().Locked">
             </div>
 
             <!-- ko if: $parents[$parents.length-1].IsFhir() -->
+
+            <!-- ko if: BindingType() == 'SingleValue' || BindingType() == 'Other' -->
             <div class="input-group input-group-sm">
-                <div class="input-group-addon">Is Modifier</div>
+                <div class="input-group-addon">
+                    <span>Is Fixed?</span>
+                    <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorIsFixedTooltip, placement: 'right' }"></div>
+                </div>
+                <div class="form-control">
+                    <input type="checkbox" name="Fixed" data-bind="checked: IsFixed"/>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <div class="input-group input-group-sm">
+                <div class="input-group-addon">
+                    <span>Is Modifier?</span>
+                    <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorIsModifierTooltip, placement: 'right' }"></div>
+                </div>
                 <div class="form-control">
                     <input type="checkbox" name="Modifier" data-bind="checked: IsModifier"/>
                 </div>
             </div>
 
             <div class="input-group input-group-sm">
-                <div class="input-group-addon">Must Support</div>
+                <div class="input-group-addon">
+                    <span>Must Support?</span>
+                    <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorMustSupportTooltip, placement: 'right' }"></div>
+                </div>
                 <div class="form-control">
                     <input type="checkbox" name="Support" data-bind="checked: MustSupport"/>
                 </div>
