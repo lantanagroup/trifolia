@@ -88,6 +88,10 @@
     <Compile Include="Migrations\201703021923101_init.Designer.cs">
       <DependentUpon>201703021923101_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703211651073_isFixed.cs" />
+    <Compile Include="Migrations\201703211651073_isFixed.Designer.cs">
+      <DependentUpon>201703211651073_isFixed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -179,6 +183,9 @@
     <EmbeddedResource Include="Migrations\201703021923101_init_views_up.sql" />
     <EmbeddedResource Include="Migrations\201703021923101_init.resx">
       <DependentUpon>201703021923101_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703211651073_isFixed.resx">
+      <DependentUpon>201703211651073_isFixed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

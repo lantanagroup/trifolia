@@ -19,7 +19,7 @@ namespace Trifolia.Web.Controllers.API
         private const string XsNamespace = "http://www.w3.org/2001/XMLSchema";
         private IObjectRepository tdb;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public TypeController()
             : this(DBContext.Create())
@@ -30,6 +30,14 @@ namespace Trifolia.Web.Controllers.API
         public TypeController(IObjectRepository tdb)
         {
             this.tdb = tdb;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

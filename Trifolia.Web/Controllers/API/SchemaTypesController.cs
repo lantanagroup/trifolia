@@ -16,13 +16,31 @@ namespace Trifolia.Web.Controllers
         private Trifolia.Shared.Helper helper;
         private Trifolia.Shared.SimpleSchema.SimpleSchemaFactory schemaFactory;
 
-        //dependency injection for unit tests
+        #region Construct/Dispose
+
         public SchemaTypesController(): this(
             DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress), 
             new Trifolia.Shared.Helper(),
-            new Trifolia.Shared.SimpleSchema.SimpleSchemaFactory()) {}
+            new Trifolia.Shared.SimpleSchema.SimpleSchemaFactory())
+        {
+        }
 
-        public SchemaTypesController(IObjectRepository tdb, Trifolia.Shared.Helper helper, SimpleSchema.SimpleSchemaFactory schemaFactory) { this.tdb = tdb; this.helper = helper; this.schemaFactory = schemaFactory; }
+        public SchemaTypesController(IObjectRepository tdb, Trifolia.Shared.Helper helper, SimpleSchema.SimpleSchemaFactory schemaFactory)
+        {
+            this.tdb = tdb;
+            this.helper = helper;
+            this.schemaFactory = schemaFactory;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
 
         /// <summary>
         /// Gets all of the types in a schema regardless if they are prefered or not

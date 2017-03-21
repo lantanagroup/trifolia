@@ -33,7 +33,7 @@ namespace Trifolia.Web.Controllers.API
     {
         private IObjectRepository tdb;
 
-        #region Constructor
+        #region Construct/Dispose
 
         public ImplementationGuideController()
             : this(DBContext.Create())
@@ -43,6 +43,14 @@ namespace Trifolia.Web.Controllers.API
         public ImplementationGuideController(IObjectRepository tdb)
         {
             this.tdb = tdb;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion
@@ -1340,7 +1348,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpGet, Route("api/ImplementationGuide/Edit/Permission/Search"), SecurableAction()]
         public IEnumerable<PermissionsInfoModel.MemberEntry> SearchUsers(string searchText, bool includeGroups)
         {
-            searchText = searchText.ToLower();
+            if (!string.IsNullOrEmpty(searchText))
+                searchText = searchText.ToLower();
 
             List<PermissionsInfoModel.MemberEntry> matches = new List<PermissionsInfoModel.MemberEntry>();
 

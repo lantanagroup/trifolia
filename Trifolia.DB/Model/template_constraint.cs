@@ -128,6 +128,9 @@ namespace Trifolia.DB
         [Column("isChoice")]
         public bool IsChoice { get; set; }
 
+        [Column("isFixed")]
+        public bool IsFixed { get; set; }
+
         public virtual CodeSystem CodeSystem { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

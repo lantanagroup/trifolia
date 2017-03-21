@@ -22,7 +22,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         private CapabilityStatement.ResourceInteractionComponent updateInteraction;
         private CapabilityStatement.ResourceInteractionComponent createInteraction;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public FHIR3ConformanceController(IObjectRepository tdb)
         {
@@ -50,6 +50,14 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             : this(DBContext.Create())
         {
 
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -287,7 +287,13 @@ namespace Trifolia.DB
                 Notes = constraint.Notes,
                 Description = constraint.Description,
                 Number = constraint.Number.Value,
-                Category = constraint.Category
+                Category = constraint.Category,
+                MustSupport = constraint.MustSupport,
+                IsModifier = constraint.IsModifier,
+                IsFixed = constraint.IsFixed,
+                IsChoice = constraint.IsChoice,
+                IsHeading = constraint.IsHeading,
+                HeadingDescription = constraint.HeadingDescription
             };
 
             if (parentConstraint != null)

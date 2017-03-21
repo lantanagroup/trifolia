@@ -19,7 +19,7 @@ namespace Trifolia.Web.Controllers.API
     {
         private IObjectRepository tdb;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public GreenTemplateController(IObjectRepository tdb)
         {
@@ -30,6 +30,14 @@ namespace Trifolia.Web.Controllers.API
             : this(DBContext.Create())
         {
 
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

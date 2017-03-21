@@ -18,7 +18,7 @@ namespace Trifolia.Web.Controllers.API
     {
         private IObjectRepository tdb;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public ImportController(IObjectRepository tdb)
         {
@@ -31,8 +31,21 @@ namespace Trifolia.Web.Controllers.API
 
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
+        }
+
         #endregion
 
+        /// <summary>
+        /// Imports data from the native Trifolia format. See https://github.com/lantanagroup/trifolia/blob/master/Trifolia.Shared/ImportExport/Model/TemplateExport.xsd for the schema that is used by the import.
+        /// </summary>
+        /// <param name="model">The data to import (including implementation guides and templates)</param>
+        /// <returns></returns>
         [HttpPost, Route("api/Import/Trifolia"), SecurableAction(SecurableNames.IMPORT)]
         public ImportStatusModel ImportTrifoliaModel(ImportModel model)
         {

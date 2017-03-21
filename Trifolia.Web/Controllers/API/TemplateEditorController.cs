@@ -19,10 +19,10 @@ namespace Trifolia.Web.Controllers.API
     [SecurableAction(SecurableNames.TEMPLATE_EDIT)]
     public class TemplateEditorController : ApiController
     {
-        #region Constructors
-
         private IObjectRepository tdb;
 
+        #region Construct
+        
         public TemplateEditorController()
             : this(DBContext.Create())
         {
@@ -32,6 +32,14 @@ namespace Trifolia.Web.Controllers.API
         public TemplateEditorController(IObjectRepository tdb)
         {
             this.tdb = tdb;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion
@@ -242,6 +250,7 @@ namespace Trifolia.Web.Controllers.API
                 IsModifier = constraint.IsModifier,
                 MustSupport = constraint.MustSupport,
                 IsChoice = constraint.IsChoice,
+                IsFixed = constraint.IsFixed,
 
                 NarrativeProseHtml = fc.GetPlainText(false, false, false)
             };
@@ -721,6 +730,9 @@ namespace Trifolia.Web.Controllers.API
 
                 if (constraint.IsChoice != constraintModel.IsChoice)
                     constraint.IsChoice = constraintModel.IsChoice;
+
+                if (constraint.IsFixed != constraintModel.IsFixed)
+                    constraint.IsFixed = constraintModel.IsFixed;
 
                 // Recurse through child constraints
                 SaveConstraints(tdb, template, constraintModel.Children, constraint);

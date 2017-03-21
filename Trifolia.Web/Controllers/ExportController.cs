@@ -27,7 +27,7 @@ namespace Trifolia.Web.Controllers
     {
         private IObjectRepository tdb;
 
-        #region CTOR
+        #region Construct/Dispose
 
         public ExportController()
             : this(DBContext.Create())
@@ -38,6 +38,14 @@ namespace Trifolia.Web.Controllers
         public ExportController(IObjectRepository tdb)
         {
             this.tdb = tdb;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

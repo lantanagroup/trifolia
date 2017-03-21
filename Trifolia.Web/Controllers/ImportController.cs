@@ -22,7 +22,7 @@ namespace Trifolia.Web.Controllers
     {
         private IObjectRepository tdb;
 
-        #region Constructors 
+        #region Construct/Dispose
 
         public ImportController()
         {
@@ -32,6 +32,14 @@ namespace Trifolia.Web.Controllers
         public ImportController(IObjectRepository tdb)
         {
             this.tdb = tdb;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

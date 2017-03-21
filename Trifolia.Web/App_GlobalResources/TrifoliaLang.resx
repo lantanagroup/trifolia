@@ -345,4 +345,13 @@
   <data name="StructureDefinitionSameUrlExists" xml:space="preserve">
     <value>A StructureDefinition with the same url already exists. To update, use PUT.</value>
   </data>
+  <data name="TemplateEditorConstraintEditorIsFixedTooltip" xml:space="preserve">
+    <value>Applies to single-value bindings. When checked, value must be exactly this. When not checked, value must have at least these property values</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorIsModifierTooltip" xml:space="preserve">
+    <value>If this modifies the meaning of other elements</value>
+  </data>
+  <data name="TemplateEditorConstraintEditorMustSupportTooltip" xml:space="preserve">
+    <value>If the element must be supported</value>
+  </data>
 </root>

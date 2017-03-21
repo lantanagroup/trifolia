@@ -17,6 +17,9 @@ using Trifolia.Shared.FHIR;
 
 namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 {
+    /// <summary>
+    /// FHIR DSTU2 StructureDefinition API Controller
+    /// </summary>
     [DSTU2Config]
     [RoutePrefix("api/FHIR2")]
     public class FHIR2StructureDefinitionController : TrifoliaApiController
@@ -27,7 +30,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         private IObjectRepository tdb;
         private ImplementationGuideType implementationGuideType;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public FHIR2StructureDefinitionController(IObjectRepository tdb, HttpRequestMessage request = null)
         {
@@ -46,13 +49,21 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
+        }
+
         #endregion
 
         /// <summary>
         /// Gets a specific profile and converts it to a StructureDefinition resource.
         /// </summary>
         /// <param name="templateId">The id of the profile/template to get</param>
-        /// <param name="summary">Optional. The type of summary to respond with.</param>
+        /// <param name="summary">The type of summary to respond with.</param>
         /// <returns>Hl7.Fhir.Model.StructureDefinition</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         [HttpGet]
@@ -113,7 +124,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         /// </summary>
         /// <param name="templateId">The id of a template/profile to search for and return in the bundle</param>
         /// <param name="name">The name of a template/profile to search for. Only templates/profiles that contain this specified name will be returned.</param>
-        /// <param name="summary">Optional. The type of summary to respond with.</param>
+        /// <param name="summary">The type of summary to respond with.</param>
         /// <returns>Hl7.Fhir.Model.Bundle</returns>
         /// <permission cref="Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         [HttpGet]

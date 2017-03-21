@@ -32,7 +32,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
 
         private IObjectRepository tdb;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public FHIRController(IObjectRepository tdb)
         {
@@ -43,6 +43,14 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU1
             : this(DBContext.Create())
         {
 
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion

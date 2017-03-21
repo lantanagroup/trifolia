@@ -21,6 +21,9 @@ using Trifolia.Logging;
 
 namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 {
+    /// <summary>
+    /// FHIR DSTU2 ImplementationGuide API Controller
+    /// </summary>
     [DSTU2Config]
     [RoutePrefix("api/FHIR2")]
     public class FHIR2ImplementationGuideController : ApiController
@@ -30,7 +33,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         private IObjectRepository tdb;
         private ImplementationGuideType implementationGuideType;
 
-        #region Constructors
+        #region Construct/Dispose
 
         public FHIR2ImplementationGuideController(IObjectRepository tdb)
         {
@@ -44,14 +47,22 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
 
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
+        }
+
         #endregion
 
         /// <summary>
-        /// Get the specified implementation guide in FHIR DSTU2 format
+        /// Get the specified implementation guide
         /// </summary>
         /// <param name="implementationGuideId">The id of the implementation guide</param>
-        /// <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
-        /// <param name="summary">Optional. The type of summary to respond with.</param>
+        /// <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+        /// <param name="summary">The type of summary to respond with.</param>
         /// <returns>Hl7.Fhir.Model.ImplementationGuide</returns>
         [HttpGet]
         [Route("ImplementationGuide/{implementationGuideId}")]
@@ -70,10 +81,10 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
         }
 
         /// <summary>
-        /// Gets implementation guides in FHIR DSTU2 format. Can specify search information, such as the name of the implementation guide and the id of the implementation guide.
+        /// Gets implementation guides. Can specify search information, such as the name of the implementation guide and the id of the implementation guide.
         /// </summary>
-        /// <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
-        /// <param name="summary">Optional. The type of summary to respond with.</param>
+        /// <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+        /// <param name="summary">The type of summary to respond with.</param>
         /// <param name="include">Indicate what additional information should be included with the implementation guide (such as "ImplementationGuide:resource")</param>
         /// <param name="implementationGuideId">Specify the id of the implementation guide to search for.</param>
         /// <param name="name">Specifies the name of the implementation guide to search for. Implementation guides whose name *contains* this value will be returned.</param>
@@ -96,6 +107,13 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             return Shared.GetResponseMessage(this.Request, format, bundle);
         }
 
+        /// <summary>
+        /// Creates a new implementation guide
+        /// </summary>
+        /// <param name="implementationGuide">The implementation guide body</param>
+        /// <param name="format">The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+        /// <returns></returns>
+        /// <remarks>Not implemented</remarks>
         [HttpPost]
         [Route("ImplementationGuide")]
         [SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
@@ -106,6 +124,13 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Updates the specified implementation guide
+        /// </summary>
+        /// <param name="implementationGuideId">The id of the implementation guide to update</param>
+        /// <param name="implementationGuide">The implementation guide body</param>
+        /// <returns></returns>
+        /// <remarks>Not implemented</remarks>
         [HttpPut]
         [Route("ImplementationGuide/{implementationGuideId}")]
         [SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
@@ -116,6 +141,12 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Deletes the specified implementation guide
+        /// </summary>
+        /// <param name="implementationGuideId">The id of the implementation guide</param>
+        /// <returns></returns>
+        /// <remarks>Not implemented</remarks>
         [HttpDelete]
         [Route("ImplementationGuide/{implementationGuideId}")]
         [SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]

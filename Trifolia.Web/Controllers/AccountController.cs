@@ -35,7 +35,7 @@ namespace Trifolia.Web.Controllers
         private IObjectRepository tdb;
         private WebServerClient authClient;
 
-        #region Constructors 
+        #region Construct/Dispose
 
         public AccountController()
             : this(DBContext.Create())
@@ -61,6 +61,14 @@ namespace Trifolia.Web.Controllers
         public AccountController(IObjectRepository tdb)
         {
             this.tdb = tdb;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.tdb.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #endregion
