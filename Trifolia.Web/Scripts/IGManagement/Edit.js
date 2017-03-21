@@ -210,7 +210,13 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
 
         // Doesn't make sense to have an Edit permission without a View permission. Remove the Edit permission as well.
         if (type == 'View') {
-            self.RemovePermission('Edit', permission);
+            var foundPermission = _.find(self.Model().EditPermissions(), function (editPermission) {
+                return editPermission.Id() == permission.Id() && editPermission.Type() == permission.Type();
+            });
+
+            if (foundPermission) {
+                self.RemovePermission('Edit', foundPermission);
+            }
         }
     };
 
