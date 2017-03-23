@@ -234,6 +234,16 @@ ko.validation.rules['templateIdentifierUnique'] = {
     message: 'This template identifier is not available.'
 };
 
+ko.validation.rules['ignoreSelfTemplateId'] = {
+    validator: function (impliedId, templateId) {
+        var idNum = null;
+        if (typeof templateId === "object") idNum = templateId.id();
+        else return true;
+        return idNum !== impliedId;
+    },
+    message: 'Can\'t have the implied template be the same as the current template.'
+};
+
 ko.validation.rules['hl7iiValidation'] = {
     validator: function (val, otherVal) {
         var prevVersionOid = null;

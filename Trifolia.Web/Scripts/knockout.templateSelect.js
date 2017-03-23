@@ -8,6 +8,7 @@
 	self.SelectedTemplate = ko.observable();
 	self.Display = ko.observable();
 	self.FilterImplementationGuideId = ko.observable(null);
+	self.ignoreSelfOid = ko.observable();
 	self.FilterContextType = ko.observable(null);
 	self.Buttons = ko.observableArray([]);
 	self.Label = ko.observable();
@@ -75,6 +76,9 @@
 		if (self.FilterContextType()) {
 		    url += '&filterContextType=' + encodeURIComponent(self.FilterContextType());
 		}
+
+		if (self.ignoreSelfOid())
+		    url += '&selfOid=' + self.ignoreSelfOid();
 
 		self.IsSearching(true);
 		$.ajax({
@@ -280,6 +284,9 @@ ko.bindingHandlers.templateSelect = {
 		var allBindingsUnwrapped = allBindings();
 
 		var templateSelectViewModel = new TemplateSelectViewModel(value);
+
+		if (typeof allBindingsUnwrapped.oid === 'function' && allBindingsUnwrapped.oid)
+		    templateSelectViewModel.ignoreSelfOid(allBindingsUnwrapped.oid());
 
 		if (typeof allBindingsUnwrapped.filterImplementationGuideId === 'object') {
 			templateSelectViewModel.FilterImplementationGuideId(allBindingsUnwrapped.filterImplementationGuideId);
