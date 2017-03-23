@@ -353,20 +353,22 @@ namespace Trifolia.Web.Controllers.API
         /// <param name="filterImplementationGuideId">Matches the id of the implementation guide specifically to the implementation guide of the template. Only templates that are used by the specified implementation guide will be returned.</param>
         /// <param name="filterTemplateTypeId">Matches the id of the template type specified specifically to the template type of the template. Only templates with a matching type will be returned.</param>
         /// <param name="filterOrganizationId">Matches the id of the organization specified specifically to the organization of the template. Only templates with a matching organization will be returned.</param>
+        /// <param name="selfOid">If exists, makes sure not to return the Oid of the template currently in use</param>
         /// <param name="filterContextType">Matches the context specified specifically to the context of the template. Only templates whose context type contain the specified value will be returned.</param>
         /// <returns>Trifolia.Web.Models.TemplateManagement.ListModel</returns>
         [HttpGet, Route("api/Template"), SecurableAction(SecurableNames.TEMPLATE_LIST)]
         public ListModel GetTemplates(
-            int? count = null, 
-            int page = 1, 
-            string sortProperty = "Name", 
-            bool sortDescending = false, 
+            int? count = null,
+            int page = 1,
+            string sortProperty = "Name",
+            bool sortDescending = false,
             string queryText = null,
             string filterName = null,
             string filterOid = null,
             int? filterImplementationGuideId = null,
             int? filterTemplateTypeId = null,
             int? filterOrganizationId = null,
+            string selfOid = null,
             string filterContextType = null)
         {
             Log.For(this).Trace("BEGIN: Getting list model for List and ListPartial");
@@ -394,6 +396,10 @@ namespace Trifolia.Web.Controllers.API
             var query = (from tid in templateIds
                          join vtl in tdb.ViewTemplateLists on tid equals vtl.Id
                          select vtl);
+            if(selfOid != null)
+                query = (from q in query
+                     where q.Oid != selfOid
+                     select q);
             int currentUserId = CheckPoint.Instance.GetUser(tdb).Id;
             var editableTemplates = (from tp in this.tdb.ViewTemplatePermissions
                                      where tp.UserId == currentUserId && tp.Permission == "Edit"
