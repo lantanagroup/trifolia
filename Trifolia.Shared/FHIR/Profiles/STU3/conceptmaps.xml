@@ -3,7 +3,7 @@
 <Bundle xmlns="http://hl7.org/fhir">
   <id value="conceptmaps"/>
   <meta>
-    <lastUpdated value="2016-11-30T21:26:09.734+00:00"/>
+    <lastUpdated value="2017-03-21T06:09:53.925+11:00"/>
   </meta>
   <type value="collection"/>
   <entry>
@@ -19,9 +19,9 @@
               <a href="valueset-observation-relationshiptypes.html">http://hl7.org/fhir/ValueSet/observation-relationshiptypes</a> to 
               <a href="v3/ActRelationshipType/vs.html">http://hl7.org/fhir/ValueSet/v3-ActRelationshipType</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -39,32 +39,32 @@
               <tr>
                 <td>has-member (Has Member)</td>
                 <td>equal</td>
-                <td>MBR</td>
+                <td>MBR (has member)</td>
               </tr>
               <tr>
                 <td>derived-from (Derived From)</td>
                 <td>equal</td>
-                <td>DRIV</td>
+                <td>DRIV (is derived from)</td>
               </tr>
               <tr>
                 <td>sequel-to (Sequel To)</td>
                 <td>equal</td>
-                <td>SEQL</td>
+                <td>SEQL (is sequel)</td>
               </tr>
               <tr>
                 <td>replaces (Replaces)</td>
                 <td>equal</td>
-                <td>RPLC</td>
+                <td>RPLC (replaces)</td>
               </tr>
               <tr>
                 <td>qualified-by (Qualified By)</td>
                 <td>equal</td>
-                <td>QUALF</td>
+                <td>QUALF (has qualifier)</td>
               </tr>
               <tr>
                 <td>interfered-by (Interfered By)</td>
                 <td>equal</td>
-                <td>INTF</td>
+                <td>INTF (interfered by)</td>
               </tr>
             </table>
           </div>
@@ -72,10 +72,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-observation-relationshiptypes-v3"/>
         <name value="v3 map for ObservationRelationshipType"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -83,7 +84,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/observation-relationshiptypes"/>
         </sourceReference>
@@ -92,7 +92,7 @@
         </targetReference>
         <group>
           <source value="http://hl7.org/fhir/observation-relationshiptypes"/>
-          <target value="http://hl7.org/fhir/v3/ActRrelationshipType"/>
+          <target value="http://hl7.org/fhir/v3/ActRelationshipType"/>
           <element>
             <code value="has-member"/>
             <target>
@@ -152,9 +152,9 @@
               <a href="valueset-address-use.html">http://hl7.org/fhir/ValueSet/address-use</a> to 
               <a href="v3/AddressUse/vs.html">http://hl7.org/fhir/ValueSet/v3-AddressUse</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -169,7 +169,7 @@
                   <b>Destination Concept</b>
                 </td>
                 <td>
-                  <b>Comments</b>
+                  <b>Comment</b>
                 </td>
               </tr>
               <tr>
@@ -212,10 +212,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-address-use-v3"/>
         <name value="v3 map for AddressUse"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -223,7 +224,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/address-use"/>
         </sourceReference>
@@ -259,12 +259,12 @@
             <target>
               <code value="OLD"/>
               <equivalence value="narrower"/>
-              <comments value="Bad or Old"/>
+              <comment value="Bad or Old"/>
             </target>
             <target>
               <code value="BAD"/>
               <equivalence value="narrower"/>
-              <comments value="Bad or Old"/>
+              <comment value="Bad or Old"/>
             </target>
           </element>
         </group>
@@ -284,9 +284,9 @@
               <a href="valueset-contact-point-use.html">http://hl7.org/fhir/ValueSet/contact-point-use</a> to 
               <a href="v3/AddressUse/vs.html">http://hl7.org/fhir/ValueSet/v3-AddressUse</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -301,7 +301,7 @@
                   <b>Destination Concept</b>
                 </td>
                 <td>
-                  <b>Comments</b>
+                  <b>Comment</b>
                 </td>
               </tr>
               <tr>
@@ -350,10 +350,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-contact-point-use-v3"/>
         <name value="v3 map for ContactPointUse"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -361,7 +362,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/contact-point-use"/>
         </sourceReference>
@@ -397,12 +397,12 @@
             <target>
               <code value="OLD"/>
               <equivalence value="narrower"/>
-              <comments value="Old and Bad"/>
+              <comment value="Old and Bad"/>
             </target>
             <target>
               <code value="BAD"/>
               <equivalence value="narrower"/>
-              <comments value="Old and Bad"/>
+              <comment value="Old and Bad"/>
             </target>
           </element>
           <element>
@@ -429,9 +429,9 @@
               <a href="valueset-contact-point-use.html">http://hl7.org/fhir/ValueSet/contact-point-use</a> to 
               <a href="v2/0201/index.html">http://hl7.org/fhir/ValueSet/v2-0201</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -476,10 +476,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-contact-point-use-v2"/>
         <name value="v2 map for ContactPointUse"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -487,7 +488,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/contact-point-use"/>
         </sourceReference>
@@ -543,7 +543,7 @@
               <a href="valueset-administrative-gender.html">http://hl7.org/fhir/ValueSet/administrative-gender</a> to 
               <a href="v2/0001/index.html">http://hl7.org/fhir/ValueSet/v2-0001</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project). </p>
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project). </p>
             <br/>
             <table class="grid">
               <tr>
@@ -592,8 +592,8 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-administrative-gender-v2"/>
         <name value="v2 map for AdministrativeGender"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/administrative-gender"/>
         </sourceReference>
@@ -652,9 +652,9 @@
               <a href="valueset-address-type.html">http://hl7.org/fhir/ValueSet/address-type</a> to 
               <a href="v3/AddressUse/vs.html">http://hl7.org/fhir/ValueSet/v3-AddressUse</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -685,10 +685,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-address-type-v3"/>
         <name value="v3 map for AddressType"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -696,7 +697,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/address-type"/>
         </sourceReference>
@@ -737,9 +737,9 @@
               <a href="valueset-medication-request-status.html">http://hl7.org/fhir/ValueSet/medication-request-status</a> to 
               <a href="v3/ActStatus/vs.html">http://hl7.org/fhir/ValueSet/v3-ActStatus</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -795,10 +795,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-medication-request-status-v3"/>
         <name value="v3 map for MedicationRequestStatus"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -806,7 +807,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/medication-request-status"/>
         </sourceReference>
@@ -870,115 +870,6 @@
     </resource>
   </entry>
   <entry>
-    <fullUrl value="http://hl7.org/fhir/ConceptMap/cm-procedure-status-v3"/>
-    <resource>
-      <ConceptMap>
-        <id value="cm-procedure-status-v3"/>
-        <text>
-          <status value="generated"/>
-          <div xmlns="http://www.w3.org/1999/xhtml">
-            <h2>v3 map for ProcedureStatus (http://hl7.org/fhir/ConceptMap/cm-procedure-status-v3)</h2>
-            <p>Mapping from 
-              <a href="valueset-procedure-status.html">http://hl7.org/fhir/ValueSet/procedure-status</a> to 
-              <a href="v3/ActStatus/vs.html">http://hl7.org/fhir/ValueSet/v3-ActStatus</a>
-            </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
-              <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
-            </p>
-            <br/>
-            <table class="grid">
-              <tr>
-                <td>
-                  <b>Source Code</b>
-                </td>
-                <td>
-                  <b>Equivalence</b>
-                </td>
-                <td>
-                  <b>Destination Code</b>
-                </td>
-              </tr>
-              <tr>
-                <td>in-progress (In Progress)</td>
-                <td>equal</td>
-                <td>active (active)</td>
-              </tr>
-              <tr>
-                <td>aborted (Aboted)</td>
-                <td>equal</td>
-                <td>aborted (aborted)</td>
-              </tr>
-              <tr>
-                <td>completed (Completed)</td>
-                <td>equal</td>
-                <td>completed (completed)</td>
-              </tr>
-              <tr>
-                <td>entered-in-error (Entered in Error)</td>
-                <td>equal</td>
-                <td>nullified (nullified)</td>
-              </tr>
-            </table>
-          </div>
-        </text>
-        <url value="http://hl7.org/fhir/ConceptMap/cm-procedure-status-v3"/>
-        <name value="v3 map for ProcedureStatus"/>
-        <status value="draft"/>
-        <publisher value="HL7 (FHIR Project)"/>
-        <contact>
-          <telecom>
-            <system value="other"/>
-            <value value="http://hl7.org/fhir"/>
-          </telecom>
-          <telecom>
-            <system value="email"/>
-            <value value="fhir@lists.hl7.org"/>
-          </telecom>
-        </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
-        <sourceReference>
-          <reference value="http://hl7.org/fhir/ValueSet/procedure-status"/>
-        </sourceReference>
-        <targetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/v3-ActStatus"/>
-        </targetReference>
-        <group>
-          <source value="http://hl7.org/fhir/procedure-status"/>
-          <target value="http://hl7.org/fhir/v3/ActStatus"/>
-          <element>
-            <code value="in-progress"/>
-            <target>
-              <code value="active"/>
-              <equivalence value="equal"/>
-            </target>
-          </element>
-          <element>
-            <code value="aborted"/>
-            <target>
-              <code value="aborted"/>
-              <equivalence value="equal"/>
-            </target>
-          </element>
-          <element>
-            <code value="completed"/>
-            <target>
-              <code value="completed"/>
-              <equivalence value="equal"/>
-            </target>
-          </element>
-          <element>
-            <code value="entered-in-error"/>
-            <target>
-              <code value="nullified"/>
-              <equivalence value="equal"/>
-            </target>
-          </element>
-        </group>
-      </ConceptMap>
-    </resource>
-  </entry>
-  <entry>
     <fullUrl value="http://hl7.org/fhir/ConceptMap/cm-administrative-gender-v3"/>
     <resource>
       <ConceptMap>
@@ -991,7 +882,7 @@
               <a href="valueset-administrative-gender.html">http://hl7.org/fhir/ValueSet/administrative-gender</a> to 
               <a href="v3/AdministrativeGender/vs.html">http://hl7.org/fhir/ValueSet/v3-AdministrativeGender</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project). </p>
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project). </p>
             <br/>
             <table class="grid">
               <tr>
@@ -1031,8 +922,8 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-administrative-gender-v3"/>
         <name value="v3 map for AdministrativeGender"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/administrative-gender"/>
         </sourceReference>
@@ -1087,7 +978,7 @@
               <a href="valueset-data-absent-reason.html">http://hl7.org/fhir/ValueSet/data-absent-reason</a> to 
               <a href="v3/NullFlavor/vs.html">http://hl7.org/fhir/ValueSet/v3-NullFlavor</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project). </p>
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project). </p>
             <br/>
             <table class="grid">
               <tr>
@@ -1152,8 +1043,8 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-data-absent-reason-v3"/>
         <name value="v3 map for DataAbsentReason"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/data-absent-reason"/>
         </sourceReference>
@@ -1243,9 +1134,9 @@
               <a href="valueset-name-use.html">http://hl7.org/fhir/ValueSet/name-use</a> to 
               <a href="v2/0200/index.html">http://hl7.org/fhir/ValueSet/v2-0200</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -1300,7 +1191,7 @@
                 <td>NOUSE (No Longer To Be Used)</td>
               </tr>
               <tr>
-                <td>maiden (Maiden)</td>
+                <td>maiden (Name changed for Marriage)</td>
                 <td>:equivalent</td>
                 <td>M (Maiden Name)</td>
               </tr>
@@ -1310,10 +1201,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-name-use-v2"/>
         <name value="v2 map for NameUse"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -1321,7 +1213,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/name-use"/>
         </sourceReference>
@@ -1401,7 +1292,7 @@
               <a href="valueset-document-reference-status.html">http://hl7.org/fhir/ValueSet/document-reference-status</a> to 
               <a href="v3/ActStatus/vs.html">http://hl7.org/fhir/ValueSet/v3-ActStatus</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project). </p>
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project). </p>
             <br/>
             <table class="grid">
               <tr>
@@ -1436,8 +1327,8 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-document-reference-status-v3"/>
         <name value="v3 map for DocumentReferenceStatus"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/document-reference-status"/>
         </sourceReference>
@@ -1485,9 +1376,9 @@
               <a href="valueset-name-use.html">http://hl7.org/fhir/ValueSet/name-use</a> to 
               <a href="v3/EntityNameUseR2/vs.html">http://hl7.org/fhir/ValueSet/v3-EntityNameUseR2</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -1533,7 +1424,7 @@
                 <td>OLD (no longer in use)</td>
               </tr>
               <tr>
-                <td>maiden (Maiden)</td>
+                <td>maiden (Name changed for Marriage)</td>
                 <td>equal</td>
                 <td>M (maiden name)</td>
               </tr>
@@ -1543,10 +1434,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-name-use-v3"/>
         <name value="v3 map for NameUse"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -1554,7 +1446,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/name-use"/>
         </sourceReference>
@@ -1630,9 +1521,9 @@
               <a href="valueset-detectedissue-severity.html">http://hl7.org/fhir/ValueSet/detectedissue-severity</a> to 
               <a href="v3/SeverityObservation/vs.html">http://hl7.org/fhir/ValueSet/v3-SeverityObservation</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -1668,10 +1559,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-detectedissue-severity-v3"/>
         <name value="v3 map for DetectedIssueSeverity"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -1679,7 +1571,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/detectedissue-severity"/>
         </sourceReference>
@@ -1727,9 +1618,9 @@
               <a href="valueset-medication-admin-status.html">http://hl7.org/fhir/ValueSet/medication-admin-status</a> to 
               <a href="v3/ActStatus/vs.html">http://hl7.org/fhir/ValueSet/v3-ActStatus</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -1775,10 +1666,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-medication-admin-status-v3"/>
         <name value="v3 map for MedicationAdministrationStatus"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -1786,7 +1678,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/medication-admin-status"/>
         </sourceReference>
@@ -1848,9 +1739,9 @@
               <a href="valueset-contact-point-system.html">http://hl7.org/fhir/ValueSet/contact-point-system</a> to 
               <a href="v2/0202/index.html">http://hl7.org/fhir/ValueSet/v2-0202</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -1865,7 +1756,7 @@
                   <b>Destination Code</b>
                 </td>
                 <td>
-                  <b>Comments</b>
+                  <b>Comment</b>
                 </td>
               </tr>
               <tr>
@@ -1893,7 +1784,7 @@
                 <td/>
               </tr>
               <tr>
-                <td>other (URL)</td>
+                <td>url (URL)</td>
                 <td>narrower</td>
                 <td>Internet (Internet Address)</td>
                 <td>for non-email kinds of addresses</td>
@@ -1904,10 +1795,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-contact-point-system-v2"/>
         <name value="v2 map for ContactPointSystem"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -1915,7 +1807,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/contact-point-system"/>
         </sourceReference>
@@ -1944,7 +1835,7 @@
             <target>
               <code value="Internet"/>
               <equivalence value="narrower"/>
-              <comments value="for email addresses"/>
+              <comment value="for email addresses"/>
             </target>
           </element>
           <element>
@@ -1955,11 +1846,11 @@
             </target>
           </element>
           <element>
-            <code value="other"/>
+            <code value="url"/>
             <target>
               <code value="Internet"/>
               <equivalence value="narrower"/>
-              <comments value="for non-email kinds of addresses"/>
+              <comment value="for non-email kinds of addresses"/>
             </target>
           </element>
         </group>
@@ -1979,9 +1870,9 @@
               <a href="valueset-medication-dispense-status.html">http://hl7.org/fhir/ValueSet/medication-dispense-status</a> to 
               <a href="v3/ActStatus/vs.html">http://hl7.org/fhir/ValueSet/v3-ActStatus</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -2027,10 +1918,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-medication-dispense-status-v3"/>
         <name value="v3 map for MedicationDispenseStatus"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -2038,7 +1930,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/medication-dispense-status"/>
         </sourceReference>
@@ -2100,9 +1991,9 @@
               <a href="valueset-composition-status.html">http://hl7.org/fhir/ValueSet/composition-status</a> to 
               <a href="v3/ActStatus/vs.html">http://hl7.org/fhir/ValueSet/v3-ActStatus</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -2143,10 +2034,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-composition-status-v3"/>
         <name value="v3 map for CompositionStatus"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -2154,7 +2046,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/composition-status"/>
         </sourceReference>
@@ -2209,9 +2100,9 @@
               <a href="valueset-address-use.html">http://hl7.org/fhir/ValueSet/address-use</a> to 
               <a href="v2/0190/index.html">http://hl7.org/fhir/ValueSet/v2-0190</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -2226,7 +2117,7 @@
                   <b>Destination Code</b>
                 </td>
                 <td>
-                  <b>Comments</b>
+                  <b>Comment</b>
                 </td>
               </tr>
               <tr>
@@ -2259,10 +2150,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-address-use-v2"/>
         <name value="v2 map for AddressUse"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -2270,7 +2162,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/address-use"/>
         </sourceReference>
@@ -2306,7 +2197,7 @@
             <target>
               <code value="BA"/>
               <equivalence value="wider"/>
-              <comments value="unclear about old addresses"/>
+              <comment value="unclear about old addresses"/>
             </target>
           </element>
         </group>
@@ -2326,9 +2217,9 @@
               <a href="valueset-medication-statement-status.html">http://hl7.org/fhir/ValueSet/medication-statement-status</a> to 
               <a href="v3/ActStatus/vs.html">http://hl7.org/fhir/ValueSet/v3-ActStatus</a>
             </p>
-            <p>DRAFT. Published on Nov 30, 2016 9:26:09 PM by HL7 (FHIR Project) (
+            <p>DRAFT. Published on 21/03/2017 6:09:53 AM by HL7 (FHIR Project) (
               <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
-              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>; ). 
+              <a href="mailto:fhir@lists.hl7.org">fhir@lists.hl7.org</a>). 
             </p>
             <br/>
             <table class="grid">
@@ -2374,10 +2265,11 @@
         <url value="http://hl7.org/fhir/ConceptMap/cm-medication-statement-status-v3"/>
         <name value="v3 map for MedicationStatementStatus"/>
         <status value="draft"/>
+        <date value="2017-03-21T06:09:53+11:00"/>
         <publisher value="HL7 (FHIR Project)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
           <telecom>
@@ -2385,7 +2277,6 @@
             <value value="fhir@lists.hl7.org"/>
           </telecom>
         </contact>
-        <date value="2016-11-30T21:26:09+00:00"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/medication-statement-status"/>
         </sourceReference>
@@ -2440,13 +2331,13 @@
       <ConceptMap>
         <id value="101"/>
         <meta>
-          <lastUpdated value="2016-11-30T21:26:09.734+00:00"/>
+          <lastUpdated value="2017-03-21T06:09:53.925+11:00"/>
         </meta>
         <text>
           <status value="generated"/>
           <div xmlns="http://www.w3.org/1999/xhtml">
       
-            <h2>FHIR/v3 Address Use Mapping (http://hl7.org/fhir/ConceptMap/101)</h2>
+            <h2>FHIR-v3-Address-Use (http://hl7.org/fhir/ConceptMap/101)</h2>
       
             <p>Mapping from 
         
@@ -2456,9 +2347,9 @@
       
             </p>
       
-            <p>DRAFT (not intended for production usage). Published on Jun 13, 2012 by HL7, Inc (FHIR project team (example): 
+            <p>DRAFT (not intended for production usage). Published on 13/06/2012 by HL7, Inc (FHIR project team (example): 
         
-              <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>; ). Creative Commons 0
+              <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>). Creative Commons 0
       
             </p>
       
@@ -2495,21 +2386,9 @@
           
                 <td>
             
-                  <b>Comments</b>
+                  <b>Comment</b>
           
                 </td>
-        
-              </tr>
-        
-              <tr>
-          
-                <td>home (Home)</td>
-          
-                <td/>
-          
-                <td>H (home address)</td>
-          
-                <td/>
         
               </tr>
         
@@ -2571,18 +2450,19 @@
           <value value="urn:uuid:53cd62ee-033e-414c-9f58-3ca97b5ffc3b"/>
         </identifier>
         <version value="20120613"/>
-        <name value="FHIR/v3 Address Use Mapping"/>
+        <name value="FHIR-v3-Address-Use"/>
+        <title value="FHIR/v3 Address Use Mapping"/>
         <status value="draft"/>
         <experimental value="true"/>
+        <date value="2012-06-13"/>
         <publisher value="HL7, Inc"/>
         <contact>
           <name value="FHIR project team (example)"/>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
         </contact>
-        <date value="2012-06-13"/>
         <description value="A mapping between the FHIR and HL7 v3 AddressUse Code systems"/>
         <useContext>
           <code>
@@ -2595,47 +2475,50 @@
         </useContext>
         <purpose value="To help implementers map from HL7 v3/CDA to FHIR"/>
         <copyright value="Creative Commons 0"/>
-        <sourceReference>
-          <reference value="http://hl7.org/fhir/ValueSet/address-use"/>
-        </sourceReference>
-        <targetReference>
-          <reference value="http://hl7.org/fhir/ValueSet/v3-AddressUse"/>
-        </targetReference>
+        <sourceUri value="http://hl7.org/fhir/ValueSet/address-use"/>
+        <targetUri value="http://hl7.org/fhir/ValueSet/v3-AddressUse"/>
         <group>
           <source value="http://hl7.org/fhir/address-use"/>
           <target value="http://hl7.org/fhir/v3/AddressUse"/>
           <element>
             <code value="home"/>
+            <display value="home"/>
             <target>
               <code value="H"/>
-            </target>
-          </element>
-          <element>
-            <code value="home"/>
-            <target>
-              <code value="H"/>
+              <display value="home"/>
             </target>
           </element>
           <element>
             <code value="work"/>
+            <display value="work"/>
             <target>
               <code value="WP"/>
+              <display value="work place"/>
             </target>
           </element>
           <element>
             <code value="temp"/>
+            <display value="temp"/>
             <target>
               <code value="TMP"/>
+              <display value="temporary address"/>
             </target>
           </element>
           <element>
             <code value="old"/>
+            <display value="old"/>
             <target>
               <code value="BAD"/>
+              <display value="bad address"/>
               <equivalence value="disjoint"/>
-              <comments value="In the HL7 v3 AD, old is handled by the usablePeriod element, but you have to provide a time, there&#39;s no simple equivalent of flagging an address as old"/>
+              <comment value="In the HL7 v3 AD, old is handled by the usablePeriod element, but you have to provide a time, there&#39;s no simple equivalent of flagging an address as old"/>
             </target>
           </element>
+          <unmapped>
+            <mode value="fixed"/>
+            <code value="temp"/>
+            <display value="temp"/>
+          </unmapped>
         </group>
       </ConceptMap>
     </resource>
@@ -2646,7 +2529,7 @@
       <ConceptMap>
         <id value="103"/>
         <meta>
-          <lastUpdated value="2016-11-30T21:26:09.734+00:00"/>
+          <lastUpdated value="2017-03-21T06:09:53.925+11:00"/>
         </meta>
         <text>
           <status value="generated"/>
@@ -2656,9 +2539,9 @@
       
             <p>Mapping from http://snomed.info/id?fhir_vs to http://hl7.org/fhir/sid/icd-10-us</p>
       
-            <p>DRAFT (not intended for production usage). Published on Jun 13, 2012 by HL7, Inc (FHIR project team (example): 
+            <p>DRAFT (not intended for production usage). Published on 13/06/2012 by HL7, Inc (FHIR project team (example): 
         
-              <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>; ). Creative Commons 0
+              <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>). Creative Commons 0
       
             </p>
       
@@ -2695,7 +2578,7 @@
           
                 <td>
             
-                  <b>Comments</b>
+                  <b>Comment</b>
           
                 </td>
         
@@ -2703,7 +2586,7 @@
         
               <tr>
           
-                <td>263204007 (Fracture of shaft of ulna (disorder))</td>
+                <td>263204007 (Fracture of shaft of ulna)</td>
           
                 <td>narrower</td>
           
@@ -2738,15 +2621,15 @@
         <name value="SNOMED CT to ICD-10-CM mappings for fracture of ulna"/>
         <status value="draft"/>
         <experimental value="true"/>
+        <date value="2012-06-13"/>
         <publisher value="HL7, Inc"/>
         <contact>
           <name value="FHIR project team (example)"/>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
         </contact>
-        <date value="2012-06-13"/>
         <description value="Example rule-based mappings between SNOMED CT to ICD-10-CM for fracture of ulna"/>
         <jurisdiction>
           <coding>
@@ -2773,14 +2656,14 @@
             <target>
               <code value="S52.209A"/>
               <equivalence value="narrower"/>
-              <comments value="The target mapping to ICD-10-CM is narrower, since additional patient data on the encounter (initial vs. subsequent) and fracture type is required for a valid ICD-10-CM mapping."/>
+              <comment value="The target mapping to ICD-10-CM is narrower, since additional patient data on the encounter (initial vs. subsequent) and fracture type is required for a valid ICD-10-CM mapping."/>
             </target>
           </element>
           <element>
             <target>
               <code value="S52.209D"/>
               <equivalence value="narrower"/>
-              <comments value="The target mapping to ICD-10-CM is narrower, since additional patient data on the encounter (initial vs. subsequent), fracture type and healing (for subsequent encounter) is required for a valid ICD-10-CM mapping."/>
+              <comment value="The target mapping to ICD-10-CM is narrower, since additional patient data on the encounter (initial vs. subsequent), fracture type and healing (for subsequent encounter) is required for a valid ICD-10-CM mapping."/>
             </target>
           </element>
         </group>
@@ -2793,7 +2676,7 @@
       <ConceptMap>
         <id value="102"/>
         <meta>
-          <lastUpdated value="2016-11-30T21:26:09.734+00:00"/>
+          <lastUpdated value="2017-03-21T06:09:53.925+11:00"/>
         </meta>
         <text>
           <status value="generated"/>
@@ -2807,11 +2690,11 @@
       
             </p>
       
-            <p>DRAFT. Published on Jul 25, 2013 by FHIR project team (original source: LabMCoP) (
+            <p>DRAFT. Published on 25/07/2013 by FHIR project team (original source: LabMCoP) (
         
-              <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>; , 
+              <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>, 
         
-              <a href="http://www.phconnect.org/group/laboratorymessagingcommunityofpractice/forum/attachment/download?id=3649725%3AUploadedFile%3A145786">http://www.phconnect.org/group...</a>; ). 
+              <a href="http://www.phconnect.org/group/laboratorymessagingcommunityofpractice/forum/attachment/download?id=3649725%3AUploadedFile%3A145786">http://www.phconnect.org/group...</a>). 
       
             </p>
       
@@ -2841,7 +2724,7 @@
           
                 <td>
             
-                  <b>Comments</b>
+                  <b>Comment</b>
           
                 </td>
         
@@ -2891,7 +2774,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309068002 (Skin lesion sample (specimen))</td>
+                <td>309068002 (Skin lesion sample)</td>
           
                 <td/>
           
@@ -2909,13 +2792,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119323008 (Pus specimen (specimen))</td>
+                <td>119323008 (Pus specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>47002008 (Pustule (morphologic abnormality))</td>
+                <td>47002008 (Pustule)</td>
           
                 <td>HL7 term is a historical term. mapped to Pus</td>
         
@@ -2927,7 +2810,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>446302006 (Air sample (specimen))</td>
+                <td>446302006 (Air sample)</td>
           
                 <td/>
           
@@ -2945,13 +2828,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119376003 (Tissue specimen (specimen))</td>
+                <td>119376003 (Tissue specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>7970006 (Homograft)</td>
+                <td>7970006 (Allograft)</td>
           
                 <td/>
         
@@ -2963,9 +2846,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>408654003 (Specimen obtained by amputation (specimen))</td>
+                <td>408654003 (Specimen obtained by amputation)</td>
           
-                <td>81723002 (Amputation (procedure))</td>
+                <td>81723002 (Amputation)</td>
           
                 <td/>
           
@@ -2981,7 +2864,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -2999,7 +2882,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -3035,9 +2918,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119295008 (Specimen obtained by aspiration (specimen))</td>
+                <td>119295008 (Specimen obtained by aspiration)</td>
           
-                <td>14766002 (Aspiration (procedure))</td>
+                <td>14766002 (Removal by suction)</td>
           
                 <td/>
           
@@ -3107,7 +2990,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119304001 (Blood bag specimen (specimen))</td>
+                <td>119304001 (Blood bag specimen)</td>
           
                 <td/>
           
@@ -3129,7 +3012,7 @@
           
                 <td/>
           
-                <td>32361000 (Popliteal fossa structure (body structure))</td>
+                <td>32361000 (Popliteal fossa)</td>
           
                 <td/>
           
@@ -3161,13 +3044,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309049000 (Lesion sample (specimen))</td>
+                <td>309049000 (Lesion sample)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>339008 (Blistering)</td>
+                <td>339008 (Blister)</td>
           
                 <td/>
         
@@ -3179,13 +3062,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309049000 (Lesion sample (specimen))</td>
+                <td>309049000 (Lesion sample)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>339008 (Blistering)</td>
+                <td>339008 (Blister)</td>
           
                 <td/>
         
@@ -3197,13 +3080,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119295008 (Specimen obtained by aspiration (specimen))</td>
+                <td>119295008 (Specimen obtained by aspiration)</td>
           
-                <td>14766002 (Aspiration (procedure))</td>
+                <td>14766002 (Removal by suction)</td>
           
                 <td/>
           
-                <td>59843005 (Furuncle (morphologic abnormality))</td>
+                <td>59843005 (Furuncle)</td>
           
                 <td/>
         
@@ -3215,7 +3098,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>430268003 (Specimen from bone (specimen))</td>
+                <td>430268003 (Specimen from bone)</td>
           
                 <td/>
           
@@ -3251,7 +3134,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119300005 (Specimen from blood product (specimen))</td>
+                <td>119300005 (Specimen from blood product)</td>
           
                 <td/>
           
@@ -3269,7 +3152,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119367005 (Specimen from burn injury (specimen))</td>
+                <td>119367005 (Specimen from burn injury)</td>
           
                 <td/>
           
@@ -3287,7 +3170,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258415003 (Biopsy sample (specimen))</td>
+                <td>258415003 (Biopsy sample)</td>
           
                 <td>439336003 (Brush biopsy)</td>
           
@@ -3305,7 +3188,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119336008 (Exhaled air specimen (specimen))</td>
+                <td>119336008 (Exhaled air specimen)</td>
           
                 <td/>
           
@@ -3323,9 +3206,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309176002 (Bronchial brushings sample (specimen))</td>
+                <td>309176002 (Bronchial brushings sample)</td>
           
-                <td>80657008 (Bronchoscopy with brush biopsy (procedure))</td>
+                <td>80657008 (Bronchoscopy with brush biopsy)</td>
           
                 <td/>
           
@@ -3341,13 +3224,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>302795002 (Lymph node aspirate (specimen))</td>
+                <td>302795002 (Lymph node aspirate)</td>
           
-                <td>14766002 (Aspiration (procedure))</td>
+                <td>14766002 (Removal by suction)</td>
           
                 <td/>
           
-                <td>11585000 (Bubo (morphologic abnormality))</td>
+                <td>11585000 (Bubo)</td>
           
                 <td/>
         
@@ -3359,13 +3242,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258482009 (Vesicle fluid sample (specimen))</td>
+                <td>258482009 (Vesicle fluid sample)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>339008 (Blistering)</td>
+                <td>339008 (Blister)</td>
           
                 <td/>
         
@@ -3377,9 +3260,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258415003 (Biopsy sample (specimen))</td>
+                <td>258415003 (Biopsy sample)</td>
           
-                <td>86273004 (Biopsy (procedure))</td>
+                <td>86273004 (Biopsy)</td>
           
                 <td/>
           
@@ -3395,7 +3278,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119350003 (Calculus specimen (specimen))</td>
+                <td>119350003 (Calculus specimen)</td>
           
                 <td/>
           
@@ -3413,13 +3296,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309051001 (Body fluid sample (specimen))</td>
+                <td>309051001 (Body fluid sample)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>41570003 (Carbuncle (morphologic abnormality))</td>
+                <td>41570003 (Carbuncle)</td>
           
                 <td/>
         
@@ -3431,7 +3314,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119311002 (Catheter specimen (specimen))</td>
+                <td>119311002 (Catheter specimen)</td>
           
                 <td/>
           
@@ -3467,7 +3350,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119327009 (Nail specimen (specimen))</td>
+                <td>119327009 (Nail specimen)</td>
           
                 <td/>
           
@@ -3485,7 +3368,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119401005 (Specimen from conjunctiva (specimen))</td>
+                <td>119401005 (Specimen from conjunctiva)</td>
           
                 <td/>
           
@@ -3521,7 +3404,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258498002 (Conjunctival swab (specimen))</td>
+                <td>258498002 (Conjunctival swab)</td>
           
                 <td/>
           
@@ -3539,7 +3422,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119329007 (Colostrum specimen (specimen))</td>
+                <td>119329007 (Colostrum specimen)</td>
           
                 <td/>
           
@@ -3557,11 +3440,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>399713008 (Specimen from uterine cervix obtained by cone biopsy (specimen))</td>
+                <td>399713008 (Specimen from uterine cervix obtained by cone biopsy)</td>
           
-                <td>54535009 (Cone biopsy of cervix (procedure))</td>
+                <td>54535009 (Cone biopsy of cervix)</td>
           
-                <td>71252005 (Cervix uteri structure (body structure))</td>
+                <td>71252005 (Uterine cervix)</td>
           
                 <td/>
           
@@ -3611,13 +3494,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258507003 (Swab of line insertion site (specimen))</td>
+                <td>258507003 (Swab of line insertion site)</td>
           
-                <td>285570007 (Taking of swab (procedure))</td>
+                <td>285570007 (Taking of swab)</td>
           
                 <td/>
           
-                <td>386144009 (Line insertion site (morphologic abnormality))</td>
+                <td>386144009 (Line insertion site)</td>
           
                 <td>Prefer to have aspirate of the pus oozing out from cleaned insertion site - if swab is all that can be obtained, then swab after cleaning, otherwise you may get a contaminated specimen and a falsely identified infected central line. Do not just swab the reddened area - that will just collect skin flora       </td>
         
@@ -3629,7 +3512,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309051001 (Body fluid sample (specimen))</td>
+                <td>309051001 (Body fluid sample)</td>
           
                 <td/>
           
@@ -3647,7 +3530,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258453008 (Cyst fluid sample (specimen))</td>
+                <td>258453008 (Cyst fluid sample)</td>
           
                 <td/>
           
@@ -3683,7 +3566,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -3701,7 +3584,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258507003 (Swab of line insertion site (specimen))</td>
+                <td>258507003 (Swab of line insertion site)</td>
           
                 <td/>
           
@@ -3719,13 +3602,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>445085009 (Tunneled central venous catheter (physical object))</td>
+                <td>445085009 (Tunneled central venous catheter)</td>
           
                 <td>TBD in detail</td>
         
@@ -3737,13 +3620,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119368000 (Specimen from cyst (specimen))</td>
+                <td>119368000 (Specimen from cyst)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>27925004 (Nodule (morphologic abnormality))</td>
+                <td>27925004 (Nodule)</td>
           
                 <td/>
         
@@ -3755,7 +3638,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119368000 (Specimen from cyst (specimen))</td>
+                <td>119368000 (Specimen from cyst)</td>
           
                 <td/>
           
@@ -3791,7 +3674,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119335007 (Coughed sputum specimen (specimen))</td>
+                <td>119335007 (Coughed sputum specimen)</td>
           
                 <td/>
           
@@ -3809,7 +3692,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258505006 (Skin ulcer swab (specimen))</td>
+                <td>258505006 (Skin ulcer swab)</td>
           
                 <td/>
           
@@ -3845,7 +3728,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119360007 (Dialysis fluid specimen (specimen))</td>
+                <td>119360007 (Dialysis fluid specimen)</td>
           
                 <td/>
           
@@ -3863,7 +3746,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258439008 (Discharge specimen (specimen))</td>
+                <td>258439008 (Discharge)</td>
           
                 <td/>
           
@@ -3881,13 +3764,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119376003 (Tissue specimen (specimen))</td>
+                <td>119376003 (Tissue specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>31113003 (Diverticulum (morphologic abnormality))</td>
+                <td>31113003 (Diverticulum)</td>
           
                 <td/>
         
@@ -3899,7 +3782,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119306004 (Drain device specimen (specimen))</td>
+                <td>119306004 (Drain device specimen)</td>
           
                 <td/>
           
@@ -3917,9 +3800,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258455001 (Drainage fluid sample (specimen))</td>
+                <td>258455001 (Drainage fluid sample)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
                 <td/>
           
@@ -3935,9 +3818,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309051001 (Body fluid sample (specimen))</td>
+                <td>309051001 (Body fluid sample)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
                 <td/>
           
@@ -3953,7 +3836,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122580007 (Cerumen specimen (specimen))</td>
+                <td>122580007 (Cerumen specimen)</td>
           
                 <td/>
           
@@ -3971,11 +3854,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309210009 (Esophageal brushings sample (specimen))</td>
+                <td>309210009 (Oesophageal brushings sample)</td>
           
-                <td>36213007 (Endoscopy and brush biopsy (procedure))</td>
+                <td>36213007 (Endoscopy and brush biopsy)</td>
           
-                <td>32849002 (Esophageal structure (body structure))</td>
+                <td>32849002 (Esophagus)</td>
           
                 <td/>
           
@@ -4025,7 +3908,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258440005 (Effusion sample (specimen))</td>
+                <td>258440005 (Effusion sample)</td>
           
                 <td/>
           
@@ -4043,7 +3926,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119320006 (Food specimen (specimen))</td>
+                <td>119320006 (Food specimen)</td>
           
                 <td/>
           
@@ -4061,7 +3944,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258536003 (Incubator swab (specimen))</td>
+                <td>258536003 (Incubator swab)</td>
           
                 <td/>
           
@@ -4079,7 +3962,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119314005 (Electrode specimen (specimen))</td>
+                <td>119314005 (Electrode specimen)</td>
           
                 <td/>
           
@@ -4097,7 +3980,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119324002 (Specimen of unknown material (specimen))</td>
+                <td>119324002 (Specimen of unknown material)</td>
           
                 <td/>
           
@@ -4169,11 +4052,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119307008 (Specimen from endotracheal tube (specimen))</td>
+                <td>119307008 (Endotracheal tube specimen)</td>
           
-                <td>14766002 (Aspiration (procedure))</td>
+                <td>14766002 (Removal by suction)</td>
           
-                <td>321667001 (Respiratory tract structure (body structure))</td>
+                <td>321667001 (Respiratory tract structure)</td>
           
                 <td/>
           
@@ -4187,7 +4070,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -4205,11 +4088,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119307008 (Specimen from endotracheal tube (specimen))</td>
+                <td>119307008 (Endotracheal tube specimen)</td>
           
-                <td>14766002 (Aspiration (procedure))</td>
+                <td>14766002 (Removal by suction)</td>
           
-                <td>321667001 (Respiratory tract structure (body structure))</td>
+                <td>321667001 (Respiratory tract structure)</td>
           
                 <td/>
           
@@ -4241,7 +4124,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119336008 (Exhaled air specimen (specimen))</td>
+                <td>119336008 (Exhaled air specimen)</td>
           
                 <td/>
           
@@ -4277,7 +4160,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258441009 (Exudate sample (specimen))</td>
+                <td>258441009 (Exudate sample)</td>
           
                 <td/>
           
@@ -4313,13 +4196,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119297000 (Blood specimen (specimen))</td>
+                <td>119297000 (Blood specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>303112003 (Fetal period (qualifier value))</td>
+                <td>303112003 (Fetal period)</td>
           
                 <td/>
         
@@ -4331,11 +4214,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>168139001 (Peritoneal fluid sample (specimen))</td>
+                <td>168139001 (Peritoneal fluid sample)</td>
           
                 <td/>
           
-                <td>83670000 (Peritoneal cavity structure (body structure))</td>
+                <td>83670000 (Peritoneal cavity)</td>
           
                 <td/>
           
@@ -4349,7 +4232,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119370009 (Specimen from fistula (specimen))</td>
+                <td>119370009 (Specimen from fistula)</td>
           
                 <td/>
           
@@ -4367,7 +4250,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309051001 (Body fluid sample (specimen))</td>
+                <td>309051001 (Body fluid sample)</td>
           
                 <td/>
           
@@ -4403,7 +4286,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309051001 (Body fluid sample (specimen))</td>
+                <td>309051001 (Body fluid sample)</td>
           
                 <td/>
           
@@ -4421,7 +4304,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258442002 (Fluid sample (specimen))</td>
+                <td>258442002 (Fluid sample)</td>
           
                 <td/>
           
@@ -4439,7 +4322,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -4457,11 +4340,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258442002 (Fluid sample (specimen))</td>
+                <td>258442002 (Fluid sample)</td>
           
                 <td/>
           
-                <td>272626006 (Respiratory organ (body structure))</td>
+                <td>272626006 (Respiratory organ)</td>
           
                 <td/>
           
@@ -4475,11 +4358,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309502007 (Fetus specimen (specimen))</td>
+                <td>309502007 (Fetus specimen)</td>
           
                 <td/>
           
-                <td>41695006 (Scalp structure)</td>
+                <td>41695006 (Scalp)</td>
           
                 <td/>
           
@@ -4493,13 +4376,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119295008 (Specimen obtained by aspiration (specimen))</td>
+                <td>119295008 (Specimen obtained by aspiration)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>59843005 (Furuncle (morphologic abnormality))</td>
+                <td>59843005 (Furuncle)</td>
           
                 <td>Further describe the sample as tissue or pus. or by the collection method. The term boil is not specifc to a body site - need to indicate source site (spm.8). preferred term is Aspirate_Boil</td>
         
@@ -4511,7 +4394,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119317003 (Gaseous material specimen (specimen))</td>
+                <td>119317003 (Gaseous material specimen)</td>
           
                 <td/>
           
@@ -4529,11 +4412,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>168137004 (Gastric aspirate sample (specimen))</td>
+                <td>168137004 (Gastric aspirate sample)</td>
           
-                <td>14766002 (Aspiration (procedure))</td>
+                <td>14766002 (Removal by suction)</td>
           
-                <td>69695003 (Stomach structure (body structure))</td>
+                <td>69695003 (Stomach)</td>
           
                 <td/>
           
@@ -4547,11 +4430,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119379005 (Specimen from stomach (specimen))</td>
+                <td>119379005 (Specimen from stomach)</td>
           
                 <td/>
           
-                <td>66051006 (Pyloric antrum structure (body structure))</td>
+                <td>66051006 (Pyloric antrum)</td>
           
                 <td/>
           
@@ -4565,11 +4448,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309213006 (Gastric brushings sample (specimen))</td>
+                <td>309213006 (Gastric brushings sample)</td>
           
-                <td>235157009 (Endoscopic brushings of gastrointestinal tract (procedure))</td>
+                <td>235157009 (Endoscopic brushings of GIT)</td>
           
-                <td>69695003 (Stomach structure (body structure))</td>
+                <td>69695003 (Stomach)</td>
           
                 <td/>
           
@@ -4583,11 +4466,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258459007 (Gastric fluid sample (specimen))</td>
+                <td>258459007 (Gastric fluid sample)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
-                <td>69695003 (Stomach structure (body structure))</td>
+                <td>69695003 (Stomach)</td>
           
                 <td/>
           
@@ -4601,7 +4484,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258459007 (Gastric fluid sample (specimen))</td>
+                <td>258459007 (Gastric fluid sample)</td>
           
                 <td/>
           
@@ -4619,7 +4502,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119394009 (Specimen from vagina (specimen))</td>
+                <td>119394009 (Specimen from vagina)</td>
           
                 <td/>
           
@@ -4637,7 +4520,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>440493002 (Graft specimen from patient (specimen))</td>
+                <td>440493002 (Graft sample)</td>
           
                 <td/>
           
@@ -4655,13 +4538,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119376003 (Tissue specimen (specimen))</td>
+                <td>119376003 (Tissue specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>45647009 (Granuloma (morphologic abnormality))</td>
+                <td>45647009 (Granuloma)</td>
           
                 <td/>
         
@@ -4673,7 +4556,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119311002 (Catheter specimen (specimen))</td>
+                <td>119311002 (Catheter specimen)</td>
           
                 <td/>
           
@@ -4709,11 +4592,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309211008 (Specimen from stomach obtained by biopsy)</td>
+                <td>309211008 (Gastric biopsy sample)</td>
           
-                <td>79121003 (Biopsy of stomach (procedure))</td>
+                <td>79121003 (Biopsy of stomach)</td>
           
-                <td>69695003 (Stomach structure (body structure))</td>
+                <td>69695003 (Stomach)</td>
           
                 <td/>
           
@@ -4745,13 +4628,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258459007 (Gastric fluid sample (specimen))</td>
+                <td>258459007 (Gastric fluid sample)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
-                <td>69695003 (Stomach structure (body structure))</td>
+                <td>69695003 (Stomach)</td>
           
-                <td>127490009 (Gastrostomy use)</td>
+                <td>127490009 (Gastrostomy route)</td>
           
                 <td>Historical term - consider what is being drained and indicate that in SPM-4 instead</td>
         
@@ -4781,13 +4664,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119297000 (Blood specimen (specimen))</td>
+                <td>119297000 (Blood specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>303113008 (Postmortem period (qualifier value))</td>
+                <td>303113008 (Postmortem period)</td>
           
                 <td/>
         
@@ -4799,7 +4682,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -4817,7 +4700,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -4835,7 +4718,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119376003 (Tissue specimen (specimen))</td>
+                <td>119376003 (Tissue specimen)</td>
           
                 <td/>
           
@@ -4853,7 +4736,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119306004 (Drain device specimen (specimen))</td>
+                <td>119306004 (Drain device specimen)</td>
           
                 <td/>
           
@@ -4871,13 +4754,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>445085009 (Tunneled central venous catheter (physical object))</td>
+                <td>445085009 (Tunneled central venous catheter)</td>
           
                 <td>TBD in detail</td>
         
@@ -4889,13 +4772,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309051001 (Body fluid sample (specimen))</td>
+                <td>309051001 (Body fluid sample)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>55434001 (Hydrocele (disorder))</td>
+                <td>55434001 (Hydrocele)</td>
           
                 <td/>
         
@@ -4925,7 +4808,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309075001 (Skin cyst sample (specimen))</td>
+                <td>309075001 (Skin cyst sample)</td>
           
                 <td/>
           
@@ -4943,7 +4826,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -4961,7 +4844,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119337004 (Inhaled gas specimen (specimen))</td>
+                <td>119337004 (Inhaled gas specimen)</td>
           
                 <td/>
           
@@ -4979,13 +4862,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258455001 (Drainage fluid sample (specimen))</td>
+                <td>258455001 (Drainage fluid sample)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>419954003 (Ileostomy route (qualifier value))</td>
+                <td>419954003 (Ileostomy route)</td>
           
                 <td>Historical term - consider what is being drained and indicate that in SPM-4 instead: stool is what is expected, should use stool sample</td>
         
@@ -5015,7 +4898,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>439961009 (Implant submitted as specimen (specimen))</td>
+                <td>439961009 (Implant submitted as specimen)</td>
           
                 <td/>
           
@@ -5033,7 +4916,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>438660002 (Specimen from prosthetic device (specimen))</td>
+                <td>438660002 (Specimen from prosthetic device)</td>
           
                 <td/>
           
@@ -5069,7 +4952,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258614005 (Insect sample (specimen))</td>
+                <td>258614005 (Insect sample)</td>
           
                 <td/>
           
@@ -5087,7 +4970,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -5105,7 +4988,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119307008 (Specimen from endotracheal tube (specimen))</td>
+                <td>119307008 (Endotracheal tube specimen)</td>
           
                 <td/>
           
@@ -5141,13 +5024,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>255560000 (Intravenous (qualifier value))</td>
+                <td>255560000 (Intravenous)</td>
           
                 <td>TBD in detail</td>
         
@@ -5159,7 +5042,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258649003 (Intravenous infusion fluid sample (specimen))</td>
+                <td>258649003 (Intravenous infusion fluid sample)</td>
           
                 <td/>
           
@@ -5177,7 +5060,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -5195,11 +5078,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258463000 (Jejunal fluid sample (specimen))</td>
+                <td>258463000 (Jejunal fluid sample)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
-                <td>21306003 (Jejunal structure (body structure))</td>
+                <td>21306003 (Jejunum)</td>
           
                 <td/>
           
@@ -5213,7 +5096,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119332005 (Synovial fluid specimen (specimen))</td>
+                <td>119332005 (Synovial fluid specimen)</td>
           
                 <td/>
           
@@ -5231,9 +5114,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309051001 (Body fluid sample (specimen))</td>
+                <td>309051001 (Body fluid sample)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
                 <td/>
           
@@ -5249,9 +5132,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>440674008 (Specimen obtained by lavage (specimen))</td>
+                <td>440674008 (Wash out specimen)</td>
           
-                <td>67889009 (Irrigation (procedure))</td>
+                <td>67889009 (Irrigation)</td>
           
                 <td/>
           
@@ -5267,11 +5150,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309051001 (Body fluid sample (specimen))</td>
+                <td>309051001 (Body fluid sample)</td>
           
                 <td/>
           
-                <td>64033007 (Kidney structure (body structure))</td>
+                <td>64033007 (Kidney)</td>
           
                 <td/>
           
@@ -5285,9 +5168,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258607008 (Bronchoalveolar lavage fluid sample (specimen))</td>
+                <td>258607008 (Bronchoalveolar lavage fluid sample)</td>
           
-                <td>397394009 (Bronchoalveolar lavage (procedure))</td>
+                <td>397394009 (Bronchoalveolar lavage)</td>
           
                 <td/>
           
@@ -5303,11 +5186,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>168138009 (Gastric lavage aspirate sample (specimen))</td>
+                <td>168138009 (Gastric lavage aspirate sample)</td>
           
-                <td>173830003 (Gastric lavage (procedure))</td>
+                <td>173830003 (Irrigation of stomach)</td>
           
-                <td>69695003 (Stomach structure (body structure))</td>
+                <td>69695003 (Stomach)</td>
           
                 <td/>
           
@@ -5321,7 +5204,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>440137008 (Specimen obtained by peritoneal lavage (specimen))</td>
+                <td>440137008 (Specimen obtained by peritoneal lavage)</td>
           
                 <td/>
           
@@ -5339,11 +5222,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>440674008 (Specimen obtained by lavage (specimen))</td>
+                <td>440674008 (Wash out specimen)</td>
           
-                <td>67889009 (Irrigation (procedure))</td>
+                <td>67889009 (Irrigation)</td>
           
-                <td>44567001 (Tracheal structure)</td>
+                <td>44567001 (Trachea)</td>
           
                 <td/>
           
@@ -5357,7 +5240,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>440473005 (Contact lens submitted as specimen (specimen))</td>
+                <td>440473005 (Contact lens submitted as specimen)</td>
           
                 <td/>
           
@@ -5393,7 +5276,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309049000 (Lesion sample (specimen))</td>
+                <td>309049000 (Lesion sample)</td>
           
                 <td/>
           
@@ -5411,7 +5294,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258442002 (Fluid sample (specimen))</td>
+                <td>258442002 (Fluid sample)</td>
           
                 <td/>
           
@@ -5447,11 +5330,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258450006 (Cerebrospinal fluid sample (specimen))</td>
+                <td>258450006 (Cerebrospinal fluid sample)</td>
           
                 <td/>
           
-                <td>303949008 (Lumbar spinal cerebrospinal fluid pathway (body structure))</td>
+                <td>303949008 (Lumbar spinal cerebrospinal fluid pathway)</td>
           
                 <td/>
           
@@ -5465,7 +5348,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -5483,13 +5366,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>420548004 (Specimen from mass lesion (specimen))</td>
+                <td>420548004 (Specimen from mass)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>4147007 (Mass (morphologic abnormality))</td>
+                <td>4147007 (Mass)</td>
           
                 <td/>
         
@@ -5501,7 +5384,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119345009 (Menstrual blood specimen (specimen))</td>
+                <td>119345009 (Menstrual blood specimen)</td>
           
                 <td/>
           
@@ -5519,11 +5402,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119376003 (Tissue specimen (specimen))</td>
+                <td>119376003 (Tissue specimen)</td>
           
                 <td/>
           
-                <td>414781009 (Mucous membrane structure (body structure))</td>
+                <td>414781009 (Mucous membrane structure)</td>
           
                 <td/>
           
@@ -5537,7 +5420,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258483004 (Mucus sample (specimen))</td>
+                <td>258483004 (Mucus sample)</td>
           
                 <td/>
           
@@ -5555,11 +5438,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258474009 (Sinus fluid sample (specimen))</td>
+                <td>258474009 (Sinus fluid sample)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
-                <td>2095001 (Nasal sinus structure (body structure))</td>
+                <td>2095001 (Accessory sinus)</td>
           
                 <td/>
           
@@ -5591,7 +5474,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>438660002 (Specimen from prosthetic device (specimen))</td>
+                <td>438660002 (Specimen from prosthetic device)</td>
           
                 <td/>
           
@@ -5611,9 +5494,9 @@
           
                 <td>302794003 (Nasogastric aspirate)</td>
           
-                <td>6853008 (Nasogastric tube aspiration (procedure))</td>
+                <td>6853008 (Nasogastric tube aspiration)</td>
           
-                <td>69695003 (Stomach structure (body structure))</td>
+                <td>69695003 (Stomach)</td>
           
                 <td/>
           
@@ -5627,13 +5510,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258459007 (Gastric fluid sample (specimen))</td>
+                <td>258459007 (Gastric fluid sample)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
-                <td>69695003 (Stomach structure (body structure))</td>
+                <td>69695003 (Stomach)</td>
           
-                <td>127492001 (Nasogastric use)</td>
+                <td>127492001 (Nasogastric route)</td>
           
                 <td>Historical term - consider what is being drained and indicate that in SPM-4 instead</td>
         
@@ -5645,7 +5528,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>438660002 (Specimen from prosthetic device (specimen))</td>
+                <td>438660002 (Specimen from prosthetic device)</td>
           
                 <td/>
           
@@ -5681,7 +5564,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>168141000 (Nasal fluid sample (specimen))</td>
+                <td>168141000 (Nasal fluid sample)</td>
           
                 <td/>
           
@@ -5699,7 +5582,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>123038009 (Specimen (specimen))</td>
+                <td>123038009 (Specimen)</td>
           
                 <td/>
           
@@ -5721,7 +5604,7 @@
           
                 <td/>
           
-                <td>74262004 (Oral cavity structure (body structure))</td>
+                <td>74262004 (Oral cavity)</td>
           
                 <td/>
           
@@ -5735,7 +5618,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>123038009 (Specimen (specimen))</td>
+                <td>123038009 (Specimen)</td>
           
                 <td/>
           
@@ -5771,7 +5654,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122571007 (Pericardial fluid specimen (specimen))</td>
+                <td>122571007 (Pericardial fluid specimen)</td>
           
                 <td/>
           
@@ -5789,7 +5672,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>438660002 (Specimen from prosthetic device (specimen))</td>
+                <td>438660002 (Specimen from prosthetic device)</td>
           
                 <td/>
           
@@ -5825,11 +5708,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119371008 (Specimen from abscess (specimen))</td>
+                <td>119371008 (Specimen from abscess)</td>
           
                 <td/>
           
-                <td>12921003 (Pelvic structure (body structure))</td>
+                <td>12921003 (Pelvis)</td>
           
                 <td/>
           
@@ -5847,7 +5730,7 @@
           
                 <td/>
           
-                <td>18911002 (Penile structure (body structure))</td>
+                <td>18911002 (Penis)</td>
           
                 <td/>
           
@@ -5861,11 +5744,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119371008 (Specimen from abscess (specimen))</td>
+                <td>119371008 (Specimen from abscess)</td>
           
                 <td/>
           
-                <td>397158004 (Perianal region structure (body structure))</td>
+                <td>397158004 (Perianal region structure)</td>
           
                 <td/>
           
@@ -5879,7 +5762,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119368000 (Specimen from cyst (specimen))</td>
+                <td>119368000 (Specimen from cyst)</td>
           
                 <td/>
           
@@ -5897,7 +5780,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>438660002 (Specimen from prosthetic device (specimen))</td>
+                <td>438660002 (Specimen from prosthetic device)</td>
           
                 <td/>
           
@@ -5915,7 +5798,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258507003 (Swab of line insertion site (specimen))</td>
+                <td>258507003 (Swab of line insertion site)</td>
           
                 <td/>
           
@@ -5933,7 +5816,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119301009 (Plant specimen (specimen))</td>
+                <td>119301009 (Plant specimen)</td>
           
                 <td/>
           
@@ -5951,7 +5834,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119361006 (Plasma specimen (specimen))</td>
+                <td>119361006 (Plasma specimen)</td>
           
                 <td/>
           
@@ -5969,7 +5852,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119305000 (Plasma bag specimen (specimen))</td>
+                <td>119305000 (Plasma bag specimen)</td>
           
                 <td/>
           
@@ -5987,13 +5870,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119364003 (Serum specimen (specimen))</td>
+                <td>119364003 (Serum specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>255587001 (Peak (qualifier value))</td>
+                <td>255587001 (Peak)</td>
           
                 <td/>
         
@@ -6005,11 +5888,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258439008 (Discharge specimen (specimen))</td>
+                <td>258439008 (Discharge)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
-                <td>13648007 (Urethral structure (body structure))</td>
+                <td>13648007 (Urethra)</td>
           
                 <td/>
           
@@ -6023,13 +5906,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119376003 (Tissue specimen (specimen))</td>
+                <td>119376003 (Tissue specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>41329004 (Polyp (morphologic abnormality))</td>
+                <td>41329004 (Polyp)</td>
           
                 <td/>
         
@@ -6041,11 +5924,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>440493002 (Graft specimen from patient (specimen))</td>
+                <td>440493002 (Graft sample)</td>
           
                 <td/>
           
-                <td>6902008 (Popliteal region structure (body structure))</td>
+                <td>6902008 (Popliteal region)</td>
           
                 <td/>
           
@@ -6059,11 +5942,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>440493002 (Graft specimen from patient (specimen))</td>
+                <td>440493002 (Graft sample)</td>
           
                 <td/>
           
-                <td>6902008 (Popliteal region structure (body structure))</td>
+                <td>6902008 (Popliteal region)</td>
           
                 <td/>
           
@@ -6095,7 +5978,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119311002 (Catheter specimen (specimen))</td>
+                <td>119311002 (Catheter specimen)</td>
           
                 <td/>
           
@@ -6113,7 +5996,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119362004 (Platelet poor plasma specimen (specimen))</td>
+                <td>119362004 (Platelet poor plasma specimen)</td>
           
                 <td/>
           
@@ -6131,7 +6014,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>438660002 (Specimen from prosthetic device (specimen))</td>
+                <td>438660002 (Specimen from prosthetic device)</td>
           
                 <td/>
           
@@ -6149,7 +6032,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119363009 (Platelet rich plasma specimen (specimen))</td>
+                <td>119363009 (Platelet rich plasma specimen)</td>
           
                 <td/>
           
@@ -6167,7 +6050,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119368000 (Specimen from cyst (specimen))</td>
+                <td>119368000 (Specimen from cyst)</td>
           
                 <td/>
           
@@ -6185,13 +6068,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119365002 (Specimen from wound (specimen))</td>
+                <td>119365002 (Specimen from wound)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>129300006 (Puncture - action (qualifier value))</td>
+                <td>129300006 (Puncture - action)</td>
           
                 <td/>
         
@@ -6203,7 +6086,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119323008 (Pus specimen (specimen))</td>
+                <td>119323008 (Pus specimen)</td>
           
                 <td/>
           
@@ -6221,13 +6104,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119323008 (Pus specimen (specimen))</td>
+                <td>119323008 (Pus specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>47002008 (Pustule (morphologic abnormality))</td>
+                <td>47002008 (Pustule)</td>
           
                 <td/>
         
@@ -6239,13 +6122,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119323008 (Pus specimen (specimen))</td>
+                <td>119323008 (Pus specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>47002008 (Pustule (morphologic abnormality))</td>
+                <td>47002008 (Pustule)</td>
           
                 <td/>
         
@@ -6275,7 +6158,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>278020009 (Spot urine sample (specimen))</td>
+                <td>278020009 (Spot urine sample)</td>
           
                 <td/>
           
@@ -6311,11 +6194,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119339001 (Stool specimen (specimen))</td>
+                <td>119339001 (Stool specimen)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
-                <td>34402009 (Rectum structure (body structure))</td>
+                <td>34402009 (Rectum)</td>
           
                 <td/>
           
@@ -6329,11 +6212,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119371008 (Specimen from abscess (specimen))</td>
+                <td>119371008 (Specimen from abscess)</td>
           
                 <td/>
           
-                <td>34402009 (Rectum structure (body structure))</td>
+                <td>34402009 (Rectum)</td>
           
                 <td/>
           
@@ -6347,11 +6230,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258420003 (Cyst tissue (specimen))</td>
+                <td>258420003 (Cyst tissue)</td>
           
                 <td/>
           
-                <td>64033007 (Kidney structure (body structure))</td>
+                <td>64033007 (Kidney)</td>
           
                 <td/>
           
@@ -6365,11 +6248,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258453008 (Cyst fluid sample (specimen))</td>
+                <td>258453008 (Cyst fluid sample)</td>
           
                 <td/>
           
-                <td>64033007 (Kidney structure (body structure))</td>
+                <td>64033007 (Kidney)</td>
           
                 <td/>
           
@@ -6383,7 +6266,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258603007 (Respiratory sample (specimen))</td>
+                <td>258603007 (Respiratory sample)</td>
           
                 <td/>
           
@@ -6401,7 +6284,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119342007 (Saliva specimen (specimen))</td>
+                <td>119342007 (Saliva specimen)</td>
           
                 <td/>
           
@@ -6419,7 +6302,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119376003 (Tissue specimen (specimen))</td>
+                <td>119376003 (Tissue specimen)</td>
           
                 <td/>
           
@@ -6437,11 +6320,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
-                <td>9454009 (Structure of subclavian vein (body structure))</td>
+                <td>9454009 (Subclavian vein)</td>
           
                 <td/>
           
@@ -6455,11 +6338,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119371008 (Specimen from abscess (specimen))</td>
+                <td>119371008 (Specimen from abscess)</td>
           
                 <td/>
           
-                <td>20233005 (Scrotal structure (body structure))</td>
+                <td>20233005 (Scrotum)</td>
           
                 <td/>
           
@@ -6473,7 +6356,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>432825001 (Body secretion specimen (specimen))</td>
+                <td>432825001 (Body secretion specimen)</td>
           
                 <td/>
           
@@ -6491,7 +6374,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119364003 (Serum specimen (specimen))</td>
+                <td>119364003 (Serum specimen)</td>
           
                 <td/>
           
@@ -6509,13 +6392,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119295008 (Specimen obtained by aspiration (specimen))</td>
+                <td>119295008 (Specimen obtained by aspiration)</td>
           
-                <td>14766002 (Aspiration (procedure))</td>
+                <td>14766002 (Removal by suction)</td>
           
                 <td/>
           
-                <td>257351008 (Shunt (physical object))</td>
+                <td>257351008 (Shunt)</td>
           
                 <td>Preferred is aspiration with sterile syringe from inflamed area. Specify body location of shunt site</td>
         
@@ -6527,11 +6410,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>446861007 (Cerebrospinal fluid specimen obtained via ventriculoperitoneal shunt (specimen))</td>
+                <td>446861007 (Cerebrospinal fluid specimen obtained via ventriculoperitoneal shunt)</td>
           
-                <td>446860008 (Collection of cerebrospinal fluid via ventriculoperitoneal shunt (procedure))</td>
+                <td>446860008 (Collection of cerebrospinal fluid via ventriculoperitoneal shunt)</td>
           
-                <td>279107003 (Central nervous system space (body structure))</td>
+                <td>279107003 (Central nervous system space)</td>
           
                 <td/>
           
@@ -6581,9 +6464,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309066003 (Skin biopsy sample (specimen))</td>
+                <td>309066003 (Skin biopsy sample)</td>
           
-                <td>240977001 (Biopsy of skin (procedure))</td>
+                <td>240977001 (Biopsy of skin)</td>
           
                 <td/>
           
@@ -6599,7 +6482,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119325001 (Skin (tissue) specimen (specimen))</td>
+                <td>119325001 (Skin specimen)</td>
           
                 <td/>
           
@@ -6617,13 +6500,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>420548004 (Specimen from mass lesion (specimen))</td>
+                <td>420548004 (Specimen from mass)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>4147007 (Mass (morphologic abnormality))</td>
+                <td>4147007 (Mass)</td>
           
                 <td/>
         
@@ -6635,7 +6518,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119332005 (Synovial fluid specimen (specimen))</td>
+                <td>119332005 (Synovial fluid specimen)</td>
           
                 <td/>
           
@@ -6653,7 +6536,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119349003 (Spermatozoa specimen (specimen))</td>
+                <td>119349003 (Spermatozoa specimen)</td>
           
                 <td/>
           
@@ -6671,7 +6554,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -6689,7 +6572,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -6725,7 +6608,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119334006 (Sputum specimen (specimen))</td>
+                <td>119334006 (Sputum specimen)</td>
           
                 <td/>
           
@@ -6743,7 +6626,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119335007 (Coughed sputum specimen (specimen))</td>
+                <td>119335007 (Coughed sputum specimen)</td>
           
                 <td/>
           
@@ -6797,7 +6680,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258610001 (Sputum specimen obtained by sputum induction (specimen))</td>
+                <td>258610001 (Sputum specimen obtained by sputum induction)</td>
           
                 <td/>
           
@@ -6815,7 +6698,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119335007 (Coughed sputum specimen (specimen))</td>
+                <td>119335007 (Coughed sputum specimen)</td>
           
                 <td/>
           
@@ -6851,7 +6734,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119339001 (Stool specimen (specimen))</td>
+                <td>119339001 (Stool specimen)</td>
           
                 <td/>
           
@@ -6869,11 +6752,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119350003 (Calculus specimen (specimen))</td>
+                <td>119350003 (Calculus specimen)</td>
           
                 <td/>
           
-                <td>64033007 (Kidney structure (body structure))</td>
+                <td>64033007 (Kidney)</td>
           
                 <td/>
           
@@ -6887,11 +6770,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119371008 (Specimen from abscess (specimen))</td>
+                <td>119371008 (Specimen from abscess)</td>
           
                 <td/>
           
-                <td>5713008 (Submandibular triangle structure (body structure))</td>
+                <td>5713008 (Submandibular triangle)</td>
           
                 <td/>
           
@@ -6905,11 +6788,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119371008 (Specimen from abscess (specimen))</td>
+                <td>119371008 (Specimen from abscess)</td>
           
                 <td/>
           
-                <td>4335006 (Upper jaw region structure (body structure))</td>
+                <td>4335006 (Upper jaw)</td>
           
                 <td/>
           
@@ -6923,9 +6806,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>446562005 (Body fluid specimen obtained via sump drain (specimen))</td>
+                <td>446562005 (Body fluid specimen obtained via sump drain)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
                 <td/>
           
@@ -6941,9 +6824,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122575003 (Urine specimen (specimen))</td>
+                <td>122575003 (Urine specimen)</td>
           
-                <td>58088002 (Urine specimen collection, suprapubic (procedure))</td>
+                <td>58088002 (Urine specimen collection, suprapubic)</td>
           
                 <td/>
           
@@ -6977,7 +6860,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -6995,11 +6878,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122877000 (Upper respiratory fluid specimen obtained by tracheal aspiration (specimen))</td>
+                <td>122877000 (Upper respiratory fluid specimen obtained by tracheal aspiration)</td>
           
-                <td>129112001 (Aspiration from trachea (procedure))</td>
+                <td>129112001 (Aspiration from trachea)</td>
           
-                <td>44567001 (Tracheal structure)</td>
+                <td>44567001 (Trachea)</td>
           
                 <td/>
           
@@ -7013,7 +6896,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119376003 (Tissue specimen (specimen))</td>
+                <td>119376003 (Tissue specimen)</td>
           
                 <td/>
           
@@ -7031,7 +6914,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122593002 (Tissue specimen obtained from ulcer (specimen))</td>
+                <td>122593002 (Tissue specimen obtained from ulcer)</td>
           
                 <td/>
           
@@ -7049,7 +6932,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -7067,7 +6950,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>438660002 (Specimen from prosthetic device (specimen))</td>
+                <td>438660002 (Specimen from prosthetic device)</td>
           
                 <td/>
           
@@ -7085,7 +6968,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258538002 (Transudate sample (specimen))</td>
+                <td>258538002 (Transudate sample)</td>
           
                 <td/>
           
@@ -7103,13 +6986,13 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119364003 (Serum specimen (specimen))</td>
+                <td>119364003 (Serum specimen)</td>
           
                 <td/>
           
                 <td/>
           
-                <td>255588006 (Trough (qualifier value))</td>
+                <td>255588006 (Trough)</td>
           
                 <td/>
         
@@ -7121,11 +7004,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119371008 (Specimen from abscess (specimen))</td>
+                <td>119371008 (Specimen from abscess)</td>
           
                 <td/>
           
-                <td>279572002 (Testicular structure (body structure))</td>
+                <td>279572002 (Testicular structure)</td>
           
                 <td/>
           
@@ -7139,9 +7022,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258480001 (Transtracheal aspirate sample (specimen))</td>
+                <td>258480001 (Transtracheal aspirate sample)</td>
           
-                <td>129112001 (Aspiration from trachea (procedure))</td>
+                <td>129112001 (Aspiration from trachea)</td>
           
                 <td/>
           
@@ -7157,7 +7040,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119310001 (Tube specimen (specimen))</td>
+                <td>119310001 (Tube specimen)</td>
           
                 <td/>
           
@@ -7175,7 +7058,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258435002 (Tumor tissue sample (specimen))</td>
+                <td>258435002 (Tumour tissue)</td>
           
                 <td/>
           
@@ -7211,7 +7094,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>123038009 (Specimen (specimen))</td>
+                <td>123038009 (Specimen)</td>
           
                 <td/>
           
@@ -7229,7 +7112,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122575003 (Urine specimen (specimen))</td>
+                <td>122575003 (Urine specimen)</td>
           
                 <td/>
           
@@ -7247,7 +7130,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122880004 (Urine specimen obtained by clean catch procedure (specimen))</td>
+                <td>122880004 (Urine specimen obtained by clean catch procedure)</td>
           
                 <td/>
           
@@ -7265,9 +7148,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122575003 (Urine specimen (specimen))</td>
+                <td>122575003 (Urine specimen)</td>
           
-                <td>78533007 (Irrigation of urinary bladder (procedure))</td>
+                <td>78533007 (Irrigation of urinary bladder)</td>
           
                 <td/>
           
@@ -7283,7 +7166,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>446846006 (Urine specimen obtained via indwelling urinary catheter (specimen))</td>
+                <td>446846006 (Urine specimen obtained via indwelling urinary catheter)</td>
           
                 <td/>
           
@@ -7301,11 +7184,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258574006 (Mid-stream urine sample (specimen))</td>
+                <td>258574006 (Mid-stream urine sample)</td>
           
-                <td>225271002 (Collection of mid-stream specimen of urine (procedure))</td>
+                <td>225271002 (Collection of mid-stream specimen of urine)</td>
           
-                <td>431938005 (Structure of urinary tract proper (body structure))</td>
+                <td>431938005 (Structure of urinary tract proper)</td>
           
                 <td/>
           
@@ -7319,11 +7202,11 @@
           
                 <td>:(equivalent)</td>
           
-                <td>446277003 (Urine specimen obtained from nephrostomy tube after percutaneous insertion (specimen))</td>
+                <td>446277003 (Urine specimen obtained from nephrostomy tube after percutaneous insertion)</td>
           
-                <td>225109005 (Collection of nephrostomy urine specimen (procedure))</td>
+                <td>225109005 (Collection of nephrostomy urine specimen)</td>
           
-                <td>25990002 (Renal pelvis structure (body structure))</td>
+                <td>25990002 (Renal pelvis)</td>
           
                 <td/>
           
@@ -7355,7 +7238,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122565001 (Urinary catheter specimen (specimen))</td>
+                <td>122565001 (Urinary catheter specimen)</td>
           
                 <td/>
           
@@ -7377,7 +7260,7 @@
           
                 <td>176178006 (Diagnostic cystoscopy)</td>
           
-                <td>89837001 (Urinary bladder structure (body structure))</td>
+                <td>89837001 (Urinary bladder)</td>
           
                 <td/>
           
@@ -7391,7 +7274,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>123038009 (Specimen (specimen))</td>
+                <td>123038009 (Specimen)</td>
           
                 <td/>
           
@@ -7409,7 +7292,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -7427,7 +7310,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119312009 (Catheter tip specimen (specimen))</td>
+                <td>119312009 (Catheter tip specimen)</td>
           
                 <td/>
           
@@ -7445,7 +7328,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258438000 (Vitreous humor sample (specimen))</td>
+                <td>258438000 (Vitreous humor sample)</td>
           
                 <td/>
           
@@ -7463,7 +7346,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122572000 (Vomitus specimen (specimen))</td>
+                <td>122572000 (Vomitus specimen)</td>
           
                 <td/>
           
@@ -7481,7 +7364,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>440674008 (Specimen obtained by lavage (specimen))</td>
+                <td>440674008 (Wash out specimen)</td>
           
                 <td/>
           
@@ -7499,7 +7382,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122609004 (Specimen from lung obtained by bronchial washing procedure (specimen))</td>
+                <td>122609004 (Specimen from lung obtained by bronchial washing procedure)</td>
           
                 <td/>
           
@@ -7517,7 +7400,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119318008 (Water specimen (specimen))</td>
+                <td>119318008 (Water specimen)</td>
           
                 <td/>
           
@@ -7553,7 +7436,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309075001 (Skin cyst sample (specimen))</td>
+                <td>309075001 (Skin cyst sample)</td>
           
                 <td/>
           
@@ -7589,7 +7472,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119365002 (Specimen from wound (specimen))</td>
+                <td>119365002 (Specimen from wound)</td>
           
                 <td/>
           
@@ -7607,7 +7490,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119366001 (Specimen from wound abscess (specimen))</td>
+                <td>119366001 (Specimen from wound abscess)</td>
           
                 <td/>
           
@@ -7625,9 +7508,9 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122566000 (Fluid specimen from wound (specimen))</td>
+                <td>122566000 (Fluid specimen from wound)</td>
           
-                <td>122462000 (Drainage procedure (procedure))</td>
+                <td>122462000 (Drainage)</td>
           
                 <td/>
           
@@ -7643,7 +7526,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>122568004 (Exudate specimen from wound (specimen))</td>
+                <td>122568004 (Exudate specimen from wound)</td>
           
                 <td/>
           
@@ -7661,7 +7544,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>258618008 (Helminth sample (specimen))</td>
+                <td>258618008 (Helminth sample)</td>
           
                 <td/>
           
@@ -7679,7 +7562,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>309068002 (Skin lesion sample (specimen))</td>
+                <td>309068002 (Skin lesion sample)</td>
           
                 <td/>
           
@@ -7697,7 +7580,7 @@
           
                 <td>:(equivalent)</td>
           
-                <td>119318008 (Water specimen (specimen))</td>
+                <td>119318008 (Water specimen)</td>
           
                 <td/>
           
@@ -7753,11 +7636,11 @@
           
                 <td/>
           
-                <td>386144009 (Line insertion site (morphologic abnormality))</td>
+                <td>386144009 (Line insertion site)</td>
           
-                <td>14766002 (Aspiration (procedure))</td>
+                <td>14766002 (Removal by suction)</td>
           
-                <td>119295008 (Specimen obtained by aspiration (specimen))</td>
+                <td>119295008 (Specimen obtained by aspiration)</td>
           
                 <td>Prefer to have aspirate of the pus oozing out from cleaned insertion site - if swab is all that can be obtained, then swab after cleaning, otherwise you may get a contaminated specimen and a falsely identified infected central line. Do not just swab the reddened area - that will just collect skin flora</td>
         
@@ -7775,7 +7658,7 @@
           
                 <td/>
           
-                <td>119326000 (Hair specimen (specimen))</td>
+                <td>119326000 (Hair specimen)</td>
           
                 <td>Be more specific use either: 119326000^hair specimen, or 119327009^nail specimen</td>
         
@@ -7789,11 +7672,11 @@
           
                 <td/>
           
-                <td>257351008 (Shunt (physical object))</td>
+                <td>257351008 (Shunt)</td>
           
                 <td/>
           
-                <td>438660002 (Specimen from prosthetic device (specimen))</td>
+                <td>438660002 (Specimen from prosthetic device)</td>
           
                 <td>assume swab from shunt site for mapping here - clean surface of skin prior to expressing the shunt site - preferred is aspiration with sterile syringe should use SPM.8 to specify body approximate match location of shunt site</td>
         
@@ -7808,20 +7691,20 @@
         <name value="Specimen mapping from v2 table 0487 to SNOMED CT"/>
         <status value="draft"/>
         <experimental value="false"/>
+        <date value="2013-07-25"/>
         <publisher value="FHIR project team (original source: LabMCoP)"/>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://hl7.org/fhir"/>
           </telecom>
         </contact>
         <contact>
           <telecom>
-            <system value="other"/>
+            <system value="url"/>
             <value value="http://www.phconnect.org/group/laboratorymessagingcommunityofpractice/forum/attachment/download?id=3649725%3AUploadedFile%3A145786"/>
           </telecom>
         </contact>
-        <date value="2013-07-25"/>
         <sourceReference>
           <reference value="http://hl7.org/fhir/ValueSet/v2-0487"/>
         </sourceReference>
@@ -7841,7 +7724,7 @@
             <code value="ACNFLD"/>
             <target>
               <code value="119323008"/>
-              <comments value="HL7 term is a historical term. mapped to Pus"/>
+              <comment value="HL7 term is a historical term. mapped to Pus"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -7881,21 +7764,21 @@
             <code value="ANGI"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
             <code value="ARTC"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
             <code value="ASERU"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="pending"/>
+              <comment value="pending"/>
             </target>
           </element>
           <element>
@@ -7913,21 +7796,21 @@
             <code value="ATTE"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="AUTOC"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="AUTP"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="This really is not a specimen per se - it is the state of the subject from whom the specimen is collected, so it should be used as a  specimen type modifier ONLY!. Often this is indicated with a special medical record number or other notation on the patient. needs to have specimen type (e.g. SPM-4) and source site (SPM.8) and spatial orientation (SPM.9)"/>
+              <comment value="This really is not a specimen per se - it is the state of the subject from whom the specimen is collected, so it should be used as a  specimen type modifier ONLY!. Often this is indicated with a special medical record number or other notation on the patient. needs to have specimen type (e.g. SPM-4) and source site (SPM.8) and spatial orientation (SPM.9)"/>
             </target>
           </element>
           <element>
@@ -7940,7 +7823,7 @@
             <code value="BCYST"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="submitted (PLR155) with parent of  167874004^knee joint synovial fluid (specimen), with specimen source topography 32361000^Popliteal fossa structure (body structure)"/>
+              <comment value="submitted (PLR155) with parent of  167874004^knee joint synovial fluid (specimen), with specimen source topography 32361000^Popliteal fossa structure (body structure)"/>
               <product>
                 <property value="http://snomed.info/id/3006873018"/>
                 <system value="http://snomed.info/sct"/>
@@ -7952,7 +7835,7 @@
             <code value="BITE"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="Submit for new term with parent 119365002"/>
+              <comment value="Submit for new term with parent 119365002"/>
             </target>
           </element>
           <element>
@@ -8003,7 +7886,7 @@
             <code value="BOWL"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="Don&#39;t use this term for human samples - use Stool instead. animal would use small intestinal contents, large intestinal contents"/>
+              <comment value="Don&#39;t use this term for human samples - use Stool instead. animal would use small intestinal contents, large intestinal contents"/>
             </target>
           </element>
           <element>
@@ -8111,14 +7994,14 @@
             <code value="CBITE"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="Submit for new term with parent 119365002"/>
+              <comment value="Submit for new term with parent 119365002"/>
             </target>
           </element>
           <element>
             <code value="CLIPP"/>
             <target>
               <code value="119327009"/>
-              <comments value="Be more specific use either: 119326000^hair specimen or 119327009^nail specimen"/>
+              <comment value="Be more specific use either: 119326000^hair specimen or 119327009^nail specimen"/>
             </target>
           </element>
           <element>
@@ -8165,21 +8048,21 @@
             <code value="CSCR"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="submit for new term with parent 119365002^Specimen from wound (specimen)"/>
+              <comment value="submit for new term with parent 119365002^Specimen from wound (specimen)"/>
             </target>
           </element>
           <element>
             <code value="CSERU"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="pending"/>
+              <comment value="pending"/>
             </target>
           </element>
           <element>
             <code value="CSITE"/>
             <target>
               <code value="258507003"/>
-              <comments value="Prefer to have aspirate of the pus oozing out from cleaned insertion site - if swab is all that can be obtained, then swab after cleaning, otherwise you may get a contaminated specimen and a falsely identified infected central line. Do not just swab the reddened area - that will just collect skin flora       "/>
+              <comment value="Prefer to have aspirate of the pus oozing out from cleaned insertion site - if swab is all that can be obtained, then swab after cleaning, otherwise you may get a contaminated specimen and a falsely identified infected central line. Do not just swab the reddened area - that will just collect skin flora       "/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -8208,14 +8091,14 @@
             <code value="CSVR"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD - may use blood and SPM-6"/>
+              <comment value="TBD - may use blood and SPM-6"/>
             </target>
           </element>
           <element>
             <code value="CTP"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
@@ -8228,7 +8111,7 @@
             <code value="CVPT"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -8257,7 +8140,7 @@
             <code value="DBITE"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="Submit for new term with parent 119365002"/>
+              <comment value="Submit for new term with parent 119365002"/>
             </target>
           </element>
           <element>
@@ -8276,7 +8159,7 @@
             <code value="DEION"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -8312,7 +8195,7 @@
             <code value="DRNG"/>
             <target>
               <code value="258455001"/>
-              <comments value="Historical term - consider what is being drained and indicate that in SPM-4 instead: not an acceptable specimen for micro - not specific enough term"/>
+              <comment value="Historical term - consider what is being drained and indicate that in SPM-4 instead: not an acceptable specimen for micro - not specific enough term"/>
               <product>
                 <property value="http://snomed.info/id/246380002"/>
                 <system value="http://snomed.info/sct"/>
@@ -8324,7 +8207,7 @@
             <code value="DRNGP"/>
             <target>
               <code value="309051001"/>
-              <comments value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
+              <comment value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
               <product>
                 <property value="http://snomed.info/id/246380002"/>
                 <system value="http://snomed.info/sct"/>
@@ -8358,14 +8241,14 @@
             <code value="EEYE"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="EFF"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -8402,21 +8285,21 @@
             <code value="EOTH"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="ESOI"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="ESOS"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -8439,7 +8322,7 @@
             <code value="ETTP"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
@@ -8462,7 +8345,7 @@
             <code value="EWHI"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -8475,7 +8358,7 @@
             <code value="EXS"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -8488,7 +8371,7 @@
             <code value="FAW"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -8529,7 +8412,7 @@
             <code value="FLT"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -8548,14 +8431,14 @@
             <code value="FOLEY"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
             <code value="FRS"/>
             <target>
               <code value="258442002"/>
-              <comments value="this term is not specific enough, choose from terms that more accurately describe the specimen"/>
+              <comment value="this term is not specific enough, choose from terms that more accurately describe the specimen"/>
               <product>
                 <property value="http://snomed.info/id/3006873018"/>
                 <system value="http://snomed.info/sct"/>
@@ -8578,7 +8461,7 @@
             <code value="FUR"/>
             <target>
               <code value="119295008"/>
-              <comments value="Further describe the sample as tissue or pus. or by the collection method. The term boil is not specifc to a body site - need to indicate source site (spm.8). preferred term is Aspirate_Boil"/>
+              <comment value="Further describe the sample as tissue or pus. or by the collection method. The term boil is not specifc to a body site - need to indicate source site (spm.8). preferred term is Aspirate_Boil"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -8639,7 +8522,7 @@
             <code value="GASD"/>
             <target>
               <code value="258459007"/>
-              <comments value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
+              <comment value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
               <product>
                 <property value="http://snomed.info/id/246380002"/>
                 <system value="http://snomed.info/sct"/>
@@ -8685,14 +8568,14 @@
             <code value="GROSH"/>
             <target>
               <code value="119311002"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
             <code value="GSOL"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -8715,14 +8598,14 @@
             <code value="GT"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="GTUBE"/>
             <target>
               <code value="258459007"/>
-              <comments value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
+              <comment value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -8744,7 +8627,7 @@
             <code value="HBITE"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="Submit for new term with parent 119365002"/>
+              <comment value="Submit for new term with parent 119365002"/>
             </target>
           </element>
           <element>
@@ -8762,14 +8645,14 @@
             <code value="HEMAQ"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
             <code value="HEMO"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
@@ -8788,7 +8671,7 @@
             <code value="HIC"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -8811,7 +8694,7 @@
             <code value="IBITE"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="Submit for new term with parent 119365002"/>
+              <comment value="Submit for new term with parent 119365002"/>
             </target>
           </element>
           <element>
@@ -8824,7 +8707,7 @@
             <code value="IDC"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
@@ -8837,7 +8720,7 @@
             <code value="ILEO"/>
             <target>
               <code value="258455001"/>
-              <comments value="Historical term - consider what is being drained and indicate that in SPM-4 instead: stool is what is expected, should use stool sample"/>
+              <comment value="Historical term - consider what is being drained and indicate that in SPM-4 instead: stool is what is expected, should use stool sample"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -8849,7 +8732,7 @@
             <code value="ILLEG"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -8868,7 +8751,7 @@
             <code value="INFIL"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="This describes a morphologic abnormality, not a sample"/>
+              <comment value="This describes a morphologic abnormality, not a sample"/>
             </target>
           </element>
           <element>
@@ -8881,7 +8764,7 @@
             <code value="INTRD"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
@@ -8894,14 +8777,14 @@
             <code value="IUD"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="pending"/>
+              <comment value="pending"/>
             </target>
           </element>
           <element>
             <code value="IVCAT"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -8925,7 +8808,7 @@
             <code value="JEJU"/>
             <target>
               <code value="258463000"/>
-              <comments value="Historical term - consider what is being drained and indicate that in SPM-4 instead: stool is what is expected, should use stool sample"/>
+              <comment value="Historical term - consider what is being drained and indicate that in SPM-4 instead: stool is what is expected, should use stool sample"/>
               <product>
                 <property value="http://snomed.info/id/246380002"/>
                 <system value="http://snomed.info/sct"/>
@@ -8948,7 +8831,7 @@
             <code value="JP"/>
             <target>
               <code value="309051001"/>
-              <comments value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
+              <comment value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
               <product>
                 <property value="http://snomed.info/id/246380002"/>
                 <system value="http://snomed.info/sct"/>
@@ -9037,14 +8920,14 @@
             <code value="LENS2"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="LESN"/>
             <target>
               <code value="309049000"/>
-              <comments value="should be more specific what kind of lesion is observed - be more specific is it a wound, abscess, mass - specify! Ask SNOMED CT to mark it as a grouper term only (309049000)"/>
+              <comment value="should be more specific what kind of lesion is observed - be more specific is it a wound, abscess, mass - specify! Ask SNOMED CT to mark it as a grouper term only (309049000)"/>
             </target>
           </element>
           <element>
@@ -9057,14 +8940,14 @@
             <code value="LIQO"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="LSAC"/>
             <target>
               <code value="258450006"/>
-              <comments value="The HL7 term is a historical term Mapped to CSF obtained by lumbar puncture"/>
+              <comment value="The HL7 term is a historical term Mapped to CSF obtained by lumbar puncture"/>
               <product>
                 <property value="http://snomed.info/id/3006873018"/>
                 <system value="http://snomed.info/sct"/>
@@ -9076,7 +8959,7 @@
             <code value="MAHUR"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
@@ -9117,7 +9000,7 @@
             <code value="NASDR"/>
             <target>
               <code value="258474009"/>
-              <comments value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
+              <comment value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
               <product>
                 <property value="http://snomed.info/id/246380002"/>
                 <system value="http://snomed.info/sct"/>
@@ -9134,7 +9017,7 @@
             <code value="NEDL"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -9163,7 +9046,7 @@
             <code value="NGAST"/>
             <target>
               <code value="258459007"/>
-              <comments value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
+              <comment value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -9191,7 +9074,7 @@
             <code value="NODUL"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="pending"/>
+              <comment value="pending"/>
             </target>
           </element>
           <element>
@@ -9210,7 +9093,7 @@
             <code value="ORL"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="be more precise use ulcer, tumor, vesicle"/>
+              <comment value="be more precise use ulcer, tumor, vesicle"/>
               <product>
                 <property value="http://snomed.info/id/3006873018"/>
                 <system value="http://snomed.info/sct"/>
@@ -9228,7 +9111,7 @@
             <code value="PACEM"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -9247,7 +9130,7 @@
             <code value="PDTS"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="submitted for code"/>
+              <comment value="submitted for code"/>
             </target>
           </element>
           <element>
@@ -9265,7 +9148,7 @@
             <code value="PENIL"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="need to know what kind of lesion, so map to: UlcerTissue_penile, VesicleFluid_penile, Wound_penile, Mass tissue_penile, Necrotic tissue_penile, AbscessAspirate_penile, Anything else?"/>
+              <comment value="need to know what kind of lesion, so map to: UlcerTissue_penile, VesicleFluid_penile, Wound_penile, Mass tissue_penile, Necrotic tissue_penile, AbscessAspirate_penile, Anything else?"/>
               <product>
                 <property value="http://snomed.info/id/3006873018"/>
                 <system value="http://snomed.info/sct"/>
@@ -9335,7 +9218,7 @@
             <code value="PND"/>
             <target>
               <code value="258439008"/>
-              <comments value="Historical term -though in this case more often used for discharge"/>
+              <comment value="Historical term -though in this case more often used for discharge"/>
               <product>
                 <property value="http://snomed.info/id/246380002"/>
                 <system value="http://snomed.info/sct"/>
@@ -9385,14 +9268,14 @@
             <code value="POPLV"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="PORTA"/>
             <target>
               <code value="119311002"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
@@ -9462,7 +9345,7 @@
             <code value="QC3"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -9475,14 +9358,14 @@
             <code value="RBITE"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="Submit for new term with parent: 119365002"/>
+              <comment value="Submit for new term with parent: 119365002"/>
             </target>
           </element>
           <element>
             <code value="RECT"/>
             <target>
               <code value="119339001"/>
-              <comments value="Historical term - consider what is being drained and indicate that in SPM-4 instead: stool is what is expected, should use stool sample"/>
+              <comment value="Historical term - consider what is being drained and indicate that in SPM-4 instead: stool is what is expected, should use stool sample"/>
               <product>
                 <property value="http://snomed.info/id/246380002"/>
                 <system value="http://snomed.info/sct"/>
@@ -9550,7 +9433,7 @@
             <code value="SCLV"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
               <product>
                 <property value="http://snomed.info/id/3006873018"/>
                 <system value="http://snomed.info/sct"/>
@@ -9585,7 +9468,7 @@
             <code value="SHU"/>
             <target>
               <code value="119295008"/>
-              <comments value="Preferred is aspiration with sterile syringe from inflamed area. Specify body location of shunt site"/>
+              <comment value="Preferred is aspiration with sterile syringe from inflamed area. Specify body location of shunt site"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -9618,14 +9501,14 @@
             <code value="SHUNT"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="SITE"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -9672,21 +9555,21 @@
             <code value="SPRP"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
             <code value="SPRPB"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
             <code value="SPS"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -9711,7 +9594,7 @@
             <code value="SPUT1"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -9730,7 +9613,7 @@
             <code value="STER"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -9776,7 +9659,7 @@
             <code value="SUMP"/>
             <target>
               <code value="446562005"/>
-              <comments value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
+              <comment value="Historical term - consider what is being drained and indicate that in SPM-4 instead"/>
               <product>
                 <property value="http://snomed.info/id/246380002"/>
                 <system value="http://snomed.info/sct"/>
@@ -9799,14 +9682,14 @@
             <code value="SUTUR"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="SWGZ"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
@@ -9841,7 +9724,7 @@
             <code value="TLC"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
@@ -9905,7 +9788,7 @@
             <code value="TZANC"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="This is the name of a lab test. A skin sample is examined for viral inclusions."/>
+              <comment value="This is the name of a lab test. A skin sample is examined for viral inclusions."/>
             </target>
           </element>
           <element>
@@ -9979,7 +9862,7 @@
             <code value="URINP"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -9992,7 +9875,7 @@
             <code value="USCOP"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="NEW specimenTERM 7"/>
+              <comment value="NEW specimenTERM 7"/>
               <product>
                 <property value="http://snomed.info/id/246380002"/>
                 <system value="http://snomed.info/sct"/>
@@ -10015,14 +9898,14 @@
             <code value="VASTIP"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
             <code value="VENT"/>
             <target>
               <code value="119312009"/>
-              <comments value="TBD in detail"/>
+              <comment value="TBD in detail"/>
             </target>
           </element>
           <element>
@@ -10059,7 +9942,7 @@
             <code value="WB"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="Bloodbanking term ONLY now map to blood and the respective preservative"/>
+              <comment value="Bloodbanking term ONLY now map to blood and the respective preservative"/>
             </target>
           </element>
           <element>
@@ -10072,7 +9955,7 @@
             <code value="WICK"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
@@ -10126,21 +10009,21 @@
             <code value="WWO"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="WWT"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="TBD"/>
+              <comment value="TBD"/>
             </target>
           </element>
           <element>
             <code value="CSITE"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="Prefer to have aspirate of the pus oozing out from cleaned insertion site - if swab is all that can be obtained, then swab after cleaning, otherwise you may get a contaminated specimen and a falsely identified infected central line. Do not just swab the reddened area - that will just collect skin flora"/>
+              <comment value="Prefer to have aspirate of the pus oozing out from cleaned insertion site - if swab is all that can be obtained, then swab after cleaning, otherwise you may get a contaminated specimen and a falsely identified infected central line. Do not just swab the reddened area - that will just collect skin flora"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -10162,7 +10045,7 @@
             <code value="CLIPP"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="Be more specific use either: 119326000^hair specimen, or 119327009^nail specimen"/>
+              <comment value="Be more specific use either: 119326000^hair specimen, or 119327009^nail specimen"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -10174,7 +10057,7 @@
             <code value="SHU"/>
             <target>
               <equivalence value="unmatched"/>
-              <comments value="assume swab from shunt site for mapping here - clean surface of skin prior to expressing the shunt site - preferred is aspiration with sterile syringe should use SPM.8 to specify body approximate match location of shunt site"/>
+              <comment value="assume swab from shunt site for mapping here - clean surface of skin prior to expressing the shunt site - preferred is aspiration with sterile syringe should use SPM.8 to specify body approximate match location of shunt site"/>
               <product>
                 <property value="TypeModifier"/>
                 <system value="http://snomed.info/sct"/>
@@ -10187,6 +10070,145 @@
               </product>
             </target>
           </element>
+        </group>
+      </ConceptMap>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="http://hl7.org/fhir/ConceptMap/example2"/>
+    <resource>
+      <ConceptMap>
+        <id value="example2"/>
+        <meta>
+          <lastUpdated value="2017-03-21T06:09:53.925+11:00"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+          <div xmlns="http://www.w3.org/1999/xhtml">
+      
+            <h2>FHIR-exanple-2 (http://hl7.org/fhir/ConceptMap/example2)</h2>
+      
+            <p>Mapping from http://example.org/fhir/example1 to http://example.org/fhir/example2</p>
+      
+            <p>DRAFT (not intended for production usage). Published on 13/06/2012 by HL7, Inc (FHIR project team (example): 
+        
+              <a href="http://hl7.org/fhir">http://hl7.org/fhir</a>). 
+      
+            </p>
+      
+            <div>
+        
+              <p>An example mapping</p>
+
+      
+            </div>
+      
+            <br/>
+      
+            <table class="grid">
+        
+              <tr>
+          
+                <td colspan="2">
+            
+                  <b>Source Concept</b>
+          
+                </td>
+          
+                <td>
+            
+                  <b>Equivalence</b>
+          
+                </td>
+          
+                <td colspan="1">
+            
+                  <b>Destination Concept</b>
+          
+                </td>
+        
+              </tr>
+        
+              <tr>
+          
+                <td>
+            
+                  <b>Code [http://example.org/fhir/example1]</b>
+          
+                </td>
+          
+                <td>
+            
+                  <b>http://example.org/fhir/DataElement/example [http://example.org/fhir/example3]</b>
+          
+                </td>
+          
+                <td/>
+          
+                <td>
+            
+                  <b>Code [http://example.org/fhir/example2]</b>
+          
+                </td>
+        
+              </tr>
+        
+              <tr>
+          
+                <td>code</td>
+          
+                <td>some-code</td>
+          
+                <td>:equivalent</td>
+          
+                <td>code2</td>
+        
+              </tr>
+      
+            </table>
+    
+          </div>
+        </text>
+        <url value="http://hl7.org/fhir/ConceptMap/example2"/>
+        <name value="FHIR-exanple-2"/>
+        <title value="FHIR Example 2"/>
+        <status value="draft"/>
+        <experimental value="true"/>
+        <date value="2012-06-13"/>
+        <publisher value="HL7, Inc"/>
+        <contact>
+          <name value="FHIR project team (example)"/>
+          <telecom>
+            <system value="url"/>
+            <value value="http://hl7.org/fhir"/>
+          </telecom>
+        </contact>
+        <description value="An example mapping"/>
+        <purpose value="To illustrate mapping features"/>
+        <sourceUri value="http://example.org/fhir/example1"/>
+        <targetUri value="http://example.org/fhir/example2"/>
+        <group>
+          <source value="http://example.org/fhir/example1"/>
+          <target value="http://example.org/fhir/example2"/>
+          <element>
+            <code value="code"/>
+            <display value="Example Code"/>
+            <target>
+              <code value="code2"/>
+              <display value="Some Example Code"/>
+              <equivalence value="equivalent"/>
+              <dependsOn>
+                <property value="http://example.org/fhir/DataElement/example"/>
+                <system value="http://example.org/fhir/example3"/>
+                <code value="some-code"/>
+                <display value="Something Coded"/>
+              </dependsOn>
+            </target>
+          </element>
+          <unmapped>
+            <mode value="other-map"/>
+            <url value="http://example.org/fhir/ConceptMap/map2"/>
+          </unmapped>
         </group>
       </ConceptMap>
     </resource>

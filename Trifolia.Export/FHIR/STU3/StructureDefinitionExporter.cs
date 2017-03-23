@@ -130,7 +130,7 @@ namespace Trifolia.Export.FHIR.STU3
                 ElementId = constraint.Id.ToString(),
                 Short = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : constraint.Context,
                 Label = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : null,
-                Comments = !string.IsNullOrEmpty(constraint.Notes) ? constraint.Notes : null,
+                Comment = !string.IsNullOrEmpty(constraint.Notes) ? constraint.Notes : null,
                 Path = constraint.GetElementPath(strucDef.Type != null ? strucDef.Type.ToString() : null),
                 SliceName = constraint.IsBranch ? newSliceName : sliceName,
                 Definition = definition
@@ -139,7 +139,10 @@ namespace Trifolia.Export.FHIR.STU3
             if (constraint.IsChoice)
             {
                 newElementDef.Slicing = new ElementDefinition.SlicingComponent();
-                newElementDef.Slicing.Discriminator = new string[] { "@type" };
+                newElementDef.Slicing.Discriminator.Add(new ElementDefinition.DiscriminatorComponent()
+                {
+                    Path = "@type"
+                });
                 newElementDef.Slicing.Rules = ElementDefinition.SlicingRules.Open;
             }
 
@@ -386,7 +389,10 @@ namespace Trifolia.Export.FHIR.STU3
                         newElementDef.Slicing = new ElementDefinition.SlicingComponent()
                         {
                             Discriminator = (from bi in branchIdentifiers
-                                             select bi.GetElementPath(template.TemplateType.RootContextType)),
+                                             select new ElementDefinition.DiscriminatorComponent()
+                                             {
+                                                 Path = bi.GetElementPath(template.TemplateType.RootContextType)
+                                             }).ToList(),
                             Rules = template.IsOpen ? ElementDefinition.SlicingRules.Open : ElementDefinition.SlicingRules.Closed
                         };
 
@@ -406,7 +412,11 @@ namespace Trifolia.Export.FHIR.STU3
                             if (singleValueDiscriminators.Count() > 0 && singleValueDiscriminators.Count() != discriminatorConstraints.Count())
                                 discriminatorConstraints = singleValueDiscriminators;
 
-                            newElementDef.Slicing.Discriminator = discriminatorConstraints.Select(y => y.GetElementPath(template.PrimaryContextType));
+                            newElementDef.Slicing.Discriminator = (from d in discriminatorConstraints
+                                                                   select new ElementDefinition.DiscriminatorComponent()
+                                                                   {
+                                                                       Path = d.GetElementPath(template.PrimaryContextType)
+                                                                   }).ToList();
                         }
                     }
 
