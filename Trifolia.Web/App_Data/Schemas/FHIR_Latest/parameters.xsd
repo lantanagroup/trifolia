@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,25 +34,34 @@
   any profiles that apply to the resources in order to make a conformant implementation.
 
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://hl7.org/fhir" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://hl7.org/fhir" elementFormDefault="qualified" version="1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://hl7.org/fhir"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://hl7.org/fhir"
+  elementFormDefault="qualified" version="1.0">
   <xs:include schemaLocation="fhir-base.xsd"/>
   <xs:element name="Parameters" type="Parameters">
     <xs:annotation>
-      <xs:documentation xml:lang="en">This special resource type is used to represent an operation request and response (operations.html). It has no other use, and there is no RESTful endpoint associated with it.</xs:documentation>
+      <xs:documentation xml:lang="en">This special resource type is used to represent an operation
+        request and response (operations.html). It has no other use, and there is no RESTful
+        endpoint associated with it.</xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:complexType name="Parameters">
     <xs:annotation>
-      <xs:documentation xml:lang="en">This special resource type is used to represent an operation request and response (operations.html). It has no other use, and there is no RESTful endpoint associated with it.</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">This special resource type is used to represent an operation
+        request and response (operations.html). It has no other use, and there is no RESTful
+        endpoint associated with it.</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Resource">
         <xs:sequence>
-          <xs:element name="parameter" type="Parameters.Parameter" minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="parameter" type="Parameters.Parameter" minOccurs="0"
+            maxOccurs="unbounded">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A parameter passed to or received from the operation.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A parameter passed to or received from the
+                operation.</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -60,18 +69,23 @@
   </xs:complexType>
   <xs:complexType name="Parameters.Parameter">
     <xs:annotation>
-      <xs:documentation xml:lang="en">This special resource type is used to represent an operation request and response (operations.html). It has no other use, and there is no RESTful endpoint associated with it.</xs:documentation>
+      <xs:documentation xml:lang="en">This special resource type is used to represent an operation
+        request and response (operations.html). It has no other use, and there is no RESTful
+        endpoint associated with it.</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
         <xs:sequence>
           <xs:element name="name" minOccurs="1" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The name of the parameter (reference to the operation definition).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The name of the parameter (reference to the operation
+                definition).</xs:documentation>
+            </xs:annotation>
           </xs:element>
-          <xs:choice minOccurs="0" maxOccurs="1" >
+          <xs:choice minOccurs="0" maxOccurs="1">
             <xs:annotation>
+              <xs:appinfo source="https://trifolia.lantanagroup.com/choiceName"
+                >value[x]</xs:appinfo>
               <xs:documentation xml:lang="en">If the parameter is a data type.</xs:documentation>
             </xs:annotation>
             <xs:element name="valueBase64Binary" type="base64Binary"/>
@@ -115,13 +129,15 @@
           </xs:choice>
           <xs:element name="resource" minOccurs="0" maxOccurs="1" type="ResourceContainer">
             <xs:annotation>
-              <xs:documentation xml:lang="en">If the parameter is a whole resource.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">If the parameter is a whole
+                resource.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="part" type="Parameters.Parameter" minOccurs="0" maxOccurs="unbounded">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A named part of a multi-part parameter.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A named part of a multi-part
+                parameter.</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>

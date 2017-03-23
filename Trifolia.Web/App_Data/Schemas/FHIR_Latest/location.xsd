@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +34,121 @@
   any profiles that apply to the resources in order to make a conformant implementation.
 
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://hl7.org/fhir" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://hl7.org/fhir" elementFormDefault="qualified" version="1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://hl7.org/fhir"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://hl7.org/fhir"
+  elementFormDefault="qualified" version="1.0">
   <xs:include schemaLocation="fhir-base.xsd"/>
   <xs:element name="Location" type="Location">
     <xs:annotation>
-      <xs:documentation xml:lang="en">Details and position information for a physical place where services are provided  and resources and participants may be stored, found, contained or accommodated.</xs:documentation>
+      <xs:documentation xml:lang="en">Details and position information for a physical place where
+        services are provided and resources and participants may be stored, found, contained or
+        accommodated.</xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:complexType name="Location">
     <xs:annotation>
-      <xs:documentation xml:lang="en">Details and position information for a physical place where services are provided  and resources and participants may be stored, found, contained or accommodated.</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">Details and position information for a physical place where
+        services are provided and resources and participants may be stored, found, contained or
+        accommodated.</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="DomainResource">
         <xs:sequence>
           <xs:element name="identifier" minOccurs="0" maxOccurs="unbounded" type="Identifier">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Unique code or number identifying the location to its users.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Unique code or number identifying the location to its
+                users.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="status" minOccurs="0" maxOccurs="1" type="LocationStatus">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The status property covers the general availability of the resource, not the current value which may be covered by the operationStatus, or by a schedule/slots if they are configured for the location.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The status property covers the general availability of
+                the resource, not the current value which may be covered by the operationStatus, or
+                by a schedule/slots if they are configured for the location.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="operationalStatus" minOccurs="0" maxOccurs="1" type="Coding">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The Operational status covers operation values most relevant to beds (but can also apply to rooms/units/chair/etc such as an isolation unit/dialisys chair). This typically covers concepts such as contamination, housekeeping and other activities like maintenance.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The Operational status covers operation values most
+                relevant to beds (but can also apply to rooms/units/chair/etc such as an isolation
+                unit/dialisys chair). This typically covers concepts such as contamination,
+                housekeeping and other activities like maintenance.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="name" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Name of the location as used by humans. Does not need to be unique.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Name of the location as used by humans. Does not need
+                to be unique.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="alias" minOccurs="0" maxOccurs="unbounded" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A list of alternate names that the location is known as, or was known as in the past.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A list of alternate names that the location is known
+                as, or was known as in the past.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="description" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Description of the Location, which helps in finding or referencing the place.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Description of the Location, which helps in finding or
+                referencing the place.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="mode" minOccurs="0" maxOccurs="1" type="LocationMode">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Indicates whether a resource instance represents a specific location or a class of locations.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Indicates whether a resource instance represents a
+                specific location or a class of locations.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="type" minOccurs="0" maxOccurs="1" type="CodeableConcept">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Indicates the type of function performed at the location.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Indicates the type of function performed at the
+                location.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="telecom" minOccurs="0" maxOccurs="unbounded" type="ContactPoint">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The contact details of communication devices available at the location. This can include phone numbers, fax numbers, mobile numbers, email addresses and web sites.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The contact details of communication devices available
+                at the location. This can include phone numbers, fax numbers, mobile numbers, email
+                addresses and web sites.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="address" minOccurs="0" maxOccurs="1" type="Address">
             <xs:annotation>
               <xs:documentation xml:lang="en">Physical location.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="physicalType" minOccurs="0" maxOccurs="1" type="CodeableConcept">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Physical form of the location, e.g. building, room, vehicle, road.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Physical form of the location, e.g. building, room,
+                vehicle, road.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="position" type="Location.Position" minOccurs="0" maxOccurs="1">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The absolute geographic location of the Location, expressed using the WGS84 datum (This is the same co-ordinate system used in KML).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The absolute geographic location of the Location,
+                expressed using the WGS84 datum (This is the same co-ordinate system used in
+                KML).</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="managingOrganization" minOccurs="0" maxOccurs="1" type="Reference">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The organization responsible for the provisioning and upkeep of the location.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The organization responsible for the provisioning and
+                upkeep of the location.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="partOf" minOccurs="0" maxOccurs="1" type="Reference">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Another Location which this Location is physically part of.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Another Location which this Location is physically
+                part of.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="endpoint" minOccurs="0" maxOccurs="unbounded" type="Reference">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Technical endpoints providing access to services operated for the location.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Technical endpoints providing access to services
+                operated for the location.</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -130,25 +156,33 @@
   </xs:complexType>
   <xs:complexType name="Location.Position">
     <xs:annotation>
-      <xs:documentation xml:lang="en">Details and position information for a physical place where services are provided  and resources and participants may be stored, found, contained or accommodated.</xs:documentation>
+      <xs:documentation xml:lang="en">Details and position information for a physical place where
+        services are provided and resources and participants may be stored, found, contained or
+        accommodated.</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
         <xs:sequence>
           <xs:element name="longitude" minOccurs="1" maxOccurs="1" type="decimal">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes below).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Longitude. The value domain and the interpretation are
+                the same as for the text of the longitude element in KML (see notes
+                below).</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="latitude" minOccurs="1" maxOccurs="1" type="decimal">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes below).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Latitude. The value domain and the interpretation are
+                the same as for the text of the latitude element in KML (see notes
+                below).</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="altitude" minOccurs="0" maxOccurs="1" type="decimal">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Altitude. The value domain and the interpretation are
+                the same as for the text of the altitude element in KML (see notes
+                below).</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -170,8 +204,10 @@
   </xs:simpleType>
   <xs:complexType name="LocationMode">
     <xs:annotation>
-      <xs:documentation xml:lang="en">Indicates whether a resource instance represents a specific location or a class of locations.</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">Indicates whether a resource instance represents a specific
+        location or a class of locations.</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">
@@ -200,8 +236,10 @@
   </xs:simpleType>
   <xs:complexType name="LocationStatus">
     <xs:annotation>
-      <xs:documentation xml:lang="en">Indicates whether the location is still in use.</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">Indicates whether the location is still in
+        use.</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">

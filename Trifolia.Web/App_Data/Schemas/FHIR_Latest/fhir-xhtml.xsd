@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml" targetNamespace="http://www.w3.org/1999/xhtml" elementFormDefault="qualified" version="1.0" xml:lang="en">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml"
+  targetNamespace="http://www.w3.org/1999/xhtml" elementFormDefault="qualified" version="1.0"
+  xml:lang="en">
   <!--
   FHIR XHTML Schema
   
@@ -18,94 +20,61 @@
   -->
   <!-- Note: When using this schema with some tools, it may also be necessary to declare xmlns:xml="http://www.w3.org/XML/1998/namespace", however this causes performance issues with other tools and thus is not in the base schemas. -->
   <xs:annotation>
-    <xs:documentation>
-    XHTML 1.0 (Second Edition) Strict in XML Schema
-
-    This is the same as HTML 4 Strict except for
-    changes due to the differences between XML and SGML.
-
-    Namespace = http://www.w3.org/1999/xhtml
-
-    For further information, see: http://www.w3.org/TR/xhtml1
-
-    Copyright (c) 1998-2002 W3C (MIT, INRIA, Keio),
-    All Rights Reserved. 
-
-    The DTD version is identified by the PUBLIC and SYSTEM identifiers:
-
-    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
-
-    _id: xhtml1-strict.xsd,v 1.2 2002/08/28 08:05:44 mimasa Exp $
-    </xs:documentation>
+    <xs:documentation> XHTML 1.0 (Second Edition) Strict in XML Schema This is the same as HTML 4
+      Strict except for changes due to the differences between XML and SGML. Namespace =
+      http://www.w3.org/1999/xhtml For further information, see: http://www.w3.org/TR/xhtml1
+      Copyright (c) 1998-2002 W3C (MIT, INRIA, Keio), All Rights Reserved. The DTD version is
+      identified by the PUBLIC and SYSTEM identifiers: PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" _id: xhtml1-strict.xsd,v 1.2
+      2002/08/28 08:05:44 mimasa Exp $ </xs:documentation>
   </xs:annotation>
   <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
   <xs:annotation>
-    <xs:documentation>
-    ================ Character mnemonic entities =========================
-
-    XHTML entity sets are identified by the PUBLIC and SYSTEM identifiers:
-  
-    PUBLIC "-//W3C//ENTITIES Latin 1 for XHTML//EN"
-    SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent"
-
-    PUBLIC "-//W3C//ENTITIES Special for XHTML//EN"
-    SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml-special.ent"
-
-    PUBLIC "-//W3C//ENTITIES Symbols for XHTML//EN"
-    SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml-symbol.ent"
-    </xs:documentation>
+    <xs:documentation> ================ Character mnemonic entities ========================= XHTML
+      entity sets are identified by the PUBLIC and SYSTEM identifiers: PUBLIC "-//W3C//ENTITIES
+      Latin 1 for XHTML//EN" SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent" PUBLIC
+      "-//W3C//ENTITIES Special for XHTML//EN" SYSTEM
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml-special.ent" PUBLIC "-//W3C//ENTITIES Symbols for
+      XHTML//EN" SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml-symbol.ent" </xs:documentation>
   </xs:annotation>
   <xs:annotation>
-    <xs:documentation>
-    ================== Imported Names ====================================
+    <xs:documentation> ================== Imported Names ====================================
     </xs:documentation>
   </xs:annotation>
   <xs:simpleType name="ContentType">
     <xs:annotation>
-      <xs:documentation>
-      media type, as per [RFC2045]
-      </xs:documentation>
+      <xs:documentation> media type, as per [RFC2045] </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="ContentTypes">
     <xs:annotation>
-      <xs:documentation>
-      comma-separated list of media types, as per [RFC2045]
-      </xs:documentation>
+      <xs:documentation> comma-separated list of media types, as per [RFC2045] </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="Charset">
     <xs:annotation>
-      <xs:documentation>
-      a character encoding, as per [RFC2045]
-      </xs:documentation>
+      <xs:documentation> a character encoding, as per [RFC2045] </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="Charsets">
     <xs:annotation>
-      <xs:documentation>
-      a space separated list of character encodings, as per [RFC2045]
+      <xs:documentation> a space separated list of character encodings, as per [RFC2045]
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="LanguageCode">
     <xs:annotation>
-      <xs:documentation>
-      a language code, as per [RFC3066]
-      </xs:documentation>
+      <xs:documentation> a language code, as per [RFC3066] </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:language"/>
   </xs:simpleType>
   <xs:simpleType name="Character">
     <xs:annotation>
-      <xs:documentation>
-      a single character, as per section 2.2 of [XML]
-      </xs:documentation>
+      <xs:documentation> a single character, as per section 2.2 of [XML] </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:length value="1" fixed="true"/>
@@ -113,9 +82,7 @@
   </xs:simpleType>
   <xs:simpleType name="Number">
     <xs:annotation>
-      <xs:documentation>
-      one or more digits
-      </xs:documentation>
+      <xs:documentation> one or more digits </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:nonNegativeInteger">
       <xs:pattern value="[0-9]+"/>
@@ -123,11 +90,9 @@
   </xs:simpleType>
   <xs:simpleType name="tabindexNumber">
     <xs:annotation>
-      <xs:documentation>
-      tabindex attribute specifies the position of the current element
-      in the tabbing order for the current document. This value must be
-      a number between 0 and 32767. User agents should ignore leading zeros. 
-      </xs:documentation>
+      <xs:documentation> tabindex attribute specifies the position of the current element in the
+        tabbing order for the current document. This value must be a number between 0 and 32767.
+        User agents should ignore leading zeros. </xs:documentation>
     </xs:annotation>
     <xs:restriction base="Number">
       <xs:minInclusive value="0"/>
@@ -136,17 +101,13 @@
   </xs:simpleType>
   <xs:simpleType name="LinkTypes">
     <xs:annotation>
-      <xs:documentation>
-      space-separated list of link types
-      </xs:documentation>
+      <xs:documentation> space-separated list of link types </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:NMTOKENS"/>
   </xs:simpleType>
   <xs:simpleType name="MediaDesc">
     <xs:annotation>
-      <xs:documentation>
-      single or comma-separated list of media descriptors
-      </xs:documentation>
+      <xs:documentation> single or comma-separated list of media descriptors </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:pattern value="[^,]+(,\s*[^,]+)*"/>
@@ -154,57 +115,43 @@
   </xs:simpleType>
   <xs:simpleType name="URI">
     <xs:annotation>
-      <xs:documentation>
-      a Uniform Resource Identifier, see [RFC2396]
-      </xs:documentation>
+      <xs:documentation> a Uniform Resource Identifier, see [RFC2396] </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:anyURI"/>
   </xs:simpleType>
   <xs:simpleType name="UriList">
     <xs:annotation>
-      <xs:documentation>
-      a space separated list of Uniform Resource Identifiers
-      </xs:documentation>
+      <xs:documentation> a space separated list of Uniform Resource Identifiers </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="Datetime">
     <xs:annotation>
-      <xs:documentation>
-      date and time information. ISO date format
-      </xs:documentation>
+      <xs:documentation> date and time information. ISO date format </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:dateTime"/>
   </xs:simpleType>
   <xs:simpleType name="Script">
     <xs:annotation>
-      <xs:documentation>
-      script expression
-      </xs:documentation>
+      <xs:documentation> script expression </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="StyleSheet">
     <xs:annotation>
-      <xs:documentation>
-      style sheet data
-      </xs:documentation>
+      <xs:documentation> style sheet data </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="Text">
     <xs:annotation>
-      <xs:documentation>
-      used for titles etc.
-      </xs:documentation>
+      <xs:documentation> used for titles etc. </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="Length">
     <xs:annotation>
-      <xs:documentation>
-      nn for pixels or nn% for percentage length
-      </xs:documentation>
+      <xs:documentation> nn for pixels or nn% for percentage length </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:pattern value="[-+]?(\d+|\d+(\.\d+)?%)"/>
@@ -212,9 +159,7 @@
   </xs:simpleType>
   <xs:simpleType name="MultiLength">
     <xs:annotation>
-      <xs:documentation>
-      pixel, percentage, or relative
-      </xs:documentation>
+      <xs:documentation> pixel, percentage, or relative </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:pattern value="[-+]?(\d+|\d+(\.\d+)?%)|[1-9]?(\d+)?\*"/>
@@ -222,16 +167,12 @@
   </xs:simpleType>
   <xs:simpleType name="Pixels">
     <xs:annotation>
-      <xs:documentation>
-      integer representing length in pixels
-      </xs:documentation>
+      <xs:documentation> integer representing length in pixels </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:nonNegativeInteger"/>
   </xs:simpleType>
   <xs:annotation>
-    <xs:documentation>
-    these are used for image maps
-    </xs:documentation>
+    <xs:documentation> these are used for image maps </xs:documentation>
   </xs:annotation>
   <xs:simpleType name="Shape">
     <xs:restriction base="xs:token">
@@ -243,28 +184,21 @@
   </xs:simpleType>
   <xs:simpleType name="Coords">
     <xs:annotation>
-      <xs:documentation>
-      comma separated list of lengths
-      </xs:documentation>
+      <xs:documentation> comma separated list of lengths </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:pattern value="[-+]?(\d+|\d+(\.\d+)?%)(,\s*[-+]?(\d+|\d+(\.\d+)?%))*"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:annotation>
-    <xs:documentation>
-    =================== Generic Attributes ===============================
+    <xs:documentation> =================== Generic Attributes ===============================
     </xs:documentation>
   </xs:annotation>
   <xs:attributeGroup name="coreattrs">
     <xs:annotation>
-      <xs:documentation>
-      core attributes common to most elements
-      id       document-wide unique id
-      class    space separated list of classes
-      style    associated style info
-      title    advisory title/amplification
-      </xs:documentation>
+      <xs:documentation> core attributes common to most elements id document-wide unique id class
+        space separated list of classes style associated style info title advisory
+        title/amplification </xs:documentation>
     </xs:annotation>
     <xs:attribute name="id" type="xs:ID"/>
     <xs:attribute name="class" type="xs:NMTOKENS"/>
@@ -273,11 +207,8 @@
   </xs:attributeGroup>
   <xs:attributeGroup name="i18n">
     <xs:annotation>
-      <xs:documentation>
-      internationalization attributes
-      lang        language code (backwards compatible)
-      xml:lang    language code (as per XML 1.0 spec)
-      dir         direction for weak/neutral text
+      <xs:documentation> internationalization attributes lang language code (backwards compatible)
+        xml:lang language code (as per XML 1.0 spec) dir direction for weak/neutral text
       </xs:documentation>
     </xs:annotation>
     <xs:attribute name="lang" type="LanguageCode"/>
@@ -293,18 +224,11 @@
   </xs:attributeGroup>
   <xs:attributeGroup name="events">
     <xs:annotation>
-      <xs:documentation>
-      attributes for common UI events
-      onclick     a pointer button was clicked
-      ondblclick  a pointer button was double clicked
-      onmousedown a pointer button was pressed down
-      onmouseup   a pointer button was released
-      onmousemove a pointer was moved onto the element
-      onmouseout  a pointer was moved away from the element
-      onkeypress  a key was pressed and released
-      onkeydown   a key was pressed down
-      onkeyup     a key was released
-      </xs:documentation>
+      <xs:documentation> attributes for common UI events onclick a pointer button was clicked
+        ondblclick a pointer button was double clicked onmousedown a pointer button was pressed down
+        onmouseup a pointer button was released onmousemove a pointer was moved onto the element
+        onmouseout a pointer was moved away from the element onkeypress a key was pressed and
+        released onkeydown a key was pressed down onkeyup a key was released </xs:documentation>
     </xs:annotation>
     <!--
   FHIR: Active Content is not allowed:
@@ -322,13 +246,9 @@
   </xs:attributeGroup>
   <xs:attributeGroup name="focus">
     <xs:annotation>
-      <xs:documentation>
-      attributes for elements that can get the focus
-      accesskey   accessibility key character
-      tabindex    position in tabbing order
-      onfocus     the element got the focus
-      onblur      the element lost the focus
-      </xs:documentation>
+      <xs:documentation> attributes for elements that can get the focus accesskey accessibility key
+        character tabindex position in tabbing order onfocus the element got the focus onblur the
+        element lost the focus </xs:documentation>
     </xs:annotation>
     <xs:attribute name="accesskey" type="Character"/>
     <xs:attribute name="tabindex" type="tabindexNumber"/>
@@ -343,8 +263,7 @@
     <xs:attributeGroup ref="events"/>
   </xs:attributeGroup>
   <xs:annotation>
-    <xs:documentation>
-    =================== Text Elements ====================================
+    <xs:documentation> =================== Text Elements ====================================
     </xs:documentation>
   </xs:annotation>
   <xs:group name="special.pre">
@@ -437,9 +356,7 @@
   </xs:group>
   <xs:complexType name="Inline" mixed="true">
     <xs:annotation>
-      <xs:documentation>
-      "Inline" covers inline or "text-level" elements
-      </xs:documentation>
+      <xs:documentation> "Inline" covers inline or "text-level" elements </xs:documentation>
     </xs:annotation>
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:group ref="inline"/>
@@ -447,8 +364,7 @@
     </xs:choice>
   </xs:complexType>
   <xs:annotation>
-    <xs:documentation>
-    ================== Block level elements ==============================
+    <xs:documentation> ================== Block level elements ==============================
     </xs:documentation>
   </xs:annotation>
   <xs:group name="heading">
@@ -499,8 +415,7 @@
   </xs:complexType>
   <xs:complexType name="Flow" mixed="true">
     <xs:annotation>
-      <xs:documentation>
-      "Flow" mixes block and inline and is used for list items etc.
+      <xs:documentation> "Flow" mixes block and inline and is used for list items etc.
       </xs:documentation>
     </xs:annotation>
     <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -513,15 +428,12 @@
     </xs:choice>
   </xs:complexType>
   <xs:annotation>
-    <xs:documentation>
-    ================== Content models for exclusions =====================
+    <xs:documentation> ================== Content models for exclusions =====================
     </xs:documentation>
   </xs:annotation>
   <xs:complexType name="a.content" mixed="true">
     <xs:annotation>
-      <xs:documentation>
-      a elements use "Inline" excluding a
-      </xs:documentation>
+      <xs:documentation> a elements use "Inline" excluding a </xs:documentation>
     </xs:annotation>
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:group ref="special"/>
@@ -535,9 +447,7 @@
   </xs:complexType>
   <xs:complexType name="pre.content" mixed="true">
     <xs:annotation>
-      <xs:documentation>
-      pre uses "Inline" excluding big, small, sup or sup
-      </xs:documentation>
+      <xs:documentation> pre uses "Inline" excluding big, small, sup or sup </xs:documentation>
     </xs:annotation>
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element ref="a"/>
@@ -583,8 +493,7 @@
   </xs:complexType>
 -->
   <xs:annotation>
-    <xs:documentation>
-    ================ Document Structure ==================================
+    <xs:documentation> ================ Document Structure ==================================
     </xs:documentation>
   </xs:annotation>
   <!--
@@ -782,9 +691,7 @@
 -->
   <xs:element name="div">
     <xs:annotation>
-      <xs:documentation>
-      generic language/style container      
-      </xs:documentation>
+      <xs:documentation> generic language/style container </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -795,8 +702,7 @@
     </xs:complexType>
   </xs:element>
   <xs:annotation>
-    <xs:documentation>
-    =================== Paragraphs =======================================
+    <xs:documentation> =================== Paragraphs =======================================
     </xs:documentation>
   </xs:annotation>
   <xs:element name="p">
@@ -809,11 +715,8 @@
     </xs:complexType>
   </xs:element>
   <xs:annotation>
-    <xs:documentation>
-    =================== Headings =========================================
-
-    There are six levels of headings from h1 (the most important)
-    to h6 (the least important).
+    <xs:documentation> =================== Headings ========================================= There
+      are six levels of headings from h1 (the most important) to h6 (the least important).
     </xs:documentation>
   </xs:annotation>
   <xs:element name="h1">
@@ -871,15 +774,12 @@
     </xs:complexType>
   </xs:element>
   <xs:annotation>
-    <xs:documentation>
-    =================== Lists ============================================
+    <xs:documentation> =================== Lists ============================================
     </xs:documentation>
   </xs:annotation>
   <xs:element name="ul">
     <xs:annotation>
-      <xs:documentation>
-      Unordered list
-      </xs:documentation>
+      <xs:documentation> Unordered list </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
@@ -890,9 +790,7 @@
   </xs:element>
   <xs:element name="ol">
     <xs:annotation>
-      <xs:documentation>
-      Ordered (numbered) list
-      </xs:documentation>
+      <xs:documentation> Ordered (numbered) list </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
@@ -903,9 +801,7 @@
   </xs:element>
   <xs:element name="li">
     <xs:annotation>
-      <xs:documentation>
-      list item
-      </xs:documentation>
+      <xs:documentation> list item </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -916,9 +812,7 @@
     </xs:complexType>
   </xs:element>
   <xs:annotation>
-    <xs:documentation>
-    definition lists - dt for term, dd for its definition
-    </xs:documentation>
+    <xs:documentation> definition lists - dt for term, dd for its definition </xs:documentation>
   </xs:annotation>
   <xs:element name="dl">
     <xs:complexType>
@@ -948,15 +842,12 @@
     </xs:complexType>
   </xs:element>
   <xs:annotation>
-    <xs:documentation>
-    =================== Address ==========================================
+    <xs:documentation> =================== Address ==========================================
     </xs:documentation>
   </xs:annotation>
   <xs:element name="address">
     <xs:annotation>
-      <xs:documentation>
-      information on author
-      </xs:documentation>
+      <xs:documentation> information on author </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -967,8 +858,7 @@
     </xs:complexType>
   </xs:element>
   <xs:annotation>
-    <xs:documentation>
-    =================== Horizontal Rule ==================================
+    <xs:documentation> =================== Horizontal Rule ==================================
     </xs:documentation>
   </xs:annotation>
   <xs:element name="hr">
@@ -977,14 +867,12 @@
     </xs:complexType>
   </xs:element>
   <xs:annotation>
-    <xs:documentation>
-    =================== Preformatted Text ================================
+    <xs:documentation> =================== Preformatted Text ================================
     </xs:documentation>
   </xs:annotation>
   <xs:element name="pre">
     <xs:annotation>
-      <xs:documentation>
-      content is "Inline" excluding "img|object|big|small|sub|sup"
+      <xs:documentation> content is "Inline" excluding "img|object|big|small|sub|sup"
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -997,8 +885,7 @@
     </xs:complexType>
   </xs:element>
   <xs:annotation>
-    <xs:documentation>
-    =================== Block-like Quotes ================================
+    <xs:documentation> =================== Block-like Quotes ================================
     </xs:documentation>
   </xs:annotation>
   <xs:element name="blockquote">
@@ -1045,14 +932,12 @@
   </xs:element>
 -->
   <xs:annotation>
-    <xs:documentation>
-    ================== The Anchor Element ================================
+    <xs:documentation> ================== The Anchor Element ================================
     </xs:documentation>
   </xs:annotation>
   <xs:element name="a">
     <xs:annotation>
-      <xs:documentation>
-      content is "Inline" except that anchors shouldn't be nested
+      <xs:documentation> content is "Inline" except that anchors shouldn't be nested
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -1074,15 +959,12 @@
     </xs:complexType>
   </xs:element>
   <xs:annotation>
-    <xs:documentation>
-    ===================== Inline Elements ================================
+    <xs:documentation> ===================== Inline Elements ================================
     </xs:documentation>
   </xs:annotation>
   <xs:element name="span">
     <xs:annotation>
-      <xs:documentation>
-      generic language/style container
-      </xs:documentation>
+      <xs:documentation> generic language/style container </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1094,9 +976,7 @@
   </xs:element>
   <xs:element name="bdo">
     <xs:annotation>
-      <xs:documentation>
-      I18N BiDi over-ride
-      </xs:documentation>
+      <xs:documentation> I18N BiDi over-ride </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1119,9 +999,7 @@
   </xs:element>
   <xs:element name="br">
     <xs:annotation>
-      <xs:documentation>
-      forced line break
-      </xs:documentation>
+      <xs:documentation> forced line break </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attributeGroup ref="coreattrs"/>
@@ -1129,9 +1007,7 @@
   </xs:element>
   <xs:element name="em">
     <xs:annotation>
-      <xs:documentation>
-      emphasis
-      </xs:documentation>
+      <xs:documentation> emphasis </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1143,9 +1019,7 @@
   </xs:element>
   <xs:element name="strong">
     <xs:annotation>
-      <xs:documentation>
-      strong emphasis
-      </xs:documentation>
+      <xs:documentation> strong emphasis </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1157,9 +1031,7 @@
   </xs:element>
   <xs:element name="dfn">
     <xs:annotation>
-      <xs:documentation>
-      definitional
-      </xs:documentation>
+      <xs:documentation> definitional </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1171,9 +1043,7 @@
   </xs:element>
   <xs:element name="code">
     <xs:annotation>
-      <xs:documentation>
-      program code
-      </xs:documentation>
+      <xs:documentation> program code </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1185,9 +1055,7 @@
   </xs:element>
   <xs:element name="samp">
     <xs:annotation>
-      <xs:documentation>
-      sample
-      </xs:documentation>
+      <xs:documentation> sample </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1199,9 +1067,7 @@
   </xs:element>
   <xs:element name="kbd">
     <xs:annotation>
-      <xs:documentation>
-      something user would type
-      </xs:documentation>
+      <xs:documentation> something user would type </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1213,9 +1079,7 @@
   </xs:element>
   <xs:element name="var">
     <xs:annotation>
-      <xs:documentation>
-      variable
-      </xs:documentation>
+      <xs:documentation> variable </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1227,9 +1091,7 @@
   </xs:element>
   <xs:element name="cite">
     <xs:annotation>
-      <xs:documentation>
-      citation
-      </xs:documentation>
+      <xs:documentation> citation </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1241,9 +1103,7 @@
   </xs:element>
   <xs:element name="abbr">
     <xs:annotation>
-      <xs:documentation>
-      abbreviation
-      </xs:documentation>
+      <xs:documentation> abbreviation </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1255,9 +1115,7 @@
   </xs:element>
   <xs:element name="acronym">
     <xs:annotation>
-      <xs:documentation>
-      acronym
-      </xs:documentation>
+      <xs:documentation> acronym </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1269,9 +1127,7 @@
   </xs:element>
   <xs:element name="q">
     <xs:annotation>
-      <xs:documentation>
-      inlined quote
-      </xs:documentation>
+      <xs:documentation> inlined quote </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1284,9 +1140,7 @@
   </xs:element>
   <xs:element name="sub">
     <xs:annotation>
-      <xs:documentation>
-      subscript
-      </xs:documentation>
+      <xs:documentation> subscript </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1298,9 +1152,7 @@
   </xs:element>
   <xs:element name="sup">
     <xs:annotation>
-      <xs:documentation>
-      superscript
-      </xs:documentation>
+      <xs:documentation> superscript </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1312,9 +1164,7 @@
   </xs:element>
   <xs:element name="tt">
     <xs:annotation>
-      <xs:documentation>
-      fixed pitch font
-      </xs:documentation>
+      <xs:documentation> fixed pitch font </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1326,9 +1176,7 @@
   </xs:element>
   <xs:element name="i">
     <xs:annotation>
-      <xs:documentation>
-      italic font
-      </xs:documentation>
+      <xs:documentation> italic font </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1340,9 +1188,7 @@
   </xs:element>
   <xs:element name="b">
     <xs:annotation>
-      <xs:documentation>
-      bold font
-      </xs:documentation>
+      <xs:documentation> bold font </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1354,9 +1200,7 @@
   </xs:element>
   <xs:element name="big">
     <xs:annotation>
-      <xs:documentation>
-      bigger font
-      </xs:documentation>
+      <xs:documentation> bigger font </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1368,9 +1212,7 @@
   </xs:element>
   <xs:element name="small">
     <xs:annotation>
-      <xs:documentation>
-      smaller font
-      </xs:documentation>
+      <xs:documentation> smaller font </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:complexContent>
@@ -1450,16 +1292,11 @@
   </xs:element>
 -->
   <xs:annotation>
-    <xs:documentation>
-    =================== Images ===========================================
-
-    To avoid accessibility problems for people who aren't
-    able to see the image, you should provide a text
-    description using the alt and longdesc attributes.
-    In addition, avoid the use of server-side image maps.
-    Note that in this DTD there is no name attribute. That
-    is only available in the transitional and frameset DTD.
-    </xs:documentation>
+    <xs:documentation> =================== Images =========================================== To
+      avoid accessibility problems for people who aren't able to see the image, you should provide a
+      text description using the alt and longdesc attributes. In addition, avoid the use of
+      server-side image maps. Note that in this DTD there is no name attribute. That is only
+      available in the transitional and frameset DTD. </xs:documentation>
   </xs:annotation>
   <xs:element name="img">
     <xs:complexType>
@@ -1471,10 +1308,8 @@
       <xs:attribute name="width" type="Length"/>
       <xs:attribute name="usemap" type="URI">
         <xs:annotation>
-          <xs:documentation>
-          usemap points to a map element which may be in this document
-          or an external document, although the latter is not widely supported
-          </xs:documentation>
+          <xs:documentation> usemap points to a map element which may be in this document or an
+            external document, although the latter is not widely supported </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="ismap">
@@ -1487,19 +1322,16 @@
     </xs:complexType>
   </xs:element>
   <xs:annotation>
-    <xs:documentation>
-    ================== Client-side image maps ============================
-
-    These can be placed in the same document or grouped in a
-    separate document although this isn't yet widely supported
-    </xs:documentation>
+    <xs:documentation> ================== Client-side image maps ============================ These
+      can be placed in the same document or grouped in a separate document although this isn't yet
+      widely supported </xs:documentation>
   </xs:annotation>
   <xs:element name="map">
     <xs:complexType>
       <xs:choice>
         <xs:choice maxOccurs="unbounded">
           <xs:group ref="block"/>
-<!--
+          <!--
   FHIR: no forms
           <xs:element ref="form"/>
           <xs:group ref="misc"/>
@@ -1830,22 +1662,15 @@
   </xs:element>
 -->
   <xs:annotation>
-    <xs:documentation>
-    ======================= Tables =======================================
-
-    Derived from IETF HTML table standard, see [RFC1942]
-    </xs:documentation>
+    <xs:documentation> ======================= Tables =======================================
+      Derived from IETF HTML table standard, see [RFC1942] </xs:documentation>
   </xs:annotation>
   <xs:simpleType name="TFrame">
     <xs:annotation>
-      <xs:documentation>
-      The border attribute sets the thickness of the frame around the
-      table. The default units are screen pixels.
-
-      The frame attribute specifies which parts of the frame around
-      the table should be rendered. The values are not the same as
-      CALS to avoid a name clash with the valign attribute.
-      </xs:documentation>
+      <xs:documentation> The border attribute sets the thickness of the frame around the table. The
+        default units are screen pixels. The frame attribute specifies which parts of the frame
+        around the table should be rendered. The values are not the same as CALS to avoid a name
+        clash with the valign attribute. </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:token">
       <xs:enumeration value="void"/>
@@ -1861,11 +1686,8 @@
   </xs:simpleType>
   <xs:simpleType name="TRules">
     <xs:annotation>
-      <xs:documentation>
-      The rules attribute defines which rules to draw between cells:
-
-      If rules is absent then assume:
-          "none" if border is absent or border="0" otherwise "all"
+      <xs:documentation> The rules attribute defines which rules to draw between cells: If rules is
+        absent then assume: "none" if border is absent or border="0" otherwise "all"
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:token">
@@ -1878,12 +1700,8 @@
   </xs:simpleType>
   <xs:attributeGroup name="cellhalign">
     <xs:annotation>
-      <xs:documentation>
-      horizontal alignment attributes for cell contents
-
-      char        alignment char, e.g. char=':'
-      charoff     offset for alignment char
-      </xs:documentation>
+      <xs:documentation> horizontal alignment attributes for cell contents char alignment char, e.g.
+        char=':' charoff offset for alignment char </xs:documentation>
     </xs:annotation>
     <xs:attribute name="align">
       <xs:simpleType>
@@ -1901,9 +1719,7 @@
   </xs:attributeGroup>
   <xs:attributeGroup name="cellvalign">
     <xs:annotation>
-      <xs:documentation>
-      vertical alignment attributes for cell contents
-      </xs:documentation>
+      <xs:documentation> vertical alignment attributes for cell contents </xs:documentation>
     </xs:annotation>
     <xs:attribute name="valign">
       <xs:simpleType>
@@ -1951,18 +1767,11 @@
     </xs:complexType>
   </xs:element>
   <xs:annotation>
-    <xs:documentation>
-    Use thead to duplicate headers when breaking table
-    across page boundaries, or for static headers when
-    tbody sections are rendered in scrolling panel.
-
-    Use tfoot to duplicate footers when breaking table
-    across page boundaries, or for static footers when
-    tbody sections are rendered in scrolling panel.
-
-    Use multiple tbody sections when rules are needed
-    between groups of table rows.
-    </xs:documentation>
+    <xs:documentation> Use thead to duplicate headers when breaking table across page boundaries, or
+      for static headers when tbody sections are rendered in scrolling panel. Use tfoot to duplicate
+      footers when breaking table across page boundaries, or for static footers when tbody sections
+      are rendered in scrolling panel. Use multiple tbody sections when rules are needed between
+      groups of table rows. </xs:documentation>
   </xs:annotation>
   <xs:element name="thead">
     <xs:complexType>
@@ -1996,10 +1805,8 @@
   </xs:element>
   <xs:element name="colgroup">
     <xs:annotation>
-      <xs:documentation>
-      colgroup groups a set of col elements. It allows you to group
-      several semantically related columns together.
-      </xs:documentation>
+      <xs:documentation> colgroup groups a set of col elements. It allows you to group several
+        semantically related columns together. </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
@@ -2014,18 +1821,10 @@
   </xs:element>
   <xs:element name="col">
     <xs:annotation>
-      <xs:documentation>
-      col elements define the alignment properties for cells in
-      one or more columns.
-
-      The width attribute specifies the width of the columns, e.g.
-
-          width=64        width in screen pixels
-          width=0.5*      relative width of 0.5
-
-      The span attribute causes the attributes of one
-      col element to apply to more than one column.
-      </xs:documentation>
+      <xs:documentation> col elements define the alignment properties for cells in one or more
+        columns. The width attribute specifies the width of the columns, e.g. width=64 width in
+        screen pixels width=0.5* relative width of 0.5 The span attribute causes the attributes of
+        one col element to apply to more than one column. </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attributeGroup ref="attrs"/>
@@ -2048,8 +1847,7 @@
   </xs:element>
   <xs:simpleType name="Scope">
     <xs:annotation>
-      <xs:documentation>
-      Scope is simpler than headers attribute for common tables
+      <xs:documentation> Scope is simpler than headers attribute for common tables
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:token">
@@ -2060,8 +1858,7 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:annotation>
-    <xs:documentation>
-    th is for headers, td for data and for cells acting as both
+    <xs:documentation> th is for headers, td for data and for cells acting as both
     </xs:documentation>
   </xs:annotation>
   <xs:element name="th">

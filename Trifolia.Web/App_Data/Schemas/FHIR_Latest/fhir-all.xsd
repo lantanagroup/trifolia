@@ -28,7 +28,8 @@ Copyright (c) 2011+, HL7, Inc
 
  Generated on Tue, Mar 21, 2017 06:09+1100 for FHIR v3.0.0
 -->
-<xs:schema xmlns="http://hl7.org/fhir" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://hl7.org/fhir" elementFormDefault="qualified" version="3.0.0">
+<xs:schema xmlns="http://hl7.org/fhir" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://hl7.org/fhir" elementFormDefault="qualified" version="3.0.0">
   <xs:include schemaLocation="account.xsd"/>
   <xs:include schemaLocation="activitydefinition.xsd"/>
   <xs:include schemaLocation="adverseevent.xsd"/>

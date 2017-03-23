@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,110 +34,150 @@
   any profiles that apply to the resources in order to make a conformant implementation.
 
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://hl7.org/fhir" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://hl7.org/fhir" elementFormDefault="qualified" version="1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://hl7.org/fhir"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://hl7.org/fhir"
+  elementFormDefault="qualified" version="1.0">
   <xs:include schemaLocation="fhir-base.xsd"/>
   <xs:element name="StructureMap" type="StructureMap">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used to transform data.</xs:documentation>
+      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used
+        to transform data.</xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:complexType name="StructureMap">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used to transform data.</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used
+        to transform data.</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="DomainResource">
         <xs:sequence>
           <xs:element name="url" minOccurs="1" maxOccurs="1" type="uri">
             <xs:annotation>
-              <xs:documentation xml:lang="en">An absolute URI that is used to identify this structure map when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this structure map is (or will be) published. The URL SHOULD include the major version of the structure map. For more information see [Technical and Business Versions](resource.html#versions).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">An absolute URI that is used to identify this
+                structure map when it is referenced in a specification, model, design or an
+                instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address
+                at which this structure map is (or will be) published. The URL SHOULD include the
+                major version of the structure map. For more information see [Technical and Business
+                Versions](resource.html#versions).</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="identifier" minOccurs="0" maxOccurs="unbounded" type="Identifier">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A formal identifier that is used to identify this structure map when it is represented in other formats, or referenced in a specification, model, design or an instance.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A formal identifier that is used to identify this
+                structure map when it is represented in other formats, or referenced in a
+                specification, model, design or an instance.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="version" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The identifier that is used to identify this version of the structure map when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the structure map author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The identifier that is used to identify this version
+                of the structure map when it is referenced in a specification, model, design or
+                instance. This is an arbitrary value managed by the structure map author and is not
+                expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd)
+                if a managed version is not available. There is also no expectation that versions
+                can be placed in a lexicographical sequence.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="name" minOccurs="1" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A natural language name identifying the structure map. This name should be usable as an identifier for the module by machine processing applications such as code generation.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A natural language name identifying the structure map.
+                This name should be usable as an identifier for the module by machine processing
+                applications such as code generation.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="title" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A short, descriptive, user-friendly title for the structure map.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A short, descriptive, user-friendly title for the
+                structure map.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="status" minOccurs="1" maxOccurs="1" type="PublicationStatus">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The status of this structure map. Enables tracking the life-cycle of the content.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The status of this structure map. Enables tracking the
+                life-cycle of the content.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="experimental" minOccurs="0" maxOccurs="1" type="boolean">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A boolean value to indicate that this structure map is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A boolean value to indicate that this structure map is
+                authored for testing purposes (or education/evaluation/marketing), and is not
+                intended to be used for genuine usage.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="date" minOccurs="0" maxOccurs="1" type="dateTime">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The date  (and optionally time) when the structure map was published. The date must change if and when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the structure map changes.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The date (and optionally time) when the structure map
+                was published. The date must change if and when the business version changes and it
+                must change if the status code changes. In addition, it should change when the
+                substantive content of the structure map changes.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="publisher" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The name of the individual or organization that published the structure map.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The name of the individual or organization that
+                published the structure map.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="contact" minOccurs="0" maxOccurs="unbounded" type="ContactDetail">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Contact details to assist a user in finding and communicating with the publisher.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Contact details to assist a user in finding and
+                communicating with the publisher.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="description" minOccurs="0" maxOccurs="1" type="markdown">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A free text natural language description of the structure map from a consumer's perspective.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A free text natural language description of the
+                structure map from a consumer's perspective.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="useContext" minOccurs="0" maxOccurs="unbounded" type="UsageContext">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The content was developed with a focus and intent of supporting the contexts that are listed. These terms may be used to assist with indexing and searching for appropriate structure map instances.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The content was developed with a focus and intent of
+                supporting the contexts that are listed. These terms may be used to assist with
+                indexing and searching for appropriate structure map instances.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="jurisdiction" minOccurs="0" maxOccurs="unbounded" type="CodeableConcept">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A legal or geographic region in which the structure map is intended to be used.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A legal or geographic region in which the structure
+                map is intended to be used.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="purpose" minOccurs="0" maxOccurs="1" type="markdown">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Explaination of why this structure map is needed and why it has been designed as it has.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Explaination of why this structure map is needed and
+                why it has been designed as it has.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="copyright" minOccurs="0" maxOccurs="1" type="markdown">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A copyright statement relating to the structure map and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the structure map.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A copyright statement relating to the structure map
+                and/or its contents. Copyright statements are generally legal restrictions on the
+                use and publishing of the structure map.</xs:documentation>
+            </xs:annotation>
           </xs:element>
-          <xs:element name="structure" type="StructureMap.Structure" minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="structure" type="StructureMap.Structure" minOccurs="0"
+            maxOccurs="unbounded">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A structure definition used by this map. The structure definition may describe instances that are converted, or the instances that are produced.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A structure definition used by this map. The structure
+                definition may describe instances that are converted, or the instances that are
+                produced.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="import" minOccurs="0" maxOccurs="unbounded" type="uri">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Other maps used by this map (canonical URLs).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Other maps used by this map (canonical
+                URLs).</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="group" type="StructureMap.Group" minOccurs="1" maxOccurs="unbounded">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Organizes the mapping into managable chunks for human review/ease of maintenance.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Organizes the mapping into managable chunks for human
+                review/ease of maintenance.</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -145,30 +185,35 @@
   </xs:complexType>
   <xs:complexType name="StructureMap.Structure">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used to transform data.</xs:documentation>
+      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used
+        to transform data.</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
         <xs:sequence>
           <xs:element name="url" minOccurs="1" maxOccurs="1" type="uri">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The canonical URL that identifies the structure.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The canonical URL that identifies the
+                structure.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="mode" minOccurs="1" maxOccurs="1" type="StructureMapModelMode">
             <xs:annotation>
-              <xs:documentation xml:lang="en">How the referenced structure is used in this mapping.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">How the referenced structure is used in this
+                mapping.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="alias" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The name used for this type in the map.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The name used for this type in the
+                map.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="documentation" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Documentation that describes how the structure is used in the mapping.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Documentation that describes how the structure is used
+                in the mapping.</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -176,40 +221,47 @@
   </xs:complexType>
   <xs:complexType name="StructureMap.Group">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used to transform data.</xs:documentation>
+      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used
+        to transform data.</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
         <xs:sequence>
           <xs:element name="name" minOccurs="1" maxOccurs="1" type="id">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A unique name for the group for the convenience of human readers.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A unique name for the group for the convenience of
+                human readers.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="extends" minOccurs="0" maxOccurs="1" type="id">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Another group that this group adds rules to.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Another group that this group adds rules
+                to.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="typeMode" minOccurs="1" maxOccurs="1" type="StructureMapGroupTypeMode">
             <xs:annotation>
-              <xs:documentation xml:lang="en">If this is the default rule set to apply for thie source type, or this combination of types.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">If this is the default rule set to apply for thie
+                source type, or this combination of types.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="documentation" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Additional supporting documentation that explains the purpose of the group and the types of mappings within it.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Additional supporting documentation that explains the
+                purpose of the group and the types of mappings within it.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="input" type="StructureMap.Input" minOccurs="1" maxOccurs="unbounded">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A name assigned to an instance of data. The instance must be provided when the mapping is invoked.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A name assigned to an instance of data. The instance
+                must be provided when the mapping is invoked.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="rule" type="StructureMap.Rule" minOccurs="1" maxOccurs="unbounded">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Transform Rule from source to target.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Transform Rule from source to
+                target.</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -217,7 +269,8 @@
   </xs:complexType>
   <xs:complexType name="StructureMap.Input">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used to transform data.</xs:documentation>
+      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used
+        to transform data.</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
@@ -225,22 +278,23 @@
           <xs:element name="name" minOccurs="1" maxOccurs="1" type="id">
             <xs:annotation>
               <xs:documentation xml:lang="en">Name for this instance of data.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="type" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
               <xs:documentation xml:lang="en">Type for this instance of data.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="mode" minOccurs="1" maxOccurs="1" type="StructureMapInputMode">
             <xs:annotation>
               <xs:documentation xml:lang="en">Mode for this instance of data.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="documentation" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Documentation for this instance of data.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Documentation for this instance of
+                data.</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -248,40 +302,46 @@
   </xs:complexType>
   <xs:complexType name="StructureMap.Rule">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used to transform data.</xs:documentation>
+      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used
+        to transform data.</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
         <xs:sequence>
           <xs:element name="name" minOccurs="1" maxOccurs="1" type="id">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Name of the rule for internal references.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Name of the rule for internal
+                references.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="source" type="StructureMap.Source" minOccurs="1" maxOccurs="unbounded">
             <xs:annotation>
               <xs:documentation xml:lang="en">Source inputs to the mapping.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="target" type="StructureMap.Target" minOccurs="0" maxOccurs="unbounded">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Content to create because of this mapping rule.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Content to create because of this mapping
+                rule.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="rule" type="StructureMap.Rule" minOccurs="0" maxOccurs="unbounded">
             <xs:annotation>
               <xs:documentation xml:lang="en">Rules contained in this rule.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
-          <xs:element name="dependent" type="StructureMap.Dependent" minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="dependent" type="StructureMap.Dependent" minOccurs="0"
+            maxOccurs="unbounded">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Which other rules to apply in the context of this rule.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Which other rules to apply in the context of this
+                rule.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="documentation" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Documentation for this instance of data.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Documentation for this instance of
+                data.</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -289,34 +349,45 @@
   </xs:complexType>
   <xs:complexType name="StructureMap.Source">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used to transform data.</xs:documentation>
+      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used
+        to transform data.</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
         <xs:sequence>
           <xs:element name="context" minOccurs="1" maxOccurs="1" type="id">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Type or variable this rule applies to.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Type or variable this rule applies
+                to.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="min" minOccurs="0" maxOccurs="1" type="integer">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Specified minimum cardinality for the element. This is
+                optional; if present, it acts an implicit check on the input
+                content.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="max" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Specified maximum cardinality for the element - a number or a &quot;*&quot;. This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Specified maximum cardinality for the element - a
+                number or a "*". This is optional; if present, it acts an implicit check on the
+                input content (* just serves as documentation; it's the default
+                value).</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="type" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Specified type for the element. This works as a
+                condition on the mapping - use for polymorphic elements.</xs:documentation>
+            </xs:annotation>
           </xs:element>
-          <xs:choice minOccurs="0" maxOccurs="1" >
+          <xs:choice minOccurs="0" maxOccurs="1">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A value to use if there is no existing value in the source object.</xs:documentation>
+              <xs:appinfo source="https://trifolia.lantanagroup.com/choiceName"
+                >default[x]</xs:appinfo>
+              <xs:documentation xml:lang="en">A value to use if there is no existing value in the
+                source object.</xs:documentation>
             </xs:annotation>
             <xs:element name="defaultValueBase64Binary" type="base64Binary"/>
             <xs:element name="defaultValueBoolean" type="boolean"/>
@@ -360,27 +431,31 @@
           <xs:element name="element" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
               <xs:documentation xml:lang="en">Optional field for this source.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="listMode" minOccurs="0" maxOccurs="1" type="StructureMapSourceListMode">
             <xs:annotation>
-              <xs:documentation xml:lang="en">How to handle the list mode for this element.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">How to handle the list mode for this
+                element.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="variable" minOccurs="0" maxOccurs="1" type="id">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Named context for field, if a field is specified.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Named context for field, if a field is
+                specified.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="condition" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">FHIRPath expression  - must be true or the rule does not apply.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">FHIRPath expression - must be true or the rule does
+                not apply.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="check" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">FHIRPath expression - must be true or the mapping
+                engine throws an error instead of completing.</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -388,50 +463,57 @@
   </xs:complexType>
   <xs:complexType name="StructureMap.Target">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used to transform data.</xs:documentation>
+      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used
+        to transform data.</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
         <xs:sequence>
           <xs:element name="context" minOccurs="0" maxOccurs="1" type="id">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Type or variable this rule applies to.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Type or variable this rule applies
+                to.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="contextType" minOccurs="0" maxOccurs="1" type="StructureMapContextType">
             <xs:annotation>
               <xs:documentation xml:lang="en">How to interpret the context.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="element" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
               <xs:documentation xml:lang="en">Field to create in the context.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="variable" minOccurs="0" maxOccurs="1" type="id">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Named context for field, if desired, and a field is specified.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Named context for field, if desired, and a field is
+                specified.</xs:documentation>
+            </xs:annotation>
           </xs:element>
-          <xs:element name="listMode" minOccurs="0" maxOccurs="unbounded" type="StructureMapTargetListMode">
+          <xs:element name="listMode" minOccurs="0" maxOccurs="unbounded"
+            type="StructureMapTargetListMode">
             <xs:annotation>
-              <xs:documentation xml:lang="en">If field is a list, how to manage the list.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">If field is a list, how to manage the
+                list.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="listRuleId" minOccurs="0" maxOccurs="1" type="id">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Internal rule reference for shared list items.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Internal rule reference for shared list
+                items.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="transform" minOccurs="0" maxOccurs="1" type="StructureMapTransform">
             <xs:annotation>
               <xs:documentation xml:lang="en">How the data is copied / created.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
-          <xs:element name="parameter" type="StructureMap.Parameter" minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="parameter" type="StructureMap.Parameter" minOccurs="0"
+            maxOccurs="unbounded">
             <xs:annotation>
               <xs:documentation xml:lang="en">Parameters to the transform.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -439,14 +521,18 @@
   </xs:complexType>
   <xs:complexType name="StructureMap.Parameter">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used to transform data.</xs:documentation>
+      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used
+        to transform data.</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
         <xs:sequence>
-          <xs:choice minOccurs="1" maxOccurs="1" >
+          <xs:choice minOccurs="1" maxOccurs="1">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Parameter value - variable or literal.</xs:documentation>
+              <xs:appinfo source="https://trifolia.lantanagroup.com/choiceName"
+                >value[x]</xs:appinfo>
+              <xs:documentation xml:lang="en">Parameter value - variable or
+                literal.</xs:documentation>
             </xs:annotation>
             <xs:element name="valueId" type="id"/>
             <xs:element name="valueString" type="string"/>
@@ -460,7 +546,8 @@
   </xs:complexType>
   <xs:complexType name="StructureMap.Dependent">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used to transform data.</xs:documentation>
+      <xs:documentation xml:lang="en">A Map of relationships between 2 structures that can be used
+        to transform data.</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
@@ -468,12 +555,13 @@
           <xs:element name="name" minOccurs="1" maxOccurs="1" type="id">
             <xs:annotation>
               <xs:documentation xml:lang="en">Name of a rule or group to apply.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="variable" minOccurs="1" maxOccurs="unbounded" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Variable to pass to the rule or group.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Variable to pass to the rule or
+                group.</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -496,7 +584,8 @@
   <xs:complexType name="StructureMapInputMode">
     <xs:annotation>
       <xs:documentation xml:lang="en">Mode for this instance of data</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">
@@ -521,7 +610,8 @@
   <xs:complexType name="StructureMapContextType">
     <xs:annotation>
       <xs:documentation xml:lang="en">How to interpret the context</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">
@@ -555,8 +645,10 @@
   </xs:simpleType>
   <xs:complexType name="StructureMapTargetListMode">
     <xs:annotation>
-      <xs:documentation xml:lang="en">If field is a list, how to manage the production</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">If field is a list, how to manage the
+        production</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">
@@ -656,7 +748,8 @@
   <xs:complexType name="StructureMapTransform">
     <xs:annotation>
       <xs:documentation xml:lang="en">How data is copied/created</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">
@@ -695,8 +788,10 @@
   </xs:simpleType>
   <xs:complexType name="StructureMapSourceListMode">
     <xs:annotation>
-      <xs:documentation xml:lang="en">If field is a list, how to manage the source</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">If field is a list, how to manage the
+        source</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">
@@ -725,8 +820,10 @@
   </xs:simpleType>
   <xs:complexType name="StructureMapGroupTypeMode">
     <xs:annotation>
-      <xs:documentation xml:lang="en">If this is the default rule set to apply for the source type, or this combination of types</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">If this is the default rule set to apply for the source type,
+        or this combination of types</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">
@@ -760,8 +857,10 @@
   </xs:simpleType>
   <xs:complexType name="StructureMapModelMode">
     <xs:annotation>
-      <xs:documentation xml:lang="en">How the referenced structure is used in this mapping</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">How the referenced structure is used in this
+        mapping</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">

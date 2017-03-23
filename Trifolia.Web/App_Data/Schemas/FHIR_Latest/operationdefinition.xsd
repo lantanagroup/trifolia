@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,135 +34,184 @@
   any profiles that apply to the resources in order to make a conformant implementation.
 
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://hl7.org/fhir" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://hl7.org/fhir" elementFormDefault="qualified" version="1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://hl7.org/fhir"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="http://hl7.org/fhir"
+  elementFormDefault="qualified" version="1.0">
   <xs:include schemaLocation="fhir-base.xsd"/>
   <xs:element name="OperationDefinition" type="OperationDefinition">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).</xs:documentation>
+      <xs:documentation xml:lang="en">A formal computable definition of an operation (on the RESTful
+        interface) or a named query (using the search interaction).</xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:complexType name="OperationDefinition">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">A formal computable definition of an operation (on the RESTful
+        interface) or a named query (using the search interaction).</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="DomainResource">
         <xs:sequence>
           <xs:element name="url" minOccurs="0" maxOccurs="1" type="uri">
             <xs:annotation>
-              <xs:documentation xml:lang="en">An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this operation definition is (or will be) published. The URL SHOULD include the major version of the operation definition. For more information see [Technical and Business Versions](resource.html#versions).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">An absolute URI that is used to identify this
+                operation definition when it is referenced in a specification, model, design or an
+                instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address
+                at which this operation definition is (or will be) published. The URL SHOULD include
+                the major version of the operation definition. For more information see [Technical
+                and Business Versions](resource.html#versions).</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="version" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The identifier that is used to identify this version of the operation definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the operation definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The identifier that is used to identify this version
+                of the operation definition when it is referenced in a specification, model, design
+                or instance. This is an arbitrary value managed by the operation definition author
+                and is not expected to be globally unique. For example, it might be a timestamp
+                (e.g. yyyymmdd) if a managed version is not available. There is also no expectation
+                that versions can be placed in a lexicographical sequence.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="name" minOccurs="1" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A natural language name identifying the operation definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A natural language name identifying the operation
+                definition. This name should be usable as an identifier for the module by machine
+                processing applications such as code generation.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="status" minOccurs="1" maxOccurs="1" type="PublicationStatus">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The status of this operation definition. Enables tracking the life-cycle of the content.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The status of this operation definition. Enables
+                tracking the life-cycle of the content.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="kind" minOccurs="1" maxOccurs="1" type="OperationKind">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Whether this is an operation or a named query.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Whether this is an operation or a named
+                query.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="experimental" minOccurs="0" maxOccurs="1" type="boolean">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A boolean value to indicate that this operation definition is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A boolean value to indicate that this operation
+                definition is authored for testing purposes (or education/evaluation/marketing), and
+                is not intended to be used for genuine usage.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="date" minOccurs="0" maxOccurs="1" type="dateTime">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The date  (and optionally time) when the operation definition was published. The date must change if and when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the operation definition changes.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The date (and optionally time) when the operation
+                definition was published. The date must change if and when the business version
+                changes and it must change if the status code changes. In addition, it should change
+                when the substantive content of the operation definition changes.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="publisher" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The name of the individual or organization that published the operation definition.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The name of the individual or organization that
+                published the operation definition.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="contact" minOccurs="0" maxOccurs="unbounded" type="ContactDetail">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Contact details to assist a user in finding and communicating with the publisher.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Contact details to assist a user in finding and
+                communicating with the publisher.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="description" minOccurs="0" maxOccurs="1" type="markdown">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A free text natural language description of the operation definition from a consumer's perspective.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A free text natural language description of the
+                operation definition from a consumer's perspective.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="useContext" minOccurs="0" maxOccurs="unbounded" type="UsageContext">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The content was developed with a focus and intent of supporting the contexts that are listed. These terms may be used to assist with indexing and searching for appropriate operation definition instances.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The content was developed with a focus and intent of
+                supporting the contexts that are listed. These terms may be used to assist with
+                indexing and searching for appropriate operation definition
+                instances.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="jurisdiction" minOccurs="0" maxOccurs="unbounded" type="CodeableConcept">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A legal or geographic region in which the operation definition is intended to be used.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A legal or geographic region in which the operation
+                definition is intended to be used.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="purpose" minOccurs="0" maxOccurs="1" type="markdown">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Explaination of why this operation definition is needed and why it has been designed as it has.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Explaination of why this operation definition is
+                needed and why it has been designed as it has.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="idempotent" minOccurs="0" maxOccurs="1" type="boolean">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Operations that are idempotent (see [HTTP specification definition of idempotent](http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html)) may be invoked by performing an HTTP GET operation instead of a POST.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Operations that are idempotent (see [HTTP
+                specification definition of
+                idempotent](http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html)) may be invoked
+                by performing an HTTP GET operation instead of a POST.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="code" minOccurs="1" maxOccurs="1" type="code">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The name used to invoke the operation.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The name used to invoke the
+                operation.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="comment" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Additional information about how to use this operation or named query.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Additional information about how to use this operation
+                or named query.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="base" minOccurs="0" maxOccurs="1" type="Reference">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Indicates that this operation definition is a constraining profile on the base.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Indicates that this operation definition is a
+                constraining profile on the base.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="resource" minOccurs="0" maxOccurs="unbounded" type="ResourceType">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The types on which this operation can be executed.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The types on which this operation can be
+                executed.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="system" minOccurs="1" maxOccurs="1" type="boolean">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Indicates whether this operation or named query can be invoked at the system level (e.g. without needing to choose a resource type for the context).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Indicates whether this operation or named query can be
+                invoked at the system level (e.g. without needing to choose a resource type for the
+                context).</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="type" minOccurs="1" maxOccurs="1" type="boolean">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Indicates whether this operation or named query can be invoked at the resource type level for any given resource type level (e.g. without needing to choose a specific resource id for the context).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Indicates whether this operation or named query can be
+                invoked at the resource type level for any given resource type level (e.g. without
+                needing to choose a specific resource id for the context).</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="instance" minOccurs="1" maxOccurs="1" type="boolean">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Indicates whether this operation can be invoked on a particular instance of one of the given types.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Indicates whether this operation can be invoked on a
+                particular instance of one of the given types.</xs:documentation>
+            </xs:annotation>
           </xs:element>
-          <xs:element name="parameter" type="OperationDefinition.Parameter" minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="parameter" type="OperationDefinition.Parameter" minOccurs="0"
+            maxOccurs="unbounded">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The parameters for the operation/query.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The parameters for the
+                operation/query.</xs:documentation>
+            </xs:annotation>
           </xs:element>
-          <xs:element name="overload" type="OperationDefinition.Overload" minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="overload" type="OperationDefinition.Overload" minOccurs="0"
+            maxOccurs="unbounded">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Defines an appropriate combination of parameters to use when invoking this operation, to help code generators when generating overloaded parameter sets for this operation.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Defines an appropriate combination of parameters to
+                use when invoking this operation, to help code generators when generating overloaded
+                parameter sets for this operation.</xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -170,60 +219,70 @@
   </xs:complexType>
   <xs:complexType name="OperationDefinition.Parameter">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).</xs:documentation>
+      <xs:documentation xml:lang="en">A formal computable definition of an operation (on the RESTful
+        interface) or a named query (using the search interaction).</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
         <xs:sequence>
           <xs:element name="name" minOccurs="1" maxOccurs="1" type="code">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The name of used to identify the parameter.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The name of used to identify the
+                parameter.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="use" minOccurs="1" maxOccurs="1" type="OperationParameterUse">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Whether this is an input or an output parameter.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Whether this is an input or an output
+                parameter.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="min" minOccurs="1" maxOccurs="1" type="integer">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The minimum number of times this parameter SHALL appear in the request or response.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The minimum number of times this parameter SHALL
+                appear in the request or response.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="max" minOccurs="1" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">The maximum number of times this element is permitted to appear in the request or response.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">The maximum number of times this element is permitted
+                to appear in the request or response.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="documentation" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Describes the meaning or use of this parameter.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Describes the meaning or use of this
+                parameter.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="type" minOccurs="0" maxOccurs="1" type="FHIRAllTypes">
             <xs:annotation>
               <xs:documentation xml:lang="en">The type for this parameter.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="searchType" minOccurs="0" maxOccurs="1" type="SearchParamType">
             <xs:annotation>
-              <xs:documentation xml:lang="en">How the parameter is understood as a search parameter. This is only used if the parameter type is 'string'.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">How the parameter is understood as a search parameter.
+                This is only used if the parameter type is 'string'.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="profile" minOccurs="0" maxOccurs="1" type="Reference">
             <xs:annotation>
-              <xs:documentation xml:lang="en">A profile the specifies the rules that this parameter must conform to.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">A profile the specifies the rules that this parameter
+                must conform to.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="binding" type="OperationDefinition.Binding" minOccurs="0" maxOccurs="1">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Binds to a value set if this parameter is coded (code, Coding, CodeableConcept).</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Binds to a value set if this parameter is coded (code,
+                Coding, CodeableConcept).</xs:documentation>
+            </xs:annotation>
           </xs:element>
-          <xs:element name="part" type="OperationDefinition.Parameter" minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="part" type="OperationDefinition.Parameter" minOccurs="0"
+            maxOccurs="unbounded">
             <xs:annotation>
               <xs:documentation xml:lang="en">The parts of a nested Parameter.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -231,19 +290,25 @@
   </xs:complexType>
   <xs:complexType name="OperationDefinition.Binding">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).</xs:documentation>
+      <xs:documentation xml:lang="en">A formal computable definition of an operation (on the RESTful
+        interface) or a named query (using the search interaction).</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
         <xs:sequence>
           <xs:element name="strength" minOccurs="1" maxOccurs="1" type="BindingStrength">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Indicates the degree of conformance expectations associated with this binding - that is, the degree to which the provided value set must be adhered to in the instances.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Indicates the degree of conformance expectations
+                associated with this binding - that is, the degree to which the provided value set
+                must be adhered to in the instances.</xs:documentation>
+            </xs:annotation>
           </xs:element>
-          <xs:choice minOccurs="1" maxOccurs="1" >
+          <xs:choice minOccurs="1" maxOccurs="1">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Points to the value set or external definition (e.g. implicit value set) that identifies the set of codes to be used.</xs:documentation>
+              <xs:appinfo source="https://trifolia.lantanagroup.com/choiceName"
+                >value[x]</xs:appinfo>
+              <xs:documentation xml:lang="en">Points to the value set or external definition (e.g.
+                implicit value set) that identifies the set of codes to be used.</xs:documentation>
             </xs:annotation>
             <xs:element name="valueSetUri" type="uri"/>
             <xs:element name="valueSetReference" type="Reference"/>
@@ -254,20 +319,22 @@
   </xs:complexType>
   <xs:complexType name="OperationDefinition.Overload">
     <xs:annotation>
-      <xs:documentation xml:lang="en">A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).</xs:documentation>
+      <xs:documentation xml:lang="en">A formal computable definition of an operation (on the RESTful
+        interface) or a named query (using the search interaction).</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="BackboneElement">
         <xs:sequence>
           <xs:element name="parameterName" minOccurs="0" maxOccurs="unbounded" type="string">
             <xs:annotation>
-              <xs:documentation xml:lang="en">Name of parameter to include in overload.</xs:documentation>
-           </xs:annotation>
+              <xs:documentation xml:lang="en">Name of parameter to include in
+                overload.</xs:documentation>
+            </xs:annotation>
           </xs:element>
           <xs:element name="comment" minOccurs="0" maxOccurs="1" type="string">
             <xs:annotation>
               <xs:documentation xml:lang="en">Comments to go on overload.</xs:documentation>
-           </xs:annotation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
@@ -1154,8 +1221,9 @@
   </xs:simpleType>
   <xs:complexType name="FHIRAllTypes">
     <xs:annotation>
-      <xs:documentation xml:lang="en"></xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en"> </xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">
@@ -1179,8 +1247,10 @@
   </xs:simpleType>
   <xs:complexType name="OperationParameterUse">
     <xs:annotation>
-      <xs:documentation xml:lang="en">Whether an operation parameter is an input or an output parameter.</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">Whether an operation parameter is an input or an output
+        parameter.</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">
@@ -1204,8 +1274,10 @@
   </xs:simpleType>
   <xs:complexType name="OperationKind">
     <xs:annotation>
-      <xs:documentation xml:lang="en">Whether an operation is a normal operation or a query.</xs:documentation>
-      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an @id, or extensions</xs:documentation>
+      <xs:documentation xml:lang="en">Whether an operation is a normal operation or a
+        query.</xs:documentation>
+      <xs:documentation xml:lang="en">If the element is present, it must have either a @value, an
+        @id, or extensions</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="Element">
