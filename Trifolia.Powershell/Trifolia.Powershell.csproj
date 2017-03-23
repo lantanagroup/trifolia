@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="AppConfig.cs" />
     <Compile Include="BaseCommand.cs" />
+    <Compile Include="SetSchemaCommonWords.cs" />
     <Compile Include="SchematronCommand.cs" />
     <Compile Include="GetUsersCommand.cs" />
     <Compile Include="SetPasswordResetCommand.cs" />
