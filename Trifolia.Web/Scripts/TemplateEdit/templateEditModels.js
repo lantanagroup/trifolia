@@ -869,7 +869,12 @@ var TemplateModel = function (data, viewModel) {
         PrimaryContextType: self.PrimaryContextType.extend({ required: { message: 'Primary Context Type is required.' } }),
         OwningImplementationGuideId: self.OwningImplementationGuideId.extend({ required: { message: 'Owning Implementation Guide is required.' } }),
         IdentifierPrefix: self.IdentifierPrefix.extend({ required: { message: 'Identifier\'s prefix is required.' } }),
-        IdentifierAfix: self.IdentifierAfix.extend({ required: { message: 'Identifier\s afix is required.' } })
+        IdentifierAfix: self.IdentifierAfix.extend({ required: { message: 'Identifier\'s afix is required.' } }),
+        ImpliedTemplateId: self.ImpliedTemplateId.extend({
+            ignoreSelfTemplateId: {
+                impliedId: self.ImpliedTemplateId,
+                id: self.Id
+            }})
     });
 
     self.AddExtension = function () {
