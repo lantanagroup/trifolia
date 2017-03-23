@@ -27,7 +27,6 @@ namespace Trifolia.Export.FHIR.STU3
         private Dictionary<ImplementationGuide, IGSettingsManager> allIgSettings = new Dictionary<ImplementationGuide, IGSettingsManager>();
         private Dictionary<string, StructureDefinition> baseProfiles = new Dictionary<string, StructureDefinition>();
         private ImplementationGuideType implementationGuideType;
-        private Bundle profileBundle;
 
         public StructureDefinitionExporter(IObjectRepository tdb, string scheme, string authority)
         {
@@ -35,7 +34,6 @@ namespace Trifolia.Export.FHIR.STU3
             this.scheme = scheme;
             this.authority = authority;
             this.implementationGuideType = STU3Helper.GetImplementationGuideType(this.tdb, true);
-            this.profileBundle = ProfileHelper.GetProfileBundle();
         }
 
         public Extension Convert(TemplateExtension extension)
@@ -446,19 +444,14 @@ namespace Trifolia.Export.FHIR.STU3
 
         private StructureDefinition GetBaseProfile(Template template)
         {
-            if (this.baseProfiles.ContainsKey(template.TemplateType.RootContextType))
-                return this.baseProfiles[template.TemplateType.RootContextType];
+            var resourceType = template.TemplateType.RootContextType;
 
-            var resourceType = template.TemplateType.RootContextType.ToLower();
-            var resourceTypeUrl = "http://hl7.org/fhir/StructureDefinition/" + resourceType;
+            if (this.baseProfiles.ContainsKey(resourceType))
+                return this.baseProfiles[resourceType];
 
-            foreach (var entry in this.profileBundle.Entry)
-            {
-                if (entry.FullUrl.ToLower() == resourceTypeUrl.ToLower())
-                    return (StructureDefinition)entry.Resource;
-            }
-
-            return null;
+            var baseProfile = ProfileHelper.GetProfile(resourceType);
+            this.baseProfiles[resourceType] = baseProfile;
+            return baseProfile;
         }
 
         private List<ElementDefinition.TypeRefComponent> GetProfileDataTypes(StructureDefinition structure, TemplateConstraint constraint)
