@@ -241,6 +241,7 @@
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" placeholder="User Name" data-bind="value: $parent.PermissionSearchText" />
                                                     <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" data-bind="click: function () { $parent.PermissionSearchText(''); $parent.SearchPermissions(); }">Clear</button>
                                                         <button type="submit" class="btn btn-default">Search</button>
                                                     </div>
                                                 </div>

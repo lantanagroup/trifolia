@@ -1808,6 +1808,16 @@
               Looks up a localized string similar to Inheritable:.
             </summary>
         </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorIsFixedTooltip">
+            <summary>
+              Looks up a localized string similar to Applies to single-value bindings. When checked, value must be exactly this. When not checked, value must have at least these property values.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorIsModifierTooltip">
+            <summary>
+              Looks up a localized string similar to If this modifies the meaning of other elements.
+            </summary>
+        </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorLabel">
             <summary>
               Looks up a localized string similar to Label:.
@@ -1816,6 +1826,11 @@
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorLabelTooltip">
             <summary>
               Looks up a localized string similar to Exported at end of constraint.
+            </summary>
+        </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorMustSupportTooltip">
+            <summary>
+              Looks up a localized string similar to If the element must be supported.
             </summary>
         </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorRooted">

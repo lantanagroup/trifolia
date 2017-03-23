@@ -385,6 +385,24 @@ namespace Trifolia.Web.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Applies to single-value bindings. When checked, value must be exactly this. When not checked, value must have at least these property values.
+        /// </summary>
+        public static string TemplateEditorConstraintEditorIsFixedTooltip {
+            get {
+                return ResourceManager.GetString("TemplateEditorConstraintEditorIsFixedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If this modifies the meaning of other elements.
+        /// </summary>
+        public static string TemplateEditorConstraintEditorIsModifierTooltip {
+            get {
+                return ResourceManager.GetString("TemplateEditorConstraintEditorIsModifierTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Label:.
         /// </summary>
         public static string TemplateEditorConstraintEditorLabel {
@@ -399,6 +417,15 @@ namespace Trifolia.Web.App_GlobalResources {
         public static string TemplateEditorConstraintEditorLabelTooltip {
             get {
                 return ResourceManager.GetString("TemplateEditorConstraintEditorLabelTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the element must be supported.
+        /// </summary>
+        public static string TemplateEditorConstraintEditorMustSupportTooltip {
+            get {
+                return ResourceManager.GetString("TemplateEditorConstraintEditorMustSupportTooltip", resourceCulture);
             }
         }
         

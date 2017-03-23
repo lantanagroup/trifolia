@@ -50,9 +50,12 @@ namespace Trifolia.Web.Models.TemplateEditing
 
         // Engineer fields
         public bool IsSchRooted { get; set; }
+
         public bool IsInheritable { get; set; }
 
         public bool IsChoice { get; set; }
+
+        public bool IsFixed { get; set; }
 
         public List<ConstraintModel> Children { get; set; }
 

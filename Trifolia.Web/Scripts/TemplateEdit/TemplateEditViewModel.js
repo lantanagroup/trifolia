@@ -119,13 +119,6 @@ var templateEditViewModel = function (templateId, defaults) {
         self.Template().Bookmark(newBookmark.substring(0, 39));
     };
 
-    self.Template().OwningImplementationGuideId.subscribe(self.ImplementationGuideChanged);
-
-    // Subscribe to changes to the template's Name() observable to regenerate the bookmark
-    self.Template().Name.subscribe(self.RegenerateBookmark);
-
-    self.Template().StatusId.subscribe(self.StatusChanged);
-
     // Subscribe to changes to the ViewMode() observable and store the value in 
     // cookies so that when the user next opens the template editor, the same ViewMode() is selected
     self.ViewMode.subscribe(function (newViewMode) {
@@ -179,7 +172,7 @@ var templateEditViewModel = function (templateId, defaults) {
         var isFhir = false;
 
         if (foundTemplateType) {
-            _.some(trifoliaConfig.FhirIgTypes, function (fhirIgType) {
+            isFhir = _.some(trifoliaConfig.FhirIgTypes, function (fhirIgType) {
                 return fhirIgType.Name == foundTemplateType.ImplementationGuideType;
             });
         }
@@ -247,7 +240,6 @@ var templateEditViewModel = function (templateId, defaults) {
                 });
         }
     };
-    self.Template().TemplateTypeId.subscribe(self.TemplateTypeChanged);
 
     /* 
     * Public Methods 
@@ -555,7 +547,7 @@ var templateEditViewModel = function (templateId, defaults) {
 
         var newConstraint = new ConstraintModel(constraintJS, constraint.Parent(), self);
         newConstraint.ConstraintAndProseChanged();
-        newConstraint.SubscribeForUpdates(true);
+        newConstraint.SubscribeForUpdates();
         newNode.Constraint(newConstraint);
 
         // Add the new objects to the sibling lists
@@ -601,7 +593,7 @@ var templateEditViewModel = function (templateId, defaults) {
                 self.Nodes.push(newNode);
             }
 
-            newConstraint.SubscribeForUpdates(true);
+            newConstraint.SubscribeForUpdates();
 
             self.CurrentNode(newNode);
             self.ApplyWidths();
@@ -1510,16 +1502,13 @@ var templateEditViewModel = function (templateId, defaults) {
                 result.StatusId = result.StatusId ? result.StatusId : undefined;        // Convert null to undefined for select binding purposes
 
                 var template = new TemplateModel(result, self);
+                self.Template(template);
+                self.Template().SubscribeChanges();
+                self.Template().IsNew(false);
 
                 // Initialize the template types before we bind to self.Template so that it doesn't screw up the template's TemplateTypeId()
                 self.InitializeTemplateTypes(template.OwningImplementationGuideId())
                     .then(function() {
-                        self.Template(template);
-                        self.Template().Name.subscribe(self.RegenerateBookmark);
-                        self.Template().StatusId.subscribe(self.StatusChanged);
-                        self.Template().SubscribeChanges();
-                        self.Template().IsNew(false);
-
                         console.log('Done loading template meta-data: ' + (new Date().getTime() - startTime) + ' milliseconds');
                         deferred.resolve(template);
                     })
@@ -1558,7 +1547,7 @@ var templateEditViewModel = function (templateId, defaults) {
                     var item = result[i];
                     var newConstraint = new ConstraintModel(item, null, self);
                     newConstraint.IsNew(false);
-                    newConstraint.SubscribeForUpdates(true);
+                    newConstraint.SubscribeForUpdates();
 
                     self.Constraints.push(newConstraint);
                 };
