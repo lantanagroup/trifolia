@@ -107,7 +107,13 @@ namespace Trifolia.Web.Controllers.API
                 throw new AuthorizationException("You do not have permission to view this template");
 
             WIKIParser wikiParser = new WIKIParser(this.tdb);
-            Template template = this.tdb.Templates.Single(y => y.Id == templateId);
+            Template template = this.tdb.Templates
+                .Include("ChildConstraints")
+                .Include("ChildConstraints.ChildConstraints")
+                .Include("ChildConstraints.ChildConstraints.ChildConstraints")
+                .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints")
+                .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints")
+                .Single(y => y.Id == templateId);
             IGSettingsManager igManager = new IGSettingsManager(this.tdb, template.OwningImplementationGuideId);
             string baseLink = this.Request.RequestUri.GetLeftPart(UriPartial.Authority);
             bool canEditTemplate = CheckPoint.Instance.GrantEditTemplate(template.Id)

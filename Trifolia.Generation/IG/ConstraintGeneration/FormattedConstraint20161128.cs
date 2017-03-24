@@ -94,7 +94,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
         #endregion
 
-        public void ParseConstraint(IConstraint constraint)
+        public void ParseConstraint(IConstraint constraint, Template containedTemplate = null, ValueSet valueSet = null, CodeSystem codeSystem = null)
         {
             this.childCount = constraint.Children != null ? constraint.Children.Count() : 0;
 
@@ -139,7 +139,9 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             if (constraint.ContainedTemplateId != null)
             {
-                Template containedTemplate = this.tdb.Templates.Single(y => y.Id == constraint.ContainedTemplateId);
+                // If the caller didn't pass along the contained template, retrieve it from the DB
+                if (containedTemplate == null || containedTemplate.Id != constraint.ContainedTemplateId)
+                    containedTemplate = this.tdb.Templates.Single(y => y.Id == constraint.ContainedTemplateId);
 
                 this.ContainedTemplateId = containedTemplate.Id;
                 this.ContainedTemplateTitle = containedTemplate.Name;
@@ -160,7 +162,9 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             if (constraint.ValueSetId != null)
             {
-                ValueSet valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
+                // If the caller didn't pass in the ValueSet, get it from the db
+                if (valueSet == null || valueSet.Id != constraint.ValueSetId)
+                    valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
 
                 this.ValueSetName = valueSet.Name;
                 this.ValueSetOid = valueSet.Oid;
@@ -169,7 +173,10 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             if (constraint.ValueCodeSystemId != null)
             {
-                CodeSystem codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
+                // If the caller didn't pass in the CodeSystem, get it from the db
+                if (codeSystem == null || codeSystem.Id != constraint.ValueCodeSystemId)
+                        codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
+
                 this.CodeSystemName = codeSystem.Name;
                 this.CodeSystemOid = codeSystem.Oid;
             }

@@ -19,6 +19,32 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         };
 
         public static IFormattedConstraint NewFormattedConstraint(
+            IObjectRepository tdb,
+            IGSettingsManager igSettings,
+            TemplateConstraint constraint,
+            string templateLinkBase = null,
+            string valueSetLinkBase = null,
+            bool linkContainedTemplate = false,
+            bool linkIsBookmark = false,
+            bool createLinksForValueSets = false,
+            bool includeCategory = true)
+        {
+            return NewFormattedConstraint(
+                tdb,
+                igSettings,
+                (IConstraint)constraint,
+                templateLinkBase,
+                valueSetLinkBase,
+                linkContainedTemplate,
+                linkIsBookmark,
+                createLinksForValueSets,
+                includeCategory,
+                constraint.ContainedTemplate,
+                constraint.ValueSet,
+                constraint.CodeSystem);
+        }
+
+        public static IFormattedConstraint NewFormattedConstraint(
             IObjectRepository tdb, 
             IGSettingsManager igSettings,
             IConstraint constraint,
@@ -27,7 +53,10 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             bool linkContainedTemplate = false, 
             bool linkIsBookmark = false, 
             bool createLinksForValueSets = false,
-            bool includeCategory = true)
+            bool includeCategory = true,
+            Template containedTemplate = null,
+            ValueSet valueSet = null,
+            CodeSystem codeSystem = null)
         {
             var selectedType = typeof(FormattedConstraint);
 
@@ -60,7 +89,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             formattedConstraint.CreateLinkForValueSets = createLinksForValueSets;
 
             // Set the properties in the FormattedConstraint based on the IConstraint
-            formattedConstraint.ParseConstraint(constraint);
+            formattedConstraint.ParseConstraint(constraint, containedTemplate, valueSet, codeSystem);
 
             // Pre-process the constraint so that calls to GetHtml(), GetPlainText(), etc. returns something
             formattedConstraint.ParseFormattedConstraint();

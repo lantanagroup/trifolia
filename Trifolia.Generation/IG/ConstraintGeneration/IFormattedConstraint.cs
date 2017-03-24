@@ -53,7 +53,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         string TemplateLinkBase { get; set; }
         string ValueSetLinkBase { get; set; }
 
-        void ParseConstraint(IConstraint constraint);
+        void ParseConstraint(IConstraint constraint, Template containedTemplate = null, ValueSet valueSet = null, CodeSystem codeSystem = null);
         void ParseFormattedConstraint();
         Paragraph AddToDocParagraph(WIKIParser wikiParser, OpenXmlElement parent, int level, int id, string headingStyle);
         string GetPlainText(bool includeHeading = true, bool includeDescription = true, bool includeLabel = true);
