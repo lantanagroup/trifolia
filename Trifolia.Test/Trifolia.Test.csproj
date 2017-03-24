@@ -203,7 +203,6 @@
     <Compile Include="Generation\Vocabulary\ValueSetExportTest.cs" />
     <Compile Include="Generation\WIKIParserTest.cs" />
     <Compile Include="Generation\Versioning\VersionComparerTest.cs" />
-    <Compile Include="Services\Validation\ValidationServiceTest.cs" />
     <Compile Include="Generation\IG\FormattedConstraintTest.cs" />
     <Compile Include="Generation\Green\GreenSchemaGeneratorTest.cs" />
     <Compile Include="Generation\Green\GreenTransformGeneratorTest.cs" />
@@ -261,10 +260,6 @@
     <ProjectReference Include="..\Trifolia.Web\Trifolia.Web.csproj">
       <Project>{6017497a-7603-4c00-9b39-d88ad6bf73c8}</Project>
       <Name>Trifolia.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Validation\Trifolia.Validation.csproj">
-      <Project>{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}</Project>
-      <Name>Trifolia.Validation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trifolia.Terminology\Trifolia.Terminology.csproj">
       <Project>{fdb22f8f-9677-471a-8929-b8dcb59e4c60}</Project>
