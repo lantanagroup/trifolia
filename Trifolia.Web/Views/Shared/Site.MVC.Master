@@ -17,6 +17,7 @@
     <script type="text/javascript" src="/Scripts/ContainerViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript">
         var containerViewModel = new ContainerViewModel();
+        var supportViewModel = new SupportViewModel(containerViewModel);
     </script>
 </head>
 <body id="mainBody" runat="server">
@@ -477,7 +478,6 @@
             if (loadMessage != null && loadMessage != '')
                 showMessage(loadMessage);
 
-            supportViewModel = new SupportViewModel();
             ko.applyBindings(supportViewModel, $('#supportPopup')[0]);
 
             $("#supportPopup").modal({

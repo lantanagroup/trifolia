@@ -1,13 +1,7 @@
-﻿var emailNameRequired;
-
-var requireEmailandName = function (logIn) {
-    emailNameRequired = logIn;
-}
-
-var SupportRequest = function () {
+﻿var SupportRequest = function (requireEmailAndName) {
     var self = this;
 
-    self.showEmailName = ko.observable(emailNameRequired);
+    self.showEmailName = ko.observable(requireEmailAndName);
     self.Name = ko.observable();
     self.Email = ko.observable();
     self.Priority = ko.observable();
@@ -16,8 +10,8 @@ var SupportRequest = function () {
     self.Details = ko.observable();
 
     var validation = ko.validatedObservable({
-        Name: self.Name.extend({ required: emailNameRequired }),
-        Email: self.Email.extend({ required: emailNameRequired }),
+        Name: self.Name.extend({ required: requireEmailAndName }),
+        Email: self.Email.extend({ required: requireEmailAndName }),
         Summary: self.Summary.extend({ required: true, maxLength: 254 }),
         Details: self.Details.extend({ required: true })
     });
@@ -27,7 +21,7 @@ var SupportRequest = function () {
     });
 }
 
-var SupportViewModel = function () {
+var SupportViewModel = function (containerViewModel) {
     var self = this;
 
     self.Config = ko.observable();
@@ -41,14 +35,6 @@ var SupportViewModel = function () {
     });
 
     $.ajax({
-        async: false,
-        url: '/api/Auth/WhoAmI',
-        complete: function (jqXHR, textstatus) {
-            requireEmailandName(!jqXHR.responseJSON);
-        }
-    });
-
-    $.ajax({
         type: "GET",
         url: "/api/Support/Config",
         success: function (data, textStatus, jqXHR) {
@@ -59,7 +45,7 @@ var SupportViewModel = function () {
         }
     });
 
-    self.Request = ko.observable(new SupportRequest());
+    self.Request = ko.observable();
 
     self.SubmitSupportRequest = function () {
         if (!self.Request().IsValid()) {
@@ -101,11 +87,13 @@ var SupportViewModel = function () {
 
     self.CancelSupportRequest = function () {
         $("#supportPopup").modal('hide');
-        self.Request(new SupportRequest());
+        self.Request(null);
     };
 
-    self.ShowSupportRequest = function ()
-    {
+    self.ShowSupportRequest = function () {
+        var requireEmailAndName = containerViewModel.Me() ? false : true;
+        self.Request(new SupportRequest(requireEmailAndName));
+
         $("#supportPopup").modal('show');  
     };
 };

@@ -46,11 +46,13 @@ var templateEditViewModel = function (templateId, defaults) {
     };
     self.Template = ko.observable(createNewTemplate());
 
-    self.ImplementationGuideChanged = function (newImplementationGuideId) {
-        self.InitializePublishStatuses(newImplementationGuideId);
-        self.InitializeTemplateTypes(newImplementationGuideId);
-        self.InitializeCategories(newImplementationGuideId);
-        self.InitializeAvailableExtensions(newImplementationGuideId);
+    self.ImplementationGuideChanged = function () {
+        var implementationGuideId = self.Template().OwningImplementationGuideId();
+
+        self.InitializePublishStatuses(implementationGuideId);
+        self.InitializeTemplateTypes(implementationGuideId);
+        self.InitializeCategories(implementationGuideId);
+        self.InitializeAvailableExtensions(implementationGuideId);
     };
 
     self.GetRetiredStatusId = function () {
