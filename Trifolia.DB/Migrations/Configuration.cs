@@ -4,7 +4,9 @@ namespace Trifolia.DB.Migrations
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.IO;
     using System.Linq;
+    using System.Reflection;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Trifolia.DB.TrifoliaDatabase>
     {
@@ -263,124 +265,47 @@ namespace Trifolia.DB.Migrations
 
         private void SeedFHIRSTU3(Trifolia.DB.TrifoliaDatabase context)
         {
-            context.TemplateTypes.AddOrUpdate(tt => new { tt.ImplementationGuideTypeId, tt.Name },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Account", OutputOrder = 1, RootContext = "Account", RootContextType = "Account" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ActivityDefinition", OutputOrder = 2, RootContext = "ActivityDefinition", RootContextType = "ActivityDefinition" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "AllergyIntolerance", OutputOrder = 3, RootContext = "AllergyIntolerance", RootContextType = "AllergyIntolerance" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Appointment", OutputOrder = 4, RootContext = "Appointment", RootContextType = "Appointment" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "AppointmentResponse", OutputOrder = 5, RootContext = "AppointmentResponse", RootContextType = "AppointmentResponse" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "AuditEvent", OutputOrder = 6, RootContext = "AuditEvent", RootContextType = "AuditEvent" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Basic", OutputOrder = 7, RootContext = "Basic", RootContextType = "Basic" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Binary", OutputOrder = 8, RootContext = "Binary", RootContextType = "Binary" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "BodySite", OutputOrder = 9, RootContext = "BodySite", RootContextType = "BodySite" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Bundle", OutputOrder = 10, RootContext = "Bundle", RootContextType = "Bundle" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "CarePlan", OutputOrder = 11, RootContext = "CarePlan", RootContextType = "CarePlan" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "CareTeam", OutputOrder = 12, RootContext = "CareTeam", RootContextType = "CareTeam" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Claim", OutputOrder = 13, RootContext = "Claim", RootContextType = "Claim" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ClaimResponse", OutputOrder = 14, RootContext = "ClaimResponse", RootContextType = "ClaimResponse" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ClinicalImpression", OutputOrder = 15, RootContext = "ClinicalImpression", RootContextType = "ClinicalImpression" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "CodeSystem", OutputOrder = 16, RootContext = "CodeSystem", RootContextType = "CodeSystem" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Communication", OutputOrder = 17, RootContext = "Communication", RootContextType = "Communication" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "CommunicationRequest", OutputOrder = 18, RootContext = "CommunicationRequest", RootContextType = "CommunicationRequest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "CompartmentDefinition", OutputOrder = 19, RootContext = "CompartmentDefinition", RootContextType = "CompartmentDefinition" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Composition", OutputOrder = 20, RootContext = "Composition", RootContextType = "Composition" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ConceptMap", OutputOrder = 21, RootContext = "ConceptMap", RootContextType = "ConceptMap" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Condition", OutputOrder = 22, RootContext = "Condition", RootContextType = "Condition" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Consent", OutputOrder = 24, RootContext = "Consent", RootContextType = "Consent" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Contract", OutputOrder = 25, RootContext = "Contract", RootContextType = "Contract" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Coverage", OutputOrder = 26, RootContext = "Coverage", RootContextType = "Coverage" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "DataElement", OutputOrder = 27, RootContext = "DataElement", RootContextType = "DataElement" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "DetectedIssue", OutputOrder = 29, RootContext = "DetectedIssue", RootContextType = "DetectedIssue" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Device", OutputOrder = 30, RootContext = "Device", RootContextType = "Device" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "DeviceComponent", OutputOrder = 31, RootContext = "DeviceComponent", RootContextType = "DeviceComponent" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "DeviceMetric", OutputOrder = 32, RootContext = "DeviceMetric", RootContextType = "DeviceMetric" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "DeviceUseRequest", OutputOrder = 33, RootContext = "DeviceUseRequest", RootContextType = "DeviceUseRequest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "DeviceUseStatement", OutputOrder = 34, RootContext = "DeviceUseStatement", RootContextType = "DeviceUseStatement" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "DiagnosticRequest", OutputOrder = 35, RootContext = "DiagnosticRequest", RootContextType = "DiagnosticRequest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "DiagnosticReport", OutputOrder = 36, RootContext = "DiagnosticReport", RootContextType = "DiagnosticReport" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "DocumentManifest", OutputOrder = 37, RootContext = "DocumentManifest", RootContextType = "DocumentManifest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "DocumentReference", OutputOrder = 38, RootContext = "DocumentReference", RootContextType = "DocumentReference" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "EligibilityRequest", OutputOrder = 39, RootContext = "EligibilityRequest", RootContextType = "EligibilityRequest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "EligibilityResponse", OutputOrder = 40, RootContext = "EligibilityResponse", RootContextType = "EligibilityResponse" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Encounter", OutputOrder = 41, RootContext = "Encounter", RootContextType = "Encounter" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Endpoint", OutputOrder = 42, RootContext = "Endpoint", RootContextType = "Endpoint" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "EnrollmentRequest", OutputOrder = 43, RootContext = "EnrollmentRequest", RootContextType = "EnrollmentRequest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "EnrollmentResponse", OutputOrder = 44, RootContext = "EnrollmentResponse", RootContextType = "EnrollmentResponse" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "EpisodeOfCare", OutputOrder = 45, RootContext = "EpisodeOfCare", RootContextType = "EpisodeOfCare" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ExpansionProfile", OutputOrder = 46, RootContext = "ExpansionProfile", RootContextType = "ExpansionProfile" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ExplanationOfBenefit", OutputOrder = 47, RootContext = "ExplanationOfBenefit", RootContextType = "ExplanationOfBenefit" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Extension", OutputOrder = 48, RootContext = "Extension", RootContextType = "Extension" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "FamilyMemberHistory", OutputOrder = 49, RootContext = "FamilyMemberHistory", RootContextType = "FamilyMemberHistory" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Flag", OutputOrder = 50, RootContext = "Flag", RootContextType = "Flag" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Goal", OutputOrder = 51, RootContext = "Goal", RootContextType = "Goal" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Group", OutputOrder = 52, RootContext = "Group", RootContextType = "Group" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "GuidanceResponse", OutputOrder = 53, RootContext = "GuidanceResponse", RootContextType = "GuidanceResponse" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "HealthcareService", OutputOrder = 54, RootContext = "HealthcareService", RootContextType = "HealthcareService" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ImagingManifest", OutputOrder = 55, RootContext = "ImagingManifest", RootContextType = "ImagingManifest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ImagingStudy", OutputOrder = 56, RootContext = "ImagingStudy", RootContextType = "ImagingStudy" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Immunization", OutputOrder = 57, RootContext = "Immunization", RootContextType = "Immunization" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ImmunizationRecommendation", OutputOrder = 58, RootContext = "ImmunizationRecommendation", RootContextType = "ImmunizationRecommendation" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ImplementationGuide", OutputOrder = 59, RootContext = "ImplementationGuide", RootContextType = "ImplementationGuide" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Library", OutputOrder = 60, RootContext = "Library", RootContextType = "Library" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Linkage", OutputOrder = 61, RootContext = "Linkage", RootContextType = "Linkage" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "List", OutputOrder = 62, RootContext = "List", RootContextType = "List" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Location", OutputOrder = 63, RootContext = "Location", RootContextType = "Location" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Measure", OutputOrder = 64, RootContext = "Measure", RootContextType = "Measure" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "MeasureReport", OutputOrder = 65, RootContext = "MeasureReport", RootContextType = "MeasureReport" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Media", OutputOrder = 66, RootContext = "Media", RootContextType = "Media" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Medication", OutputOrder = 67, RootContext = "Medication", RootContextType = "Medication" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "MedicationAdministration", OutputOrder = 68, RootContext = "MedicationAdministration", RootContextType = "MedicationAdministration" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "MedicationDispense", OutputOrder = 69, RootContext = "MedicationDispense", RootContextType = "MedicationDispense" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "MedicationStatement", OutputOrder = 71, RootContext = "MedicationStatement", RootContextType = "MedicationStatement" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "MessageHeader", OutputOrder = 72, RootContext = "MessageHeader", RootContextType = "MessageHeader" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "NamingSystem", OutputOrder = 73, RootContext = "NamingSystem", RootContextType = "NamingSystem" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "NutritionRequest", OutputOrder = 74, RootContext = "NutritionRequest", RootContextType = "NutritionRequest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Observation", OutputOrder = 75, RootContext = "Observation", RootContextType = "Observation" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "OperationDefinition", OutputOrder = 76, RootContext = "OperationDefinition", RootContextType = "OperationDefinition" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "OperationOutcome", OutputOrder = 77, RootContext = "OperationOutcome", RootContextType = "OperationOutcome" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Organization", OutputOrder = 78, RootContext = "Organization", RootContextType = "Organization" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Parameters", OutputOrder = 79, RootContext = "Parameters", RootContextType = "Parameters" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Patient", OutputOrder = 80, RootContext = "Patient", RootContextType = "Patient" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "PaymentNotice", OutputOrder = 81, RootContext = "PaymentNotice", RootContextType = "PaymentNotice" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "PaymentReconciliation", OutputOrder = 82, RootContext = "PaymentReconciliation", RootContextType = "PaymentReconciliation" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Person", OutputOrder = 83, RootContext = "Person", RootContextType = "Person" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "PlanDefinition", OutputOrder = 84, RootContext = "PlanDefinition", RootContextType = "PlanDefinition" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Practitioner", OutputOrder = 85, RootContext = "Practitioner", RootContextType = "Practitioner" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "PractitionerRole", OutputOrder = 86, RootContext = "PractitionerRole", RootContextType = "PractitionerRole" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Procedure", OutputOrder = 87, RootContext = "Procedure", RootContextType = "Procedure" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ProcedureRequest", OutputOrder = 88, RootContext = "ProcedureRequest", RootContextType = "ProcedureRequest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ProcessRequest", OutputOrder = 89, RootContext = "ProcessRequest", RootContextType = "ProcessRequest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ProcessResponse", OutputOrder = 90, RootContext = "ProcessResponse", RootContextType = "ProcessResponse" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Provenance", OutputOrder = 91, RootContext = "Provenance", RootContextType = "Provenance" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Questionnaire", OutputOrder = 92, RootContext = "Questionnaire", RootContextType = "Questionnaire" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "QuestionnaireResponse", OutputOrder = 93, RootContext = "QuestionnaireResponse", RootContextType = "QuestionnaireResponse" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ReferralRequest", OutputOrder = 94, RootContext = "ReferralRequest", RootContextType = "ReferralRequest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "RelatedPerson", OutputOrder = 95, RootContext = "RelatedPerson", RootContextType = "RelatedPerson" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "RiskAssessment", OutputOrder = 96, RootContext = "RiskAssessment", RootContextType = "RiskAssessment" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Schedule", OutputOrder = 97, RootContext = "Schedule", RootContextType = "Schedule" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "SearchParameter", OutputOrder = 98, RootContext = "SearchParameter", RootContextType = "SearchParameter" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Sequence", OutputOrder = 99, RootContext = "Sequence", RootContextType = "Sequence" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Slot", OutputOrder = 100, RootContext = "Slot", RootContextType = "Slot" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Specimen", OutputOrder = 101, RootContext = "Specimen", RootContextType = "Specimen" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "StructureDefinition", OutputOrder = 102, RootContext = "StructureDefinition", RootContextType = "StructureDefinition" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "StructureMap", OutputOrder = 103, RootContext = "StructureMap", RootContextType = "StructureMap" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Subscription", OutputOrder = 104, RootContext = "Subscription", RootContextType = "Subscription" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Substance", OutputOrder = 105, RootContext = "Substance", RootContextType = "Substance" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "SupplyDelivery", OutputOrder = 106, RootContext = "SupplyDelivery", RootContextType = "SupplyDelivery" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "SupplyRequest", OutputOrder = 107, RootContext = "SupplyRequest", RootContextType = "SupplyRequest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "Task", OutputOrder = 108, RootContext = "Task", RootContextType = "Task" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "TestScript", OutputOrder = 109, RootContext = "TestScript", RootContextType = "TestScript" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ValueSet", OutputOrder = 110, RootContext = "ValueSet", RootContextType = "ValueSet" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "VisionPrescription", OutputOrder = 111, RootContext = "VisionPrescription", RootContextType = "VisionPrescription" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "CapabilityStatement", OutputOrder = 112, RootContext = "CapabilityStatement", RootContextType = "CapabilityStatement" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "MedicationRequest", OutputOrder = 113, RootContext = "MedicationRequest", RootContextType = "MedicationRequest" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "MessageDefinition", OutputOrder = 114, RootContext = "MessageDefinition", RootContextType = "MessageDefinition" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "RequestGroup", OutputOrder = 115, RootContext = "RequestGroup", RootContextType = "RequestGroup" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ResearchStudy", OutputOrder = 116, RootContext = "ResearchStudy", RootContextType = "ResearchStudy" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ResearchSubject", OutputOrder = 117, RootContext = "ResearchSubject", RootContextType = "ResearchSubject" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "ServiceDefinition", OutputOrder = 118, RootContext = "ServiceDefinition", RootContextType = "ServiceDefinition" },
-                new TemplateType() { ImplementationGuideTypeId = 6, Name = "TestReport", OutputOrder = 119, RootContext = "TestReport", RootContextType = "TestReport" }
-            );
+            List<string> resourceTypes = new List<string>() { "Extension" };
+            List<TemplateType> templateTypes = new List<TemplateType>();
+
+            using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("Trifolia.DB.Migrations.FHIR_Latest_Resources.txt")))
+            {
+                string content = sr.ReadToEnd();
+                List<string> resourceTypeLines = (from c in content.Split('\n')
+                                                  orderby c
+                                                  select c.Replace("\r", "").Trim())
+                                                  .ToList();
+                resourceTypes.AddRange(resourceTypeLines);
+            }
+
+            for (int i = 0; i < resourceTypes.Count; i++)
+            {
+                var templateType = new TemplateType()
+                {
+                    ImplementationGuideTypeId = 6,
+                    Name = resourceTypes[i],
+                    OutputOrder = i + 1,
+                    RootContext = resourceTypes[i],
+                    RootContextType = resourceTypes[i]
+                };
+
+                context.TemplateTypes.AddOrUpdate(tt => new { tt.ImplementationGuideTypeId, tt.Name }, templateType);
+            }
+
+            var removeTemplateTypes = (from tt in context.TemplateTypes
+                                       where tt.ImplementationGuideTypeId == 6 && !resourceTypes.Contains(tt.Name)
+                                       select tt).ToList();
+
+            foreach (var removeTemplateType in removeTemplateTypes)
+            {
+                if (removeTemplateType.Templates.Count > 0)
+                {
+                    Console.WriteLine("Can't remove " + removeTemplateType.Name + " from FHIR STU3 because it is associated with templates");
+                    continue;
+                }
+
+                context.TemplateTypes.Remove(removeTemplateType);
+            }
         }
 
         protected override void Seed(Trifolia.DB.TrifoliaDatabase context)
