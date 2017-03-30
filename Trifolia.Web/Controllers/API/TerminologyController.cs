@@ -91,18 +91,6 @@ namespace Trifolia.Web.Controllers.API
             return relationships;
         }
 
-        [HttpGet, Route("api/Terminology/ValueSet/Basic"), SecurableAction(SecurableNames.VALUESET_LIST)]
-        public IEnumerable<BasicItem> GetBasicValueSets()
-        {
-            return (from vs in this.tdb.ValueSets
-                    select new BasicItem()
-                    {
-                        Id = vs.Id,
-                        Name = vs.Name,
-                        Oid = vs.Oid
-                    });
-        }
-
         [HttpGet, Route("api/Terminology/ValueSet/{valueSetId}/Concepts/{activeDate}"), SecurableAction(SecurableNames.VALUESET_LIST)]
         public ConceptItems Concepts(int valueSetId, DateTime activeDate)
         {
@@ -220,8 +208,8 @@ namespace Trifolia.Web.Controllers.API
                 IntentionalDefinition = valueSet.IntensionalDefinition,
                 IsComplete = !valueSet.IsIncomplete,
                 IsIntentional = valueSet.Intensional.HasValue ? valueSet.Intensional.Value : false,
-                Oid = valueSet.Oid,
-                SourceUrl = valueSet.Source
+                SourceUrl = valueSet.Source,
+                Identifiers = valueSet.Identifiers.Select(y => new ValueSetIdentifierModel(y)).ToList()
             };
 
             return model;
@@ -233,12 +221,14 @@ namespace Trifolia.Web.Controllers.API
             if (string.IsNullOrEmpty(identifier))
                 throw new ArgumentNullException("identifier");
 
-            var valueSets = this.tdb.ValueSets.Where(y => y.Oid == identifier);
+            var valueSet = (from vs in this.tdb.ValueSets
+                            join vsi in this.tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
+                            where vsi.Identifier.ToLower().Trim() == identifier.ToLower().Trim()
+                            select vs)
+                            .Distinct()
+                            .First();
 
-            if (valueSets.Count() > 0)
-                return valueSets.First().Id;
-
-            return null;
+            return valueSet != null ? (int?)valueSet.Id : null;
         }
 
         [HttpGet, Route("api/Terminology/CodeSystem/Find"), SecurableAction(SecurableNames.CODESYSTEM_LIST)]
@@ -336,6 +326,37 @@ namespace Trifolia.Web.Controllers.API
             }
         }
 
+        private void SaveValueSetIdentifiers(IObjectRepository tdb, ValueSet valueSet, List<ValueSetIdentifierModel> valueSetIdentifierModels)
+        {
+            // Remove identifiers
+            foreach (var vsIdentifierModel in valueSetIdentifierModels.Where(y => y.ShouldRemove))
+            {
+                ValueSetIdentifier vsIdentifier = valueSet.Identifiers.Single(y => y.Id == vsIdentifierModel.Id);
+                tdb.ValueSetIdentifiers.Remove(vsIdentifier);
+            }
+
+            // Add/Update identifiers
+            foreach (var vsIdentifierModel in valueSetIdentifierModels.Where(y => !y.ShouldRemove))
+            {
+                ValueSetIdentifier vsIdentifier = valueSet.Identifiers.SingleOrDefault(y => y.Id == vsIdentifierModel.Id);
+
+                if (vsIdentifier == null)
+                {
+                    vsIdentifier = new ValueSetIdentifier();
+                    valueSet.Identifiers.Add(vsIdentifier);
+                }
+
+                if (vsIdentifier.Identifier != vsIdentifierModel.Identifier)
+                    vsIdentifier.Identifier = vsIdentifierModel.Identifier;
+
+                if (vsIdentifier.Type != vsIdentifierModel.Type)
+                    vsIdentifier.Type = vsIdentifierModel.Type;
+
+                if (vsIdentifier.IsDefault != vsIdentifierModel.IsDefault)
+                    vsIdentifier.IsDefault = vsIdentifierModel.IsDefault;
+            }
+        }
+
         [HttpPost, Route("api/Terminology/ValueSet/Save"), SecurableAction(SecurableNames.VALUESET_EDIT)]
         public int SaveValueSet(SaveValueSetModel model)
         {
@@ -370,11 +391,10 @@ namespace Trifolia.Web.Controllers.API
                 if (valueSetModel.Name != valueSet.Name)
                     valueSet.Name = valueSetModel.Name;
 
-                if (valueSetModel.Oid != valueSet.Oid)
-                    valueSet.Oid = valueSetModel.Oid;
-
                 if (valueSetModel.SourceUrl != valueSet.Source)
                     valueSet.Source = valueSetModel.SourceUrl;
+
+                this.SaveValueSetIdentifiers(auditedTdb, valueSet, valueSetModel.Identifiers);
 
                 // Remove concepts
                 if (model.RemovedConcepts != null)

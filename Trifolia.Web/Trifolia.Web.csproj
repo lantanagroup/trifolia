@@ -484,7 +484,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GridViewExtensions.cs" />
-    <Compile Include="Helper.cs" />
     <Compile Include="IRestrictedForm.cs" />
     <Compile Include="Models\ActionItem.cs" />
     <Compile Include="Models\BetaViewModel.cs" />
@@ -495,9 +494,6 @@
     <Compile Include="Models\IGManagement\ExportSQLModel.cs" />
     <Compile Include="Models\IGManagement\ListModel.cs" />
     <Compile Include="Models\IGManagement\ViewModel.cs" />
-    <Compile Include="Models\LandingPage\ConstraintViewModel.cs" />
-    <Compile Include="Models\LandingPage\GreenTemplateViewModel.cs" />
-    <Compile Include="Models\LandingPage\ValueSetSummaryViewModel.cs" />
     <Compile Include="Models\LogInViewModel.cs" />
     <Compile Include="Models\RoleManagement\RolesModel.cs" />
     <Compile Include="Models\Shared\IGTypeComboModel.cs" />
@@ -505,11 +501,8 @@
     <Compile Include="Models\Shared\OrganizationComboModel.cs" />
     <Compile Include="Models\Shared\TemplateComboModel.cs" />
     <Compile Include="Models\Shared\TemplateTypeComboModel.cs" />
-    <Compile Include="Models\Shared\ValueSetComboModel.cs" />
     <Compile Include="Models\TemplateManagement\DeleteModel.cs" />
-    <Compile Include="Models\LandingPage\ImplementationGuideSummaryViewModel.cs" />
     <Compile Include="Models\TemplateManagement\ListModel.cs" />
-    <Compile Include="Models\LandingPage\TemplateSummaryViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session\SessionConstants.cs" />
     <Compile Include="SimplifiedSchemaContext.cs" />

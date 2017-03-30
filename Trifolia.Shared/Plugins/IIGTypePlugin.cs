@@ -86,6 +86,8 @@ namespace Trifolia.Shared.Plugins
         string GetFHIRResourceInstanceXml(string content);
 
         string GetFHIRResourceInstanceJson(string content);
+
+        ValueSetIdentifierTypes DefaultIdentifierType { get; }
     }
 
     public enum ExportFormats

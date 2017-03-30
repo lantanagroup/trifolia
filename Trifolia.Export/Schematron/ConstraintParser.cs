@@ -220,7 +220,7 @@ namespace Trifolia.Export.Schematron
 
             // Do we have a valueset on this attribute?
             if (aConstraintValueSet != null)
-                aAttribute.ValueSet = this.igTypePlugin.ParseIdentifier(this.valueSet.Oid);
+                aAttribute.ValueSet = this.igTypePlugin.ParseIdentifier(this.valueSet.GetIdentifier(this.igTypePlugin));
 
             if (this.codeSystem != null)
             {
@@ -363,7 +363,7 @@ namespace Trifolia.Export.Schematron
                             includeNullFlavor = true;
                         }
 
-                        string valueSetIdentifier = this.igTypePlugin.ParseIdentifier(this.valueSet.Oid);
+                        string valueSetIdentifier = this.igTypePlugin.ParseIdentifier(this.valueSet.GetIdentifier(this.igTypePlugin));
                         asb.WithinValueSet(valueSetIdentifier, this.valueSetFile, this.vocabularyOutputType, includeNullFlavor);
                     }
                 }

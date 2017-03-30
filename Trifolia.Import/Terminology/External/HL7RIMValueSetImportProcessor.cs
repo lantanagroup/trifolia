@@ -63,7 +63,12 @@ namespace Trifolia.Import.Terminology.External
             if (foundValueSetNode == null)
                 return null;
 
-            ValueSet currentValueSet = tdb.ValueSets.SingleOrDefault(y => y.Oid == oid);
+            ValueSet currentValueSet = (from vs in tdb.ValueSets
+                                        join vsi in tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
+                                        where vsi.Identifier.ToLower().Trim() == oid.ToLower().Trim()
+                                        select vs)
+                                      .Distinct()
+                                      .FirstOrDefault();
             T importValueSet = Activator.CreateInstance<T>();
 
             importValueSet.Name = foundValueSetNode.Attributes["name"].Value;

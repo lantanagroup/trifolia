@@ -19,11 +19,6 @@ namespace Trifolia.DB
         [Column("id")]
         public int Id { get; set; }
 
-        [Column("oid")]
-        [Required]
-        [StringLength(255)]
-        public string Oid { get; set; }
-
         [Column("name")]
         [Required]
         [StringLength(255)]
@@ -57,5 +52,8 @@ namespace Trifolia.DB
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ValueSetMember> Members { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ValueSetIdentifier> Identifiers { get; set; }
     }
 }

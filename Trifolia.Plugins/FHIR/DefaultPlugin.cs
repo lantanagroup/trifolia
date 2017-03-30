@@ -10,6 +10,14 @@ namespace Trifolia.Plugins.FHIR
 {
     public class DefaultPlugin
     {
+        public ValueSetIdentifierTypes DefaultIdentifierType
+        {
+            get
+            {
+                return ValueSetIdentifierTypes.HTTP;
+            }
+        }
+
         public string TemplateIdentifierElementName
         {
             get { return "meta/profile"; }

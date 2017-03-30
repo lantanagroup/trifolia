@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 
 using Trifolia.DB;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.DECOR
 {
@@ -19,6 +20,7 @@ namespace Trifolia.Export.DECOR
         private IObjectRepository tdb;
         private ImplementationGuide ig;
         private IGSettingsManager igSettings;
+        private IIGTypePlugin igTypePlugin;
         private PublishStatus publishedStatus;
         private PublishStatus retiredStatus;
 
@@ -28,6 +30,7 @@ namespace Trifolia.Export.DECOR
             this.tdb = tdb;
             this.igSettings = new IGSettingsManager(tdb, implementationGuideId);
             this.ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            this.igTypePlugin = this.ig.ImplementationGuideType.GetPlugin();
             this.publishedStatus = PublishStatus.GetPublishedStatus(tdb);
             this.retiredStatus = PublishStatus.GetRetiredStatus(tdb);
         }
@@ -141,7 +144,7 @@ namespace Trifolia.Export.DECOR
                 templateDef.example = examples.ToArray();
 
             // constraints
-            ConstraintExporter constraintExporter = new ConstraintExporter(dom, template, igSettings, this.tdb);
+            ConstraintExporter constraintExporter = new ConstraintExporter(dom, template, this.igSettings, this.igTypePlugin, this.tdb);
             templateDef.Items = constraintExporter.ExportConstraints();
 
             return templateDef;

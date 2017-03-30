@@ -31,7 +31,7 @@ namespace Trifolia.Export.FHIR.DSTU2
                 Name = valueSet.Name,
                 Status = usedByPublishedIgs ? ConformanceResourceStatus.Active : ConformanceResourceStatus.Draft,
                 Description = valueSet.Description,
-                Url = valueSet.Oid
+                Url = valueSet.GetIdentifier(ValueSetIdentifierTypes.HTTP)
             };
 
             if (summaryType == null || summaryType == SummaryType.Data)
@@ -84,6 +84,29 @@ namespace Trifolia.Export.FHIR.DSTU2
             return fhirValueSet;
         }
 
+        private void PopulateIdentifier(ValueSet valueSet, string fhirIdentifier)
+        {
+            ValueSetIdentifier vsIdentifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == ValueSetIdentifierTypes.HTTP);
+
+            if (vsIdentifier == null)
+            {
+                vsIdentifier = new ValueSetIdentifier()
+                {
+                    Type = ValueSetIdentifierTypes.HTTP,
+                    Identifier = fhirIdentifier
+                };
+
+                valueSet.Identifiers.Add(vsIdentifier);
+            }
+            else
+            {
+                vsIdentifier.Identifier = fhirIdentifier;
+            }
+
+            if (!valueSet.Identifiers.Any(y => y.IsDefault))
+                vsIdentifier.IsDefault = true;
+        }
+
         public ValueSet Convert(FhirValueSet fhirValueSet, ValueSet valueSet = null)
         {
             if (valueSet == null)
@@ -98,8 +121,7 @@ namespace Trifolia.Export.FHIR.DSTU2
             if (fhirValueSet.Identifier == null)
                 throw new Exception("ValueSet.identifier.value is required");
 
-            if (valueSet.Oid != fhirValueSet.Identifier.Value)
-                valueSet.Oid = fhirValueSet.Identifier.Value;
+            this.PopulateIdentifier(valueSet, fhirValueSet.Identifier.Value);
 
             if (fhirValueSet.Expansion != null)
             {

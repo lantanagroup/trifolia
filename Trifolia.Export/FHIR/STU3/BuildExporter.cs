@@ -15,6 +15,7 @@ using fhir_stu3.Hl7.Fhir.Serialization;
 using System.Text.RegularExpressions;
 using Trifolia.Config;
 using System.Net;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.FHIR.STU3
 {
@@ -24,6 +25,7 @@ namespace Trifolia.Export.FHIR.STU3
 
         private IObjectRepository tdb;
         private ImplementationGuide ig;
+        private IIGTypePlugin igTypePlugin;
         private ZipFile zip;
         private SimpleSchema schema;
         private Models.Control control;
@@ -47,6 +49,7 @@ namespace Trifolia.Export.FHIR.STU3
             this.tdb = tdb;
 
             this.ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId);
+            this.igTypePlugin = this.ig.ImplementationGuideType.GetPlugin();
             this.templates = templates ?? this.ig.GetRecursiveTemplates(this.tdb);
 
             this.schema = this.ig.ImplementationGuideType.GetSimpleSchema();
@@ -296,8 +299,11 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var valueSet in valueSets)
             {
-                string definition = !string.IsNullOrEmpty(valueSet.Description) ? string.Format("<u>{0}</u><br/>\n{1}", valueSet.Oid, valueSet.Description) : valueSet.Oid;
-                valueSetsContent += string.Format("<tr><td><a href=\"ValueSet-{0}.html\">{1}</a></td><td>{2}</td></tr>", valueSet.GetFhirId(), valueSet.Name, definition);
+                string definition = !string.IsNullOrEmpty(valueSet.Description) ? 
+                    string.Format("<u>{0}</u><br/>\n{1}", valueSet.GetIdentifier(this.igTypePlugin), valueSet.Description) : 
+                    valueSet.GetIdentifier(this.igTypePlugin);
+                valueSetsContent += string.Format("<tr><td><a href=\"ValueSet-{0}.html\">{1}</a></td><td>{2}</td></tr>", 
+                    valueSet.GetFhirId(), valueSet.Name, definition);
             }
 
             if (valueSets.Any())

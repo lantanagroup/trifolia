@@ -77,9 +77,45 @@ namespace Trifolia.Import.Terminology.External
 
         #region Model population
 
+        private bool PopulateIdentifier(ValueSet valueSet, string identifier)
+        {
+            bool changed = false;
+            ValueSetIdentifierTypes type = ValueSetIdentifierTypes.Oid;
+
+            if (identifier.StartsWith("http://") || identifier.StartsWith("https://"))
+                type = ValueSetIdentifierTypes.HTTP;
+
+            ValueSetIdentifier vsIdentifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == type);
+
+            if (vsIdentifier == null)
+            {
+                vsIdentifier = new ValueSetIdentifier()
+                {
+                    Type = ValueSetIdentifierTypes.HTTP,
+                    Identifier = identifier
+                };
+
+                valueSet.Identifiers.Add(vsIdentifier);
+                changed = true;
+            }
+
+            if (!valueSet.Identifiers.Any(y => y.IsDefault))
+            {
+                vsIdentifier.IsDefault = true;
+                changed = true;
+            }
+
+            return changed;
+        }
+
         private ValueSet FindOrAddValueSet(IObjectRepository tdb, ImportValueSet valueSet)
         {
-            ValueSet foundValueSet = tdb.ValueSets.SingleOrDefault(y => y.Oid == valueSet.Oid);
+            ValueSet foundValueSet = (from vs in tdb.ValueSets
+                                      join vsi in tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
+                                      where vsi.Identifier.ToLower().Trim() == valueSet.Oid.ToLower().Trim()
+                                      select vs)
+                                      .Distinct()
+                                      .FirstOrDefault();
 
             if (valueSet.ImportStatus == "None")
                 return foundValueSet;
@@ -102,11 +138,8 @@ namespace Trifolia.Import.Terminology.External
                 changed = true;
             }
 
-            if (foundValueSet.Oid != oid)
-            {
-                foundValueSet.Oid = oid;
+            if (this.PopulateIdentifier(foundValueSet, oid))
                 changed = true;
-            }
 
             if (foundValueSet.Description != valueSet.Description)
             {

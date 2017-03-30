@@ -9,11 +9,13 @@ using DocumentFormat.OpenXml;
 
 using Trifolia.Shared;
 using Trifolia.DB;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG
 {
     public interface IConstraintGenerator
     {
+        IIGTypePlugin IGTypePlugin { get; set; }
         IGSettingsManager IGSettings { get; set; }
         Body DocumentBody { get; set; }
         FigureCollection Figures { get; set; }

@@ -13,6 +13,7 @@ using Trifolia.Shared;
 using Trifolia.Generation.IG;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Web.Extensions;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -200,22 +201,23 @@ namespace Trifolia.Web.Controllers.API
         private IEnumerable<ConstraintModel> GetConstraints(IObjectRepository tdb, Template template)
         {
             IGSettingsManager igSettings = new IGSettingsManager(tdb, template.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
 
             var constraints = template.ChildConstraints.Where(y => y.ParentConstraintId == null);
             List<ConstraintModel> constraintModels = new List<ConstraintModel>();
 
             foreach (TemplateConstraint rootConstraint in constraints.OrderBy(y => y.Order))
             {
-                var newConstraintModel = CreateConstraintModel(rootConstraint, igSettings);
+                var newConstraintModel = CreateConstraintModel(rootConstraint, igSettings, igTypePlugin);
                 constraintModels.Add(newConstraintModel);
             }
 
             return constraintModels;
         }
 
-        private ConstraintModel CreateConstraintModel(TemplateConstraint constraint, IGSettingsManager igSettings)
+        private ConstraintModel CreateConstraintModel(TemplateConstraint constraint, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin)
         {
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, constraint);
+            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, constraint);
 
             var newConstraintModel = new ConstraintModel()
             {
@@ -265,7 +267,7 @@ namespace Trifolia.Web.Controllers.API
             List<ConstraintModel> children = newConstraintModel.Children as List<ConstraintModel>;
             foreach (TemplateConstraint childConstraint in constraint.ChildConstraints.OrderBy(y => y.Order))
             {
-                var newChildConstraintModel = CreateConstraintModel(childConstraint, igSettings);
+                var newChildConstraintModel = CreateConstraintModel(childConstraint, igSettings, igTypePlugin);
                 children.Add(newChildConstraintModel);
             }
 
@@ -371,7 +373,7 @@ namespace Trifolia.Web.Controllers.API
         public string GetNarrative(ConstraintModel constraint)
         {
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb);
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, constraint);
+            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, null, constraint);
             fc.HasChildren = true;
 
             return fc.GetPlainText(false, false, true);

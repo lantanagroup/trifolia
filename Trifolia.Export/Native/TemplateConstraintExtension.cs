@@ -12,6 +12,7 @@ using ExportConformanceTypes = Trifolia.Shared.ImportExport.Model.ConstraintType
 using ExportCategory = Trifolia.Shared.ImportExport.Model.ConstraintTypeCategory;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.Native
 {
@@ -40,7 +41,7 @@ namespace Trifolia.Export.Native
             }
         }
 
-        public static ExportConstraint Export(this TemplateConstraint constraint, IObjectRepository tdb, IGSettingsManager igSettings, bool isVerbose = false, List<string> categories = null)
+        public static ExportConstraint Export(this TemplateConstraint constraint, IObjectRepository tdb, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, bool isVerbose = false, List<string> categories = null)
         {
             ExportConstraint exportConstraint = new ExportConstraint()
             {
@@ -95,7 +96,7 @@ namespace Trifolia.Export.Native
                     name = constraint.ValueSet.Name,
                     isStatic = constraint.IsStatic == true,
                     isStaticSpecified = constraint.IsStatic != null,
-                    identifier = constraint.ValueSet.Oid
+                    identifier = constraint.ValueSet.GetIdentifier(igTypePlugin)
                 };
                 exportConstraint.Item = exportValueSet;
             }
@@ -121,7 +122,7 @@ namespace Trifolia.Export.Native
 
             if (!constraint.IsPrimitive)
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(tdb, igSettings, constraint);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(tdb, igSettings, igTypePlugin, constraint);
 
                 // Only include the generated narrative, as Description and Label are already exported in separate fields.
                 exportConstraint.NarrativeText = fc.GetPlainText(false, false, false);
@@ -139,7 +140,7 @@ namespace Trifolia.Export.Native
                 if (!cChildConstraint.CategoryIsMatch(categories))
                     continue;
 
-                exportConstraint.Constraint.Add(cChildConstraint.Export(tdb, igSettings, isVerbose, categories));
+                exportConstraint.Constraint.Add(cChildConstraint.Export(tdb, igSettings, igTypePlugin, isVerbose, categories));
             }
 
             return exportConstraint;

@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml;
 
 using Trifolia.Shared;
 using Trifolia.DB;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG.ConstraintGeneration
 {
@@ -34,6 +35,8 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         private Template currentTemplate;
         private List<Template> allTemplates;
         private string constraintHeadingStyle;
+
+        public IIGTypePlugin IGTypePlugin { get; set; }
 
         public CommentManager CommentManager { get; set; }
 
@@ -145,7 +148,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             bool containedTemplateLinked = constraint.ContainedTemplateId != null && this.allTemplates.Exists(y => y.Id == constraint.ContainedTemplateId);
             bool includeCategory = this.IncludeCategory && (!this.HasSelectedCategories || this.SelectedCategories.Count > 1);
-            IFormattedConstraint fConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.dataSource, this.igSettings, constraint, linkContainedTemplate: containedTemplateLinked, linkIsBookmark: true, createLinksForValueSets: aCreateLinksForValueSets, includeCategory: includeCategory);
+            IFormattedConstraint fConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.dataSource, this.igSettings, this.IGTypePlugin, constraint, linkContainedTemplate: containedTemplateLinked, linkIsBookmark: true, createLinksForValueSets: aCreateLinksForValueSets, includeCategory: includeCategory);
             Paragraph para = fConstraint.AddToDocParagraph(this.wikiParser, this.DocumentBody, level -1, GenerationConstants.BASE_TEMPLATE_INDEX + (int)currentTemplate.Id, this.constraintHeadingStyle);
 
             if (!string.IsNullOrEmpty(constraint.Notes) && includeNotes)

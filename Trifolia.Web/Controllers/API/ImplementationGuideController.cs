@@ -205,6 +205,7 @@ namespace Trifolia.Web.Controllers.API
         public List<VocabularyItemModel> GetImplementationGuideValueSets(int implementationGuideId, bool onlyStatic = true)
         {
             var ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            var igTypePlugin = ig.ImplementationGuideType.GetPlugin();
             bool? isStatic = onlyStatic ? (bool?)true : null;
             var valueSets = ig.GetValueSets(this.tdb, isStatic);
 
@@ -213,7 +214,7 @@ namespace Trifolia.Web.Controllers.API
                     {
                         Id = vs.ValueSet.Id,
                         Name = vs.ValueSet.Name,
-                        Oid = vs.ValueSet.Oid,
+                        Oid = vs.ValueSet.GetIdentifier(igTypePlugin),
                         BindingDate = vs.BindingDate != null ? vs.BindingDate.Value.ToString("MM/dd/yyyy") : string.Empty
                     }).ToList();
         }
@@ -1522,7 +1523,7 @@ namespace Trifolia.Web.Controllers.API
             else
             {
                 WIKIParser wikiParser = new WIKIParser(this.tdb);
-                IGSettingsManager igManager = new IGSettingsManager(this.tdb, implementationGuideId);
+                IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
                 var igTypePlugin = IGTypePluginFactory.GetPlugin(ig.ImplementationGuideType);
                 var firstTemplateType = ig.ImplementationGuideType.TemplateTypes.OrderBy(y => y.OutputOrder).FirstOrDefault();
 
@@ -1533,7 +1534,7 @@ namespace Trifolia.Web.Controllers.API
                     ImplementationGuideFileId = fileId,
                     Status = ig.PublishStatus.Status,
                     PublishDate = ig.PublishDate != null ? ig.PublishDate.Value.ToShortDateString() : null,
-                    Volume1Html = igManager.GetSetting(IGSettingsManager.SettingProperty.Volume1Html)
+                    Volume1Html = igSettings.GetSetting(IGSettingsManager.SettingProperty.Volume1Html)
                 };
 
                 model.ImplementationGuideDescription = ig.WebDescription;
@@ -1572,7 +1573,7 @@ namespace Trifolia.Web.Controllers.API
                 {
                     var newValueSetModel = new ViewDataModel.ValueSet()
                     {
-                        Identifier = valueSet.ValueSet.Oid,
+                        Identifier = valueSet.ValueSet.GetIdentifier(igTypePlugin),
                         Name = valueSet.ValueSet.Name,
                         Source = valueSet.ValueSet.Source,
                         Description = valueSet.ValueSet.Description,
@@ -1628,7 +1629,7 @@ namespace Trifolia.Web.Controllers.API
 
                     if (lPreviousVersion != null)
                     {
-                        var comparer = VersionComparer.CreateComparer(this.tdb);
+                        var comparer = VersionComparer.CreateComparer(this.tdb, igTypePlugin, igSettings);
                         var result = comparer.Compare(lPreviousVersion, template);
 
                         newTemplateModel.Changes = new Trifolia.Web.Models.TemplateManagement.DifferenceModel(result)
@@ -1683,11 +1684,11 @@ namespace Trifolia.Web.Controllers.API
 
                     // Create the constraint models (hierarchically)
                     var parentConstraints = template.ChildConstraints.Where(y => y.ParentConstraintId == null);
-                    CreateConstraints(wikiParser, igManager, parentConstraints, newTemplateModel.Constraints, templateSchema);
+                    CreateConstraints(wikiParser, igSettings, igTypePlugin, parentConstraints, newTemplateModel.Constraints, templateSchema);
                 }
 
                 // Create models for template types in the IG
-                model.TemplateTypes = (from igt in igManager.TemplateTypes
+                model.TemplateTypes = (from igt in igSettings.TemplateTypes
                                        join tt in this.tdb.TemplateTypes on igt.TemplateTypeId equals tt.Id
                                        where model.Templates.Exists(y => y.TemplateTypeId == tt.Id)
                                        select new ViewDataModel.TemplateType()
@@ -1704,7 +1705,7 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
-        private void CreateConstraints(WIKIParser wikiParser, IGSettingsManager igManager, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList, SimpleSchema templateSchema, SimpleSchema.SchemaObject schemaObject = null)
+        private void CreateConstraints(WIKIParser wikiParser, IGSettingsManager igManager, IIGTypePlugin igTypePlugin, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList, SimpleSchema templateSchema, SimpleSchema.SchemaObject schemaObject = null)
         {
             foreach (var constraint in constraints.OrderBy(y => y.Order))
             {
@@ -1714,7 +1715,7 @@ namespace Trifolia.Web.Controllers.API
                 if (templateSchema != null && schemaObject == null)
                     schemaObject = templateSchema.Children.SingleOrDefault(y => y.Name == constraint.Context);
 
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, theConstraint, "#/volume2/", "#/valuesets/#", true, true, true, false);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, igTypePlugin, theConstraint, "#/volume2/", "#/valuesets/#", true, true, true, false);
 
                 var newConstraintModel = new ViewDataModel.Constraint()
                 {
@@ -1725,7 +1726,7 @@ namespace Trifolia.Web.Controllers.API
                     Context = theConstraint.Context,
                     DataType = theConstraint.DataType,
                     Value = theConstraint.Value,
-                    ValueSetIdentifier = theConstraint.ValueSet != null ? theConstraint.ValueSet.Oid : null,
+                    ValueSetIdentifier = theConstraint.ValueSet != null ? theConstraint.ValueSet.GetIdentifier(igTypePlugin) : null,
                     ValueSetDate = theConstraint.ValueSetDate != null ? theConstraint.ValueSetDate.Value.ToShortDateString() : null,
                     ContainedTemplate = theConstraint.ContainedTemplateId != null ? new ViewDataModel.TemplateReference(theConstraint.ContainedTemplate) : null,
                     IsChoice = theConstraint.IsChoice
@@ -1744,7 +1745,7 @@ namespace Trifolia.Web.Controllers.API
                     null;
 
                 // Recursively add child constraints
-                CreateConstraints(wikiParser, igManager, theConstraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
+                CreateConstraints(wikiParser, igManager, igTypePlugin, theConstraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
             }
         }
 

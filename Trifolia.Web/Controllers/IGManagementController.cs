@@ -22,6 +22,7 @@ using Trifolia.DB;
 using ListModel = Trifolia.Web.Models.IGManagement.ListModel;
 using ViewModel = Trifolia.Web.Models.IGManagement.ViewModel;
 using EditModel = Trifolia.Web.Models.IGManagement.EditModel;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Web.Controllers
 {
@@ -81,10 +82,12 @@ namespace Trifolia.Web.Controllers
             if (!CheckPoint.Instance.GrantViewImplementationGuide(id))
                 throw new AuthorizationException("You do not have access to view this implementation guide's changes.");
 
-            ViewChangesModel lModel = new ViewChangesModel();
-            VersionComparer lComparer = VersionComparer.CreateComparer(tdb);
-
             ImplementationGuide lGuide = this.tdb.ImplementationGuides.Single(ig => ig.Id == id);
+            ViewChangesModel lModel = new ViewChangesModel();
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, lGuide.Id);
+            IIGTypePlugin igTypePlugin = lGuide.ImplementationGuideType.GetPlugin();
+            VersionComparer lComparer = VersionComparer.CreateComparer(tdb, igTypePlugin, igSettings);
+
             lModel.IgName = lGuide.Name;
 
             // Modified templates

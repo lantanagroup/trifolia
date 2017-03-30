@@ -119,14 +119,13 @@
     <Compile Include="LookupOrganization.cs" />
     <Compile Include="LookupTemplate.cs" />
     <Compile Include="LookupTemplateType.cs" />
-    <Compile Include="LookupValueSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleSchema.cs" />
     <Compile Include="SupportTypes.cs" />
     <Compile Include="TemplateConstraintExtensions.cs" />
     <Compile Include="TemplateExtensions.cs" />
     <Compile Include="TemplateValidationResult.cs" />
-    <Compile Include="ValueSetExtension.cs" />
+    <Compile Include="ValueSetExtensions.cs" />
     <Compile Include="VocabularyOutputType.cs" />
     <Compile Include="VocabularyOutputTypeTranslator.cs" />
   </ItemGroup>

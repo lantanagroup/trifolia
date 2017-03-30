@@ -10,6 +10,7 @@ using ExportSample = Trifolia.Shared.ImportExport.Model.TrifoliaTemplateSample;
 using Trifolia.DB;
 using Trifolia.Shared.ImportExport.Model;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.Native
 {
@@ -19,6 +20,7 @@ namespace Trifolia.Export.Native
 
         public static ExportTemplate Export(this Template template, IObjectRepository tdb, IGSettingsManager igSettings, SimpleSchema schema = null, List<string> categories = null)
         {
+            IIGTypePlugin igTypePlugin = template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
             ExportTemplate exportTemplate = new ExportTemplate()
             {
                 identifier = template.Oid,
@@ -84,7 +86,7 @@ namespace Trifolia.Export.Native
                     if (foundConstraints.Count() == 0)
                     {
                         var foundConstraint = schemaNode.CreateComputable(template.IsOpen);
-                        exportTemplate.Constraint.Add(foundConstraint.Export(tdb, igSettings, isVerbose: true, categories: categories));
+                        exportTemplate.Constraint.Add(foundConstraint.Export(tdb, igSettings, igTypePlugin, isVerbose: true, categories: categories));
                     }
                     else
                     {
@@ -93,7 +95,7 @@ namespace Trifolia.Export.Native
                             if (!foundConstraint.CategoryIsMatch(categories))
                                 continue;
 
-                            exportTemplate.Constraint.Add(foundConstraint.Export(tdb, igSettings, categories: categories));
+                            exportTemplate.Constraint.Add(foundConstraint.Export(tdb, igSettings, igTypePlugin, categories: categories));
                         }
                     }
                 }
@@ -105,7 +107,7 @@ namespace Trifolia.Export.Native
                     if (!cChildConstraint.CategoryIsMatch(categories))
                         continue;
 
-                    exportTemplate.Constraint.Add(cChildConstraint.Export(tdb, igSettings, categories: categories));
+                    exportTemplate.Constraint.Add(cChildConstraint.Export(tdb, igSettings, igTypePlugin, categories: categories));
                 }
             }
 

@@ -115,6 +115,7 @@ namespace Trifolia.Web.Controllers.API
                 .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints")
                 .Single(y => y.Id == templateId);
             IGSettingsManager igManager = new IGSettingsManager(this.tdb, template.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
             string baseLink = this.Request.RequestUri.GetLeftPart(UriPartial.Authority);
             bool canEditTemplate = CheckPoint.Instance.GrantEditTemplate(template.Id)
                 && CheckPoint.Instance.HasSecurables(SecurableNames.TEMPLATE_EDIT);
@@ -179,7 +180,7 @@ namespace Trifolia.Web.Controllers.API
             int constraintCount = 0;
             foreach (TemplateConstraint cDbConstraint in template.ChildConstraints.Where(y => y.Parent == null).OrderBy(y => y.Order))
             {
-                ViewModel.Constraint newConstraint = BuildConstraint(wikiParser, baseLink, igManager, cDbConstraint, ++constraintCount);
+                ViewModel.Constraint newConstraint = BuildConstraint(wikiParser, baseLink, igManager, igTypePlugin, cDbConstraint, ++constraintCount);
                 model.Constraints.Add(newConstraint);
             }
 
@@ -651,6 +652,7 @@ namespace Trifolia.Web.Controllers.API
 
             Template template = this.tdb.Templates.Single(y => y.Id == model.TemplateId);
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, template.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
 
             // Check for duplicate conformance numbers
             List<int> destinationIgConfNumbers = (from t in this.tdb.Templates
@@ -664,7 +666,7 @@ namespace Trifolia.Web.Controllers.API
 
             template.Constraints.ForEach(c =>
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, c);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, c);
 
                 model.Constraints.Add(new CopyModel.Constraint()
                 {
@@ -788,21 +790,23 @@ namespace Trifolia.Web.Controllers.API
             if (!CheckPoint.Instance.GrantViewTemplate(templateId))
                 throw new AuthorizationException("You do not have permission to view this template");
 
-            Template lTemplate = this.tdb.Templates.Single(t => t.Id == templateId);
-            Template lPreviousVersion = this.tdb.Templates.SingleOrDefault(t => t.Id == lTemplate.PreviousVersionTemplateId);
+            Template currentVersion = this.tdb.Templates.Single(t => t.Id == templateId);
+            Template previousVersion = this.tdb.Templates.SingleOrDefault(t => t.Id == currentVersion.PreviousVersionTemplateId);
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, currentVersion.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = currentVersion.ImplementationGuideType.GetPlugin();
 
-            if (lPreviousVersion == null)
+            if (previousVersion == null)
                 return null;
 
-            VersionComparer comparer = VersionComparer.CreateComparer(this.tdb);
-            ComparisonResult result = comparer.Compare(lPreviousVersion, lTemplate);
+            VersionComparer comparer = VersionComparer.CreateComparer(this.tdb, igTypePlugin, igSettings);
+            ComparisonResult result = comparer.Compare(previousVersion, currentVersion);
 
             DifferenceModel model = new DifferenceModel(result)
             {
-                Id = lTemplate.Id,
-                TemplateName = lTemplate.Name,
-                PreviousTemplateName = string.Format("{0} ({1})", lPreviousVersion.Name, lPreviousVersion.Oid),
-                PreviousTemplateId = lPreviousVersion.Id
+                Id = currentVersion.Id,
+                TemplateName = currentVersion.Name,
+                PreviousTemplateName = string.Format("{0} ({1})", previousVersion.Name, previousVersion.Oid),
+                PreviousTemplateId = previousVersion.Id
             };
 
             return model;
@@ -838,6 +842,7 @@ namespace Trifolia.Web.Controllers.API
 
             Template template = this.tdb.Templates.Single(y => y.Id == model.TemplateId);
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, template.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
             List<int> duplicateConformanceNumbers = new List<int>();
             List<MoveConstraint> moveConstraints = new List<MoveConstraint>();
 
@@ -855,7 +860,7 @@ namespace Trifolia.Web.Controllers.API
 
             template.ChildConstraints.ToList().ForEach(c =>
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, c);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, c);
 
                 moveConstraints.Add(new MoveConstraint()
                 {
@@ -1003,9 +1008,9 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
-        private ViewModel.Constraint BuildConstraint(WIKIParser wikiParser, string baseLink, IGSettingsManager igSettings, TemplateConstraint dbConstraint, int constraintCount)
+        private ViewModel.Constraint BuildConstraint(WIKIParser wikiParser, string baseLink, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, TemplateConstraint dbConstraint, int constraintCount)
         {
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, dbConstraint, linkContainedTemplate: true, linkIsBookmark: false, createLinksForValueSets: false);
+            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, dbConstraint, linkContainedTemplate: true, linkIsBookmark: false, createLinksForValueSets: false);
 
             ViewModel.Constraint newConstraint = new ViewModel.Constraint()
             {
@@ -1020,7 +1025,7 @@ namespace Trifolia.Web.Controllers.API
             int nextConstraintCount = 0;
             foreach (TemplateConstraint cDbConstraint in dbConstraint.ChildConstraints.OrderBy(y => y.Order))
             {
-                ViewModel.Constraint nextNewConstraint = BuildConstraint(wikiParser, baseLink, igSettings, cDbConstraint, ++nextConstraintCount);
+                ViewModel.Constraint nextNewConstraint = BuildConstraint(wikiParser, baseLink, igSettings, igTypePlugin, cDbConstraint, ++nextConstraintCount);
                 newConstraint.Children.Add(nextNewConstraint);
             }
 

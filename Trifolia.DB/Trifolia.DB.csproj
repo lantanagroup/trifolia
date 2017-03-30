@@ -92,6 +92,10 @@
     <Compile Include="Migrations\201703211651073_isFixed.Designer.cs">
       <DependentUpon>201703211651073_isFixed.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703292147411_multipleValueSetIdentifiers.cs" />
+    <Compile Include="Migrations\201703292147411_multipleValueSetIdentifiers.Designer.cs">
+      <DependentUpon>201703292147411_multipleValueSetIdentifiers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -127,6 +131,7 @@
     <Compile Include="Model\user_group.cs" />
     <Compile Include="Model\user_role.cs" />
     <Compile Include="Model\valueset.cs" />
+    <Compile Include="Model\valueset_identifier.cs" />
     <Compile Include="Model\valueset_member.cs" />
     <Compile Include="Model\v_constraintcount.cs" />
     <Compile Include="Model\v_igaudittrail.cs" />
@@ -189,7 +194,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201703292147411_multipleValueSetIdentifiers.resx">
+      <DependentUpon>201703292147411_multipleValueSetIdentifiers.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FHIR_Latest_Resources.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201703292147411_searchValueSet_down.sql" />
+    <EmbeddedResource Include="Migrations\201703292147411_searchValueSet_up.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

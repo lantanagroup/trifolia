@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml;
 
 using Trifolia.Shared;
 using Trifolia.DB;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG.ConstraintGeneration
 {
@@ -27,6 +28,8 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         private Template currentTemplate;
         private List<Template> allTemplates;
         private string constraintHeadingStyle;
+
+        public IIGTypePlugin IGTypePlugin { get; set; }
 
         public CommentManager CommentManager { get; set; }
 
@@ -254,7 +257,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                             DocHelper.CreateRun(", which "),
                             DocHelper.CreateRun(valueConformance, Properties.Settings.Default.ConformanceVerbStyle),
                             DocHelper.CreateRun(" be selected from ValueSet "),
-                            DocHelper.CreateRun(constraint.ValueSet.Name + " " + constraint.ValueSet.Oid, 
+                            DocHelper.CreateRun(constraint.ValueSet.Name + " " + constraint.ValueSet.GetIdentifier(this.IGTypePlugin), 
                             anchorName:lValueSetAnchor,
                             style:Properties.Settings.Default.VocabularyConstraintStyle));
                     }
@@ -299,7 +302,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                     {
                         pConstraint.Append(
                             DocHelper.CreateRun(" (ValueSet: "),
-                            DocHelper.CreateRun(constraint.ValueSet.Name + " " + constraint.ValueSet.Oid, style:Properties.Settings.Default.TemplateOidStyle),
+                            DocHelper.CreateRun(constraint.ValueSet.Name + " " + constraint.ValueSet.GetIdentifier(this.IGTypePlugin), style:Properties.Settings.Default.TemplateOidStyle),
                             DocHelper.CreateRun(")"));
                     }
                 }

@@ -1482,18 +1482,6 @@
             The number of items included in the list
             </summary>
         </member>
-        <member name="M:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel.#ctor">
-            <summary>
-            Hide the ctor so we can enforce usage of the factory method, so we can "fix up" the model as necessary
-            </summary>
-        </member>
-        <member name="M:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel.AdaptFromTemplate(Trifolia.DB.Template)">
-            <summary>
-            Creates a new instance of <see cref="T:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel"/> from the passed in Template
-            </summary>
-            <param name="aTemplate"></param>
-            <returns></returns>
-        </member>
         <member name="T:Trifolia.Web.Models.LogInViewModel">
             <summary>
             Provides data for the view that's when the user should log in

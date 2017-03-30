@@ -42,10 +42,21 @@ namespace Trifolia.Import.Terminology.Excel
                 {
                     valueSet = new ValueSet()
                     {
-                        Oid = checkValueSet.Oid,
                         Name = checkValueSet.Name,
                         LastUpdate = DateTime.Now
                     };
+
+                    ValueSetIdentifier vsIdentifier = new ValueSetIdentifier();
+                    vsIdentifier.Identifier = checkValueSet.Oid;
+
+                    if (checkValueSet.Oid.StartsWith("http://") || checkValueSet.Oid.StartsWith("https://"))
+                        vsIdentifier.Type = ValueSetIdentifierTypes.HTTP;
+                    else if (checkValueSet.Oid.StartsWith("urn:hl7ii:"))
+                        vsIdentifier.Type = ValueSetIdentifierTypes.HL7II;
+                    else
+                        vsIdentifier.Type = ValueSetIdentifierTypes.Oid;
+
+                    valueSet.Identifiers.Add(vsIdentifier);
                     this.tdb.ValueSets.Add(valueSet);
                 }
 
@@ -113,22 +124,27 @@ namespace Trifolia.Import.Terminology.Excel
                 Cell nameCell = cells.SingleOrDefault(y => y.CellReference == "A" + row.RowIndex.Value.ToString());
                 Cell oidCell = cells.SingleOrDefault(y => y.CellReference == "B" + row.RowIndex.Value.ToString());
                 var name = GetCellValue(nameCell, wbPart);
-                var oid = GetCellValue(oidCell, wbPart);
+                var identifier = GetCellValue(oidCell, wbPart);
 
-                if (string.IsNullOrEmpty(oid))
+                if (string.IsNullOrEmpty(identifier))
                 {
                     response.Errors.Add(string.Format("Row {0} on valueset sheet does not specify an identifier for the value set", row.RowIndex.Value));
                     continue;
                 }
 
-                if (!oid.StartsWith("http://") && !oid.StartsWith("https://") && !oid.StartsWith("urn:oid:"))
+                if (!identifier.StartsWith("http://") && !identifier.StartsWith("https://") && !identifier.StartsWith("urn:oid:"))
                 {
                     response.Errors.Add(string.Format("Row {0}'s identifier on valueset sheet must be correctly formatted as one of: http[s]://XXXX or urn:oid:XXXX", row.RowIndex.Value));
                     continue;
                 }
 
                 ImportValueSetChange change = new ImportValueSetChange();
-                ValueSet foundValueSet = this.tdb.ValueSets.SingleOrDefault(y => y.Oid == oid);
+                ValueSet foundValueSet = (from vs in this.tdb.ValueSets
+                                          join vsi in this.tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
+                                          where vsi.Identifier.ToLower().Trim() == identifier.ToLower().Trim()
+                                          select vs)
+                                          .Distinct()
+                                          .FirstOrDefault();
 
                 if (foundValueSet == null)
                 {
@@ -136,13 +152,14 @@ namespace Trifolia.Import.Terminology.Excel
                 }
                 else
                 {
+                    change.ValueSet = foundValueSet;
                     change.Id = foundValueSet.Id;
 
                     if (foundValueSet.Name != name)
                         change.ChangeType = ImportValueSetChange.ChangeTypes.Update;
                 }
 
-                change.Oid = oid;
+                change.Oid = identifier;
                 change.Name = name;
 
                 response.ValueSets.Add(change);
@@ -204,10 +221,10 @@ namespace Trifolia.Import.Terminology.Excel
                     continue;
                 }
 
-                var foundValuesetChange = response.ValueSets.SingleOrDefault(y => y.Oid == valuesetOid);
+                var foundValueSetChange = response.ValueSets.SingleOrDefault(y => y.Oid == valuesetOid);
                 var foundCodeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid == codeSystemOid);
 
-                if (foundValuesetChange == null)
+                if (foundValueSetChange == null)
                 {
                     response.Errors.Add(string.Format("Row {0} on concept sheet does not have a valid valueset OID.", row.RowIndex.Value));
                     continue;
@@ -253,9 +270,10 @@ namespace Trifolia.Import.Terminology.Excel
                     statusDate = parsedStatusDate;
 
                 ImportValueSetChange.ConceptChange conceptChange = new ImportValueSetChange.ConceptChange();
-                var foundConcept = foundValuesetChange.ChangeType != ImportValueSetChange.ChangeTypes.Add ?
-                    this.tdb.ValueSetMembers.SingleOrDefault(y => y.ValueSet.Oid == foundValuesetChange.Oid && y.Code == code && y.Status == status && y.StatusDate == statusDate) :
-                    null;
+                ValueSetMember foundConcept = null;
+
+                if (foundValueSetChange.ValueSet != null)
+                    foundConcept = foundValueSetChange.ValueSet.Members.SingleOrDefault(y => y.Code == code && y.Status == status && y.StatusDate == statusDate);
 
                 if (foundConcept == null)
                 {
@@ -276,7 +294,7 @@ namespace Trifolia.Import.Terminology.Excel
                 conceptChange.Status = status;
                 conceptChange.StatusDate = statusDate;
 
-                foundValuesetChange.Concepts.Add(conceptChange);
+                foundValueSetChange.Concepts.Add(conceptChange);
             }
         }
 

@@ -19,6 +19,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Validation;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Terminology
 {
@@ -45,45 +46,50 @@ namespace Trifolia.Terminology
 
         #endregion
 
-        public int GetValueSetMemberLength(string valueSetOid)
+        public int GetValueSetMemberLength(string valueSetIdentifier)
         {
             try
             {
-                int count = 0;
+                ValueSet valueSet = (from v in this.tdb.ValueSets
+                                     join vsi in this.tdb.ValueSetIdentifiers on v.Id equals vsi.ValueSetId
+                                     where vsi.Identifier.ToLower().Trim() == valueSetIdentifier.ToLower().Trim()
+                                     select v)
+                                     .FirstOrDefault();
 
-                if (tdb.ValueSets.Any(y => y.Oid == valueSetOid))
-                {
-                    TDBValueSet valueSet = tdb.ValueSets.SingleOrDefault(y => y.Oid == valueSetOid);
-                    count = valueSet.Members.Count();
-                }
+                if (valueSet == null)
+                    return 0;
 
-                return count;
+                return valueSet.Members.Count;
             }
             catch (Exception ex)
             {
-                Log.For(this).Critical("Error occurred while retrieving valueset member length for valueset oid '" + valueSetOid + "'.", ex);
+                Log.For(this).Critical("Error occurred while retrieving valueset member length for valueset oid '" + valueSetIdentifier + "'.", ex);
                 throw;
             }
         }
 
-        public string GetValueSet(string valueSetOid, int vocabOutputType, string encoding)
+        public string GetValueSet(string valueSetIdentifier, int vocabOutputType, string encoding)
         {
             try
             {
-                TDBValueSet valueSet = tdb.ValueSets.SingleOrDefault(y => y.Oid == valueSetOid);
+                ValueSet valueSet = (from v in this.tdb.ValueSets
+                                     join vsi in this.tdb.ValueSetIdentifiers on v.Id equals vsi.ValueSetId
+                                     where vsi.Identifier.ToLower().Trim() == valueSetIdentifier.ToLower().Trim()
+                                     select v)
+                                     .FirstOrDefault();
 
                 if (valueSet == null)
                     throw new Exception("Could not find ValueSet specified.");
 
                 VocabularySystems schema = new VocabularySystems();
-                schema.Systems = new VocabularySystem[] { GetSystem(tdb, valueSet, DateTime.Now) };
+                schema.Systems = new VocabularySystem[] { GetSystem(null, tdb, valueSet, DateTime.Now) };
                 VocabularyOutputTypeAdapter adapter = new VocabularyOutputTypeAdapter(schema, VocabularyOutputTypeTranslator.FromInt(vocabOutputType), Encoding.GetEncoding(encoding));
 
                 return adapter.AsXML();
             }
             catch (Exception ex)
             {
-                Log.For(this).Critical("Error occurred while retrieving a valueset for oid '" + valueSetOid + "'", ex);
+                Log.For(this).Critical("Error occurred while retrieving a valueset for oid '" + valueSetIdentifier + "'", ex);
                 throw;
             }
         }
@@ -97,12 +103,18 @@ namespace Trifolia.Terminology
                 if (ig == null)
                     throw new Exception("Could not find ImplementationGuide specified.");
 
+                var igTypePlugin = ig.ImplementationGuideType.GetPlugin();
                 List<Template> templates = ig.GetRecursiveTemplates(tdb);
-                return (from t in templates
-                        join tc in tdb.TemplateConstraints on t.Id equals tc.TemplateId
-                        join vs in tdb.ValueSets on tc.ValueSetId equals vs.Id
-                        where tc.ValueSetId != null
-                        select vs).Distinct().Select(vs => vs.Oid).ToArray();
+
+                var valueSets = (from t in templates
+                                 join tc in tdb.TemplateConstraints on t.Id equals tc.TemplateId
+                                 join vs in tdb.ValueSets on tc.ValueSetId equals vs.Id
+                                 where tc.ValueSetId != null
+                                 select vs)
+                                 .Distinct()
+                                 .ToList();
+                
+                return valueSets.Select(vs => vs.GetIdentifier(igTypePlugin)).ToArray();
             }
             catch (Exception ex)
             {
@@ -120,6 +132,7 @@ namespace Trifolia.Terminology
                 if (ig == null)
                     throw new Exception("Could not find ImplementationGuide specified.");
 
+                var igTypePlugin = ig.ImplementationGuideType.GetPlugin();
                 List<ImplementationGuideValueSet> valueSets = ig.GetValueSets(tdb);
 
                 using (MemoryStream ms = new MemoryStream())
@@ -265,7 +278,7 @@ namespace Trifolia.Terminology
                             "</row>",
                             sheet1Count++,
                             XmlEncodeText(cValueSet.ValueSet.Name),
-                            XmlEncodeText(cValueSet.ValueSet.Oid));
+                            XmlEncodeText(cValueSet.ValueSet.GetIdentifier(igTypePlugin)));
 
                         Row newSummaryRow = new Row(summaryXml);
                         sheet1Data.AppendChild(newSummaryRow);
@@ -285,7 +298,7 @@ namespace Trifolia.Terminology
                                 "  <c r=\"E{0}\" t=\"str\"><v>{5}</v></c>" +
                                 "</row>",
                                 sheet2Count++,
-                                XmlEncodeText(cValueSet.ValueSet.Oid),
+                                XmlEncodeText(cValueSet.ValueSet.GetIdentifier(igTypePlugin)),
                                 XmlEncodeText(cValueSet.ValueSet.Name),
                                 XmlEncodeText(cMember.Code),
                                 XmlEncodeText(cMember.DisplayName),
@@ -360,13 +373,14 @@ namespace Trifolia.Terminology
                 if (ig == null)
                     throw new Exception("Could not find ImplementationGuide specified.");
 
+                IIGTypePlugin igTypePlugin = ig.ImplementationGuideType.GetPlugin();
                 bool? onlyStatic = VocabularyOutputTypeTranslator.FromInt(vocabOutputType) != VocabularyOutputType.FHIR ? (bool?)true : null;
                 List<ImplementationGuideValueSet> valueSets = ig.GetValueSets(tdb, onlyStatic);
                 List<VocabularySystem> systems = new List<VocabularySystem>();
 
                 foreach (ImplementationGuideValueSet cValueSet in valueSets)
                 {
-                    VocabularySystem newSystem = this.GetSystem(tdb, cValueSet.ValueSet, cValueSet.BindingDate);
+                    VocabularySystem newSystem = this.GetSystem(igTypePlugin, tdb, cValueSet.ValueSet, cValueSet.BindingDate);
                     systems.Add(newSystem);
                 }
 
@@ -406,7 +420,7 @@ namespace Trifolia.Terminology
             return System.Enum.GetNames(typeof(VocabularyOutputType)).Select(v => new VocabularyOutputTypeSpecifier() { Id = id++, OutputType = v }).ToArray();
         }
 
-        private VocabularySystem GetSystem(IObjectRepository tdb, TDBValueSet valueSet, DateTime? bindingDate)
+        private VocabularySystem GetSystem(IIGTypePlugin igTypePlugin, IObjectRepository tdb, TDBValueSet valueSet, DateTime? bindingDate)
         {
             if (valueSet == null)
                 throw new Exception("Could not find ValueSet specified.");
@@ -414,7 +428,7 @@ namespace Trifolia.Terminology
             VocabularySystems schema = new VocabularySystems();
             VocabularySystem schemaValueSet = new VocabularySystem()
             {
-                ValueSetOid = valueSet.Oid,
+                ValueSetOid = valueSet.GetIdentifier(igTypePlugin),
                 ValueSetName = valueSet.Name
             };
 

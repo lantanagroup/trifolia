@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml;
 
 using Trifolia.Shared;
 using Trifolia.DB;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG.ConstraintGeneration
 {
@@ -94,7 +95,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
         #endregion
 
-        public void ParseConstraint(IConstraint constraint, Template containedTemplate = null, ValueSet valueSet = null, CodeSystem codeSystem = null)
+        public void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, Template containedTemplate = null, ValueSet valueSet = null, CodeSystem codeSystem = null)
         {
             this.childCount = constraint.Children != null ? constraint.Children.Count() : 0;
 
@@ -167,7 +168,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                     valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
 
                 this.ValueSetName = valueSet.Name;
-                this.ValueSetOid = valueSet.Oid;
+                this.ValueSetOid = valueSet.GetIdentifier(igTypePlugin);
                 this.ValueSetVersion = constraint.ValueSetDate;
             }
 

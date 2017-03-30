@@ -128,21 +128,18 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             [FromBody] FhirValueSet fhirValueSet,
             [FromUri(Name = "_format")] string format = null)
         {
-            var fhirIdentifier = fhirValueSet.Identifier.Count > 0 ? fhirValueSet.Identifier.First() : null;
-            var fhirIdentifierValue = fhirIdentifier != null ? fhirIdentifier.Value : null;
+            var foundValueSets = (from vs in this.tdb.ValueSets
+                                  join vsi in this.tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
+                                  join fvsi in fhirValueSet.Identifier on vsi.Identifier.ToLower().Trim() equals fvsi.Value.ToLower().Trim()
+                                  select vs)
+                                  .Distinct();
 
-            if (fhirValueSet.Identifier != null && this.tdb.ValueSets.Count(y => y.Oid == fhirIdentifierValue) > 0)
+            if (foundValueSets.Count() > 0)
                 throw new Exception("ValueSet already exists with this identifier. Use a PUT instead");
 
             ValueSetImporter importer = new ValueSetImporter(this.tdb);
             ValueSetExporter exporter = new ValueSetExporter(this.tdb);
             ValueSet valueSet = importer.Convert(fhirValueSet);
-
-            if (valueSet.Oid == null)
-                valueSet.Oid = string.Empty;
-
-            if (this.tdb.ValueSets.Count(y => y.Oid == valueSet.Oid) > 0)
-                throw new Exception("A ValueSet with that identifier already exists");
 
             this.tdb.ValueSets.Add(valueSet);
             this.tdb.SaveChanges();

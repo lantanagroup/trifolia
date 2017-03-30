@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Trifolia.DB;
 
 namespace Trifolia.Import.Terminology
 {
@@ -12,6 +13,11 @@ namespace Trifolia.Import.Terminology
             this.Concepts = new List<ConceptChange>();
         }
 
+        /// <summary>
+        /// The ValueSet in the database that was matched to the valueset in the import file
+        /// </summary>
+        /// <remarks>This is marked as internal so that the property does not get serialized by the REST API</remarks>
+        internal ValueSet ValueSet { get; set; }
         public int? Id { get; set; }
         public string Name { get; set; }
         public string Oid { get; set; }

@@ -362,19 +362,20 @@ namespace Trifolia.Web.Controllers.API
         public List<VocabularyItemModel> GetValueSets(int implementationGuideId, int? exportFormat = 0)
         {
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            IIGTypePlugin igTypePlugin = ig.ImplementationGuideType.GetPlugin();
 
             switch (exportFormat)
             {
                 case 0:
                 case 1:
                 case 2:
-                    return ConvertVocabularyItems(ig.GetValueSets(this.tdb, true));
+                    return ConvertVocabularyItems(ig.GetValueSets(this.tdb, true), igTypePlugin);
                 default:
-                    return ConvertVocabularyItems(ig.GetValueSets(this.tdb));
+                    return ConvertVocabularyItems(ig.GetValueSets(this.tdb), igTypePlugin);
             }
         }
 
-        private List<VocabularyItemModel> ConvertVocabularyItems(List<ImplementationGuideValueSet> valueSets)
+        private List<VocabularyItemModel> ConvertVocabularyItems(List<ImplementationGuideValueSet> valueSets, IIGTypePlugin igTypePlugin)
         {
             List<VocabularyItemModel> ret = new List<VocabularyItemModel>();
 
@@ -385,7 +386,7 @@ namespace Trifolia.Web.Controllers.API
                     {
                         Id = cValueSet.ValueSet.Id,
                         Name = cValueSet.ValueSet.Name,
-                        Oid = cValueSet.ValueSet.Oid,
+                        Oid = cValueSet.ValueSet.GetIdentifier(igTypePlugin),
                         BindingDate = cValueSet.BindingDate != null ? cValueSet.BindingDate.Value.ToString("MM/dd/yyyy") : string.Empty
                     });
             }
@@ -558,7 +559,7 @@ namespace Trifolia.Web.Controllers.API
                 settingsManager.SaveSetting(MSWordExportSettingsPropertyName, settingsJson);
             }
 
-            generator.BuildImplementationGuide(lConfig);
+            generator.BuildImplementationGuide(lConfig, ig.ImplementationGuideType.GetPlugin());
 
             byte[] data = generator.GetDocument();
 
