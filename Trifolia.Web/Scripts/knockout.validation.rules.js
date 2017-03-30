@@ -239,7 +239,7 @@ ko.validation.rules['ignoreSelfTemplateId'] = {
         var idNum = null;
         if (typeof templateId === "object") idNum = templateId.id();
         else return true;
-        return idNum !== impliedId;
+        return (idNum === undefined && impliedId === undefined) || idNum !== impliedId;
     },
     message: 'Can\'t have the implied template be the same as the current template.'
 };
