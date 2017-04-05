@@ -26,7 +26,7 @@ where oid not like 'urn:oid:%' and oid not like 'http://%' and oid not like 'htt
         #region [Un]Migrate Identifiers SQL
 
         private const string MigrateIdentifiers = @"
-insert into dbo.valueset_identifier
+insert into dbo.valueset_identifier (valueSetId, identifier, [type], isDefault)
 select
   id as valueSetId,
   oid as identifier,
