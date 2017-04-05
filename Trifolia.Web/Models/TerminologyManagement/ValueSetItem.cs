@@ -9,7 +9,7 @@ namespace Trifolia.Web.Models.TerminologyManagement
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Oid { get; set; }
+        public string Identifiers { get; set; }
         public string Description { get; set; }
         public string Code { get; set; }
         public bool IsIntentional { get; set; }

@@ -17,8 +17,8 @@ namespace Trifolia.DB
         [Column("id")]
         public int Id { get; set; }
 
-        [Column("oid")]
-        public string Oid { get; set; }
+        [Column("identifiers")]
+        public string Identifiers { get; set; }
 
         [Column("name")]
         public string Name { get; set; }

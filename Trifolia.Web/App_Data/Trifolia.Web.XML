@@ -1105,6 +1105,14 @@
             it registers as a change event when auditing, regardless if the value is different.
             </remarks>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.TerminologyController.ValidateValueSetIdentifier(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Looks for the identifier among existing identifiers.
+            </summary>
+            <param name="identifier">The identifier to search for</param>
+            <param name="identifierId">The id of a valueset identifier that should be ignored while searching</param>
+            <returns>True if the identifier is not found, otherwise false.</returns>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.TypeController.GetSchemaChoices(System.Int32)">
             <summary>
             Gets all choices available within the specified implementation guide type's schema

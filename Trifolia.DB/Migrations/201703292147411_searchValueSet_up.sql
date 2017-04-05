@@ -37,7 +37,7 @@ BEGIN
 	CREATE TABLE #valuesets (
 		id INT, 
 		name VARCHAR(255), 
-		identifier VARCHAR(255), 
+		identifiers VARCHAR(255), 
 		code VARCHAR(255), 
 		[description] NVARCHAR(max), 
 		intensional BIT NULL, 
@@ -49,7 +49,7 @@ BEGIN
 	SELECT DISTINCT
 		vs.id,
 		vs.name,
-		stuff((select ', ' + identifier from valueset_identifier where valueSetId = vs.id for xml path ('')), 1, 2, '') as identifier,
+		stuff((select ', ' + identifier from valueset_identifier where valueSetId = vs.id order by identifier desc for xml path ('')), 1, 2, '') as identifiers,
 		vs.code,
 		vs.[description],
 		vs.intensional,
@@ -82,14 +82,14 @@ BEGIN
 		CASE @orderDesc WHEN 0 THEN
 			CASE @orderProperty
 				WHEN 'Name' THEN vs.name
-				WHEN 'Oid' THEN vs.identifier
+				WHEN 'Identifiers' THEN vs.identifiers
 				WHEN 'IsComplete' THEN CAST(vs.isComplete as VARCHAR(255))
 			END
 		END ASC,
 		CASE @orderDesc WHEN 1 THEN
 			CASE @orderProperty
 				WHEN 'Name' THEN vs.name
-				WHEN 'Oid' THEN vs.identifier
+				WHEN 'Identifiers' THEN vs.identifiers
 				WHEN 'IsComplete' THEN CAST(vs.isComplete as VARCHAR(255))
 			END
 		END DESC

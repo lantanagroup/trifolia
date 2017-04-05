@@ -181,7 +181,7 @@ namespace Trifolia.Web.Controllers.API
                                 Id = r.Id,
                                 Code = r.Code,
                                 Name = r.Name,
-                                Oid = r.Oid,
+                                Identifiers = r.Identifiers,
                                 Description = r.Description,
                                 IntentionalDefinition = r.IntensionalDefinition,
                                 IsIntentional = r.Intensional == true,
@@ -215,20 +215,24 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
-        [HttpGet, Route("api/Terminology/ValueSet/Find"), SecurableAction(SecurableNames.VALUESET_LIST)]
-        public int? FindValueSet(string identifier)
+        /// <summary>
+        /// Looks for the identifier among existing identifiers.
+        /// </summary>
+        /// <param name="identifier">The identifier to search for</param>
+        /// <param name="identifierId">The id of a valueset identifier that should be ignored while searching</param>
+        /// <returns>True if the identifier is not found, otherwise false.</returns>
+        [HttpGet, Route("api/Terminology/ValueSet/$validateIdentifier"), SecurableAction(SecurableNames.VALUESET_LIST)]
+        public bool ValidateValueSetIdentifier(string identifier, int? identifierId = null)
         {
             if (string.IsNullOrEmpty(identifier))
                 throw new ArgumentNullException("identifier");
 
-            var valueSet = (from vs in this.tdb.ValueSets
-                            join vsi in this.tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
-                            where vsi.Identifier.ToLower().Trim() == identifier.ToLower().Trim()
-                            select vs)
-                            .Distinct()
-                            .First();
+            var valueSetIds = (from vsi in this.tdb.ValueSetIdentifiers
+                               where vsi.Identifier.ToLower().Trim() == identifier.ToLower().Trim() && vsi.Id != identifierId
+                               select vsi)
+                               .Distinct();
 
-            return valueSet != null ? (int?)valueSet.Id : null;
+            return !valueSetIds.Any();
         }
 
         [HttpGet, Route("api/Terminology/CodeSystem/Find"), SecurableAction(SecurableNames.CODESYSTEM_LIST)]
@@ -357,12 +361,11 @@ namespace Trifolia.Web.Controllers.API
             }
         }
 
-        [HttpPost, Route("api/Terminology/ValueSet/Save"), SecurableAction(SecurableNames.VALUESET_EDIT)]
-        public int SaveValueSet(SaveValueSetModel model)
+        [HttpPost, Route("api/Terminology/ValueSet"), SecurableAction(SecurableNames.VALUESET_EDIT)]
+        public int SaveValueSet(ValueSetModel valueSetModel)
         {
             using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                ValueSetModel valueSetModel = model.ValueSet;
                 ValueSet valueSet = auditedTdb.ValueSets.SingleOrDefault(y => y.Id == valueSetModel.Id);
 
                 if (valueSet == null)
@@ -395,34 +398,6 @@ namespace Trifolia.Web.Controllers.API
                     valueSet.Source = valueSetModel.SourceUrl;
 
                 this.SaveValueSetIdentifiers(auditedTdb, valueSet, valueSetModel.Identifiers);
-
-                // Remove concepts
-                if (model.RemovedConcepts != null)
-                {
-                    foreach (var concept in model.RemovedConcepts)
-                    {
-                        var valueSetMember = auditedTdb.ValueSetMembers.Single(y => y.Id == concept.Id && y.ValueSetId == valueSet.Id);
-                        auditedTdb.ValueSetMembers.Remove(valueSetMember);
-                    }
-                }
-
-                // Update concepts
-                if (model.Concepts != null)
-                {
-                    foreach (var concept in model.Concepts)
-                    {
-                        ValueSetMember valueSetMember = auditedTdb.ValueSetMembers.SingleOrDefault(y => y.Id == concept.Id && y.ValueSetId == valueSet.Id);
-
-                        if (valueSetMember == null)
-                        {
-                            valueSetMember = new ValueSetMember();
-                            valueSetMember.ValueSet = valueSet;
-                            auditedTdb.ValueSetMembers.Add(valueSetMember);
-                        }
-
-                        this.SaveConceptProperties(auditedTdb, valueSetMember, concept);
-                    }
-                }
 
                 auditedTdb.SaveChanges();
 
@@ -465,19 +440,13 @@ namespace Trifolia.Web.Controllers.API
                     }).OrderBy(y => y.Name);
         }
 
-        [HttpGet, Route("api/Terminology/CodeSystems"), SecurableAction(SecurableNames.CODESYSTEM_LIST)]
-        public CodeSystemItems CodeSystems(string search = null)
-        {
-            return CodeSystems("Name", 1, Int32.MaxValue, "asc", search);
-        }
-
-        [HttpGet, Route("api/Terminology/CodeSystems/SortedAndPaged"), SecurableAction(SecurableNames.CODESYSTEM_LIST)]
-        public CodeSystemItems CodeSystems(
-            string sort,
-            int page,
-            int rows,
-            string order,
-            string search)
+        [HttpGet, Route("api/Terminology/CodeSystem"), SecurableAction(SecurableNames.CODESYSTEM_LIST)]
+        public CodeSystemItems SearchCodeSystems(
+            string search = "",
+            string sort = "Name",
+            int page = 1,
+            int rows = 20,
+            string order = "asc")
         {
             var codeSystems = this.tdb.CodeSystems.Where(y => y.Name != null);
 
@@ -552,7 +521,7 @@ namespace Trifolia.Web.Controllers.API
             return result;
         }
 
-        [HttpPost, Route("api/Terminology/CodeSystems/Save"), SecurableAction(SecurableNames.CODESYSTEM_EDIT)]
+        [HttpPost, Route("api/Terminology/CodeSystem"), SecurableAction(SecurableNames.CODESYSTEM_EDIT)]
         public CodeSystemItem SaveCodeSystem(CodeSystemItem item)
         {
             var foundCodeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Id == item.Id);
