@@ -119,7 +119,7 @@ namespace Trifolia.Test.Import
                 "    </Constraint>" +
                 "    <Constraint isVerbose=\"false\" number=\"1003\" context=\"code\" conformance=\"SHALL\" cardinality=\"1..1\">" +
                 "      <Constraint isVerbose=\"false\" number=\"1004\" context=\"@code\" conformance=\"SHALL\" cardinality=\"1..1\" dataType=\"CE\">" +
-                "        <ValueSet identifier=\"9.8.7.6.5.4.3.2.1\" isStatic=\"true\" />" +
+                "        <ValueSet identifier=\"urn:oid:9.8.7.6.5.4.3.2.1\" isStatic=\"true\" />" +
                 "      </Constraint>" +
                 "    </Constraint>" +
                 "  </Template>" +

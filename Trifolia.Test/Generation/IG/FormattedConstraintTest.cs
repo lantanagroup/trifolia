@@ -10,6 +10,7 @@ using Trifolia.DB;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Test.Generation.IG
 {
@@ -25,6 +26,7 @@ namespace Trifolia.Test.Generation.IG
         private TestContext testContextInstance;
         private MockObjectRepository mockRepo;
         private IGSettingsManager igSettings;
+        private IIGTypePlugin igTypePlugin;
         private bool linkContainedTemplate;
 
         /// <summary>
@@ -47,7 +49,11 @@ namespace Trifolia.Test.Generation.IG
         public void MyTestInitialize()
         {
             this.mockRepo = TestDataGenerator.GenerateMockDataset2();
-            this.igSettings = new IGSettingsManager(this.mockRepo);
+
+            ImplementationGuide ig = this.mockRepo.ImplementationGuides.SingleOrDefault(y => y.Name == TestDataGenerator.DS2_IG_NAME);
+
+            this.igSettings = new IGSettingsManager(this.mockRepo, ig.Id);
+            this.igTypePlugin = ig.ImplementationGuideType.GetPlugin();
             this.linkContainedTemplate = false;
         }
 
@@ -59,7 +65,7 @@ namespace Trifolia.Test.Generation.IG
         {
             // Test 1000
             TemplateConstraint constraint = mockRepo.TemplateConstraints.Single(y => y.Id == 1);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] value (CONF:1-1).", constraintText);
@@ -70,7 +76,7 @@ namespace Trifolia.Test.Generation.IG
         {
             // Test 1001
             TemplateConstraint constraint = mockRepo.TemplateConstraints.Single(y => y.Id == 2);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] @classCode=\"OBS\" Observation (CodeSystem: HL7ActStatus 113883.5.14) (CONF:1-2).", constraintText);
@@ -81,7 +87,7 @@ namespace Trifolia.Test.Generation.IG
         {
             // Test 1002
             TemplateConstraint constraint = mockRepo.TemplateConstraints.Single(y => y.Id == 3);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] templateId/@root=\"22.4.47\" (CONF:1-3).", constraintText);
@@ -92,7 +98,7 @@ namespace Trifolia.Test.Generation.IG
         {
             // Test 1003
             TemplateConstraint constraint = mockRepo.TemplateConstraints.Single(y => y.Id == 4);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] code with @xsi:type=\"CD\" (CONF:1-4).", constraintText);
@@ -103,7 +109,7 @@ namespace Trifolia.Test.Generation.IG
         {
             // Test 1004
             TemplateConstraint constraint = mockRepo.TemplateConstraints.Single(y => y.Id == 5);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("MAY contain zero or one [0..1] Test Template 2 (identifier: 1.2.3.4.5.6.5) (CONF:1-5).", constraintText);
@@ -114,7 +120,7 @@ namespace Trifolia.Test.Generation.IG
         {
             // Test 1005
             TemplateConstraint constraint = mockRepo.TemplateConstraints.Single(y => y.Id == 6);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] administrativeGenderCode/@code, which MAY be selected from ValueSet GenderCode 11.1 (CONF:1-6).", constraintText);
@@ -129,7 +135,7 @@ namespace Trifolia.Test.Generation.IG
             constraint.ValueSetDate = new DateTime(2012, 5, 1);
 
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, constraint.Template.OwningImplementationGuideId);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] administrativeGenderCode, which MAY be selected from ValueSet GenderCode 11.1 2012-05-01 (CONF:1-6).", constraintText);
@@ -145,7 +151,7 @@ namespace Trifolia.Test.Generation.IG
             constraint.IsStatic = true;
 
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, constraint.Template.OwningImplementationGuideId);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] administrativeGenderCode, which MAY be selected from ValueSet GenderCode 11.1 STATIC 2012-05-01 (CONF:1-6).", constraintText);
@@ -157,7 +163,7 @@ namespace Trifolia.Test.Generation.IG
             // Test 1006
             TemplateConstraint constraint = mockRepo.TemplateConstraints.Single(y => y.Id == 7);
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, constraint.Template.OwningImplementationGuideId);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] statusCode=\"completed\" Completed (CodeSystem: HL7ActStatus 113883.5.14) (CONF:1-7).", constraintText);
@@ -168,7 +174,7 @@ namespace Trifolia.Test.Generation.IG
             // Test 1007
             TemplateConstraint constraint = mockRepo.TemplateConstraints.Single(y => y.Id == 8);
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, constraint.Template.OwningImplementationGuideId);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] code/@code=\"1234-X\" Test Disp, which SHALL be selected from CodeSystem SNOMED CT (6.96) (CONF:1-8).", constraintText);
@@ -180,7 +186,7 @@ namespace Trifolia.Test.Generation.IG
             // Test 1008
             TemplateConstraint constraint = mockRepo.TemplateConstraints.Single(y => y.Id == 9);
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, constraint.Template.OwningImplementationGuideId);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] code=\"1234-X\" Test Disp with @xsi:type=\"CD\", where the code SHALL be selected from CodeSystem SNOMED CT (6.96) (CONF:1-9).", constraintText);
@@ -193,13 +199,13 @@ namespace Trifolia.Test.Generation.IG
 
             // Test WITH categories enabled
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, constraint.Template.OwningImplementationGuideId);
-            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false, includeCategory: true);
+            IFormattedConstraint target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate, linkIsBookmark: false, includeCategory: true);
             string constraintText = target.GetPlainText();
 
             Assert.AreEqual("[TestCategory] SHALL contain exactly one [1..1] code (CONF:1-10).", constraintText);
 
             // Test WITHOUT categories enabled
-            target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, constraint, linkContainedTemplate: linkContainedTemplate, includeCategory: false);
+            target = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, constraint, linkContainedTemplate: linkContainedTemplate, includeCategory: false);
             constraintText = target.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] code (CONF:1-10).", constraintText);
@@ -309,7 +315,8 @@ namespace Trifolia.Test.Generation.IG
                 PrimitiveText = "This entry SHALL contain X which SHALL NOT contain Y"
             };
 
-            var formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(repo, new IGSettingsManager(repo), newConstraint);
+            IGSettingsManager igSettings = new IGSettingsManager(repo);
+            var formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(repo, igSettings, null, newConstraint);
 
             WIKIParser wikiParser = new WIKIParser(repo);
             Document newDoc = new Document();

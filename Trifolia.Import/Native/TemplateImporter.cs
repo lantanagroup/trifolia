@@ -16,6 +16,7 @@ using ImportSingleValueCode = Trifolia.Shared.ImportExport.Model.ConstraintTypeS
 using ImportValueSet = Trifolia.Shared.ImportExport.Model.ConstraintTypeValueSet;
 using ImportCodeSystem = Trifolia.Shared.ImportExport.Model.ConstraintTypeCodeSystem;
 using ImportConstraintSample = Trifolia.Shared.ImportExport.Model.ConstraintTypeSample;
+using Trifolia.Logging;
 
 namespace Trifolia.Import.Native
 {
@@ -360,8 +361,9 @@ namespace Trifolia.Import.Native
                 if (importTemplate.Constraint != null)
                     importTemplate.Constraint.ToList().ForEach(y => AddImportConstraint(template, null, y));
             }
-            catch
+            catch (Exception ex)
             {
+                Log.For(this).Error("Error importing constraints for template.", ex);
                 return null;
             }
 

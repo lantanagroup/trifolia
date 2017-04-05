@@ -25,7 +25,7 @@ namespace Trifolia.DB
         DbSet<TemplateType> TemplateTypes { get; }
         DbSet<ValueSet> ValueSets { get; }
         DbSet<ValueSetMember> ValueSetMembers { get; }
-        DbSet<ValueSetIdentifier> ValueSetIdentifiers { get; set; }
+        DbSet<ValueSetIdentifier> ValueSetIdentifiers { get; }
         DbSet<ImplementationGuideTemplateType> ImplementationGuideTemplateTypes { get; }
         DbSet<ImplementationGuideTypeDataType> ImplementationGuideTypeDataTypes { get; }
         DbSet<ImplementationGuideType> ImplementationGuideTypes { get; }

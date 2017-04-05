@@ -55,7 +55,7 @@ namespace Trifolia.Test.Generation.Vocabulary
         public void ValueSetExport_Inline()
         {
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(mainPart, tables, false, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, false, 2, null);
 
             vse.AddValueSet(this.vs1, DateTime.Now);
 
@@ -94,7 +94,7 @@ namespace Trifolia.Test.Generation.Vocabulary
         public void ValueSetExport_Appendix()
         {
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(mainPart, tables, true, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, true, 2, null);
 
             vse.AddValueSet(this.vs1, DateTime.Now);
             Assert.AreEqual(0, this.body.ChildElements.Count);
@@ -116,7 +116,7 @@ namespace Trifolia.Test.Generation.Vocabulary
         public void ValueSetExport_NoMembers()
         {
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(mainPart, tables, false, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, false, 2, null);
 
             vse.AddValueSet(this.vs3, DateTime.Now);
             Assert.AreEqual(0, this.body.ChildElements.Count);
@@ -126,7 +126,7 @@ namespace Trifolia.Test.Generation.Vocabulary
         public void ValueSetExport_SameValueSetTwice()
         {
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(mainPart, tables, false, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, false, 2, null);
 
             vse.AddValueSet(this.vs2, DateTime.Now);
             Assert.AreEqual(3, this.body.ChildElements.Count);

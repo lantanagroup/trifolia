@@ -14,6 +14,7 @@ namespace Trifolia.DB
         {
             Constraints = new HashSet<TemplateConstraint>();
             Members = new HashSet<ValueSetMember>();
+            Identifiers = new HashSet<ValueSetIdentifier>();
         }
 
         [Column("id")]

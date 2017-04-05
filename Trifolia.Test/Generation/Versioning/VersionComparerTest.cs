@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Trifolia.Generation.Versioning;
 using Trifolia.DB;
+using Trifolia.Shared.Plugins;
+using Trifolia.Shared;
 
 namespace Trifolia.Test.Generation.Versioning
 {
@@ -29,6 +31,8 @@ namespace Trifolia.Test.Generation.Versioning
         public void VersionComparerTest1()
         {
             Template parentTemplate = this.mockRepo.CreateTemplate("3.2.1.4.3", this.documentType, "Parent Template", this.ig);
+            IIGTypePlugin igTypePlugin = this.ig.ImplementationGuideType.GetPlugin();
+            IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, this.ig.Id);
 
             Template aTemplate = this.mockRepo.CreateTemplate("1.2.3.4", this.documentType, "Test Template", this.ig, description: "Test Description 1");
             aTemplate.IsOpen = false;
@@ -42,7 +46,7 @@ namespace Trifolia.Test.Generation.Versioning
             this.mockRepo.AddConstraintToTemplate(bTemplate, null, null, "entryRelationship", "SHALL", "1..1", number: 3);
             this.mockRepo.AddConstraintToTemplate(bTemplate, null, null, "author", "SHALL", "1..1", number: 4);
 
-            VersionComparer comparer = VersionComparer.CreateComparer(mockRepo);
+            VersionComparer comparer = VersionComparer.CreateComparer(mockRepo, igTypePlugin, igSettings);
             ComparisonResult compared = comparer.Compare(aTemplate, bTemplate);
 
             // Test template changes

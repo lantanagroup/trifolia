@@ -429,6 +429,7 @@ namespace Trifolia.Test
         DbSet<TemplateConstraint> constraints = null;
         DbSet<TemplateType> templateTypes = null;
         DbSet<ValueSet> valuesets = null;
+        DbSet<ValueSetIdentifier> valueSetIdentifiers = null;
         DbSet<ValueSetMember> valuesetMembers = null;
         DbSet<ImplementationGuideTemplateType> implementationGuideTemplateTypes = null;
         DbSet<ImplementationGuideTypeDataType> dataTypes = null;
@@ -560,6 +561,17 @@ namespace Trifolia.Test
                     this.valuesets = CreateMockDbSet<ValueSet>();
 
                 return valuesets;
+            }
+        }
+
+        public DbSet<ValueSetIdentifier> ValueSetIdentifiers
+        {
+            get
+            {
+                if (this.valueSetIdentifiers == null)
+                    this.valueSetIdentifiers = CreateMockDbSet<ValueSetIdentifier>();
+
+                return this.valueSetIdentifiers;
             }
         }
 
@@ -1510,22 +1522,26 @@ namespace Trifolia.Test
         /// If none is found, a new instance is created and added to the mock object repository.
         /// </summary>
         /// <param name="name">Required. The name of the value set.</param>
-        /// <param name="oid">Required. The oid of the value set. This value is used to perform the search.</param>
+        /// <param name="identifier">Required. The oid of the value set. This value is used to perform the search.</param>
         /// <param name="code">The code of the value set.</param>
         /// <param name="description">The description of the valueset.</param>
         /// <param name="intensional">Indicates whether the value set is intensional or extensional.</param>
         /// <param name="intensionalDefinition">Describes the algorithm used for intensional value sets.</param>
         /// <param name="lastUpdate">The last update date of the value set.</param>
         /// <returns>Either the found ValueSet or a new instance of one, which has been added to the mock object repository.</returns>
-        public ValueSet FindOrCreateValueSet(string name, string oid, string code = null, string description = null, bool? intensional = null, string intensionalDefinition = null, DateTime? lastUpdate = null)
+        public ValueSet FindOrCreateValueSet(string name, string identifier, string code = null, string description = null, bool? intensional = null, string intensionalDefinition = null, DateTime? lastUpdate = null)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
 
-            if (string.IsNullOrEmpty(oid))
+            if (string.IsNullOrEmpty(identifier))
                 throw new ArgumentNullException("oid");
 
-            ValueSet valueSet = this.ValueSets.SingleOrDefault(y => y.Oid == oid);
+            ValueSet valueSet = (from v in this.ValueSets
+                                 join vsi in this.ValueSetIdentifiers on v.Id equals vsi.ValueSetId
+                                 where vsi.Identifier.ToLower().Trim() == identifier.ToLower().Trim()
+                                 select v)
+                                 .FirstOrDefault();
 
             if (valueSet == null)
             {
@@ -1533,7 +1549,6 @@ namespace Trifolia.Test
                 {
                     Id = this.ValueSets.DefaultIfEmpty().Max(y => y != null ? y.Id : 0) + 1,
                     Name = name,
-                    Oid = oid,
                     Description = intensionalDefinition,
                     Intensional = intensional,
                     IntensionalDefinition = intensionalDefinition,
@@ -1542,6 +1557,15 @@ namespace Trifolia.Test
                 };
 
                 this.ValueSets.Add(valueSet);
+
+                // Add the identifier
+                ValueSetIdentifier vsi = new ValueSetIdentifier();
+                vsi.ValueSetId = valueSet.Id;
+                vsi.ValueSet = valueSet;
+                vsi.Identifier = identifier;
+
+                valueSet.Identifiers.Add(vsi);
+                this.ValueSetIdentifiers.Add(vsi);
             }
 
             return valueSet;

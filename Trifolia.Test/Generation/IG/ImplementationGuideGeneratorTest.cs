@@ -11,6 +11,7 @@ using Trifolia.Shared;
 using Trifolia.Generation.IG;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.DB;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Test.Generation.IG
 {
@@ -51,8 +52,9 @@ namespace Trifolia.Test.Generation.IG
             IEnumerable<int> templateIds = (from t in this.mockRepo.Templates
                                              select t.Id);
 
-            ImplementationGuideGenerator generator = new ImplementationGuideGenerator(this.mockRepo,
-                                                                                      1, templateIds);
+            ImplementationGuide ig = this.mockRepo.ImplementationGuides.Single(y => y.Name == TestDataGenerator.DS1_IG_NAME);
+            IIGTypePlugin igTypePlugin = ig.ImplementationGuideType.GetPlugin();
+            ImplementationGuideGenerator generator = new ImplementationGuideGenerator(this.mockRepo, 1, templateIds);
             ExportSettings lSettings = new ExportSettings();
             lSettings.Use(s =>
             {
@@ -69,7 +71,7 @@ namespace Trifolia.Test.Generation.IG
                 s.IncludeNotes = true;
             });
 
-            generator.BuildImplementationGuide(lSettings);
+            generator.BuildImplementationGuide(lSettings, igTypePlugin);
             this.docBytes = generator.GetDocument();
 
             this.docContents = GetWordDocumentContents(docBytes);
@@ -138,8 +140,9 @@ namespace Trifolia.Test.Generation.IG
         {
             TemplateConstraint ctConstraint = this.mockRepo.TemplateConstraints.First(y => y.ContainedTemplateId != null);
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, ctConstraint.Template.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = ctConstraint.Template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
 
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, ctConstraint);
+            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, ctConstraint);
             string constraintText = fc.GetPlainText();
 
             Assert.IsNotNull(constraintText);
@@ -154,8 +157,9 @@ namespace Trifolia.Test.Generation.IG
         {
             TemplateConstraint ctConstraint = this.mockRepo.TemplateConstraints.Last(y => y.ContainedTemplateId != null);
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, ctConstraint.Template.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = ctConstraint.Template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
 
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, ctConstraint);
+            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, ctConstraint);
             string constraintText = fc.GetPlainText();
 
             Assert.IsNotNull(constraintText);
