@@ -1580,7 +1580,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Generation\Schematron\Data\SingleValueWithinBranch.xml" />
     <EmbeddedResource Include="DocSamples\Camara-FHIR-IG.xml" />
-    <Content Include="DocSamples\Camara_FHIR_IG.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
