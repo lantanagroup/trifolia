@@ -183,6 +183,248 @@
             <div class="main-content">
                 
 <p></p>
+<p class="rvps2"><span class="rvts6">Trifolia's implementation of the FHIR specification is documented here. This topic includes information on the latest implementation of FHIR in Trifolia; previous versions are kept for backwards compatibility, but are not actively maintained. </span><span class="rvts19">Trifolia currently supports the STU3 version of FHIR.</span></p>
+<p class="rvps2"><span class="rvts6">The following table(s) indicate what properties Trifolia uses of the FHIR specification, and any relevant notes about the property's usage in Trifolia.</span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">StructureDefinition</span></span></h2>
+<div class="rvps2"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Property</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Notes</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">id</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">name</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">description</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">url</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">type</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">context</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">contextType</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">derivation</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">extension</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">contact</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Not imported with POST/PUT. Exported with GET, represents the author of a profile.</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">baseDefinition</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">differential</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">snapshot</span></p>
+</td>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Not imported. Only differential definitions are imported.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<h3 class="rvps7"><span class="rvts0"><span class="rvts22">ElementDefinition</span></span></h3>
+<div class="rvps2"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Property</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Notes</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">id</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">short</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Constraint's label if specified, or the element/attribute name if not</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">label</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Constraint's label if specified</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">comment</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Constraint's notes, if any</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">path</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">min</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">max</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">slicing</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">When the constraint, or a parent constraint is a branch/slice</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">slicing/discriminator</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">The first "identifier" within the branch/slice or "@type" when constraint is a schema-based choice</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">slicing/rules</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Always set to "open" when constraint is a schema-based choice</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">binding[x]</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">binding/strength</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">bindingReference/reference</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">bindingReference/display</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">pattern[x]</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">patternCodeableConcept</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">When there is a single-value binding and the data-type is CodeableConcept</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">patternCoding</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">When there is a single-value binding and the data-type is Coding</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">patternCode</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">When there is a single-value binding and the data-type is code</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">patternString</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">When there is a single-value binding and the data-type is not one of the above.</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">type</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><br/>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">type/code</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">"Extension" when the profile is for an Extension, otherwise "Reference"</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">type/profile</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Contained profile's "url", when profile is for an extension</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">type/targetProfile</span></p>
+</td>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Contained profile's "url", when profile is not an extension</span></p>
+</td>
+</tr>
+</table>
+</div>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">ImplementationGuide</span></span></h2>
+<p class="rvps2"><span class="rvts6">TODO</span></p>
+<h2 class="rvps5"><span class="rvts0"><span class="rvts21">ValueSet</span></span></h2>
+<p class="rvps2"><span class="rvts6">TODO</span></p>
 <p></p>
 
             </div>
