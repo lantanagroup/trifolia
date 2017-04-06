@@ -15,7 +15,7 @@
                 <td>
                     <span style="white-space: pre">{{getNodeTabs(node)}}</span>
                     <i ng-if="node.HasChildren" class="glyphicon clickable" ng-class="{ 'glyphicon-plus': !node.$expanded, 'glyphicon-minus': node.$expanded }" ng-click="toggleExpand(node)"></i>
-                    {{node.Context}} ({{node.Constraint != undefined}})
+                    {{node.Context}}
                 </td>
                 <td>{{getCellDisplay(node, 'Number')}}</td>
                 <td>{{getCellDisplay(node, 'Conformance')}}</td>

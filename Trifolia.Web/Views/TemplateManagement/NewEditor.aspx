@@ -78,6 +78,22 @@
 
         .constraint-properties > .panel > .panel-heading {
             padding: 8px;
+            height: 38px;
+        }
+
+        .constraint-properties > .panel > .panel-heading > span {
+            float: left;
+            padding-left: 10px;
+        }
+
+        .constraint-properties > .panel > .panel-heading > .input-group {
+            float: left;
+            margin-top: -5px;
+            width: 20%;
+        }
+
+        .constraint-properties .panel-heading .btn-group {
+            margin-top: -5px;
         }
         
         .constraint-properties > .panel > .panel-body {
@@ -303,14 +319,42 @@
                     <div class="constraint-properties">
                         <div class="panel panel-default panel-sm">
                             <div class="panel-heading">
-                                <span>Properties</span>
+                                <div class="input-group" ng-show="selectedNode.Constraint">
+                                    <input type="text" class="form-control input-sm" readonly="readonly" ng-model="selectedNode.Constraint.Number" />
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <span><strong>Properties</strong></span>
                                 <div class="pull-right">
-                                    <button type="button" ng-show="!selectedNode || selectedNode.Constraint" class="btn btn-default btn-sm">Add Primitive Constraint</button>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm" title="Move the duplicated constraint up" ng-disabled="!selectedNode.Constraint">
+                                            <i class="glyphicon glyphicon-arrow-up"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm" title="Move the duplicated constraint down" ng-disabled="!selectedNode.Constraint">
+                                            <i class="glyphicon glyphicon-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm" title="Create a computable constraint for this node" ng-disabled="!selectedNode || selectedNode.Constraint">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm" title="Add primitive/narrative constraint {{selectedNode.Constraint ? 'within the current constraint' : 'at the top level' }}">
+                                            <i class="glyphicon glyphicon-text-height"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm" title="Duplicate the current constraint" ng-disabled="!selectedNode.Constraint">
+                                            <i class="glyphicon glyphicon-repeat"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm" title="Remove constraint from the selected node" ng-disabled="!selectedNode.Constraint">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="panel-body">
                                 <div ng-if="selectedNode && selectedNode.Constraint" ng-include="'/Scripts/NewTemplateEditor/constraintsPanel.html'"></div>
-                                <button type="button" ng-show="selectedNode && !selectedNode.Constraint" class="btn btn-default">Create Computable Constraint</button>
                             </div>
                         </div>
                     </div>
