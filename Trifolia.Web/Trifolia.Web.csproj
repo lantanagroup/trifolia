@@ -1678,6 +1678,8 @@
     <Content Include="Scripts\Admin\Group.js" />
     <Content Include="Scripts\Admin\Groups.js" />
     <Content Include="Scripts\Admin\Users.js" />
+    <Content Include="Scripts\angular\services.js" />
+    <Content Include="Scripts\angular\startup.js" />
     <Content Include="Scripts\lib\angular\angular-cookies.js" />
     <Content Include="Scripts\lib\angular\angular-highlight.min.js" />
     <Content Include="Scripts\lib\angular\angular-route.min.js" />

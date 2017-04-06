@@ -1,9 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.MVC.Master" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
-    <script type="text/javascript" src="/Scripts/lib/angular/angular.min.js"></script>
-    <script type="text/javascript" src="/Scripts/lib/angular/angular-cookies.js"></script>
-    <script type="text/javascript" src="/Scripts/lib/angular/ui-bootstrap-tpls-2.5.0.min.js"></script>
     <script type="text/javascript" src="/Scripts/TerminologyManagement/Browse.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 
     <style type="text/css">
