@@ -435,12 +435,40 @@ namespace Trifolia.Web.Controllers.API
             var templates = (from t in this.tdb.Templates
                              where model.TemplateIds.Contains(t.Id)
                              select t).ToList();
-
             string schematronResult = SchematronGenerator.Generate(tdb, ig, model.IncludeCustomSchematron, vocOutputType, model.VocabularyFileName, templates, model.SelectedCategories, model.DefaultSchematron);
             byte[] data = ASCIIEncoding.UTF8.GetBytes(schematronResult);
             string fileName = string.Format("{0}.sch", ig.GetDisplayName(true));
 
-            return GetExportResponse(fileName, XML_MIME_TYPE, data);
+            if (model.IncludeVocabulary)
+            {
+                VocabularyService service = new VocabularyService(tdb, ig.ImplementationGuideType.SchemaURI == "urn:hl7-org:v3");
+
+                using (ZipFile zip = new ZipFile())
+                {
+                    zip.AddEntry(fileName, data);
+
+                    //Assuming default settings for vocabulary file
+                    string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, 0, (int)vocOutputType, "UTF-8");
+
+                    byte[] vocData = ASCIIEncoding.UTF8.GetBytes(vocXml);
+                    string vocFileName = string.Format("{0}.xml", ig.GetDisplayName(true));
+                    zip.AddEntry(vocFileName, vocData);
+
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        zip.Save(ms);
+
+                        string zipFileName = string.Format("{0}.zip", ig.GetDisplayName(true));
+                        byte[] zipData = ms.ToArray();
+
+                        return GetExportResponse(zipFileName, ZIP_MIME_TYPE, zipData);
+                    }
+                }
+            }
+            else
+            {
+                return GetExportResponse(fileName, XML_MIME_TYPE, data);
+            }
         }
 
         #endregion
