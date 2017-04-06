@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml;
 
 using Trifolia.Shared;
 using Trifolia.DB;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG.ConstraintGeneration
 {
@@ -23,7 +24,6 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         private List<ConstraintPart> parts = new List<ConstraintPart>();
         private IGSettingsManager igSettings;
         private IObjectRepository tdb;
-        private Template containedTemplate;
 
         #region Properties
 
@@ -73,6 +73,8 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         public string ContainedTemplateTitle { get; set; }
         public string ContainedTemplateLink { get; set; }
         public string ContainedTemplateOid { get; set; }
+        public string ContainedTemplateBookmark { get; set; }
+        public string ContainedTemplateViewUrl { get; set; }
         public string ValueConformance { get; set; }
         public string StaticDynamic { get; set; }
         public string ValueSetName { get; set; }
@@ -91,7 +93,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
         #endregion
 
-        public void ParseConstraint(IConstraint constraint)
+        public void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, Template containedTemplate = null, ValueSet valueSet = null, CodeSystem codeSystem = null)
         {
             this.Number = constraint.Number.HasValue ? constraint.Number.ToString() : "X";
             this.Context = constraint.Context;
@@ -117,11 +119,14 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             if (constraint.ContainedTemplateId != null)
             {
-                this.containedTemplate = this.tdb.Templates.Single(y => y.Id == constraint.ContainedTemplateId);
+                if (containedTemplate == null || containedTemplate.Id != constraint.ContainedTemplateId)
+                    containedTemplate = this.tdb.Templates.Single(y => y.Id == constraint.ContainedTemplateId);
 
-                this.ContainedTemplateId = this.containedTemplate.Id;
-                this.ContainedTemplateTitle = this.containedTemplate.Name;
-                this.ContainedTemplateOid = this.containedTemplate.Oid;
+                this.ContainedTemplateId = containedTemplate.Id;
+                this.ContainedTemplateTitle = containedTemplate.Name;
+                this.ContainedTemplateOid = containedTemplate.Oid;
+                this.ContainedTemplateBookmark = containedTemplate.Bookmark;
+                this.ContainedTemplateViewUrl = containedTemplate.GetViewUrl(this.TemplateLinkBase);
             }
 
             this.ValueConformance = constraint.ValueConformance;
@@ -133,16 +138,21 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             if (constraint.ValueSetId != null)
             {
-                ValueSet valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
+                // If the caller didn't pass in the ValueSet, get it from the db
+                if (valueSet == null || valueSet.Id != constraint.ValueSetId)
+                    valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
 
                 this.ValueSetName = valueSet.Name;
-                this.ValueSetOid = valueSet.Oid;
+                this.ValueSetOid = valueSet.GetIdentifier(igTypePlugin);
                 this.ValueSetVersion = constraint.ValueSetDate;
             }
 
             if (constraint.ValueCodeSystemId != null)
             {
-                CodeSystem codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
+                // If the caller didn't pass in the CodeSystem, get it from the db
+                if (codeSystem == null || codeSystem.Id != constraint.ValueCodeSystemId)
+                    codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
+
                 this.CodeSystemName = codeSystem.Name;
                 this.CodeSystemOid = codeSystem.Oid;
             }
@@ -162,9 +172,9 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                 this.IsPrimitive = false;
 
                 if (this.LinkIsBookmark)
-                    this.ContainedTemplateLink = string.Format("{0}{1}", this.TemplateLinkBase, this.containedTemplate.Bookmark);
+                    this.ContainedTemplateLink = string.Format("{0}{1}", this.TemplateLinkBase, this.ContainedTemplateBookmark);
                 else
-                    this.ContainedTemplateLink = this.containedTemplate.GetViewUrl(this.TemplateLinkBase);
+                    this.ContainedTemplateLink = this.ContainedTemplateViewUrl;
             }
 
             // Build the constraint text

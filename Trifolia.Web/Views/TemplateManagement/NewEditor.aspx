@@ -188,7 +188,7 @@
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="editor" ng-app="Trifolia" ng-controller="EditorController" ng-init="init(<%= Model.TemplateIdString %>, <%= Model.DefaultImplementationGuideIdString %>)">
+    <div class="editor ng-cloak" ng-app="Trifolia" ng-controller="EditorController" ng-init="init(<%= Model.TemplateIdString %>, <%= Model.DefaultImplementationGuideIdString %>)">
         <div class="left-nav"">
             <button type="button" class="btn btn-default btn-sm" uib-popover-template="'/Scripts/NewTemplateEditor/templateSearch.html'" popover-placement="right" popover-append-to-body="true" popover-class="template-search" popover-trigger="'outsideClick'">Templates/Profiles</button>
         </div>

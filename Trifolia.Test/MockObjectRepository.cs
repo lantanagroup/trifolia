@@ -294,7 +294,7 @@ namespace Trifolia.Test
             Helper.AuthLogin(this, DEFAULT_USERNAME, DEFAULT_ORGANIZATION);
         }
 
-        #region IObjectRepository
+        #region IObjectRepository Collections
 
         public void AuditChanges(string auditUserName, string auditIP)
         {
@@ -419,194 +419,418 @@ namespace Trifolia.Test
             return mockSet.Object;
         }
 
-        DbSet<AuditEntry> auditEntries = CreateMockDbSet<AuditEntry>();
-        DbSet<Template> templates = CreateMockDbSet<Template>();
-        DbSet<CodeSystem> codeSystems = CreateMockDbSet<CodeSystem>();
-        DbSet<GreenConstraint> greenConstraints = CreateMockDbSet<GreenConstraint>();
-        DbSet<GreenTemplate> greenTemplates = CreateMockDbSet<GreenTemplate>();
-        DbSet<ImplementationGuide> implementationGuides = CreateMockDbSet<ImplementationGuide>();
-        DbSet<ImplementationGuideSetting> implementationGuideSettings = CreateMockDbSet<ImplementationGuideSetting>();
-        DbSet<TemplateConstraint> constraints = CreateMockDbSet<TemplateConstraint>();
-        DbSet<TemplateType> templateTypes = CreateMockDbSet<TemplateType>();
-        DbSet<ValueSet> valuesets = CreateMockDbSet<ValueSet>();
-        DbSet<ValueSetMember> valuesetMembers = CreateMockDbSet<ValueSetMember>();
-        DbSet<ImplementationGuideTemplateType> implementationGuideTemplateTypes = CreateMockDbSet<ImplementationGuideTemplateType>();
-        DbSet<ImplementationGuideTypeDataType> dataTypes = CreateMockDbSet<ImplementationGuideTypeDataType>();
-        DbSet<ImplementationGuideType> implementationGuideTypes = CreateMockDbSet<ImplementationGuideType>();
-        DbSet<ImplementationGuideFile> implementationGuideFiles = CreateMockDbSet<ImplementationGuideFile>();
-        DbSet<ImplementationGuideFileData> implementationGuideFileDatas = CreateMockDbSet<ImplementationGuideFileData>();
-        DbSet<Organization> organizations = CreateMockDbSet<Organization>();
-        DbSet<ImplementationGuideSchematronPattern> implementationGuideSchematronPatterns = CreateMockDbSet<ImplementationGuideSchematronPattern>();
-        DbSet<PublishStatus> publishStatuses = CreateMockDbSet<PublishStatus>();
-        DbSet<Role> roles = CreateMockDbSet<Role>();
-        DbSet<AppSecurable> appSecurables = CreateMockDbSet<AppSecurable>();
-        DbSet<RoleAppSecurable> roleAppSecurables = CreateMockDbSet<RoleAppSecurable>();
-        DbSet<UserRole> userRoles = CreateMockDbSet<UserRole>();
-        DbSet<User> users = CreateMockDbSet<User>();
-        DbSet<RoleRestriction> roleRestrictions = CreateMockDbSet<RoleRestriction>();
-        DbSet<Group> groups = CreateMockDbSet<Group>();
-        DbSet<UserGroup> userGroups = CreateMockDbSet<UserGroup>();
-        DbSet<GroupManager> groupManagers = CreateMockDbSet<GroupManager>();
-        DbSet<ImplementationGuidePermission> implementationGuidePermissions = CreateMockDbSet<ImplementationGuidePermission>();
-        DbSet<TemplateConstraintSample> templateConstraintSamples = CreateMockDbSet<TemplateConstraintSample>();
-        DbSet<TemplateSample> templateSamples = CreateMockDbSet<TemplateSample>();
-        DbSet<ImplementationGuideSection> implementationGuideSections = CreateMockDbSet<ImplementationGuideSection>();
-        DbSet<TemplateExtension> templateExtensions = CreateMockDbSet<TemplateExtension>();
+        DbSet<AuditEntry> auditEntries = null;
+        DbSet<Template> templates = null;
+        DbSet<CodeSystem> codeSystems = null;
+        DbSet<GreenConstraint> greenConstraints = null;
+        DbSet<GreenTemplate> greenTemplates = null;
+        DbSet<ImplementationGuide> implementationGuides = null;
+        DbSet<ImplementationGuideSetting> implementationGuideSettings = null;
+        DbSet<TemplateConstraint> constraints = null;
+        DbSet<TemplateType> templateTypes = null;
+        DbSet<ValueSet> valuesets = null;
+        DbSet<ValueSetIdentifier> valueSetIdentifiers = null;
+        DbSet<ValueSetMember> valuesetMembers = null;
+        DbSet<ImplementationGuideTemplateType> implementationGuideTemplateTypes = null;
+        DbSet<ImplementationGuideTypeDataType> dataTypes = null;
+        DbSet<ImplementationGuideType> implementationGuideTypes = null;
+        DbSet<ImplementationGuideFile> implementationGuideFiles = null;
+        DbSet<ImplementationGuideFileData> implementationGuideFileDatas = null;
+        DbSet<Organization> organizations = null;
+        DbSet<ImplementationGuideSchematronPattern> implementationGuideSchematronPatterns = null;
+        DbSet<PublishStatus> publishStatuses = null;
+        DbSet<Role> roles = null;
+        DbSet<AppSecurable> appSecurables = null;
+        DbSet<RoleAppSecurable> roleAppSecurables = null;
+        DbSet<UserRole> userRoles = null;
+        DbSet<User> users = null;
+        DbSet<RoleRestriction> roleRestrictions = null;
+        DbSet<Group> groups = null;
+        DbSet<UserGroup> userGroups = null;
+        DbSet<GroupManager> groupManagers = null;
+        DbSet<ImplementationGuidePermission> implementationGuidePermissions = null;
+        DbSet<TemplateConstraintSample> templateConstraintSamples = null;
+        DbSet<TemplateSample> templateSamples = null;
+        DbSet<ImplementationGuideSection> implementationGuideSections = null;
+        DbSet<TemplateExtension> templateExtensions = null;
 
         public DbSet<AuditEntry> AuditEntries
         {
-            get { return auditEntries; }
+            get
+            {
+                if (this.auditEntries == null)
+                    this.auditEntries = CreateMockDbSet<AuditEntry>();
+
+                return auditEntries;
+            }
         }
 
         public DbSet<CodeSystem> CodeSystems
         {
-            get { return codeSystems; }
+            get
+            {
+                if (this.codeSystems == null)
+                    this.codeSystems = CreateMockDbSet<CodeSystem>();
+
+                return codeSystems;
+            }
         }
 
         public DbSet<GreenConstraint> GreenConstraints
         {
-            get { return greenConstraints; }
+            get
+            {
+                if (this.greenConstraints == null)
+                    this.greenConstraints = CreateMockDbSet<GreenConstraint>();
+
+                return greenConstraints;
+            }
         }
 
         public DbSet<GreenTemplate> GreenTemplates
         {
-            get { return greenTemplates; }
+            get
+            {
+                if (this.greenTemplates == null)
+                    this.greenTemplates = CreateMockDbSet<GreenTemplate>();
+
+                return greenTemplates;
+            }
         }
 
         public DbSet<ImplementationGuide> ImplementationGuides
         {
-            get { return implementationGuides; }
+            get
+            {
+                if (this.implementationGuides == null)
+                    this.implementationGuides = CreateMockDbSet<ImplementationGuide>();
+
+                return implementationGuides;
+            }
         }
 
         public DbSet<ImplementationGuideSetting> ImplementationGuideSettings
         {
-            get { return implementationGuideSettings; }
+            get
+            {
+                if (this.implementationGuideSettings == null)
+                    this.implementationGuideSettings = CreateMockDbSet<ImplementationGuideSetting>();
+
+                return implementationGuideSettings;
+            }
         }
 
         public DbSet<Template> Templates
         {
-            get { return this.templates; }
+            get
+            {
+                if (this.templates == null)
+                    this.templates = CreateMockDbSet<Template>();
+
+                return templates;
+            }
         }
 
         public DbSet<TemplateConstraint> TemplateConstraints
         {
-            get { return constraints; }
+            get
+            {
+                if (this.constraints == null)
+                    this.constraints = CreateMockDbSet<TemplateConstraint>();
+
+                return constraints;
+            }
         }
 
         public DbSet<TemplateType> TemplateTypes
         {
-            get { return templateTypes; }
+            get
+            {
+                if (this.templateTypes == null)
+                    this.templateTypes = CreateMockDbSet<TemplateType>();
+
+                return templateTypes;
+            }
         }
 
         public DbSet<ValueSet> ValueSets
         {
-            get { return valuesets; }
+            get
+            {
+                if (this.valuesets == null)
+                    this.valuesets = CreateMockDbSet<ValueSet>();
+
+                return valuesets;
+            }
+        }
+
+        public DbSet<ValueSetIdentifier> ValueSetIdentifiers
+        {
+            get
+            {
+                if (this.valueSetIdentifiers == null)
+                    this.valueSetIdentifiers = CreateMockDbSet<ValueSetIdentifier>();
+
+                return this.valueSetIdentifiers;
+            }
         }
 
         public DbSet<ValueSetMember> ValueSetMembers
         {
-            get { return valuesetMembers; }
+            get
+            {
+                if (this.valuesetMembers == null)
+                    this.valuesetMembers = CreateMockDbSet<ValueSetMember>();
+
+                return valuesetMembers;
+            }
         }
 
         public DbSet<ImplementationGuideTemplateType> ImplementationGuideTemplateTypes
         {
-            get { return implementationGuideTemplateTypes; }
+            get
+            {
+                if (this.implementationGuideTemplateTypes == null)
+                    this.implementationGuideTemplateTypes = CreateMockDbSet<ImplementationGuideTemplateType>();
+
+                return implementationGuideTemplateTypes;
+            }
         }
 
         public DbSet<ImplementationGuideTypeDataType> ImplementationGuideTypeDataTypes
         {
-            get { return dataTypes; }
+            get
+            {
+                if (this.dataTypes == null)
+                    this.dataTypes = CreateMockDbSet<ImplementationGuideTypeDataType>();
+
+                return dataTypes;
+            }
         }
 
         public DbSet<ImplementationGuideType> ImplementationGuideTypes
         {
-            get { return implementationGuideTypes; }
+            get
+            {
+                if (this.implementationGuideTypes == null)
+                    this.implementationGuideTypes = CreateMockDbSet<ImplementationGuideType>();
+
+                return implementationGuideTypes;
+            }
         }
 
         public DbSet<ImplementationGuideFile> ImplementationGuideFiles
         {
-            get { return implementationGuideFiles; }
+            get
+            {
+                if (this.implementationGuideFiles == null)
+                    this.implementationGuideFiles = CreateMockDbSet<ImplementationGuideFile>();
+
+                return implementationGuideFiles;
+            }
         }
 
         public DbSet<ImplementationGuideFileData> ImplementationGuideFileDatas
         {
-            get { return implementationGuideFileDatas; }
+            get
+            {
+                if (this.implementationGuideFileDatas == null)
+                    this.implementationGuideFileDatas = CreateMockDbSet<ImplementationGuideFileData>();
+
+                return implementationGuideFileDatas;
+            }
         }
 
         public DbSet<Organization> Organizations
         {
-            get { return organizations; }
+            get
+            {
+                if (this.organizations == null)
+                    this.organizations = CreateMockDbSet<Organization>();
+                
+                return organizations;
+            }
         }
 
         public DbSet<ImplementationGuideSchematronPattern> ImplementationGuideSchematronPatterns
         {
-            get { return implementationGuideSchematronPatterns; }
+            get
+            {
+                if (this.implementationGuideSchematronPatterns == null)
+                    this.implementationGuideSchematronPatterns = CreateMockDbSet<ImplementationGuideSchematronPattern>();
+
+                return implementationGuideSchematronPatterns;
+            }
         }
 
         public DbSet<PublishStatus> PublishStatuses
         {
-            get { return publishStatuses; }
+            get
+            {
+                if (this.publishStatuses == null)
+                    this.publishStatuses = CreateMockDbSet<PublishStatus>();
+
+                return publishStatuses;
+            }
         }
 
         public DbSet<Role> Roles
         {
-            get { return roles; }
+            get
+            {
+                if (this.roles == null)
+                    this.roles = CreateMockDbSet<Role>();
+
+                return roles;
+            }
         }
 
         public DbSet<AppSecurable> AppSecurables
         {
-            get { return appSecurables; }
+            get
+            {
+                if (this.appSecurables == null)
+                    this.appSecurables = CreateMockDbSet<AppSecurable>();
+
+                return appSecurables;
+            }
         }
 
         public DbSet<RoleAppSecurable> RoleAppSecurables
         {
-            get { return roleAppSecurables; }
+            get
+            {
+                if (this.roleAppSecurables == null)
+                    this.roleAppSecurables = CreateMockDbSet<RoleAppSecurable>();
+
+                return roleAppSecurables;
+            }
         }
 
         public DbSet<UserRole> UserRoles
         {
-            get { return userRoles; }
+            get
+            {
+                if (this.userRoles == null)
+                    this.userRoles = CreateMockDbSet<UserRole>();
+
+                return userRoles;
+            }
         }
 
         public DbSet<User> Users
         {
-            get { return users; }
+            get
+            {
+                if (this.users == null)
+                    this.users = CreateMockDbSet<User>();
+
+                return users;
+            }
         }
 
         public DbSet<RoleRestriction> RoleRestrictions
         {
-            get { return roleRestrictions; }
+            get
+            {
+                if (this.roleRestrictions == null)
+                    this.roleRestrictions = CreateMockDbSet<RoleRestriction>();
+
+                return roleRestrictions;
+            }
         }
 
         public DbSet<Group> Groups
         {
-            get { return groups; }
+            get
+            {
+                if (this.groups == null)
+                    this.groups = CreateMockDbSet<Group>();
+
+                return groups;
+            }
         }
 
         public DbSet<UserGroup> UserGroups
         {
-            get { return userGroups; }
+            get
+            {
+                if (this.userGroups == null)
+                    this.userGroups = CreateMockDbSet<UserGroup>();
+
+                return userGroups;
+            }
         }
 
         public DbSet<GroupManager> GroupManagers
         {
-            get { return this.groupManagers; }
+            get
+            {
+                if (this.groupManagers == null)
+                    this.groupManagers = CreateMockDbSet<GroupManager>();
+
+                return this.groupManagers;
+            }
         }
 
         public DbSet<ImplementationGuidePermission> ImplementationGuidePermissions
         {
-            get { return implementationGuidePermissions; }
+            get
+            {
+                if (this.implementationGuidePermissions == null)
+                    this.implementationGuidePermissions = CreateMockDbSet<ImplementationGuidePermission>();
+
+                return implementationGuidePermissions;
+            }
         }
 
         public DbSet<TemplateConstraintSample> TemplateConstraintSamples
         {
-            get { return templateConstraintSamples; }
+            get
+            {
+                if (this.templateConstraintSamples == null)
+                    this.templateConstraintSamples = CreateMockDbSet<TemplateConstraintSample>();
+
+                return templateConstraintSamples;
+            }
         }
 
         public DbSet<TemplateSample> TemplateSamples
         {
-            get { return templateSamples; }
+            get
+            {
+                if (this.templateSamples == null)
+                    this.templateSamples = CreateMockDbSet<TemplateSample>();
+
+                return templateSamples;
+            }
         }
+
+        public DbSet<ImplementationGuideSection> ImplementationGuideSections
+        {
+            get
+            {
+                if (this.implementationGuideSections == null)
+                    this.implementationGuideSections = CreateMockDbSet<ImplementationGuideSection>();
+
+                return implementationGuideSections;
+            }
+        }
+
+        public DbSet<TemplateExtension> TemplateExtensions
+        {
+            get
+            {
+                if (this.templateExtensions == null)
+                    this.templateExtensions = CreateMockDbSet<TemplateExtension>();
+
+                return templateExtensions;
+            }
+        }
+
+        #endregion
+
+        #region IObjectRepository View Collections
 
         public DbSet<ViewIGAuditTrail> ViewIGAuditTrails
         {
@@ -616,28 +840,12 @@ namespace Trifolia.Test
             }
         }
 
-        public DbSet<ImplementationGuideSection> ImplementationGuideSections
-        {
-            get
-            {
-                return implementationGuideSections;
-            }
-        }
-
-        public DbSet<TemplateExtension> TemplateExtensions
-        {
-            get
-            {
-                return templateExtensions;
-            }
-        }
-
         public DbSet<ViewTemplatePermission> ViewTemplatePermissions
         {
             get
             {
                 var results = (from ig in this.ImplementationGuides
-                               join igp in this.implementationGuidePermissions on ig.Id equals igp.ImplementationGuideId
+                               join igp in this.ImplementationGuidePermissions on ig.Id equals igp.ImplementationGuideId
                                join t in this.Templates on ig.Id equals t.OwningImplementationGuideId
                                join u in this.Users on igp.UserId equals u.Id
                                select new ViewTemplatePermission()
@@ -667,7 +875,7 @@ namespace Trifolia.Test
         {
             get
             {
-                var results = (from igp in this.implementationGuidePermissions
+                var results = (from igp in this.ImplementationGuidePermissions
                                join u in this.Users on igp.UserId equals u.Id
                                select new ViewImplementationGuidePermission()
                                {
@@ -740,7 +948,7 @@ namespace Trifolia.Test
         {
             get
             {
-                var maxFileDataDates = (from ifgd in this.ImplementationGuideFileDatas 
+                var maxFileDataDates = (from ifgd in this.ImplementationGuideFileDatas
                                         group ifgd by ifgd.ImplementationGuideFileId into g
                                         select new
                                         {
@@ -837,7 +1045,7 @@ namespace Trifolia.Test
 
         public Organization FindOrCreateOrganization(string name, string contactName = null, string contactEmail = null, string contactPhone = null)
         {
-            Organization foundOrganization = this.organizations.SingleOrDefault(y => y.Name == name);
+            Organization foundOrganization = this.Organizations.SingleOrDefault(y => y.Name == name);
 
             if (foundOrganization == null)
             {
@@ -873,7 +1081,7 @@ namespace Trifolia.Test
             PublishStatus publishStatus = null;
 
             if (!string.IsNullOrEmpty(status))
-                publishStatus = this.publishStatuses.Single(y => y.Status == status);
+                publishStatus = this.PublishStatuses.Single(y => y.Status == status);
 
             var template = CreateTemplate(oid, templateType, title, owningImplementationGuide, primaryContext, primaryContextType, description, notes, impliedTemplate, publishStatus);
 
@@ -1011,7 +1219,7 @@ namespace Trifolia.Test
                     SchemaURI = uri
                 };
 
-                this.implementationGuideTypes.Add(igType);
+                this.ImplementationGuideTypes.Add(igType);
             }
 
             return igType;
@@ -1090,7 +1298,7 @@ namespace Trifolia.Test
             if (string.IsNullOrEmpty(title))
                 throw new ArgumentNullException("title");
 
-            ImplementationGuide ig = this.implementationGuides.SingleOrDefault(y => y.ImplementationGuideType == igType && y.Name.ToLower() == title.ToLower());
+            ImplementationGuide ig = this.ImplementationGuides.SingleOrDefault(y => y.ImplementationGuideType == igType && y.Name.ToLower() == title.ToLower());
 
             if (organization == null)
                 organization = this.FindOrCreateOrganization(DEFAULT_ORGANIZATION);
@@ -1314,22 +1522,26 @@ namespace Trifolia.Test
         /// If none is found, a new instance is created and added to the mock object repository.
         /// </summary>
         /// <param name="name">Required. The name of the value set.</param>
-        /// <param name="oid">Required. The oid of the value set. This value is used to perform the search.</param>
+        /// <param name="identifier">Required. The oid of the value set. This value is used to perform the search.</param>
         /// <param name="code">The code of the value set.</param>
         /// <param name="description">The description of the valueset.</param>
         /// <param name="intensional">Indicates whether the value set is intensional or extensional.</param>
         /// <param name="intensionalDefinition">Describes the algorithm used for intensional value sets.</param>
         /// <param name="lastUpdate">The last update date of the value set.</param>
         /// <returns>Either the found ValueSet or a new instance of one, which has been added to the mock object repository.</returns>
-        public ValueSet FindOrCreateValueSet(string name, string oid, string code = null, string description = null, bool? intensional = null, string intensionalDefinition = null, DateTime? lastUpdate = null)
+        public ValueSet FindOrCreateValueSet(string name, string identifier, string code = null, string description = null, bool? intensional = null, string intensionalDefinition = null, DateTime? lastUpdate = null)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
 
-            if (string.IsNullOrEmpty(oid))
+            if (string.IsNullOrEmpty(identifier))
                 throw new ArgumentNullException("oid");
 
-            ValueSet valueSet = this.ValueSets.SingleOrDefault(y => y.Oid == oid);
+            ValueSet valueSet = (from v in this.ValueSets
+                                 join vsi in this.ValueSetIdentifiers on v.Id equals vsi.ValueSetId
+                                 where vsi.Identifier.ToLower().Trim() == identifier.ToLower().Trim()
+                                 select v)
+                                 .FirstOrDefault();
 
             if (valueSet == null)
             {
@@ -1337,7 +1549,6 @@ namespace Trifolia.Test
                 {
                     Id = this.ValueSets.DefaultIfEmpty().Max(y => y != null ? y.Id : 0) + 1,
                     Name = name,
-                    Oid = oid,
                     Description = intensionalDefinition,
                     Intensional = intensional,
                     IntensionalDefinition = intensionalDefinition,
@@ -1346,6 +1557,15 @@ namespace Trifolia.Test
                 };
 
                 this.ValueSets.Add(valueSet);
+
+                // Add the identifier
+                ValueSetIdentifier vsi = new ValueSetIdentifier();
+                vsi.ValueSetId = valueSet.Id;
+                vsi.ValueSet = valueSet;
+                vsi.Identifier = identifier;
+
+                valueSet.Identifiers.Add(vsi);
+                this.ValueSetIdentifiers.Add(vsi);
             }
 
             return valueSet;

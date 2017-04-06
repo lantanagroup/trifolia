@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="AppConfig.cs" />
     <Compile Include="BaseCommand.cs" />
+    <Compile Include="SetSchemaCommonWords.cs" />
     <Compile Include="SchematronCommand.cs" />
     <Compile Include="GetUsersCommand.cs" />
     <Compile Include="SetPasswordResetCommand.cs" />
@@ -109,10 +110,6 @@
     <ProjectReference Include="..\Trifolia.Terminology\Trifolia.Terminology.csproj">
       <Project>{fdb22f8f-9677-471a-8929-b8dcb59e4c60}</Project>
       <Name>Trifolia.Terminology</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Validation\Trifolia.Validation.csproj">
-      <Project>{02f2ab9f-856b-4a0c-be81-2dfa26b602b6}</Project>
-      <Name>Trifolia.Validation</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

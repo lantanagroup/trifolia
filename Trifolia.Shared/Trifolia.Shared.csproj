@@ -46,22 +46,37 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libraries\Hessiancsharp.dll</HintPath>
     </Reference>
-    <Reference Include="Hl7.Fhir.STU3.Core">
-      <HintPath>..\libraries\Hl7.Fhir.STU3.Core.dll</HintPath>
+    <Reference Include="Hl7.Fhir.STU3.Core, Version=0.93.0.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.STU3.0.93.0-alpha1\lib\net45\Hl7.Fhir.STU3.Core.dll</HintPath>
+      <Private>True</Private>
       <Aliases>fhir_stu3</Aliases>
     </Reference>
-    <Reference Include="Hl7.Fhir.STU3.Specification">
-      <HintPath>..\libraries\Hl7.Fhir.STU3.Specification.dll</HintPath>
+    <Reference Include="Hl7.Fhir.STU3.Specification, Version=0.93.0.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.Specification.STU3.0.93.0-alpha1\lib\net45\Hl7.Fhir.STU3.Specification.dll</HintPath>
+      <Private>True</Private>
       <Aliases>fhir_stu3</Aliases>
+    </Reference>
+    <Reference Include="Hl7.FhirPath, Version=0.4.1.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.FhirPath.0.4.1\lib\net45\Hl7.FhirPath.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Hl7.FluentPath">
       <HintPath>..\libraries\Hl7.FluentPath.dll</HintPath>
       <Aliases>fhir_stu3</Aliases>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -104,14 +119,13 @@
     <Compile Include="LookupOrganization.cs" />
     <Compile Include="LookupTemplate.cs" />
     <Compile Include="LookupTemplateType.cs" />
-    <Compile Include="LookupValueSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleSchema.cs" />
     <Compile Include="SupportTypes.cs" />
     <Compile Include="TemplateConstraintExtensions.cs" />
     <Compile Include="TemplateExtensions.cs" />
     <Compile Include="TemplateValidationResult.cs" />
-    <Compile Include="ValueSetExtension.cs" />
+    <Compile Include="ValueSetExtensions.cs" />
     <Compile Include="VocabularyOutputType.cs" />
     <Compile Include="VocabularyOutputTypeTranslator.cs" />
   </ItemGroup>
@@ -122,6 +136,9 @@
     <None Include="packages.config" />
     <None Include="ImportExport\Model\TemplateExport.xsd">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="specification.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -325,6 +342,126 @@
     <EmbeddedResource Include="FHIR\Profiles\STU3\v2-tables.xml" />
     <EmbeddedResource Include="FHIR\Profiles\STU3\v3-codesystems.xml" />
     <EmbeddedResource Include="FHIR\Profiles\STU3\valuesets.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Account.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ActivityDefinition.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-AdverseEvent.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-AllergyIntolerance.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Appointment.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-AppointmentResponse.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-AuditEvent.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Basic.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Binary.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-BodySite.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Bundle.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-CapabilityStatement.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-CarePlan.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-CareTeam.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ChargeItem.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Claim.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ClaimResponse.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ClinicalImpression.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-CodeSystem.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Communication.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-CommunicationRequest.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-CompartmentDefinition.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Composition.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ConceptMap.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Condition.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Consent.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Contract.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Coverage.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-DataElement.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-DetectedIssue.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Device.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-DeviceComponent.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-DeviceMetric.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-DeviceRequest.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-DeviceUseStatement.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-DiagnosticReport.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-DocumentManifest.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-DocumentReference.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-DomainResource.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-EligibilityRequest.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-EligibilityResponse.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Encounter.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Endpoint.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-EnrollmentRequest.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-EnrollmentResponse.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-EpisodeOfCare.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ExpansionProfile.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ExplanationOfBenefit.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-FamilyMemberHistory.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Flag.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Goal.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-GraphDefinition.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Group.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-GuidanceResponse.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-HealthcareService.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ImagingManifest.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ImagingStudy.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Immunization.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ImmunizationRecommendation.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ImplementationGuide.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Library.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Linkage.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-List.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Location.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Measure.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-MeasureReport.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Media.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Medication.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-MedicationAdministration.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-MedicationDispense.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-MedicationRequest.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-MedicationStatement.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-MessageDefinition.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-MessageHeader.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-MetadataResource.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-NamingSystem.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-NutritionOrder.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Observation.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-OperationDefinition.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-OperationOutcome.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Organization.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Parameters.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Patient.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-PaymentNotice.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-PaymentReconciliation.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Person.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-PlanDefinition.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Practitioner.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-PractitionerRole.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Procedure.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ProcedureRequest.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ProcessRequest.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ProcessResponse.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Provenance.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Questionnaire.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-QuestionnaireResponse.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ReferralRequest.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-RelatedPerson.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-RequestGroup.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ResearchStudy.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ResearchSubject.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Resource.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-RiskAssessment.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Schedule.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-SearchParameter.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Sequence.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ServiceDefinition.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Slot.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Specimen.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-StructureDefinition.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-StructureMap.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Subscription.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Substance.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-SupplyDelivery.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-SupplyRequest.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-Task.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-TestReport.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-TestScript.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-ValueSet.xml" />
+    <EmbeddedResource Include="FHIR\Profiles\STU3\profile-VisionPrescription.xml" />
     <Content Include="ImportExport\Model\TemplateExportReadme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

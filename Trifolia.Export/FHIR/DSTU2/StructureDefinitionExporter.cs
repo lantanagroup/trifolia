@@ -12,6 +12,7 @@ using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.FHIR;
+using Trifolia.Shared.Plugins;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 
 namespace Trifolia.Export.FHIR.DSTU2
@@ -24,6 +25,7 @@ namespace Trifolia.Export.FHIR.DSTU2
         private Dictionary<ImplementationGuide, IGSettingsManager> allIgSettings = new Dictionary<ImplementationGuide, IGSettingsManager>();
         private Dictionary<string, StructureDefinition> baseProfiles = new Dictionary<string, StructureDefinition>();
         private ImplementationGuideType implementationGuideType;
+        private IIGTypePlugin igTypePlugin;
 
         public StructureDefinitionExporter(IObjectRepository tdb, string scheme, string authority)
         {
@@ -31,6 +33,7 @@ namespace Trifolia.Export.FHIR.DSTU2
             this.scheme = scheme;
             this.authority = authority;
             this.implementationGuideType = DSTU2Helper.GetImplementationGuideType(this.tdb, true);
+            this.igTypePlugin = this.implementationGuideType.GetPlugin();
         }
 
         public Extension Convert(TemplateExtension extension)
@@ -113,7 +116,7 @@ namespace Trifolia.Export.FHIR.DSTU2
                 newSliceName = string.Format("{0}_slice_pos{1}", constraint.Context, constraint.Order);
 
             var igSettings = GetIGSettings(constraint);
-            var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, constraint);
+            var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, this.igTypePlugin, constraint);
 
             ElementDefinition newElementDef = new ElementDefinition()
             {

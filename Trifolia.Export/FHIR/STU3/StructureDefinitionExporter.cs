@@ -14,6 +14,7 @@ using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.FHIR;
 using Trifolia.Shared.FHIR.Profiles.STU3;
+using Trifolia.Shared.Plugins;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using StructureDefinition = fhir_stu3.Hl7.Fhir.Model.StructureDefinition;
 
@@ -27,7 +28,7 @@ namespace Trifolia.Export.FHIR.STU3
         private Dictionary<ImplementationGuide, IGSettingsManager> allIgSettings = new Dictionary<ImplementationGuide, IGSettingsManager>();
         private Dictionary<string, StructureDefinition> baseProfiles = new Dictionary<string, StructureDefinition>();
         private ImplementationGuideType implementationGuideType;
-        private Bundle profileBundle;
+        private IIGTypePlugin igTypePlugin;
 
         public StructureDefinitionExporter(IObjectRepository tdb, string scheme, string authority)
         {
@@ -35,7 +36,7 @@ namespace Trifolia.Export.FHIR.STU3
             this.scheme = scheme;
             this.authority = authority;
             this.implementationGuideType = STU3Helper.GetImplementationGuideType(this.tdb, true);
-            this.profileBundle = ProfileHelper.GetProfileBundle();
+            this.igTypePlugin = this.implementationGuideType.GetPlugin();
         }
 
         public Extension Convert(TemplateExtension extension)
@@ -119,7 +120,7 @@ namespace Trifolia.Export.FHIR.STU3
                 newSliceName = string.Format("{0}_slice_pos{1}", constraint.Context, constraint.Order);
 
             var igSettings = GetIGSettings(constraint);
-            var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, constraint);
+            var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, this.igTypePlugin, constraint);
             string definition = constraintFormatter.GetPlainText(false, false, false);
 
             if (definition == null)
@@ -130,7 +131,7 @@ namespace Trifolia.Export.FHIR.STU3
                 ElementId = constraint.Id.ToString(),
                 Short = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : constraint.Context,
                 Label = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : null,
-                Comments = !string.IsNullOrEmpty(constraint.Notes) ? constraint.Notes : null,
+                Comment = !string.IsNullOrEmpty(constraint.Notes) ? constraint.Notes : null,
                 Path = constraint.GetElementPath(strucDef.Type != null ? strucDef.Type.ToString() : null),
                 SliceName = constraint.IsBranch ? newSliceName : sliceName,
                 Definition = definition
@@ -139,7 +140,10 @@ namespace Trifolia.Export.FHIR.STU3
             if (constraint.IsChoice)
             {
                 newElementDef.Slicing = new ElementDefinition.SlicingComponent();
-                newElementDef.Slicing.Discriminator = new string[] { "@type" };
+                newElementDef.Slicing.Discriminator.Add(new ElementDefinition.DiscriminatorComponent()
+                {
+                    Path = "@type"
+                });
                 newElementDef.Slicing.Rules = ElementDefinition.SlicingRules.Open;
             }
 
@@ -161,7 +165,7 @@ namespace Trifolia.Export.FHIR.STU3
                 {
                     ValueSet = new ResourceReference()
                     {
-                        Reference = constraint.ValueSet.Oid,
+                        Reference = constraint.ValueSet.GetIdentifier(ValueSetIdentifierTypes.HTTP),
                         Display = constraint.ValueSet.Name
                     }
                 };
@@ -379,14 +383,17 @@ namespace Trifolia.Export.FHIR.STU3
                     foreach (var branchConstraint in sliceGroup)
                     {
                         var igSettings = GetIGSettings(branchConstraint);
-                        var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, branchConstraint);
+                        var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, this.igTypePlugin, branchConstraint);
                         var branchIdentifiers = branchConstraint.ChildConstraints.Where(y => y.IsBranchIdentifier);
 
                         newElementDef.Definition = constraintFormatter.GetPlainText(false, false, false);
                         newElementDef.Slicing = new ElementDefinition.SlicingComponent()
                         {
                             Discriminator = (from bi in branchIdentifiers
-                                             select bi.GetElementPath(template.TemplateType.RootContextType)),
+                                             select new ElementDefinition.DiscriminatorComponent()
+                                             {
+                                                 Path = bi.GetElementPath(template.TemplateType.RootContextType)
+                                             }).ToList(),
                             Rules = template.IsOpen ? ElementDefinition.SlicingRules.Open : ElementDefinition.SlicingRules.Closed
                         };
 
@@ -406,7 +413,11 @@ namespace Trifolia.Export.FHIR.STU3
                             if (singleValueDiscriminators.Count() > 0 && singleValueDiscriminators.Count() != discriminatorConstraints.Count())
                                 discriminatorConstraints = singleValueDiscriminators;
 
-                            newElementDef.Slicing.Discriminator = discriminatorConstraints.Select(y => y.GetElementPath(template.PrimaryContextType));
+                            newElementDef.Slicing.Discriminator = (from d in discriminatorConstraints
+                                                                   select new ElementDefinition.DiscriminatorComponent()
+                                                                   {
+                                                                       Path = d.GetElementPath(template.PrimaryContextType)
+                                                                   }).ToList();
                         }
                     }
 
@@ -436,19 +447,14 @@ namespace Trifolia.Export.FHIR.STU3
 
         private StructureDefinition GetBaseProfile(Template template)
         {
-            if (this.baseProfiles.ContainsKey(template.TemplateType.RootContextType))
-                return this.baseProfiles[template.TemplateType.RootContextType];
+            var resourceType = template.TemplateType.RootContextType;
 
-            var resourceType = template.TemplateType.RootContextType.ToLower();
-            var resourceTypeUrl = "http://hl7.org/fhir/StructureDefinition/" + resourceType;
+            if (this.baseProfiles.ContainsKey(resourceType))
+                return this.baseProfiles[resourceType];
 
-            foreach (var entry in this.profileBundle.Entry)
-            {
-                if (entry.FullUrl.ToLower() == resourceTypeUrl.ToLower())
-                    return (StructureDefinition)entry.Resource;
-            }
-
-            return null;
+            var baseProfile = ProfileHelper.GetProfile(resourceType);
+            this.baseProfiles[resourceType] = baseProfile;
+            return baseProfile;
         }
 
         private List<ElementDefinition.TypeRefComponent> GetProfileDataTypes(StructureDefinition structure, TemplateConstraint constraint)

@@ -19,11 +19,36 @@ namespace Trifolia.Import.FHIR.STU3
             this.tdb = tdb;
         }
 
+        private void PopulateIdentifier(ValueSet valueSet, FhirValueSet fhirValueSet)
+        {
+            var existingIdentifiers = valueSet.Identifiers.Where(y => y.Type == ValueSetIdentifierTypes.HTTP).ToList();
+
+            // Remove HTTP identifiers that are not found in the FHIR ValueSet's identifiers
+            for (var i = existingIdentifiers.Count - 1; i >= 0; i--)
+            {
+                var existingIdentifier = existingIdentifiers[i];
+
+                if (!fhirValueSet.Identifier.Any(y => y.Value.ToLower().Trim() == existingIdentifier.Identifier.ToLower().Trim()))
+                    this.tdb.ValueSetIdentifiers.Remove(existingIdentifier);
+            }
+
+            // Add identifiers from the FHIR ValueSet's identifiers that don't already exist
+            foreach (var fhirIdentifer in fhirValueSet.Identifier)
+            {
+                if (!existingIdentifiers.Any(y => y.Identifier.ToLower().Trim() == fhirIdentifer.Value.ToLower().Trim()))
+                {
+                    valueSet.Identifiers.Add(new ValueSetIdentifier()
+                    {
+                        Type = ValueSetIdentifierTypes.HTTP,
+                        Identifier = fhirIdentifer.Value
+                    });
+                }
+            }
+        }
+
         public ValueSet Convert(FhirValueSet fhirValueSet, ValueSet valueSet = null)
         {
             string fhirDescription = fhirValueSet.Description != null ? fhirValueSet.Description.Value : null;
-            var fhirIdentifier = fhirValueSet.Identifier.Count > 0 ? fhirValueSet.Identifier.First() : null;
-            var fhirIdentifierValue = fhirIdentifier != null ? fhirIdentifier.Value : null;
 
             if (valueSet == null)
                 valueSet = new ValueSet();
@@ -37,8 +62,7 @@ namespace Trifolia.Import.FHIR.STU3
             if (fhirValueSet.Identifier == null)
                 throw new Exception("ValueSet.identifier.value is required");
 
-            if (valueSet.Oid != fhirIdentifierValue)
-                valueSet.Oid = fhirIdentifierValue;
+            this.PopulateIdentifier(valueSet, fhirValueSet);
 
             if (fhirValueSet.Expansion != null)
             {

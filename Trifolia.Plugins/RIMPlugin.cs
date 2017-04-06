@@ -51,6 +51,14 @@ namespace Trifolia.Plugins
             }
         }
 
+        public ValueSetIdentifierTypes DefaultIdentifierType
+        {
+            get
+            {
+                return ValueSetIdentifierTypes.Oid;
+            }
+        }
+
         public void FillSampleData(XmlElement element)
         {
             switch (element.Name)

@@ -336,7 +336,12 @@ namespace Trifolia.Web.Controllers.API
                         }
                         else
                         {
-                            ValueSet foundValueSet = this.tdb.ValueSets.SingleOrDefault(y => y.Oid == valueSet);
+                            ValueSet foundValueSet = (from vs in this.tdb.ValueSets
+                                                      join vsi in this.tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
+                                                      where vsi.Identifier.ToLower().Trim() == valueSet.ToLower().Trim()
+                                                      select vs)
+                                      .Distinct()
+                                      .FirstOrDefault();
 
                             if (foundValueSet == null)
                                 results.Errors.Add("Constraint change #" + constraintChange.RowNumber.ToString() + " defines a value set \"" + valueSet + "\" which could not be found.");

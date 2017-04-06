@@ -92,7 +92,10 @@ namespace Trifolia.Test.Export.FHIR
             Assert.IsNotNull(diff.Element[2].Slicing);
             Assert.IsNotNull(diff.Element[2].Slicing.Discriminator);
             Assert.AreEqual(1, diff.Element[2].Slicing.Discriminator.Count());
-            Assert.AreEqual("@type", diff.Element[2].Slicing.Discriminator.First());
+
+            var discriminator = diff.Element[2].Slicing.Discriminator.FirstOrDefault();
+            Assert.IsNotNull(discriminator);
+            Assert.AreEqual("@type", discriminator.Path);
         }
     }
 }

@@ -164,10 +164,13 @@ namespace Trifolia.Generation.IG
             {
                 foreach (ValueSet currentValueSet in valueSets)
                 {
+                    ValueSetIdentifier vsIdentifier = currentValueSet.Identifiers.OrderBy(y => y.IsDefault).FirstOrDefault();
+                    string identifier = vsIdentifier != null ? MakeQuoted(vsIdentifier.Identifier) : null;
+
                     Dictionary<string, string> columns = new Dictionary<string, string>()
                     {
                         { "ID", currentValueSet.Id.ToString() },
-                        { "OID", MakeQuoted(currentValueSet.Oid) },
+                        { "OID", identifier },
                         { "valueSetName", MakeQuoted(currentValueSet.Name) },
                         { "valueSetCode", MakeQuoted(currentValueSet.Code) },
                         { "description", MakeQuoted(currentValueSet.Description) },
@@ -205,7 +208,7 @@ namespace Trifolia.Generation.IG
                     {
                         { "ID", currentValueSetMember.Id.ToString() },
                         { "valueSetId", currentValueSetMember.ValueSetId.ToString() },
-                        { "valueSetOId", MakeQuoted(currentValueSetMember.ValueSet.Oid) },
+                        { "valueSetOId", MakeQuoted(currentValueSetMember.ValueSet.GetIdentifier()) },
                         { "codeSystemId", MakeQuoted(currentValueSetMember.CodeSystemId) },
                         { "code", MakeQuoted(currentValueSetMember.Code) },
                         { "codeSystemOID", MakeQuoted(currentValueSetMember.CodeSystem.Oid) },

@@ -8,6 +8,7 @@ using System.Web;
 using Trifolia.Generation.IG;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Web.Models.GreenManagement
 {
@@ -51,6 +52,7 @@ namespace Trifolia.Web.Models.GreenManagement
             lViewModel.TemplateOid = aTemplate.Oid;
 
             IGSettingsManager igManager = new IGSettingsManager(_tdb, aTemplate.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = aTemplate.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
             string baseLink = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path) + "?Id=";
 
             int constraintCount = 0;
@@ -60,7 +62,7 @@ namespace Trifolia.Web.Models.GreenManagement
                 .Where(c => c.IsPrimitive == false)
                 .Where(c => string.IsNullOrEmpty(c.Value)).OrderBy(y => y.Order))
             {
-                ConstraintViewModel lConstraintView = this.BuildConstraint(_tdb, baseLink, igManager, cDbConstraint, constraintCount);
+                ConstraintViewModel lConstraintView = this.BuildConstraint(_tdb, baseLink, igManager, igTypePlugin, cDbConstraint, constraintCount);
                 this.CreateIfRequiredGreenTemplateTree(lConstraintView);
 
                 lViewModel.childConstraints.Add(lConstraintView);
@@ -258,10 +260,16 @@ namespace Trifolia.Web.Models.GreenManagement
             return description.ToString();
         }
 
-        private ConstraintViewModel BuildConstraint(DB.IObjectRepository tdb, string baseLink,
-            IGSettingsManager igSettings, DB.TemplateConstraint dbConstraint, int constraintCount, int? aParentConstraintId = null)
+        private ConstraintViewModel BuildConstraint(
+            DB.IObjectRepository tdb, 
+            string baseLink,
+            IGSettingsManager igSettings, 
+            IIGTypePlugin igTypePlugin,
+            DB.TemplateConstraint dbConstraint, 
+            int constraintCount, 
+            int? aParentConstraintId = null)
         {
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(tdb, igSettings, dbConstraint);
+            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(tdb, igSettings, igTypePlugin, dbConstraint);
             WIKIParser wikiParser = new WIKIParser(tdb);
 
             ConstraintViewModel lGreenViewModel = new ConstraintViewModel()
@@ -308,7 +316,7 @@ namespace Trifolia.Web.Models.GreenManagement
             foreach (DB.TemplateConstraint cDbConstraint in dbConstraint.ChildConstraints.Where(cc => cc.IsPrimitive == false).OrderBy(y => y.Order))
             {
                 ConstraintViewModel nextNewConstraint
-                    = BuildConstraint(tdb, baseLink, igSettings, cDbConstraint, ++nextConstraintCount, dbConstraint.Id);
+                    = BuildConstraint(tdb, baseLink, igSettings, igTypePlugin, cDbConstraint, ++nextConstraintCount, dbConstraint.Id);
                 lGreenViewModel.children.Add(nextNewConstraint);
             }
 

@@ -362,19 +362,20 @@ namespace Trifolia.Web.Controllers.API
         public List<VocabularyItemModel> GetValueSets(int implementationGuideId, int? exportFormat = 0)
         {
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            IIGTypePlugin igTypePlugin = ig.ImplementationGuideType.GetPlugin();
 
             switch (exportFormat)
             {
                 case 0:
                 case 1:
                 case 2:
-                    return ConvertVocabularyItems(ig.GetValueSets(this.tdb, true));
+                    return ConvertVocabularyItems(ig.GetValueSets(this.tdb, true), igTypePlugin);
                 default:
-                    return ConvertVocabularyItems(ig.GetValueSets(this.tdb));
+                    return ConvertVocabularyItems(ig.GetValueSets(this.tdb), igTypePlugin);
             }
         }
 
-        private List<VocabularyItemModel> ConvertVocabularyItems(List<ImplementationGuideValueSet> valueSets)
+        private List<VocabularyItemModel> ConvertVocabularyItems(List<ImplementationGuideValueSet> valueSets, IIGTypePlugin igTypePlugin)
         {
             List<VocabularyItemModel> ret = new List<VocabularyItemModel>();
 
@@ -385,7 +386,7 @@ namespace Trifolia.Web.Controllers.API
                     {
                         Id = cValueSet.ValueSet.Id,
                         Name = cValueSet.ValueSet.Name,
-                        Oid = cValueSet.ValueSet.Oid,
+                        Oid = cValueSet.ValueSet.GetIdentifier(igTypePlugin),
                         BindingDate = cValueSet.BindingDate != null ? cValueSet.BindingDate.Value.ToString("MM/dd/yyyy") : string.Empty
                     });
             }
@@ -434,12 +435,40 @@ namespace Trifolia.Web.Controllers.API
             var templates = (from t in this.tdb.Templates
                              where model.TemplateIds.Contains(t.Id)
                              select t).ToList();
-
             string schematronResult = SchematronGenerator.Generate(tdb, ig, model.IncludeCustomSchematron, vocOutputType, model.VocabularyFileName, templates, model.SelectedCategories, model.DefaultSchematron);
             byte[] data = ASCIIEncoding.UTF8.GetBytes(schematronResult);
             string fileName = string.Format("{0}.sch", ig.GetDisplayName(true));
 
-            return GetExportResponse(fileName, XML_MIME_TYPE, data);
+            if (model.IncludeVocabulary)
+            {
+                VocabularyService service = new VocabularyService(tdb, ig.ImplementationGuideType.SchemaURI == "urn:hl7-org:v3");
+
+                using (ZipFile zip = new ZipFile())
+                {
+                    zip.AddEntry(fileName, data);
+
+                    //Assuming default settings for vocabulary file
+                    string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, 0, (int)vocOutputType, "UTF-8");
+
+                    byte[] vocData = ASCIIEncoding.UTF8.GetBytes(vocXml);
+                    string vocFileName = string.Format("{0}.xml", ig.GetDisplayName(true));
+                    zip.AddEntry(vocFileName, vocData);
+
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        zip.Save(ms);
+
+                        string zipFileName = string.Format("{0}.zip", ig.GetDisplayName(true));
+                        byte[] zipData = ms.ToArray();
+
+                        return GetExportResponse(zipFileName, ZIP_MIME_TYPE, zipData);
+                    }
+                }
+            }
+            else
+            {
+                return GetExportResponse(fileName, XML_MIME_TYPE, data);
+            }
         }
 
         #endregion
@@ -558,7 +587,7 @@ namespace Trifolia.Web.Controllers.API
                 settingsManager.SaveSetting(MSWordExportSettingsPropertyName, settingsJson);
             }
 
-            generator.BuildImplementationGuide(lConfig);
+            generator.BuildImplementationGuide(lConfig, ig.ImplementationGuideType.GetPlugin());
 
             byte[] data = generator.GetDocument();
 

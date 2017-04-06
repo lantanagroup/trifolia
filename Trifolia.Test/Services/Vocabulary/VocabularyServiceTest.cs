@@ -112,7 +112,7 @@ namespace Trifolia.Test.Services.Vocabulary
                 Cell valueSet1Cell1 = valueSet1Row.Elements<Cell>().Single(y => y.CellReference == "A2");
                 Cell valueSet1Cell2 = valueSet1Row.Elements<Cell>().Single(y => y.CellReference == "B2");
                 Assert.AreEqual(this.vs1.Name, valueSet1Cell1.CellValue.Text);
-                Assert.AreEqual(this.vs1.Oid, valueSet1Cell2.CellValue.Text);
+                Assert.AreEqual(this.vs1.GetIdentifier(), valueSet1Cell2.CellValue.Text);
 
                 Row valueSet2Row = summarySheetData.ChildElements[2] as Row;
                 Assert.IsNotNull(valueSet1Row);
@@ -120,7 +120,7 @@ namespace Trifolia.Test.Services.Vocabulary
                 Cell valueSet2Cell1 = valueSet2Row.Elements<Cell>().Single(y => y.CellReference == "A3");
                 Cell valueSet2Cell2 = valueSet2Row.Elements<Cell>().Single(y => y.CellReference == "B3");
                 Assert.AreEqual(this.vs2.Name, valueSet2Cell1.CellValue.Text);
-                Assert.AreEqual(this.vs2.Oid, valueSet2Cell2.CellValue.Text);
+                Assert.AreEqual(this.vs2.GetIdentifier(), valueSet2Cell2.CellValue.Text);
 
                 // Value Set Members
                 Sheet membersSheet = sheets.LastChild as Sheet;

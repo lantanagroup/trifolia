@@ -6,6 +6,7 @@ using System.Reflection;
 
 using Trifolia.DB;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG.ConstraintGeneration
 {
@@ -19,15 +20,47 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         };
 
         public static IFormattedConstraint NewFormattedConstraint(
+            IObjectRepository tdb,
+            IGSettingsManager igSettings,
+            IIGTypePlugin igTypePlugin,
+            TemplateConstraint constraint,
+            string templateLinkBase = null,
+            string valueSetLinkBase = null,
+            bool linkContainedTemplate = false,
+            bool linkIsBookmark = false,
+            bool createLinksForValueSets = false,
+            bool includeCategory = true)
+        {
+            return NewFormattedConstraint(
+                tdb,
+                igSettings,
+                igTypePlugin,
+                (IConstraint)constraint,
+                templateLinkBase,
+                valueSetLinkBase,
+                linkContainedTemplate,
+                linkIsBookmark,
+                createLinksForValueSets,
+                includeCategory,
+                constraint.ContainedTemplate,
+                constraint.ValueSet,
+                constraint.CodeSystem);
+        }
+
+        public static IFormattedConstraint NewFormattedConstraint(
             IObjectRepository tdb, 
             IGSettingsManager igSettings,
+            IIGTypePlugin igTypePlugin,
             IConstraint constraint,
             string templateLinkBase = null,
             string valueSetLinkBase = null,
             bool linkContainedTemplate = false, 
             bool linkIsBookmark = false, 
             bool createLinksForValueSets = false,
-            bool includeCategory = true)
+            bool includeCategory = true,
+            Template containedTemplate = null,
+            ValueSet valueSet = null,
+            CodeSystem codeSystem = null)
         {
             var selectedType = typeof(FormattedConstraint);
 
@@ -60,7 +93,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             formattedConstraint.CreateLinkForValueSets = createLinksForValueSets;
 
             // Set the properties in the FormattedConstraint based on the IConstraint
-            formattedConstraint.ParseConstraint(constraint);
+            formattedConstraint.ParseConstraint(igTypePlugin, constraint, containedTemplate, valueSet, codeSystem);
 
             // Pre-process the constraint so that calls to GetHtml(), GetPlainText(), etc. returns something
             formattedConstraint.ParseFormattedConstraint();

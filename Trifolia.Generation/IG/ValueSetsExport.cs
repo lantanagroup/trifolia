@@ -9,6 +9,8 @@ using DocumentFormat.OpenXml;
 
 using Trifolia.DB;
 using Helper = Trifolia.Shared.Helper;
+using Trifolia.Shared.Plugins;
+using Trifolia.Shared;
 
 namespace Trifolia.Generation.IG
 {
@@ -19,11 +21,13 @@ namespace Trifolia.Generation.IG
         private bool generateAsAppendix;
         private TableCollection tables;
         private MainDocumentPart mainPart;
+        private IIGTypePlugin igTypePlugin;
 
         private Dictionary<ValueSet, DateTime> appendixValueSets = new Dictionary<ValueSet, DateTime>();
 
-        public ValueSetsExport(MainDocumentPart mainPart, TableCollection tables, bool generateAsAppendix, int defaultMaxMembers, Dictionary<string, int> valueSetMaximumMembers)
+        public ValueSetsExport(IIGTypePlugin igTypePlugin, MainDocumentPart mainPart, TableCollection tables, bool generateAsAppendix, int defaultMaxMembers, Dictionary<string, int> valueSetMaximumMembers)
         {
+            this.igTypePlugin = igTypePlugin;
             this.mainPart = mainPart;
             this.tables = tables;
             this.generateAsAppendix = generateAsAppendix;
@@ -83,6 +87,7 @@ namespace Trifolia.Generation.IG
 
             foreach (ValueSet cValueSet in this.appendixValueSets.Keys.OrderBy(y => y.Name))
             {
+                string valueSetIdentifier = cValueSet.GetIdentifier(this.igTypePlugin);
                 string cAnchor = Helper.GetCleanName(cValueSet.Name, 39);
                 OpenXmlElement urlRun = DocHelper.CreateRun("N/A");
 
@@ -105,7 +110,7 @@ namespace Trifolia.Generation.IG
                                 {
                                     Val = Properties.Settings.Default.TableContentStyle
                                 }),
-                            DocHelper.CreateRun(cValueSet.Oid))),
+                            DocHelper.CreateRun(valueSetIdentifier))),
                     new TableCell(
                         new Paragraph(
                             new ParagraphProperties(
@@ -120,6 +125,7 @@ namespace Trifolia.Generation.IG
 
         private void AddValueSetDetailTable(ValueSet valueSet, DateTime bindingDate)
         {
+            string valueSetIdentifier = valueSet.GetIdentifier(this.igTypePlugin);
             string bookmarkId = this.GetValueSetBookmark(valueSet);
             List<ValueSetMember> members = valueSet.GetActiveMembers(bindingDate);
 
@@ -137,7 +143,7 @@ namespace Trifolia.Generation.IG
                 new Paragraph(
                     new ParagraphProperties(new ParagraphStyleId() { Val = Properties.Settings.Default.TableContentStyle }),
                     DocHelper.CreateRun(
-                    string.Format("Value Set: {0} {1}", valueSet.Name, valueSet.Oid))));
+                    string.Format("Value Set: {0} {1}", valueSet.Name, valueSet.GetIdentifier(igTypePlugin)))));
 
             if (!string.IsNullOrEmpty(valueSet.Description))
                 headingCell.Append(
@@ -158,8 +164,8 @@ namespace Trifolia.Generation.IG
 
             int maximumMembers = this.defaultMaxMembers;
 
-            if (this.valueSetMaximumMembers != null && this.valueSetMaximumMembers.ContainsKey(valueSet.Oid))
-                maximumMembers = this.valueSetMaximumMembers[valueSet.Oid];
+            if (this.valueSetMaximumMembers != null && this.valueSetMaximumMembers.ContainsKey(valueSetIdentifier))
+                maximumMembers = this.valueSetMaximumMembers[valueSet.GetIdentifier(this.igTypePlugin)];
 
             int count = 0;
             foreach (ValueSetMember currentMember in members)

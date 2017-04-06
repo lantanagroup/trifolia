@@ -11,12 +11,12 @@ namespace Trifolia.Export.FHIR.STU3
     {
         public static string GetFhirId(this ValueSet valueSet)
         {
-            string id = valueSet.Id.ToString();
+            ValueSetIdentifier httpIdentifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == ValueSetIdentifierTypes.HTTP);
 
-            if (valueSet.Oid.LastIndexOf("/") > 0)
-                id = valueSet.Oid.Substring(valueSet.Oid.LastIndexOf("/") + 1);
+            if (httpIdentifier != null)
+                return httpIdentifier.Identifier.Substring(httpIdentifier.Identifier.LastIndexOf("/") + 1);
 
-            return id;
+            return valueSet.Id.ToString();
         }
     }
 }

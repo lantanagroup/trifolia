@@ -44,7 +44,15 @@
 <script type="text/javascript" src="/Scripts/lib/Sha1.js"></script>
 <script type="text/javascript" src="/Scripts/lib/q/q.js"></script>
 
+<script type="text/javascript" src="/Scripts/lib/angular/angular.min.js"></script>
+<script type="text/javascript" src="/Scripts/lib/angular/angular-cookies.js"></script>
+<script type="text/javascript" src="/Scripts/lib/angular/ui-bootstrap-tpls-2.5.0.min.js"></script>
+
 <!-- Application Scripts -->
+<script type="text/javascript" src="/Scripts/angular/startup.js"></script>
+<script type="text/javascript" src="/Scripts/angular/services.js"></script>
+<script type="text/javascript" src="/Scripts/angular/filters.js"></script>
+<script type="text/javascript" src="/Scripts/angular/treegrid/treegrid.js"></script>
 <script type="text/javascript" src="/Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 <script type="text/javascript" src="/Scripts/PermissionManagement.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 <script type="text/javascript" src="/Scripts/SupportRequestHandler.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>

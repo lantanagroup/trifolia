@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Shared", "Trifolia.Shared\Trifolia.Shared.csproj", "{C44C370B-2BFE-4503-921F-8BA7674517AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Validation", "Trifolia.Validation\Trifolia.Validation.csproj", "{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Terminology", "Trifolia.Terminology\Trifolia.Terminology.csproj", "{FDB22F8F-9677-471A-8929-B8DCB59E4C60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Config", "Trifolia.Config\Trifolia.Config.csproj", "{3FCE87C4-71B6-4FEB-A9EE-C6D64FDCC477}"
@@ -32,7 +30,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Web", "Trifolia.Web\Trifolia.Web.csproj", "{6017497A-7603-4C00-9B39-D88AD6BF73C8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FDB22F8F-9677-471A-8929-B8DCB59E4C60} = {FDB22F8F-9677-471A-8929-B8DCB59E4C60}
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6} = {02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Authorization", "Trifolia.Authorization\Trifolia.Authorization.csproj", "{D90E0EEE-7AC3-4726-9A56-5B77632E9B3B}"
@@ -116,44 +113,6 @@ Global
 		{C44C370B-2BFE-4503-921F-8BA7674517AE}.SingleImage|Mixed Platforms.Build.0 = Install Release|Any CPU
 		{C44C370B-2BFE-4503-921F-8BA7674517AE}.SingleImage|x86.ActiveCfg = Install Release|Any CPU
 		{C44C370B-2BFE-4503-921F-8BA7674517AE}.SingleImage|x86.Build.0 = Install Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.CD_ROM|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.CD_ROM|Mixed Platforms.Build.0 = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.CD_ROM|x86.ActiveCfg = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.CD_ROM|x86.Build.0 = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.DVD-5|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.DVD-5|Mixed Platforms.Build.0 = Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.DVD-5|x86.ActiveCfg = Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.DVD-5|x86.Build.0 = Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Install Debug|Any CPU.ActiveCfg = Install Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Install Debug|Any CPU.Build.0 = Install Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Install Debug|Mixed Platforms.ActiveCfg = Install Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Install Debug|Mixed Platforms.Build.0 = Install Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Install Debug|x86.ActiveCfg = Install Debug|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Install Release|Any CPU.ActiveCfg = Install Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Install Release|Any CPU.Build.0 = Install Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Install Release|Mixed Platforms.ActiveCfg = Install Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Install Release|Mixed Platforms.Build.0 = Install Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Install Release|x86.ActiveCfg = Install Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.Release|x86.ActiveCfg = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.SingleImage|Any CPU.Build.0 = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.SingleImage|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.SingleImage|Mixed Platforms.Build.0 = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.SingleImage|x86.ActiveCfg = Release|Any CPU
-		{02F2AB9F-856B-4A0C-BE81-2DFA26B602B6}.SingleImage|x86.Build.0 = Release|Any CPU
 		{FDB22F8F-9677-471A-8929-B8DCB59E4C60}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
 		{FDB22F8F-9677-471A-8929-B8DCB59E4C60}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{FDB22F8F-9677-471A-8929-B8DCB59E4C60}.CD_ROM|Mixed Platforms.ActiveCfg = Release|Any CPU

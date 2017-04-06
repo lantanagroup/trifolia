@@ -14,15 +14,11 @@ namespace Trifolia.DB
         {
             Constraints = new HashSet<TemplateConstraint>();
             Members = new HashSet<ValueSetMember>();
+            Identifiers = new HashSet<ValueSetIdentifier>();
         }
 
         [Column("id")]
         public int Id { get; set; }
-
-        [Column("oid")]
-        [Required]
-        [StringLength(255)]
-        public string Oid { get; set; }
 
         [Column("name")]
         [Required]
@@ -57,5 +53,8 @@ namespace Trifolia.DB
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ValueSetMember> Members { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ValueSetIdentifier> Identifiers { get; set; }
     }
 }

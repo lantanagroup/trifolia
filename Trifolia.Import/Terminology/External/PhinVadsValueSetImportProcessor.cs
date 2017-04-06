@@ -45,7 +45,12 @@ namespace Trifolia.Import.Terminology.External
                     searchOid = "urn:oid:" + searchOid;
 
                 VadsClient.ValueSet valueSetResult = valueSetResults.valueSet[0];
-                Trifolia.DB.ValueSet currentValueSet = tdb.ValueSets.SingleOrDefault(y => y.Oid == searchOid);
+                Trifolia.DB.ValueSet currentValueSet = (from vs in tdb.ValueSets
+                                                        join vsi in tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
+                                                        where vsi.Identifier.ToLower().Trim() == searchOid.ToLower().Trim()
+                                                        select vs)
+                                                        .Distinct()
+                                                        .FirstOrDefault();
 
                 T importValueSet = CreateImportValueSet(currentValueSet, valueSetResult);
 

@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml;
 
 using Trifolia.Shared;
 using Trifolia.DB;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG.ConstraintGeneration
 {
@@ -91,7 +92,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
         #endregion
 
-        public void ParseConstraint(IConstraint constraint)
+        public void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, Template containedTemplate = null, ValueSet valueSet = null, CodeSystem codeSystem = null)
         {
             this.Number = string.Format("{0}-{1}",
                 constraint.Template != null ? constraint.Template.OwningImplementationGuideId.ToString() : "X",
@@ -135,16 +136,21 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             if (constraint.ValueSetId != null)
             {
-                ValueSet valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
+                // If the caller didn't pass in the ValueSet, get it from the db
+                if (valueSet == null || valueSet.Id != constraint.ValueSetId)
+                    valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
 
                 this.ValueSetName = valueSet.Name;
-                this.ValueSetOid = valueSet.Oid;
+                this.ValueSetOid = valueSet.GetIdentifier(igTypePlugin);
                 this.ValueSetVersion = constraint.ValueSetDate;
             }
 
             if (constraint.ValueCodeSystemId != null)
             {
-                CodeSystem codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
+                // If the caller didn't pass in the CodeSystem, get it from the db
+                if (codeSystem == null || codeSystem.Id != constraint.ValueCodeSystemId)
+                    codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
+
                 this.CodeSystemName = codeSystem.Name;
                 this.CodeSystemOid = codeSystem.Oid;
             }

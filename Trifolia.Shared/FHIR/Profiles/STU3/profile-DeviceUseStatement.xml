@@ -1,0 +1,1075 @@
+<StructureDefinition xmlns="http://hl7.org/fhir">
+        <id value="DeviceUseStatement" />
+        <meta>
+          <lastUpdated value="2017-03-21T06:09:53.925+11:00" />
+        </meta>
+        <text>
+          <status value="generated" />
+          <div xmlns="http://www.w3.org/1999/xhtml">
+            <table border="0" cellpadding="0" cellspacing="0" style="border: 0px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;">
+              <tr style="border: 1px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;">
+                <th style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="formats.html#table" title="The logical name of the element">Name</a>
+                </th>
+                <th style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="formats.html#table" title="Information about the use of the element">Flags</a>
+                </th>
+                <th style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="formats.html#table" title="Minimum and Maximum # of times the the element can appear in the instance">Card.</a>
+                </th>
+                <th style="width: 100px" class="hierarchy">
+                  <a href="formats.html#table" title="Reference to the type of the element">Type</a>
+                </th>
+                <th style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="formats.html#table" title="Additional information about the element">Description &amp; Constraints</a>
+                  <span style="float: right">
+                    <a href="formats.html#table" title="Legend for this format">
+                      <img src="help16.png" alt="doco" style="background-color: inherit" />
+                    </a>
+                  </span>
+                </th>
+              </tr>
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJBSURBVDjLhdKxa5NBGMfx713yvkmbJnaoFiSF4mJTh06Kg4OgiyCCRXCof4YIdXdxFhQVHPo3OFSoUx0FySQttaVKYq2NbdO8ed/L3fM4JG3tYPvAcfBw9+HHPWdUlf/V0tLSqKo+EpEHInJFRIohhDUR+RBCeDM7O7ua55QSkRfVanVufHyckZERrLV0Op2Zra2tmXq9fg+YsmcAdyYnJykUCke9OI6ZmJgghHAZ4KwE3ntPs9mkVCohIjQaDWq1GiEEAM5KoHEcY62lVCrRarUoFotUKpUjIL/y/uqXYmV62ph/LSVrr30P4bEFcM4B0Ov1jk547/uAUTs1ceNdZIwB7V/GGHz6+9LXxY96eDiEgHMOY8xJAK8p4grZz5cElwNbwZgyxYu3EFM01lriOCZJEqIoIooiALIsGwA9Y1UcwcWoKNLdpLu9zvbnBWqNBhuvn5EDUmB0EH/1E2TZw5U+YLQovkun+Ytsaw1xCbnCOap334LC7s4Oe/ttvA+ICLmhMXRxDufczUECS37oAuevPwUEVFFp4/eXkXSdYc2IopSepnjtUh5/wg9gfn6+OQBUNaRIUkfDHhraSLoBKqikIF3yHJDLHaAkFOLciVHnyVAVj/S2Ub/XRyQD9aAZKgkaOohvo6ENgykcA07VEFDfQv1uf4W9Y8y30bCPhg4qKZJtMnjTPqBO/vhkZ7h3EJeRslWNQMqgY2jIAIfa/m5sIKSpqpPsGEiz599e3b+GchtD+bSvjQJm2SG6cNj6C+QmaxAek5tyAAAAAElFTkSuQmCC" alt="." style="background-color: white; background-color: inherit" title="Resource" class="hierarchy" /> 
+                  <span title="DeviceUseStatement : A record of a device being used by a patient where the record is the result of a report from the patient or another clinician.">DeviceUseStatement</span>
+                  <a name="DeviceUseStatement"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="domainresource.html">DomainResource</a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">Record of use of a device
+                  <br />Elements defined in Ancestors: 
+                  <a href="resource.html#Resource" title="The logical id of the resource, as used in the URL for the resource. Once assigned, this value never changes.">id</a>, 
+                  <a href="resource.html#Resource" title="The metadata about the resource. This is content that is maintained by the infrastructure. Changes to the content may not always be associated with version changes to the resource.">meta</a>, 
+                  <a href="resource.html#Resource" title="A reference to a set of rules that were followed when the resource was constructed, and which must be understood when processing the content.">implicitRules</a>, 
+                  <a href="resource.html#Resource" title="The base language in which the resource is written.">language</a>, 
+                  <a href="domainresource.html#DomainResource" title="A human-readable narrative that contains a summary of the resource, and may be used to represent the content of the resource to a human. The narrative need not encode all the structured data, but is required to contain sufficient detail to make it &quot;clinically safe&quot; for a human to just read the narrative. Resource definitions may define what content should be represented in the narrative to ensure clinical safety.">text</a>, 
+                  <a href="domainresource.html#DomainResource" title="These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, and nor can they have their own independent transaction scope.">contained</a>, 
+                  <a href="domainresource.html#DomainResource" title="May be used to represent additional information that is not part of the basic definition of the resource. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.">extension</a>, 
+                  <a href="domainresource.html#DomainResource" title="May be used to represent additional information that is not part of the basic definition of the resource, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.">modifierExtension</a>
+                </td>
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,R0lGODlhEAAQAOZ/APrkusOiYvvfqbiXWaV2G+jGhdq1b8GgYf3v1frw3vTUlsWkZNewbcSjY/DQkad4Hb6dXv3u0f3v1ObEgfPTlerJiP3w1v79+e7OkPrfrfnjuNOtZPrpydaxa+/YrvvdpP779ZxvFPvnwKKBQaFyF/369M2vdaqHRPz58/HNh/vowufFhfroxO3OkPrluv779tK0e6JzGProwvrow9m4eOnIifPTlPDPkP78+Naxaf3v0/zowfXRi+bFhLWUVv379/rnwPvszv3rye3LiPvnv+3MjPDasKiIS/789/3x2f747eXDg+7Mifvu0tu7f+/QkfDTnPXWmPrjsvrjtPbPgrqZW+/QlPz48K2EMv36866OUPvowat8Ivvgq/Pbrvzgq/PguvrgrqN0Gda2evfYm9+7d/rpw9q6e/LSku/Rl/XVl/LSlfrkt+zVqe7Wqv3x1/bNffbOf59wFdS6if3u0vrqyP3owPvepfXQivDQkO/PkKh9K7STVf779P///////yH5BAEAAH8ALAAAAAAQABAAAAfNgH+Cg36FfoOIhH4JBxBghYl/hQkNAV0IVT5GkJKLCwtQaSsSdx9aR26Gcwt2IkQaNRI6dBERIzCFDSgWSW8WCDkbBnoOQ3uFARc/JQJfCAZlT0x4ZFyFBxdNQT9ZCBNWKQoKUQ+FEDgcdTIAV14YDmg2CgSFA0hmQC5TLE4VRTdrKJAoxOeFCzZSwsw4U6BCizwUQhQyEaAPiAwCVNCY0FCNnA6GPAwYoETIFgY9loiRA4dToTYnsOxg8CBGHE6ICvEYQ4AKzkidfgoKBAA7" alt="." style="background-color: white; background-color: inherit" title="Data Type" class="hierarchy" /> 
+                  <span title="DeviceUseStatement.identifier : An external identifier for this statement such as an IRI.">identifier</span>
+                  <a name="DeviceUseStatement.identifier"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">0..*</td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="datatypes.html#Identifier">Identifier</a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">External identifier for this record
+                  <br />
+                </td>
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gYBFzI0BrFQCwAAAERJREFUOMtj/P//PwMlgImBQjDwBrCcOnWKokBgYWBgYDCU+06W5i8MUggvnH/EOVJjAW4AuQHJ+O75LYqikXE0LzAAALePEntTkEoSAAAAAElFTkSuQmCC" alt="." style="background-color: white; background-color: inherit" title="Primitive Data Type" class="hierarchy" /> 
+                  <span title="DeviceUseStatement.status : A code representing the patient or other source's judgment about the state of the device used that this statement is about.  Generally this will be active or completed.">status</span>
+                  <a name="DeviceUseStatement.status"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <span style="padding: 3px" title="This element is a modifier element">?!</span>
+                  <span style="padding: 3px" title="This element is included in summaries">S</span>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">1..1</td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="datatypes.html#code">code</a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">active | completed | entered-in-error +
+                  <br />
+                  <a href="valueset-device-statement-status.html" title="A coded concept indicating the current status of a the Device Usage">DeviceUseStatementStatus</a> (
+                  <a href="terminologies.html#required" title="To be conformant, the concept in this element SHALL be from the specified value set">Required</a>)
+                </td>
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAFxJREFUOE/NjEEOACEIA/0o/38GGw+agoXYeNnDJDCUDnd/gkoFKhWozJiZI3gLwY6rAgxhsPKTPUzycTl8lAryMyMsVQG6TFi6cHULyz8KOjC7OIQKlQpU3uPjAwhX2CCcGsgOAAAAAElFTkSuQmCC" alt="." style="background-color: white; background-color: inherit" title="Reference to another Resource" class="hierarchy" /> 
+                  <span title="DeviceUseStatement.subject : The patient who used the device.">subject</span>
+                  <a name="DeviceUseStatement.subject"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">1..1</td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="references.html">Reference</a>(
+                  <a href="patient.html">Patient</a> | 
+                  <a href="group.html">Group</a>)
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">Patient using device</td>
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,R0lGODlhEAAQAOZ/APrkusOiYvvfqbiXWaV2G+jGhdq1b8GgYf3v1frw3vTUlsWkZNewbcSjY/DQkad4Hb6dXv3u0f3v1ObEgfPTlerJiP3w1v79+e7OkPrfrfnjuNOtZPrpydaxa+/YrvvdpP779ZxvFPvnwKKBQaFyF/369M2vdaqHRPz58/HNh/vowufFhfroxO3OkPrluv779tK0e6JzGProwvrow9m4eOnIifPTlPDPkP78+Naxaf3v0/zowfXRi+bFhLWUVv379/rnwPvszv3rye3LiPvnv+3MjPDasKiIS/789/3x2f747eXDg+7Mifvu0tu7f+/QkfDTnPXWmPrjsvrjtPbPgrqZW+/QlPz48K2EMv36866OUPvowat8Ivvgq/Pbrvzgq/PguvrgrqN0Gda2evfYm9+7d/rpw9q6e/LSku/Rl/XVl/LSlfrkt+zVqe7Wqv3x1/bNffbOf59wFdS6if3u0vrqyP3owPvepfXQivDQkO/PkKh9K7STVf779P///////yH5BAEAAH8ALAAAAAAQABAAAAfNgH+Cg36FfoOIhH4JBxBghYl/hQkNAV0IVT5GkJKLCwtQaSsSdx9aR26Gcwt2IkQaNRI6dBERIzCFDSgWSW8WCDkbBnoOQ3uFARc/JQJfCAZlT0x4ZFyFBxdNQT9ZCBNWKQoKUQ+FEDgcdTIAV14YDmg2CgSFA0hmQC5TLE4VRTdrKJAoxOeFCzZSwsw4U6BCizwUQhQyEaAPiAwCVNCY0FCNnA6GPAwYoETIFgY9loiRA4dToTYnsOxg8CBGHE6ICvEYQ4AKzkidfgoKBAA7" alt="." style="background-color: white; background-color: inherit" title="Data Type" class="hierarchy" /> 
+                  <span title="DeviceUseStatement.whenUsed : The time period over which the device was used.">whenUsed</span>
+                  <a name="DeviceUseStatement.whenUsed"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">0..1</td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="datatypes.html#Period">Period</a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">Period device was used</td>
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,R0lGODlhEAAQAMQfAGm6/idTd4yTmF+v8Xa37KvW+lyh3KHJ62aq41ee2bXZ98nm/2mt5W2Ck5XN/C1chEZieho8WXXA/2Gn4P39/W+y6V+l3qjP8Njt/lx2izxPYGyv51Oa1EJWZ////////yH5BAEAAB8ALAAAAAAQABAAAAWH4Cd+Xml6Y0pCQts0EKp6GbYshaM/skhjhCChUmFIeL4OsHIxXRAISQTl6SgIG8+FgfBMoh2qtbLZQr0TQJhk3TC4pYPBApiyFVDEwSOf18UFXxMWBoUJBn9sDgmDewcJCRyJJBoEkRyYmAABPZQEAAOhA5seFDMaDw8BAQ9TpiokJyWwtLUhADs=" alt="." style="background-color: white; background-color: inherit" title="Choice of Types" class="hierarchy" /> 
+                  <span title="DeviceUseStatement.timing[x] : How often the device was used.">timing[x]</span>
+                  <a name="DeviceUseStatement.timing_x_"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">0..1</td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"></td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">How often  the device was used</td>
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAMElEQVR42u3QwQkAMAwDsezq/WdoskKgFAoy6HkfV5LamJ1tc7MHAAD+5QQAAOCZBkurQFbnaRSlAAAAAElFTkSuQmCC)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzMPbYccAgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAMElEQVQ4y+3OQREAIBDDwAv+PQcFFN5MIyCzqHMKUGVCpMFLK97heq+gggoq+EiwAVjvMhFGmlEUAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,R0lGODlhEAAQAOZ/APrkusOiYvvfqbiXWaV2G+jGhdq1b8GgYf3v1frw3vTUlsWkZNewbcSjY/DQkad4Hb6dXv3u0f3v1ObEgfPTlerJiP3w1v79+e7OkPrfrfnjuNOtZPrpydaxa+/YrvvdpP779ZxvFPvnwKKBQaFyF/369M2vdaqHRPz58/HNh/vowufFhfroxO3OkPrluv779tK0e6JzGProwvrow9m4eOnIifPTlPDPkP78+Naxaf3v0/zowfXRi+bFhLWUVv379/rnwPvszv3rye3LiPvnv+3MjPDasKiIS/789/3x2f747eXDg+7Mifvu0tu7f+/QkfDTnPXWmPrjsvrjtPbPgrqZW+/QlPz48K2EMv36866OUPvowat8Ivvgq/Pbrvzgq/PguvrgrqN0Gda2evfYm9+7d/rpw9q6e/LSku/Rl/XVl/LSlfrkt+zVqe7Wqv3x1/bNffbOf59wFdS6if3u0vrqyP3owPvepfXQivDQkO/PkKh9K7STVf779P///////yH5BAEAAH8ALAAAAAAQABAAAAfNgH+Cg36FfoOIhH4JBxBghYl/hQkNAV0IVT5GkJKLCwtQaSsSdx9aR26Gcwt2IkQaNRI6dBERIzCFDSgWSW8WCDkbBnoOQ3uFARc/JQJfCAZlT0x4ZFyFBxdNQT9ZCBNWKQoKUQ+FEDgcdTIAV14YDmg2CgSFA0hmQC5TLE4VRTdrKJAoxOeFCzZSwsw4U6BCizwUQhQyEaAPiAwCVNCY0FCNnA6GPAwYoETIFgY9loiRA4dToTYnsOxg8CBGHE6ICvEYQ4AKzkidfgoKBAA7" alt="." style="background-color: white; background-color: inherit" title="Data Type" class="hierarchy" /> timingTiming
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"></td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="datatypes.html#Timing">Timing</a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAMElEQVR42u3QwQkAMAwDsezq/WdoskKgFAoy6HkfV5LamJ1tc7MHAAD+5QQAAOCZBkurQFbnaRSlAAAAAElFTkSuQmCC)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzMPbYccAgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAMElEQVQ4y+3OQREAIBDDwAv+PQcFFN5MIyCzqHMKUGVCpMFLK97heq+gggoq+EiwAVjvMhFGmlEUAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,R0lGODlhEAAQAOZ/APrkusOiYvvfqbiXWaV2G+jGhdq1b8GgYf3v1frw3vTUlsWkZNewbcSjY/DQkad4Hb6dXv3u0f3v1ObEgfPTlerJiP3w1v79+e7OkPrfrfnjuNOtZPrpydaxa+/YrvvdpP779ZxvFPvnwKKBQaFyF/369M2vdaqHRPz58/HNh/vowufFhfroxO3OkPrluv779tK0e6JzGProwvrow9m4eOnIifPTlPDPkP78+Naxaf3v0/zowfXRi+bFhLWUVv379/rnwPvszv3rye3LiPvnv+3MjPDasKiIS/789/3x2f747eXDg+7Mifvu0tu7f+/QkfDTnPXWmPrjsvrjtPbPgrqZW+/QlPz48K2EMv36866OUPvowat8Ivvgq/Pbrvzgq/PguvrgrqN0Gda2evfYm9+7d/rpw9q6e/LSku/Rl/XVl/LSlfrkt+zVqe7Wqv3x1/bNffbOf59wFdS6if3u0vrqyP3owPvepfXQivDQkO/PkKh9K7STVf779P///////yH5BAEAAH8ALAAAAAAQABAAAAfNgH+Cg36FfoOIhH4JBxBghYl/hQkNAV0IVT5GkJKLCwtQaSsSdx9aR26Gcwt2IkQaNRI6dBERIzCFDSgWSW8WCDkbBnoOQ3uFARc/JQJfCAZlT0x4ZFyFBxdNQT9ZCBNWKQoKUQ+FEDgcdTIAV14YDmg2CgSFA0hmQC5TLE4VRTdrKJAoxOeFCzZSwsw4U6BCizwUQhQyEaAPiAwCVNCY0FCNnA6GPAwYoETIFgY9loiRA4dToTYnsOxg8CBGHE6ICvEYQ4AKzkidfgoKBAA7" alt="." style="background-color: white; background-color: inherit" title="Data Type" class="hierarchy" /> 
+                  <span title="A time period defined by a start and end date and optionally time.">timingPeriod</span>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"></td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="datatypes.html#Period">Period</a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzMPbYccAgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAMElEQVQ4y+3OQREAIBDDwAv+PQcFFN5MIyCzqHMKUGVCpMFLK97heq+gggoq+EiwAVjvMhFGmlEUAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzME+lXFigAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+3OsRUAIAjEUOL+O8cJABttJM11/x1qZAGqRBEVcNIqdWj1efDqQbb3HwwwwEfABmQUHSPM9dtDAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gYBFzI0BrFQCwAAAERJREFUOMtj/P//PwMlgImBQjDwBrCcOnWKokBgYWBgYDCU+06W5i8MUggvnH/EOVJjAW4AuQHJ+O75LYqikXE0LzAAALePEntTkEoSAAAAAElFTkSuQmCC" alt="." style="background-color: white; background-color: inherit" title="Primitive Data Type" class="hierarchy" /> 
+                  <span title="A date, date-time or partial date (e.g. just year or year + month).  If hours and minutes are specified, a time zone SHALL be populated. The format is a union of the schema types gYear, gYearMonth, date and dateTime. Seconds must be provided due to schema type constraints but may be zero-filled and may be ignored.                 Dates SHALL be valid dates.">timingDateTime</span>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy"></td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="datatypes.html#dateTime">dateTime</a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gYBFzI0BrFQCwAAAERJREFUOMtj/P//PwMlgImBQjDwBrCcOnWKokBgYWBgYDCU+06W5i8MUggvnH/EOVJjAW4AuQHJ+O75LYqikXE0LzAAALePEntTkEoSAAAAAElFTkSuQmCC" alt="." style="background-color: white; background-color: inherit" title="Primitive Data Type" class="hierarchy" /> 
+                  <span title="DeviceUseStatement.recordedOn : The time at which the statement was made/recorded.">recordedOn</span>
+                  <a name="DeviceUseStatement.recordedOn"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">0..1</td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="datatypes.html#dateTime">dateTime</a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">When statement was recorded</td>
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAFxJREFUOE/NjEEOACEIA/0o/38GGw+agoXYeNnDJDCUDnd/gkoFKhWozJiZI3gLwY6rAgxhsPKTPUzycTl8lAryMyMsVQG6TFi6cHULyz8KOjC7OIQKlQpU3uPjAwhX2CCcGsgOAAAAAElFTkSuQmCC" alt="." style="background-color: white; background-color: inherit" title="Reference to another Resource" class="hierarchy" /> 
+                  <span title="DeviceUseStatement.source : Who reported the device was being used by the patient.">source</span>
+                  <a name="DeviceUseStatement.source"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">0..1</td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="references.html">Reference</a>(
+                  <a href="patient.html">Patient</a> | 
+                  <a href="practitioner.html">Practitioner</a> | 
+                  <a href="relatedperson.html">RelatedPerson</a>)
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">Who made the statement</td>
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAFxJREFUOE/NjEEOACEIA/0o/38GGw+agoXYeNnDJDCUDnd/gkoFKhWozJiZI3gLwY6rAgxhsPKTPUzycTl8lAryMyMsVQG6TFi6cHULyz8KOjC7OIQKlQpU3uPjAwhX2CCcGsgOAAAAAElFTkSuQmCC" alt="." style="background-color: white; background-color: inherit" title="Reference to another Resource" class="hierarchy" /> 
+                  <span title="DeviceUseStatement.device : The details of the device used.">device</span>
+                  <a name="DeviceUseStatement.device"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">1..1</td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="references.html">Reference</a>(
+                  <a href="device.html">Device</a>)
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">Reference to device used</td>
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,R0lGODlhEAAQAOZ/APrkusOiYvvfqbiXWaV2G+jGhdq1b8GgYf3v1frw3vTUlsWkZNewbcSjY/DQkad4Hb6dXv3u0f3v1ObEgfPTlerJiP3w1v79+e7OkPrfrfnjuNOtZPrpydaxa+/YrvvdpP779ZxvFPvnwKKBQaFyF/369M2vdaqHRPz58/HNh/vowufFhfroxO3OkPrluv779tK0e6JzGProwvrow9m4eOnIifPTlPDPkP78+Naxaf3v0/zowfXRi+bFhLWUVv379/rnwPvszv3rye3LiPvnv+3MjPDasKiIS/789/3x2f747eXDg+7Mifvu0tu7f+/QkfDTnPXWmPrjsvrjtPbPgrqZW+/QlPz48K2EMv36866OUPvowat8Ivvgq/Pbrvzgq/PguvrgrqN0Gda2evfYm9+7d/rpw9q6e/LSku/Rl/XVl/LSlfrkt+zVqe7Wqv3x1/bNffbOf59wFdS6if3u0vrqyP3owPvepfXQivDQkO/PkKh9K7STVf779P///////yH5BAEAAH8ALAAAAAAQABAAAAfNgH+Cg36FfoOIhH4JBxBghYl/hQkNAV0IVT5GkJKLCwtQaSsSdx9aR26Gcwt2IkQaNRI6dBERIzCFDSgWSW8WCDkbBnoOQ3uFARc/JQJfCAZlT0x4ZFyFBxdNQT9ZCBNWKQoKUQ+FEDgcdTIAV14YDmg2CgSFA0hmQC5TLE4VRTdrKJAoxOeFCzZSwsw4U6BCizwUQhQyEaAPiAwCVNCY0FCNnA6GPAwYoETIFgY9loiRA4dToTYnsOxg8CBGHE6ICvEYQ4AKzkidfgoKBAA7" alt="." style="background-color: white; background-color: inherit" title="Data Type" class="hierarchy" /> 
+                  <span title="DeviceUseStatement.indication : Reason or justification for the use of the device.">indication</span>
+                  <a name="DeviceUseStatement.indication"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">0..*</td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="datatypes.html#CodeableConcept">CodeableConcept</a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">Why device was used
+                  <br />
+                </td>
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAL0lEQVR42u3XsQ0AQAgCQHdl/xn8jxvYWB3JlTR0VJLa+OltBwAAYP6EEQAAgCsPVYVAgIJrA/sAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzI3XJ6V3QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+2RsQ0AIAzDav7/2VzQwoCY4iWbZSmo1QGoUgNMghvWaIejPQW/CrrNCylIwcOCDYfLNRcNer4SAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,R0lGODlhEAAQAOZ/APrkusOiYvvfqbiXWaV2G+jGhdq1b8GgYf3v1frw3vTUlsWkZNewbcSjY/DQkad4Hb6dXv3u0f3v1ObEgfPTlerJiP3w1v79+e7OkPrfrfnjuNOtZPrpydaxa+/YrvvdpP779ZxvFPvnwKKBQaFyF/369M2vdaqHRPz58/HNh/vowufFhfroxO3OkPrluv779tK0e6JzGProwvrow9m4eOnIifPTlPDPkP78+Naxaf3v0/zowfXRi+bFhLWUVv379/rnwPvszv3rye3LiPvnv+3MjPDasKiIS/789/3x2f747eXDg+7Mifvu0tu7f+/QkfDTnPXWmPrjsvrjtPbPgrqZW+/QlPz48K2EMv36866OUPvowat8Ivvgq/Pbrvzgq/PguvrgrqN0Gda2evfYm9+7d/rpw9q6e/LSku/Rl/XVl/LSlfrkt+zVqe7Wqv3x1/bNffbOf59wFdS6if3u0vrqyP3owPvepfXQivDQkO/PkKh9K7STVf779P///////yH5BAEAAH8ALAAAAAAQABAAAAfNgH+Cg36FfoOIhH4JBxBghYl/hQkNAV0IVT5GkJKLCwtQaSsSdx9aR26Gcwt2IkQaNRI6dBERIzCFDSgWSW8WCDkbBnoOQ3uFARc/JQJfCAZlT0x4ZFyFBxdNQT9ZCBNWKQoKUQ+FEDgcdTIAV14YDmg2CgSFA0hmQC5TLE4VRTdrKJAoxOeFCzZSwsw4U6BCizwUQhQyEaAPiAwCVNCY0FCNnA6GPAwYoETIFgY9loiRA4dToTYnsOxg8CBGHE6ICvEYQ4AKzkidfgoKBAA7" alt="." style="background-color: white; background-color: inherit" title="Data Type" class="hierarchy" /> 
+                  <span title="DeviceUseStatement.bodySite : Indicates the site on the subject's body where the device was used ( i.e. the target site).">bodySite</span>
+                  <a name="DeviceUseStatement.bodySite"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">0..1</td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="datatypes.html#CodeableConcept">CodeableConcept</a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">Target body site
+                  <br />
+                  <a href="valueset-body-site.html" title="Codes describing anatomical locations. May include laterality.">SNOMED CT Body Structures</a> (
+                  <a href="terminologies.html#example" title="Instances are not expected or even encouraged to draw from the specified value set.  The value set merely provides examples of the types of concepts intended to be included.">Example</a>)
+                </td>
+              </tr>
+
+              <tr style="border: 0px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: white;">
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url(data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAACCAYAAACg/LjIAAAAI0lEQVR42u3QIQEAAAACIL/6/4MvTAQOkLYBAAB4kAAAANwMad9AqkRjgNAAAAAASUVORK5CYII=)" class="hierarchy">
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzIs1vtcMQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAE0lEQVQI12P4//8/AxMDAwNdCABMPwMo2ctnoQAAAABJRU5ErkJggg==" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAWCAYAAADJqhx8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYeFzME+lXFigAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAANklEQVQ4y+3OsRUAIAjEUOL+O8cJABttJM11/x1qZAGqRBEVcNIqdWj1efDqQbb3HwwwwEfABmQUHSPM9dtDAAAAAElFTkSuQmCC" alt="." style="background-color: inherit" class="hierarchy" />
+                  <img src="data: image/png;base64,R0lGODlhEAAQAOZ/APrkusOiYvvfqbiXWaV2G+jGhdq1b8GgYf3v1frw3vTUlsWkZNewbcSjY/DQkad4Hb6dXv3u0f3v1ObEgfPTlerJiP3w1v79+e7OkPrfrfnjuNOtZPrpydaxa+/YrvvdpP779ZxvFPvnwKKBQaFyF/369M2vdaqHRPz58/HNh/vowufFhfroxO3OkPrluv779tK0e6JzGProwvrow9m4eOnIifPTlPDPkP78+Naxaf3v0/zowfXRi+bFhLWUVv379/rnwPvszv3rye3LiPvnv+3MjPDasKiIS/789/3x2f747eXDg+7Mifvu0tu7f+/QkfDTnPXWmPrjsvrjtPbPgrqZW+/QlPz48K2EMv36866OUPvowat8Ivvgq/Pbrvzgq/PguvrgrqN0Gda2evfYm9+7d/rpw9q6e/LSku/Rl/XVl/LSlfrkt+zVqe7Wqv3x1/bNffbOf59wFdS6if3u0vrqyP3owPvepfXQivDQkO/PkKh9K7STVf779P///////yH5BAEAAH8ALAAAAAAQABAAAAfNgH+Cg36FfoOIhH4JBxBghYl/hQkNAV0IVT5GkJKLCwtQaSsSdx9aR26Gcwt2IkQaNRI6dBERIzCFDSgWSW8WCDkbBnoOQ3uFARc/JQJfCAZlT0x4ZFyFBxdNQT9ZCBNWKQoKUQ+FEDgcdTIAV14YDmg2CgSFA0hmQC5TLE4VRTdrKJAoxOeFCzZSwsw4U6BCizwUQhQyEaAPiAwCVNCY0FCNnA6GPAwYoETIFgY9loiRA4dToTYnsOxg8CBGHE6ICvEYQ4AKzkidfgoKBAA7" alt="." style="background-color: white; background-color: inherit" title="Data Type" class="hierarchy" /> 
+                  <span title="DeviceUseStatement.note : Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.">note</span>
+                  <a name="DeviceUseStatement.note"> </a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy" />
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">0..*</td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">
+                  <a href="datatypes.html#Annotation">Annotation</a>
+                </td>
+                <td style="vertical-align: top; text-align : left; background-color: white; border: 0px #F0F0F0 solid; padding:0px 4px 0px 4px" class="hierarchy">Addition details (comments, instructions)
+                  <br />
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="5" class="hierarchy">
+                  <br />
+                  <a href="formats.html#table" title="Legend for this format">
+                    <img src="help16.png" alt="doco" style="background-color: inherit" /> Documentation for this format
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </text>
+        <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm">
+          <valueInteger value="0" />
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+          <valueCode value="oo" />
+        </extension>
+        <url value="http://hl7.org/fhir/StructureDefinition/DeviceUseStatement" />
+        <name value="DeviceUseStatement" />
+        <status value="draft" />
+        <date value="2017-03-21T06:09:53+11:00" />
+        <publisher value="Health Level Seven International (Orders and Observations)" />
+        <contact>
+          <telecom>
+            <system value="url" />
+            <value value="http://hl7.org/fhir" />
+          </telecom>
+        </contact>
+        <contact>
+          <telecom>
+            <system value="url" />
+            <value value="http://www.hl7.org/Special/committees/orders/index.cfm" />
+          </telecom>
+        </contact>
+        <description value="Base StructureDefinition for DeviceUseStatement Resource" />
+        <fhirVersion value="3.0.0" />
+        <mapping>
+          <identity value="quick" />
+          <uri value="http://wiki.siframework.org/CQF" />
+          <name value="Quality Improvement and Clinical Knowledge (QUICK)" />
+        </mapping>
+        <mapping>
+          <identity value="w5" />
+          <uri value="http://hl7.org/fhir/w5" />
+          <name value="W5 Mapping" />
+        </mapping>
+        <mapping>
+          <identity value="rim" />
+          <uri value="http://hl7.org/v3" />
+          <name value="RIM Mapping" />
+        </mapping>
+        <kind value="resource" />
+        <abstract value="false" />
+        <type value="DeviceUseStatement" />
+        <baseDefinition value="http://hl7.org/fhir/StructureDefinition/DomainResource" />
+        <derivation value="specialization" />
+        <snapshot>
+          <element id="DeviceUseStatement">
+            <path value="DeviceUseStatement" />
+            <short value="Record of use of a device" />
+            <definition value="A record of a device being used by a patient where the record is the result of a report from the patient or another clinician." />
+            <min value="0" />
+            <max value="*" />
+            <constraint>
+              <key value="dom-2" />
+              <severity value="error" />
+              <human value="If the resource is contained in another resource, it SHALL NOT contain nested Resources" />
+              <expression value="contained.contained.empty()" />
+              <xpath value="not(parent::f:contained and f:contained)" />
+              <source value="DomainResource" />
+            </constraint>
+            <constraint>
+              <key value="dom-1" />
+              <severity value="error" />
+              <human value="If the resource is contained in another resource, it SHALL NOT contain any narrative" />
+              <expression value="contained.text.empty()" />
+              <xpath value="not(parent::f:contained and f:text)" />
+              <source value="DomainResource" />
+            </constraint>
+            <constraint>
+              <key value="dom-4" />
+              <severity value="error" />
+              <human value="If a resource is contained in another resource, it SHALL NOT have a meta.versionId or a meta.lastUpdated" />
+              <expression value="contained.meta.versionId.empty() and contained.meta.lastUpdated.empty()" />
+              <xpath value="not(exists(f:contained/*/f:meta/f:versionId)) and not(exists(f:contained/*/f:meta/f:lastUpdated))" />
+              <source value="DomainResource" />
+            </constraint>
+            <constraint>
+              <key value="dom-3" />
+              <severity value="error" />
+              <human value="If the resource is contained in another resource, it SHALL be referred to from elsewhere in the resource" />
+              <expression value="contained.where(('#'+id in %resource.descendants().reference).not()).empty()" />
+              <xpath value="not(exists(for $id in f:contained/*/@id return $id[not(ancestor::f:contained/parent::*/descendant::f:reference/@value=concat('#', $id))]))" />
+              <source value="DomainResource" />
+            </constraint>
+            <mapping>
+              <identity value="rim" />
+              <map value="Entity. Role, or Act" />
+            </mapping>
+            <mapping>
+              <identity value="quick" />
+              <map value="DeviceUsePerformanceOccurrence" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="workflow.order" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.id">
+            <path value="DeviceUseStatement.id" />
+            <short value="Logical id of this artifact" />
+            <definition value="The logical id of the resource, as used in the URL for the resource. Once assigned, this value never changes." />
+            <comment value="The only time that a resource does not have an id is when it is being submitted to the server using a create operation." />
+            <min value="0" />
+            <max value="1" />
+            <base>
+              <path value="Resource.id" />
+              <min value="0" />
+              <max value="1" />
+            </base>
+            <type>
+              <code value="id" />
+            </type>
+            <isSummary value="true" />
+          </element>
+          <element id="DeviceUseStatement.meta">
+            <path value="DeviceUseStatement.meta" />
+            <short value="Metadata about the resource" />
+            <definition value="The metadata about the resource. This is content that is maintained by the infrastructure. Changes to the content may not always be associated with version changes to the resource." />
+            <min value="0" />
+            <max value="1" />
+            <base>
+              <path value="Resource.meta" />
+              <min value="0" />
+              <max value="1" />
+            </base>
+            <type>
+              <code value="Meta" />
+            </type>
+            <isSummary value="true" />
+          </element>
+          <element id="DeviceUseStatement.implicitRules">
+            <path value="DeviceUseStatement.implicitRules" />
+            <short value="A set of rules under which this content was created" />
+            <definition value="A reference to a set of rules that were followed when the resource was constructed, and which must be understood when processing the content." />
+            <comment value="Asserting this rule set restricts the content to be only understood by a limited set of trading partners. This inherently limits the usefulness of the data in the long term. However, the existing health eco-system is highly fractured, and not yet ready to define, collect, and exchange data in a generally computable sense. Wherever possible, implementers and/or specification writers should avoid using this element. &#xA;&#xA;This element is labelled as a modifier because the implicit rules may provide additional knowledge about the resource that modifies it's meaning or interpretation." />
+            <min value="0" />
+            <max value="1" />
+            <base>
+              <path value="Resource.implicitRules" />
+              <min value="0" />
+              <max value="1" />
+            </base>
+            <type>
+              <code value="uri" />
+            </type>
+            <isModifier value="true" />
+            <isSummary value="true" />
+          </element>
+          <element id="DeviceUseStatement.language">
+            <path value="DeviceUseStatement.language" />
+            <short value="Language of the resource content" />
+            <definition value="The base language in which the resource is written." />
+            <comment value="Language is provided to support indexing and accessibility (typically, services such as text to speech use the language tag). The html language tag in the narrative applies  to the narrative. The language tag on the resource may be used to specify the language of other presentations generated from the data in the resource  Not all the content has to be in the base language. The Resource.language should not be assumed to apply to the narrative automatically. If a language is specified, it should it also be specified on the div element in the html (see rules in HTML5 for information about the relationship between xml:lang and the html lang attribute)." />
+            <min value="0" />
+            <max value="1" />
+            <base>
+              <path value="Resource.language" />
+              <min value="0" />
+              <max value="1" />
+            </base>
+            <type>
+              <code value="code" />
+            </type>
+            <binding>
+              <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet">
+                <valueReference>
+                  <reference value="http://hl7.org/fhir/ValueSet/all-languages" />
+                </valueReference>
+              </extension>
+              <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName">
+                <valueString value="Language" />
+              </extension>
+              <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-isCommonBinding">
+                <valueBoolean value="true" />
+              </extension>
+              <strength value="extensible" />
+              <description value="A human language." />
+              <valueSetReference>
+                <reference value="http://hl7.org/fhir/ValueSet/languages" />
+              </valueSetReference>
+            </binding>
+          </element>
+          <element id="DeviceUseStatement.text">
+            <path value="DeviceUseStatement.text" />
+            <short value="Text summary of the resource, for human interpretation" />
+            <definition value="A human-readable narrative that contains a summary of the resource, and may be used to represent the content of the resource to a human. The narrative need not encode all the structured data, but is required to contain sufficient detail to make it &quot;clinically safe&quot; for a human to just read the narrative. Resource definitions may define what content should be represented in the narrative to ensure clinical safety." />
+            <comment value="Contained resources do not have narrative. Resources that are not contained SHOULD have a narrative. In some cases, a resource may only have text with little or no additional discrete data (as long as all minOccurs=1 elements are satisfied).  This may be necessary for data from legacy systems where information is captured as a &quot;text blob&quot; or where text is additionally entered raw or narrated and encoded in formation is added later." />
+            <alias value="narrative" />
+            <alias value="html" />
+            <alias value="xhtml" />
+            <alias value="display" />
+            <min value="0" />
+            <max value="1" />
+            <base>
+              <path value="DomainResource.text" />
+              <min value="0" />
+              <max value="1" />
+            </base>
+            <type>
+              <code value="Narrative" />
+            </type>
+            <condition value="dom-1" />
+            <mapping>
+              <identity value="rim" />
+              <map value="Act.text?" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.contained">
+            <path value="DeviceUseStatement.contained" />
+            <short value="Contained, inline Resources" />
+            <definition value="These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, and nor can they have their own independent transaction scope." />
+            <comment value="This should never be done when the content can be identified properly, as once identification is lost, it is extremely difficult (and context dependent) to restore it again." />
+            <alias value="inline resources" />
+            <alias value="anonymous resources" />
+            <alias value="contained resources" />
+            <min value="0" />
+            <max value="*" />
+            <base>
+              <path value="DomainResource.contained" />
+              <min value="0" />
+              <max value="*" />
+            </base>
+            <type>
+              <code value="Resource" />
+            </type>
+            <mapping>
+              <identity value="rim" />
+              <map value="N/A" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.extension">
+            <path value="DeviceUseStatement.extension" />
+            <short value="Additional Content defined by implementations" />
+            <definition value="May be used to represent additional information that is not part of the basic definition of the resource. In order to make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension." />
+            <comment value="There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone." />
+            <alias value="extensions" />
+            <alias value="user content" />
+            <min value="0" />
+            <max value="*" />
+            <base>
+              <path value="DomainResource.extension" />
+              <min value="0" />
+              <max value="*" />
+            </base>
+            <type>
+              <code value="Extension" />
+            </type>
+            <mapping>
+              <identity value="rim" />
+              <map value="N/A" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.modifierExtension">
+            <path value="DeviceUseStatement.modifierExtension" />
+            <short value="Extensions that cannot be ignored" />
+            <definition value="May be used to represent additional information that is not part of the basic definition of the resource, and that modifies the understanding of the element that contains it. Usually modifier elements provide negation or qualification. In order to make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions." />
+            <comment value="There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone." />
+            <alias value="extensions" />
+            <alias value="user content" />
+            <min value="0" />
+            <max value="*" />
+            <base>
+              <path value="DomainResource.modifierExtension" />
+              <min value="0" />
+              <max value="*" />
+            </base>
+            <type>
+              <code value="Extension" />
+            </type>
+            <isModifier value="true" />
+            <mapping>
+              <identity value="rim" />
+              <map value="N/A" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.identifier">
+            <path value="DeviceUseStatement.identifier" />
+            <short value="External identifier for this record" />
+            <definition value="An external identifier for this statement such as an IRI." />
+            <min value="0" />
+            <max value="*" />
+            <type>
+              <code value="Identifier" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="ClinicalStatement.identifier" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="id" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.status">
+            <path value="DeviceUseStatement.status" />
+            <short value="active | completed | entered-in-error +" />
+            <definition value="A code representing the patient or other source's judgment about the state of the device used that this statement is about.  Generally this will be active or completed." />
+            <comment value="DeviceUseStatment is a statement at a point in time.  The status is only representative at the point when it was asserted.  The value set for contains codes that assert the status of the use  by the patient (for example, stopped or on hold) as well as codes that assert the status of the resource itself (for example, entered in error).&#xA;&#xA;This element is labeled as a modifier because the status contains the codes that mark the statement as not currently valid." />
+            <min value="1" />
+            <max value="1" />
+            <type>
+              <code value="code" />
+            </type>
+            <isModifier value="true" />
+            <isSummary value="true" />
+            <binding>
+              <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName">
+                <valueString value="DeviceUseStatementStatus" />
+              </extension>
+              <strength value="required" />
+              <description value="A coded concept indicating the current status of a the Device Usage" />
+              <valueSetReference>
+                <reference value="http://hl7.org/fhir/ValueSet/device-statement-status" />
+              </valueSetReference>
+            </binding>
+            <mapping>
+              <identity value="rim" />
+              <map value=".statusCode" />
+            </mapping>
+            <mapping>
+              <identity value="quick" />
+              <map value="…status" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="status" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.subject">
+            <path value="DeviceUseStatement.subject" />
+            <short value="Patient using device" />
+            <definition value="The patient who used the device." />
+            <min value="1" />
+            <max value="1" />
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/Patient" />
+            </type>
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/Group" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="ClinicalStatement.subject" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="who.focus" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.whenUsed">
+            <path value="DeviceUseStatement.whenUsed" />
+            <short value="Period device was used" />
+            <definition value="The time period over which the device was used." />
+            <min value="0" />
+            <max value="1" />
+            <type>
+              <code value="Period" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="Performance.performanceTime" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="when.done" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.timing[x]">
+            <path value="DeviceUseStatement.timing[x]" />
+            <short value="How often  the device was used" />
+            <definition value="How often the device was used." />
+            <min value="0" />
+            <max value="1" />
+            <type>
+              <code value="Timing" />
+            </type>
+            <type>
+              <code value="Period" />
+            </type>
+            <type>
+              <code value="dateTime" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="DeviceUse.applicationSchedule" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="when.done" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.recordedOn">
+            <path value="DeviceUseStatement.recordedOn" />
+            <short value="When statement was recorded" />
+            <definition value="The time at which the statement was made/recorded." />
+            <min value="0" />
+            <max value="1" />
+            <type>
+              <code value="dateTime" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="ClinicalStatement.statementDateTime" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="when.recorded" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.source">
+            <path value="DeviceUseStatement.source" />
+            <short value="Who made the statement" />
+            <definition value="Who reported the device was being used by the patient." />
+            <min value="0" />
+            <max value="1" />
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/Patient" />
+            </type>
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/Practitioner" />
+            </type>
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/RelatedPerson" />
+            </type>
+            <mapping>
+              <identity value="w5" />
+              <map value="who.actor" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.device">
+            <path value="DeviceUseStatement.device" />
+            <short value="Reference to device used" />
+            <definition value="The details of the device used." />
+            <min value="1" />
+            <max value="1" />
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/Device" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="DeviceUse.device" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="who.actor" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.indication">
+            <path value="DeviceUseStatement.indication" />
+            <short value="Why device was used" />
+            <definition value="Reason or justification for the use of the device." />
+            <min value="0" />
+            <max value="*" />
+            <type>
+              <code value="CodeableConcept" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="Action.indication.reason" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="why" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.bodySite">
+            <path value="DeviceUseStatement.bodySite" />
+            <short value="Target body site" />
+            <definition value="Indicates the site on the subject's body where the device was used ( i.e. the target site)." />
+            <requirements value="Knowing where the device is targeted is important for tracking if multiple sites are possible. If more information than just a code is required, use the extension [http://hl7.org/fhir/StructureDefinition/body-site-instance](null.html)." />
+            <min value="0" />
+            <max value="1" />
+            <type>
+              <code value="CodeableConcept" />
+            </type>
+            <binding>
+              <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName">
+                <valueString value="BodySite" />
+              </extension>
+              <strength value="example" />
+              <description value="Codes describing anatomical locations. May include laterality." />
+              <valueSetReference>
+                <reference value="http://hl7.org/fhir/ValueSet/body-site" />
+              </valueSetReference>
+            </binding>
+            <mapping>
+              <identity value="rim" />
+              <map value="targetSiteCode" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.note">
+            <path value="DeviceUseStatement.note" />
+            <short value="Addition details (comments, instructions)" />
+            <definition value="Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement." />
+            <min value="0" />
+            <max value="*" />
+            <type>
+              <code value="Annotation" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="ClinicalStatement.additionalText" />
+            </mapping>
+          </element>
+        </snapshot>
+        <differential>
+          <element id="DeviceUseStatement">
+            <path value="DeviceUseStatement" />
+            <short value="Record of use of a device" />
+            <definition value="A record of a device being used by a patient where the record is the result of a report from the patient or another clinician." />
+            <min value="0" />
+            <max value="*" />
+            <mapping>
+              <identity value="quick" />
+              <map value="DeviceUsePerformanceOccurrence" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="workflow.order" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.identifier">
+            <path value="DeviceUseStatement.identifier" />
+            <short value="External identifier for this record" />
+            <definition value="An external identifier for this statement such as an IRI." />
+            <min value="0" />
+            <max value="*" />
+            <type>
+              <code value="Identifier" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="ClinicalStatement.identifier" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="id" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.status">
+            <path value="DeviceUseStatement.status" />
+            <short value="active | completed | entered-in-error +" />
+            <definition value="A code representing the patient or other source's judgment about the state of the device used that this statement is about.  Generally this will be active or completed." />
+            <comment value="DeviceUseStatment is a statement at a point in time.  The status is only representative at the point when it was asserted.  The value set for contains codes that assert the status of the use  by the patient (for example, stopped or on hold) as well as codes that assert the status of the resource itself (for example, entered in error).&#xA;&#xA;This element is labeled as a modifier because the status contains the codes that mark the statement as not currently valid." />
+            <min value="1" />
+            <max value="1" />
+            <type>
+              <code value="code" />
+            </type>
+            <isModifier value="true" />
+            <isSummary value="true" />
+            <binding>
+              <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName">
+                <valueString value="DeviceUseStatementStatus" />
+              </extension>
+              <strength value="required" />
+              <description value="A coded concept indicating the current status of a the Device Usage" />
+              <valueSetReference>
+                <reference value="http://hl7.org/fhir/ValueSet/device-statement-status" />
+              </valueSetReference>
+            </binding>
+            <mapping>
+              <identity value="rim" />
+              <map value=".statusCode" />
+            </mapping>
+            <mapping>
+              <identity value="quick" />
+              <map value="…status" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="status" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.subject">
+            <path value="DeviceUseStatement.subject" />
+            <short value="Patient using device" />
+            <definition value="The patient who used the device." />
+            <min value="1" />
+            <max value="1" />
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/Patient" />
+            </type>
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/Group" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="ClinicalStatement.subject" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="who.focus" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.whenUsed">
+            <path value="DeviceUseStatement.whenUsed" />
+            <short value="Period device was used" />
+            <definition value="The time period over which the device was used." />
+            <min value="0" />
+            <max value="1" />
+            <type>
+              <code value="Period" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="Performance.performanceTime" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="when.done" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.timing[x]">
+            <path value="DeviceUseStatement.timing[x]" />
+            <short value="How often  the device was used" />
+            <definition value="How often the device was used." />
+            <min value="0" />
+            <max value="1" />
+            <type>
+              <code value="Timing" />
+            </type>
+            <type>
+              <code value="Period" />
+            </type>
+            <type>
+              <code value="dateTime" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="DeviceUse.applicationSchedule" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="when.done" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.recordedOn">
+            <path value="DeviceUseStatement.recordedOn" />
+            <short value="When statement was recorded" />
+            <definition value="The time at which the statement was made/recorded." />
+            <min value="0" />
+            <max value="1" />
+            <type>
+              <code value="dateTime" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="ClinicalStatement.statementDateTime" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="when.recorded" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.source">
+            <path value="DeviceUseStatement.source" />
+            <short value="Who made the statement" />
+            <definition value="Who reported the device was being used by the patient." />
+            <min value="0" />
+            <max value="1" />
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/Patient" />
+            </type>
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/Practitioner" />
+            </type>
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/RelatedPerson" />
+            </type>
+            <mapping>
+              <identity value="w5" />
+              <map value="who.actor" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.device">
+            <path value="DeviceUseStatement.device" />
+            <short value="Reference to device used" />
+            <definition value="The details of the device used." />
+            <min value="1" />
+            <max value="1" />
+            <type>
+              <code value="Reference" />
+              <targetProfile value="http://hl7.org/fhir/StructureDefinition/Device" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="DeviceUse.device" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="who.actor" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.indication">
+            <path value="DeviceUseStatement.indication" />
+            <short value="Why device was used" />
+            <definition value="Reason or justification for the use of the device." />
+            <min value="0" />
+            <max value="*" />
+            <type>
+              <code value="CodeableConcept" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="Action.indication.reason" />
+            </mapping>
+            <mapping>
+              <identity value="w5" />
+              <map value="why" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.bodySite">
+            <path value="DeviceUseStatement.bodySite" />
+            <short value="Target body site" />
+            <definition value="Indicates the site on the subject's body where the device was used ( i.e. the target site)." />
+            <requirements value="Knowing where the device is targeted is important for tracking if multiple sites are possible. If more information than just a code is required, use the extension [http://hl7.org/fhir/StructureDefinition/body-site-instance](null.html)." />
+            <min value="0" />
+            <max value="1" />
+            <type>
+              <code value="CodeableConcept" />
+            </type>
+            <binding>
+              <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName">
+                <valueString value="BodySite" />
+              </extension>
+              <strength value="example" />
+              <description value="Codes describing anatomical locations. May include laterality." />
+              <valueSetReference>
+                <reference value="http://hl7.org/fhir/ValueSet/body-site" />
+              </valueSetReference>
+            </binding>
+            <mapping>
+              <identity value="rim" />
+              <map value="targetSiteCode" />
+            </mapping>
+          </element>
+          <element id="DeviceUseStatement.note">
+            <path value="DeviceUseStatement.note" />
+            <short value="Addition details (comments, instructions)" />
+            <definition value="Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement." />
+            <min value="0" />
+            <max value="*" />
+            <type>
+              <code value="Annotation" />
+            </type>
+            <mapping>
+              <identity value="quick" />
+              <map value="ClinicalStatement.additionalText" />
+            </mapping>
+          </element>
+        </differential>
+      </StructureDefinition>

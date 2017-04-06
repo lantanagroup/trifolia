@@ -157,7 +157,7 @@ namespace Trifolia.Web.Controllers.API
                                     ConstraintNumber = t.OwningImplementationGuideId.ToString() + "-" + tc.Number.Value.ToString(),
                                     IsPrimitive = tc.IsPrimitive ? "Yes" : "No",
                                     HasSchematron = (!tc.IsPrimitive && (tc.Schematron == null || tc.Schematron.Length == 0)) || (tc.Schematron != null && tc.Schematron.Length != 0) ? "Yes" : "No",
-                                    ValueSetName = tc.ValueSet != null ? tc.ValueSet.Name + " (" + tc.ValueSet.Oid + ")" : null,
+                                    ValueSetName = tc.ValueSet != null ? tc.ValueSet.Name + " (" + tc.ValueSet.GetIdentifier() + ")" : null,
                                     CodeSystemName = tc.CodeSystem != null ? tc.CodeSystem.Name + " (" + tc.CodeSystem.Oid + ")" : null
                                 });
 

@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml;
 using Trifolia.DB;
 using Trifolia.Generation.IG.Models;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG
 {
@@ -28,15 +29,17 @@ namespace Trifolia.Generation.IG
         private const string FIXED_VALUE = "Value";
 
         private IGSettingsManager igSettings;
+        private IIGTypePlugin igTypePlugin;
         private List<Template> templates;
         private TableCollection tables;
         private List<string> selectedCategories = null;
 
         #region Ctor
 
-        public TemplateConstraintTable(IGSettingsManager igSettings, List<Template> templates, TableCollection tables, List<string> selectedCategories)
+        public TemplateConstraintTable(IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, List<Template> templates, TableCollection tables, List<string> selectedCategories)
         {
             this.igSettings = igSettings;
+            this.igTypePlugin = igTypePlugin;
             this.templates = templates;
             this.tables = tables;
             this.selectedCategories = selectedCategories;
@@ -137,9 +140,14 @@ namespace Trifolia.Generation.IG
                     dataType = schemaObject.DataType;
 
                 if (constraint.ValueSet != null)
-                    fixedValue = string.Format("{0} ({1})", constraint.ValueSet.Oid, constraint.ValueSet.Name);
+                {
+                    string valueSetIdentifier = constraint.ValueSet.GetIdentifier(igTypePlugin);
+                    fixedValue = string.Format("{0} ({1})", valueSetIdentifier, constraint.ValueSet.Name);
+                }
                 else if (constraint.CodeSystem != null)
+                {
                     fixedValue = string.Format("{0} ({1})", constraint.CodeSystem.Oid, constraint.CodeSystem.Name);
+                }
 
                 if (!string.IsNullOrEmpty(constraint.Value))
                 {

@@ -6,6 +6,7 @@ using System.Text;
 using Trifolia.DB;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.Versioning
 {
@@ -13,6 +14,8 @@ namespace Trifolia.Generation.Versioning
     {
         private ComparisonResult result;
         private IObjectRepository tdb;
+        private IIGTypePlugin igTypePlugin;
+        private IGSettingsManager igSettings;
 
         #region Constructor
 
@@ -20,9 +23,8 @@ namespace Trifolia.Generation.Versioning
         /// Creates a new instance of VersionComparer
         /// </summary>
         /// <param name="tdb">The repository for data</param>
-        public VersionComparer(IObjectRepository tdb)
+        private VersionComparer()
         {
-            this.tdb = tdb;
         }
 
         #endregion
@@ -32,9 +34,12 @@ namespace Trifolia.Generation.Versioning
         /// <summary>
         /// Creates a new instance of VersionComparer
         /// </summary>
-        public static VersionComparer CreateComparer(IObjectRepository tdb)
+        public static VersionComparer CreateComparer(IObjectRepository tdb, IIGTypePlugin igTypePlugin, IGSettingsManager igSettings)
         {
-            VersionComparer comparer = new VersionComparer(tdb);
+            VersionComparer comparer = new VersionComparer();
+            comparer.tdb = tdb;
+            comparer.igTypePlugin = igTypePlugin;
+            comparer.igSettings = igSettings;
             return comparer;
         }
 
@@ -57,14 +62,11 @@ namespace Trifolia.Generation.Versioning
             this.result = new ComparisonResult();
 
             this.CompareTemplate(previousTemplate, newTemplate);
-
-            // TODO: Change this after implementation guide is required
-            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, newTemplate.OwningImplementationGuideId);
             
             // Added constraints
             foreach (var cConstraint in newTemplate.Constraints.Where(b => !previousTemplate.Constraints.Exists(a => a.Number == b.Number)))
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, cConstraint);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint);
 
                 ComparisonConstraintResult cResult = new ComparisonConstraintResult()
                 {
@@ -83,7 +85,7 @@ namespace Trifolia.Generation.Versioning
             // Deleted constraints
             foreach (var cConstraint in previousTemplate.Constraints.Where(a => !newTemplate.Constraints.Exists(b => b.Number == a.Number)))
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, cConstraint);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint);
 
                 ComparisonConstraintResult cResult = new ComparisonConstraintResult()
                 {
@@ -104,7 +106,7 @@ namespace Trifolia.Generation.Versioning
             {
                 var newConstraint = newTemplate.Constraints.Single(b => b.Number == oldConstraint.Number);
 
-                ComparisonConstraintResult compareResult = this.CompareConstraint(igSettings, oldConstraint, newConstraint);
+                ComparisonConstraintResult compareResult = this.CompareConstraint(this.igSettings, oldConstraint, newConstraint);
 
                 if (compareResult != null)
                     result.ChangedConstraints.Add(compareResult);
@@ -128,8 +130,8 @@ namespace Trifolia.Generation.Versioning
 
         private ComparisonConstraintResult CompareConstraint(IGSettingsManager igSettings, IConstraint oldConstraint, IConstraint newConstraint)
         {
-            var oldFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, oldConstraint);
-            var newFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, newConstraint);
+            var oldFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, oldConstraint);
+            var newFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, newConstraint);
 
             var newNarrative = newFc.GetPlainText();
             var oldNarrative = oldFc.GetPlainText();
@@ -211,7 +213,7 @@ namespace Trifolia.Generation.Versioning
             if (constraint.ValueSetId != null)
             {
                 ValueSet valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
-                return string.Format("{0} ({1})", valueSet.Name, valueSet.Oid);
+                return string.Format("{0} ({1})", valueSet.Name, valueSet.GetIdentifier(this.igTypePlugin));
             }
 
             return string.Empty;

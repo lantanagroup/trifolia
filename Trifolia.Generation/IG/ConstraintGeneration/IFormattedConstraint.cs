@@ -8,6 +8,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 
 using Trifolia.DB;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG.ConstraintGeneration
 {
@@ -53,7 +54,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         string TemplateLinkBase { get; set; }
         string ValueSetLinkBase { get; set; }
 
-        void ParseConstraint(IConstraint constraint);
+        void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, Template containedTemplate = null, ValueSet valueSet = null, CodeSystem codeSystem = null);
         void ParseFormattedConstraint();
         Paragraph AddToDocParagraph(WIKIParser wikiParser, OpenXmlElement parent, int level, int id, string headingStyle);
         string GetPlainText(bool includeHeading = true, bool includeDescription = true, bool includeLabel = true);

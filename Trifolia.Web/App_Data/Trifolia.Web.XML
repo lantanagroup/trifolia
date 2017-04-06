@@ -1056,7 +1056,7 @@
             <param name="identifier">The identifier of the template/profile to search for</param>
             <returns>System.Nullable&lt;System.Int32&gt;: Returns null/nothing if no template/profile is found. Otherwise, returns the internal Trifolia id (integer) of the template/profile.</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.TemplateController.GetTemplates(System.Nullable{System.Int32},System.Int32,System.String,System.Boolean,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Boolean)">
+        <member name="M:Trifolia.Web.Controllers.API.TemplateController.GetTemplates(System.Nullable{System.Int32},System.Int32,System.String,System.Boolean,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Boolean)">
             <summary>
             Searches for templates and returns basic meta-data about the templates
             </summary>
@@ -1070,6 +1070,7 @@
             <param name="filterImplementationGuideId">Matches the id of the implementation guide specifically to the implementation guide of the template. Only templates that are used by the specified implementation guide will be returned.</param>
             <param name="filterTemplateTypeId">Matches the id of the template type specified specifically to the template type of the template. Only templates with a matching type will be returned.</param>
             <param name="filterOrganizationId">Matches the id of the organization specified specifically to the organization of the template. Only templates with a matching organization will be returned.</param>
+            <param name="selfOid">If exists, makes sure not to return the Oid of the template currently in use</param>
             <param name="filterContextType">Matches the context specified specifically to the context of the template. Only templates whose context type contain the specified value will be returned.</param>
             <param name="inferred">Indicates if templates from other implementation guides, that are used by the filtered implementation guide, should be included. Does not apply if not filter is specified for implementation guide.</param>
             <returns>Trifolia.Web.Models.TemplateManagement.ListModel</returns>
@@ -1104,6 +1105,22 @@
             Each property is checked to determine if it is different before updating the property, otherwise
             it registers as a change event when auditing, regardless if the value is different.
             </remarks>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TerminologyController.ValidateValueSetIdentifier(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Looks for the identifier among existing identifiers.
+            </summary>
+            <param name="identifier">The identifier to search for</param>
+            <param name="identifierId">The id of a valueset identifier that should be ignored while searching</param>
+            <returns>True if the identifier is not found, otherwise false.</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TerminologyController.DeleteValueSet(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Deletes a value set. If a replacement value set is specified, it will take the place of the value set being deleted
+            in the constraints that reference it.
+            </summary>
+            <param name="valueSetId">The value set to delete</param>
+            <param name="replaceValueSetId">The value set that should take its place, if specified.</param>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.TypeController.GetSchemaChoices(System.Int32)">
             <summary>
@@ -1481,18 +1498,6 @@
             <summary>
             The number of items included in the list
             </summary>
-        </member>
-        <member name="M:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel.#ctor">
-            <summary>
-            Hide the ctor so we can enforce usage of the factory method, so we can "fix up" the model as necessary
-            </summary>
-        </member>
-        <member name="M:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel.AdaptFromTemplate(Trifolia.DB.Template)">
-            <summary>
-            Creates a new instance of <see cref="T:Trifolia.Web.Models.LandingPage.TemplateSummaryViewModel"/> from the passed in Template
-            </summary>
-            <param name="aTemplate"></param>
-            <returns></returns>
         </member>
         <member name="T:Trifolia.Web.Models.LogInViewModel">
             <summary>

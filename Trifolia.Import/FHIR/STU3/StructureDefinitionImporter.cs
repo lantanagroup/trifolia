@@ -27,7 +27,6 @@ namespace Trifolia.Import.FHIR.STU3
         private Dictionary<ImplementationGuide, IGSettingsManager> allIgSettings = new Dictionary<ImplementationGuide, IGSettingsManager>();
         private Dictionary<string, StructureDefinition> baseProfiles = new Dictionary<string, StructureDefinition>();
         private ImplementationGuideType implementationGuideType;
-        private Bundle profileBundle;
 
         public StructureDefinitionImporter(IObjectRepository tdb, string scheme, string authority)
         {
@@ -35,7 +34,6 @@ namespace Trifolia.Import.FHIR.STU3
             this.scheme = scheme;
             this.authority = authority;
             this.implementationGuideType = STU3Helper.GetImplementationGuideType(this.tdb, true);
-            this.profileBundle = ProfileHelper.GetProfileBundle();
         }
 
         private void PopulateBinding(TemplateConstraint constraint, CodeableConcept codeableConcept)

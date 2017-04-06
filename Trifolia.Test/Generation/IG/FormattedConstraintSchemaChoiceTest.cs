@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Trifolia.DB;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Test.Generation.IG
 {
@@ -12,6 +13,7 @@ namespace Trifolia.Test.Generation.IG
         private MockObjectRepository tdb;
         private ImplementationGuide fhirIg;
         private IGSettingsManager fhirIgSettings;
+        private IIGTypePlugin fhirIgTypePlugin;
 
         [TestInitialize]
         public void Setup()
@@ -23,6 +25,7 @@ namespace Trifolia.Test.Generation.IG
             var fhirIgType = this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_FHIR_STU3_IG_TYPE_NAME);
             this.fhirIg = this.tdb.FindOrCreateImplementationGuide(fhirIgType, "Test FHIR IG");
             this.fhirIgSettings = new IGSettingsManager(this.tdb, this.fhirIg.Id);
+            this.fhirIgTypePlugin = fhirIgType.GetPlugin();
         }
 
         [TestMethod, TestCategory("Narrative Generation")]
@@ -33,10 +36,10 @@ namespace Trifolia.Test.Generation.IG
             var c1 = this.tdb.AddConstraintToTemplate(template, null, null, "effective[x]", "SHALL", "1..1", isChoice: true);
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, null, "effectiveDateTime");
 
-            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c1);
+            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c1);
             var c1Text = c1fc.GetPlainText();
 
-            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c2);
+            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c2);
             var c2Text = c2fc.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] effective[x], where effective[x] is (CONF:2-1)", c1Text);
@@ -52,13 +55,13 @@ namespace Trifolia.Test.Generation.IG
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, null, "effectiveDateTime");
             var c3 = this.tdb.AddConstraintToTemplate(template, c1, null, "effectivePeriod");
 
-            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c1);
+            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c1);
             var c1Text = c1fc.GetPlainText();
 
-            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c2);
+            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c2);
             var c2Text = c2fc.GetPlainText();
 
-            var c3fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c3);
+            var c3fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c3);
             var c3Text = c3fc.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] effective[x], where effective[x] is one of (CONF:2-1)", c1Text);
@@ -75,10 +78,10 @@ namespace Trifolia.Test.Generation.IG
             var c1 = this.tdb.AddConstraintToTemplate(template, null, null, "value[x]", "SHALL", "1..1", isChoice: true);
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, null, "valueCodeableConcept", valueSet: valueSet);
 
-            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c1);
+            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c1);
             var c1Text = c1fc.GetPlainText();
 
-            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c2);
+            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c2);
             var c2Text = c2fc.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] value[x], where value[x] is (CONF:2-1)", c1Text);
@@ -94,10 +97,10 @@ namespace Trifolia.Test.Generation.IG
             var c1 = this.tdb.AddConstraintToTemplate(template, null, null, "value[x]", "SHALL", "1..1", isChoice: true);
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, null, "valueCodeableConcept", codeSystem: codeSystem);
 
-            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c1);
+            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c1);
             var c1Text = c1fc.GetPlainText();
 
-            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c2);
+            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c2);
             var c2Text = c2fc.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] value[x], where value[x] is (CONF:2-1)", c1Text);
@@ -112,10 +115,10 @@ namespace Trifolia.Test.Generation.IG
             var c1 = this.tdb.AddConstraintToTemplate(template, null, null, "value[x]", "SHALL", "1..1", isChoice: true);
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, null, "valueCodeableConcept", value: "1234-x", displayName: "Test Value");
 
-            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c1);
+            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c1);
             var c1Text = c1fc.GetPlainText();
 
-            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c2);
+            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c2);
             var c2Text = c2fc.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] value[x], where value[x] is (CONF:2-1)", c1Text);
@@ -132,10 +135,10 @@ namespace Trifolia.Test.Generation.IG
             var c1 = this.tdb.AddConstraintToTemplate(template, null, null, "value[x]", "SHALL", "1..1", isChoice: true);
             var c2 = this.tdb.AddConstraintToTemplate(template, c1, template2, "valueReference");
 
-            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c1);
+            var c1fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c1);
             var c1Text = c1fc.GetPlainText();
 
-            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, c2);
+            var c2fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.fhirIgSettings, this.fhirIgTypePlugin, c2);
             var c2Text = c2fc.GetPlainText();
 
             Assert.AreEqual("SHALL contain exactly one [1..1] value[x], where value[x] is (CONF:2-1)", c1Text);

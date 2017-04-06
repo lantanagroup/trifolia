@@ -25,6 +25,7 @@ namespace Trifolia.Web.Models.Export
         public int ImplementationGuideId { get; set; }
         public ValueSetOutputFormats ValueSetOutputFormat { get; set; }
         public bool IncludeCustomSchematron { get; set; }
+        public bool IncludeVocabulary { get; set; }
         public string VocabularyFileName { get; set; }
         public List<int> TemplateIds { get; set; }
         public List<string> SelectedCategories { get; set; }

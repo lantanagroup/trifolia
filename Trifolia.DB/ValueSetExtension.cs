@@ -9,14 +9,6 @@ namespace Trifolia.DB
 {
     public partial class ValueSet
     {
-        public static List<ValueSet> GetAllValueSets()
-        {
-            using (IObjectRepository tdb = DBContext.Create())
-            {
-                return tdb.ValueSets.ToList();
-            }
-        }
-
         public List<ValueSetMember> GetActiveMembers(DateTime? bindingDate)
         {
             // Always have SOME desired date
@@ -44,6 +36,20 @@ namespace Trifolia.DB
             }
 
             return members;
+        }
+
+        public string GetIdentifier(ValueSetIdentifierTypes? preferredType = null)
+        {
+            if (preferredType != null)
+            {
+                ValueSetIdentifier preferredIdentifier = this.Identifiers.FirstOrDefault(y => y.Type == preferredType.Value);
+
+                if (preferredIdentifier != null)
+                    return preferredIdentifier.Identifier;
+            }
+
+            ValueSetIdentifier vsIdentifier = this.Identifiers.OrderByDescending(y => y.IsDefault).FirstOrDefault();
+            return vsIdentifier != null ? vsIdentifier.Identifier : null;
         }
     }
 }

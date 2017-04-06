@@ -162,7 +162,8 @@
                                 <span class="templateMetaDataError" data-bind="validationMessage: Bookmark"></span>
 
                                 <!-- ko if: TemplateTypeId() -->
-                                <div class="implied-template-field" data-bind="templateSelect: ImpliedTemplateId, disable: $parent.DisableImpliedTemplate, filterContextType: PrimaryContextType, label: 'Implied Template/Profile:', canTypeAhead: true"></div>
+                                <div class="implied-template-field" data-bind="templateSelect: ImpliedTemplateId, oid: Oid, disable: $parent.DisableImpliedTemplate, filterContextType: PrimaryContextType, label: 'Implied Template/Profile:', canTypeAhead: true"></div>
+                                <span class="templateMetaDataError" data-bind="validationMessage: ImpliedTemplateId"></span>
                                 <!-- /ko -->
 
                                 <div class="input-group is-open-field">

@@ -838,7 +838,7 @@ namespace Trifolia.Export.Schematron
             List<string> messages = new List<string>();
 
             IGSettingsManager igSettings = new IGSettingsManager(rep, ig.Id);
-            IFormattedConstraint currentFc = FormattedConstraintFactory.NewFormattedConstraint(this.rep, igSettings, tc);
+            IFormattedConstraint currentFc = FormattedConstraintFactory.NewFormattedConstraint(this.rep, igSettings, this.igTypePlugin, tc);
 
             if (!string.IsNullOrEmpty(conformance))
                 currentFc.Conformance = conformance;

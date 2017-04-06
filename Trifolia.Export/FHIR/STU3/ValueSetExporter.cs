@@ -50,7 +50,7 @@ namespace Trifolia.Export.FHIR.STU3
                 Name = valueSet.Name,
                 Status = usedByPublishedIgs ? PublicationStatus.Active : PublicationStatus.Draft,
                 Description = new Markdown(valueSet.Description),
-                Url = valueSet.Oid
+                Url = valueSet.GetIdentifier(ValueSetIdentifierTypes.HTTP)
             };
 
             if (summaryType == null || summaryType == SummaryType.Data)

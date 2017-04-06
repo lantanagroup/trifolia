@@ -107,8 +107,15 @@ namespace Trifolia.Web.Controllers.API
                 throw new AuthorizationException("You do not have permission to view this template");
 
             WIKIParser wikiParser = new WIKIParser(this.tdb);
-            Template template = this.tdb.Templates.Single(y => y.Id == templateId);
+            Template template = this.tdb.Templates
+                .Include("ChildConstraints")
+                .Include("ChildConstraints.ChildConstraints")
+                .Include("ChildConstraints.ChildConstraints.ChildConstraints")
+                .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints")
+                .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints")
+                .Single(y => y.Id == templateId);
             IGSettingsManager igManager = new IGSettingsManager(this.tdb, template.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
             string baseLink = this.Request.RequestUri.GetLeftPart(UriPartial.Authority);
             bool canEditTemplate = CheckPoint.Instance.GrantEditTemplate(template.Id)
                 && CheckPoint.Instance.HasSecurables(SecurableNames.TEMPLATE_EDIT);
@@ -173,7 +180,7 @@ namespace Trifolia.Web.Controllers.API
             int constraintCount = 0;
             foreach (TemplateConstraint cDbConstraint in template.ChildConstraints.Where(y => y.Parent == null).OrderBy(y => y.Order))
             {
-                ViewModel.Constraint newConstraint = BuildConstraint(wikiParser, baseLink, igManager, cDbConstraint, ++constraintCount);
+                ViewModel.Constraint newConstraint = BuildConstraint(wikiParser, baseLink, igManager, igTypePlugin, cDbConstraint, ++constraintCount);
                 model.Constraints.Add(newConstraint);
             }
 
@@ -353,21 +360,23 @@ namespace Trifolia.Web.Controllers.API
         /// <param name="filterImplementationGuideId">Matches the id of the implementation guide specifically to the implementation guide of the template. Only templates that are used by the specified implementation guide will be returned.</param>
         /// <param name="filterTemplateTypeId">Matches the id of the template type specified specifically to the template type of the template. Only templates with a matching type will be returned.</param>
         /// <param name="filterOrganizationId">Matches the id of the organization specified specifically to the organization of the template. Only templates with a matching organization will be returned.</param>
+        /// <param name="selfOid">If exists, makes sure not to return the Oid of the template currently in use</param>
         /// <param name="filterContextType">Matches the context specified specifically to the context of the template. Only templates whose context type contain the specified value will be returned.</param>
         /// <param name="inferred">Indicates if templates from other implementation guides, that are used by the filtered implementation guide, should be included. Does not apply if not filter is specified for implementation guide.</param>
         /// <returns>Trifolia.Web.Models.TemplateManagement.ListModel</returns>
         [HttpGet, Route("api/Template"), SecurableAction(SecurableNames.TEMPLATE_LIST)]
         public ListModel GetTemplates(
-            int? count = null, 
-            int page = 1, 
-            string sortProperty = "Name", 
-            bool sortDescending = false, 
+            int? count = null,
+            int page = 1,
+            string sortProperty = "Name",
+            bool sortDescending = false,
             string queryText = null,
             string filterName = null,
             string filterOid = null,
             int? filterImplementationGuideId = null,
             int? filterTemplateTypeId = null,
             int? filterOrganizationId = null,
+            string selfOid = null,
             string filterContextType = null,
             bool inferred = true)
         {
@@ -399,6 +408,9 @@ namespace Trifolia.Web.Controllers.API
 
             if (filterImplementationGuideId != null && !inferred)
                 query = query.Where(y => y.ImplementationGuideId == filterImplementationGuideId);
+                
+            if (selfOid != null)
+                query = (from q in query where q.Oid != selfOid select q);
 
             int currentUserId = CheckPoint.Instance.GetUser(tdb).Id;
             var editableTemplates = (from tp in this.tdb.ViewTemplatePermissions
@@ -645,6 +657,7 @@ namespace Trifolia.Web.Controllers.API
 
             Template template = this.tdb.Templates.Single(y => y.Id == model.TemplateId);
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, template.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
 
             // Check for duplicate conformance numbers
             List<int> destinationIgConfNumbers = (from t in this.tdb.Templates
@@ -658,7 +671,7 @@ namespace Trifolia.Web.Controllers.API
 
             template.Constraints.ForEach(c =>
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, c);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, c);
 
                 model.Constraints.Add(new CopyModel.Constraint()
                 {
@@ -782,21 +795,23 @@ namespace Trifolia.Web.Controllers.API
             if (!CheckPoint.Instance.GrantViewTemplate(templateId))
                 throw new AuthorizationException("You do not have permission to view this template");
 
-            Template lTemplate = this.tdb.Templates.Single(t => t.Id == templateId);
-            Template lPreviousVersion = this.tdb.Templates.SingleOrDefault(t => t.Id == lTemplate.PreviousVersionTemplateId);
+            Template currentVersion = this.tdb.Templates.Single(t => t.Id == templateId);
+            Template previousVersion = this.tdb.Templates.SingleOrDefault(t => t.Id == currentVersion.PreviousVersionTemplateId);
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, currentVersion.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = currentVersion.ImplementationGuideType.GetPlugin();
 
-            if (lPreviousVersion == null)
+            if (previousVersion == null)
                 return null;
 
-            VersionComparer comparer = VersionComparer.CreateComparer(this.tdb);
-            ComparisonResult result = comparer.Compare(lPreviousVersion, lTemplate);
+            VersionComparer comparer = VersionComparer.CreateComparer(this.tdb, igTypePlugin, igSettings);
+            ComparisonResult result = comparer.Compare(previousVersion, currentVersion);
 
             DifferenceModel model = new DifferenceModel(result)
             {
-                Id = lTemplate.Id,
-                TemplateName = lTemplate.Name,
-                PreviousTemplateName = string.Format("{0} ({1})", lPreviousVersion.Name, lPreviousVersion.Oid),
-                PreviousTemplateId = lPreviousVersion.Id
+                Id = currentVersion.Id,
+                TemplateName = currentVersion.Name,
+                PreviousTemplateName = string.Format("{0} ({1})", previousVersion.Name, previousVersion.Oid),
+                PreviousTemplateId = previousVersion.Id
             };
 
             return model;
@@ -832,6 +847,7 @@ namespace Trifolia.Web.Controllers.API
 
             Template template = this.tdb.Templates.Single(y => y.Id == model.TemplateId);
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, template.OwningImplementationGuideId);
+            IIGTypePlugin igTypePlugin = template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
             List<int> duplicateConformanceNumbers = new List<int>();
             List<MoveConstraint> moveConstraints = new List<MoveConstraint>();
 
@@ -849,7 +865,7 @@ namespace Trifolia.Web.Controllers.API
 
             template.ChildConstraints.ToList().ForEach(c =>
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, c);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, c);
 
                 moveConstraints.Add(new MoveConstraint()
                 {
@@ -997,9 +1013,9 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
-        private ViewModel.Constraint BuildConstraint(WIKIParser wikiParser, string baseLink, IGSettingsManager igSettings, TemplateConstraint dbConstraint, int constraintCount)
+        private ViewModel.Constraint BuildConstraint(WIKIParser wikiParser, string baseLink, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, TemplateConstraint dbConstraint, int constraintCount)
         {
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, dbConstraint, linkContainedTemplate: true, linkIsBookmark: false, createLinksForValueSets: false);
+            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, dbConstraint, linkContainedTemplate: true, linkIsBookmark: false, createLinksForValueSets: false);
 
             ViewModel.Constraint newConstraint = new ViewModel.Constraint()
             {
@@ -1014,7 +1030,7 @@ namespace Trifolia.Web.Controllers.API
             int nextConstraintCount = 0;
             foreach (TemplateConstraint cDbConstraint in dbConstraint.ChildConstraints.OrderBy(y => y.Order))
             {
-                ViewModel.Constraint nextNewConstraint = BuildConstraint(wikiParser, baseLink, igSettings, cDbConstraint, ++nextConstraintCount);
+                ViewModel.Constraint nextNewConstraint = BuildConstraint(wikiParser, baseLink, igSettings, igTypePlugin, cDbConstraint, ++nextConstraintCount);
                 newConstraint.Children.Add(nextNewConstraint);
             }
 

@@ -7,6 +7,9 @@ namespace Trifolia.Test
 {
     public static class TestDataGenerator
     {
+        public const string DS1_IG_NAME = "Test Implementation Guide";
+        public const string DS2_IG_NAME = "The IG";
+
         #region Data Set 1 - IG Generation and Trifolia Export Testing
 
         /// <summary>
@@ -30,7 +33,7 @@ namespace Trifolia.Test
 
             mockRepo.FindOrCreateValueSet("Test Value Set", "9.8.7.6.5.4.3.2.1");
 
-            ImplementationGuide ig = mockRepo.FindOrCreateImplementationGuide(igType, "Test Implementation Guide", internalOrg);
+            ImplementationGuide ig = mockRepo.FindOrCreateImplementationGuide(igType, DS1_IG_NAME, internalOrg);
             mockRepo.FindOrCreateImplementationGuide(igType, "Test IG 2", testOrg);
             mockRepo.FindOrCreateImplementationGuide(igType, "Test IG 3", internalOrg);
 
@@ -75,6 +78,7 @@ namespace Trifolia.Test
 
         /// <summary>
         /// Used to test different narrative constraint generation combinations.
+        /// Populates the mock repository with CDA implementation guide and some basic templates
         /// </summary>
         /// <returns></returns>
         public static MockObjectRepository GenerateMockDataset2()
@@ -92,7 +96,7 @@ namespace Trifolia.Test
 
             ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType("CDA", "CDA.xsd", "cda", "urn:hl7-org:v3");
 
-            ImplementationGuide ig = mockRepo.FindOrCreateImplementationGuide(igType, "The IG");
+            ImplementationGuide ig = mockRepo.FindOrCreateImplementationGuide(igType, DS2_IG_NAME);
 
             TemplateType docType = mockRepo.FindOrCreateTemplateType(igType, "Document", "ClinicalDocument", "ClinicalDocument", 1);
 
