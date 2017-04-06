@@ -1113,6 +1113,14 @@
             <param name="identifierId">The id of a valueset identifier that should be ignored while searching</param>
             <returns>True if the identifier is not found, otherwise false.</returns>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.TerminologyController.DeleteValueSet(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Deletes a value set. If a replacement value set is specified, it will take the place of the value set being deleted
+            in the constraints that reference it.
+            </summary>
+            <param name="valueSetId">The value set to delete</param>
+            <param name="replaceValueSetId">The value set that should take its place, if specified.</param>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.TypeController.GetSchemaChoices(System.Int32)">
             <summary>
             Gets all choices available within the specified implementation guide type's schema

@@ -11,6 +11,24 @@
             padding-top: 28px;
             padding-bottom: 0px;
         }
+
+        ul.dropdown-menu[template-url] {
+            z-index: 1050;
+        }
+
+        ul.dropdown-menu[template-url] .row {
+            padding: 2px 10px;
+            cursor: pointer;
+        }
+
+        ul.dropdown-menu[template-url] .identifier-col {
+            word-wrap: break-word;
+        }
+
+        .table.valueset-relationships thead tr th:nth-child(1),
+        .table.valueset-relationships thead tr th:nth-child(2) {
+            width: 25%;
+        }
     </style>
 </asp:Content>
 
@@ -77,9 +95,9 @@
                                         <a href="#" class="dropdown-toggle" role="menu" data-toggle="dropdown"><span>{{r.Name}}</span> <span class="caret"></span></a>
                                         <i ng-show="r.IsPublished" class="glyphicon glyphicon-exclamation-sign" title="This value set is used by a published implementation guide!"></i>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#" data-bind="attr: { href: '/TerminologyManagement/ValueSet/View/' + Id() }">View</a></li>
+                                            <li><a href="/TerminologyManagement/ValueSet/View/{{r.Id}}">View</a></li>
                                             <li ng-disabled="r.disableModify"><a href="#" ng-click="editValueSet(r)">Edit Value Set</a></li>
-                                            <li ng-disabled="r.disableModify"><a href="#" ng-click="editConcepts(r)">Edit Concepts</a></li>
+                                            <li ng-disabled="r.disableModify"><a href="/TerminologyManagement/ValueSet/Edit/{{r.Id}}/Concept" ng-click="editConcepts(r)">Edit Concepts</a></li>
                                             <li ng-disabled="r.disableModify"><a href="#" ng-click="removeValueSet(r)">Remove</a></li>
                                         </ul>
                                     </div>
@@ -136,21 +154,21 @@
                                         <i ng-show="criteria.order == 'asc'" class="glyphicon glyphicon-chevron-up"></i>
                                     </span>
                                 </th>
-                                <th data-bind="click: function () { $parent.ToggleCodeSystemSort('Oid'); }" style="cursor: pointer;">
+                                <th ng-click="toggleSort('Oid')" style="cursor: pointer;">
                                     Identifier
                                     <span ng-show="criteria.sort == 'Oid'">
                                         <i ng-show="criteria.order == 'desc'" class="glyphicon glyphicon-chevron-down"></i>
                                         <i ng-show="criteria.order == 'asc'" class="glyphicon glyphicon-chevron-up"></i>
                                     </span>
                                 </th>
-                                <th data-bind="click: function () { $parent.ToggleCodeSystemSort('MemberCount'); }" style="cursor: pointer;">
+                                <th ng-click="toggleSort('MemberCount')" style="cursor: pointer;">
                                     #/Members
                                     <span ng-show="criteria.sort == 'MemberCount'">
                                         <i ng-show="criteria.order == 'desc'" class="glyphicon glyphicon-chevron-down"></i>
                                         <i ng-show="criteria.order == 'asc'" class="glyphicon glyphicon-chevron-up"></i>
                                     </span>
                                 </th>
-                                <th data-bind="click: function () { $parent.ToggleCodeSystemSort('ConstraintCount'); }" style="cursor: pointer;">
+                                <th ng-click="toggleSort('ConstraintCount')" style="cursor: pointer;">
                                     #/Constraints
                                     <span ng-show="criteria.sort == 'ConstraintCount'">
                                         <i ng-show="criteria.order == 'desc'" class="glyphicon glyphicon-chevron-down"></i>
@@ -190,6 +208,64 @@
                 </div>
             </uib-tab>
         </uib-tabset>
+
+        <script type="text/html" id="valueSetTypeaheadTemplate.html">
+            <div class="row">
+                <div class="col-md-6">{{match.model.name}}</div>
+                <div class="col-md-6 identifier-col">
+                    <span ng-repeat="i in match.model.identifiers">{{i}}</span>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="removeValueSetModal.html">
+            <div class="modal-header">
+                <h4 class="modal-title">Remove Value Set</h4>
+            </div>
+            <div class="modal-body" ng-init="init()">
+                <div class="alert alert-warning">Removing the value set is a permanent action. If constraints are associated with the value set, please indicate which value set should replace it. The following table displays the relationships to the value set that will be affected by this change:</div>
+
+                <table class="table table-striped valueset-relationships">
+                    <thead>
+                        <tr>
+                            <th>Implementation Guide</th>
+                            <th>Template/Profile</th>
+                            <th>Constraint(s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="r in relationships">
+                            <td>{{r.ImplementationGuideName}}</td>
+                            <td>
+                                <span>{{r.TemplateName}}</span>
+                                <sub>{{r.TemplateOid}}</sub>
+                            </td>
+                            <td>
+                                <div class="row" ng-repeat="b in r.Bindings">
+                                    <div class="col-md-4">{{b.ConstraintNumber}}</div>
+                                    <div class="col-md-4">{{b.Date | date}}</div>
+                                    <div class="col-md-4">{{(bindingStrengths | filter: { value: b.Strength })[0].display}}</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot ng-show="relationships.length == 0">
+                        <tr>
+                            <td colspan="3">This value set does not have any relationships yet.</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="form-group">
+                    <label>Replacement value set</label>
+                    <input type="text" class="form-control" placeholder="Type to search" typeahead-append-to-body="true" typeahead-template-url="valueSetTypeaheadTemplate.html" typeahead-show-hint="true" ng-model="replaceValueSet" typeahead-min-length="3" uib-typeahead="vs as vs.display for vs in searchValueSets($viewValue)"></input>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" ng-click="ok()">OK</button>
+                <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+            </div>
+        </script>
 
         <script type="text/html" id="editValueSetModal.html">
             <form name="EditValueSetForm">

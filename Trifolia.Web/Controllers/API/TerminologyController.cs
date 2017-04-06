@@ -249,9 +249,18 @@ namespace Trifolia.Web.Controllers.API
             return null;
         }
 
+        /// <summary>
+        /// Deletes a value set. If a replacement value set is specified, it will take the place of the value set being deleted
+        /// in the constraints that reference it.
+        /// </summary>
+        /// <param name="valueSetId">The value set to delete</param>
+        /// <param name="replaceValueSetId">The value set that should take its place, if specified.</param>
         [HttpDelete, Route("api/Terminology/ValueSet/{valueSetId}"), SecurableAction(SecurableNames.VALUESET_EDIT)]
-        public void DeleteValueSet(int valueSetId)
+        public void DeleteValueSet(int valueSetId, int? replaceValueSetId = null)
         {
+            if (replaceValueSetId == valueSetId)
+                throw new ArgumentException("replaceValueSetId cannot be the same as the value set being deleted");
+
             using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
                 var valueSet = auditedTdb.ValueSets.SingleOrDefault(y => y.Id == valueSetId);
@@ -259,11 +268,13 @@ namespace Trifolia.Web.Controllers.API
                 if (!valueSet.CanModify(auditedTdb) && !valueSet.CanOverride(auditedTdb))
                     throw new AuthorizationException("You do not have the permission to delete this valueset");
 
-                // Nullify the references to the valueset on constraints
-                valueSet.Constraints.ToList().ForEach(y =>
+                List<TemplateConstraint> constraints = valueSet.Constraints.ToList();
+
+                foreach (var constraint in constraints)
                 {
-                    y.ValueSet = null;
-                });
+                    // If no replacement value set is specified, then it will be null, as expected
+                    constraint.ValueSetId = replaceValueSetId;
+                }
 
                 // Remove members from the valueset
                 valueSet.Members.ToList().ForEach(y => {

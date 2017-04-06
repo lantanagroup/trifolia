@@ -103,6 +103,19 @@
             });
         };
 
+        $scope.removeValueSet = function (valueSet) {
+            var modalInstance = $uibModal.open({
+                controller: 'RemoveValueSetModalController',
+                templateUrl: 'removeValueSetModal.html',
+                size: 'lg',
+                resolve: {
+                    valueSetId: function () { return valueSet.Id; }
+                }
+            });
+
+            modalInstance.result.then($scope.search);
+        };
+
         $scope.contextTabChanged = function () {
             if ($scope.currentTab == 0) {
                 $scope.search();
@@ -215,6 +228,64 @@
         };
 
         $scope.$on('CurrentTabChanged', $scope.contextTabChanged);
+    })
+    .controller('RemoveValueSetModalController', function ($q, $uibModalInstance, $scope, TerminologyService, HelperService, valueSetId) {
+        $scope.replaceValueSet = null;
+        $scope.relationships = [];
+        $scope.bindingStrengths = [{ value: 0, display: 'Static' }, { value: 1, display: 'Dynamic' }];
+
+        $scope.init = function () {
+            TerminologyService.getValueSetRelationships(valueSetId)
+                .then(function (results) {
+                    $scope.relationships = results;
+                })
+                .catch(function (err) {
+                    alert('An error occurred while getting the relationships to the value set: ' + err);
+                });
+        };
+
+        $scope.searchValueSets = function (query) {
+            var deferred = $q.defer();
+
+            TerminologyService.searchValueSets(query, 'Name', 1, 10, 'asc')
+                .then(function (results) {
+                    var mapped = _.map(results.Items, function (valueSet) {
+                        var ret = {
+                            id: valueSet.Id,
+                            name: valueSet.Name,
+                            identifiers: valueSet.Identifiers.split(',')
+                        };
+
+                        ret.display = ret.name;
+
+                        if (ret.identifiers.length > 0) {
+                            ret.display += ' (' + ret.identifiers[0] + ')';
+                        }
+
+                        return ret;
+                    });
+
+                    deferred.resolve(mapped);
+                })
+                .catch(deferred.reject);
+
+            return deferred.promise;
+        };
+
+        $scope.ok = function () {
+            var replaceValueSetId = $scope.replaceValueSet ? $scope.replaceValueSet.id : null;
+            TerminologyService.removeValueSet(valueSetId, replaceValueSetId)
+                .then(function() {
+                    $uibModalInstance.close();
+                })
+                .catch(function(err) {
+                    alert('An error occurred while removing the value set: ' + err);
+                });
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
     })
     .controller('EditCodeSystemModalController', function ($uibModalInstance, $scope, TerminologyService, HelperService, codeSystem) {
         $scope.identifierRegex = HelperService.identifierRegex;
@@ -408,6 +479,21 @@
             return deferred.promise;
         };
 
+        service.getValueSetRelationships = function (valueSetId) {
+            var url = '/api/Terminology/ValueSet/' + valueSetId + '/Relationships';
+            var deferred = $q.defer();
+
+            $http.get(url)
+                .then(function (results) {
+                    deferred.resolve(results.data);
+                })
+                .catch(function (err) {
+                    deferred.reject(err);
+                });
+
+            return deferred.promise;
+        };
+
         service.validateValueSetIdentifier = function (valueSetIdentifier, identifierId) {
             var url = HelperService.buildUrl('/api/Terminology/ValueSet/$validateIdentifier', {
                 identifier: valueSetIdentifier,
@@ -433,6 +519,24 @@
             $http.post(url, valueSet)
                 .then(function (results) {
                     deferred.resolve(results.data);
+                })
+                .catch(function (err) {
+                    deferred.reject(err);
+                });
+
+            return deferred.promise;
+        };
+
+        service.removeValueSet = function (valueSetId, replaceValueSetId) {
+            var url = '/api/Terminology/ValueSet/' + valueSetId;
+            url = HelperService.buildUrl(url, {
+                replaceValueSetId: replaceValueSetId
+            });
+            var deferred = $q.defer();
+
+            $http.delete(url)
+                .then(function () {
+                    deferred.resolve();
                 })
                 .catch(function (err) {
                     deferred.reject(err);
