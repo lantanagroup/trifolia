@@ -302,11 +302,15 @@ namespace Trifolia.DB
                 newConstraint.ParentConstraint = parentConstraint;
             }
 
-            if (constraint.ContainedTemplate != null)
+            constraint.References.ToList().ForEach(y =>
             {
-                newConstraint.ContainedTemplateId = null;
-                newConstraint.ContainedTemplate = constraint.ContainedTemplate;
-            }
+                newConstraint.References.Add(new TemplateConstraintReference()
+                {
+                    Constraint = newConstraint,
+                    ReferenceIdentifier = y.ReferenceIdentifier,
+                    ReferenceType = y.ReferenceType
+                });
+            });
 
             // Clone each child constraint
             constraint.ChildConstraints.ToList().ForEach(y =>
@@ -331,15 +335,43 @@ namespace Trifolia.DB
             return bookmark.Length <= 40 ? bookmark : bookmark.Substring(0, 39);
         }
 
+        public IEnumerable<TemplateConstraint> GetReferencingConstraints(IObjectRepository tdb)
+        {
+            string thisIdentifier = this.Oid.ToLower().Trim();
+            return (from tc in tdb.TemplateConstraints
+                    join tcr in tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
+                    where tcr.ReferenceIdentifier.ToLower().Trim() == thisIdentifier && tcr.ReferenceType == ConstraintReferenceTypes.Template
+                    select tc)
+                    .Distinct();
+        }
+
         public void Delete(IObjectRepository tdb, int? replacementTemplateId)
         {
-            // Update the constraints to reference the selected template instead of this one
-            List<TemplateConstraint> constraints = this.ContainingConstraints.ToList();
+            string thisIdentifier = this.Oid.ToLower().Trim();
+            var constraintReferences = tdb.TemplateConstraintReferences
+                .Where(y => y.ReferenceIdentifier == thisIdentifier && y.ReferenceType == ConstraintReferenceTypes.Template)
+                .ToList();
+            Template replacementTemplate = replacementTemplateId != null ? tdb.Templates.SingleOrDefault(y => y.Id == replacementTemplateId) : null;
 
-            if (replacementTemplateId != null)
-                constraints.ForEach(tc => tc.ContainedTemplateId = replacementTemplateId);
-            else
-                constraints.ForEach(tc => tdb.TemplateConstraints.Remove(tc));
+            // Update the constraints to reference the selected template instead of this one
+            foreach (var constraintReference in constraintReferences)
+            {
+                if (replacementTemplate != null)
+                {
+                    bool alreadyHasNewReference = constraintReference.Constraint.References.Any(y =>
+                        y.ReferenceIdentifier.ToLower().Trim() == replacementTemplate.Oid.ToLower().Trim()
+                        && y.ReferenceType == ConstraintReferenceTypes.Template);
+
+                    if (alreadyHasNewReference)
+                        tdb.TemplateConstraintReferences.Remove(constraintReference);
+                    else
+                        constraintReference.ReferenceIdentifier = replacementTemplate.Oid;
+                }
+                else
+                {
+                    tdb.TemplateConstraintReferences.Remove(constraintReference);
+                }
+            }
 
             // Update the tempaltes to reference the selected template instead of this one
             List<Template> templates = this.ImplyingTemplates.ToList();
@@ -365,16 +397,16 @@ namespace Trifolia.DB
             tdb.Templates.Remove(this);
         }
 
-        public List<Template> GetRelatedTemplates(bool includeImplied = true, bool includeContained = true)
+        public List<Template> GetRelatedTemplates(IObjectRepository tdb, bool includeImplied = true, bool includeContained = true)
         {
             List<Template> templates = new List<Template>();
 
-            GetRelatedTemplates(templates, this, includeImplied, includeContained);
+            GetRelatedTemplates(tdb, templates, this, includeImplied, includeContained);
 
             return templates;
         }
 
-        private void GetRelatedTemplates(List<Template> list, Template currentTemplate, bool includeImplied, bool includeContained)
+        private static void GetRelatedTemplates(IObjectRepository tdb, List<Template> list, Template currentTemplate, bool includeImplied, bool includeContained)
         {
             if (list.Contains(currentTemplate))
                 return;
@@ -382,20 +414,21 @@ namespace Trifolia.DB
             if (currentTemplate.ImpliedTemplate != null && includeImplied)
             {
                 list.Add(currentTemplate.ImpliedTemplate);
-                GetRelatedTemplates(list, currentTemplate.ImpliedTemplate, includeImplied, includeContained);
+                GetRelatedTemplates(tdb, list, currentTemplate.ImpliedTemplate, includeImplied, includeContained);
             }
 
             if (includeContained)
             {
-                var containedTemplates = currentTemplate.ChildConstraints
-                    .Where(y => y.ContainedTemplate != null)
-                    .Select(y => y.ContainedTemplate)
-                    .Distinct();
+                var containedTemplates = (from tcr in tdb.TemplateConstraintReferences
+                                          join tc in tdb.TemplateConstraints on tcr.TemplateConstraintId equals tc.Id
+                                          join t in tdb.Templates on tc.TemplateId equals t.Id
+                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template && tcr.ReferenceIdentifier == currentTemplate.Oid
+                                          select t);
 
                 foreach (Template currentContainedTemplate in containedTemplates)
                 {
                     list.Add(currentContainedTemplate);
-                    GetRelatedTemplates(list, currentContainedTemplate, includeImplied, includeContained);
+                    GetRelatedTemplates(tdb, list, currentContainedTemplate, includeImplied, includeContained);
                 }
             }
 

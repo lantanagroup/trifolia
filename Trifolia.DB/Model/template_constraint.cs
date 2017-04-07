@@ -15,6 +15,7 @@ namespace Trifolia.DB
             GreenConstraints = new HashSet<GreenConstraint>();
             Samples = new HashSet<TemplateConstraintSample>();
             ChildConstraints = new HashSet<TemplateConstraint>();
+            References = new HashSet<TemplateConstraintReference>();
         }
 
         [Column("id")]
@@ -34,9 +35,6 @@ namespace Trifolia.DB
 
         [Column("valueSetId")]
         public int? ValueSetId { get; set; }
-
-        [Column("containedTemplateId")]
-        public int? ContainedTemplateId { get; set; }
 
         [Column("order")]
         public int Order { get; set; }
@@ -138,10 +136,11 @@ namespace Trifolia.DB
 
         public virtual Template Template { get; set; }
 
-        public virtual Template ContainedTemplate { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TemplateConstraintSample> Samples { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TemplateConstraintReference> References { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TemplateConstraint> ChildConstraints { get; set; }

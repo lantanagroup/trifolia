@@ -14,7 +14,6 @@ namespace Trifolia.DB
         {
             GreenTemplates = new HashSet<GreenTemplate>();
             ChildConstraints = new HashSet<TemplateConstraint>();
-            ContainingConstraints = new HashSet<TemplateConstraint>();
             Extensions = new HashSet<TemplateExtension>();
             ImplyingTemplates = new HashSet<Template>();
             NextVersions = new HashSet<Template>();
@@ -94,9 +93,6 @@ namespace Trifolia.DB
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TemplateConstraint> ChildConstraints { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TemplateConstraint> ContainingConstraints { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TemplateExtension> Extensions { get; set; }

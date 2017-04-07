@@ -77,6 +77,7 @@
     <Compile Include="Exceptions\TrifoliaModelException.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="IConstraint.cs" />
+    <Compile Include="IConstraintReference.cs" />
     <Compile Include="IFilterOrganization.cs" />
     <Compile Include="ImplementationGuideExtensions.cs" />
     <Compile Include="ImplementationGuideFileExtension.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Model\app_securable.cs" />
     <Compile Include="Model\audit.cs" />
     <Compile Include="Model\codesystem.cs" />
+    <Compile Include="Model\template_constraint_reference.cs" />
     <Compile Include="Model\TrifoliaDatabase.cs" />
     <Compile Include="Model\green_constraint.cs" />
     <Compile Include="Model\green_template.cs" />
