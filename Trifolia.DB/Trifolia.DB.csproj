@@ -212,6 +212,20 @@
     <EmbeddedResource Include="Migrations\201703292147411_searchValueSet_down.sql" />
     <EmbeddedResource Include="Migrations\201703292147411_searchValueSet_up.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201704111943303_getImplementationGuideTemplates_up.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201704111943303_getImplementationGuideTemplates_down.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201704111943303_vContainedTemplateCount_down.sql" />
+    <EmbeddedResource Include="Migrations\201704111943303_vContainedTemplateCount_up.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201704111943303_vTemplateUsage_down.sql" />
+    <EmbeddedResource Include="Migrations\201704111943303_vTemplateUsage_up.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

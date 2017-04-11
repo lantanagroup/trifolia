@@ -50,6 +50,9 @@ where
             this.Sql(MigrateContainedTemplates);
             this.Sql(DropContainedTemplateIndex);
             this.Sql(DropContainedTemplateForeignKey);
+            this.SqlResource("Trifolia.DB.Migrations.201704111943303_getImplementationGuideTemplates_up.sql");
+            this.SqlResource("Trifolia.DB.Migrations.201704111943303_vContainedTemplateCount_up.sql");
+            this.SqlResource("Trifolia.DB.Migrations.201704111943303_vTemplateUsage_up.sql");
 
             DropForeignKey("dbo.template_constraint", "containedTemplateId", "dbo.template");
             DropIndex("dbo.template_constraint", new[] { "containedTemplateId" });
@@ -61,6 +64,9 @@ where
             AddColumn("dbo.template_constraint", "containedTemplateId", c => c.Int());
 
             this.Sql(UnMigrateContainedTemplates);
+            this.SqlResource("Trifolia.DB.Migrations.201704111943303_getImplementationGuideTemplates_down.sql");
+            this.SqlResource("Trifolia.DB.Migrations.201704111943303_vContainedTemplateCount_down.sql");
+            this.SqlResource("Trifolia.DB.Migrations.201704111943303_vTemplateUsage_down.sql");
 
             DropForeignKey("dbo.template_constraint_reference", "templateConstraintId", "dbo.template_constraint");
             DropIndex("dbo.template_constraint_reference", new[] { "templateConstraintId" });
