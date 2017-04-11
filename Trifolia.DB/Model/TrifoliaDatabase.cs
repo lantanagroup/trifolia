@@ -48,7 +48,6 @@ namespace Trifolia.DB
         public virtual DbSet<TemplateConstraint> TemplateConstraints { get; set; }
         public virtual DbSet<TemplateConstraintSample> TemplateConstraintSamples { get; set; }
         public virtual DbSet<TemplateConstraintReference> TemplateConstraintReferences { get; set; }
-        public virtual DbSet<ViewConstraintReference> ViewConstraintReferences { get; set; }
         public virtual DbSet<TemplateExtension> TemplateExtensions { get; set; }
         public virtual DbSet<TemplateSample> TemplateSamples { get; set; }
         public virtual DbSet<TemplateType> TemplateTypes { get; set; }
