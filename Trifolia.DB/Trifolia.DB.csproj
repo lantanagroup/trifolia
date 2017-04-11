@@ -97,6 +97,10 @@
     <Compile Include="Migrations\201703292147411_multipleValueSetIdentifiers.Designer.cs">
       <DependentUpon>201703292147411_multipleValueSetIdentifiers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704111943303_multipleContainedTemplates.cs" />
+    <Compile Include="Migrations\201704111943303_multipleContainedTemplates.Designer.cs">
+      <DependentUpon>201704111943303_multipleContainedTemplates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -198,6 +202,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703292147411_multipleValueSetIdentifiers.resx">
       <DependentUpon>201703292147411_multipleValueSetIdentifiers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704111943303_multipleContainedTemplates.resx">
+      <DependentUpon>201704111943303_multipleContainedTemplates.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FHIR_Latest_Resources.txt" />
   </ItemGroup>

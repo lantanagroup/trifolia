@@ -494,6 +494,9 @@ namespace Trifolia.Web.Controllers.API
         /// </remarks>
         private Template SaveTemplate(IObjectRepository tdb, TemplateMetaDataModel model)
         {
+            if (string.IsNullOrEmpty(model.Oid))
+                throw new ArgumentNullException("model.Oid", "The template/profile must have an identifier");
+
             Template template = null;
 
             // Create the initial template object and add it to the appropriate list (if it is new)
@@ -523,13 +526,22 @@ namespace Trifolia.Web.Controllers.API
             if (template.ImplementationGuideTypeId != ig.ImplementationGuideTypeId)
                 template.ImplementationGuideTypeId = ig.ImplementationGuideTypeId;
 
-            
-
             if (template.Name != model.Name)
                 template.Name = model.Name;
 
             if (template.Oid != model.Oid)
+            {
+                var existingTemplateReferences = (from tcr in this.tdb.TemplateConstraintReferences
+                                                  where tcr.ReferenceType == ConstraintReferenceTypes.Template && tcr.ReferenceIdentifier == template.Oid
+                                                  select tcr);
+
+                foreach (var existingTemplateReference in existingTemplateReferences)
+                {
+                    existingTemplateReference.ReferenceIdentifier = model.Oid;
+                }
+
                 template.Oid = model.Oid;
+            }
 
             if (template.Bookmark != model.Bookmark)
                 template.Bookmark = model.Bookmark;
