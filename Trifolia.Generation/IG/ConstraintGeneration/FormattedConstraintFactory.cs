@@ -12,6 +12,11 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 {
     public class FormattedConstraintFactory
     {
+        /// <summary>
+        /// Different versions of FormattedConstraint classes that should be used based on date.
+        /// Selection is based on date of publication (or current date if not published) being 
+        /// greater than or equal to the date.
+        /// </summary>
         private static Dictionary<DateTime, Type> versions = new Dictionary<DateTime, Type>()
         {
             { new DateTime(2014, 4, 21), typeof(FormattedConstraint20150421) },
@@ -31,6 +36,13 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             bool createLinksForValueSets = false,
             bool includeCategory = true)
         {
+            var containedTemplates = (from tcr in constraint.References
+                                      join t in tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                      where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                      select t)
+                                      .Distinct()
+                                      .ToList();
+
             return NewFormattedConstraint(
                 tdb,
                 igSettings,
@@ -42,7 +54,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                 linkIsBookmark,
                 createLinksForValueSets,
                 includeCategory,
-                constraint.ContainedTemplate,
+                containedTemplates,
                 constraint.ValueSet,
                 constraint.CodeSystem);
         }
@@ -58,11 +70,11 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             bool linkIsBookmark = false, 
             bool createLinksForValueSets = false,
             bool includeCategory = true,
-            Template containedTemplate = null,
+            List<Template> containedTemplates = null,
             ValueSet valueSet = null,
             CodeSystem codeSystem = null)
         {
-            var selectedType = typeof(FormattedConstraint);
+            Type selectedType = null;
 
             if (igSettings == null || !igSettings.IsPublished)
             {
@@ -93,7 +105,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             formattedConstraint.CreateLinkForValueSets = createLinksForValueSets;
 
             // Set the properties in the FormattedConstraint based on the IConstraint
-            formattedConstraint.ParseConstraint(igTypePlugin, constraint, containedTemplate, valueSet, codeSystem);
+            formattedConstraint.ParseConstraint(igTypePlugin, constraint, containedTemplates, valueSet, codeSystem);
 
             // Pre-process the constraint so that calls to GetHtml(), GetPlainText(), etc. returns something
             formattedConstraint.ParseFormattedConstraint();

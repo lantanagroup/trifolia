@@ -78,6 +78,7 @@ namespace Trifolia.Web.Models.IG
             public Constraint()
             {
                 this.Constraints = new List<Constraint>();
+                this.ContainedTemplates = new List<TemplateReference>();
             }
 
             public string Number { get; set; }
@@ -90,7 +91,8 @@ namespace Trifolia.Web.Models.IG
             public string ValueSetIdentifier { get; set; }
             public string ValueSetDate { get; set; }
             public bool IsChoice { get; set; }
-            public TemplateReference ContainedTemplate { get; set; }
+
+            public List<TemplateReference> ContainedTemplates { get; set; }
 
             public List<Constraint> Constraints { get; set; }
         }

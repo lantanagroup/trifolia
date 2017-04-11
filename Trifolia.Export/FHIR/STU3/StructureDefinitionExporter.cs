@@ -156,7 +156,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             // Binding
             string valueConformance = string.IsNullOrEmpty(constraint.ValueConformance) ? constraint.Conformance : constraint.ValueConformance;
-            bool hasBinding = constraint.ContainedTemplate != null;
+            bool hasBinding = constraint.References.Any(y => y.ReferenceType == ConstraintReferenceTypes.Template);
 
             if (constraint.ValueSet != null && valueConformance.IndexOf("NOT") < 0)
             {
@@ -240,9 +240,16 @@ namespace Trifolia.Export.FHIR.STU3
                 StructureDefinition profile = GetBaseProfile(constraint.Template);
                 newElementDef.Type = GetProfileDataTypes(profile, constraint);
 
+                var containedTemplates = (from tcr in constraint.References
+                                          join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                          select new { Identifier = t.Oid, t.PrimaryContextType });
+
                 // If there is a contained template/profile, make sure it supports a "Reference" type, and then output the profile identifier in the type
-                if (constraint.ContainedTemplate != null && newElementDef.Type.Exists(y => y.Code == "Reference" || y.Code == "Extension"))
+                if (containedTemplates.Count() > 0 && newElementDef.Type.Exists(y => y.Code == "Reference" || y.Code == "Extension"))
                 {
+                    var containedTypes = new List<ElementDefinition.TypeRefComponent>();
+
                     // FHIR requires that referenced profiles be represented by multiple types on a single element
                     // TODO: There is some potential loss of properties on the second element definition
                     if (!string.IsNullOrEmpty(sliceName))
@@ -256,17 +263,18 @@ namespace Trifolia.Export.FHIR.STU3
                         }
                     }
 
-                    bool isExtension = constraint.ContainedTemplate.PrimaryContextType == "Extension" && newElementDef.Type.Exists(y => y.Code == "Extension");
-
-                    var containedTypes = new List<ElementDefinition.TypeRefComponent>();
-                    var typeRef = new ElementDefinition.TypeRefComponent()
+                    foreach (var containedTemplate in containedTemplates)
                     {
-                        Code = isExtension ? "Extension" : "Reference",
-                        Profile = isExtension ? constraint.ContainedTemplate.Oid : null,
-                        TargetProfile = !isExtension ? constraint.ContainedTemplate.Oid : null
-                    };
+                        bool isExtension = containedTemplate.PrimaryContextType == "Extension" && newElementDef.Type.Exists(y => y.Code == "Extension");
 
-                    containedTypes.Add(typeRef);
+                        containedTypes.Add(new ElementDefinition.TypeRefComponent()
+                        {
+                            Code = isExtension ? "Extension" : "Reference",
+                            Profile = isExtension ? containedTemplate.Identifier : null,
+                            TargetProfile = !isExtension ? containedTemplate.Identifier : null
+                        });
+                    }
+
                     newElementDef.Type = containedTypes;
                 }
             }
@@ -404,8 +412,14 @@ namespace Trifolia.Export.FHIR.STU3
 
                             // If the slice referencing a contained template, use the constraints of the contained template instead of the 
                             // direct constraints of the branch
-                            if (branchConstraint.ContainedTemplate != null)
-                                discriminatorConstraints = branchConstraint.ContainedTemplate.ChildConstraints.Where(y => y.ParentConstraint == null & y.Conformance == "SHALL");
+                            if (branchConstraint.References.Any(y => y.ReferenceType == ConstraintReferenceTypes.Template))
+                            {
+                                discriminatorConstraints = (from tcr in branchConstraint.References
+                                                            join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                                            join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
+                                                            where tc.ParentConstraintId == null && tc.Conformance == "SHALL"
+                                                            select tc);
+                            }
 
                             var singleValueDiscriminators = discriminatorConstraints.Where(y => !string.IsNullOrEmpty(y.Value));
 

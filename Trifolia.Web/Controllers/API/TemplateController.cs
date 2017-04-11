@@ -195,12 +195,15 @@ namespace Trifolia.Web.Controllers.API
 
             // Build referenced templates
             var containedByTemplates = (from tc in this.tdb.TemplateConstraints
+                                        join tcr in this.tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
                                         join te in this.tdb.Templates on tc.TemplateId equals te.Id
-                                        where tc.ContainedTemplateId == template.Id && tc.TemplateId != template.Id
+                                        where tcr.ReferenceIdentifier == template.Oid && tc.TemplateId != template.Id && tcr.ReferenceType == ConstraintReferenceTypes.Template
                                         orderby tc.Conformance, te.Name
                                         select te).Distinct().ToList();
             var containedTemplates = (from ac in template.ChildConstraints
-                                      join ct in this.tdb.Templates on ac.ContainedTemplateId equals ct.Id
+                                      join tcr in this.tdb.TemplateConstraintReferences on ac.Id equals tcr.TemplateConstraintId
+                                      join ct in this.tdb.Templates on tcr.ReferenceIdentifier equals ct.Oid
+                                      where tcr.ReferenceType == ConstraintReferenceTypes.Template
                                       orderby ct.Name
                                       select ct).Distinct().ToList();
             var implyingTemplates = (from t in this.tdb.Templates
@@ -529,7 +532,9 @@ namespace Trifolia.Web.Controllers.API
                                       }
                                   })
                                   .Union(from tc in this.tdb.TemplateConstraints
-                                         where tc.ContainedTemplateId == templateId
+                                         join tcr in this.tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
+                                         join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                         where t.Id == templateId && tcr.ReferenceType == ConstraintReferenceTypes.Template
                                          select new
                                          {
                                              ImplementationGuideId = tc.Template.OwningImplementationGuideId,

@@ -24,7 +24,6 @@ namespace Trifolia.Export.Schematron
         private CodeSystem codeSystem;
         private Cardinality constraintCardinalityType = new Cardinality();
         private Conformance constraintConformanceType = new Conformance();
-        private Template containedTemplate = null;
         private string prefix;
         private VocabularyOutputType vocabularyOutputType = VocabularyOutputType.Default;
         private IIGTypePlugin igTypePlugin = null;
@@ -61,9 +60,6 @@ namespace Trifolia.Export.Schematron
             if (!string.IsNullOrEmpty(this.constraint.Conformance))
                 this.constraintConformanceType = ConformanceParser.Parse(this.constraint.Conformance);
 
-            if (this.constraint.ContainedTemplateId != null)
-                this.containedTemplate = this.tdb.Templates.Single(y => y.Id == this.constraint.ContainedTemplateId.Value);
-
             this.prefix = igType.SchemaPrefix;
 
             this.vocabularyOutputType = vocabularyOutputType;
@@ -85,7 +81,7 @@ namespace Trifolia.Export.Schematron
             ConstraintToDocumentElementHelper.AddElementValueAndDataType(this.prefix, aElement, aTemplateConstraint);
 
             //create builders
-            var builder = new AssertionLineBuilder(aElement, this.igType);
+            var builder = new AssertionLineBuilder(this.tdb, aElement, this.igType);
 
             if (aGenerateContext)
             {
@@ -98,11 +94,14 @@ namespace Trifolia.Export.Schematron
                 }
             }
 
-            if (aTemplateConstraint.ContainedTemplateId != null)
+            var containedTemplates = (from tcr in aTemplateConstraint.References
+                                      join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                      where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                      select new { Identifier = t.Oid, t.PrimaryContextType });
+
+            foreach (var containedTemplate in containedTemplates)
             {
-                var containedTemplate = this.tdb.Templates.Single(y => y.Id == aTemplateConstraint.ContainedTemplateId.Value);
-                if (containedTemplate != null)
-                    builder.ContainsTemplate(containedTemplate.Oid);
+                builder.ContainsTemplate(containedTemplate.Identifier, containedTemplate.PrimaryContextType);
 
                 if (aTemplateConstraint.Parent != null && aTemplateConstraint.Parent.IsBranch)
                 {
@@ -144,12 +143,16 @@ namespace Trifolia.Export.Schematron
                 if (!string.IsNullOrEmpty(aConstraint.Value))
                     element.Value = aConstraint.Value;
 
-                asb = new AssertionLineBuilder(element, this.igType);
-                if (aConstraint.ContainedTemplateId != null)
+                asb = new AssertionLineBuilder(this.tdb, element, this.igType);
+
+                var containedTemplates = (from tcr in aConstraint.References
+                                          join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                          select new { Identifier = t.Oid, t.PrimaryContextType });
+
+                foreach (var containedTemplate in containedTemplates)
                 {
-                    var containedTemplate = this.tdb.Templates.Single(y => y.Id == aConstraint.ContainedTemplateId.Value);
-                    if (containedTemplate != null)
-                        asb.ContainsTemplate(containedTemplate.Oid, containedTemplate.PrimaryContext);
+                    asb.ContainsTemplate(containedTemplate.Identifier, containedTemplate.PrimaryContextType);
                 }
             }
             else if (attribute != null)
@@ -157,7 +160,7 @@ namespace Trifolia.Export.Schematron
                 if (!string.IsNullOrEmpty(aConstraint.Value))
                     attribute.SingleValue = aConstraint.Value;
 
-                asb = new AssertionLineBuilder(attribute, this.igType);
+                asb = new AssertionLineBuilder(this.tdb, attribute, this.igType);
             }
             else
             {
@@ -240,7 +243,7 @@ namespace Trifolia.Export.Schematron
             }
             else
             {
-                asb = new AssertionLineBuilder(aAttribute, this.igType);
+                asb = new AssertionLineBuilder(this.tdb, aAttribute, this.igType);
 
                 if (aConstraint.Parent != null)
                 {
@@ -290,8 +293,9 @@ namespace Trifolia.Export.Schematron
                 this.codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
 
             IConstraint currentConstraint = this.constraint; //set current constraint, setting this as a variable allows us to move the current constraint to the parent when dealing with branches
-            if (string.IsNullOrEmpty(currentConstraint.Context) 
-                && (currentConstraint.ContainedTemplateId == null)) //we can have empty context but a contained template  
+            var containedTemplates = currentConstraint.References.Where(y => y.ReferenceType == ConstraintReferenceTypes.Template);
+
+            if (string.IsNullOrEmpty(currentConstraint.Context) && !containedTemplates.Any()) //we can have empty context but a contained template  
                 return null;
 
             DocumentTemplateElement element = null;

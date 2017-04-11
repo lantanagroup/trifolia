@@ -613,7 +613,7 @@ namespace Trifolia.Web.Controllers.API
             model.Templates = (from t in ig.ChildTemplates
                                join rtt in rootTemplateTypes on t.TemplateTypeId equals rtt.Id
                                where t.GreenTemplates.Count > 0
-                               select LookupTemplate.ConvertTemplate(t)).ToList();
+                               select new GreenModel.Template(this.tdb, t)).ToList();
 
             return model;
         }

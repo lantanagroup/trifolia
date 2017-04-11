@@ -40,11 +40,14 @@ namespace Trifolia.Generation.IG
             string[] headers = new string[] { GenerationConstants.USED_TEMPLATE_TABLE_TITLE, GenerationConstants.USED_TEMPLATE_TABLE_TYPE, GenerationConstants.USED_TEMPLATE_TABLE_ID };
             Table t = this.tables.AddTable("Template Containments", headers);
 
-            List<Template> rootTemplates = this.allTemplates
-                .Where(y => y.ContainingConstraints.Count == 0)
-                .OrderBy(y => y.TemplateTypeId)
-                .ThenBy(y => y.Name)
-                .ToList();
+            var referencedTemplates = (from at in this.allTemplates
+                                       join tcr in this.tdb.TemplateConstraintReferences on at.Oid equals tcr.ReferenceIdentifier
+                                       where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                       select at)
+                                       .Distinct();
+
+            // Root templates are not referenced elsewhere
+            var rootTemplates = this.allTemplates.Where(y => !referencedTemplates.Contains(y));
 
             foreach (Template cTemplate in rootTemplates)
             {
@@ -99,8 +102,9 @@ namespace Trifolia.Generation.IG
             table.Append(newRow);
 
             List<Template> childTemplates = (from tc in template.ChildConstraints
-                                             join t in this.allTemplates on tc.ContainedTemplateId equals t.Id
-                                             where t.Id != template.Id
+                                             join tcr in this.tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
+                                             join t in this.allTemplates on tcr.ReferenceIdentifier equals t.Oid
+                                             where t.Id != template.Id && tcr.ReferenceType == ConstraintReferenceTypes.Template
                                              orderby t.Name
                                              select t)
                                                 .Distinct()

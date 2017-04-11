@@ -136,6 +136,7 @@
     <Compile Include="Model\valueset_identifier.cs" />
     <Compile Include="Model\valueset_member.cs" />
     <Compile Include="Model\v_constraintcount.cs" />
+    <Compile Include="Model\v_constraintreferences.cs" />
     <Compile Include="Model\v_igaudittrail.cs" />
     <Compile Include="Model\v_implementationguidefile.cs" />
     <Compile Include="Model\v_implementationGuidePermissions.cs" />

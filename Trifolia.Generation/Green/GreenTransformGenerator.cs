@@ -249,8 +249,9 @@ namespace Trifolia.Generation.Green.Transform
         private XmlElement CreateGreenMapping(XmlElement parent, GreenConstraint greenConstraint)
         {
             // If the constraint represents a contained template, we should simply apply the rules of the contained template here.
-            if (greenConstraint.TemplateConstraint.ContainedTemplate != null)
+            if (greenConstraint.TemplateConstraint.References.Count(y => y.ReferenceType == ConstraintReferenceTypes.Template) > 0)
             {
+                /* TODO: update to work with multiple contained templates/profiles
                 if (allGreenTemplates.Exists(y => y.TemplateId == greenConstraint.TemplateConstraint.ContainedTemplateId))
                 {
                     XmlElement applyTemplatesElement = TransformHelper.CreateXsltApplyTemplates(this.transformDoc, greenConstraint.Name);
@@ -261,6 +262,7 @@ namespace Trifolia.Generation.Green.Transform
                     XmlComment newComent = this.transformDoc.CreateComment("CONF# " + greenConstraint.TemplateConstraintId.ToString() + " has a green constraint '" + greenConstraint.Name + "' that references a contained template, which does not have a green template defined for.");
                     parent.AppendChild(newComent);
                 }
+                */
             }
             else
             {

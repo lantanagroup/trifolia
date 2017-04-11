@@ -73,9 +73,9 @@
     <Compile Include="IG\ConstraintGenerationFactory.cs" />
     <Compile Include="IG\ConstraintGeneration\ConsolidatedGeneration.cs" />
     <Compile Include="IG\ConstraintGeneration\ConstraintPart.cs" />
+    <Compile Include="IG\ConstraintGeneration\ContainedTemplate.cs" />
     <Compile Include="IG\ConstraintGeneration\FormattedConstraint20161128.cs" />
     <Compile Include="IG\ConstraintGeneration\FormattedConstraint20150421.cs" />
-    <Compile Include="IG\ConstraintGeneration\FormattedConstraint.cs" />
     <Compile Include="IG\ConstraintGeneration\FormattedConstraint20140415.cs" />
     <Compile Include="IG\ConstraintGeneration\FormattedConstraintFactory.cs" />
     <Compile Include="IG\ConstraintGeneration\IFormattedConstraint.cs" />

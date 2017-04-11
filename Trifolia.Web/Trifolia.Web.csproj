@@ -411,6 +411,7 @@
     <Compile Include="Models\PermissionManagement\PermissionsInfoModel.cs" />
     <Compile Include="Models\OrganizationManagement\OrganizationModel.cs" />
     <Compile Include="Models\Group\GroupModel.cs" />
+    <Compile Include="Models\TemplateEditing\ConstraintReferenceModel.cs" />
     <Compile Include="Models\User\SearchUserModel.cs" />
     <Compile Include="Models\User\UserModel.cs" />
     <Compile Include="Models\Report\ExternalOrganizationDetail.cs" />
@@ -496,11 +497,6 @@
     <Compile Include="Models\IGManagement\ViewModel.cs" />
     <Compile Include="Models\LogInViewModel.cs" />
     <Compile Include="Models\RoleManagement\RolesModel.cs" />
-    <Compile Include="Models\Shared\IGTypeComboModel.cs" />
-    <Compile Include="Models\Shared\ImplementationGuideComboModel.cs" />
-    <Compile Include="Models\Shared\OrganizationComboModel.cs" />
-    <Compile Include="Models\Shared\TemplateComboModel.cs" />
-    <Compile Include="Models\Shared\TemplateTypeComboModel.cs" />
     <Compile Include="Models\TemplateManagement\DeleteModel.cs" />
     <Compile Include="Models\TemplateManagement\ListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

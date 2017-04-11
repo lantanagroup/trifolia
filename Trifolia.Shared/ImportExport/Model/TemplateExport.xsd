@@ -226,6 +226,12 @@
 					</xs:complexType>
 				</xs:element>
 			</xs:choice>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="ContainedTemplate">
+				<xs:complexType>
+					<xs:attribute name="identifier" use="required"/>
+					<xs:attribute name="type" use="required"/>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="CodeSystem" minOccurs="0">
 				<xs:complexType>
 					<xs:attribute name="identifier" type="xs:string" use="required"/>
@@ -286,8 +292,6 @@
 		</xs:attribute>
 		<xs:attribute name="cardinality" type="xs:string" use="optional"/>
 		<xs:attribute name="dataType" type="xs:string" use="optional"/>
-		<xs:attribute name="containedTemplateOid" type="xs:string" use="optional"/>
-		<xs:attribute name="containedTemplateType"/>
 		<xs:attribute name="isBranch" type="xs:boolean" use="optional" default="false"/>
 		<xs:attribute name="isBranchIdentifier" type="xs:boolean" default="false"/>
 		<xs:attribute name="isPrimitive" type="xs:boolean" use="optional" default="false"/>

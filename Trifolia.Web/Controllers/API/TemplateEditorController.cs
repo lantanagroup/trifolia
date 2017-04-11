@@ -128,7 +128,7 @@ namespace Trifolia.Web.Controllers.API
             };
 
             // Parse the validation results for the template
-            lViewModel.ValidationResults = (from vr in lTemplate.ValidateTemplate(schema)
+            lViewModel.ValidationResults = (from vr in lTemplate.ValidateTemplate(this.tdb, schema)
                                             select new
                                             {
                                                 ConstraintNumber = vr.ConstraintNumber,
@@ -155,14 +155,20 @@ namespace Trifolia.Web.Controllers.API
             List<TemplateMetaDataModel.TemplateReference> containedByTemplates = new List<TemplateMetaDataModel.TemplateReference>();
             lViewModel.ContainedByTemplates = containedByTemplates;
 
-            foreach (var containingConstraint in lTemplate.ContainingConstraints)
+            var containingTemplates = (from tcr in this.tdb.TemplateConstraintReferences
+                                       join tc in this.tdb.TemplateConstraints on tcr.TemplateConstraintId equals tc.Id
+                                       where tcr.ReferenceIdentifier == lTemplate.Oid && tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                       select tc.Template)
+                                       .Distinct();
+
+            foreach (var containingTemplate in containingTemplates)
             {
                 TemplateMetaDataModel.TemplateReference newReference = new TemplateMetaDataModel.TemplateReference()
                 {
-                    EditUrl = containingConstraint.Template.GetEditUrl(),
-                    ViewUrl = containingConstraint.Template.GetViewUrl(),
-                    Name = containingConstraint.Template.Name,
-                    ImplementationGuide = containingConstraint.Template.OwningImplementationGuide.GetDisplayName()
+                    EditUrl = containingTemplate.GetEditUrl(),
+                    ViewUrl = containingTemplate.GetViewUrl(),
+                    Name = containingTemplate.Name,
+                    ImplementationGuide = containingTemplate.OwningImplementationGuide.GetDisplayName()
                 };
 
                 containedByTemplates.Add(newReference);
@@ -241,7 +247,6 @@ namespace Trifolia.Web.Controllers.API
                 ValueSetDate = constraint.ValueSetDate,
                 ValueCodeSystemId = constraint.CodeSystemId,
                 IsPrimitive = constraint.IsPrimitive,
-                ContainedTemplateId = constraint.ContainedTemplateId,
                 IsHeading = constraint.IsHeading,
                 HeadingDescription = constraint.HeadingDescription,
                 IsInheritable = constraint.IsInheritable,
@@ -263,6 +268,16 @@ namespace Trifolia.Web.Controllers.API
                 newConstraintModel.Binding = "DYNAMIC";
             else
                 newConstraintModel.Binding = "DEFAULT";
+
+            foreach (var reference in constraint.References)
+            {
+                newConstraintModel.References.Add(new ConstraintReferenceModel()
+                {
+                    Id = reference.Id,
+                    ReferenceType = reference.ReferenceType,
+                    ReferenceIdentifier = reference.ReferenceIdentifier
+                });
+            }
 
             List<ConstraintModel> children = newConstraintModel.Children as List<ConstraintModel>;
             foreach (TemplateConstraint childConstraint in constraint.ChildConstraints.OrderBy(y => y.Order))
@@ -457,7 +472,7 @@ namespace Trifolia.Web.Controllers.API
                     SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, template.ImplementationGuideType);
                     schema = schema.GetSchemaFromContext(template.PrimaryContextType);
 
-                    response.ValidationResults = (from vr in template.ValidateTemplate(schema)
+                    response.ValidationResults = (from vr in template.ValidateTemplate(this.tdb, schema)
                                                   select new
                                                   {
                                                       ConstraintNumber = vr.ConstraintNumber,
@@ -596,6 +611,11 @@ namespace Trifolia.Web.Controllers.API
             }
         }
 
+        private void SaveConstraintReferences(IObjectRepository tdb, TemplateConstraint constraint, List<ConstraintReferenceModel> references)
+        {
+            // TODO
+        }
+
         /// <summary>
         /// Converts ConstraintModel into TemplateConstraint (EF) models.
         /// </summary>
@@ -657,9 +677,6 @@ namespace Trifolia.Web.Controllers.API
 
                 if (constraint.PrimitiveText != constraintModel.PrimitiveText)
                     constraint.PrimitiveText = constraintModel.PrimitiveText;
-
-                if (constraint.ContainedTemplateId != constraintModel.ContainedTemplateId)
-                    constraint.ContainedTemplateId = constraintModel.ContainedTemplateId;
 
                 if (constraint.ValueConformance != constraintModel.ValueConformance)
                     constraint.ValueConformance = constraintModel.ValueConformance;
@@ -736,8 +753,10 @@ namespace Trifolia.Web.Controllers.API
                 if (constraint.IsFixed != constraintModel.IsFixed)
                     constraint.IsFixed = constraintModel.IsFixed;
 
+                this.SaveConstraintReferences(tdb, constraint, constraintModel.References);
+
                 // Recurse through child constraints
-                SaveConstraints(tdb, template, constraintModel.Children, constraint);
+                this.SaveConstraints(tdb, template, constraintModel.Children, constraint);
             }
         }
     }

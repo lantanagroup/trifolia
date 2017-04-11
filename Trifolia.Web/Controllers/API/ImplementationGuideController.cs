@@ -1662,7 +1662,9 @@ namespace Trifolia.Web.Controllers.API
 
                     // Contained templates
                     var containedTemplates = (from tc in template.ChildConstraints
-                                              join t in templates on tc.ContainedTemplateId equals t.Id
+                                              join tcr in this.tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
+                                              join t in templates on tcr.ReferenceIdentifier equals t.Oid
+                                              where tcr.ReferenceType == ConstraintReferenceTypes.Template
                                               select t).Distinct();
                     newTemplateModel.ContainedTemplates = containedTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
 
@@ -1673,8 +1675,10 @@ namespace Trifolia.Web.Controllers.API
                     newTemplateModel.ImplyingTemplates = implyingTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
 
                     // Contained by templates
-                    var containedByTemplates = (from tc in template.ContainingConstraints
+                    var containedByTemplates = (from tc in this.tdb.TemplateConstraints
+                                                join tcr in this.tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
                                                 join t in templates on tc.TemplateId equals t.Id
+                                                where tcr.ReferenceIdentifier == template.Oid
                                                 select t).Distinct().AsEnumerable();
                     newTemplateModel.ContainedByTemplates = containedByTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
 
@@ -1728,9 +1732,20 @@ namespace Trifolia.Web.Controllers.API
                     Value = theConstraint.Value,
                     ValueSetIdentifier = theConstraint.ValueSet != null ? theConstraint.ValueSet.GetIdentifier(igTypePlugin) : null,
                     ValueSetDate = theConstraint.ValueSetDate != null ? theConstraint.ValueSetDate.Value.ToShortDateString() : null,
-                    ContainedTemplate = theConstraint.ContainedTemplateId != null ? new ViewDataModel.TemplateReference(theConstraint.ContainedTemplate) : null,
                     IsChoice = theConstraint.IsChoice
                 };
+
+                newConstraintModel.ContainedTemplates = (from tcr in theConstraint.References
+                                                         join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                                         where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                                         select new ViewDataModel.TemplateReference()
+                                                         {
+                                                             Identifier = t.Oid,
+                                                             Bookmark = t.Bookmark,
+                                                             ImplementationGuide = t.OwningImplementationGuide.GetDisplayName(),
+                                                             PublishDate = t.OwningImplementationGuide.PublishDate,
+                                                             Name = t.Name
+                                                         }).ToList();
 
                 var isFhir = constraint.Template.ImplementationGuideType.SchemaURI == ImplementationGuideType.FHIR_NS;
 

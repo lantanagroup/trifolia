@@ -202,6 +202,11 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                         break;
                 }
 
+                var containedTemplate = (from tcr in constraint.References
+                                         join t in this.dataSource.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                         where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                         select t).FirstOrDefault();
+
                 if (!string.IsNullOrEmpty(constraint.Context))
                 {
                     string dataType = constraint.DataType != null ? constraint.DataType.ToLower() : string.Empty;
@@ -221,10 +226,8 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                     pConstraint.Append(
                         DocHelper.CreateRun(context, style:Properties.Settings.Default.ConstraintContextStyle));
                 }
-                else if (constraint.ContainedTemplate != null)
+                else if (containedTemplate != null)
                 {
-                    Template containedTemplate = this.dataSource.Templates.Single(y => y.Id == constraint.ContainedTemplateId.Value);
-
                     if (this.allTemplates.Exists(y => y.Id == containedTemplate.Id))
                     {
                         pConstraint.Append(

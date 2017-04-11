@@ -38,7 +38,7 @@ namespace Trifolia.DB
         /// </summary>
         /// <param name="errors">The errors list that should be populated when issues occur matching the template/constraints to the schema.</param>
         /// <param name="templateSchema">The schema that the template should be validated against.</param>
-        public static List<TemplateValidationResult> ValidateTemplate(this Template template, SimpleSchema templateSchema = null, SimpleSchema igSchema = null)
+        public static List<TemplateValidationResult> ValidateTemplate(this Template template, IObjectRepository tdb, SimpleSchema templateSchema = null, SimpleSchema igSchema = null)
         {
             if (templateSchema == null)
                 templateSchema = template.GetSchema(igSchema);
@@ -59,7 +59,7 @@ namespace Trifolia.DB
                 rootConstraints.ForEach(y =>
                 {
                     // The first child in the schema is the complex type itself
-                    template.ValidateTemplateConstraint(xpathNavigator, errors, templateSchema, templateSchema.Children, y);
+                    template.ValidateTemplateConstraint(tdb, xpathNavigator, errors, templateSchema, templateSchema.Children, y);
                 });
             }
 
@@ -72,7 +72,7 @@ namespace Trifolia.DB
         /// <param name="errors">The list of errors that should be added to when a constraint has an error matching the schema</param>
         /// <param name="schemaObjects">The list of sibling-level schema objects that the constraint should be compared to</param>
         /// <param name="currentConstraint">The current constraint to match against the schema</param>
-        public static void ValidateTemplateConstraint(this Template template, XPathNavigator xpathNavigator, List<TemplateValidationResult> errors, SimpleSchema schema, List<SimpleSchema.SchemaObject> schemaObjects, TemplateConstraint currentConstraint)
+        public static void ValidateTemplateConstraint(this Template template, IObjectRepository tdb, XPathNavigator xpathNavigator, List<TemplateValidationResult> errors, SimpleSchema schema, List<SimpleSchema.SchemaObject> schemaObjects, TemplateConstraint currentConstraint)
         {
             List<TemplateConstraint> childConstraints = currentConstraint.ChildConstraints.ToList();
 
@@ -104,25 +104,31 @@ namespace Trifolia.DB
 
                 SimpleSchema.SchemaObject foundSchemaObject = schemaObjects.SingleOrDefault(y => y.Name.ToLower() == context.ToLower() && y.IsAttribute == isAttribute);
 
-                // Verify that the template (if specified) matches the datatype of the constraints
-                if (currentConstraint.ContainedTemplate != null
-                    && currentConstraint.ContainedTemplate.PrimaryContextType != null
-                    && foundSchemaObject != null)
+                var containedTemplates = (from tcr in currentConstraint.References
+                                          join t in tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                          select t);
+
+                foreach (var containedTemplate in containedTemplates)
                 {
-                    string containedTemplateDataType = currentConstraint.ContainedTemplate.PrimaryContextType;
-                    string constraintDataType = !string.IsNullOrEmpty(currentConstraint.DataType) ? currentConstraint.DataType : foundSchemaObject.DataType;
-
-                    bool isFhirResourceReference = schema.Schema.TargetNamespace == "http://hl7.org/fhir" && (constraintDataType == "ResourceReference" || constraintDataType == "Reference");
-
-                    if (!isFhirResourceReference && containedTemplateDataType.ToLower() != constraintDataType.ToLower())
+                    // Verify that the template (if specified) matches the datatype of the constraints
+                    if (containedTemplate.PrimaryContextType != null && foundSchemaObject != null)
                     {
-                        errors.Add(TemplateValidationResult.CreateResult(
-                            currentConstraint.Number,
-                            ValidationLevels.Error,
-                            "Contained template \"{0}\" has a type of \"{1}\" which does not match the containing element \"{2}\"",
-                            currentConstraint.ContainedTemplate.Oid,
-                            containedTemplateDataType,
-                            constraintDataType));
+                        string containedTemplateDataType = containedTemplate.PrimaryContextType;
+                        string constraintDataType = !string.IsNullOrEmpty(currentConstraint.DataType) ? currentConstraint.DataType : foundSchemaObject.DataType;
+
+                        bool isFhirResourceReference = schema.Schema.TargetNamespace == "http://hl7.org/fhir" && (constraintDataType == "ResourceReference" || constraintDataType == "Reference");
+
+                        if (!isFhirResourceReference && containedTemplateDataType.ToLower() != constraintDataType.ToLower())
+                        {
+                            errors.Add(TemplateValidationResult.CreateResult(
+                                currentConstraint.Number,
+                                ValidationLevels.Error,
+                                "Contained template/profile \"{0}\" has a type of \"{1}\" which does not match the containing element \"{2}\"",
+                                containedTemplate.Oid,
+                                containedTemplateDataType,
+                                constraintDataType));
+                        }
                     }
                 }
 
@@ -167,7 +173,7 @@ namespace Trifolia.DB
                         childSchemaObjects = foundSchemaTypeObject.Children;
                 }
 
-                childConstraints.ForEach(y => template.ValidateTemplateConstraint(xpathNavigator, errors, schema, childSchemaObjects, y));
+                childConstraints.ForEach(y => template.ValidateTemplateConstraint(tdb, xpathNavigator, errors, schema, childSchemaObjects, y));
             }
         }
 

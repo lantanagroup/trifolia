@@ -146,7 +146,14 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             this.templateConstraintCount++;
 
-            bool containedTemplateLinked = constraint.ContainedTemplateId != null && this.allTemplates.Exists(y => y.Id == constraint.ContainedTemplateId);
+            // All contained template references must exist in the list of templates being exported to be linked
+            // TODO: Improve so that not all references have to be in the export for some to be linked
+            var containedTemplateReferences = constraint.References.Where(y => y.ReferenceType == ConstraintReferenceTypes.Template);
+            var containedTemplatesFound = (from ct in containedTemplateReferences
+                                           join t in this.allTemplates on ct.ReferenceIdentifier equals t.Oid
+                                           select t);
+            bool containedTemplateLinked = containedTemplateReferences.Count() > 0 && containedTemplateReferences.Count() == containedTemplatesFound.Count();
+
             bool includeCategory = this.IncludeCategory && (!this.HasSelectedCategories || this.SelectedCategories.Count > 1);
             IFormattedConstraint fConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.dataSource, this.igSettings, this.IGTypePlugin, constraint, linkContainedTemplate: containedTemplateLinked, linkIsBookmark: true, createLinksForValueSets: aCreateLinksForValueSets, includeCategory: includeCategory);
             Paragraph para = fConstraint.AddToDocParagraph(this.wikiParser, this.DocumentBody, level -1, GenerationConstants.BASE_TEMPLATE_INDEX + (int)currentTemplate.Id, this.constraintHeadingStyle);

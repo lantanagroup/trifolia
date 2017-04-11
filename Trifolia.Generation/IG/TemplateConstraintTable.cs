@@ -33,11 +33,13 @@ namespace Trifolia.Generation.IG
         private List<Template> templates;
         private TableCollection tables;
         private List<string> selectedCategories = null;
+        private IObjectRepository tdb;
 
         #region Ctor
 
-        public TemplateConstraintTable(IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, List<Template> templates, TableCollection tables, List<string> selectedCategories)
+        public TemplateConstraintTable(IObjectRepository tdb,IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, List<Template> templates, TableCollection tables, List<string> selectedCategories)
         {
+            this.tdb = tdb;
             this.igSettings = igSettings;
             this.igTypePlugin = igTypePlugin;
             this.templates = templates;
@@ -149,6 +151,11 @@ namespace Trifolia.Generation.IG
                     fixedValue = string.Format("{0} ({1})", constraint.CodeSystem.Oid, constraint.CodeSystem.Name);
                 }
 
+                var containedTemplates = (from tcr in constraint.References
+                                          join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                          select t);
+
                 if (!string.IsNullOrEmpty(constraint.Value))
                 {
                     if (!string.IsNullOrEmpty(fixedValue))
@@ -156,11 +163,13 @@ namespace Trifolia.Generation.IG
                     else
                         fixedValue = constraint.Value;
                 }
-                else if (constraint.ContainedTemplate != null)
+                else if (containedTemplates.Count() > 0)
                 {
-                    fixedValue = string.Format("{0} (identifier: {1}", constraint.ContainedTemplate.Name, constraint.ContainedTemplate.Oid);
-                    if (this.templates.Contains(constraint.ContainedTemplate))
-                        fixedValueLink = constraint.ContainedTemplate.Bookmark;
+                    var containedTemplateValues = containedTemplates.Select(y => string.Format("{0} (identifier: {1}", y.Name, y.Oid));
+                    fixedValue = string.Join(" or ", containedTemplateValues);
+
+                    if (containedTemplates.Count() == 1 && this.templates.Contains(containedTemplates.First()))
+                        fixedValueLink = containedTemplates.First().Bookmark;
                 }
 
                 for (int i = 1; i <= (level); i++)      // One tab for each level

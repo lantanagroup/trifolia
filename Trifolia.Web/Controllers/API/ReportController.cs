@@ -113,7 +113,7 @@ namespace Trifolia.Web.Controllers.API
                     Oid = template.Oid
                 };
 
-                var validationResults = template.ValidateTemplate(null, igSchema);
+                var validationResults = template.ValidateTemplate(this.tdb, null, igSchema);
                 result.Items.AddRange(validationResults);
 
                 results.Add(result);

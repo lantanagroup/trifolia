@@ -34,10 +34,6 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         string Conformance { get; set; }
         string Cardinality { get; set; }
         string DataType { get; set; }
-        int ContainedTemplateId { get; set; }
-        string ContainedTemplateTitle { get; set; }
-        string ContainedTemplateLink { get; set; }
-        string ContainedTemplateOid { get; set; }
         string ValueConformance { get; set; }
         string StaticDynamic { get; set; }
         string ValueSetName { get; set; }
@@ -53,8 +49,9 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         string HeadingDescription { get; set; }
         string TemplateLinkBase { get; set; }
         string ValueSetLinkBase { get; set; }
+        List<ContainedTemplate> ContainedTemplates { get; set; }
 
-        void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, Template containedTemplate = null, ValueSet valueSet = null, CodeSystem codeSystem = null);
+        void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, List<Template> containedTemplates = null, ValueSet valueSet = null, CodeSystem codeSystem = null);
         void ParseFormattedConstraint();
         Paragraph AddToDocParagraph(WIKIParser wikiParser, OpenXmlElement parent, int level, int id, string headingStyle);
         string GetPlainText(bool includeHeading = true, bool includeDescription = true, bool includeLabel = true);

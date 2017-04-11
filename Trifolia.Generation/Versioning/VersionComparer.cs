@@ -188,13 +188,12 @@ namespace Trifolia.Generation.Versioning
 
         private string GetContainedTemplateDisplay(IConstraint constraint)
         {
-            if (constraint.ContainedTemplateId != null)
-            {
-                Template containedTemplate = this.tdb.Templates.Single(y => y.Id == constraint.ContainedTemplateId);
-                return string.Format("{0} ({1})", containedTemplate.Name, containedTemplate.Oid);
-            }
+            var containedTemplates = (from tcr in constraint.References
+                                      join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                      where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                      select string.Format("{0} ({1})", t.Name, t.Oid));
 
-            return string.Empty;
+            return string.Join(" or ", containedTemplates);
         }
 
         private string GetCodeSystemDisplay(IConstraint constraint)

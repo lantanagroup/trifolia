@@ -79,7 +79,7 @@ namespace Trifolia.Generation.IG
                     new Body());
 
             this.tables = new TableCollection(this.document.MainDocumentPart.Document.Body);
-            this.constraintTableGenerator = new TemplateConstraintTable(this.igSettings, igTypePlugin, this.templates, this.tables, _exportSettings.SelectedCategories);
+            this.constraintTableGenerator = new TemplateConstraintTable(this._tdb, this.igSettings, igTypePlugin, this.templates, this.tables, _exportSettings.SelectedCategories);
             this.figures = new FigureCollection(this.document.MainDocumentPart.Document.Body);
             this.valueSetsExport 
                 = new ValueSetsExport(
