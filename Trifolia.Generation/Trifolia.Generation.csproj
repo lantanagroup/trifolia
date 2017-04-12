@@ -80,6 +80,7 @@
     <Compile Include="IG\ConstraintGeneration\FormattedConstraintFactory.cs" />
     <Compile Include="IG\ConstraintGeneration\IFormattedConstraint.cs" />
     <Compile Include="IG\ConstraintGeneration\LegacyGeneration.cs" />
+    <Compile Include="IG\ConstraintReference.cs" />
     <Compile Include="IG\ExportSettings.cs" />
     <Compile Include="IG\FigureCollection.cs" />
     <Compile Include="IG\Models\HeaderDescriptor.cs" />

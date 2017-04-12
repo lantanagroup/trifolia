@@ -18,6 +18,12 @@ namespace Trifolia.Generation.IG
     /// </summary>
     public class CodeSystemTable
     {
+        private struct CodeSystem
+        {
+            public string Name;
+            public string Identifier;
+        }
+
         private IObjectRepository tdb;
         private Body documentBody;
         private List<Template> templates;
@@ -31,17 +37,16 @@ namespace Trifolia.Generation.IG
             this.templates = templates;
             this.tables = tables;
 
-            this.codeSystems = (from t1 in this.templates
-                                join tc in this.tdb.TemplateConstraints.AsNoTracking() on t1.Id equals tc.TemplateId
-                                where tc.CodeSystemId != null
-                                select tc.CodeSystem).Union(
-                               (from t2 in this.templates
-                                join tc in this.tdb.TemplateConstraints.AsNoTracking() on t2.Id equals tc.TemplateId
-                                join vs in this.tdb.ValueSets.AsNoTracking() on tc.ValueSetId equals vs.Id
-                                join vsm in this.tdb.ValueSetMembers.AsNoTracking() on vs.Id equals vsm.ValueSetId
-                                select vsm.CodeSystem))
-                               .Distinct()
-                               .OrderBy(y => y.Name);
+            this.codeSystems = (from t in this.templates
+                                join csu in tdb.ViewCodeSystemUsages on t.Id equals csu.TemplateId
+                                orderby csu.CodeSystemName
+                                select new CodeSystem()
+                                {
+                                    Identifier = csu.CodeSystemIdentifier,
+                                    Name = csu.CodeSystemName
+                                })
+                                .Distinct()
+                                .ToList();
         }
 
         /// <summary>
@@ -71,9 +76,9 @@ namespace Trifolia.Generation.IG
         private void AddCodeSystemTable()
         {
             string[] headers = new string[] { "Name", "OID" };
-            Table t = this.tables.AddTable("Code Systems", headers);
+            Table table = this.tables.AddTable("Code Systems", headers);
 
-            foreach (CodeSystem cCodeSystem in codeSystems)
+            foreach (var cCodeSystem in codeSystems)
             {
                 TableRow newRow = new TableRow(
                     new TableCell(
@@ -81,9 +86,9 @@ namespace Trifolia.Generation.IG
                             DocHelper.CreateRun(cCodeSystem.Name))),
                     new TableCell(
                         new Paragraph(
-                            DocHelper.CreateRun(cCodeSystem.Oid))));
+                            DocHelper.CreateRun(cCodeSystem.Identifier))));
 
-                t.Append(newRow);
+                table.Append(newRow);
             }
         }
     }

@@ -668,10 +668,21 @@ namespace Trifolia.Web.Controllers.API
             
             List<int> duplicateConformanceNumbers = destinationIgConfNumbers
                 .Where(y => template.ChildConstraints.Count(x => x.Number.Value == y) > 0).ToList();
+            var constraintReferences = (from c in template.ChildConstraints
+                                        join tcr in this.tdb.TemplateConstraintReferences on c.Id equals tcr.TemplateConstraintId
+                                        join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                        where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                        select new ConstraintReference()
+                                        {
+                                            Bookmark = t.Bookmark,
+                                            Identifier = t.Oid,
+                                            Name = t.Name,
+                                            TemplateConstraintId = tcr.TemplateConstraintId
+                                        }).ToList();
 
             template.Constraints.ForEach(c =>
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, c);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, c, constraintReferences);
 
                 model.Constraints.Add(new CopyModel.Constraint()
                 {

@@ -9,6 +9,7 @@ using Trifolia.DB;
 using Trifolia.Shared;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Shared.Plugins;
+using Trifolia.Generation.IG;
 
 namespace Trifolia.Export.DECOR
 {
@@ -19,11 +20,23 @@ namespace Trifolia.Export.DECOR
         private IGSettingsManager igSettings;
         private IIGTypePlugin igTypePlugin;
         private IObjectRepository tdb;
+        private List<ConstraintReference> constraintReferences;
 
         public ConstraintExporter(XmlDocument dom, Template template, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, IObjectRepository tdb)
         {
             this.dom = dom;
             this.template = template;
+            this.constraintReferences = (from tc in template.ChildConstraints
+                                         join tcr in tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
+                                         join t in tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                         where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                         select new ConstraintReference()
+                                         {
+                                             Bookmark = t.Bookmark,
+                                             Identifier = t.Oid,
+                                             Name = t.Name,
+                                             TemplateConstraintId = tc.Id
+                                         }).ToList();
             this.igSettings = igSettings;
             this.igTypePlugin = igTypePlugin;
             this.tdb = tdb;
@@ -31,7 +44,7 @@ namespace Trifolia.Export.DECOR
 
         private attribute ExportAttribute(TemplateConstraint constraint)
         {
-            IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, null, null, false, false, false, false);
+            IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, this.constraintReferences, null, null, false, false, false, false);
             attribute constraintAttribute = new attribute();
             constraintAttribute.name = constraint.Context.Substring(1);
             constraintAttribute.isOptional = constraint.Conformance != "SHALL";
@@ -43,7 +56,7 @@ namespace Trifolia.Export.DECOR
 
         private RuleDefinition ExportElement(TemplateConstraint constraint)
         {
-            IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, null, null, false, false, false, false);
+            IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, this.constraintReferences, null, null, false, false, false, false);
             RuleDefinition constraintRule = new RuleDefinition();
             constraintRule.name = constraint.Context;
             constraintRule.minimumMultiplicity = constraint.CardinalityType.Left.ToString();
@@ -146,7 +159,7 @@ namespace Trifolia.Export.DECOR
                 }
                 else
                 {
-                    IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, null, null, false, false, false, false);
+                    IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, this.constraintReferences, null, null, false, false, false, false);
 
                     XmlNode[] anyField = new XmlNode[] { this.dom.CreateTextNode(formattedConstraint.GetPlainText(false, false, false)) };
                     constraintRules.Add(new FreeFormMarkupWithLanguage()

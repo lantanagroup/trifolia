@@ -1607,6 +1607,18 @@ namespace Trifolia.Web.Controllers.API
                 var constraints = (from t in templates
                                    join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
                                    select tc).AsEnumerable();
+                var constraintReferences = (from c in constraints
+                                            join tcr in this.tdb.TemplateConstraintReferences on c.Id equals tcr.TemplateConstraintId
+                                            join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                            where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                            select new ConstraintReference()
+                                            {
+                                                Bookmark = t.Bookmark,
+                                                Identifier = t.Oid,
+                                                Name = t.Name,
+                                                TemplateConstraintId = tcr.TemplateConstraintId,
+                                                IncludedInIG = templates.Contains(t)
+                                            }).ToList();
 
                 foreach (var template in templates)
                 {
@@ -1688,7 +1700,7 @@ namespace Trifolia.Web.Controllers.API
 
                     // Create the constraint models (hierarchically)
                     var parentConstraints = template.ChildConstraints.Where(y => y.ParentConstraintId == null);
-                    CreateConstraints(wikiParser, igSettings, igTypePlugin, parentConstraints, newTemplateModel.Constraints, templateSchema);
+                    CreateConstraints(wikiParser, igSettings, igTypePlugin, constraintReferences, parentConstraints, newTemplateModel.Constraints, templateSchema);
                 }
 
                 // Create models for template types in the IG
@@ -1709,7 +1721,7 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
-        private void CreateConstraints(WIKIParser wikiParser, IGSettingsManager igManager, IIGTypePlugin igTypePlugin, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList, SimpleSchema templateSchema, SimpleSchema.SchemaObject schemaObject = null)
+        private void CreateConstraints(WIKIParser wikiParser, IGSettingsManager igManager, IIGTypePlugin igTypePlugin, List<ConstraintReference> constraintReferences, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList, SimpleSchema templateSchema, SimpleSchema.SchemaObject schemaObject = null)
         {
             foreach (var constraint in constraints.OrderBy(y => y.Order))
             {
@@ -1719,7 +1731,7 @@ namespace Trifolia.Web.Controllers.API
                 if (templateSchema != null && schemaObject == null)
                     schemaObject = templateSchema.Children.SingleOrDefault(y => y.Name == constraint.Context);
 
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, igTypePlugin, theConstraint, "#/volume2/", "#/valuesets/#", true, true, true, false);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, igTypePlugin, theConstraint, constraintReferences, "#/volume2/", "#/valuesets/#", true, true, true, false);
 
                 var newConstraintModel = new ViewDataModel.Constraint()
                 {
@@ -1760,7 +1772,7 @@ namespace Trifolia.Web.Controllers.API
                     null;
 
                 // Recursively add child constraints
-                CreateConstraints(wikiParser, igManager, igTypePlugin, theConstraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
+                CreateConstraints(wikiParser, igManager, igTypePlugin, constraintReferences, theConstraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
             }
         }
 

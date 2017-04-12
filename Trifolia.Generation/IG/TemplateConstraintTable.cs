@@ -34,12 +34,14 @@ namespace Trifolia.Generation.IG
         private TableCollection tables;
         private List<string> selectedCategories = null;
         private IObjectRepository tdb;
+        private List<ConstraintReference> references = null;
 
         #region Ctor
 
-        public TemplateConstraintTable(IObjectRepository tdb,IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, List<Template> templates, TableCollection tables, List<string> selectedCategories)
+        public TemplateConstraintTable(IObjectRepository tdb, List<ConstraintReference> references, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, List<Template> templates, TableCollection tables, List<string> selectedCategories)
         {
             this.tdb = tdb;
+            this.references = references;
             this.igSettings = igSettings;
             this.igTypePlugin = igTypePlugin;
             this.templates = templates;
@@ -62,7 +64,7 @@ namespace Trifolia.Generation.IG
         /// <summary>
         /// Adds a table for the template in question which lists all constraints in separate rows.
         /// </summary>
-        public void AddTemplateConstraintTable(Template template, Body documentBody, string templateXpath)
+        public void AddTemplateConstraintTable(SimpleSchema schema, Template template, Body documentBody, string templateXpath)
         {
             var constraintCategories = template.ChildConstraints.Where(y => !string.IsNullOrEmpty(y.Category)).Select(y => y.Category).Distinct();
             var includeCategoryHeader = false;
@@ -103,8 +105,11 @@ namespace Trifolia.Generation.IG
                         DocHelper.CreateRun(templateXpath))));
             t.Append(templateRow);
 
-            SimpleSchema schema = template.ImplementationGuideType.GetSimpleSchema();
-            schema = schema.GetSchemaFromContext(template.PrimaryContextType);
+            var templateSchema = schema.GetSchemaFromContext(template.PrimaryContextType);
+            var constraintIds = template.ChildConstraints.Select(y => y.Id).ToList();
+            var templateReferences = (from r in this.references
+                                      join tc in constraintIds on r.TemplateConstraintId equals tc
+                                      select r);
 
             // Start out creating the first set of rows with root (top-level) constraints (constraints that don't have children)
             foreach (TemplateConstraint cConstraint in rootConstraints.OrderBy(y => y.Order))
@@ -112,13 +117,13 @@ namespace Trifolia.Generation.IG
                 if (this.HasSelectedCategories && !string.IsNullOrEmpty(cConstraint.Category) && !this.selectedCategories.Contains(cConstraint.Category))
                     continue;
 
-                var schemaObject = schema != null ? schema.Children.SingleOrDefault(y => y.Name == cConstraint.Context) : null;
+                var schemaObject = templateSchema != null ? templateSchema.Children.SingleOrDefault(y => y.Name == cConstraint.Context) : null;
 
-                this.AddTemplateTableConstraint(template, t, cConstraint, 1, includeCategoryHeader, schemaObject);
+                this.AddTemplateTableConstraint(template, templateReferences, t, cConstraint, 1, includeCategoryHeader, schemaObject);
             }
         }
 
-        private void AddTemplateTableConstraint(Template template, Table table, TemplateConstraint constraint, int level, bool includeCategoryHeader, SimpleSchema.SchemaObject schemaObject)
+        private void AddTemplateTableConstraint(Template template, IEnumerable<ConstraintReference> templateReferences, Table table, TemplateConstraint constraint, int level, bool includeCategoryHeader, SimpleSchema.SchemaObject schemaObject)
         {
             // Skip the child constraints if this is a choice there is only one child constraint. This constraint
             // adopts the constraint narrative of the child constraint when there is only one option.
@@ -151,10 +156,7 @@ namespace Trifolia.Generation.IG
                     fixedValue = string.Format("{0} ({1})", constraint.CodeSystem.Oid, constraint.CodeSystem.Name);
                 }
 
-                var containedTemplates = (from tcr in constraint.References
-                                          join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
-                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template
-                                          select t);
+                var constraintReferences = templateReferences.Where(y => y.TemplateConstraintId == constraint.Id);
 
                 if (!string.IsNullOrEmpty(constraint.Value))
                 {
@@ -163,13 +165,15 @@ namespace Trifolia.Generation.IG
                     else
                         fixedValue = constraint.Value;
                 }
-                else if (containedTemplates.Count() > 0)
+                else if (constraintReferences.Count() > 0)
                 {
-                    var containedTemplateValues = containedTemplates.Select(y => string.Format("{0} (identifier: {1}", y.Name, y.Oid));
+                    var containedTemplateValues = constraintReferences.Select(y => string.Format("{0} (identifier: {1}", y.Name, y.Identifier));
                     fixedValue = string.Join(" or ", containedTemplateValues);
 
-                    if (containedTemplates.Count() == 1 && this.templates.Contains(containedTemplates.First()))
-                        fixedValueLink = containedTemplates.First().Bookmark;
+                    var firstConstraintReference = constraintReferences.First();
+
+                    if (constraintReferences.Count() == 1 && firstConstraintReference.IncludedInIG)
+                        fixedValueLink = firstConstraintReference.Bookmark;
                 }
 
                 for (int i = 1; i <= (level); i++)      // One tab for each level
@@ -208,7 +212,7 @@ namespace Trifolia.Generation.IG
                     schemaObject.Children.SingleOrDefault(y => y.Name == cConstraint.Context) :
                     null;
 
-                this.AddTemplateTableConstraint(template, table, cConstraint, level + 1, includeCategoryHeader, nextSchemaObject);
+                this.AddTemplateTableConstraint(template, templateReferences, table, cConstraint, level + 1, includeCategoryHeader, nextSchemaObject);
             }
         }
 

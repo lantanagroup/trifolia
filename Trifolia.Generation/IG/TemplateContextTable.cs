@@ -22,12 +22,13 @@ namespace Trifolia.Generation.IG
         private Body documentBody = null;
         private List<Template> exportedTemplates = null;
         private IEnumerable<TemplateConstraint> allConstraints = null;
+        private List<ViewTemplateRelationship> relationships = null;
 
         #region Public Static Methods
 
-        public static void AddTable(IObjectRepository tdb, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates)
+        public static void AddTable(IObjectRepository tdb, List<ViewTemplateRelationship> relationships, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates)
         {
-            TemplateContextTable cot = new TemplateContextTable(tdb, tables, documentBody, template, exportedTemplates);
+            TemplateContextTable cot = new TemplateContextTable(tdb, relationships, tables, documentBody, template, exportedTemplates);
             cot.AddTemplateContextTable();
         }
 
@@ -35,9 +36,10 @@ namespace Trifolia.Generation.IG
 
         #region Ctor
 
-        private TemplateContextTable(IObjectRepository tdb, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates)
+        private TemplateContextTable(IObjectRepository tdb, List<ViewTemplateRelationship> relationships, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates)
         {
             this.tdb = tdb;
+            this.relationships = relationships;
             this.tables = tables;
             this.template = template;
             this.documentBody = documentBody;
@@ -63,21 +65,27 @@ namespace Trifolia.Generation.IG
             TableCell usedByCell = new TableCell();
             TableCell containedCell = new TableCell();
 
-            var usedByTemplates = (from tcr in this.tdb.TemplateConstraintReferences
-                                   join tc in this.tdb.TemplateConstraints on tcr.TemplateConstraintId equals tc.Id
-                                   join t in this.tdb.Templates on tc.TemplateId equals t.Id
-                                   join tt in this.exportedTemplates on t.Id equals tt.Id
-                                   where tcr.ReferenceIdentifier == template.Oid && tc.TemplateId != template.Id
-                                   orderby tc.Conformance, t.Name
-                                   select new { Template = t, Required = tc.Conformance == "SHALL" || tc.Conformance == "SHALL NOT" })
-                                   .Distinct().ToList();
-            var containedTemplates = (from ac in allConstraints
-                                      join tcr in this.tdb.TemplateConstraintReferences on ac.Id equals tcr.TemplateConstraintId
-                                      join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
-                                      join tt in this.exportedTemplates on t.Id equals tt.Id
-                                      orderby t.Name
-                                      select new { Template = t, Required = ac.Conformance == "SHALL" || ac.Conformance == "SHALL NOT" })
-                                      .Distinct().ToList();
+            List<int> exportedTemplateIds = this.exportedTemplates.Select(y => y.Id).ToList();
+
+            string templateIdentifier = template.Oid;
+            int templateId = template.Id;
+            
+            var usedByTemplates = (from tr in this.relationships
+                                   where tr.ChildTemplateId == template.Id
+                                   select new
+                                   {
+                                       Name = tr.ParentTemplateName,
+                                       Bookmark = tr.ParentTemplateBookmark,
+                                       Required = tr.Conformance == "SHALL" || tr.Conformance == "SHALL NOT"
+                                   }).Distinct().ToList();
+            var containedTemplates = (from tr in this.relationships
+                                      where tr.ParentTemplateId == template.Id
+                                      select new
+                                      {
+                                          Name = tr.ChildTemplateName,
+                                          Bookmark = tr.ChildTemplateBookmark,
+                                          Required = tr.Conformance == "SHALL" || tr.Conformance == "SHALL NOT"
+                                      }).Distinct().ToList();
 
             int maxRows = containedTemplates.Count > usedByTemplates.Count ? containedTemplates.Count : usedByTemplates.Count;
 
@@ -103,7 +111,7 @@ namespace Trifolia.Generation.IG
                 if (usedByTemplateReference != null)
                 {
                     usedByPara.Append(
-                        DocHelper.CreateAnchorHyperlink(usedByTemplateReference.Template.Name, usedByTemplateReference.Template.Bookmark, Properties.Settings.Default.TableLinkStyle),
+                        DocHelper.CreateAnchorHyperlink(usedByTemplateReference.Name, usedByTemplateReference.Bookmark, Properties.Settings.Default.TableLinkStyle),
                         DocHelper.CreateRun(usedByTemplateReference.Required ? " (required)" : " (optional)"));
 
                     usedByCell.Append(usedByPara); 
@@ -113,7 +121,7 @@ namespace Trifolia.Generation.IG
                 if (containedTemplateReference != null)
                 {
                     usedByPara.Append(
-                        DocHelper.CreateAnchorHyperlink(containedTemplateReference.Template.Name, containedTemplateReference.Template.Bookmark, Properties.Settings.Default.TableLinkStyle),
+                        DocHelper.CreateAnchorHyperlink(containedTemplateReference.Name, containedTemplateReference.Bookmark, Properties.Settings.Default.TableLinkStyle),
                         DocHelper.CreateRun(containedTemplateReference.Required ? " (required)" : " (optional)"));
 
                     containedCell.Append(containedPara);

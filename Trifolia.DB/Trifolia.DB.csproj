@@ -101,6 +101,14 @@
     <Compile Include="Migrations\201704111943303_multipleContainedTemplates.Designer.cs">
       <DependentUpon>201704111943303_multipleContainedTemplates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704121627210_vTemplateRelationship.cs" />
+    <Compile Include="Migrations\201704121627210_vTemplateRelationship.Designer.cs">
+      <DependentUpon>201704121627210_vTemplateRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704121915528_vCodeSystemUsage.cs" />
+    <Compile Include="Migrations\201704121915528_vCodeSystemUsage.Designer.cs">
+      <DependentUpon>201704121915528_vCodeSystemUsage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -139,6 +147,8 @@
     <Compile Include="Model\valueset.cs" />
     <Compile Include="Model\valueset_identifier.cs" />
     <Compile Include="Model\valueset_member.cs" />
+    <Compile Include="Model\v_codeSystemUsage.cs" />
+    <Compile Include="Model\v_templateRelationship.cs" />
     <Compile Include="Model\v_constraintcount.cs" />
     <Compile Include="Model\v_igaudittrail.cs" />
     <Compile Include="Model\v_implementationguidefile.cs" />
@@ -206,6 +216,12 @@
     <EmbeddedResource Include="Migrations\201704111943303_multipleContainedTemplates.resx">
       <DependentUpon>201704111943303_multipleContainedTemplates.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704121627210_vTemplateRelationship.resx">
+      <DependentUpon>201704121627210_vTemplateRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704121915528_vCodeSystemUsage.resx">
+      <DependentUpon>201704121915528_vCodeSystemUsage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FHIR_Latest_Resources.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +241,14 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201704111943303_vTemplateUsage_down.sql" />
     <EmbeddedResource Include="Migrations\201704111943303_vTemplateUsage_up.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201704121627210_vTemplateRelationship_down.sql" />
+    <EmbeddedResource Include="Migrations\201704121627210_vTemplateRelationship_up.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201704121915528_vCodeSystemUsage_down.sql" />
+    <EmbeddedResource Include="Migrations\201704121915528_vCodeSystemUsage_up.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

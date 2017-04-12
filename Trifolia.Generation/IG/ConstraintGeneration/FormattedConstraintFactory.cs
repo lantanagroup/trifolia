@@ -29,6 +29,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             IGSettingsManager igSettings,
             IIGTypePlugin igTypePlugin,
             TemplateConstraint constraint,
+            List<ConstraintReference> references = null,
             string templateLinkBase = null,
             string valueSetLinkBase = null,
             bool linkContainedTemplate = false,
@@ -36,25 +37,36 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             bool createLinksForValueSets = false,
             bool includeCategory = true)
         {
-            var containedTemplates = (from tcr in constraint.References
-                                      join t in tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
-                                      where tcr.ReferenceType == ConstraintReferenceTypes.Template
-                                      select t)
-                                      .Distinct()
-                                      .ToList();
+            if (references == null)
+            {
+                references = (from tcr in tdb.TemplateConstraintReferences
+                              join t in tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                              where tcr.TemplateConstraintId == constraint.Id
+                              select new ConstraintReference()
+                              {
+                                  Bookmark = t.Bookmark,
+                                  Identifier = t.Oid,
+                                  Name = t.Name,
+                                  TemplateConstraintId = tcr.TemplateConstraintId
+                              }).ToList();
+            }
+            else
+            {
+                references = references.Where(y => y.TemplateConstraintId == constraint.Id).ToList();
+            }
 
             return NewFormattedConstraint(
                 tdb,
                 igSettings,
                 igTypePlugin,
                 (IConstraint)constraint,
+                references,
                 templateLinkBase,
                 valueSetLinkBase,
                 linkContainedTemplate,
                 linkIsBookmark,
                 createLinksForValueSets,
                 includeCategory,
-                containedTemplates,
                 constraint.ValueSet,
                 constraint.CodeSystem);
         }
@@ -64,13 +76,13 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             IGSettingsManager igSettings,
             IIGTypePlugin igTypePlugin,
             IConstraint constraint,
+            List<ConstraintReference> references,
             string templateLinkBase = null,
             string valueSetLinkBase = null,
             bool linkContainedTemplate = false, 
             bool linkIsBookmark = false, 
             bool createLinksForValueSets = false,
             bool includeCategory = true,
-            List<Template> containedTemplates = null,
             ValueSet valueSet = null,
             CodeSystem codeSystem = null)
         {
@@ -103,9 +115,10 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             formattedConstraint.LinkContainedTemplate = linkContainedTemplate;
             formattedConstraint.LinkIsBookmark = linkIsBookmark;
             formattedConstraint.CreateLinkForValueSets = createLinksForValueSets;
+            formattedConstraint.ConstraintReferences = references;
 
             // Set the properties in the FormattedConstraint based on the IConstraint
-            formattedConstraint.ParseConstraint(igTypePlugin, constraint, containedTemplates, valueSet, codeSystem);
+            formattedConstraint.ParseConstraint(igTypePlugin, constraint, valueSet, codeSystem);
 
             // Pre-process the constraint so that calls to GetHtml(), GetPlainText(), etc. returns something
             formattedConstraint.ParseFormattedConstraint();

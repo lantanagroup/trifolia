@@ -30,6 +30,7 @@ namespace Trifolia.Generation.IG
         CommentManager CommentManager { get; set; }
         bool IncludeCategory { get; set; }
         List<string> SelectedCategories { get; set; }
+        List<ConstraintReference> ConstraintReferences { get; set; }
 
         void GenerateConstraints(bool aCreateHyperlinksForValueSetNames = false, bool includeNotes = false);
     }

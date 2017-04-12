@@ -387,8 +387,17 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Template/Edit/Prose")]
         public string GetNarrative(ConstraintModel constraint)
         {
+            var constraintReferences = (from tcr in constraint.References
+                                        join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                        where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                        select new ConstraintReference()
+                                        {
+                                            Bookmark = t.Bookmark,
+                                            Identifier = t.Oid,
+                                            Name = t.Name
+                                        }).ToList();
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb);
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, null, constraint);
+            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, null, constraint, constraintReferences);
             fc.HasChildren = true;
 
             return fc.GetPlainText(false, false, true);

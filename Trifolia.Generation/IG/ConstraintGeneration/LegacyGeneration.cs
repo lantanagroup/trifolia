@@ -33,6 +33,8 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
         public CommentManager CommentManager { get; set; }
 
+        public List<ConstraintReference> ConstraintReferences { get; set; }
+
         public string ConstraintHeadingStyle
         {
             get { return constraintHeadingStyle; }
