@@ -82,8 +82,8 @@
                     <div class="form-group">
                         <label>Include Vocabulary?</label>
                         <select class="form-control" name="IncludeVocabulary" data-bind="value: IncludeVocabulary">
-                            <option value="false" selected="selected">No</option>
-                            <option value="true">Yes</option>
+                            <option value="true" selected="selected">Yes</option>
+                            <option value="false">No</option>
                         </select>
                     </div>
                     <!-- /ko -->
