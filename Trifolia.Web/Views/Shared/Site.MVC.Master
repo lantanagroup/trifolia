@@ -67,7 +67,7 @@
                             <li><a href="/IGManagement/List/ExportSchematron">Standard IG Schematron</a></li>
                             <!-- /ko -->
                             <!-- ko if: HasSecurable(['ExportVocabulary']) -->
-                            <!--<li><a href="/IGManagement/List/ExportVocab">Vocabulary</a></li>-->
+                            <li><a href="/IGManagement/List/ExportVocab">Vocabulary</a></li>
                             <!-- /ko -->
                             <!-- ko if: HasSecurable(['ExportGreen']) -->
                             <li><a href="/IGManagement/List/ExportGreen">Green Models</a></li>
