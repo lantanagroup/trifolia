@@ -55,8 +55,8 @@ namespace Trifolia.DB.Migrations
             };
 
             this.roles = new Role[] {
-                new Role() { Name = "Administrators", IsDefault = true, IsAdmin = true },
-                new Role() { Name = "Template Authors", IsDefault = false, IsAdmin = false },
+                new Role() { Name = "Administrators", IsDefault = false, IsAdmin = true },
+                new Role() { Name = "Template Authors", IsDefault = true, IsAdmin = false },
                 new Role() { Name = "Users", IsDefault = false, IsAdmin = false },
                 new Role() { Name = "IG Admins", IsDefault = false, IsAdmin = false },
                 new Role() { Name = "Terminology Admins", IsDefault = false, IsAdmin = false }
