@@ -1061,6 +1061,10 @@ namespace Trifolia.Web.Controllers.API
                             else
                                 ig.Version = 1;
                         }
+                        else
+                        {
+                            ig.Version = 1;
+                        }
 
                         // Delete sections that don't exist in the model
                         ig.Sections.Where(y => aModel.Sections.Count(x => x.Id == y.Id) == 0)
