@@ -150,7 +150,7 @@ namespace Trifolia.Export.FHIR.STU3
                                                  Example = false,
                                                  Source = new ResourceReference()
                                                  {
-                                                     Reference = string.Format("ValueSet/{0}", vs.Id.ToString()),
+                                                     Reference = string.Format("ValueSet/{0}", vs.GetFhirId()),
                                                      Display = vs.Name
                                                  }
                                              });

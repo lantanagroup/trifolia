@@ -13,6 +13,9 @@ namespace Trifolia.Export.FHIR.STU3
         {
             ValueSetIdentifier identifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == ValueSetIdentifierTypes.HTTP);
 
+            if (identifier == null && valueSet.Identifiers.Count > 0)
+                identifier = valueSet.Identifiers.First();
+
             if (identifier != null)
             {
                 if (identifier.Type == ValueSetIdentifierTypes.Oid)

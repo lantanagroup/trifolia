@@ -462,13 +462,13 @@ namespace Trifolia.Export.FHIR.STU3
             {
                 var fhirValueSet = exporter.Convert(valueSet, null, null, this.ig.Identifier);
                 var fhirValueSetContent = this.JsonFormat ? FhirSerializer.SerializeResourceToJson(fhirValueSet) : FhirSerializer.SerializeResourceToXml(fhirValueSet);
-                var fhirValueSetFileName = string.Format("resources/ValueSet/{0}.{1}", valueSet.Id, fileExtension);
+                var fhirValueSetFileName = string.Format("resources/ValueSet/{0}.{1}", fhirValueSet.Id, fileExtension);
 
                 // Add the value set file to the package
                 this.zip.AddEntry(fhirValueSetFileName, fhirValueSetContent);
 
                 // Add the value set to the control file so it knows what to do with it
-                string resourceKey = "ValueSet/" + valueSet.GetFhirId();
+                string resourceKey = "ValueSet/" + fhirValueSet.Id;
 
                 this.control.resources.Add(resourceKey, new Models.Control.ResourceReference()
                 {
