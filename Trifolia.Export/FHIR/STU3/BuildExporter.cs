@@ -460,7 +460,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var valueSet in valueSets)
             {
-                var fhirValueSet = exporter.Convert(valueSet);
+                var fhirValueSet = exporter.Convert(valueSet, null, null, this.ig.Identifier);
                 var fhirValueSetContent = this.JsonFormat ? FhirSerializer.SerializeResourceToJson(fhirValueSet) : FhirSerializer.SerializeResourceToXml(fhirValueSet);
                 var fhirValueSetFileName = string.Format("resources/ValueSet/{0}.{1}", valueSet.Id, fileExtension);
 
