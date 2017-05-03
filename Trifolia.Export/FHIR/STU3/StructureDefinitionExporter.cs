@@ -142,6 +142,7 @@ namespace Trifolia.Export.FHIR.STU3
                 newElementDef.Slicing = new ElementDefinition.SlicingComponent();
                 newElementDef.Slicing.Discriminator.Add(new ElementDefinition.DiscriminatorComponent()
                 {
+                    Type = ElementDefinition.DiscriminatorType.Value,
                     Path = "@type"
                 });
                 newElementDef.Slicing.Rules = ElementDefinition.SlicingRules.Open;
@@ -165,7 +166,7 @@ namespace Trifolia.Export.FHIR.STU3
                 {
                     ValueSet = new ResourceReference()
                     {
-                        Reference = constraint.ValueSet.GetIdentifier(ValueSetIdentifierTypes.HTTP),
+                        Reference = constraint.ValueSet.GetReference(),
                         Display = constraint.ValueSet.Name
                     }
                 };
@@ -389,16 +390,27 @@ namespace Trifolia.Export.FHIR.STU3
                         newElementDef.Definition = constraintFormatter.GetPlainText(false, false, false);
                         newElementDef.Slicing = new ElementDefinition.SlicingComponent()
                         {
-                            Discriminator = (from bi in branchIdentifiers
-                                             select new ElementDefinition.DiscriminatorComponent()
-                                             {
-                                                 Path = bi.GetElementPath(template.TemplateType.RootContextType)
-                                             }).ToList(),
                             Rules = template.IsOpen ? ElementDefinition.SlicingRules.Open : ElementDefinition.SlicingRules.Closed
                         };
 
-                        // If no discriminators are specified, assume the child SHALL constraints are discriminators
-                        if (newElementDef.Slicing.Discriminator.Count() == 0)
+                        if (branchIdentifiers.Count() > 0)
+                        {
+                            newElementDef.Slicing.Discriminator = (from bi in branchIdentifiers
+                                                                   select new ElementDefinition.DiscriminatorComponent()
+                                                                   {
+                                                                       Type = ElementDefinition.DiscriminatorType.Value,
+                                                                       Path = bi.GetElementPath(null)
+                                                                   }).ToList();
+                        }
+                        else if (branchConstraint.Context == "extension")
+                        {
+                            newElementDef.Slicing.Discriminator.Add(new ElementDefinition.DiscriminatorComponent()
+                            {
+                                Type = ElementDefinition.DiscriminatorType.Value,
+                                Path = "url"
+                            });
+                        }
+                        else        // If no discriminators are specified, assume the child SHALL constraints are discriminators
                         {
                             var discriminatorConstraints = branchConstraint.ChildConstraints.Where(y => y.Conformance == "SHALL");
 
@@ -416,6 +428,7 @@ namespace Trifolia.Export.FHIR.STU3
                             newElementDef.Slicing.Discriminator = (from d in discriminatorConstraints
                                                                    select new ElementDefinition.DiscriminatorComponent()
                                                                    {
+                                                                       Type = ElementDefinition.DiscriminatorType.Value,
                                                                        Path = d.GetElementPath(template.PrimaryContextType)
                                                                    }).ToList();
                         }

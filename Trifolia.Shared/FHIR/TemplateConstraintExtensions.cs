@@ -40,7 +40,10 @@ namespace Trifolia.Shared.FHIR
                 current = current.ParentConstraint;
             }
 
-            return (string.IsNullOrEmpty(resourceType) ? "Resource" : resourceType) + "." + elementPath;
+            if (!string.IsNullOrEmpty(resourceType))
+                return resourceType + "." + elementPath;
+
+            return elementPath;
         }
     }
 }

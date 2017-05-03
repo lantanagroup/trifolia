@@ -56,9 +56,9 @@ namespace Trifolia.Export.FHIR.STU3
             // Handle urn:oid: and urn:hl7ii: identifiers differently if a base url is provided
             // baseUrl is most likely provided when within the context of an implementation guide
             if (fhirValueSet.Url.StartsWith("urn:oid:") && !string.IsNullOrEmpty(baseUrl))
-                fhirValueSet.Url = baseUrl.TrimEnd('/') + "/" + fhirValueSet.Url.Substring(8);
+                fhirValueSet.Url = baseUrl.TrimEnd('/') + "/ValueSet/" + fhirValueSet.Url.Substring(8);
             else if (fhirValueSet.Url.StartsWith("urn:hl7ii:") && !string.IsNullOrEmpty(baseUrl))
-                fhirValueSet.Url = baseUrl.TrimEnd('/') + "/" + fhirValueSet.Url.Substring(10);
+                fhirValueSet.Url = baseUrl.TrimEnd('/') + "/ValueSet/" + fhirValueSet.Url.Substring(10);
 
             if (summaryType == null || summaryType == SummaryType.Data)
             {
