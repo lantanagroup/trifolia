@@ -141,7 +141,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var template in this.templates)
             {
-                string entryContentFormat = "<tr><td><a href=\"StructureDefinition_{0}.html\">{1}</a></td><td>{2}</td></tr>";
+                string entryContentFormat = "<tr><td><a href=\"StructureDefinition-{0}.html\">{1}</a></td><td>{2}</td></tr>";
                 string description = !string.IsNullOrEmpty(template.Description) ? template.Description.RemoveInvalidUtf8Characters() : string.Empty;
                 pageContent += string.Format(entryContentFormat, template.FhirId(), template.Name, description);
             }
@@ -454,21 +454,30 @@ namespace Trifolia.Export.FHIR.STU3
             var valueSets = (from t in templates
                              join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
                              where tc.ValueSet != null
-                             select tc.ValueSet).Distinct();
+                             select tc.ValueSet).Distinct().ToList();
             ValueSetExporter exporter = new ValueSetExporter(this.tdb);
             string fileExtension = this.JsonFormat ? "json" : "xml";
 
             foreach (var valueSet in valueSets)
             {
-                var fhirValueSet = exporter.Convert(valueSet);
+                var fhirValueSet = exporter.Convert(valueSet, null, null, this.ig.Identifier);
                 var fhirValueSetContent = this.JsonFormat ? FhirSerializer.SerializeResourceToJson(fhirValueSet) : FhirSerializer.SerializeResourceToXml(fhirValueSet);
-                var fhirValueSetFileName = string.Format("resources/ValueSet/{0}.{1}", valueSet.Id, fileExtension);
+                var fhirValueSetFileName = string.Format("resources/ValueSet/{0}.{1}", fhirValueSet.Id, fileExtension);
+
+                // Ignore value sets from the base spec
+                if (string.IsNullOrEmpty(fhirValueSet.Url) || fhirValueSet.Url.StartsWith("http://hl7.org/fhir/ValueSet/"))
+                    continue;
+
+                // If the value set is part of a different implementation guide (has a different base url from this IG)
+                // add the url to the control file's special-urls property so that the ig publisher knows to handle it differently
+                if (!fhirValueSet.Url.StartsWith(this.ig.Identifier))
+                    this.control.special_urls.Add(fhirValueSet.Url);
 
                 // Add the value set file to the package
                 this.zip.AddEntry(fhirValueSetFileName, fhirValueSetContent);
 
                 // Add the value set to the control file so it knows what to do with it
-                string resourceKey = "ValueSet/" + valueSet.GetFhirId();
+                string resourceKey = "ValueSet/" + fhirValueSet.Id;
 
                 this.control.resources.Add(resourceKey, new Models.Control.ResourceReference()
                 {
@@ -513,7 +522,7 @@ namespace Trifolia.Export.FHIR.STU3
                 string strucDefFileName = "resources/StructureDefinition/" + template.FhirId() + "." + fileExtension;
                 this.zip.AddEntry(strucDefFileName, strucDefContent);
 
-                control.resources.Add(location, new Models.Control.ResourceReference("instance-template-sd-no-example.html", "StructureDefinition_" + template.FhirId() + ".html"));
+                control.resources.Add(location, new Models.Control.ResourceReference("instance-template-sd-no-example.html", "StructureDefinition-" + template.FhirId() + ".html"));
             }
         }
 

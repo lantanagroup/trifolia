@@ -20,6 +20,7 @@ namespace Trifolia.Export.FHIR.STU3.Models
             this.defaults.Add("StructureDefinition", new TemplateReference("instance-template-sd.html", null));
 
             this.resources = new Dictionary<string, ResourceReference>();
+            this.special_urls = new List<string>();
         }
 
         public string tool { get; set; }
@@ -30,6 +31,10 @@ namespace Trifolia.Export.FHIR.STU3.Models
 
         [JsonProperty(PropertyName = "sct-edition", NullValueHandling = NullValueHandling.Ignore)]
         public string sct_edition { get; set; }
+
+        [JsonProperty(PropertyName = "special-urls", NullValueHandling = NullValueHandling.Ignore)]
+        public List<string> special_urls { get; set; }
+
         public Dictionary<string, ResourceReference> resources { get; set; }
 
         public class Path

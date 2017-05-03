@@ -145,12 +145,13 @@ namespace Trifolia.Export.FHIR.STU3
                                      where tc.ValueSet != null
                                      select tc.ValueSet).Distinct().ToList();
                     var valueSetResources = (from vs in valueSets
+                                             where vs.GetIdentifier() != null && !vs.GetIdentifier().StartsWith("http://hl7.org/fhir/ValueSet/")    // Ignore value sets in the base spec
                                              select new FhirImplementationGuide.ResourceComponent()
                                              {
                                                  Example = false,
                                                  Source = new ResourceReference()
                                                  {
-                                                     Reference = string.Format("ValueSet/{0}", vs.Id.ToString()),
+                                                     Reference = string.Format("ValueSet/{0}", vs.GetFhirId()),
                                                      Display = vs.Name
                                                  }
                                              });
