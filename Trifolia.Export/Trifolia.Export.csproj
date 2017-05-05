@@ -127,6 +127,7 @@
     <Compile Include="FHIR\STU3\BuildExporter.cs" />
     <Compile Include="FHIR\STU3\ImplementationGuideExporter.cs" />
     <Compile Include="FHIR\STU3\Models\Control.cs" />
+    <Compile Include="FHIR\STU3\Models\DataExamples.cs" />
     <Compile Include="FHIR\STU3\StructureDefinitionExporter.cs" />
     <Compile Include="FHIR\STU3\TemplateExtensions.cs" />
     <Compile Include="FHIR\STU3\ValueSetExporter.cs" />

@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using Trifolia.Config;
 using System.Net;
 using Trifolia.Shared.Plugins;
+using Trifolia.Export.FHIR.STU3.Models;
 
 namespace Trifolia.Export.FHIR.STU3
 {
@@ -32,6 +33,7 @@ namespace Trifolia.Export.FHIR.STU3
         private string igName;
         private string controlFileName;
         private IEnumerable<Template> templates;
+        private DataExamples dataExamples;
 
         private static Regex RemoveSpecialCharactersRegex = new Regex(@"[^\u0000-\u007F]+", RegexOptions.Compiled);
 
@@ -56,6 +58,8 @@ namespace Trifolia.Export.FHIR.STU3
             this.igName = this.ig.Name.Replace(" ", "_");
             this.controlFileName = this.igName + ".json";
             this.JsonFormat = jsonFormat;
+
+            this.dataExamples = new DataExamples();
         }
 
         public BuildExporter(int implementationGuideId)
@@ -108,7 +112,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             this.AddExamples();
 
-            this.AddControl();
+            this.AddControlAndDataExamples();
 
             this.AddBatch();
 
@@ -139,7 +143,9 @@ namespace Trifolia.Export.FHIR.STU3
     </tr>
 ";
 
-            foreach (var template in this.templates)
+            var templatesExcludingExtensions = this.templates.Where(y => y.PrimaryContextType != "Extension");
+
+            foreach (var template in templatesExcludingExtensions)
             {
                 string entryContentFormat = "<tr><td><a href=\"StructureDefinition-{0}.html\">{1}</a></td><td>{2}</td></tr>";
                 string description = !string.IsNullOrEmpty(template.Description) ? template.Description.RemoveInvalidUtf8Characters() : string.Empty;
@@ -228,6 +234,7 @@ namespace Trifolia.Export.FHIR.STU3
             var templateExamples = (from t in this.templates
                                     join ts in this.tdb.TemplateSamples on t.Id equals ts.TemplateId
                                     select new { Template = t, Sample = ts });
+
             var parserSettings = new fhir_stu3.Hl7.Fhir.Serialization.ParserSettings();
             parserSettings.AcceptUnknownMembers = true;
             parserSettings.AllowUnrecognizedEnums = true;
@@ -239,6 +246,13 @@ namespace Trifolia.Export.FHIR.STU3
             {
                 fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
                 string fileExtension = "";
+
+                DataExamples.StructureDefinition strucDefExamples = new DataExamples.StructureDefinition();
+
+                if (this.dataExamples.StructureDefinitions.ContainsKey(templateExample.Template.Bookmark))
+                    strucDefExamples = this.dataExamples.StructureDefinitions[templateExample.Template.Bookmark];
+                else
+                    this.dataExamples.StructureDefinitions.Add(templateExample.Template.Bookmark, strucDefExamples);
 
                 try
                 {
@@ -269,11 +283,18 @@ namespace Trifolia.Export.FHIR.STU3
 
                 // Add the sample to the control file
                 string keyValue = string.Format("{0}/{1}", resource.ResourceType.ToString(), resource.Id);
-                string baseValue = string.Format("_includes/{0}.xhtml", resource.Id);
+                string baseValue = string.Format("{0}-{1}.html", resource.ResourceType.ToString(), resource.Id);
+                
                 this.control.resources.Add(keyValue, new Models.Control.ResourceReference()
                 {
-                    template_base = "instance-template-example.html",
+                    //template_base = "instance-template-example.html",
                     reference_base = baseValue
+                });
+
+                strucDefExamples.Examples.Add(new DataExamples.Example()
+                {
+                    Type = resource.ResourceType.ToString(),
+                    Id = resource.Id
                 });
             }
         }
@@ -315,16 +336,7 @@ namespace Trifolia.Export.FHIR.STU3
         private void AddCodeSystemsPage()
         {
             string codeSystemsContent = string.Empty;
-            var codeSystems = (from t in this.templates
-                               join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
-                               where tc.CodeSystem != null
-                               select tc.CodeSystem).Union(
-                                from t in this.templates
-                                join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
-                                join vs in this.tdb.ValueSets on tc.ValueSetId equals vs.Id
-                                join vsm in this.tdb.ValueSetMembers on vs.Id equals vsm.ValueSetId
-                                select vsm.CodeSystem)
-                .Distinct();
+            var codeSystems = this.tdb.ViewImplementationGuideCodeSystems.Where(y => y.ImplementationGuideId == this.ig.Id).OrderBy(y => y.Name);
 
             if (codeSystems.Any())
             {
@@ -338,7 +350,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var codeSystem in codeSystems)
             {
-                string definition = !string.IsNullOrEmpty(codeSystem.Description) ? string.Format("<u>{0}</u><br/>\n{1}", codeSystem.Oid, codeSystem.Description) : codeSystem.Oid;
+                string definition = !string.IsNullOrEmpty(codeSystem.Description) ? string.Format("<u>{0}</u><br/>\n{1}", codeSystem.CodeSystemId, codeSystem.Description) : codeSystem.Identifier;
                 codeSystemsContent += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", codeSystem.Name, definition);
             }
 
@@ -367,7 +379,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var extensionTemplate in extensionTemplates)
             {
-                extensionsContent += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", extensionTemplate.Name, extensionTemplate.Oid);
+                extensionsContent += string.Format("<tr><td><a href=\"StructureDefinition-{2}.html\">{0}</a></td><td>{1}</td></tr>", extensionTemplate.Name, extensionTemplate.Oid, extensionTemplate.Bookmark);
             }
 
             if (extensionTemplates.Any())
@@ -430,11 +442,15 @@ namespace Trifolia.Export.FHIR.STU3
             this.zip.AddEntry("RunIGPublisherCmd.bat", batchContent);
         }
 
-        private void AddControl()
+        private void AddControlAndDataExamples()
         {
-            string controlContent = JsonConvert.SerializeObject(control, Formatting.Indented);
+            string controlContent = JsonConvert.SerializeObject(this.control, Formatting.Indented);
 
             this.zip.AddEntry(this.controlFileName, controlContent);
+
+            string dataExamplesContent = JsonConvert.SerializeObject(this.dataExamples.StructureDefinitions, Formatting.Indented);
+
+            this.zip.AddEntry("pages/_data/examples.json", dataExamplesContent);
         }
 
         private void AddOverviewPage()
@@ -481,7 +497,7 @@ namespace Trifolia.Export.FHIR.STU3
 
                 this.control.resources.Add(resourceKey, new Models.Control.ResourceReference()
                 {
-                    template_base = "instance-template-format.html",
+                    //template_base = "instance-template-format.html",
                     reference_base = string.Format("ValueSet-{0}.html", valueSet.GetFhirId())
                 });
             }
@@ -505,10 +521,12 @@ namespace Trifolia.Export.FHIR.STU3
         {
             List<TemplateType> templateTypes = this.templates.Select(y => y.TemplateType).Distinct().ToList();
 
+            /*      no need to create a default for each type since they are the same for all
             foreach (var templateType in templateTypes)
             {
                 control.defaults.Add(templateType.RootContextType, new Models.Control.TemplateReference("instance-template-format-example.html", "instance-template-example.html"));
             }
+            */
 
             foreach (var template in this.templates)
             {
@@ -522,7 +540,7 @@ namespace Trifolia.Export.FHIR.STU3
                 string strucDefFileName = "resources/StructureDefinition/" + template.FhirId() + "." + fileExtension;
                 this.zip.AddEntry(strucDefFileName, strucDefContent);
 
-                control.resources.Add(location, new Models.Control.ResourceReference("instance-template-sd-no-example.html", "StructureDefinition-" + template.FhirId() + ".html"));
+                this.control.resources.Add(location, new Models.Control.ResourceReference("StructureDefinition-" + template.FhirId() + ".html"));
             }
         }
 

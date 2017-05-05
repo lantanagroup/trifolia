@@ -229,6 +229,11 @@ namespace Trifolia.Export.FHIR.STU3
                         {
                             Reference = string.Format("{0}/{1}", resource.ResourceType, resource.Id),
                             Display = GetResourceName(resource, templateExample.Sample.Name)
+                        },
+                        ExampleFor = new ResourceReference()
+                        {
+                            Reference = string.Format("StructureDefinition/{0}", templateExample.Template.Bookmark),
+                            Display = templateExample.Template.Name
                         }
                     };
 

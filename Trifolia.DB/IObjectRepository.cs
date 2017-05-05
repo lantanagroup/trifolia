@@ -52,6 +52,7 @@ namespace Trifolia.DB
         DbSet<ViewImplementationGuideTemplate> ViewImplementationGuideTemplates { get; }
         DbSet<TemplateConstraintSample> TemplateConstraintSamples { get; }
         DbSet<TemplateSample> TemplateSamples { get; }
+        DbSet<ViewImplementationGuideCodeSystem> ViewImplementationGuideCodeSystems { get; }
         DbSet<ViewIGAuditTrail> ViewIGAuditTrails { get; }
         DbSet<ImplementationGuideSection> ImplementationGuideSections { get; }
         DbSet<TemplateExtension> TemplateExtensions { get; }

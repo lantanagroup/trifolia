@@ -56,6 +56,7 @@ namespace Trifolia.DB
         public virtual DbSet<ValueSet> ValueSets { get; set; }
         public virtual DbSet<ValueSetMember> ValueSetMembers { get; set; }
         public virtual DbSet<ValueSetIdentifier> ValueSetIdentifiers { get; set; }
+        public virtual DbSet<ViewImplementationGuideCodeSystem> ViewImplementationGuideCodeSystems { get; set; }
         public virtual DbSet<ViewConstraintCount> ViewConstraintCounts { get; set; }
         public virtual DbSet<ViewIGAuditTrail> ViewIGAuditTrails { get; set; }
         public virtual DbSet<ViewImplementationGuideFile> ViewImplementationGuideFiles { get; set; }

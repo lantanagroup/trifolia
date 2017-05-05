@@ -832,6 +832,41 @@ namespace Trifolia.Test
 
         #region IObjectRepository View Collections
 
+        public DbSet<ViewImplementationGuideCodeSystem> ViewImplementationGuideCodeSystems
+        {
+            get
+            {
+                var results = (from t in this.Templates
+                               join tc in this.TemplateConstraints on t.Id equals tc.TemplateId
+                               join cs in this.CodeSystems on tc.CodeSystemId equals cs.Id
+                               select new ViewImplementationGuideCodeSystem()
+                               {
+                                   CodeSystemId = cs.Id,
+                                   Description = cs.Description,
+                                   Identifier = cs.Oid,
+                                   ImplementationGuideId = t.OwningImplementationGuideId,
+                                   Name = cs.Name
+                               }).Distinct()
+                        .Union(from t in this.Templates
+                               join tc in this.TemplateConstraints on t.Id equals tc.TemplateId
+                               join vsm in this.ValueSetMembers on tc.ValueSetId equals vsm.ValueSetId
+                               join cs in this.CodeSystems on vsm.CodeSystemId equals cs.Id
+                               select new ViewImplementationGuideCodeSystem()
+                               {
+                                   CodeSystemId = cs.Id,
+                                   Description = cs.Description,
+                                   Identifier = cs.Oid,
+                                   ImplementationGuideId = t.OwningImplementationGuideId,
+                                   Name = cs.Name
+                               })
+                               .Distinct();
+
+                var mockDbSet = CreateMockDbSet<ViewImplementationGuideCodeSystem>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
+            }
+        }
+
         public DbSet<ViewIGAuditTrail> ViewIGAuditTrails
         {
             get

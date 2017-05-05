@@ -96,6 +96,10 @@
     <Compile Include="Migrations\201703292147411_multipleValueSetIdentifiers.Designer.cs">
       <DependentUpon>201703292147411_multipleValueSetIdentifiers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705041941253_vImplementationGuideCodeSystems.cs" />
+    <Compile Include="Migrations\201705041941253_vImplementationGuideCodeSystems.Designer.cs">
+      <DependentUpon>201705041941253_vImplementationGuideCodeSystems.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -142,6 +146,7 @@
     <Compile Include="Model\v_template.cs" />
     <Compile Include="Model\v_templateList.cs" />
     <Compile Include="Model\v_templatePermissions.cs" />
+    <Compile Include="Model\v_implementationGuideCodeSystems.cs" />
     <Compile Include="Model\v_templateusage.cs" />
     <Compile Include="Model\v_userSecurables.cs" />
     <Compile Include="ObjectContextExtension.cs" />
@@ -196,6 +201,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703292147411_multipleValueSetIdentifiers.resx">
       <DependentUpon>201703292147411_multipleValueSetIdentifiers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705041941253_vImplementationGuideCodeSystems.resx">
+      <DependentUpon>201705041941253_vImplementationGuideCodeSystems.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FHIR_Latest_Resources.txt" />
   </ItemGroup>
