@@ -162,7 +162,7 @@ namespace Trifolia.Export.FHIR.STU3
             if (constraint.ValueSet != null && valueConformance.IndexOf("NOT") < 0)
             {
                 hasBinding = true;
-                newElementDef.Binding = new ElementDefinition.BindingComponent()
+                newElementDef.Binding = new ElementDefinition.ElementDefinitionBindingComponent()
                 {
                     ValueSet = new ResourceReference()
                     {
