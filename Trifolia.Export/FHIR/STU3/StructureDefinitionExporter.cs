@@ -399,7 +399,7 @@ namespace Trifolia.Export.FHIR.STU3
                                                                    select new ElementDefinition.DiscriminatorComponent()
                                                                    {
                                                                        Type = ElementDefinition.DiscriminatorType.Value,
-                                                                       Path = bi.GetElementPath(null)
+                                                                       Path = bi.GetElementPath(null, branchConstraint)
                                                                    }).ToList();
                         }
                         else if (branchConstraint.Context == "extension")
@@ -429,7 +429,7 @@ namespace Trifolia.Export.FHIR.STU3
                                                                    select new ElementDefinition.DiscriminatorComponent()
                                                                    {
                                                                        Type = ElementDefinition.DiscriminatorType.Value,
-                                                                       Path = d.GetElementPath(template.PrimaryContextType)
+                                                                       Path = d.GetElementPath(template.PrimaryContextType, branchConstraint)
                                                                    }).ToList();
                         }
                     }
