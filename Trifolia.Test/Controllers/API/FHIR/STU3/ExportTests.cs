@@ -17,8 +17,8 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
     [DeploymentItem("Schemas\\", "Schemas\\")]
     public class ExportTests
     {
-        private const string STRUC_DEF_SCH = "Trifolia.Test.Schemas.FHIR_Latest.structuredefinition.sch";
-        private const string IMPL_GUIDE_SCH = "Trifolia.Test.Schemas.FHIR_Latest.implementationguide.sch";
+        private const string STRUC_DEF_SCH = "Trifolia.Test.Schemas.FHIR_STU3.structuredefinition.sch";
+        private const string IMPL_GUIDE_SCH = "Trifolia.Test.Schemas.FHIR_STU3.implementationguide.sch";
         private const string IMPORT_XML = "Trifolia.Test.DocSamples.ccda-on-fhir-native.xml";
 
         private static MockObjectRepository tdb;

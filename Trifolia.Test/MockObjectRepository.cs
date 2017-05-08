@@ -23,7 +23,7 @@ namespace Trifolia.Test
         public const string DEFAULT_ORGANIZATION = "LCG";
         public const string DEFAULT_FHIR_DSTU1_IG_TYPE_NAME = "FHIR DSTU1";
         public const string DEFAULT_FHIR_DSTU2_IG_TYPE_NAME = "FHIR DSTU2";
-        public const string DEFAULT_FHIR_STU3_IG_TYPE_NAME = "FHIR Latest";
+        public const string DEFAULT_FHIR_STU3_IG_TYPE_NAME = "FHIR STU3";
         public const string DEFAULT_CDA_IG_TYPE_NAME = "CDA";
         public const string DEFAULT_HQMF_R2_IG_TYPE_NAME = "HQMF R2";
         public const string DEFAULT_USERNAME = "admin";

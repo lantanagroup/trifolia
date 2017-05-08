@@ -205,7 +205,7 @@
     <EmbeddedResource Include="Migrations\201705041941253_vImplementationGuideCodeSystems.resx">
       <DependentUpon>201705041941253_vImplementationGuideCodeSystems.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FHIR_Latest_Resources.txt" />
+    <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703292147411_searchValueSet_down.sql" />

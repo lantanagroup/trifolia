@@ -268,7 +268,7 @@ namespace Trifolia.DB.Migrations
             List<string> resourceTypes = new List<string>() { "Extension" };
             List<TemplateType> templateTypes = new List<TemplateType>();
 
-            using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("Trifolia.DB.Migrations.FHIR_Latest_Resources.txt")))
+            using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("Trifolia.DB.Migrations.FHIR_STU3_Resources.txt")))
             {
                 string content = sr.ReadToEnd();
                 List<string> resourceTypeLines = (from c in content.Split('\n')
@@ -381,7 +381,7 @@ namespace Trifolia.DB.Migrations
                 new ImplementationGuideType()
                 {
                     Id = 6,
-                    Name = "FHIR Latest",
+                    Name = "FHIR STU3",
                     SchemaLocation = "fhir-all.xsd",
                     SchemaPrefix = "fhir",
                     SchemaURI = "http://hl7.org/fhir"

@@ -1050,495 +1050,495 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\account.xsd">
+    <None Include="Schemas\FHIR_STU3\account.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\activitydefinition.xsd">
+    <None Include="Schemas\FHIR_STU3\activitydefinition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\adverseevent.xsd">
+    <None Include="Schemas\FHIR_STU3\adverseevent.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\allergyintolerance.xsd">
+    <None Include="Schemas\FHIR_STU3\allergyintolerance.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\appointment.xsd">
+    <None Include="Schemas\FHIR_STU3\appointment.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\appointmentresponse.xsd">
+    <None Include="Schemas\FHIR_STU3\appointmentresponse.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\auditevent.xsd">
+    <None Include="Schemas\FHIR_STU3\auditevent.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\basic.xsd">
+    <None Include="Schemas\FHIR_STU3\basic.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\binary.xsd">
+    <None Include="Schemas\FHIR_STU3\binary.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\bodysite.xsd">
+    <None Include="Schemas\FHIR_STU3\bodysite.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\bundle.xsd">
+    <None Include="Schemas\FHIR_STU3\bundle.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\capabilitystatement.xsd">
+    <None Include="Schemas\FHIR_STU3\capabilitystatement.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\careplan.xsd">
+    <None Include="Schemas\FHIR_STU3\careplan.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\careteam.xsd">
+    <None Include="Schemas\FHIR_STU3\careteam.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\chargeitem.xsd">
+    <None Include="Schemas\FHIR_STU3\chargeitem.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\claim.xsd">
+    <None Include="Schemas\FHIR_STU3\claim.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\claimresponse.xsd">
+    <None Include="Schemas\FHIR_STU3\claimresponse.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\clinicalimpression.xsd">
+    <None Include="Schemas\FHIR_STU3\clinicalimpression.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\codesystem.xsd">
+    <None Include="Schemas\FHIR_STU3\codesystem.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\communication.xsd">
+    <None Include="Schemas\FHIR_STU3\communication.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\communicationrequest.xsd">
+    <None Include="Schemas\FHIR_STU3\communicationrequest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\compartmentdefinition.xsd">
+    <None Include="Schemas\FHIR_STU3\compartmentdefinition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\composition.xsd">
+    <None Include="Schemas\FHIR_STU3\composition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\conceptmap.xsd">
+    <None Include="Schemas\FHIR_STU3\conceptmap.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\condition.xsd">
+    <None Include="Schemas\FHIR_STU3\condition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\consent.xsd">
+    <None Include="Schemas\FHIR_STU3\consent.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\contract.xsd">
+    <None Include="Schemas\FHIR_STU3\contract.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\coverage.xsd">
+    <None Include="Schemas\FHIR_STU3\coverage.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\dataelement.xsd">
+    <None Include="Schemas\FHIR_STU3\dataelement.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\detectedissue.xsd">
+    <None Include="Schemas\FHIR_STU3\detectedissue.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\device.xsd">
+    <None Include="Schemas\FHIR_STU3\device.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\devicecomponent.xsd">
+    <None Include="Schemas\FHIR_STU3\devicecomponent.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\devicemetric.xsd">
+    <None Include="Schemas\FHIR_STU3\devicemetric.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\devicerequest.xsd">
+    <None Include="Schemas\FHIR_STU3\devicerequest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\deviceusestatement.xsd">
+    <None Include="Schemas\FHIR_STU3\deviceusestatement.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\diagnosticreport.xsd">
+    <None Include="Schemas\FHIR_STU3\diagnosticreport.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\documentmanifest.xsd">
+    <None Include="Schemas\FHIR_STU3\documentmanifest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\documentreference.xsd">
+    <None Include="Schemas\FHIR_STU3\documentreference.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\eligibilityrequest.xsd">
+    <None Include="Schemas\FHIR_STU3\eligibilityrequest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\eligibilityresponse.xsd">
+    <None Include="Schemas\FHIR_STU3\eligibilityresponse.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\encounter.xsd">
+    <None Include="Schemas\FHIR_STU3\encounter.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\endpoint.xsd">
+    <None Include="Schemas\FHIR_STU3\endpoint.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\enrollmentrequest.xsd">
+    <None Include="Schemas\FHIR_STU3\enrollmentrequest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\enrollmentresponse.xsd">
+    <None Include="Schemas\FHIR_STU3\enrollmentresponse.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\episodeofcare.xsd">
+    <None Include="Schemas\FHIR_STU3\episodeofcare.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\expansionprofile.xsd">
+    <None Include="Schemas\FHIR_STU3\expansionprofile.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\explanationofbenefit.xsd">
+    <None Include="Schemas\FHIR_STU3\explanationofbenefit.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\familymemberhistory.xsd">
+    <None Include="Schemas\FHIR_STU3\familymemberhistory.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\fhir-all.xsd">
+    <None Include="Schemas\FHIR_STU3\fhir-all.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\fhir-base.xsd">
+    <None Include="Schemas\FHIR_STU3\fhir-base.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\fhir-single.xsd">
+    <None Include="Schemas\FHIR_STU3\fhir-single.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\fhir-xhtml.xsd">
+    <None Include="Schemas\FHIR_STU3\fhir-xhtml.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\flag.xsd">
+    <None Include="Schemas\FHIR_STU3\flag.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\goal.xsd">
+    <None Include="Schemas\FHIR_STU3\goal.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\graphdefinition.xsd">
+    <None Include="Schemas\FHIR_STU3\graphdefinition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\group.xsd">
+    <None Include="Schemas\FHIR_STU3\group.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\guidanceresponse.xsd">
+    <None Include="Schemas\FHIR_STU3\guidanceresponse.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\healthcareservice.xsd">
+    <None Include="Schemas\FHIR_STU3\healthcareservice.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\imagingmanifest.xsd">
+    <None Include="Schemas\FHIR_STU3\imagingmanifest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\imagingstudy.xsd">
+    <None Include="Schemas\FHIR_STU3\imagingstudy.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\immunization.xsd">
+    <None Include="Schemas\FHIR_STU3\immunization.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\immunizationrecommendation.xsd">
+    <None Include="Schemas\FHIR_STU3\immunizationrecommendation.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\implementationguide.xsd">
+    <None Include="Schemas\FHIR_STU3\implementationguide.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\library.xsd">
+    <None Include="Schemas\FHIR_STU3\library.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\linkage.xsd">
+    <None Include="Schemas\FHIR_STU3\linkage.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\list.xsd">
+    <None Include="Schemas\FHIR_STU3\list.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\location.xsd">
+    <None Include="Schemas\FHIR_STU3\location.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\measure.xsd">
+    <None Include="Schemas\FHIR_STU3\measure.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\measurereport.xsd">
+    <None Include="Schemas\FHIR_STU3\measurereport.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\media.xsd">
+    <None Include="Schemas\FHIR_STU3\media.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\medication.xsd">
+    <None Include="Schemas\FHIR_STU3\medication.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\medicationadministration.xsd">
+    <None Include="Schemas\FHIR_STU3\medicationadministration.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\medicationdispense.xsd">
+    <None Include="Schemas\FHIR_STU3\medicationdispense.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\medicationrequest.xsd">
+    <None Include="Schemas\FHIR_STU3\medicationrequest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\medicationstatement.xsd">
+    <None Include="Schemas\FHIR_STU3\medicationstatement.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\messagedefinition.xsd">
+    <None Include="Schemas\FHIR_STU3\messagedefinition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\messageheader.xsd">
+    <None Include="Schemas\FHIR_STU3\messageheader.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\namingsystem.xsd">
+    <None Include="Schemas\FHIR_STU3\namingsystem.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\nutritionorder.xsd">
+    <None Include="Schemas\FHIR_STU3\nutritionorder.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\observation.xsd">
+    <None Include="Schemas\FHIR_STU3\observation.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\operationdefinition.xsd">
+    <None Include="Schemas\FHIR_STU3\operationdefinition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\operationoutcome.xsd">
+    <None Include="Schemas\FHIR_STU3\operationoutcome.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\organization.xsd">
+    <None Include="Schemas\FHIR_STU3\organization.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\parameters.xsd">
+    <None Include="Schemas\FHIR_STU3\parameters.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\patient.xsd">
+    <None Include="Schemas\FHIR_STU3\patient.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\paymentnotice.xsd">
+    <None Include="Schemas\FHIR_STU3\paymentnotice.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\paymentreconciliation.xsd">
+    <None Include="Schemas\FHIR_STU3\paymentreconciliation.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\person.xsd">
+    <None Include="Schemas\FHIR_STU3\person.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\plandefinition.xsd">
+    <None Include="Schemas\FHIR_STU3\plandefinition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\practitioner.xsd">
+    <None Include="Schemas\FHIR_STU3\practitioner.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\practitionerrole.xsd">
+    <None Include="Schemas\FHIR_STU3\practitionerrole.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\procedure.xsd">
+    <None Include="Schemas\FHIR_STU3\procedure.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\procedurerequest.xsd">
+    <None Include="Schemas\FHIR_STU3\procedurerequest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\processrequest.xsd">
+    <None Include="Schemas\FHIR_STU3\processrequest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\processresponse.xsd">
+    <None Include="Schemas\FHIR_STU3\processresponse.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\provenance.xsd">
+    <None Include="Schemas\FHIR_STU3\provenance.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\questionnaire.xsd">
+    <None Include="Schemas\FHIR_STU3\questionnaire.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\questionnaireresponse.xsd">
+    <None Include="Schemas\FHIR_STU3\questionnaireresponse.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\referralrequest.xsd">
+    <None Include="Schemas\FHIR_STU3\referralrequest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\relatedperson.xsd">
+    <None Include="Schemas\FHIR_STU3\relatedperson.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\requestgroup.xsd">
+    <None Include="Schemas\FHIR_STU3\requestgroup.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\researchstudy.xsd">
+    <None Include="Schemas\FHIR_STU3\researchstudy.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\researchsubject.xsd">
+    <None Include="Schemas\FHIR_STU3\researchsubject.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\riskassessment.xsd">
+    <None Include="Schemas\FHIR_STU3\riskassessment.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\schedule.xsd">
+    <None Include="Schemas\FHIR_STU3\schedule.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\searchparameter.xsd">
+    <None Include="Schemas\FHIR_STU3\searchparameter.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\sequence.xsd">
+    <None Include="Schemas\FHIR_STU3\sequence.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\servicedefinition.xsd">
+    <None Include="Schemas\FHIR_STU3\servicedefinition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\slot.xsd">
+    <None Include="Schemas\FHIR_STU3\slot.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\specimen.xsd">
+    <None Include="Schemas\FHIR_STU3\specimen.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\structuredefinition.xsd">
+    <None Include="Schemas\FHIR_STU3\structuredefinition.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\structuremap.xsd">
+    <None Include="Schemas\FHIR_STU3\structuremap.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\subscription.xsd">
+    <None Include="Schemas\FHIR_STU3\subscription.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\substance.xsd">
+    <None Include="Schemas\FHIR_STU3\substance.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\supplydelivery.xsd">
+    <None Include="Schemas\FHIR_STU3\supplydelivery.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\supplyrequest.xsd">
+    <None Include="Schemas\FHIR_STU3\supplyrequest.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\task.xsd">
+    <None Include="Schemas\FHIR_STU3\task.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\testreport.xsd">
+    <None Include="Schemas\FHIR_STU3\testreport.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\testscript.xsd">
+    <None Include="Schemas\FHIR_STU3\testscript.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\valueset.xsd">
+    <None Include="Schemas\FHIR_STU3\valueset.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\visionprescription.xsd">
+    <None Include="Schemas\FHIR_STU3\visionprescription.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\xml.xsd">
+    <None Include="Schemas\FHIR_STU3\xml.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Schemas\FHIR_Latest\xmldsig-core-schema.xsd">
+    <None Include="Schemas\FHIR_STU3\xmldsig-core-schema.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
