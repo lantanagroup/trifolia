@@ -451,7 +451,7 @@ namespace Trifolia.Terminology
                 {
                     Value = vc.Code,
                     DisplayName = vc.DisplayName,
-                    CodeSystem = vc.CodeSystem.Oid,
+                    CodeSystem = vc.CodeSystem.GetIdentifierValue(),
                     CodeSystemName = vc.CodeSystem.Name
                 };
 

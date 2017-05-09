@@ -202,7 +202,7 @@ namespace Trifolia.Generation.Versioning
             if (constraint.ValueCodeSystemId != null)
             {
                 CodeSystem codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
-                return string.Format("{0} ({1})", codeSystem.Name, codeSystem.Oid);
+                return string.Format("{0} ({1})", codeSystem.Name, codeSystem.GetIdentifierValue());
             }
 
             return string.Empty;

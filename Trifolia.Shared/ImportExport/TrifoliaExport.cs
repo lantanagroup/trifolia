@@ -130,7 +130,7 @@ namespace Trifolia.Generation.IG
                     Dictionary<string, string> columns = new Dictionary<string, string>()
                     {
                         { "ID", currentCodeSystems.Id.ToString() },
-                        { "OID", MakeQuoted(currentCodeSystems.Oid) },
+                        { "OID", MakeQuoted(currentCodeSystems.GetIdentifierValue()) },
                         { "codeSystemName", MakeQuoted(currentCodeSystems.Name) },
                         { "description", MakeQuoted(currentCodeSystems.Description) },
                         { "lastUpdate", GetDateTime(currentCodeSystems.LastUpdate) }
@@ -211,7 +211,7 @@ namespace Trifolia.Generation.IG
                         { "valueSetOId", MakeQuoted(currentValueSetMember.ValueSet.GetIdentifier()) },
                         { "codeSystemId", MakeQuoted(currentValueSetMember.CodeSystemId) },
                         { "code", MakeQuoted(currentValueSetMember.Code) },
-                        { "codeSystemOID", MakeQuoted(currentValueSetMember.CodeSystem.Oid) },
+                        { "codeSystemOID", MakeQuoted(currentValueSetMember.CodeSystem.GetIdentifierValue()) },
                         { "displayName", MakeQuoted(currentValueSetMember.DisplayName) },
                         { "dateOfValueSetStatus", MakeQuoted(currentValueSetMember.StatusDate) },
                         { "lastUpdate", GetDateTime(DateTime.Now) }

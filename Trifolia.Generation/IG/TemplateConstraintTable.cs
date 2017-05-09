@@ -146,7 +146,7 @@ namespace Trifolia.Generation.IG
                 }
                 else if (constraint.CodeSystem != null)
                 {
-                    fixedValue = string.Format("{0} ({1})", constraint.CodeSystem.Oid, constraint.CodeSystem.Name);
+                    fixedValue = string.Format("{0} ({1})", constraint.CodeSystem.GetIdentifierValue(this.igTypePlugin.DefaultIdentifierType), constraint.CodeSystem.Name);
                 }
 
                 if (!string.IsNullOrEmpty(constraint.Value))

@@ -105,7 +105,7 @@ namespace Trifolia.Web.Controllers.API
                            DisplayName = am.DisplayName,
                            CodeSystemId = am.CodeSystemId,
                            CodeSystemName = am.CodeSystem.Name,
-                           CodeSystemOid = am.CodeSystem.Oid,
+                           CodeSystemOid = am.CodeSystem.GetIdentifierValue(),
                            Status = am.Status,
                            StatusDate = am.StatusDate
                        }).ToArray();
@@ -132,7 +132,7 @@ namespace Trifolia.Web.Controllers.API
                             DisplayName = vsm.DisplayName,
                             CodeSystemId = vsm.CodeSystemId,
                             CodeSystemName = vsm.CodeSystem.Name,
-                            CodeSystemOid = vsm.CodeSystem.Oid,
+                            CodeSystemOid = vsm.CodeSystem.GetIdentifierValue(),
                             Status = vsm.Status,
                             StatusDate = vsm.StatusDate
                         });
@@ -241,7 +241,11 @@ namespace Trifolia.Web.Controllers.API
             if (string.IsNullOrEmpty(identifier))
                 throw new ArgumentNullException("identifier");
 
-            var codeSystems = this.tdb.CodeSystems.Where(y => y.Oid == identifier);
+            var codeSystems = (from cs in this.tdb.CodeSystems
+                               join csi in this.tdb.CodeSystemIdentifiers on cs.Id equals csi.CodeSystemId
+                               where csi.Identifier.Trim().ToLower() == identifier.Trim().ToLower()
+                               select cs)
+                               .Distinct();
 
             if (codeSystems.Count() > 0)
                 return codeSystems.First().Id;
@@ -447,7 +451,7 @@ namespace Trifolia.Web.Controllers.API
                     {
                         Id = cs.Id,
                         Name = cs.Name, 
-                        Oid = cs.Oid
+                        Oid = cs.Identifiers.OrderByDescending(y => y.IsDefault).First().Identifier
                     }).OrderBy(y => y.Name);
         }
 
@@ -459,17 +463,29 @@ namespace Trifolia.Web.Controllers.API
             int rows = 20,
             string order = "asc")
         {
-            var codeSystems = this.tdb.CodeSystems.Where(y => y.Name != null);
+            IQueryable<CodeSystemItem> codeSystems = (from cs in this.tdb.CodeSystems
+                                                      select new CodeSystemItem()
+                                                      {
+                                                          Id = cs.Id,
+                                                          Name = cs.Name,
+                                                          Oid = string.Join("\r\n", cs.Identifiers.OrderByDescending(y => y.IsDefault).Select(y => y.Identifier)),
+                                                          Description = cs.Description,
+                                                          ConstraintCount = cs.Constraints.Count,
+                                                          MemberCount = cs.Members.Count,
+                                                          PermitModify = CheckPoint.Instance.HasSecurables(SecurableNames.CODESYSTEM_EDIT),
+                                                          CanModify = cs.CanModify(this.tdb),
+                                                          CanOverride = cs.CanOverride(this.tdb)
+                                                      })
+                                                      .Distinct();
 
             if (!string.IsNullOrEmpty(search))
             {
-                var searchLower = search.ToLower();
+                string searchLower = search.ToLower();
 
-                codeSystems = (from cs in this.tdb.CodeSystems
-                               where cs.Name.ToLower().Contains(searchLower) ||
-                               cs.Oid.ToLower().Contains(searchLower) ||
-                               cs.Description.ToLower().Contains(searchLower)
-                               select cs);
+                codeSystems = codeSystems.Where(y =>
+                    y.Name.ToLower().Contains(searchLower) ||
+                    y.Oid.ToLower().Contains(searchLower) ||
+                    y.Description.ToLower().Contains(searchLower));
             }
 
             int total = codeSystems.Count();
@@ -479,15 +495,15 @@ namespace Trifolia.Web.Controllers.API
             {
                 case "MemberCount":
                     if (order == "desc")
-                        codeSystems = codeSystems.OrderByDescending(y => y.Members.Count);
+                        codeSystems = codeSystems.OrderByDescending(y => y.MemberCount);
                     else
-                        codeSystems = codeSystems.OrderBy(y => y.Members.Count);
+                        codeSystems = codeSystems.OrderBy(y => y.MemberCount);
                     break;
                 case "ConstraintCount":
                     if (order == "desc")
-                        codeSystems = codeSystems.OrderByDescending(y => y.Constraints.Count);
+                        codeSystems = codeSystems.OrderByDescending(y => y.ConstraintCount);
                     else
-                        codeSystems = codeSystems.OrderBy(y => y.Constraints.Count);
+                        codeSystems = codeSystems.OrderBy(y => y.ConstraintCount);
                     break;
                 case "Oid":
                     if (order == "desc")
@@ -510,23 +526,10 @@ namespace Trifolia.Web.Controllers.API
                 .Skip(start)
                 .Take(rows);
 
-            CodeSystemItem[] retCodeSystems = codeSystems.AsEnumerable().Select(y => new CodeSystemItem()
-            {
-                Id = y.Id,
-                Name = y.Name,
-                Oid = y.Oid,
-                Description = y.Description,
-                ConstraintCount = y.Constraints.Count,
-                MemberCount = y.Members.Count,
-                PermitModify = CheckPoint.Instance.HasSecurables(SecurableNames.CODESYSTEM_EDIT),
-                CanModify = y.CanModify(this.tdb),
-                CanOverride = y.CanOverride(this.tdb)
-            }).ToArray();
-
             CodeSystemItems result = new CodeSystemItems()
             {
                 total = total,
-                rows = retCodeSystems
+                rows = codeSystems.ToArray()
             };
 
             return result;

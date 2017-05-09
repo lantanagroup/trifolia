@@ -51,11 +51,11 @@ namespace Trifolia.Plugins
             }
         }
 
-        public ValueSetIdentifierTypes DefaultIdentifierType
+        public IdentifierTypes DefaultIdentifierType
         {
             get
             {
-                return ValueSetIdentifierTypes.Oid;
+                return IdentifierTypes.Oid;
             }
         }
 

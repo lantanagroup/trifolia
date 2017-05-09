@@ -105,7 +105,7 @@ namespace Trifolia.Export.Native
             {
                 exportConstraint.CodeSystem = new ExportCodeSystem()
                 {
-                    identifier = constraint.CodeSystem.Oid,
+                    identifier = constraint.CodeSystem.GetIdentifierValue(),
                     name = constraint.CodeSystem.Name
                 };
             }

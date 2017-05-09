@@ -226,7 +226,7 @@ namespace Trifolia.Export.Schematron
             {
                 //TODO: CDA specific logic, need to refactor this out to make more dynamic
                 if ((aAttribute.AttributeName == "code" || aAttribute.AttributeName == "value") && (aParentContext.EndsWith(this.prefix + ":code") || aParentContext.EndsWith(this.prefix + ":value")))
-                    aAttribute.CodeSystemOid = this.igTypePlugin.ParseIdentifier(this.codeSystem.Oid);
+                    aAttribute.CodeSystemOid = this.igTypePlugin.ParseIdentifier(this.codeSystem.GetIdentifierValue());
             }
         }
 

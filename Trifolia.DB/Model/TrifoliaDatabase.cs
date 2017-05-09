@@ -26,6 +26,7 @@ namespace Trifolia.DB
         public virtual DbSet<RoleAppSecurable> RoleAppSecurables { get; set; }
         public virtual DbSet<AuditEntry> AuditEntries { get; set; }
         public virtual DbSet<CodeSystem> CodeSystems { get; set; }
+        public virtual DbSet<CodeSystemIdentifier> CodeSystemIdentifiers { get; set; }
         public virtual DbSet<GreenConstraint> GreenConstraints { get; set; }
         public virtual DbSet<GreenTemplate> GreenTemplates { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
@@ -293,6 +294,11 @@ namespace Trifolia.DB
             modelBuilder.Entity<ValueSet>()
                 .HasMany(e => e.Identifiers)
                 .WithRequired(e => e.ValueSet)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<CodeSystem>()
+                .HasMany(e => e.Identifiers)
+                .WithRequired(e => e.CodeSystem)
                 .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<ViewIGAuditTrail>()

@@ -19,13 +19,13 @@ namespace Trifolia.Import.FHIR.DSTU2
         }
         private void PopulateIdentifier(ValueSet valueSet, string fhirIdentifier)
         {
-            ValueSetIdentifier vsIdentifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == ValueSetIdentifierTypes.HTTP);
+            ValueSetIdentifier vsIdentifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == IdentifierTypes.HTTP);
 
             if (vsIdentifier == null)
             {
                 vsIdentifier = new ValueSetIdentifier()
                 {
-                    Type = ValueSetIdentifierTypes.HTTP,
+                    Type = IdentifierTypes.HTTP,
                     Identifier = fhirIdentifier
                 };
 
@@ -64,15 +64,17 @@ namespace Trifolia.Import.FHIR.DSTU2
                     if (string.IsNullOrEmpty(expContains.Code) || string.IsNullOrEmpty(expContains.System))
                         continue;
 
-                    CodeSystem codeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid == expContains.System);
+                    CodeSystem codeSystem = (from cs in this.tdb.CodeSystems
+                                             join csi in this.tdb.CodeSystemIdentifiers on cs.Id equals csi.CodeSystemId
+                                             where csi.Identifier == expContains.System
+                                             select cs)
+                                            .FirstOrDefault();
 
                     if (codeSystem == null)
                     {
-                        codeSystem = new CodeSystem()
-                        {
-                            Oid = expContains.System,
-                            Name = expContains.System
-                        };
+                        codeSystem = new CodeSystem(expContains.System);
+                        codeSystem.Identifiers.Add(new CodeSystemIdentifier(expContains.System));
+
                         this.tdb.CodeSystems.Add(codeSystem);
                     }
 

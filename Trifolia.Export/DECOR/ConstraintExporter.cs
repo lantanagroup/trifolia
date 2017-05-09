@@ -100,21 +100,17 @@ namespace Trifolia.Export.DECOR
 
                     if (parentConstraint.CodeSystem != null)
                     {
-                        vocabConstraint.codeSystem = parentConstraint.CodeSystem.Oid;
+                        vocabConstraint.codeSystem = parentConstraint.CodeSystem.GetIdentifierValue(this.igTypePlugin.DefaultIdentifierType);
                         vocabConstraint.codeSystemName = parentConstraint.CodeSystem.Name;
 
-                        string oid, ext;
+                        CodeSystemIdentifier identifier = parentConstraint.CodeSystem.GetIdentifier(this.igTypePlugin.DefaultIdentifierType);
 
-                        if (IdentifierHelper.IsIdentifierOID(parentConstraint.CodeSystem.Oid))
-                        {
-                            IdentifierHelper.GetIdentifierOID(parentConstraint.CodeSystem.Oid, out oid);
-                            vocabConstraint.codeSystem = oid;
-                        }
-                        else if (IdentifierHelper.IsIdentifierII(parentConstraint.CodeSystem.Oid))
-                        {
-                            IdentifierHelper.GetIdentifierII(parentConstraint.CodeSystem.Oid, out oid, out ext);
-                            vocabConstraint.codeSystem = oid;
-                        }
+                        if (identifier.Type == IdentifierTypes.Oid)
+                            vocabConstraint.code = identifier.Identifier.Substring(8);
+                        else if (identifier.Type == IdentifierTypes.HL7II)
+                            vocabConstraint.code = identifier.Identifier.Substring(10, identifier.Identifier.LastIndexOf(':') - 10);
+                        else
+                            vocabConstraint.code = identifier.Identifier;
                     }
 
                     if (!string.IsNullOrEmpty(parentConstraint.Value))

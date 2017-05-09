@@ -173,6 +173,8 @@ namespace Trifolia.Generation.IG
                 if (count >= maximumMembers)
                     break;
 
+                string codeSystemIdentifier = currentMember.CodeSystem.GetIdentifierValue(this.igTypePlugin.DefaultIdentifierType);
+
                 TableRow memberRow = new TableRow(
                     new TableCell(
                         new Paragraph(
@@ -197,7 +199,7 @@ namespace Trifolia.Generation.IG
                                 {
                                     Val = Properties.Settings.Default.TableContentStyle
                                 }),
-                            DocHelper.CreateRun(currentMember.CodeSystem.Oid))),
+                            DocHelper.CreateRun(codeSystemIdentifier))),
                     new TableCell(
                         new Paragraph(
                             new ParagraphProperties(

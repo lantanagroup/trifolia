@@ -80,10 +80,10 @@ namespace Trifolia.Import.Terminology.External
         private bool PopulateIdentifier(ValueSet valueSet, string identifier)
         {
             bool changed = false;
-            ValueSetIdentifierTypes type = ValueSetIdentifierTypes.Oid;
+            IdentifierTypes type = IdentifierTypes.Oid;
 
             if (identifier.StartsWith("http://") || identifier.StartsWith("https://"))
-                type = ValueSetIdentifierTypes.HTTP;
+                type = IdentifierTypes.HTTP;
 
             ValueSetIdentifier vsIdentifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == type);
 
@@ -91,7 +91,7 @@ namespace Trifolia.Import.Terminology.External
             {
                 vsIdentifier = new ValueSetIdentifier()
                 {
-                    Type = ValueSetIdentifierTypes.HTTP,
+                    Type = IdentifierTypes.HTTP,
                     Identifier = identifier
                 };
 

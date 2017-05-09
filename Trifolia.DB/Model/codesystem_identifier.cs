@@ -8,14 +8,16 @@ using System.Threading.Tasks;
 
 namespace Trifolia.DB
 {
-    [Table("valueset_identifier")]
-    public class ValueSetIdentifier
+    [Table("codesystem_identifier")]
+    public partial class CodeSystemIdentifier
     {
+        public CodeSystemIdentifier() { }
+
         [Column("id")]
         public int Id { get; set; }
 
-        [Column("valueSetId")]
-        public int ValueSetId { get; set; }
+        [Column("codeSystemId")]
+        public int CodeSystemId { get; set; }
 
         [Column("identifier")]
         [StringLength(255)]
@@ -27,6 +29,6 @@ namespace Trifolia.DB
         [Column("type")]
         public IdentifierTypes Type { get; set; }
 
-        public virtual ValueSet ValueSet { get; set; }
+        public virtual CodeSystem CodeSystem { get; set; }
     }
 }

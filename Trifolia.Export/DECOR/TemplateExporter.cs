@@ -160,19 +160,15 @@ namespace Trifolia.Export.DECOR
                 type = VocabType.L,
                 level = "1"
             };
-            
-            if (IdentifierHelper.IsIdentifierOID(member.CodeSystem.Oid))
-            {
-                string oid;
-                IdentifierHelper.GetIdentifierOID(member.CodeSystem.Oid, out oid);
-                concept.codeSystem = oid;
-            }
-            else if (IdentifierHelper.IsIdentifierII(member.CodeSystem.Oid))
-            {
-                string oid, ext;
-                IdentifierHelper.GetIdentifierII(member.CodeSystem.Oid, out oid, out ext);
-                concept.codeSystem = oid;
-            }
+
+            CodeSystemIdentifier identifier = member.CodeSystem.GetIdentifier();
+
+            if (identifier.Type == IdentifierTypes.Oid)
+                concept.codeSystem = identifier.Identifier.Substring(8);
+            else if (identifier.Type == IdentifierTypes.HL7II)
+                concept.codeSystem = identifier.Identifier.Substring(10, identifier.Identifier.LastIndexOf(':') - 10);
+            else
+                concept.codeSystem = identifier.Identifier;
 
             return concept;
         }

@@ -172,15 +172,19 @@ namespace Trifolia.Import.Terminology.External
             }
         }
 
-        private void PopulateContentMembers(ImportValueSet importValueSet, DateTime? versionDate, XmlNodeList contentNodes, ValueSet currentValueSet)
+        private void PopulateContentMembers(IObjectRepository tdb, ImportValueSet importValueSet, DateTime? versionDate, XmlNodeList contentNodes, ValueSet currentValueSet)
         {
             foreach (XmlNode cContentNode in contentNodes)
             {
                 string codeSystemOid = cContentNode.Attributes["codeSystem"].Value;
                 XmlNodeList codeNodes = cContentNode.SelectNodes("mif:codeBasedContent", this.nsManager);
 
+                if (!codeSystemOid.StartsWith("urn:oid:") && !codeSystemOid.StartsWith("urn:hl7ii:") && !codeSystemOid.StartsWith("http://") && !codeSystemOid.StartsWith("https://"))
+                    codeSystemOid = "urn:oid:" + codeSystemOid;
+
                 foreach (XmlNode cCodeNode in codeNodes)
                 {
+                    ValueSetMember currentMember = null;
                     string code = cCodeNode.Attributes["code"].Value;
                     string relationshipType = null;
                     bool includeHead = cCodeNode.Attributes["includeHeadCode"] != null ? bool.Parse(cCodeNode.Attributes["includeHeadCode"].Value) : true;
@@ -198,9 +202,14 @@ namespace Trifolia.Import.Terminology.External
 
                     PopulateConceptFields(importMember);
 
-                    ValueSetMember currentMember = currentValueSet != null ?
-                        currentValueSet.Members.SingleOrDefault(y => y.Code == code && y.CodeSystem.Oid == codeSystemOid) :
-                        null;
+                    if (currentValueSet != null)
+                    {
+                        currentMember = (from vsm in currentValueSet.Members
+                                         join csi in tdb.CodeSystemIdentifiers on vsm.CodeSystemId equals csi.CodeSystemId
+                                         where vsm.Code.Trim().ToLower() == code.Trim().ToLower() && csi.Identifier.Trim().ToLower() == codeSystemOid.Trim().ToLower()
+                                         select vsm)
+                                         .FirstOrDefault();
+                    }
 
                     importMember.ImportStatus = DetermineValueSetMemberStatus(importMember, currentMember);
 

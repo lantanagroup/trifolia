@@ -96,7 +96,7 @@ namespace Trifolia.Export.Schematron.ConstraintToDocumentElementMap
                 var codeSystem = aTdb.CodeSystems.Single(y => y.Id == aTemplateConstraint.ValueCodeSystemId);
                 if (codeSystem != null)
                 {
-                    var codeSystemIdentifier = igTypePlugin.ParseIdentifier(codeSystem.Oid);
+                    var codeSystemIdentifier = igTypePlugin.ParseIdentifier(codeSystem.GetIdentifierValue(igTypePlugin.DefaultIdentifierType));
                     aElement.AddAttribute(new DocumentTemplateElementAttribute("codeSystem", codeSystemIdentifier, true)); //TODO: this is cda specific, need to update it
                 }
             }

@@ -71,6 +71,8 @@
     <Compile Include="AuditExtension.cs" />
     <Compile Include="Cardinality.cs" />
     <Compile Include="CardinalityParser.cs" />
+    <Compile Include="CodeSystemExtensions.cs" />
+    <Compile Include="CodeSystemIdentifierExtensions.cs" />
     <Compile Include="Conformance.cs" />
     <Compile Include="ConformanceParser.cs" />
     <Compile Include="DBContext.cs" />
@@ -105,6 +107,8 @@
     <Compile Include="Model\app_securable.cs" />
     <Compile Include="Model\audit.cs" />
     <Compile Include="Model\codesystem.cs" />
+    <Compile Include="Model\codesystem_identifier.cs" />
+    <Compile Include="Model\identifiertype.cs" />
     <Compile Include="Model\TrifoliaDatabase.cs" />
     <Compile Include="Model\green_constraint.cs" />
     <Compile Include="Model\green_template.cs" />

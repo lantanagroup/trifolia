@@ -31,7 +31,7 @@ namespace Trifolia.Export.FHIR.DSTU2
                 Name = valueSet.Name,
                 Status = usedByPublishedIgs ? ConformanceResourceStatus.Active : ConformanceResourceStatus.Draft,
                 Description = valueSet.Description,
-                Url = valueSet.GetIdentifier(ValueSetIdentifierTypes.HTTP)
+                Url = valueSet.GetIdentifier(IdentifierTypes.HTTP)
             };
 
             if (summaryType == null || summaryType == SummaryType.Data)
@@ -49,7 +49,7 @@ namespace Trifolia.Export.FHIR.DSTU2
                         var include = new FhirValueSet.ConceptSetComponent();
                         compose.Include.Add(include);
 
-                        include.System = groupedMember.Key.Oid;
+                        include.System = groupedMember.Key.GetIdentifierValue(IdentifierTypes.HTTP);
 
                         foreach (var member in groupedMember)
                         {
@@ -71,7 +71,7 @@ namespace Trifolia.Export.FHIR.DSTU2
                     {
                         var fhirMember = new FhirValueSet.ValueSetExpansionContainsComponent()
                         {
-                            System = DSTU2Helper.FormatIdentifier(vsMember.CodeSystem.Oid),
+                            System = DSTU2Helper.FormatIdentifier(vsMember.CodeSystem.GetIdentifierValue(IdentifierTypes.HTTP)),
                             Code = vsMember.Code,
                             Display = vsMember.DisplayName
                         };
@@ -86,13 +86,13 @@ namespace Trifolia.Export.FHIR.DSTU2
 
         private void PopulateIdentifier(ValueSet valueSet, string fhirIdentifier)
         {
-            ValueSetIdentifier vsIdentifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == ValueSetIdentifierTypes.HTTP);
+            ValueSetIdentifier vsIdentifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == IdentifierTypes.HTTP);
 
             if (vsIdentifier == null)
             {
                 vsIdentifier = new ValueSetIdentifier()
                 {
-                    Type = ValueSetIdentifierTypes.HTTP,
+                    Type = IdentifierTypes.HTTP,
                     Identifier = fhirIdentifier
                 };
 
@@ -131,15 +131,17 @@ namespace Trifolia.Export.FHIR.DSTU2
                     if (string.IsNullOrEmpty(expContains.Code) || string.IsNullOrEmpty(expContains.System))
                         continue;
 
-                    CodeSystem codeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid == expContains.System);
+                    CodeSystem codeSystem = (from cs in this.tdb.CodeSystems
+                                             join csi in this.tdb.CodeSystemIdentifiers on cs.Id equals csi.CodeSystemId
+                                             where csi.Identifier.Trim().ToLower() == expContains.System.Trim().ToLower()
+                                             select cs)
+                                             .FirstOrDefault();
 
                     if (codeSystem == null)
                     {
-                        codeSystem = new CodeSystem()
-                        {
-                            Oid = expContains.System,
-                            Name = expContains.System
-                        };
+                        codeSystem = new CodeSystem(expContains.System);
+                        codeSystem.Identifiers.Add(new CodeSystemIdentifier(expContains.System));
+
                         this.tdb.CodeSystems.Add(codeSystem);
                     }
 

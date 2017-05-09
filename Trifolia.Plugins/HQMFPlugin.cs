@@ -12,9 +12,9 @@ namespace Trifolia.Plugins
 {
     public class HQMFPlugin : IIGTypePlugin
     {
-        public ValueSetIdentifierTypes DefaultIdentifierType
+        public IdentifierTypes DefaultIdentifierType
         {
-            get { return ValueSetIdentifierTypes.Oid; }
+            get { return IdentifierTypes.Oid; }
         }
 
         public string TemplateIdentifierElementName

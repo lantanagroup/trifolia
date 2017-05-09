@@ -126,18 +126,25 @@ namespace Trifolia.Import.Terminology.External
             return importValueSet;
         }
 
-        private V CreateImportValueSetMember(Trifolia.DB.ValueSet currentValueSet, VadsClient.ValueSetConcept vadsConcept)
+        private V CreateImportValueSetMember(IObjectRepository tdb, Trifolia.DB.ValueSet currentValueSet, VadsClient.ValueSetConcept vadsConcept)
         {
-            string trifCodeSystemOid = string.Format("urn:oid:{0}", vadsConcept.codeSystemOid);
+            string codeSystemIdentifier = string.Format("urn:oid:{0}", vadsConcept.codeSystemOid);
 
-            ValueSetMember currentMember = currentValueSet != null ? 
-                currentValueSet.Members.SingleOrDefault(y => y.Code == vadsConcept.conceptCode && y.CodeSystem.Oid == trifCodeSystemOid) :
-                null;
+            ValueSetMember currentMember = null;
+
+            if (currentValueSet != null)
+            {
+                currentMember = (from vsm in currentValueSet.Members
+                                 join csi in tdb.CodeSystemIdentifiers on vsm.CodeSystemId equals csi.CodeSystemId
+                                 where vsm.Code.Trim().ToLower() == vadsConcept.conceptCode.Trim().ToLower() && csi.Identifier.Trim().ToLower() == codeSystemIdentifier.Trim().ToLower()
+                                 select vsm)
+                                 .FirstOrDefault();
+            }
 
             V importValueSetMember = Activator.CreateInstance<V>();
 
             importValueSetMember.Code = vadsConcept.conceptCode;
-            importValueSetMember.CodeSystemOid = trifCodeSystemOid;
+            importValueSetMember.CodeSystemOid = codeSystemIdentifier;
             importValueSetMember.DisplayName = vadsConcept.codeSystemConceptName;
             importValueSetMember.Status = ConvertStatus(vadsConcept.status);
             importValueSetMember.StatusDate = vadsConcept.statusDate;

@@ -16,6 +16,7 @@ namespace Trifolia.DB
         
         DbSet<AuditEntry> AuditEntries { get; }
         DbSet<CodeSystem> CodeSystems { get; }
+        DbSet<CodeSystemIdentifier> CodeSystemIdentifiers { get; }
         DbSet<GreenConstraint> GreenConstraints { get; }
         DbSet<GreenTemplate> GreenTemplates { get; }
         DbSet<ImplementationGuide> ImplementationGuides { get; }

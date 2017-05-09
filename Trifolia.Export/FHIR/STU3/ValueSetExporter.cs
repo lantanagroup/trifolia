@@ -50,7 +50,7 @@ namespace Trifolia.Export.FHIR.STU3
                 Name = valueSet.Name,
                 Status = usedByPublishedIgs ? PublicationStatus.Active : PublicationStatus.Draft,
                 Description = new Markdown(valueSet.Description),
-                Url = valueSet.GetIdentifier(ValueSetIdentifierTypes.HTTP)
+                Url = valueSet.GetIdentifier(IdentifierTypes.HTTP)
             };
 
             // Handle urn:oid: and urn:hl7ii: identifiers differently if a base url is provided
@@ -75,7 +75,7 @@ namespace Trifolia.Export.FHIR.STU3
                         var include = new FhirValueSet.ConceptSetComponent();
                         compose.Include.Add(include);
 
-                        include.System = groupedMember.Key.Oid;
+                        include.System = groupedMember.Key.GetIdentifierValue(IdentifierTypes.HTTP);
 
                         foreach (var member in groupedMember)
                         {
@@ -97,7 +97,7 @@ namespace Trifolia.Export.FHIR.STU3
                     {
                         var fhirMember = new FhirValueSet.ContainsComponent()
                         {
-                            System = STU3Helper.FormatIdentifier(vsMember.CodeSystem.Oid),
+                            System = STU3Helper.FormatIdentifier(vsMember.CodeSystem.GetIdentifierValue(IdentifierTypes.HTTP)),
                             Code = vsMember.Code,
                             Display = vsMember.DisplayName
                         };

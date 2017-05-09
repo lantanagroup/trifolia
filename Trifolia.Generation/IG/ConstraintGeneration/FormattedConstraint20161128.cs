@@ -179,7 +179,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                         codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
 
                 this.CodeSystemName = codeSystem.Name;
-                this.CodeSystemOid = codeSystem.Oid;
+                this.CodeSystemOid = codeSystem.GetIdentifierValue(igTypePlugin.DefaultIdentifierType);
             }
 
             this.Value = constraint.Value;

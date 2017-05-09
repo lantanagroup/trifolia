@@ -50,11 +50,11 @@ namespace Trifolia.Import.Terminology.Excel
                     vsIdentifier.Identifier = checkValueSet.Oid;
 
                     if (checkValueSet.Oid.StartsWith("http://") || checkValueSet.Oid.StartsWith("https://"))
-                        vsIdentifier.Type = ValueSetIdentifierTypes.HTTP;
+                        vsIdentifier.Type = IdentifierTypes.HTTP;
                     else if (checkValueSet.Oid.StartsWith("urn:hl7ii:"))
-                        vsIdentifier.Type = ValueSetIdentifierTypes.HL7II;
+                        vsIdentifier.Type = IdentifierTypes.HL7II;
                     else
-                        vsIdentifier.Type = ValueSetIdentifierTypes.Oid;
+                        vsIdentifier.Type = IdentifierTypes.Oid;
 
                     valueSet.Identifiers.Add(vsIdentifier);
                     this.tdb.ValueSets.Add(valueSet);
@@ -222,7 +222,11 @@ namespace Trifolia.Import.Terminology.Excel
                 }
 
                 var foundValueSetChange = response.ValueSets.SingleOrDefault(y => y.Oid == valuesetOid);
-                var foundCodeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid == codeSystemOid);
+                CodeSystem foundCodeSystem = (from cs in this.tdb.CodeSystems
+                                              join csi in this.tdb.CodeSystemIdentifiers on cs.Id equals csi.CodeSystemId
+                                              where csi.Identifier.Trim().ToLower() == codeSystemOid.Trim().ToLower()
+                                              select cs)
+                                              .FirstOrDefault();
 
                 if (foundValueSetChange == null)
                 {

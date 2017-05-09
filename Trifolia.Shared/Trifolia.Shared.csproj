@@ -116,7 +116,6 @@
     <Compile Include="LookupGreenTemplate.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="IGSettingsManager.cs" />
-    <Compile Include="LookupCodeSystem.cs" />
     <Compile Include="LookupImplementationGuide.cs" />
     <Compile Include="LookupImplementationGuideType.cs" />
     <Compile Include="LookupOrganization.cs" />

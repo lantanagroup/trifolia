@@ -40,7 +40,7 @@ namespace Trifolia.DB
 
         public string GetReference()
         {
-            string identifier = this.GetIdentifier(ValueSetIdentifierTypes.HTTP);
+            string identifier = this.GetIdentifier(IdentifierTypes.HTTP);
 
             if (identifier.StartsWith("urn:oid:"))
             {
@@ -63,7 +63,7 @@ namespace Trifolia.DB
             return identifier;
         }
 
-        public string GetIdentifier(ValueSetIdentifierTypes? preferredType = null)
+        public string GetIdentifier(IdentifierTypes? preferredType = null)
         {
             if (preferredType != null)
             {

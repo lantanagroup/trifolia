@@ -10,11 +10,11 @@ namespace Trifolia.Plugins.FHIR
 {
     public class DefaultPlugin
     {
-        public ValueSetIdentifierTypes DefaultIdentifierType
+        public IdentifierTypes DefaultIdentifierType
         {
             get
             {
-                return ValueSetIdentifierTypes.HTTP;
+                return IdentifierTypes.HTTP;
             }
         }
 

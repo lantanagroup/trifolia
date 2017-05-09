@@ -43,7 +43,7 @@ namespace Trifolia.Web.Models.TerminologyManagement
 
         public int? Id { get; set; }
         public string Identifier { get; set; }
-        public ValueSetIdentifierTypes Type { get; set; }
+        public IdentifierTypes Type { get; set; }
         public bool IsDefault { get; set; }
         public bool ShouldRemove { get; set; }
     }

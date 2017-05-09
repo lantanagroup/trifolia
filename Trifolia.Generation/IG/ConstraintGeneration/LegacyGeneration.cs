@@ -267,7 +267,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                             DocHelper.CreateRun(", which "),
                             DocHelper.CreateRun(valueConformance, Properties.Settings.Default.ConformanceVerbStyle),
                             DocHelper.CreateRun(" be selected from CodeSystem "),
-                            DocHelper.CreateRun(constraint.CodeSystem.Name + " (" + constraint.CodeSystem.Oid + ")", style:Properties.Settings.Default.VocabularyConstraintStyle));
+                            DocHelper.CreateRun(constraint.CodeSystem.Name + " (" + constraint.CodeSystem.GetIdentifierValue(this.IGTypePlugin.DefaultIdentifierType) + ")", style:Properties.Settings.Default.VocabularyConstraintStyle));
                     }
 
                     pConstraint.Append(
@@ -292,9 +292,11 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
                     if (constraint.CodeSystem != null)
                     {
+                        string codeSystemIdentifier = constraint.CodeSystem.GetIdentifierValue(this.IGTypePlugin.DefaultIdentifierType);
+
                         pConstraint.Append(
                             DocHelper.CreateRun(" (CodeSystem: "),
-                            DocHelper.CreateRun(constraint.CodeSystem.Name + " " + constraint.CodeSystem.Oid, style:Properties.Settings.Default.TemplateOidStyle),
+                            DocHelper.CreateRun(constraint.CodeSystem.Name + " " + codeSystemIdentifier, style:Properties.Settings.Default.TemplateOidStyle),
                             DocHelper.CreateRun(")"));
                     }
 

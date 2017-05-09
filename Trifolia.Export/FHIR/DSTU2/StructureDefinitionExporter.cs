@@ -174,7 +174,7 @@ namespace Trifolia.Export.FHIR.DSTU2
                             coding.Code = constraint.Value;
 
                         if (constraint.CodeSystem != null)
-                            coding.System = constraint.CodeSystem.Oid;
+                            coding.System = constraint.CodeSystem.GetIdentifierValue(IdentifierTypes.HTTP);
 
                         if (!string.IsNullOrEmpty(constraint.DisplayName))
                             coding.Display = constraint.DisplayName;
@@ -188,7 +188,7 @@ namespace Trifolia.Export.FHIR.DSTU2
                             fixedCoding.Code = constraint.Value;
 
                         if (constraint.CodeSystem != null)
-                            fixedCoding.System = constraint.CodeSystem.Oid;
+                            fixedCoding.System = constraint.CodeSystem.GetIdentifierValue(IdentifierTypes.HTTP);
 
                         if (!string.IsNullOrEmpty(constraint.DisplayName))
                             fixedCoding.Display = constraint.DisplayName;

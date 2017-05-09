@@ -11,18 +11,18 @@ namespace Trifolia.Export.FHIR.STU3
     {
         public static string GetFhirId(this ValueSet valueSet)
         {
-            ValueSetIdentifier identifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == ValueSetIdentifierTypes.HTTP);
+            ValueSetIdentifier identifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == IdentifierTypes.HTTP);
 
             if (identifier == null && valueSet.Identifiers.Count > 0)
                 identifier = valueSet.Identifiers.First();
 
             if (identifier != null)
             {
-                if (identifier.Type == ValueSetIdentifierTypes.Oid)
+                if (identifier.Type == IdentifierTypes.Oid)
                     return identifier.Identifier.Substring(8);
-                else if (identifier.Type == ValueSetIdentifierTypes.HL7II)
+                else if (identifier.Type == IdentifierTypes.HL7II)
                     return identifier.Identifier.Substring(10);
-                else if (identifier.Type == ValueSetIdentifierTypes.HTTP)
+                else if (identifier.Type == IdentifierTypes.HTTP)
                     return identifier.Identifier.Substring(identifier.Identifier.LastIndexOf("/") + 1);
             }
 

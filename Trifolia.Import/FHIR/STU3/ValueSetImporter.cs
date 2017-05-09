@@ -21,7 +21,7 @@ namespace Trifolia.Import.FHIR.STU3
 
         private void PopulateIdentifier(ValueSet valueSet, FhirValueSet fhirValueSet)
         {
-            var existingIdentifiers = valueSet.Identifiers.Where(y => y.Type == ValueSetIdentifierTypes.HTTP).ToList();
+            var existingIdentifiers = valueSet.Identifiers.Where(y => y.Type == IdentifierTypes.HTTP).ToList();
 
             // Remove HTTP identifiers that are not found in the FHIR ValueSet's identifiers
             for (var i = existingIdentifiers.Count - 1; i >= 0; i--)
@@ -39,7 +39,7 @@ namespace Trifolia.Import.FHIR.STU3
                 {
                     valueSet.Identifiers.Add(new ValueSetIdentifier()
                     {
-                        Type = ValueSetIdentifierTypes.HTTP,
+                        Type = IdentifierTypes.HTTP,
                         Identifier = fhirIdentifer.Value
                     });
                 }
@@ -72,15 +72,17 @@ namespace Trifolia.Import.FHIR.STU3
                     if (string.IsNullOrEmpty(expContains.Code) || string.IsNullOrEmpty(expContains.System))
                         continue;
 
-                    CodeSystem codeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid == expContains.System);
+                    CodeSystem codeSystem = (from cs in this.tdb.CodeSystems
+                                             join csi in this.tdb.CodeSystemIdentifiers on cs.Id equals csi.CodeSystemId
+                                             where csi.Identifier == expContains.System
+                                             select cs)
+                                            .FirstOrDefault();
 
                     if (codeSystem == null)
                     {
-                        codeSystem = new CodeSystem()
-                        {
-                            Oid = expContains.System,
-                            Name = expContains.System
-                        };
+                        codeSystem = new CodeSystem(expContains.System);
+                        codeSystem.Identifiers.Add(new CodeSystemIdentifier(expContains.System));
+
                         this.tdb.CodeSystems.Add(codeSystem);
                     }
 
