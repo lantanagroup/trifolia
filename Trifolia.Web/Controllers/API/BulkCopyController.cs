@@ -377,7 +377,12 @@ namespace Trifolia.Web.Controllers.API
                         }
                         else
                         {
-                            CodeSystem foundCodeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid == codeSystem);
+                            CodeSystem foundCodeSystem = (from cs in this.tdb.CodeSystems
+                                                          join csi in this.tdb.CodeSystemIdentifiers on cs.Id equals csi.CodeSystemId
+                                                          where csi.Identifier.Trim().ToLower() == codeSystem.Trim().ToLower()
+                                                          select cs)
+                                                         .Distinct()
+                                                         .FirstOrDefault();
 
                             if (foundCodeSystem == null)
                                 results.Errors.Add("Constraint change #" + constraintChange.RowNumber.ToString() + " defines a code system \"" + codeSystem + "\" which could not be found.");

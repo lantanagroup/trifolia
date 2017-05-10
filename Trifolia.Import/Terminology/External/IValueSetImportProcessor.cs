@@ -11,8 +11,8 @@ namespace Trifolia.Import.Terminology.External
             where T : ImportValueSet
             where V : ImportValueSetMember
     {
-        T FindValueSet(IObjectRepository tdb, string oid);
+        T FindValueSet(string oid);
 
-        void SaveValueSet(IObjectRepository tdb, ImportValueSet valueSet);
+        void SaveValueSet(ImportValueSet valueSet);
     }
 }

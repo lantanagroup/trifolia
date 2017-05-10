@@ -44,7 +44,8 @@ namespace Trifolia.Import.Terminology.External
 
         #endregion
 
-        public HL7RIMValueSetImportProcessor(XmlDocument sourceDoc)
+        public HL7RIMValueSetImportProcessor(IObjectRepository tdb, XmlDocument sourceDoc)
+            : base(tdb)
         {
             this.sourceDoc = sourceDoc;
 
@@ -55,7 +56,7 @@ namespace Trifolia.Import.Terminology.External
             }
         }
 
-        protected override T BaseFindValueSet(IObjectRepository tdb, string oid)
+        protected override T BaseFindValueSet(string oid)
         {
             string valueSetXpath = string.Format("/mif:vocabularyModel/mif:valueSet[@id='{0}']", oid);
             XmlNode foundValueSetNode = this.sourceDoc.SelectSingleNode(valueSetXpath, this.nsManager);
@@ -63,8 +64,8 @@ namespace Trifolia.Import.Terminology.External
             if (foundValueSetNode == null)
                 return null;
 
-            ValueSet currentValueSet = (from vs in tdb.ValueSets
-                                        join vsi in tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
+            ValueSet currentValueSet = (from vs in this.tdb.ValueSets
+                                        join vsi in this.tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
                                         where vsi.Identifier.ToLower().Trim() == oid.ToLower().Trim()
                                         select vs)
                                       .Distinct()
@@ -172,7 +173,7 @@ namespace Trifolia.Import.Terminology.External
             }
         }
 
-        private void PopulateContentMembers(IObjectRepository tdb, ImportValueSet importValueSet, DateTime? versionDate, XmlNodeList contentNodes, ValueSet currentValueSet)
+        private void PopulateContentMembers(ImportValueSet importValueSet, DateTime? versionDate, XmlNodeList contentNodes, ValueSet currentValueSet)
         {
             foreach (XmlNode cContentNode in contentNodes)
             {
@@ -205,7 +206,7 @@ namespace Trifolia.Import.Terminology.External
                     if (currentValueSet != null)
                     {
                         currentMember = (from vsm in currentValueSet.Members
-                                         join csi in tdb.CodeSystemIdentifiers on vsm.CodeSystemId equals csi.CodeSystemId
+                                         join csi in this.tdb.CodeSystemIdentifiers on vsm.CodeSystemId equals csi.CodeSystemId
                                          where vsm.Code.Trim().ToLower() == code.Trim().ToLower() && csi.Identifier.Trim().ToLower() == codeSystemOid.Trim().ToLower()
                                          select vsm)
                                          .FirstOrDefault();
@@ -222,9 +223,18 @@ namespace Trifolia.Import.Terminology.External
         {
             if (includeHead)
             {
-                ValueSetMember currentMember = currentValueSet != null ?
-                    currentValueSet.Members.SingleOrDefault(y => y.Code == importValueSetMember.Code && y.CodeSystem.Oid == importValueSetMember.CodeSystemOid) :
-                    null;
+                ValueSetMember currentMember = null;
+
+                if (currentValueSet != null)
+                {
+                    currentMember = (from vsm in currentValueSet.Members
+                                     join csi in this.tdb.CodeSystemIdentifiers on vsm.CodeSystemId equals csi.CodeSystemId
+                                     where vsm.Code.Trim().ToLower() == importValueSetMember.Code.Trim().ToLower()
+                                       && csi.Identifier.Trim().ToLower() == importValueSetMember.CodeSystemOid.Trim().ToLower()
+                                     select vsm)
+                                     .Distinct()
+                                     .FirstOrDefault();
+                }
 
                 importValueSetMember.ImportStatus = DetermineValueSetMemberStatus(importValueSetMember, currentMember);
 

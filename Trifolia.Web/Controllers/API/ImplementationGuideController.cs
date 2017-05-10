@@ -1590,7 +1590,7 @@ namespace Trifolia.Web.Controllers.API
                                                 {
                                                     Code = vsm.Code,
                                                     DisplayName = vsm.DisplayName,
-                                                    CodeSystemIdentifier = vsm.CodeSystem.Oid,
+                                                    CodeSystemIdentifier = vsm.CodeSystem.GetIdentifierValue(igTypePlugin.DefaultIdentifierType),
                                                     CodeSystemName = vsm.CodeSystem.Name
                                                 }).ToList();
 
@@ -1600,7 +1600,7 @@ namespace Trifolia.Web.Controllers.API
                     var codeSystems = (from vsm in members
                                        select new ViewDataModel.CodeSystem()
                                        {
-                                           Identifier = vsm.CodeSystem.Oid,
+                                           Identifier = vsm.CodeSystem.GetIdentifierValue(igTypePlugin.DefaultIdentifierType),
                                            Name = vsm.CodeSystem.Name
                                        });
                     model.CodeSystems.AddRange(codeSystems);
@@ -1650,7 +1650,7 @@ namespace Trifolia.Web.Controllers.API
                                        where tc.CodeSystem != null
                                        select new ViewDataModel.CodeSystem()
                                        {
-                                           Identifier = tc.CodeSystem.Oid,
+                                           Identifier = tc.CodeSystem.GetIdentifierValue(igTypePlugin.DefaultIdentifierType),
                                            Name = tc.CodeSystem.Name
                                        });
                     model.CodeSystems.AddRange(codeSystems);

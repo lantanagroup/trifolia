@@ -19,6 +19,8 @@ namespace Trifolia.Web.Controllers.API
     public class TerminologyController : ApiController
     {
         private IObjectRepository tdb;
+        private const string PHINVADS_SOURCE = "PHIN VADS";
+        private const string ROSETREE_SOURCE = "HL7 RIM/RoseTree";
 
         #region Construct/Dispose
 
@@ -468,13 +470,19 @@ namespace Trifolia.Web.Controllers.API
                                                       {
                                                           Id = cs.Id,
                                                           Name = cs.Name,
-                                                          Oid = string.Join("\r\n", cs.Identifiers.OrderByDescending(y => y.IsDefault).Select(y => y.Identifier)),
                                                           Description = cs.Description,
                                                           ConstraintCount = cs.Constraints.Count,
                                                           MemberCount = cs.Members.Count,
                                                           PermitModify = CheckPoint.Instance.HasSecurables(SecurableNames.CODESYSTEM_EDIT),
                                                           CanModify = cs.CanModify(this.tdb),
-                                                          CanOverride = cs.CanOverride(this.tdb)
+                                                          CanOverride = cs.CanOverride(this.tdb),
+                                                          Identifiers = cs.Identifiers.Select(y => new CodeSystemIdentifierModel()
+                                                          {
+                                                              Id = y.Id,
+                                                              Identifier = y.Identifier,
+                                                              Type = y.Type,
+                                                              IsDefault = y.IsDefault
+                                                          }).ToList()
                                                       })
                                                       .Distinct();
 
@@ -484,7 +492,7 @@ namespace Trifolia.Web.Controllers.API
 
                 codeSystems = codeSystems.Where(y =>
                     y.Name.ToLower().Contains(searchLower) ||
-                    y.Oid.ToLower().Contains(searchLower) ||
+                    y.Identifiers.Any(x => x.Identifier.Contains(searchLower)) ||
                     y.Description.ToLower().Contains(searchLower));
             }
 
@@ -507,9 +515,9 @@ namespace Trifolia.Web.Controllers.API
                     break;
                 case "Oid":
                     if (order == "desc")
-                        codeSystems = codeSystems.OrderByDescending(y => y.Oid);
+                        codeSystems = codeSystems.OrderByDescending(y => y.Identifiers.First().Identifier);
                     else
-                        codeSystems = codeSystems.OrderBy(y => y.Oid);
+                        codeSystems = codeSystems.OrderBy(y => y.Identifiers.First().Identifier);
                     break;
                 case "Name":
                 default:
@@ -552,11 +560,40 @@ namespace Trifolia.Web.Controllers.API
             if (foundCodeSystem.Name != item.Name)
                 foundCodeSystem.Name = item.Name;
 
-            if (foundCodeSystem.Oid != item.Oid)
-                foundCodeSystem.Oid = item.Oid;
-
             if (foundCodeSystem.Description != item.Description)
                 foundCodeSystem.Description = item.Description;
+
+            // Add and update identifiers
+            foreach (var identifierModel in item.Identifiers.Where(y => !y.IsRemoved))
+            {
+                CodeSystemIdentifier identifier = null;
+
+                if (identifierModel.Id != null)
+                {
+                    identifier = foundCodeSystem.Identifiers.Single(y => y.Id == identifierModel.Id);
+                }
+                else
+                {
+                    identifier = new CodeSystemIdentifier();
+                    foundCodeSystem.Identifiers.Add(identifier);
+                }
+
+                if (identifier.Type != identifierModel.Type)
+                    identifier.Type = identifierModel.Type;
+
+                if (identifier.Identifier != identifierModel.Identifier)
+                    identifier.Identifier = identifierModel.Identifier;
+
+                if (identifier.IsDefault != identifierModel.IsDefault)
+                    identifier.IsDefault = identifierModel.IsDefault;
+            }
+
+            // Remove identifiers
+            foreach (var identifierModel in item.Identifiers.Where(y => y.IsRemoved))
+            {
+                var identifier = foundCodeSystem.Identifiers.Single(y => y.Id == identifierModel.Id);
+                this.tdb.CodeSystemIdentifiers.Remove(identifier);
+            }
 
             this.tdb.SaveChanges();
 
@@ -638,9 +675,9 @@ namespace Trifolia.Web.Controllers.API
         public ImportValueSet SearchPhinVads(string oid)
         {
             PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember> processor = 
-                new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>();
+                new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>(this.tdb);
 
-            ImportValueSet valueSet = processor.FindValueSet(this.tdb, oid);
+            ImportValueSet valueSet = processor.FindValueSet(oid);
             return valueSet;
         }
 
@@ -652,9 +689,9 @@ namespace Trifolia.Web.Controllers.API
             roseTreeDoc.Load(roseTreeLocation);
 
             HL7RIMValueSetImportProcessor<ImportValueSet, ImportValueSetMember> processor =
-                new HL7RIMValueSetImportProcessor<ImportValueSet, ImportValueSetMember>(roseTreeDoc);
+                new HL7RIMValueSetImportProcessor<ImportValueSet, ImportValueSetMember>(this.tdb, roseTreeDoc);
 
-            ImportValueSet valueSet = processor.FindValueSet(this.tdb, oid);
+            ImportValueSet valueSet = processor.FindValueSet(oid);
             return valueSet;
         }
 
@@ -663,26 +700,28 @@ namespace Trifolia.Web.Controllers.API
         {
             BaseValueSetImportProcess<ImportValueSet, ImportValueSetMember> processor;
 
-            if (valueSet.ImportSource == "PHIN VADS")
-            {
-                processor = new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>();
-            }
-            else if (valueSet.ImportSource == "HL7 RIM/RoseTree")
-            {
-                string roseTreeLocation = AppSettings.HL7RoseTreeLocation;
-                XmlDocument roseTreeDoc = new XmlDocument();
-                roseTreeDoc.Load(roseTreeLocation);
-
-                processor = new HL7RIMValueSetImportProcessor<ImportValueSet, ImportValueSetMember>(roseTreeDoc);
-            }
-            else
-                throw new Exception("Cannot identify which external soure the value set came from.");
-
             using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
+                if (valueSet.ImportSource == PHINVADS_SOURCE)
+                {
+                    processor = new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>(auditedTdb);
+                }
+                else if (valueSet.ImportSource == ROSETREE_SOURCE)
+                {
+                    string roseTreeLocation = AppSettings.HL7RoseTreeLocation;
+                    XmlDocument roseTreeDoc = new XmlDocument();
+                    roseTreeDoc.Load(roseTreeLocation);
+
+                    processor = new HL7RIMValueSetImportProcessor<ImportValueSet, ImportValueSetMember>(auditedTdb, roseTreeDoc);
+                }
+                else
+                {
+                    throw new Exception("Cannot identify which external soure the value set came from.");
+                }
+
                 Log.For(this).Info("Importing external ({0}) value set {1} ({2})", valueSet.ImportSource, valueSet.Name, valueSet.Oid);
 
-                processor.SaveValueSet(auditedTdb, valueSet);
+                processor.SaveValueSet(valueSet);
                 auditedTdb.SaveChanges();
             }
         }

@@ -18,7 +18,12 @@ namespace Trifolia.Import.Terminology.External
     {
         private const int MEMBER_PAGE_SIZE = 5000;
 
-        protected override T BaseFindValueSet(IObjectRepository tdb, string oid)
+        public PhinVadsValueSetImportProcessor(IObjectRepository tdb)
+            : base(tdb)
+        {
+        }
+
+        protected override T BaseFindValueSet(string oid)
         {
             if (string.IsNullOrEmpty(oid))
                 throw new ArgumentNullException("oid");
@@ -66,7 +71,7 @@ namespace Trifolia.Import.Terminology.External
                 {
                     foreach (ValueSetConcept cValueSetConceptResult in valueSetConceptResults.valueSetConcepts)
                     {
-                        V importValueSetMember = CreateImportValueSetMember(currentValueSet, cValueSetConceptResult);
+                        V importValueSetMember = CreateImportValueSetMember(tdb, currentValueSet, cValueSetConceptResult);
                         importValueSet.Members.Add(importValueSetMember);
 
                         // Determine the code system name

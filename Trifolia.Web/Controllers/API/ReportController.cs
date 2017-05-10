@@ -158,7 +158,7 @@ namespace Trifolia.Web.Controllers.API
                                     IsPrimitive = tc.IsPrimitive ? "Yes" : "No",
                                     HasSchematron = (!tc.IsPrimitive && (tc.Schematron == null || tc.Schematron.Length == 0)) || (tc.Schematron != null && tc.Schematron.Length != 0) ? "Yes" : "No",
                                     ValueSetName = tc.ValueSet != null ? tc.ValueSet.Name + " (" + tc.ValueSet.GetIdentifier() + ")" : null,
-                                    CodeSystemName = tc.CodeSystem != null ? tc.CodeSystem.Name + " (" + tc.CodeSystem.Oid + ")" : null
+                                    CodeSystemName = tc.CodeSystem != null ? tc.CodeSystem.Name + " (" + tc.CodeSystem.GetIdentifierValue() + ")" : null
                                 });
 
             if (filter != null)

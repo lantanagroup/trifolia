@@ -339,7 +339,12 @@ namespace Trifolia.Import.Terminology.Excel
             }
             else // Add
             {
-                CodeSystem codeSystem = this.tdb.CodeSystems.Single(y => y.Oid == checkConcept.CodeSystemOid);
+                CodeSystem codeSystem = (from cs in this.tdb.CodeSystems
+                                         join csi in this.tdb.CodeSystemIdentifiers on cs.Id equals csi.CodeSystemId
+                                         where csi.Identifier.Trim().ToLower() == checkConcept.CodeSystemOid.Trim().ToLower()
+                                         select cs)
+                                         .Distinct()
+                                         .FirstOrDefault();
 
                 member = new ValueSetMember()
                 {
@@ -350,6 +355,7 @@ namespace Trifolia.Import.Terminology.Excel
                     Status = checkConcept.Status,
                     StatusDate = checkConcept.StatusDate
                 };
+
                 this.tdb.ValueSetMembers.Add(member);
             }
         }

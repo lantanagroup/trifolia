@@ -12,22 +12,28 @@ namespace Trifolia.Import.Terminology.External
             where T : ImportValueSet
             where V : ImportValueSetMember
     {
-        protected abstract T BaseFindValueSet(IObjectRepository tdb, string oid);
+        protected IObjectRepository tdb;
+        protected abstract T BaseFindValueSet(string oid);
+
+        public BaseValueSetImportProcess(IObjectRepository tdb)
+        {
+            this.tdb = tdb;
+        }
 
         #region IValueSetImportProcessor Implementation
 
-        public T FindValueSet(IObjectRepository tdb, string oid)
+        public T FindValueSet(string oid)
         {
-            return this.BaseFindValueSet(tdb, oid);
+            return this.BaseFindValueSet(oid);
         }
 
-        public void SaveValueSet(IObjectRepository tdb, ImportValueSet valueSet)
+        public void SaveValueSet(ImportValueSet valueSet)
         {
-            ValueSet tdbValueSet = FindOrAddValueSet(tdb, valueSet);
+            ValueSet tdbValueSet = FindOrAddValueSet(valueSet);
 
             foreach (ImportValueSetMember cImportMember in valueSet.Members)
             {
-                FindOrAddValueSetMember(tdb, tdbValueSet, cImportMember);
+                FindOrAddValueSetMember(tdbValueSet, cImportMember);
             }
         }
 
@@ -63,7 +69,7 @@ namespace Trifolia.Import.Terminology.External
             {
                 bool valueSetMemberIsChanged =
                     importValueSetMember.Code != currentMember.Code ||
-                    importValueSetMember.CodeSystemOid != currentMember.CodeSystem.Oid ||
+                    importValueSetMember.CodeSystemOid != currentMember.CodeSystem.GetIdentifierValue() ||
                     importValueSetMember.DisplayName != currentMember.DisplayName ||
                     importValueSetMember.Status != currentMember.Status ||
                     importValueSetMember.StatusDate != currentMember.StatusDate;
@@ -108,10 +114,10 @@ namespace Trifolia.Import.Terminology.External
             return changed;
         }
 
-        private ValueSet FindOrAddValueSet(IObjectRepository tdb, ImportValueSet valueSet)
+        private ValueSet FindOrAddValueSet(ImportValueSet valueSet)
         {
-            ValueSet foundValueSet = (from vs in tdb.ValueSets
-                                      join vsi in tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
+            ValueSet foundValueSet = (from vs in this.tdb.ValueSets
+                                      join vsi in this.tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
                                       where vsi.Identifier.ToLower().Trim() == valueSet.Oid.ToLower().Trim()
                                       select vs)
                                       .Distinct()
@@ -128,7 +134,7 @@ namespace Trifolia.Import.Terminology.External
             if (foundValueSet == null)
             {
                 foundValueSet = new ValueSet();
-                tdb.ValueSets.Add(foundValueSet);
+                this.tdb.ValueSets.Add(foundValueSet);
                 changed = true;
             }
 
@@ -159,13 +165,20 @@ namespace Trifolia.Import.Terminology.External
             return foundValueSet;
         }
 
-        private void FindOrAddValueSetMember(IObjectRepository tdb, ValueSet tdbValueSet, ImportValueSetMember valueSetMember)
+        private void FindOrAddValueSetMember(ValueSet tdbValueSet, ImportValueSetMember valueSetMember)
         {
             if (valueSetMember.ImportStatus == "None")
-                return; 
-            
-            ValueSetMember foundValueSetMember = tdbValueSet.Members.SingleOrDefault(y => y.Code == valueSetMember.Code && y.CodeSystem.Oid == valueSetMember.CodeSystemOid);
-            CodeSystem codeSystem = FindOrAddCodeSystem(tdb, valueSetMember.CodeSystemOid, valueSetMember.CodeSystemName);
+                return;
+
+            ValueSetMember foundValueSetMember = null;
+            CodeSystem codeSystem = FindOrAddCodeSystem(valueSetMember.CodeSystemOid, valueSetMember.CodeSystemName);
+
+            foundValueSetMember = (from vsm in tdbValueSet.Members
+                                   join csi in this.tdb.CodeSystemIdentifiers on vsm.CodeSystemId equals csi.CodeSystemId
+                                   where vsm.Code.Trim().ToLower() == valueSetMember.Code.Trim().ToLower() && csi.Identifier.Trim().ToLower() == valueSetMember.CodeSystemOid.Trim().ToLower()
+                                   select vsm)
+                                  .Distinct()
+                                  .FirstOrDefault();
 
             string code = TruncateString(valueSetMember.Code, 254);
             string displayName = TruncateString(valueSetMember.DisplayName, 254);
@@ -174,7 +187,7 @@ namespace Trifolia.Import.Terminology.External
             {
                 foundValueSetMember = new ValueSetMember();
                 foundValueSetMember.ValueSet = tdbValueSet;
-                tdb.ValueSetMembers.Add(foundValueSetMember);
+                this.tdb.ValueSetMembers.Add(foundValueSetMember);
             }
 
             if (foundValueSetMember.Code != code)
@@ -198,25 +211,36 @@ namespace Trifolia.Import.Terminology.External
 
         private List<Trifolia.DB.CodeSystem> addedCodeSystems = new List<CodeSystem>();
 
-        private Trifolia.DB.CodeSystem FindOrAddCodeSystem(IObjectRepository tdb, string codeSystemOid, string codeSystemName)
+        private Trifolia.DB.CodeSystem FindOrAddCodeSystem(string codeSystemOid, string codeSystemName)
         {
-            Trifolia.DB.CodeSystem foundCodeSystem = addedCodeSystems.SingleOrDefault(y => y.Oid == codeSystemOid);
+            Trifolia.DB.CodeSystem foundCodeSystem = (from acs in addedCodeSystems
+                                                      join acsi in addedCodeSystems.SelectMany(y => y.Identifiers) on acs equals acsi.CodeSystem
+                                                      where acsi.Identifier.Trim().ToLower() == codeSystemOid.Trim().ToLower()
+                                                      select acs)
+                                                      .Distinct()
+                                                      .FirstOrDefault();
 
             // If we haven't added the code system as part of this save, search the database for the code system
             if (foundCodeSystem == null)
-                foundCodeSystem = tdb.CodeSystems.FirstOrDefault(y => y.Oid == codeSystemOid);
+            {
+                foundCodeSystem = (from cs in this.tdb.CodeSystems
+                                   join csi in this.tdb.CodeSystemIdentifiers on cs.Id equals csi.CodeSystemId
+                                   where csi.Identifier.Trim().ToLower() == codeSystemOid.Trim().ToLower()
+                                   select cs)
+                                   .Distinct()
+                                   .FirstOrDefault();
+            }
 
             // If no code system was found that we added recently, and it was not found in the database, create a new one
             if (foundCodeSystem == null)
             {
-                foundCodeSystem = new CodeSystem()
+                foundCodeSystem = new CodeSystem(codeSystemName)
                 {
-                    Oid = codeSystemOid,
-                    Name = codeSystemName,
                     LastUpdate = DateTime.Now
                 };
+                foundCodeSystem.Identifiers.Add(new CodeSystemIdentifier(codeSystemOid));
 
-                tdb.CodeSystems.Add(foundCodeSystem);
+                this.tdb.CodeSystems.Add(foundCodeSystem);
                 addedCodeSystems.Add(foundCodeSystem);
             }
 
