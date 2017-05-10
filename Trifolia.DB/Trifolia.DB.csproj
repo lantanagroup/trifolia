@@ -102,6 +102,10 @@
     <Compile Include="Migrations\201705041941253_vImplementationGuideCodeSystems.Designer.cs">
       <DependentUpon>201705041941253_vImplementationGuideCodeSystems.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705102034008_multipleCodeSystemIdentifiers.cs" />
+    <Compile Include="Migrations\201705102034008_multipleCodeSystemIdentifiers.Designer.cs">
+      <DependentUpon>201705102034008_multipleCodeSystemIdentifiers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -208,6 +212,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705041941253_vImplementationGuideCodeSystems.resx">
       <DependentUpon>201705041941253_vImplementationGuideCodeSystems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705102034008_multipleCodeSystemIdentifiers.resx">
+      <DependentUpon>201705102034008_multipleCodeSystemIdentifiers.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
   </ItemGroup>
