@@ -399,7 +399,7 @@
                 <div class="selectTypeAheadResults" data-bind="foreach: TypeAheadResults">
                     <div class="row selectTypeAheadResult" data-bind="click: function () { $parent.SelectTypeAhead($index(), true); }, css: { selected: $index() == $parent.SelectedTypeAheadIndex() }">
                         <div class="col-xs-6" data-bind="text: Name"></div>
-                        <div class="col-xs-6" data-bind="text: Oid"></div>
+                        <div class="col-xs-6" data-bind="text: Identifiers"></div>
                     </div>
                 </div>
             </div>
@@ -431,7 +431,7 @@
                                         <i class="glyphicon glyphicon-comment" data-bind="tooltip: Description"></i>
                                         <!-- /ko -->
                                     </td>
-                                    <td data-bind="text: Oid"></td>
+                                    <td data-bind="text: Identifiers"></td>
                                 </tr>
                                 <!-- /ko -->
                                 <!-- ko if: $parent.IsSearching() -->
