@@ -654,6 +654,7 @@ namespace Trifolia.Generation.IG
 
             IConstraintGenerator constraintGenerator = ConstraintGenerationFactory.NewConstraintGenerator(
                 this.igSettings,
+                this.igTypePlugin,
                 this.document.MainDocumentPart.Document.Body,
                 this.commentManager,
                 this.figures,

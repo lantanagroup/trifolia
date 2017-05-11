@@ -370,10 +370,12 @@ namespace Trifolia.Web.Controllers.API
         }
 
         [HttpPost, Route("api/Template/Edit/Prose")]
-        public string GetNarrative(ConstraintModel constraint)
+        public string GetNarrative([FromBody] ConstraintModel constraint, [FromUri] int implementationGuideId)
         {
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb);
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, null, constraint);
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            IIGTypePlugin igTypePlugin = ig.ImplementationGuideType.GetPlugin();
+            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, constraint);
             fc.HasChildren = true;
 
             return fc.GetPlainText(false, false, true);

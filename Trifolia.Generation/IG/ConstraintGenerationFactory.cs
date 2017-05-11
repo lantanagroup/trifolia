@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml;
 using Trifolia.Shared;
 using Trifolia.DB;
 using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG
 {
@@ -17,6 +18,7 @@ namespace Trifolia.Generation.IG
     {
         public static IConstraintGenerator NewConstraintGenerator(
             IGSettingsManager igSettings,
+            IIGTypePlugin igTypePlugin,
             Body documentBody, 
             CommentManager cmtMgr,
             FigureCollection figures,
@@ -51,6 +53,7 @@ namespace Trifolia.Generation.IG
             constraintGenerator.CommentManager = cmtMgr;
             constraintGenerator.IncludeCategory = !string.IsNullOrEmpty(igSettings.GetSetting(IGSettingsManager.SettingProperty.Categories));
             constraintGenerator.SelectedCategories = selectedCategories;
+            constraintGenerator.IGTypePlugin = igTypePlugin;
 
             return constraintGenerator;
         }

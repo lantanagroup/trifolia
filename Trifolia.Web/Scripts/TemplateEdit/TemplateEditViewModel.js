@@ -276,7 +276,8 @@ var templateEditViewModel = function (templateId, defaults) {
                 success: function (constraints) {
                     deferred.resolve(constraints);
                 },
-                error: function (err) {
+                error: function (err, data, a1) {
+                    handleAjaxError('Error getting constraints for extension')(err, data, a1);
                     deferred.reject(err);
                 }
             });
@@ -782,7 +783,8 @@ var templateEditViewModel = function (templateId, defaults) {
                         dataTypes.push({ Value: result, Text: result });
                     });
                 }
-            }
+            },
+            error: handleAjaxError('Error getting data types for implementation guide')
         });
 
         return dataTypes;
@@ -874,6 +876,10 @@ var templateEditViewModel = function (templateId, defaults) {
                 });
 
                 deferred.resolve();
+            },
+            error: function (err, data, a1) {
+                handleAjaxError('Error getting nodes')(err, data, a1);
+                deferred.reject(err);
             }
         });
 
@@ -1094,6 +1100,10 @@ var templateEditViewModel = function (templateId, defaults) {
 
                     // Done, notify
                     deferred.resolve();
+                },
+                error: function (err, data, a1) {
+                    handleAjaxError('Error getting nodes')(err, data, a1);
+                    deferred.reject(err);
                 }
             });
         } else {
@@ -1211,7 +1221,8 @@ var templateEditViewModel = function (templateId, defaults) {
             },
             complete: function () {
                 $.unblockUI();
-            }
+            },
+            error: handleAjaxError('Error saving template')
         });
     };
 
@@ -1283,7 +1294,8 @@ var templateEditViewModel = function (templateId, defaults) {
                 };
                 ko.mapping.fromJS({ CodeSystems: codeSystems }, mapping, self);
                 console.log('Done loading code systems: ' + (new Date().getTime() - startTime) + ' milliseconds');
-            }
+            },
+            error: handleAjaxError('Error getting code systems')
         });
     };
 
@@ -1330,7 +1342,8 @@ var templateEditViewModel = function (templateId, defaults) {
 
                 self.ImplementationGuides(implementationGuides);
                 console.log('Done loading implementation guides: ' + (new Date().getTime() - startTime) + ' milliseconds');
-            }
+            },
+            error: handleAjaxError('Error getting implementation guides')
         });
     };
 
@@ -1349,7 +1362,8 @@ var templateEditViewModel = function (templateId, defaults) {
             success: function (publishStatuses) {
                 self.PublishStatuses(publishStatuses);
                 console.log('Done loading publish statuses: ' + (new Date().getTime() - startTime) + ' milliseconds');
-            }
+            },
+            error: handleAjaxError('Error getting publish statuses')
         });
     };
 
@@ -1372,7 +1386,8 @@ var templateEditViewModel = function (templateId, defaults) {
                 console.log('Done loading template/profile types (count: ' + self.TemplateTypes().length + '): ' + (new Date().getTime() - startTime) + ' milliseconds');
                 deferred.resolve(templateTypes);
             },
-            error: function (err) {
+            error: function (err, data, a1) {
+                handleAjaxError('Error getting template types for implementation guide')(err, data, a1);
                 deferred.reject(err);
             }
         });
@@ -1398,7 +1413,8 @@ var templateEditViewModel = function (templateId, defaults) {
                 console.log('Done loading categories: ' + (new Date().getTime() - startTime) + ' milliseconds');
                 deferred.resolve();
             },
-            error: function (err) {
+            error: function (err, data, a1) {
+                handleAjaxError('Error getting categories for implementation guide')(err, data, a1);
                 deferred.reject(err);
             }
         });
@@ -1423,7 +1439,8 @@ var templateEditViewModel = function (templateId, defaults) {
                 console.log('Done loading available extension templates/profiles: ' + (new Date().getTime() - startTime) + ' milliseconds');
                 deferred.resolve();
             },
-            error: function (err) {
+            error: function (err, data, a1) {
+                handleAjaxError('Error getting extensions for implementation guide')(err, data, a1);
                 deferred.reject(err);
             }
         });
@@ -1518,7 +1535,8 @@ var templateEditViewModel = function (templateId, defaults) {
                         deferred.reject(err);
                     });
             },
-            error: function (err) {
+            error: function (err, data, a1) {
+                handleAjaxError('Error getting template')(err, data, a1);
                 deferred.reject(err);
             }
         });
@@ -1556,6 +1574,10 @@ var templateEditViewModel = function (templateId, defaults) {
 
                 console.log('Done loading constraints: ' + (new Date().getTime() - startTime) + ' milliseconds');
                 deferred.resolve();
+            },
+            error: function (err, data, a1) {
+                handleAjaxError('Error getting constraints for template')(err, data, a1);
+                deferred.reject(err);
             }
         });
 

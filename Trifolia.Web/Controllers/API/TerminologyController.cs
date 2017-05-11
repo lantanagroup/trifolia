@@ -451,13 +451,14 @@ namespace Trifolia.Web.Controllers.API
         [HttpGet, Route("api/Terminology/CodeSystem/Basic"), SecurableAction()]
         public IEnumerable<BasicItem> GetBasicCodeSystems()
         {
-            return (from cs in this.tdb.CodeSystems
-                    select new BasicItem()
-                    {
-                        Id = cs.Id,
-                        Name = cs.Name, 
-                        Oid = cs.Identifiers.OrderByDescending(y => y.IsDefault).First().Identifier
-                    }).OrderBy(y => y.Name);
+            var codeSystems = (from cs in this.tdb.CodeSystems
+                               select new BasicItem()
+                               {
+                                   Id = cs.Id,
+                                   Name = cs.Name,
+                                   Oid = cs.Identifiers.OrderByDescending(y => y.IsDefault).Select(y => y.Identifier).FirstOrDefault()
+                               }).OrderBy(y => y.Name).ToList();
+            return codeSystems;
         }
 
         [HttpGet, Route("api/Terminology/CodeSystem"), SecurableAction(SecurableNames.CODESYSTEM_LIST)]

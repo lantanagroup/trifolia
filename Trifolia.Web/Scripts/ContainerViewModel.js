@@ -1,4 +1,16 @@
-﻿var ContainerViewModel = function () {
+﻿var handleAjaxError = function (msg) {
+    return function (err, data, a1) {
+        if (err && err.responseJSON) {
+            console.log(msg + ': ' + err.responseJSON.Message);
+        } else if (err && err.responseText) {
+            console.log(msg + ': ' + err.responseText);
+        } else {
+            console.log(msg + ': ' + err);
+        }
+    }
+};
+
+var ContainerViewModel = function () {
     var self = this;
 
     self.Me = ko.observable();

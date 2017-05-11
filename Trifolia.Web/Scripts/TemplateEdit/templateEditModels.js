@@ -400,7 +400,7 @@ var ConstraintModel = function (data, parent, viewModel) {
 
         // Update the narrative prose
         $.ajax({
-            url: '/api/Template/Edit/Prose',
+            url: '/api/Template/Edit/Prose?implementationGuideId=' + viewModel.Template().OwningImplementationGuideId(),
             method: 'POST',
             data: JSON.stringify(data),
             dataType: 'json',
@@ -411,7 +411,8 @@ var ConstraintModel = function (data, parent, viewModel) {
                     narrativeProse = narrativeProse.replace('\n', '<br/>\n');
                 }
                 self.NarrativeProseHtml(narrativeProse);
-            }
+            },
+            error: handleAjaxError('Error getting constraint prose')
         });
     };
 
@@ -972,7 +973,8 @@ var TemplateModel = function (data, viewModel) {
             async: false,
             success: function (results) {
                 userInfo = results;
-            }
+            },
+            error: handleAjaxError('Error getting template permissions')
         });
 
         userInfo.sort(function (a, b) {
