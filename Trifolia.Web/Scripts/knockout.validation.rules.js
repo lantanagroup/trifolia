@@ -169,33 +169,6 @@ ko.validation.rules['valueSetOidUnique'] = {
     message: 'This value set identifier is not available.'
 };
 
-ko.validation.rules['codeSystemOidUnique'] = {
-    validator: function (val, otherVal) {
-        var isValid = false;
-        var url = '/api/Terminology/CodeSystem/Find?identifier=' + encodeURIComponent(val);
-
-        var ignoreCodeSystemId = otherVal;
-
-        if (typeof otherVal === 'function') {
-            ignoreCodeSystemId = otherVal();
-        }
-
-        $.ajax({
-            url: url,
-            async: false,
-            cache: false,
-            success: function (data) {
-                if (!data || data == ignoreCodeSystemId) {
-                    isValid = true;
-                }
-            }
-        });
-
-        return isValid;
-    },
-    message: 'This code system identifier is not available.'
-};
-
 ko.validation.rules['templateIdentifierSpecificity'] = {
     validator: function (val, otherVal) {
         if (val.indexOf('http://') != 0 && val.indexOf('https://') != 0) {

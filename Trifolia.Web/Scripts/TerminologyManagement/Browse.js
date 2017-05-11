@@ -283,11 +283,101 @@
     })
     .controller('EditCodeSystemModalController', function ($uibModalInstance, $scope, TerminologyService, HelperService, codeSystem) {
         $scope.identifierRegex = HelperService.identifierRegex;
+        $scope.identifierOptions = [{ value: 0, display: 'OID' }, { value: 1, display: 'HL7-II' }, { value: 2, display: 'HTTP' }];
         $scope.codeSystem = codeSystem ? codeSystem : {
             Id: null,
             Name: '',
-            Oid: '',
-            Description: ''
+            Description: '',
+            Identifiers: []
+        };
+        $scope.newIdentifier = {
+            Type: 0,
+            Identifier: '',
+            IsDefault: false,
+            IsRemoved: false
+        };
+
+        $scope.isNewIdentifierFormatInvalid = function () {
+            if (!$scope.newIdentifier.Identifier) {
+                return 'Identifier is required.';
+            }
+
+            switch ($scope.newIdentifier.Type) {
+                case 0:
+                    if (!$scope.newIdentifier.Identifier.match(HelperService.oidRegex)) {
+                        return 'Identifier must be in the format urn:oid:XXXX';
+                    }
+                    break;
+                case 1:
+                    if (!$scope.newIdentifier.Identifier.match(HelperService.hl7iiRegex)) {
+                        return 'Identifier must be in the format urn:hl7ii:XXXX:YYYY';
+                    }
+                    break;
+                case 2:
+                    if (!$scope.newIdentifier.Identifier.match(HelperService.urlRegex)) {
+                        return 'Identifier must be in the format http[s]://XXXX.YYY/';
+                    }
+                    break;
+            }
+        };
+
+        $scope.identifierChanged = function (identifier) {
+            if (!identifier || !identifier.Identifier) {
+                return;
+            }
+
+            // Look for the identifier in the current value set first, so we don't have to make an AJAX GET if we don't need to
+            var found = _.find($scope.codeSystem.Identifiers, function (nextIdentifier) {
+                return nextIdentifier.Identifier.toLowerCase().trim() == identifier.Identifier.toLowerCase().trim();
+            });
+
+            if (found) {
+                $scope.newIdentifierIsUnique = false;
+                return;
+            }
+
+            // Ask the server to validate the identifier, to see if other value sets use the same identifier
+            TerminologyService.validateCodeSystemIdentifier(identifier.Identifier, identifier.Id)
+                .then(function (isValid) {
+                    $scope.newIdentifierIsUnique = isValid;
+                })
+                .catch(function (err) {
+                    alert('Error while validating the identifier: ' + err);
+                });
+        };
+
+        $scope.defaultIdentifierChanged = function (defaultIdentifier) {
+            // Remove "default" from other identifiers. Only one can be default at a time.
+            if (defaultIdentifier.IsDefault) {
+                _.each($scope.codeSystem.Identifiers, function (identifier) {
+                    if (identifier != defaultIdentifier) {
+                        identifier.IsDefault = false;
+                    }
+                });
+            }
+        };
+
+        $scope.removeIdentifier = function (identifier) {
+            if (!identifier.Id) {
+                var index = $scope.codeSystem.Identifiers.indexOf(identifier);
+                $scope.codeSystem.Identifiers.splice(index, 1);
+            } else {
+                identifier.IsRemoved = true;
+                identifier.IsDefault = false;
+            }
+        };
+
+        $scope.addIdentifier = function () {
+            $scope.codeSystem.Identifiers.push($scope.newIdentifier);
+            $scope.defaultIdentifierChanged($scope.newIdentifier);
+
+            $scope.newIdentifier = {
+                Id: null,
+                Type: 0,
+                Identifier: '',
+                IsDefault: false,
+                IsRemoved: false
+            };
         };
 
         $scope.ok = function () {

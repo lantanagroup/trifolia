@@ -70,6 +70,24 @@
         return deferred.promise;
     };
 
+    service.validateCodeSystemIdentifier = function (codeSystemIdentifier, identifierId) {
+        var url = HelperService.buildUrl('/api/Terminology/CodeSystem/$validateIdentifier', {
+            identifier: codeSystemIdentifier,
+            identifierId: identifierId
+        });
+        var deferred = $q.defer();
+
+        $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
     service.saveValueSet = function (valueSet) {
         var url = '/api/Terminology/ValueSet';
         var deferred = $q.defer();

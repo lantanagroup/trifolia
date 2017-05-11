@@ -195,7 +195,12 @@
                                         </ul>
                                     </div>
                                 </td>
-                                <td>{{r.Oid}}</td>
+                                <td>
+                                    <div ng-repeat="i in r.Identifiers">
+                                        <span>{{i.Identifier}}</span>
+                                        <br />
+                                    </div>
+                                </td>
                                 <td>{{r.MemberCount}}</td>
                                 <td>{{r.ConstraintCount}}</td>
                             </tr>
@@ -296,8 +301,8 @@
                                     <td style="width: 50px;">&nbsp;</td>
                                 </tr>
                             </thead>
-                            <tbody ng-repeat="i in valueSet.Identifiers">
-                                <tr ng-style="{ 'text-decoration': i.ShouldRemove ? 'line-through' : 'inherit' }">
+                            <tbody>
+                                <tr ng-style="{ 'text-decoration': i.ShouldRemove ? 'line-through' : 'inherit' }" ng-repeat="i in valueSet.Identifiers">
                                     <td>{{(identifierOptions | filter: { value: i.Type })[0].display}}</td>
                                     <td>{{i.Identifier}}</td>
                                     <td>
@@ -328,9 +333,11 @@
                                         <input type="checkbox" ng-model="newIdentifier.IsDefault" />
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-default btn-sm" ng-click="addIdentifier()" ng-disabled="isNewIdentifierFormatInvalid() || !newIdentifierIsUnique">
-                                            <i class="glyphicon glyphicon-plus"></i>
-                                        </button>
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-default btn-sm" ng-click="addIdentifier()" ng-disabled="isNewIdentifierFormatInvalid() || !newIdentifierIsUnique">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             </tfoot>
@@ -388,12 +395,61 @@
                         <input type="text" class="form-control" id="codeSystemName" ng-model="codeSystem.Name" name="name" required maxlength="255" />
                         <span class="help-block" ng-show="editCodeSystemForm.name.$error.required">Name is required.</span>
                     </div>
-                        
-                    <div class="form-group">
-                        <label for="codeSystemOid">Identifier</label>
-                        <input type="text" class="form-control" id="codeSystemOid" ng-model="codeSystem.Oid" name="identifier" ng-pattern="identifierRegex" required maxlength="255" />
-                        <span class="help-block" ng-show="editCodeSystemForm.identifier.$error.pattern">The identifier is not in the correct format. Acceptable formats are: http(s)://XXX or urn:oid:XXX or urn:hl7ii:XXX:YYY</span>
-                        <span class="help-block" ng-show="editCodeSystemForm.identifier.$error.required">Identifier is required.</span>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Identifiers</div>
+                        <table class="table identifiers">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Identifier</th>
+                                    <th>Default</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="i in codeSystem.Identifiers" ng-style="{ 'text-decoration': i.IsRemoved ? 'line-through' : 'inherit' }">
+                                    <td>{{(identifierOptions | filter: { value: i.Type })[0].display}}</td>
+                                    <td>{{i.Identifier}}</td>
+                                    <td>
+                                        <input type="checkbox" ng-show="!i.IsRemoved" ng-model="i.IsDefault" ng-change="defaultIdentifierChanged(i)" />
+                                    </td>
+                                    <td>
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-default btn-sm" ng-show="!i.IsRemoved" ng-click="removeIdentifier(i)">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>
+                                        <span><strong>New Identifier</strong></span>
+                                        <select class="form-control" ng-options="o.value as o.display for o in identifierOptions" ng-model="newIdentifier.Type" name="type"></select>
+                                    </td>
+                                    <td>
+                                        <div class="input-group identifier-input-group" ng-class="{ 'has-error': valueSet.Identifiers.length == 0 }">
+                                            <input type="text" class="form-control" ng-model="newIdentifier.Identifier" value-set-identifier name="identifier" ng-model-options="{ debounce: 500 }" ng-change="identifierChanged(newIdentifier)" />
+                                            <span class="help-block" ng-show="!newIdentifier.Identifier">Identifier is required.</span>
+                                            <span class="help-block" ng-show="newIdentifier.Identifier && !isNewIdentifierFormatValid()">{{isNewIdentifierFormatInvalid()}}</span>
+                                            <span class="help-block" ng-show="newIdentifier.Identifier && !newIdentifierIsUnique">The identifier is already used.</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" ng-model="newIdentifier.IsDefault" />
+                                    </td>
+                                    <td>
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-default btn-sm" ng-click="addIdentifier()" ng-disabled="isNewIdentifierFormatInvalid() || !newIdentifierIsUnique">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                         
                     <div class="form-group">
@@ -402,7 +458,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="editCodeSystemForm.$invalid">OK</button>
+                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="editCodeSystemForm.$invalid || codeSystem.Identifiers.length == 0">OK</button>
                     <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
                 </div>
             </form>

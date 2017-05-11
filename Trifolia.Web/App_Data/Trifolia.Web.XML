@@ -1113,6 +1113,14 @@
             <param name="identifierId">The id of a valueset identifier that should be ignored while searching</param>
             <returns>True if the identifier is not found, otherwise false.</returns>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.TerminologyController.ValidateCodeSystemIdentifier(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Looks for the identifier among existing identifiers.
+            </summary>
+            <param name="identifier">The identifier to search for</param>
+            <param name="identifierId">The id of a code system identifier that should be ignored while searching</param>
+            <returns>True if the identifier is not found, otherwise false.</returns>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.TerminologyController.DeleteValueSet(System.Int32,System.Nullable{System.Int32})">
             <summary>
             Deletes a value set. If a replacement value set is specified, it will take the place of the value set being deleted

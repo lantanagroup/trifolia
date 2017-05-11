@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 using System.Xml;
@@ -237,22 +238,24 @@ namespace Trifolia.Web.Controllers.API
             return !valueSetIds.Any();
         }
 
-        [HttpGet, Route("api/Terminology/CodeSystem/Find"), SecurableAction(SecurableNames.CODESYSTEM_LIST)]
-        public int? FindCodeSystem(string identifier)
+        /// <summary>
+        /// Looks for the identifier among existing identifiers.
+        /// </summary>
+        /// <param name="identifier">The identifier to search for</param>
+        /// <param name="identifierId">The id of a code system identifier that should be ignored while searching</param>
+        /// <returns>True if the identifier is not found, otherwise false.</returns>
+        [HttpGet, Route("api/Terminology/CodeSystem/$validateIdentifier"), SecurableAction(SecurableNames.CODESYSTEM_LIST)]
+        public bool ValidateCodeSystemIdentifier(string identifier, int? identifierId = null)
         {
             if (string.IsNullOrEmpty(identifier))
                 throw new ArgumentNullException("identifier");
 
-            var codeSystems = (from cs in this.tdb.CodeSystems
-                               join csi in this.tdb.CodeSystemIdentifiers on cs.Id equals csi.CodeSystemId
-                               where csi.Identifier.Trim().ToLower() == identifier.Trim().ToLower()
-                               select cs)
+            var codeSystemIds = (from csi in this.tdb.CodeSystemIdentifiers
+                               where csi.Identifier.ToLower().Trim() == identifier.ToLower().Trim() && csi.Id != identifierId
+                               select csi)
                                .Distinct();
 
-            if (codeSystems.Count() > 0)
-                return codeSystems.First().Id;
-
-            return null;
+            return !codeSystemIds.Any();
         }
 
         /// <summary>
@@ -465,26 +468,8 @@ namespace Trifolia.Web.Controllers.API
             int rows = 20,
             string order = "asc")
         {
-            IQueryable<CodeSystemItem> codeSystems = (from cs in this.tdb.CodeSystems
-                                                      select new CodeSystemItem()
-                                                      {
-                                                          Id = cs.Id,
-                                                          Name = cs.Name,
-                                                          Description = cs.Description,
-                                                          ConstraintCount = cs.Constraints.Count,
-                                                          MemberCount = cs.Members.Count,
-                                                          PermitModify = CheckPoint.Instance.HasSecurables(SecurableNames.CODESYSTEM_EDIT),
-                                                          CanModify = cs.CanModify(this.tdb),
-                                                          CanOverride = cs.CanOverride(this.tdb),
-                                                          Identifiers = cs.Identifiers.Select(y => new CodeSystemIdentifierModel()
-                                                          {
-                                                              Id = y.Id,
-                                                              Identifier = y.Identifier,
-                                                              Type = y.Type,
-                                                              IsDefault = y.IsDefault
-                                                          }).ToList()
-                                                      })
-                                                      .Distinct();
+            var codeSystems = (from cs in this.tdb.CodeSystems
+                                                      select cs);
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -503,21 +488,21 @@ namespace Trifolia.Web.Controllers.API
             {
                 case "MemberCount":
                     if (order == "desc")
-                        codeSystems = codeSystems.OrderByDescending(y => y.MemberCount);
+                        codeSystems = codeSystems.OrderByDescending(y => y.Members.Count);
                     else
-                        codeSystems = codeSystems.OrderBy(y => y.MemberCount);
+                        codeSystems = codeSystems.OrderBy(y => y.Members.Count);
                     break;
                 case "ConstraintCount":
                     if (order == "desc")
-                        codeSystems = codeSystems.OrderByDescending(y => y.ConstraintCount);
+                        codeSystems = codeSystems.OrderByDescending(y => y.Constraints.Count);
                     else
-                        codeSystems = codeSystems.OrderBy(y => y.ConstraintCount);
+                        codeSystems = codeSystems.OrderBy(y => y.Constraints.Count);
                     break;
                 case "Oid":
                     if (order == "desc")
-                        codeSystems = codeSystems.OrderByDescending(y => y.Identifiers.First().Identifier);
+                        codeSystems = codeSystems.OrderByDescending(y => y.Identifiers.OrderByDescending(x => x.IsDefault).Select(x => x.Identifier).FirstOrDefault());
                     else
-                        codeSystems = codeSystems.OrderBy(y => y.Identifiers.First().Identifier);
+                        codeSystems = codeSystems.OrderBy(y => y.Identifiers.OrderByDescending(x => x.IsDefault).Select(x => x.Identifier).FirstOrDefault());
                     break;
                 case "Name":
                 default:
@@ -537,7 +522,24 @@ namespace Trifolia.Web.Controllers.API
             CodeSystemItems result = new CodeSystemItems()
             {
                 total = total,
-                rows = codeSystems.ToArray()
+                rows = codeSystems.Include(y => y.Identifiers).ToList().Select(cs => new CodeSystemItem()
+                {
+                    Id = cs.Id,
+                    Name = cs.Name,
+                    Description = cs.Description,
+                    ConstraintCount = cs.Constraints.Count,
+                    MemberCount = cs.Members.Count,
+                    PermitModify = CheckPoint.Instance.HasSecurables(SecurableNames.CODESYSTEM_EDIT),
+                    CanModify = cs.CanModify(this.tdb),
+                    CanOverride = cs.CanOverride(this.tdb),
+                    Identifiers = cs.Identifiers.OrderByDescending(y => y.IsDefault).Select(y => new CodeSystemIdentifierModel()
+                    {
+                        Id = y.Id,
+                        Identifier = y.Identifier,
+                        Type = y.Type,
+                        IsDefault = y.IsDefault
+                    }).ToList()
+                }).ToArray()
             };
 
             return result;
