@@ -145,6 +145,7 @@ namespace Trifolia.Web.Controllers.API
                 IsOpen = template.IsOpen,
                 Name = template.Name,
                 Oid = template.Oid,
+                Bookmark = template.Bookmark,
                 Organization = template.OwningImplementationGuide != null && template.OwningImplementationGuide.Organization != null ? template.OwningImplementationGuide.Organization.Name : string.Empty,
                 ShowNotes = CheckPoint.Instance.GrantEditTemplate(template.Id),
                 CanEdit = canEditTemplate,
