@@ -378,7 +378,7 @@ namespace Trifolia.Export.FHIR.STU3
                 foreach (var sliceGroup in sliceGroups)
                 {
                     ElementDefinition newElementDef = new ElementDefinition();
-                    newElementDef.ElementId = string.Format("{0}-{1}", template.Id, currentSliceGroupCount.ToString("00000"));
+                    newElementDef.ElementId = string.Format("{0}-{1}", template.Id, currentSliceGroupCount.ToString("00"));
                     newElementDef.Path = sliceGroup.Key;
 
                     foreach (var branchConstraint in sliceGroup)
@@ -438,6 +438,7 @@ namespace Trifolia.Export.FHIR.STU3
                     var firstElement = fhirStructureDef.Differential.Element.First(y => y.Path == sliceGroup.Key);
                     var firstElementIndex = fhirStructureDef.Differential.Element.IndexOf(firstElement);
                     differential.Element.Insert(firstElementIndex, newElementDef);
+                    currentSliceGroupCount++;
                 }
             }
 
