@@ -130,6 +130,7 @@
     };
 
     self.RequestAccess = function (implementationGuideId) {
+        self.AccessRequestMessage('');
         var implementationGuide = ko.utils.arrayFirst(self.UnauthorizedImplementationGuides(), function (item) {
             return item.Id() == implementationGuideId;
         });
@@ -142,10 +143,9 @@
             url: url,
             method: 'POST',
             success: function (results) {
-                self.AccessRequestMessage('Successfully sent request to ' + implementationGuide.Name() + '.');
+                self.AccessRequestMessage('Successfully sent access request for ' + implementationGuide.Name() + '.');
                 self.UnauthorizedImplementationGuides.remove(implementationGuide);
                 self.RequestEditAccess(false);
-                self.RequestAccessMessage('');
             },
             error: function (err) {
                 self.AccessRequestMessage('An error occurred while sending the request!');

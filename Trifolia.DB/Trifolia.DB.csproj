@@ -100,11 +100,16 @@
     <Compile Include="Migrations\201705041941253_vImplementationGuideCodeSystems.Designer.cs">
       <DependentUpon>201705041941253_vImplementationGuideCodeSystems.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705121726509_implementationGuideAccessRequests.cs" />
+    <Compile Include="Migrations\201705121726509_implementationGuideAccessRequests.Designer.cs">
+      <DependentUpon>201705121726509_implementationGuideAccessRequests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
     <Compile Include="Model\audit.cs" />
     <Compile Include="Model\codesystem.cs" />
+    <Compile Include="Model\implementationguide_accessreq.cs" />
     <Compile Include="Model\TrifoliaDatabase.cs" />
     <Compile Include="Model\green_constraint.cs" />
     <Compile Include="Model\green_template.cs" />
@@ -204,6 +209,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705041941253_vImplementationGuideCodeSystems.resx">
       <DependentUpon>201705041941253_vImplementationGuideCodeSystems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705121726509_implementationGuideAccessRequests.resx">
+      <DependentUpon>201705121726509_implementationGuideAccessRequests.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
   </ItemGroup>

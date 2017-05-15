@@ -103,10 +103,6 @@
                         <h4 class="modal-title">Request Access</h4>
                     </div>
                     <div class="modal-body" style="max-height: 350px; overflow-y: auto;">
-                        <!-- ko if: AccessRequestMessage -->
-                        <p class="alert alert-info" data-bind="text: AccessRequestMessage"></p>
-                        <!-- /ko -->
-
                         <div class="form-group">
                             <label>Access Level</label>
                             <input type="radio" name="RequestEditAccess" value="false" data-bind="checked: RequestEditAccessString" /> View 
@@ -134,6 +130,10 @@
                         <!-- /ko -->
                     </div>
                     <div class="modal-footer">
+                        <!-- ko if: AccessRequestMessage -->
+                        <p class="alert alert-info" data-bind="text: AccessRequestMessage"></p>
+                        <!-- /ko -->
+
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>

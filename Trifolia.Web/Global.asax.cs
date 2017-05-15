@@ -70,6 +70,16 @@ namespace Trifolia.Web
             );
 
             routes.MapRoute(
+                name: "IG Authorization Request Approved",
+                url: "IGManagement/AuthorizationRequest/{accessRequestId}/$approve",
+                defaults: new { controller = "IGManagement", action = "ApproveAuthorizationRequest" });
+
+            routes.MapRoute(
+                name: "IG Authorization Request Denied",
+                url: "IGManagement/AuthorizationRequest/{accessRequestId}/$deny",
+                defaults: new { controller = "IGManagement", action = "DenyAuthorizationRequest" });
+
+            routes.MapRoute(
                 name: "IG Edit",
                 url: "IGManagement/Edit/{implementationGuideId}",
                 defaults: new { controller = "IGManagement", action = "Edit" }

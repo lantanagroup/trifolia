@@ -15,9 +15,53 @@ var ContainerViewModel = function () {
 
     self.Me = ko.observable();
     self.GroupDisclaimers = ko.observableArray([]);
+    self.AccessRequests = ko.observable();
+
+    var loadAccessRequests = function () {
+        $.ajax({
+            url: '/api/ImplementationGuide/RequestAuthorization/My',
+            cache: false,
+            success: function (results) {
+                ko.mapping.fromJS({ AccessRequests: results }, {}, self);
+            }
+        });
+    };
 
     self.OpenDisclaimers = function () {
         $('#GroupDisclaimersDialog').modal('show');
+    };
+
+    self.HasMyRequests = function () {
+        if (!self.AccessRequests()) {
+            return false;
+        }
+
+        return self.AccessRequests().MyRequests() && self.AccessRequests().MyRequests().length > 0;
+    };
+
+    self.HasApprovalRequests = function () {
+        if (!self.AccessRequests()) {
+            return false;
+        }
+
+        return self.AccessRequests().MyApprovals() && self.AccessRequests().MyApprovals().length > 0;
+    };
+
+    self.CompleteAccessRequest = function (accessRequest, approved) {
+        var url = '/api/ImplementationGuide/RequestAuthorization/' + accessRequest.Id() + '/$complete?approved=' + approved;
+
+        $.ajax({
+            url: url,
+            method: 'POST',
+            success: function () {
+                alert('Request ' + approved ? 'approved' : 'denied');
+                loadAccessRequests();
+            }
+        });
+    };
+
+    self.ShowAccessRequests = function () {
+        $("#accessRequestsDialog").modal('show');
     };
 
     self.Initialize = function () {
@@ -53,6 +97,8 @@ var ContainerViewModel = function () {
                 alert('An error occurred while getting disclaimers associated with the current user');
             }
         });
+
+        loadAccessRequests();
     };
 
     self.DisplayName = ko.computed(function () {
@@ -80,7 +126,7 @@ var ContainerViewModel = function () {
             var securableName = securableNames[securableNameIndex];
 
             var foundSecurable = ko.utils.arrayFirst(self.Me().Securables(), function (securable) {
-                return securable == securableName;
+                return securable === securableName;
             });
 
             if (foundSecurable)

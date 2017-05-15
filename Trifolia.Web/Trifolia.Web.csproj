@@ -402,6 +402,7 @@
     <Compile Include="Models\IGManagement\ImplementationGuideFileModel.cs" />
     <Compile Include="Models\IGManagement\ImplementationGuideNoteModel.cs" />
     <Compile Include="Models\IGManagement\ImplementationGuidePrimitiveModel.cs" />
+    <Compile Include="Models\IGManagement\MyAccessRequestsModel.cs" />
     <Compile Include="Models\IGManagement\TemplateTypeListItem.cs" />
     <Compile Include="Models\GreenManagement\ConstraintViewModel.cs" />
     <Compile Include="Models\GreenManagement\GreenTemplateViewModel.cs" />
@@ -1741,6 +1742,8 @@
     <Content Include="Scripts\lib\lodash.min.js" />
     <Content Include="Scripts\Admin\Details.js" />
     <Content Include="Scripts\Admin\Organizations.js" />
+    <Content Include="Scripts\lib\moment-with-locales.min.js" />
+    <Content Include="Scripts\lib\moment.min.js" />
     <Content Include="Scripts\lib\q\benchmark\compare-with-callbacks.js" />
     <Content Include="Scripts\lib\q\benchmark\scenarios.js" />
     <Content Include="Scripts\lib\q\design\q0.js" />

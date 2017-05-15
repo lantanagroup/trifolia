@@ -18,6 +18,7 @@ namespace Trifolia.DB
             Templates = new HashSet<Template>();
             Groups = new HashSet<UserGroup>();
             Roles = new HashSet<UserRole>();
+            AccessRequests = new HashSet<ImplementationGuideAccessRequest>();
         }
 
         [Column("id")]
@@ -80,5 +81,8 @@ namespace Trifolia.DB
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserRole> Roles { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ImplementationGuideAccessRequest> AccessRequests { get; set; }
     }
 }

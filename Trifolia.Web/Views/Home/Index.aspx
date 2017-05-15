@@ -3,6 +3,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Welcome to Trifolia Workbench!</h2>
 
+    <% if (!string.IsNullOrEmpty(Model.Message)) { %>
+    <div class="alert alert-info"><%= Model.Message %></div>
+    <% } %>
+
     <div id="intro"></div>
     <hr />
     <div id="whatsnew"></div>
