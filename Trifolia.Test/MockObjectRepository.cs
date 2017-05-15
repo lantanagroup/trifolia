@@ -453,6 +453,7 @@ namespace Trifolia.Test
         DbSet<TemplateSample> templateSamples = null;
         DbSet<ImplementationGuideSection> implementationGuideSections = null;
         DbSet<TemplateExtension> templateExtensions = null;
+        DbSet<ImplementationGuideAccessRequest> implementationGuideAccessRequests = null;
 
         public DbSet<AuditEntry> AuditEntries
         {
@@ -583,6 +584,17 @@ namespace Trifolia.Test
                     this.valuesetMembers = CreateMockDbSet<ValueSetMember>();
 
                 return valuesetMembers;
+            }
+        }
+
+        public DbSet<ImplementationGuideAccessRequest> ImplementationGuideAccessRequests
+        {
+            get
+            {
+                if (this.implementationGuideAccessRequests == null)
+                    this.implementationGuideAccessRequests = CreateMockDbSet<ImplementationGuideAccessRequest>();
+
+                return this.implementationGuideAccessRequests;
             }
         }
 
