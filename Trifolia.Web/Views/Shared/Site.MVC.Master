@@ -155,9 +155,6 @@
                                 <span>Access Requests</span></a>
                             </li>
                             <!-- /ko -->
-                            <!-- ko if: HasApprovalRequests() -->
-                            <li><a href="#">Approval Requests</a></li>
-                            <!-- /ko -->
                             <li class="divider"></li>
                             <li><a href="/Account/LogOff">Logout</a></li>
                             <!-- /ko -->
