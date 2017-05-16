@@ -75,7 +75,13 @@
             </thead>
             <tbody data-bind="foreach: $parent.GetItems">
                 <tr>
-                    <td data-bind="text: Title"></td>
+                    <td>
+                        <span data-bind="text: Title"></span>
+                        <!-- ko if: DisplayName() && DisplayName() != Title() -->
+                        <br />
+                        <sub data-bind="text: DisplayName"></sub>
+                        <!-- /ko -->
+                    </td>
                     <td data-bind="text: Status"></td>
                     <td data-bind="text: formatDateObj(PublishDate())"></td>
                     <!-- ko if: !$parent.HideOrganization() -->
