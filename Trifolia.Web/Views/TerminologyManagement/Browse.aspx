@@ -437,7 +437,7 @@
         </script>
 
         <script type="text/html" id="codeSystemPageNavigation">
-            Page {{criteria.page}} of {{totalPages}}, {{searchResults.total}} value sets
+            Page {{criteria.page}} of {{totalPages}}, {{searchResults.total}} code systems
             <div class="btn-group btn-group-sm">
                 <button type="button" class="btn btn-default btn-sm" ng-click="changePage('first')" ng-disabled="criteria.page <= 1" title="First Page">
                     <i class="glyphicon glyphicon-fast-backward"></i>
