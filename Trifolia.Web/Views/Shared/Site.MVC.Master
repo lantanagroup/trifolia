@@ -345,7 +345,7 @@
                         </div>
                         <div role="tabpanel" class="tab-pane" id="myRequests">
                             <!-- ko if: !HasMyRequests() -->
-                            <i>No requests are pending your approval.</i>
+                            <i>You have no pending requests.</i>
                             <!-- /ko -->
                             <!-- ko if: HasMyRequests() -->
                             <table class="table">
