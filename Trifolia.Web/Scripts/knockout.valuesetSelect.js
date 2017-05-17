@@ -37,7 +37,19 @@
         $.ajax({
             url: '/api/Terminology/ValueSet/' + idAccessor(),
             success: function (valueset) {
-                var display = valueset.Name + ' (' + valueset.Oid + ')';
+                var sortedIdentifiers = _.chain(valueset.Identifiers)
+                    .sortBy(function (identifier) {
+                        return identifier.IsDefault;
+                    })
+                    .reverse()
+                    .value();
+
+                var display = valueset.Name;
+
+                if (sortedIdentifiers.length > 0) {
+                    display += ' (' + sortedIdentifiers[0].Identifier + ')';
+                }
+
                 updateDisplay(display, false);
             }
         });
@@ -140,7 +152,7 @@
             idAccessorSubscription.dispose();
             idAccessor(typeAheadResult.Id());
 
-            var display = typeAheadResult.Name() + ' (' + typeAheadResult.Oid() + ')';
+            var display = typeAheadResult.Name() + ' (' + typeAheadResult.Identifiers() + ')';
             updateDisplay(display, false);
 
             idAccessorSubscription = idAccessor.subscribe(self.IdChanged);
@@ -226,7 +238,7 @@
             return;
         }
 
-        var display = self.SelectedValueset().Name() + ' (' + self.SelectedValueset().Oid() + ')';
+        var display = self.SelectedValueset().Name() + ' (' + self.SelectedValueset().Identifiers() + ')';
         self.Display(display);
         idAccessor(self.SelectedValueset().Id());
         $(self.ModalDiv()).modal('hide');

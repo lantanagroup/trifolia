@@ -133,7 +133,8 @@ namespace Trifolia.Web.Controllers.API
                                Identifier = ig.Identifier,
                                Organization = ig.Organization != null ? ig.Organization.Name : string.Empty,
                                PublishDate = ig.PublishDate,
-                               Title = string.Format("{0} {1}", ig.Name, ig.Version > 1 ? "V" + ig.Version.ToString() : string.Empty),
+                               Title = string.Format("{0} {1}", ig.Name, (ig.Version > 1 ? "V" + ig.Version.ToString() : string.Empty)),
+                               DisplayName = ig.DisplayName,
                                Type = ig.ImplementationGuideType.Name,
                                Status = ig.PublishStatus != null ? ig.PublishStatus.Status : string.Empty,
                                Url = GetUrlForImplementationGuide(listMode, ig.Id),
@@ -633,47 +634,6 @@ namespace Trifolia.Web.Controllers.API
                     }).ToArray();
         }
 
-        [HttpPost, Route("api/ImplementationGuide/{implementationGuideId}/RequestAuthorization"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_LIST)]
-        public void RequestAuthorization(int implementationGuideId, bool edit, string message)
-        {
-            User currentUser = CheckPoint.Instance.GetUser(this.tdb);
-            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
-            User accessManager = ig.AccessManager;
-
-            if (accessManager == null)
-                throw new ArgumentException("Specified IG does not have an access manager defined");
-
-            try
-            {
-                string mailTo = !string.IsNullOrEmpty(AppSettings.DebugMailTo) ? AppSettings.DebugMailTo : accessManager.Email;
-                MailMessage mailMessage = new MailMessage(AppSettings.MailFromAddress, mailTo);
-                mailMessage.Subject = string.Format("Trifolia: Request to access " + ig.NameWithVersion);
-                mailMessage.Body = string.Format("User {0} {1} ({2}) has requested access to {3} on {4} @ {5}\nThe user has requested {6} permissions.\n\nMessage from user: {7}\n\nUse this link to add them to the implementation guide: {8}",
-                    currentUser.FirstName,
-                    currentUser.LastName,
-                    currentUser.Email,
-                    ig.GetDisplayName(),
-                    DateTime.Now.ToShortDateString(),
-                    DateTime.Now.ToShortTimeString(),
-                    edit ? "edit" : "view",
-                    !string.IsNullOrEmpty(message) ? message : "None",
-                    ig.GetEditUrl(true));
-
-                if (!string.IsNullOrEmpty(AppSettings.DebugMailTo))
-                    mailMessage.Subject = "DEBUG: " + mailMessage.Subject;
-
-                SmtpClient client = new SmtpClient(AppSettings.MailHost, AppSettings.MailPort);
-                client.EnableSsl = AppSettings.MailEnableSSL;
-                client.Credentials = new System.Net.NetworkCredential(AppSettings.MailUser, AppSettings.MailPassword);
-                client.Send(mailMessage);
-            }
-            catch (Exception ex)
-            {
-                Log.For(this).Error("Error sending email notification to access manager", ex);
-                throw new Exception("Error sending email notification to access manager");
-            }
-        }
-
         [HttpGet, Route("api/ImplementationGuide/URL/Validate"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_FILE_MANAGEMENT)]
         public bool ValidateUrl(string url, int? ignoreFileId)
         {
@@ -1062,6 +1022,10 @@ namespace Trifolia.Web.Controllers.API
                             else
                                 ig.Version = 1;
                         }
+                        else
+                        {
+                            ig.Version = 1;
+                        }
 
                         // Delete sections that don't exist in the model
                         ig.Sections.Where(y => aModel.Sections.Count(x => x.Id == y.Id) == 0)
@@ -1211,6 +1175,52 @@ namespace Trifolia.Web.Controllers.API
             }
         }
 
+        private void SendPermissionNotificationEmail(string recipientEmail, string firstName, string lastName, string userName, string userEmail, string permission, string igName, string viewUrl, bool approved)
+        {
+            string toEmailAddress = !string.IsNullOrEmpty(AppSettings.DebugMailTo) ? AppSettings.DebugMailTo : recipientEmail;
+
+            MailMessage mailMessage = new MailMessage(AppSettings.MailFromAddress, toEmailAddress);
+
+            if (approved)
+            {
+                mailMessage.Subject = string.Format("Trifolia access granted to " + igName);
+                mailMessage.Body = string.Format("Hello {0} {1},\n\nYour user account {2} ({3}) has been granted {4} access to the \"{5}\" implementation guide.\n\nYou can {6} the implementation guide here: {7}\n\n-Trifolia",
+                    firstName,
+                    lastName,
+                    userName,
+                    userEmail,
+                    permission,
+                    igName,
+                    permission == "Edit" ? "view/edit" : "view",
+                    viewUrl);
+            }
+            else
+            {
+                mailMessage.Subject = string.Format("Trifolia access denied to " + igName);
+                mailMessage.Body = string.Format("Hello {0} {1},\n\nYour request to access {5} with {6} permissions has been denied by the access manager of the implementation guide.\n\n-Trifolia",
+                    firstName,  // 0
+                    lastName,   // 1
+                    userName,   // 2
+                    userEmail,  // 3
+                    permission, // 4
+                    igName,     // 5
+                    permission == "Edit" ? "view/edit" : "view",        // 6
+                    viewUrl);   // 7
+            }
+
+            try
+            {
+                SmtpClient client = new SmtpClient(AppSettings.MailHost, AppSettings.MailPort);
+                client.EnableSsl = AppSettings.MailEnableSSL;
+                client.Credentials = new System.Net.NetworkCredential(AppSettings.MailUser, AppSettings.MailPassword);
+                client.Send(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                Log.For(this).Error("Error sending permissions notification.", ex);
+            }
+        }
+
         private void SavePermissions(IObjectRepository auditedTdb, ImplementationGuide ig, EditModel model)
         {
             // Remove view permissions that are not needed any longer
@@ -1302,29 +1312,18 @@ namespace Trifolia.Web.Controllers.API
                 // Send an email to each user (separately) notifying them of their permission
                 foreach (var userEmail in userEmails)
                 {
-                    MailMessage mailMessage = new MailMessage(AppSettings.MailFromAddress, userEmail.User.Email);
-                    mailMessage.Subject = string.Format("Trifolia access granted to " + ig.NameWithVersion);
-                    mailMessage.Body = string.Format("Hello {0} {1},\n\nYour user account {2} ({3}) has been granted {4} access to the \"{5}\" implementation guide.\n\nYou can {6} the implementation guide here: {7}\n\n-Trifolia",
+                    string recipientEmail = userEmail.User.Email;
+
+                    this.SendPermissionNotificationEmail(
+                        recipientEmail,
                         userEmail.User.FirstName,
                         userEmail.User.LastName,
                         userEmail.User.UserName,
                         userEmail.User.Email,
-                        userEmail.Permission == "Edit" ? "edit" : "view",
+                        userEmail.Permission,
                         ig.GetDisplayName(),
-                        userEmail.Permission == "Edit" ? "view/edit" : "view",
-                        ig.GetViewUrl(true));
-
-                    try
-                    {
-                        SmtpClient client = new SmtpClient(AppSettings.MailHost, AppSettings.MailPort);
-                        client.EnableSsl = AppSettings.MailEnableSSL;
-                        client.Credentials = new System.Net.NetworkCredential(AppSettings.MailUser, AppSettings.MailPassword);
-                        client.Send(mailMessage);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.For(this).Error("Error sending permissions notification.", ex);
-                    }
+                        ig.GetViewUrl(true),
+                        true);
                 }
             }
         }
@@ -1748,6 +1747,174 @@ namespace Trifolia.Web.Controllers.API
                 // Recursively add child constraints
                 CreateConstraints(wikiParser, igManager, igTypePlugin, theConstraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
             }
+        }
+
+        #endregion
+
+        #region Access Requests
+
+        [HttpGet, Route("api/ImplementationGuide/RequestAuthorization/My")]
+        public MyAccessRequestsModel GetAccessRequests()
+        {
+            User currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+            if (currentUser == null)
+                return new MyAccessRequestsModel();
+
+            var currentUserApprovals = (from igar in this.tdb.ImplementationGuideAccessRequests
+                                        join ig in this.tdb.ImplementationGuides on igar.ImplementationGuideId equals ig.Id
+                                        where ig.AccessManagerId == currentUser.Id
+                                        select igar)
+                                        .ToList();
+            var currentUserRequests = this.tdb.ImplementationGuideAccessRequests.Where(y => y.RequestUserId == currentUser.Id).ToList();
+
+            var retModel = new MyAccessRequestsModel()
+            {
+                MyApprovals = currentUserApprovals.Select(y => new MyAccessRequestsModel.Request(y)).ToList(),
+                MyRequests = currentUserRequests.Select(y => new MyAccessRequestsModel.Request(y)).ToList()
+            };
+
+            return retModel;
+        }
+
+        [HttpPost, Route("api/ImplementationGuide/{implementationGuideId}/RequestAuthorization"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_LIST)]
+        public void RequestAuthorization(int implementationGuideId, bool edit, string message)
+        {
+            User currentUser = CheckPoint.Instance.GetUser(this.tdb);
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            User accessManager = ig.AccessManager;
+
+            if (accessManager == null)
+                throw new ArgumentException("Specified IG does not have an access manager defined");
+
+            var foundAccessRequest = this.tdb.ImplementationGuideAccessRequests.FirstOrDefault(y => y.ImplementationGuideId == ig.Id && y.RequestUserId == currentUser.Id);
+
+            if (foundAccessRequest != null)
+            {
+                // Cancel the access request if it was already requested within the last 6 hours.
+                if (foundAccessRequest.RequestDate > DateTime.Now.AddHours(-6))
+                    return;
+
+                // Update the access request's information with the latest request
+                foundAccessRequest.RequestDate = DateTime.Now;
+                foundAccessRequest.Permission = edit ? "Edit" : "View";
+
+                if (!string.IsNullOrEmpty(message))
+                    foundAccessRequest.Message = message;
+            }
+            else
+            {
+                foundAccessRequest = new ImplementationGuideAccessRequest();
+                foundAccessRequest.ImplementationGuide = ig;
+                foundAccessRequest.RequestUser = currentUser;
+                foundAccessRequest.Message = message;
+                foundAccessRequest.Permission = edit ? "Edit" : "View";
+                foundAccessRequest.RequestDate = DateTime.Now;
+                this.tdb.ImplementationGuideAccessRequests.Add(foundAccessRequest);
+            }
+
+            this.tdb.SaveChanges();
+
+            try
+            {
+                string msgFormat = @"
+User {0} {1} ({2}) has requested access to {3} on {4} @ {5}.
+The user has requested {6} permissions.
+
+Message from user: {7}
+
+Use this link to grant them permission to the implementation guide: {8}
+Use this link to deny them permission to the implementation guide: {9}
+";
+
+                string accessRequestLink = this.Request.RequestUri.GetLeftPart(UriPartial.Authority) + "/IGManagement/AuthorizationRequest/" + foundAccessRequest.Id.ToString() + "/";
+                string mailTo = !string.IsNullOrEmpty(AppSettings.DebugMailTo) ? AppSettings.DebugMailTo : accessManager.Email;
+                MailMessage mailMessage = new MailMessage(AppSettings.MailFromAddress, mailTo);
+                mailMessage.Subject = string.Format("Trifolia: Request to access " + ig.NameWithVersion);
+                mailMessage.Body = string.Format(msgFormat,
+                    currentUser.FirstName,
+                    currentUser.LastName,
+                    currentUser.Email,
+                    ig.GetDisplayName(),
+                    DateTime.Now.ToShortDateString(),
+                    DateTime.Now.ToShortTimeString(),
+                    edit ? "edit" : "view",
+                    !string.IsNullOrEmpty(message) ? message : "None",
+                    accessRequestLink + "$approve",
+                    accessRequestLink + "$deny");
+
+                if (!string.IsNullOrEmpty(AppSettings.DebugMailTo))
+                    mailMessage.Subject = "DEBUG: " + mailMessage.Subject;
+
+                SmtpClient client = new SmtpClient(AppSettings.MailHost, AppSettings.MailPort);
+                client.EnableSsl = AppSettings.MailEnableSSL;
+                client.Credentials = new System.Net.NetworkCredential(AppSettings.MailUser, AppSettings.MailPassword);
+                client.Send(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                Log.For(this).Error("Error sending email notification to access manager", ex);
+                throw new Exception("Error sending email notification to access manager");
+            }
+        }
+
+        [HttpPost, Route("api/ImplementationGuide/RequestAuthorization/{accessRequestId}/$complete")]
+        public void CompleteAccessRequest(int accessRequestId, bool approved)
+        {
+            User currentUser = CheckPoint.Instance.GetUser(this.tdb);
+            ImplementationGuideAccessRequest igac = this.tdb.ImplementationGuideAccessRequests.Single(y => y.Id == accessRequestId);
+            var ig = igac.ImplementationGuide;
+            User requestUser = igac.RequestUser;
+
+            if (ig.AccessManager != currentUser)
+                throw new UnauthorizedAccessException("You are not the access manager of the implementation guide.");
+
+            if (approved)
+            {
+                if (igac.Permission == ImplementationGuidePermission.PermissionView || igac.Permission == ImplementationGuidePermission.PermissionEdit)
+                {
+                    if (!ig.Permissions.Any(y => y.UserId == requestUser.Id && y.Permission == ImplementationGuidePermission.PermissionView))
+                    {
+                        ImplementationGuidePermission igp = new ImplementationGuidePermission()
+                        {
+                            ImplementationGuide = ig,
+                            User = requestUser,
+                            Permission = ImplementationGuidePermission.PermissionView,
+                            Type = ImplementationGuidePermission.TypeUser
+                        };
+                        this.tdb.ImplementationGuidePermissions.Add(igp);
+                    }
+                }
+
+                if (igac.Permission == ImplementationGuidePermission.PermissionEdit)
+                {
+                    if (!ig.Permissions.Any(y => y.UserId == requestUser.Id && y.Permission == ImplementationGuidePermission.PermissionEdit))
+                    {
+                        ImplementationGuidePermission igp = new ImplementationGuidePermission()
+                        {
+                            ImplementationGuide = ig,
+                            User = requestUser,
+                            Permission = ImplementationGuidePermission.PermissionEdit,
+                            Type = ImplementationGuidePermission.TypeUser
+                        };
+                        this.tdb.ImplementationGuidePermissions.Add(igp);
+                    }
+                }
+            }
+
+            this.tdb.ImplementationGuideAccessRequests.Remove(igac);
+            this.tdb.SaveChanges();
+
+            this.SendPermissionNotificationEmail(
+                requestUser.Email, 
+                requestUser.FirstName, 
+                requestUser.LastName, 
+                requestUser.UserName, 
+                requestUser.Email, 
+                igac.Permission, 
+                ig.GetDisplayName(), 
+                ig.GetViewUrl(true),
+                approved);
         }
 
         #endregion

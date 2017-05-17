@@ -21,6 +21,7 @@
 <script type="text/javascript" src="/Scripts/lib/bootstrap/bootstrap-spinedit.js"></script>
 <script type="text/javascript" src="/Scripts/lib/bootstrap/bootstrap-datepicker.js"></script>
 
+<script type="text/javascript" src="/Scripts/lib/moment-with-locales.min.js"></script>
 <script type="text/javascript" src="/Scripts/lib/lodash.min.js"></script>
 <script type="text/javascript" src="/Scripts/Mvc/MicrosoftAjax.js"></script>
 <script type="text/javascript" src="/Scripts/Mvc/MicrosoftMvcAjax.js"></script>

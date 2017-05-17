@@ -968,7 +968,7 @@ var TemplateModel = function (data, viewModel) {
         var users = {};
 
         $.ajax({
-            url: "/api/Template/Permissions/" + tId,
+            url: "/api/Template/" + tId + "/Permissions",
             async: false,
             success: function (results) {
                 userInfo = results;

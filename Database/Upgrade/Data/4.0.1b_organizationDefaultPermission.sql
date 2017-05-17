@@ -1,1 +1,0 @@
-update organization_defaultpermission set [type] = 'Everyone' where [type] = 'EntireOrganization'

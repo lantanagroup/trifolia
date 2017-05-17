@@ -26,6 +26,7 @@
     self.Author = ko.observable();
     self.Name = ko.observable();
     self.Oid = ko.observable();
+    self.Bookmark = ko.observable();
     self.ImplementationGuideType = ko.observable();
     self.ImplementationGuideTypeId = ko.observable();
     self.ImpliedTemplate = ko.observable();
@@ -115,13 +116,14 @@
                 });
 
                 if (fhirIgType) {
-                    var url = fhirIgType.BaseUrl + 'StructureDefinition/' + templateId;
+                    var url = fhirIgType.BaseUrl + 'StructureDefinition/' + self.Bookmark();
                     
                     $.ajax({
                         url: url,
                         success: function (results) {
                             self.StructureDefinitionJSON(JSON.stringify(results, null, '\t'));
-                        }
+                        },
+                        error: handleAjaxError('Error getting JSON StructureDefinition for template/profile')
                     });
 
                     $.ajax({
@@ -133,10 +135,12 @@
                         success: function (results) {
                             var prettyXml = vkbeautify.xml(results)
                             self.StructureDefinitionXML(prettyXml);
-                        }
+                        },
+                        error: handleAjaxError('Error getting XML StructureDefinition for template/profile')
                     });
                 }
-            }
+            },
+            error: handleAjaxError('Error getting template/profile')
         });
 
         $.ajax({
@@ -145,7 +149,8 @@
                 if (results) {
                     ko.mapping.fromJS({ Changes: results }, {}, self);
                 }
-            }
+            },
+            error: handleAjaxError('Error getting changes for template/profile')
         });
     };
 

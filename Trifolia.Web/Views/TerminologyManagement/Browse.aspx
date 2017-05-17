@@ -26,6 +26,15 @@
         .table.valueset-relationships thead tr th:nth-child(2) {
             width: 25%;
         }
+
+        .identifier-input-group {
+            width: 100%;
+        }
+
+        .identifier-input-group input {
+            border-bottom-right-radius: 4px !important;
+            border-top-right-radius: 4px !important;
+        }
     </style>
 </asp:Content>
 
@@ -308,10 +317,12 @@
                                         <select class="form-control" ng-options="o.value as o.display for o in identifierOptions" ng-model="newIdentifier.Type" name="type"></select>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" ng-model="newIdentifier.Identifier" value-set-identifier name="identifier" ng-model-options="{ debounce: 500 }" ng-change="identifierChanged(newIdentifier)" />
-                                        <span class="help-block" ng-show="!newIdentifier.Identifier">Identifier is required.</span>
-                                        <span class="help-block" ng-show="newIdentifier.Identifier && !isNewIdentifierFormatValid()">{{isNewIdentifierFormatInvalid()}}</span>
-                                        <span class="help-block" ng-show="newIdentifier.Identifier && !newIdentifierIsUnique">The identifier is already used.</span>
+                                        <div class="input-group identifier-input-group" ng-class="{ 'has-error': valueSet.Identifiers.length == 0 }">
+                                            <input type="text" class="form-control" ng-model="newIdentifier.Identifier" value-set-identifier name="identifier" ng-model-options="{ debounce: 500 }" ng-change="identifierChanged(newIdentifier)" />
+                                            <span class="help-block" ng-show="!newIdentifier.Identifier">Identifier is required.</span>
+                                            <span class="help-block" ng-show="newIdentifier.Identifier && !isNewIdentifierFormatValid()">{{isNewIdentifierFormatInvalid()}}</span>
+                                            <span class="help-block" ng-show="newIdentifier.Identifier && !newIdentifierIsUnique">The identifier is already used.</span>
+                                        </div>
                                     </td>
                                     <td>
                                         <input type="checkbox" ng-model="newIdentifier.IsDefault" />
@@ -360,7 +371,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="EditValueSetForm.$invalid">OK</button>
+                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="EditValueSetForm.$invalid || valueSet.Identifiers.length == 0">OK</button>
                     <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
                 </div>
             </form>
@@ -426,7 +437,7 @@
         </script>
 
         <script type="text/html" id="codeSystemPageNavigation">
-            Page {{criteria.page}} of {{totalPages}}, {{searchResults.total}} value sets
+            Page {{criteria.page}} of {{totalPages}}, {{searchResults.total}} code systems
             <div class="btn-group btn-group-sm">
                 <button type="button" class="btn btn-default btn-sm" ng-click="changePage('first')" ng-disabled="criteria.page <= 1" title="First Page">
                     <i class="glyphicon glyphicon-fast-backward"></i>

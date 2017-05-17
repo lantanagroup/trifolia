@@ -28,6 +28,9 @@ namespace Trifolia.Shared.FHIR.Profiles.STU3
             string resourceLocation = string.Format(resourceLocationFormat, resourceType);
             var resourceStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceLocation);
 
+            if (resourceStream == null)
+                return null;
+
             using (StreamReader profileReader = new StreamReader(resourceStream))
             {
                 var parserSettings = new ParserSettings();

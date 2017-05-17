@@ -22,7 +22,7 @@ namespace Trifolia.Generation.IG
         private Body documentBody;
         private List<Template> templates;
         private TableCollection tables;
-        private IEnumerable<CodeSystem> codeSystems;
+        private IEnumerable<CodeSystemTable.CodeSystem> codeSystems;
 
         public CodeSystemTable(IObjectRepository tdb, Body documentBody, List<Template> templates, TableCollection tables)
         {
@@ -31,17 +31,17 @@ namespace Trifolia.Generation.IG
             this.templates = templates;
             this.tables = tables;
 
-            this.codeSystems = (from t1 in this.templates
-                                join tc in this.tdb.TemplateConstraints.AsNoTracking() on t1.Id equals tc.TemplateId
-                                where tc.CodeSystemId != null
-                                select tc.CodeSystem).Union(
-                               (from t2 in this.templates
-                                join tc in this.tdb.TemplateConstraints.AsNoTracking() on t2.Id equals tc.TemplateId
-                                join vs in this.tdb.ValueSets.AsNoTracking() on tc.ValueSetId equals vs.Id
-                                join vsm in this.tdb.ValueSetMembers.AsNoTracking() on vs.Id equals vsm.ValueSetId
-                                select vsm.CodeSystem))
-                               .Distinct()
-                               .OrderBy(y => y.Name);
+            var implementationGuides = this.templates.Select(y => y.OwningImplementationGuideId).Distinct();
+
+            this.codeSystems = (from igcs in this.tdb.ViewImplementationGuideCodeSystems
+                                join ig in implementationGuides on igcs.ImplementationGuideId equals ig
+                                select new CodeSystemTable.CodeSystem()
+                                {
+                                    Name = igcs.Name,
+                                    Identifier = igcs.Identifier
+                                })
+                                .Distinct()
+                                .OrderBy(y => y.Name);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Trifolia.Generation.IG
             string[] headers = new string[] { "Name", "OID" };
             Table t = this.tables.AddTable("Code Systems", headers);
 
-            foreach (CodeSystem cCodeSystem in codeSystems)
+            foreach (var cCodeSystem in codeSystems)
             {
                 TableRow newRow = new TableRow(
                     new TableCell(
@@ -81,9 +81,22 @@ namespace Trifolia.Generation.IG
                             DocHelper.CreateRun(cCodeSystem.Name))),
                     new TableCell(
                         new Paragraph(
-                            DocHelper.CreateRun(cCodeSystem.Oid))));
+                            DocHelper.CreateRun(cCodeSystem.Identifier))));
 
                 t.Append(newRow);
+            }
+        }
+
+        public class CodeSystem : IEquatable<CodeSystem>
+        {
+            public string Name { get; set; }
+            public string Identifier { get; set; }
+
+            public bool Equals(CodeSystem other)
+            {
+                string thisIdentifier = !string.IsNullOrEmpty(this.Identifier) ? this.Identifier : string.Empty;
+                string otherIdentifier = other != null && !string.IsNullOrEmpty(other.Identifier) ? other.Identifier : string.Empty;
+                return thisIdentifier.Equals(otherIdentifier);
             }
         }
     }

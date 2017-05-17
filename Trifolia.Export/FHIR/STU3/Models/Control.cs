@@ -17,9 +17,10 @@ namespace Trifolia.Export.FHIR.STU3.Models
 
             this.defaults = new Dictionary<string, TemplateReference>();
             this.defaults.Add("Any", new TemplateReference("instance-template-format.html", "instance-template-base.html"));
-            this.defaults.Add("StructureDefinition", new TemplateReference("instance-template-sd.html", null));
+            this.defaults.Add("StructureDefinition", new TemplateReference(null, "instance-template-sd.html"));
 
             this.resources = new Dictionary<string, ResourceReference>();
+            this.special_urls = new List<string>();
         }
 
         public string tool { get; set; }
@@ -30,6 +31,10 @@ namespace Trifolia.Export.FHIR.STU3.Models
 
         [JsonProperty(PropertyName = "sct-edition", NullValueHandling = NullValueHandling.Ignore)]
         public string sct_edition { get; set; }
+
+        [JsonProperty(PropertyName = "special-urls", NullValueHandling = NullValueHandling.Ignore)]
+        public List<string> special_urls { get; set; }
+
         public Dictionary<string, ResourceReference> resources { get; set; }
 
         public class Path
@@ -54,6 +59,11 @@ namespace Trifolia.Export.FHIR.STU3.Models
 
         public class ResourceReference
         {
+            public ResourceReference(string reference_base)
+            {
+                this.reference_base = reference_base;
+            }
+
             public ResourceReference(string template_base, string reference_base)
             {
                 this.template_base = template_base;
@@ -84,6 +94,9 @@ namespace Trifolia.Export.FHIR.STU3.Models
             {
 
             }
+
+            [JsonProperty(PropertyName = "template-defns", NullValueHandling = NullValueHandling.Ignore)]
+            public string template_defns { get; set; }
 
             [JsonProperty(PropertyName = "template-format", NullValueHandling = NullValueHandling.Ignore)]
             public string template_format { get; set; }

@@ -19,6 +19,7 @@ namespace Trifolia.DB
         DbSet<GreenConstraint> GreenConstraints { get; }
         DbSet<GreenTemplate> GreenTemplates { get; }
         DbSet<ImplementationGuide> ImplementationGuides { get; }
+        DbSet<ImplementationGuideAccessRequest> ImplementationGuideAccessRequests { get; }
         DbSet<ImplementationGuideSetting> ImplementationGuideSettings { get; }
         DbSet<Template> Templates { get; }
         DbSet<TemplateConstraint> TemplateConstraints { get; }
@@ -52,6 +53,7 @@ namespace Trifolia.DB
         DbSet<ViewImplementationGuideTemplate> ViewImplementationGuideTemplates { get; }
         DbSet<TemplateConstraintSample> TemplateConstraintSamples { get; }
         DbSet<TemplateSample> TemplateSamples { get; }
+        DbSet<ViewImplementationGuideCodeSystem> ViewImplementationGuideCodeSystems { get; }
         DbSet<ViewIGAuditTrail> ViewIGAuditTrails { get; }
         DbSet<ImplementationGuideSection> ImplementationGuideSections { get; }
         DbSet<TemplateExtension> TemplateExtensions { get; }

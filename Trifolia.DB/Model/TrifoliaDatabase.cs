@@ -31,6 +31,7 @@ namespace Trifolia.DB
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<GroupManager> GroupManagers { get; set; }
         public virtual DbSet<ImplementationGuide> ImplementationGuides { get; set; }
+        public virtual DbSet<ImplementationGuideAccessRequest> ImplementationGuideAccessRequests { get; set; }
         public virtual DbSet<ImplementationGuideFile> ImplementationGuideFiles { get; set; }
         public virtual DbSet<ImplementationGuideFileData> ImplementationGuideFileDatas { get; set; }
         public virtual DbSet<ImplementationGuidePermission> ImplementationGuidePermissions { get; set; }
@@ -56,6 +57,7 @@ namespace Trifolia.DB
         public virtual DbSet<ValueSet> ValueSets { get; set; }
         public virtual DbSet<ValueSetMember> ValueSetMembers { get; set; }
         public virtual DbSet<ValueSetIdentifier> ValueSetIdentifiers { get; set; }
+        public virtual DbSet<ViewImplementationGuideCodeSystem> ViewImplementationGuideCodeSystems { get; set; }
         public virtual DbSet<ViewConstraintCount> ViewConstraintCounts { get; set; }
         public virtual DbSet<ViewIGAuditTrail> ViewIGAuditTrails { get; set; }
         public virtual DbSet<ViewImplementationGuideFile> ViewImplementationGuideFiles { get; set; }
@@ -109,6 +111,11 @@ namespace Trifolia.DB
                 .HasMany(e => e.NextVersions)
                 .WithOptional(e => e.PreviousVersion)
                 .HasForeignKey(e => e.PreviousVersionImplementationGuideId);
+
+            modelBuilder.Entity<ImplementationGuide>()
+                .HasMany(e => e.AccessRequests)
+                .WithRequired(e => e.ImplementationGuide)
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<ImplementationGuide>()
                 .HasMany(e => e.Files)
@@ -261,6 +268,11 @@ namespace Trifolia.DB
             modelBuilder.Entity<TemplateType>()
                 .HasMany(e => e.Templates)
                 .WithRequired(e => e.TemplateType)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.AccessRequests)
+                .WithRequired(e => e.RequestUser)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<User>()

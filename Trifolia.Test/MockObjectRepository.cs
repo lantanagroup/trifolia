@@ -23,7 +23,7 @@ namespace Trifolia.Test
         public const string DEFAULT_ORGANIZATION = "LCG";
         public const string DEFAULT_FHIR_DSTU1_IG_TYPE_NAME = "FHIR DSTU1";
         public const string DEFAULT_FHIR_DSTU2_IG_TYPE_NAME = "FHIR DSTU2";
-        public const string DEFAULT_FHIR_STU3_IG_TYPE_NAME = "FHIR Latest";
+        public const string DEFAULT_FHIR_STU3_IG_TYPE_NAME = "FHIR STU3";
         public const string DEFAULT_CDA_IG_TYPE_NAME = "CDA";
         public const string DEFAULT_HQMF_R2_IG_TYPE_NAME = "HQMF R2";
         public const string DEFAULT_USERNAME = "admin";
@@ -453,6 +453,7 @@ namespace Trifolia.Test
         DbSet<TemplateSample> templateSamples = null;
         DbSet<ImplementationGuideSection> implementationGuideSections = null;
         DbSet<TemplateExtension> templateExtensions = null;
+        DbSet<ImplementationGuideAccessRequest> implementationGuideAccessRequests = null;
 
         public DbSet<AuditEntry> AuditEntries
         {
@@ -583,6 +584,17 @@ namespace Trifolia.Test
                     this.valuesetMembers = CreateMockDbSet<ValueSetMember>();
 
                 return valuesetMembers;
+            }
+        }
+
+        public DbSet<ImplementationGuideAccessRequest> ImplementationGuideAccessRequests
+        {
+            get
+            {
+                if (this.implementationGuideAccessRequests == null)
+                    this.implementationGuideAccessRequests = CreateMockDbSet<ImplementationGuideAccessRequest>();
+
+                return this.implementationGuideAccessRequests;
             }
         }
 
@@ -831,6 +843,41 @@ namespace Trifolia.Test
         #endregion
 
         #region IObjectRepository View Collections
+
+        public DbSet<ViewImplementationGuideCodeSystem> ViewImplementationGuideCodeSystems
+        {
+            get
+            {
+                var results = (from t in this.Templates
+                               join tc in this.TemplateConstraints on t.Id equals tc.TemplateId
+                               join cs in this.CodeSystems on tc.CodeSystemId equals cs.Id
+                               select new ViewImplementationGuideCodeSystem()
+                               {
+                                   CodeSystemId = cs.Id,
+                                   Description = cs.Description,
+                                   Identifier = cs.Oid,
+                                   ImplementationGuideId = t.OwningImplementationGuideId,
+                                   Name = cs.Name
+                               }).Distinct()
+                        .Union(from t in this.Templates
+                               join tc in this.TemplateConstraints on t.Id equals tc.TemplateId
+                               join vsm in this.ValueSetMembers on tc.ValueSetId equals vsm.ValueSetId
+                               join cs in this.CodeSystems on vsm.CodeSystemId equals cs.Id
+                               select new ViewImplementationGuideCodeSystem()
+                               {
+                                   CodeSystemId = cs.Id,
+                                   Description = cs.Description,
+                                   Identifier = cs.Oid,
+                                   ImplementationGuideId = t.OwningImplementationGuideId,
+                                   Name = cs.Name
+                               })
+                               .Distinct();
+
+                var mockDbSet = CreateMockDbSet<ViewImplementationGuideCodeSystem>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
+            }
+        }
 
         public DbSet<ViewIGAuditTrail> ViewIGAuditTrails
         {

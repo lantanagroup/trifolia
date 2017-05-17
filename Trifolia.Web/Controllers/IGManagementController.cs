@@ -322,6 +322,45 @@ namespace Trifolia.Web.Controllers
 
         #endregion
 
+        #region Access Requests
+
+        [Securable(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
+        public ActionResult ApproveAuthorizationRequest(int accessRequestId)
+        {
+            return this.CompleteAuthorizationRequest(accessRequestId, true);
+        }
+
+        [Securable(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
+        public ActionResult DenyAuthorizationRequest(int accessRequestId)
+        {
+            return this.CompleteAuthorizationRequest(accessRequestId, false);
+        }
+
+        private ActionResult CompleteAuthorizationRequest(int accessRequestId, bool approved)
+        {
+            ImplementationGuideAccessRequest igac = this.tdb.ImplementationGuideAccessRequests.SingleOrDefault(y => y.Id == accessRequestId);
+
+            if (igac == null)
+                return RedirectToAction("LoggedInIndex", "Home", new { message = "Authorization request no longer exists. It may have already been approved/denied." });
+
+            User requestUser = igac.RequestUser;
+            ImplementationGuide ig = igac.ImplementationGuide;
+
+            API.ImplementationGuideController igController = new API.ImplementationGuideController(this.tdb);
+            igController.CompleteAccessRequest(accessRequestId, approved);
+
+            string msgFormat = "{0} {1} {2} access to {3}";
+            string msg = string.Format(msgFormat,
+                approved ? "Granted" : "Denied",
+                requestUser.FirstName,
+                requestUser.LastName,
+                ig.GetDisplayName());
+
+            return RedirectToAction("LoggedInIndex", "Home", new { message = msg });
+        }
+
+        #endregion
+
         [Securable(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
         public ActionResult Delete(int implementationGuideId)
         {

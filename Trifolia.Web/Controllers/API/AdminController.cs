@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Trifolia.Config;
 using Trifolia.DB;
+using Trifolia.Logging;
 using Trifolia.Web.Models.Admin;
 
 namespace Trifolia.Web.Controllers.API
@@ -48,6 +49,12 @@ namespace Trifolia.Web.Controllers.API
             foreach (IGTypeFhirElement fit in IGTypeSection.GetSection().FhirIgTypes)
             {
                 ImplementationGuideType igType = this.tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == fit.ImplementationGuideTypeName.ToLower());
+
+                if (igType == null)
+                {
+                    Log.For(this).Error("Implementation guide type defined in web.config not found in database: " + fit.ImplementationGuideTypeName);
+                    continue;
+                }
 
                 var fhirIgType = new ClientConfigModel.FhirIgType()
                 {
