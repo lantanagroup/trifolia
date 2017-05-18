@@ -208,48 +208,24 @@ namespace Trifolia.Web
             routes.MapRoute(
                 name: "Edit Template by OID",
                 url: "TemplateManagement/Edit/OID/{oid}",
-                defaults: new { controller = "TemplateManagement", action = "EditOid" }
-            );
-
-            routes.MapRoute(
-                name: "Edit Template by OID V2",
-                url: "TemplateManagement/Edit/OID/{oid}/V2",
                 defaults: new { controller = "TemplateManagement", action = "EditOid", newEditor = true }
             );
 
             routes.MapRoute(
                 name: "Edit Template by Instance Identifier",
                 url: "TemplateManagement/Edit/II/{root}/{extension}",
-                defaults: new { controller = "TemplateManagement", action = "EditInstanceIdentifier" }
-            );
-
-            routes.MapRoute(
-                name: "Edit Template by Instance Identifier V2",
-                url: "TemplateManagement/Edit/II/{root}/{extension}/V2",
                 defaults: new { controller = "TemplateManagement", action = "EditInstanceIdentifier", newEditor = true }
             );
 
             routes.MapRoute(
                 name: "Edit Template by URI",
                 url: "TemplateManagement/Edit/URI/{uri}",
-                defaults: new { controller = "TemplateManagement", action = "EditUri" }
-            );
-
-            routes.MapRoute(
-                name: "Edit Template by URI V2",
-                url: "TemplateManagement/Edit/URI/{uri}/V2",
                 defaults: new { controller = "TemplateManagement", action = "EditUri", newEditor = true }
             );
 
             routes.MapRoute(
                 name: "Edit Template by ID",
                 url: "TemplateManagement/Edit/Id/{templateId}",
-                defaults: new { controller = "TemplateManagement", action = "EditId" }
-            );
-
-            routes.MapRoute(
-                name: "Edit Template by ID V2",
-                url: "TemplateManagement/Edit/Id/{templateId}/V2",
                 defaults: new { controller = "TemplateManagement", action = "EditId", newEditor = true }
             );
 
