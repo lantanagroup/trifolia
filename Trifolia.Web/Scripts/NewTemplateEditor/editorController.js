@@ -18,6 +18,86 @@
         }
         $scope.isDebug = true;
 
+        // TODO
+        $scope.showMoveUp = function (selectedNode) {
+            if (!selectedNode || !selectedNode.Constraint) {
+                return false;
+            }
+
+            return true;
+        };
+
+        // TODO
+        $scope.moveUp = function (selectedNode) {
+            alert('todo');
+        };
+
+        // TODO
+        $scope.showMoveDown = function (selectedNode) {
+            if (!selectedNode || !selectedNode.Constraint) {
+                return false;
+            }
+            
+            return true;
+        };
+
+        // TODO
+        $scope.moveDown = function (selectedNode) {
+            alert('todo');
+        };
+
+        // TODO
+        $scope.createComputableConstraint = function (selectedNode) {
+            // recursively create computable constraints for parent nodes that don't have constraints, first.
+
+            // create a new constraint based on the node selected. initially, data-type should be left empty (representing "Default"), copy the context, cardinality and conformance from the node
+            
+            alert('todo');
+        };
+
+        // TODO
+        $scope.createPrimitiveConstraint = function (selectedNode) {
+            // selectedNode may be undefined/null. In this case, add a primitive to the top/root level
+
+            // if selectedNode is not undefined/null, create a primtive within the selectedNode
+
+            // if selectedNode does not have a Constraint associated with it yet, then use createComputableConstraint() to create one for it
+
+            alert('todo');
+        };
+
+        // TODO
+        $scope.duplicateConstraint = function (selectedNode) {
+            if (!selectedNode.Constraint) {
+                return;
+            }
+
+            // create a copy of the node so that a new node shows up in the constraints table. can use angular.copy()
+
+            // create a copy of the constraint. associate it with the copy of the node.
+
+            // update the copy of the constraint to not have the same number. the number should be automatically generated. any customized number should be removed, as well.
+
+            // position the new constraint in the list immediately after the selected constraint
+
+            // set the selectedNode to the duplicate node
+
+            alert('todo');
+        };
+
+        // TODO
+        $scope.deleteConstraint = function (selectedNode) {
+            if (!selectedNode.Constraint) {
+                return;
+            }
+
+            // if the constraint has not already been saved (doesn't have an Id value), just remove the constraint
+
+            // if the constraint HAS been saved (has an Id value), then flag it as deleted
+
+            alert('todo');
+        };
+
         $scope.nodeExpanded = function (selectedNode) {
             return EditorService.getNodes($scope.template.OwningImplementationGuideId, selectedNode.DataType)
                 .then(function (nodes) {

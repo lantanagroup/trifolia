@@ -197,6 +197,15 @@
         .search-actions {
             width: 100px;
         }
+
+        .constraint-number-popover {
+            width: 300px;
+            height: 125px;
+        }
+
+        .constraint-number-popover input {
+            width: 240px !important;
+        }
     </style>
 </asp:Content>
 
@@ -321,7 +330,7 @@
                             <div class="panel-heading">
                                 <div class="input-group" ng-show="selectedNode.Constraint">
                                     <input type="text" class="form-control input-sm" readonly="readonly" ng-model="selectedNode.Constraint.Number" />
-                                    <div class="input-group-btn">
+                                    <div class="input-group-btn" uib-popover-template="'constraintNumberPopover.html'" popover-title="Custom Number" popover-placement="bottom-left">
                                         <button type="button" class="btn btn-default btn-sm">
                                             <i class="glyphicon glyphicon-pencil"></i>
                                         </button>
@@ -330,24 +339,24 @@
                                 <span><strong>Properties</strong></span>
                                 <div class="pull-right">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm" title="Move the duplicated constraint up" ng-disabled="!selectedNode.Constraint">
+                                        <button type="button" class="btn btn-default btn-sm" title="Move the duplicated constraint up" ng-show="showMoveUp(selectedNode)" ng-click="moveUp(selectedNode)">
                                             <i class="glyphicon glyphicon-arrow-up"></i>
                                         </button>
-                                        <button type="button" class="btn btn-default btn-sm" title="Move the duplicated constraint down" ng-disabled="!selectedNode.Constraint">
+                                        <button type="button" class="btn btn-default btn-sm" title="Move the duplicated constraint down" ng-show="showMoveDown(selectedNode)" ng-click="moveDown(selectedNode)">
                                             <i class="glyphicon glyphicon-arrow-down"></i>
                                         </button>
                                     </div>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm" title="Create a computable constraint for this node" ng-disabled="!selectedNode || selectedNode.Constraint">
+                                        <button type="button" class="btn btn-default btn-sm" title="Create a computable constraint for this node" ng-show="selectedNode && selectedNode.Constraint" ng-click="createComputableConstraint(selectedNode)">
                                             <i class="glyphicon glyphicon-plus"></i>
                                         </button>
-                                        <button type="button" class="btn btn-default btn-sm" title="Add primitive/narrative constraint {{selectedNode.Constraint ? 'within the current constraint' : 'at the top level' }}">
+                                        <button type="button" class="btn btn-default btn-sm" title="Add primitive/narrative constraint {{selectedNode.Constraint ? 'within the current constraint' : 'at the top level' }}" ng-click="createPrimitiveConstraint(selectedNode)">
                                             <i class="glyphicon glyphicon-text-height"></i>
                                         </button>
-                                        <button type="button" class="btn btn-default btn-sm" title="Duplicate the current constraint" ng-disabled="!selectedNode.Constraint">
+                                        <button type="button" class="btn btn-default btn-sm" title="Duplicate the current constraint" ng-show="selectedNode && selectedNode.Constraint && !selectedNode.Constraint.IsPrimitive" ng-click="duplicateConstraint(selectedNode)">
                                             <i class="glyphicon glyphicon-repeat"></i>
                                         </button>
-                                        <button type="button" class="btn btn-default btn-sm" title="Remove constraint from the selected node" ng-disabled="!selectedNode.Constraint">
+                                        <button type="button" class="btn btn-default btn-sm" title="Remove constraint from the selected node" ng-show="selectedNode && selectedNode.Constraint" ng-click="deleteConstraint(selectedNode)">
                                             <i class="glyphicon glyphicon-trash"></i>
                                         </button>
                                     </div>
@@ -367,6 +376,22 @@
 
             </uib-tab>
         </uib-tabset>
+
+        <script type="text/html" id="constraintNumberPopover.html">
+            <div class="constraint-number-popover">
+                <div class="form-group">
+                    <label>Unique Number</label>
+                    <i class="glyphicon glyphicon-question-sign" tooltip-trigger="'click'" uib-tooltip="A unique number is always required. The unique number is used by default for conformance numbers in exports unless a display number is specified. This number must be unique across all constraints in the implementation guide that the template/profile is associated with."></i>
+                    <input type="number" class="form-control" />
+                </div>
+                
+                <div class="form-group">
+                    <label>Display Number</label>
+                    <i class="glyphicon glyphicon-question-sign" tooltip-trigger="'click'" uib-tooltip="Optional. The display number is used to override the conformance number format used by default in exports (MS Word, Schematron, etc.). The display number can contain any character (including dashes, underlines, semi-colons, etc.)"></i>
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+        </script>
 
         <script type="text/html" id="templateSelect.html">
             <div class="input-group" ng-class="{ 'input-group-sm': smallFields }">
