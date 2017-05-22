@@ -53,6 +53,7 @@
 <script type="text/javascript" src="/Scripts/angular/startup.js"></script>
 <script type="text/javascript" src="/Scripts/angular/services.js"></script>
 <script type="text/javascript" src="/Scripts/angular/filters.js"></script>
+<script type="text/javascript" src="/Scripts/angular/directives.js"></script>
 <script type="text/javascript" src="/Scripts/angular/treegrid/treegrid.js"></script>
 <script type="text/javascript" src="/Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 <script type="text/javascript" src="/Scripts/PermissionManagement.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>

@@ -18,57 +18,113 @@
             }
         };
     })
-    .directive('templateSelect', function ($modal) {
-        var TemplateSelectModalController = function ($scope, $modalInstance, TemplateService, caption) {
-            $scope.caption = caption;
-            $scope.searchText = '';
-            $scope.searchResults = null;
-
-            $scope.search = function () {
-                TemplateService.getTemplates(100, 1, null, null, $scope.searchText)
-                    .then(function (results) {
-                        $scope.searchResults = results;
-                    });
-            };
-
-            $scope.select = function (template) {
-                $modalInstance.close();
-            };
-
-            $scope.close = function () {
-                $modalInstance.dismiss('cancel');
-            };
-        };
-
+    .directive('templateSelect', function ($uibModal, $q, TemplateService) {
         return {
             restrict: 'E',
             scope: {
+                'templateId': '=templateId',
                 'caption': '@caption',
-                'size': '@size'
+                'size': '@?size',
+                'restrictType': '=?restrictType',
+                'restrictedType': '=?restrictedType'
             },
-            templateUrl: 'templateSelect.html',
+            templateUrl: '/Scripts/angular/templates/templateSelect.html',
             link: function ($scope, $element, $attr) {
                 $scope.smallFields = $scope.size == 'sm' ? true : false;
+                $scope.selectedTemplate = null;
+                $scope.restrictType = $scope.restrictType === 'undefined' ? false : $scope.restrictType;
+
+                $scope.searchTemplates = function (query) {
+                    var deferred = $q.defer();
+
+                    var searchOptions = {
+                        count: 10,
+                        queryText: query
+                    };
+
+                    if ($scope.restrictType && $scope.restrictedType) {
+                        searchOptions.filterContextType = $scope.restrictedType;
+                    }
+
+                    TemplateService.getTemplates(searchOptions)
+                        .then(function (results) {
+                            deferred.resolve(results.Items);
+                        })
+                        .catch(deferred.reject);
+
+                    return deferred.promise;
+                };
+
+                $scope.templateSelected = function (selectedTemplate) {
+                    if (selectedTemplate) {
+                        $scope.templateId = selectedTemplate.Id;
+                    } else {
+                        $scope.templateId = null;
+                    }
+                };
+
+                $scope.initTemplateSelect = function () {
+                    // If id already set, get template info to display
+                    if ($scope.templateId) {
+                        TemplateService.getTemplate($scope.templateId)
+                            .then(function (template) {
+                                $scope.selectedTemplate = template;
+                            })
+                            .catch(function (err) {
+                                console.log('Error getting information for the selected template for field: ' + $scope.caption);
+                            });
+                    }
+                };
 
                 $scope.openModal = function () {
-                    var modalInstance = $modal.open({
-                        templateUrl: 'templateSelectModal.html',
-                        controller: TemplateSelectModalController,
+                    var modalInstance = $uibModal.open({
+                        templateUrl: '/Scripts/angular/templates/templateSelectModal.html',
+                        controller: function ($scope, $uibModalInstance, TemplateService, caption, restrictType, restrictedType) {
+                            $scope.caption = caption;
+                            $scope.searchText = '';
+                            $scope.searchResults = null;
+
+                            $scope.search = function () {
+                                var searchOptions = {
+                                    count: 100,
+                                    queryText: $scope.searchText
+                                };
+
+                                if (restrictType && restrictedType) {
+                                    searchOptions.filterContextType = restrictedType;
+                                }
+
+                                TemplateService.getTemplates(searchOptions)
+                                    .then(function (results) {
+                                        $scope.searchResults = results;
+                                    });
+                            };
+
+                            $scope.select = function (template) {
+                                $uibModalInstance.close(template);
+                            };
+
+                            $scope.close = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        },
                         size: 'lg',
                         resolve: {
-                            caption: function () { return $scope.caption; }
+                            caption: function () { return $scope.caption; },
+                            restrictType: function () { return $scope.restrictType },
+                            restrictedType: function () { return $scope.restrictedType }
                         }
                     });
 
                     modalInstance.result.then(function (selectedItem) {
-                        // OK
-                    }, function () {
-                        // Cancel
+                        $scope.selectedTemplate = selectedItem;
+                        $scope.templateSelected(selectedItem);
                     });
                 };
 
                 $scope.clearSelection = function () {
-
+                    $scope.selectedTemplate = null;
+                    $scope.templateSelected(null);
                 };
             }
         };

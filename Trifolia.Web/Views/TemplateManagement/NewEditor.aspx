@@ -249,7 +249,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <template-select caption="Implied Template/Profile"></template-select>
+                        <template-select caption="Implied Template/Profile" template-id="template.ImpliedTemplateId" restrict-type="!isFhir" restricted-type="template.PrimaryContextType"></template-select>
                     </div>
                     <div class="form-group">
                         <div class="input-group">
@@ -347,7 +347,7 @@
                                         </button>
                                     </div>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-sm" title="Create a computable constraint for this node" ng-show="selectedNode && selectedNode.Constraint" ng-click="createComputableConstraint(selectedNode)">
+                                        <button type="button" class="btn btn-default btn-sm" title="Create a computable constraint for this node" ng-show="selectedNode" ng-click="createComputableConstraint(selectedNode)">
                                             <i class="glyphicon glyphicon-plus"></i>
                                         </button>
                                         <button type="button" class="btn btn-default btn-sm" title="Add primitive/narrative constraint {{selectedNode.Constraint ? 'within the current constraint' : 'at the top level' }}" ng-click="createPrimitiveConstraint(selectedNode)">
@@ -394,57 +394,6 @@
         </script>
 
         <script type="text/html" id="templateSelect.html">
-            <div class="input-group" ng-class="{ 'input-group-sm': smallFields }">
-                <div class="input-group-addon">{{caption}}</div>
-                <input type="text" class="form-control" />
-                <div class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="openModal()">
-                        <i class="glyphicon glyphicon-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="clearSelection()">
-                        <i class="glyphicon glyphicon-remove"></i>
-                    </button>
-                </div>
-            </div>
-        </script>
-        <script type="text/html" id="templateSelectModal.html">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modal-title">{{caption}}</h3>
-            </div>
-            <div class="modal-body" id="modal-body">
-                <form>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search Text..." ng-model="searchText" />
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default" ng-click="search()">Search</button>
-                        </div>
-                    </div>
-                </form>
-
-                <table class="table table-striped" ng-if="searchResults">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Identifier</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="r in searchResults.Items">
-                            <td>{{r.Name}}</td>
-                            <td>{{r.Oid}}</td>
-                            <td>
-                                <div class="pull-right">
-                                    <button type="button" class="btn btn-default btn-sm" ng-click="select(r)">Select</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-warning" type="button" ng-click="close()">Close</button>
-            </div>
         </script>
     </div>
     

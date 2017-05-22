@@ -17,6 +17,7 @@
             ext: null
         }
         $scope.isDebug = true;
+        $scope.isFhir = false;
 
         // TODO
         $scope.showMoveUp = function (selectedNode) {
@@ -128,6 +129,7 @@
                     });
 
                     $scope.implementationGuide = foundIg;
+                    $scope.isFhir = foundIg ? foundIg.Namespace == 'http://hl7.org/fhir' : false;
 
                     // Parse the identifier now that we have the implementation guide and template retrieved
                     $scope.parseIdentifier($scope.template.Oid);
@@ -160,12 +162,14 @@
 
             var igIdentifier = $scope.implementationGuide ? $scope.implementationGuide.Identifier : null;
 
-            if (igIdentifier.indexOf('http://') == 0 || igIdentifier.indexOf('https://') == 0) {
-                if (igIdentifier.lastIndexOf('/') != igIdentifier.length - 1) {
-                    igIdentifier += '/';
+            if (igIdentifier) {
+                if (igIdentifier.indexOf('http://') == 0 || igIdentifier.indexOf('https://') == 0) {
+                    if (igIdentifier.lastIndexOf('/') != igIdentifier.length - 1) {
+                        igIdentifier += '/';
+                    }
+                } else if (igIdentifier.indexOf('urn:oid:') == 0 && igIdentifier.lastIndexOf('.') != igIdentifier.length - 1) {
+                    igIdentifier += '.';
                 }
-            } else if (igIdentifier.indexOf('urn:oid:') == 0 && igIdentifier.lastIndexOf('.') != igIdentifier.length - 1) {
-                igIdentifier += '.';
             }
 
             // See if the identifier starts with the base identifier of the implementation guide
@@ -232,7 +236,14 @@
             // $scope.template comes from parent scope
             var implementationGuideId = $scope.template ? $scope.template.OwningImplementationGuideId : null;
 
-            TemplateService.getTemplates(150, 1, null, true, $scope.templateSearch.query, null, null, implementationGuideId, null, null, null, false)
+            var searchOptions = {
+                count: 150,
+                queryText: $scope.templateSearch.query,
+                filterImplementationGuideId: implementationGuideId,
+                inferred: false
+            };
+
+            TemplateService.getTemplates(searchOptions)
                 .then(function (results) {
                     $scope.templateSearch.results = results;
                 });

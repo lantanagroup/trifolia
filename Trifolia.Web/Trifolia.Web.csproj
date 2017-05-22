@@ -1686,6 +1686,8 @@
     <Content Include="Scripts\angular\filters.js" />
     <Content Include="Scripts\angular\services.js" />
     <Content Include="Scripts\angular\startup.js" />
+    <Content Include="Scripts\angular\templates\templateSelect.html" />
+    <Content Include="Scripts\angular\templates\templateSelectModal.html" />
     <Content Include="Scripts\angular\treegrid\treegrid.html" />
     <Content Include="Scripts\angular\treegrid\treegrid.js" />
     <Content Include="Scripts\lib\angular\angular-cookies.js" />

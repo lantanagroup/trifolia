@@ -57,7 +57,7 @@
 
     <!-- Contained Template/Profile -->
     <div class="form-group">
-        <template-select caption="Template/Profile:" size="sm"></template-select>
+        <template-select caption="Template/Profile:" size="sm" template-id="selectedNode.Constraint.ContainedTemplateId" restrict-type="!isFhir" restricted-type="selectedNode.Constraint.DataType || selectedNode.DataType"></template-select>
     </div>
 
     <hr />

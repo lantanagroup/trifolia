@@ -247,41 +247,70 @@ angular.module('Trifolia').factory('EditorService', function ($http, $q) {
 angular.module('Trifolia').factory('TemplateService', function ($http, $q) {
     var service = {};
 
-    service.getTemplates = function (count, page, sortProperty, sortDescending, queryText, filterName, filterOid, filterImplementationGuideId, filterTemplateTypeId, filterOrganizationId, filterContextType, inferred) {
+    service.getTemplate = function (templateId) {
+        var deferred = $q.defer();
+        var url = '/api/Template/' + templateId;
+
+        $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    service.getTemplates = function (options) {
+        var paramOptions = {
+            count: 50,
+            page: 1,
+            sortProperty: 'Name',
+            sortDescending: false,
+            queryText: '',
+            filterName: null,
+            filterOid: null,
+            filterImplementationGuideId: null,
+            filterTemplateTypeId: null,
+            filterOrganizationId: null,
+            filterContextType: null,
+            inferred: true
+        };
+        angular.extend(paramOptions, options);
+        
         var params = {};
 
-        params['count'] = count ? count : 50;
-        params['page'] = page ? page : 1;
-        params['sortProperty'] = sortProperty ? sortProperty : 'Name';
-        params['sortDescending'] = sortDescending != undefined && sortDescending != null ? sortDescending : false;
-        params['inferred'] = inferred != undefined && inferred != null ? inferred : true;
+        params['count'] = paramOptions.count;
+        params['page'] = paramOptions.page;
+        params['sortProperty'] = paramOptions.sortProperty;
+        params['sortDescending'] = paramOptions.sortDescending;
+        params['inferred'] = paramOptions.inferred;
 
-        if (queryText) {
-            params['queryText'] = queryText;
+        if (paramOptions.queryText) {
+            params['queryText'] = paramOptions.queryText;
         }
             
-        if (filterName) {
-            params['filterName'] = filterName;
+        if (paramOptions.filterName) {
+            params['filterName'] = paramOptions.filterName;
         }
 
-        if (filterOid) {
-            params['filterOid'] = filterOid;
+        if (paramOptions.filterOid) {
+            params['filterOid'] = paramOptions.filterOid;
         }
 
-        if (filterImplementationGuideId) {
-            params['filterImplementationGuideId'] = filterImplementationGuideId;
+        if (paramOptions.filterImplementationGuideId) {
+            params['filterImplementationGuideId'] = paramOptions.filterImplementationGuideId;
         }
 
-        if (filterTemplateTypeId) {
-            params['filterTemplateTypeId'] = filterTemplateTypeId;
+        if (paramOptions.filterTemplateTypeId) {
+            params['filterTemplateTypeId'] = paramOptions.filterTemplateTypeId;
         }
 
-        if (filterOrganizationId) {
-            params['filterOrganizationId'] = filterOrganizationId;
+        if (paramOptions.filterOrganizationId) {
+            params['filterOrganizationId'] = paramOptions.filterOrganizationId;
         }
 
-        if (filterContextType) {
-            params['filterContextType'] = filterContextType;
+        if (paramOptions.filterContextType) {
+            params['filterContextType'] = paramOptions.filterContextType;
         }
 
         var url = '/api/Template?';
