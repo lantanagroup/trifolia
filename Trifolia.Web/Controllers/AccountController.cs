@@ -402,7 +402,10 @@ namespace Trifolia.Web.Controllers
                 removeCookie.Expires = DateTime.Now.AddDays(-1d);
                 Response.Cookies.Add(removeCookie);
 
-                return Redirect(returnUrlCookie.Value);
+                string[] returnUrls = returnUrlCookie.Value.Split(',');
+
+                if (returnUrls.Length > 0)
+                    return Redirect(returnUrls[0]);
             }
 
             return Redirect("/");
