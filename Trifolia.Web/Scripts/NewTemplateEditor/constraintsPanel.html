@@ -5,7 +5,7 @@
     <div class="form-group">
         <div class="input-group input-group-sm" style="width: 100%;">
             <div class="input-group-addon">Conf/Card:</div>
-            <select class="form-control input-sm" style="width: 50%;" ng-model="selectedNode.Constraint.Conformance">
+            <select class="form-control input-sm" style="width: 50%;" ng-model="selectedNode.Constraint.Conformance" ng-change="templateChanged()">
                 <option>SHALL</option>
                 <option>SHOULD</option>
                 <option>MAY</option>
@@ -14,7 +14,7 @@
                 <option>MAY NOT</option>
             </select>
             <div class="input-group input-group-sm cardinality" style="width:50%; padding-top: 0px">
-                <input class="span2 form-control" id="appendedInputButton" size="16" type="text" ng-model="selectedNode.Constraint.Cardinality">
+                <input class="span2 form-control" id="appendedInputButton" size="16" type="text" ng-model="selectedNode.Constraint.Cardinality" ng-change="templateChanged()">
                 <div class="input-group-btn">
                     <a class="dropdown-toggle btn btn-primary btn-sm" data-toggle="dropdown" href="#">
                         <span class="caret"></span>

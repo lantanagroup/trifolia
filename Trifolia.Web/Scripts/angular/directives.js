@@ -26,7 +26,9 @@
                 'caption': '@caption',
                 'size': '@?size',
                 'restrictType': '=?restrictType',
-                'restrictedType': '=?restrictedType'
+                'restrictedType': '=?restrictedType',
+                'onChanged': '&?onChanged',
+                'formGroup': '=formGroup'
             },
             templateUrl: '/Scripts/angular/templates/templateSelect.html',
             link: function ($scope, $element, $attr) {
@@ -61,6 +63,8 @@
                     } else {
                         $scope.templateId = null;
                     }
+
+                    $scope.onChanged();
                 };
 
                 $scope.initTemplateSelect = function () {
@@ -73,7 +77,14 @@
                             .catch(function (err) {
                                 console.log('Error getting information for the selected template for field: ' + $scope.caption);
                             });
+                    } else {
+                        $scope.selectedTemplate = null;
                     }
+                };
+
+                $scope.clearSelection = function () {
+                    $scope.selectedTemplate = null;
+                    $scope.templateSelected(null);
                 };
 
                 $scope.openModal = function () {
@@ -122,10 +133,12 @@
                     });
                 };
 
-                $scope.clearSelection = function () {
-                    $scope.selectedTemplate = null;
-                    $scope.templateSelected(null);
-                };
+                // Watch for the model to change, and update the selected template accordingly
+                $scope.$watch('templateId', function (newTemplateId, oldTemplateId) {
+                    if (newTemplateId != oldTemplateId) {
+                        $scope.initTemplateSelect();
+                    }
+                });
             }
         };
     });

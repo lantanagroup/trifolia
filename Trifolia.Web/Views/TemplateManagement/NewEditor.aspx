@@ -30,16 +30,52 @@
             padding: inherit;
         }
 
+        .editor > h2:first-child {
+            padding-top: 0px;
+            margin-top: 0px;
+        }
+
+        .editor > .left-nav {
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 4px;
+            width: 31px;
+            position: fixed;
+            height: 80%;
+            z-index: 3;
+        }
+
+        .left-nav > .btn {
+	        transform: rotate(90deg);
+	        transform-origin: left top 0;
+            margin-left: 30px;
+        }
+
+        .editor > .editor-tabs {
+            margin-left: 33px;
+        }
+
+
+        /* Title and labels */
+        .editor .navbar-header .label {
+            float: left;
+            margin-top: 16px;
+        }
+
+        .editor .navbar-header .label > .glyphicon {
+            cursor: pointer;
+        }
+
+
+        /* Meta Data Tab */
         .editor > div:first-child > .tab-content > .tab-pane {
             padding: 5px;
         }
 
-        /* Meta Data Tab */
-        .editor > div:nth-child(2) > .tab-content > .tab-pane:first-child > .col-md-6:first-child {
+        .editor > .left-nav > .tab-content > .tab-pane:first-child > .col-md-6:first-child {
             padding-left: 5px;
         }
 
-        .editor > div:nth-child(2) > .tab-content > .tab-pane:first-child > .col-md-6:last-child {
+        .editor > .left-nav > .tab-content > .tab-pane:first-child > .col-md-6:last-child {
             padding-right: 5px;
         }
         
@@ -48,18 +84,36 @@
             width: 50%;
         }
 
-        .editor > div:nth-child(2) > .tab-content > .tab-pane:first-child textarea {
+        .editor > .editor-tabs > .tab-content > .tab-pane:first-child textarea {
             height: 150px;
         }
 
-        .editor > div:nth-child(2) > .tab-content > .tab-pane:first-child .input-group {
+        .editor > .editor-tabs > .tab-content > .tab-pane:first-child .input-group {
             width: 100%;
         }
 
-        .editor > div:nth-child(2) > .tab-content > .tab-pane:first-child .input-group-addon {
+        .editor > .editor-tabs > .tab-content > .tab-pane:first-child .input-group-addon {
             min-width: 125px;
             text-align: left;
         }
+
+        /* LEFT NAVIGATION */
+
+        .template-search.popover {
+            max-width: 60%;
+            top: 62px !important;
+        }
+
+        .template-search.popover > .arrow {
+            margin-top: -240px;
+        }
+
+        .template-search.popover .popover-inner {
+            max-height: 30vw;
+            overflow-y: auto;
+        }
+
+        /* CONSTRAINTS */
         
         .constraint-body {
             width: 65%;
@@ -157,42 +211,6 @@
             width: 50% !important;
         }
 
-        /* LEFT NAVIGATION */
-
-        .editor > div:nth-child(2) {
-            margin-left: 20px;
-        }
-
-        .left-nav {
-            border-bottom-right-radius: 4px;
-            border-top-right-radius: 4px;
-            width: 25px;
-            position: fixed;
-            height: 80%;
-            z-index: 3;
-        }
-
-        .left-nav > .btn {
-	        transform: rotate(90deg);
-	        transform-origin: left top 0;
-            margin-left: 17px;
-            margin-top: 3px;
-        }
-
-        .template-search.popover {
-            max-width: 60%;
-            top: 62px !important;
-        }
-
-        .template-search.popover > .arrow {
-            margin-top: -240px;
-        }
-
-        .template-search.popover .popover-inner {
-            max-height: 30vw;
-            overflow-y: auto;
-        }
-
         /* Miscellaneous */
         .search-actions {
             width: 100px;
@@ -214,10 +232,38 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="editor ng-cloak" ng-app="Trifolia" ng-controller="EditorController" ng-init="init(<%= Model.TemplateIdString %>, <%= Model.DefaultImplementationGuideIdString %>)">
-        <div class="left-nav"">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">{{template.Name}}</a>
+                    <span class="label label-warning" ng-show="isModified">Modified <i class="glyphicon glyphicon-question-sign" uib-tooltip="This template has been modified since it was opened. Press the Save button to persist the changes." tooltip-trigger="'click'" tooltip-placement="bottom"></i></span>
+                    <span class="label label-primary" ng-show="isLocked">Locked <i class="glyphicon glyphicon-question-sign"uib-tooltip="This template is locked for editing. The Implementation Guide it is associated with is published. Click this button to unlock it" tooltip-trigger="'click'" tooltip-placement="bottom"></i></span>            
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ng-click="save()"><a href="#">Save</a></li>
+                        <li ng-click="discard()"><a href="#">Discard</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <!-- LEFT NAV (template search) -->
+        <div class="left-nav">
             <button type="button" class="btn btn-default btn-sm" uib-popover-template="'/Scripts/NewTemplateEditor/templateSearch.html'" popover-placement="right" popover-append-to-body="true" popover-class="template-search" popover-trigger="'outsideClick'">Templates/Profiles</button>
         </div>
-        <uib-tabset>
+
+        <!-- MAIN EDITOR TABS -->
+        <uib-tabset class="editor-tabs">
             <uib-tab heading="Meta Data">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -248,9 +294,7 @@
                             <input type="text" class="form-control" ng-model="template.Bookmark" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <template-select caption="Implied Template/Profile" template-id="template.ImpliedTemplateId" restrict-type="!isFhir" restricted-type="template.PrimaryContextType"></template-select>
-                    </div>
+                    <template-select caption="Implied Template/Profile:" template-id="template.ImpliedTemplateId" restrict-type="!isFhir" restricted-type="template.PrimaryContextType" on-changed="templateChanged()" form-group="true"></template-select>
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">Extensibility:</div>

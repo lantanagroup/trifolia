@@ -18,6 +18,7 @@
         }
         $scope.isDebug = true;
         $scope.isFhir = false;
+        $scope.isModified = false;
 
         // TODO
         $scope.showMoveUp = function (selectedNode) {
@@ -99,6 +100,15 @@
             alert('todo');
         };
 
+        // TODO
+        $scope.save = function () {
+
+        };
+
+        $scope.discard = function () {
+            $scope.init($scope.template.Id);
+        };
+
         $scope.nodeExpanded = function (selectedNode) {
             return EditorService.getNodes($scope.template.OwningImplementationGuideId, selectedNode.DataType)
                 .then(function (nodes) {
@@ -115,6 +125,11 @@
         };
 
         $scope.init = function (templateId, defaultImplementationGuideId) {
+            $scope.selectedNode = null;
+            $scope.isModified = false;
+            $scope.nodes = [];
+            $scope.constraints = [];
+
             ImplementationGuideService.getEditable()
                 .then(function (implementationGuides) {
                     $scope.implementationGuides = implementationGuides;
@@ -216,6 +231,10 @@
                     }
                 }
             }
+        };
+
+        $scope.templateChanged = function () {
+            $scope.isModified = true;
         };
     })
     .controller('EditorTemplateSearchController', function ($scope, TemplateService) {

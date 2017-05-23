@@ -1,4 +1,4 @@
-﻿<div class="input-group" ng-class="{ 'input-group-sm': smallFields }" ng-init="initTemplateSelect()">
+﻿<div ng-class="{ 'form-group': formGroup }">
     <style type="text/css">
         .custom-popup-wrapper {
             position: absolute;
@@ -10,25 +10,11 @@
             border-bottom-left-radius: 5px;
             cursor: pointer;
         }
-    </style>
 
-    <div class="input-group-addon">{{caption}}</div>
-    <input type="text" class="form-control" 
-           ng-model="selectedTemplate"
-           ng-model-options="{ debounce: 500 }"
-           uib-typeahead="template for template in searchTemplates($viewValue)" 
-           typeahead-input-formatter="$model.Name"
-           typeahead-editable="false"
-           typeahead-on-select="templateSelected($model)"
-           typeahead-popup-template-url="templateSelectTypeahead.html"/>
-    <div class="input-group-btn">
-        <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="openModal()">
-            <i class="glyphicon glyphicon-edit"></i>
-        </button>
-        <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="clearSelection()">
-            <i class="glyphicon glyphicon-remove"></i>
-        </button>
-    </div>
+        .template-select-group input {
+            height: 35px;
+        }
+    </style>
 
     <script type="text/ng-template" id="templateSelectTypeahead.html">
         <div class="custom-popup-wrapper"
@@ -40,7 +26,7 @@
             <table class="table" style="width: 200px;">
                 <tbody>
                     <tr class="uib-typeahead-match" ng-repeat="match in matches track by $index" ng-class="{active: isActive($index) }"
-                    ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" id="{{::match.id}}">
+                        ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" id="{{::match.id}}">
                         <td>{{match.model.Name}}</td>
                         <td>{{match.model.Oid}}</td>
                     </tr>
@@ -48,4 +34,24 @@
             </table>
         </div>
     </script>
+
+    <div class="input-group template-select-group" ng-class="{ 'input-group-sm': smallFields }" ng-init="initTemplateSelect()">
+        <div class="input-group-addon">{{caption}}</div>
+        <input type="text" class="form-control"
+               ng-model="selectedTemplate"
+               ng-model-options="{ debounce: 500 }"
+               uib-typeahead="template for template in searchTemplates($viewValue)"
+               typeahead-input-formatter="$model.Name"
+               typeahead-editable="false"
+               typeahead-on-select="templateSelected($model)"
+               typeahead-popup-template-url="templateSelectTypeahead.html" />
+        <div class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="openModal()">
+                <i class="glyphicon glyphicon-edit"></i>
+            </button>
+            <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="clearSelection()">
+                <i class="glyphicon glyphicon-remove"></i>
+            </button>
+        </div>
+    </div>
 </div>
