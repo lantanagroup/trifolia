@@ -1,5 +1,5 @@
 ﻿angular.module('Trifolia')
-    .controller('EditorController', function ($scope, $interval, $location, EditorService, ImplementationGuideService, TemplateService) {
+    .controller('EditorController', function ($scope, $interval, $location, $window, EditorService, ImplementationGuideService, TemplateService) {
         $scope.implementationGuides = [];
         $scope.template = null;
         $scope.constraints = [];
@@ -16,9 +16,12 @@
             base: null,
             ext: null
         }
+        $scope.leftNavOpened = false;
         $scope.isDebug = true;
         $scope.isFhir = false;
         $scope.isModified = false;
+        $scope.authTimeout = false;
+        $scope.message = '';
 
         // TODO
         $scope.showMoveUp = function (selectedNode) {
@@ -109,6 +112,10 @@
             $scope.init($scope.template.Id);
         };
 
+        $scope.unlock = function () {
+            $scope.isLocked = false;
+        };
+
         $scope.nodeExpanded = function (selectedNode) {
             return EditorService.getNodes($scope.template.OwningImplementationGuideId, selectedNode.DataType)
                 .then(function (nodes) {
@@ -129,6 +136,7 @@
             $scope.isModified = false;
             $scope.nodes = [];
             $scope.constraints = [];
+            $scope.isLocked = false;
 
             ImplementationGuideService.getEditable()
                 .then(function (implementationGuides) {
@@ -145,6 +153,7 @@
 
                     $scope.implementationGuide = foundIg;
                     $scope.isFhir = foundIg ? foundIg.Namespace == 'http://hl7.org/fhir' : false;
+                    $scope.isLocked = template.Locked;
 
                     // Parse the identifier now that we have the implementation guide and template retrieved
                     $scope.parseIdentifier($scope.template.Oid);
@@ -159,7 +168,8 @@
                             associateNodes(nodes, $scope.constraints);
                             $scope.nodes = nodes;
                         });
-                });
+                })
+                .catch($scope.handleHttpError);
         };
 
         $scope.updateIdentifier = function () {
@@ -236,6 +246,24 @@
         $scope.templateChanged = function () {
             $scope.isModified = true;
         };
+
+        $scope.reload = function () {
+            $window.location.reload();
+        };
+
+        $scope.handleHttpError = function (err) {
+            $scope.leftNavOpened = false;
+
+            if (err.status == 401) {
+                $scope.authTimeout = true;
+            } else if (err.data && typeof err.data === 'string') {
+                $scope.message = err.data;
+            } else if (err.message) {
+                $scope.message = err.message;
+            } else if (typeof err === 'string') {
+                $scope.message = err;
+            }
+        };
     })
     .controller('EditorTemplateSearchController', function ($scope, TemplateService) {
         $scope.templateSearch = {
@@ -265,7 +293,8 @@
             TemplateService.getTemplates(searchOptions)
                 .then(function (results) {
                     $scope.templateSearch.results = results;
-                });
+                })
+                .catch($scope.handleHttpError);
         };
 
         $scope.$watch('template.OwningImplementationGuideId', function () {

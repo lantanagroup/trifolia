@@ -16,6 +16,8 @@
                 deferred.resolve(results.data);
             })
             .catch(function (err) {
+                console.log('Error searching for value sets');
+                console.log(err);
                 deferred.reject(err);
             });
 
@@ -31,6 +33,8 @@
                 deferred.resolve(results.data);
             })
             .catch(function (err) {
+                console.log('Error getting value set');
+                console.log(err);
                 deferred.reject(err);
             });
 
@@ -46,6 +50,8 @@
                 deferred.resolve(results.data);
             })
             .catch(function (err) {
+                console.log('Error getting value set relationships');
+                console.log(err);
                 deferred.reject(err);
             });
 
@@ -64,6 +70,8 @@
                 deferred.resolve(results.data);
             })
             .catch(function (err) {
+                console.log('Error validating value set identifier');
+                console.log(err);
                 deferred.reject(err);
             });
 
@@ -79,6 +87,8 @@
                 deferred.resolve(results.data);
             })
             .catch(function (err) {
+                console.log('Error saving value set');
+                console.log(err);
                 deferred.reject(err);
             });
 
@@ -97,6 +107,8 @@
                 deferred.resolve();
             })
             .catch(function (err) {
+                console.log('Error removing value set');
+                console.log(err);
                 deferred.reject(err);
             });
 
@@ -118,6 +130,8 @@
                 deferred.resolve(results.data);
             })
             .catch(function (err) {
+                console.log('Error searching for code systems');
+                console.log(err);
                 deferred.reject(err);
             });
 
@@ -133,6 +147,8 @@
                 deferred.resolve(results.data);
             })
             .catch(function (err) {
+                console.log('Error saving code system');
+                console.log(err);
                 deferred.reject(err);
             });
 
@@ -190,8 +206,9 @@ angular.module('Trifolia').factory('EditorService', function ($http, $q) {
             .then(function (results) {
                 deferred.resolve(results.data);
             }, function (err) {
-                alert('Error getting constraints');
+                console.log('Error getting constraints');
                 console.log(err);
+                deferred.reject(err);
             });
 
         return deferred.promise;
@@ -209,8 +226,9 @@ angular.module('Trifolia').factory('EditorService', function ($http, $q) {
             .then(function (results) {
                 deferred.resolve(new EditorTemplateModel(results.data));
             }, function (err) {
-                alert('Error getting template');
+                console.log('Error getting template');
                 console.log(err);
+                deferred.reject(err);
             });
 
         return deferred.promise;
@@ -234,8 +252,9 @@ angular.module('Trifolia').factory('EditorService', function ($http, $q) {
 
                 deferred.resolve(nodes);
             }, function (err) {
-                alert('Error getting nodes');
+                console.log('Error getting nodes');
                 console.log(err);
+                deferred.reject(err);
             });
 
         return deferred.promise;
@@ -326,7 +345,9 @@ angular.module('Trifolia').factory('TemplateService', function ($http, $q) {
                 deferred.resolve(results.data);
             })
             .catch(function (err) {
-                alert(err);
+                console.log('Error searching templates');
+                console.log(err);
+                deferred.reject(err);
             });
 
         return deferred.promise;
@@ -345,8 +366,9 @@ angular.module('Trifolia').factory('ImplementationGuideService', function ($http
             .then(function (results) {
                 deferred.resolve(results.data);
             }, function (err) {
-                alert('Errror retrieving list of implementation guides');
+                console.log('Errror retrieving list of implementation guides');
                 console.log(err);
+                deferred.reject(err);
             });
 
         return deferred.promise;
@@ -364,8 +386,9 @@ angular.module('Trifolia').factory('ImplementationGuideService', function ($http
 
                 deferred.resolve(filtered);
             }, function (err) {
-                alert('Errror retrieving list of editable implementation guides');
+                console.log('Errror retrieving list of editable implementation guides');
                 console.log(err);
+                deferred.reject(err);
             });
 
         return deferred.promise;
