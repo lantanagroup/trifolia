@@ -402,6 +402,7 @@
                                         <!-- ko if: (Constraint() && $parent.IsAnalyst() && !$parent.Template().Locked() && $parent.IsEditorMaximized()) -->
                                         <span data-bind="text: ComputedNumber"></span>
                                         <a class="clickable" data-bind="click: function () { $('#constraintNumberEdit').slideToggle(); }" title="Edit Constraint Number"><i class="glyphicon glyphicon-pencil"></i></a>
+
                                         <div id="constraintNumberEdit" class="popover fade bottom in">
                                             <div class="arrow"></div>
                                             
@@ -423,6 +424,12 @@
                                         <!-- ko if: (Constraint() && (!$parent.IsAnalyst() || $parent.Template().Locked() || !$parent.IsEditorMaximized())) -->
                                         <span data-bind="text: Constraint().Number"></span>
                                         <!-- /ko -->
+                                    </td>
+                                    <td>
+                                        <div data-bind="visible: $parent.duplicateNode()">
+                                            <button class="btn btn-default" data-bind="visible: $parent.showMoveUp(), click: $parent.moveUp"><i class="glyphicon glyphicon-chevron-up"></i></button>
+                                            <button class="btn btn-default" data-bind="visible: $parent.showMoveDown(), click: $parent.moveDown"><i class="glyphicon glyphicon-chevron-down"></i></button>
+                                        </div>
                                     </td>
                                     <td>
                                         <div class="pull-right">

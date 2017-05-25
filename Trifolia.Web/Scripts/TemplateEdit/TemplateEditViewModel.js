@@ -24,6 +24,208 @@ var templateEditViewModel = function (templateId, defaults) {
     self.AvailableExtensions = ko.observableArray([]);
     self.SelectedAvailableExtensionId = ko.observable();
 
+    self.duplicateNode = function () {
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint()) {
+            return false;
+        }
+
+        var constraint = self.CurrentNode().Constraint();
+
+        if (!constraint.IsPrimitive()) {
+            for (var x = 0; x < self.Constraints().length; x++) {
+                if (constraint.Context() === self.Constraints()[x].Context() && constraint.Id() !== self.Constraints()[x].Id()) {
+                    return true;
+                }
+            }
+        } else {
+            var siblings = constraint.Parent().Children();
+            for (var x = 0; x < self.siblings.length; x++) {
+                if (constraint.Context() === self.Constraints()[x].Context() && constraint.Id() !== self.Constraints()[x].Id()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    self.showMoveUp = function () {
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
+            return false;
+        }
+
+        var constraint = self.CurrentNode().Constraint();
+
+        //Find location of current node in constraint list
+        /*for (var x = 0; x < self.Constraints().length; x++) {
+            if (constraint.Id() == self.Constraints()[x].Id()) {
+                var index = x;
+                break;
+            }
+        }*/
+
+        //var index = self.Constraints.indexOf(constraint);
+
+        var siblings = constraint.Parent() ? constraint.Parent().Children : self.Constraints;
+        var index = siblings.indexOf(constraint);
+
+        //Abusing Javascript zero handling here (index === 0 is a hide case for showMoveUp) as well as generic no index found case
+        if (!index) return false;
+
+        if (siblings().length > 0 && siblings()[index - 1].Context() === constraint.Context())
+            return true;
+        else return false;
+
+        
+
+        /*if (!constraint.IsPrimitive()) {
+            // search self.Constraints() for duplicates, siblings to constraint
+            if (index != 0 && self.Constraints()[index - 1].Context() === constraint.Context())
+                return true;
+            else return false;
+        } else {
+            var siblings = constraint.Parent().Children();
+            index = siblings.indexOf(constraint);
+            if (index != 0 && siblings().length > 0 && siblings()[index - 1].Context() === constraint.Context())
+                return true;
+            else return false;
+            // search self.Constraints() for other primitives, siblings to constraint, use constraint.Context()
+        }*/
+    };
+
+    self.showMoveDown = function () {
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
+            return false;
+        }
+
+        var constraint = self.CurrentNode().Constraint();
+
+        //Find location of current node in constraint list
+        /*for (var x = 0; x < self.Constraints().length; x++) {
+            if (constraint.Id() == self.Constraints()[x].Id()) {
+                var index = x;
+                break;
+            }
+        }*/
+        //var index = self.Constraints.indexOf(constraint);
+
+        var siblings = constraint.Parent() ? constraint.Parent().Children : self.Constraints;
+        var index = siblings.indexOf(constraint);
+
+        if (!index && index != 0) return false;
+
+        if (siblings().length > 0 && index < siblings().length - 1 && siblings()[index + 1].Context() === constraint.Context())
+            return true;
+        else return false;
+
+        /*if (!constraint.IsPrimitive()) {
+            // search self.Constraints() for duplicates, siblings to constraint
+            if (index != self.Constraints().length - 1 && self.Constraints()[index + 1].Context() === constraint.Context())
+                return true;
+            else return false;
+        } else {
+            var siblings = constraint.Parent().Children();
+            index = siblings.indexOf(constraint);
+            if (index != 0 && siblings().length > 0 && siblings()[index + 1].Context() === constraint.Context())
+                return true;
+            else return false;
+            // search self.Constraints() for other primitives, siblings to constraint, use constraint.Context()
+        }*/
+    }
+
+    self.moveUp = function () {
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
+            return false;
+        }
+
+        var constraint = self.CurrentNode().Constraint();
+
+        //Find location of current node in constraint list
+        for (var x = 0; x < self.Constraints().length; x++) {
+            if (constraint.Id() == self.Constraints()[x].Id()) {
+                var index = x;
+                break;
+            }
+        }
+        //var index = self.Constraints.indexOf(constraint);
+
+        if (!constraint.IsPrimitive()) {
+            // search self.Constraints() for duplicates, siblings to constraint
+            if (index != 0 && self.Constraints()[index - 1].Context() === constraint.Context()) {
+                var tmp = self.Constraints.splice(index, 1);
+                self.Constraints.splice(index - 1, 0, tmp[0]);
+
+                var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
+                var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
+                var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
+                siblingNodes.splice(currentNodeIndex - 1, 0, tmpNode[0]);
+            }
+            // if already first in the list, do nothing
+        } else {
+        // search self.Constraints() for other primitives, siblings to constraint, use constraint.Context()
+            var siblings = constraint.Parent().Children;
+            var index = siblings().indexOf(constraint);
+
+            if (index != 0 && siblings()[index - 1].Context() === constraint.Context()) {
+                var tmp = siblings.splice(index, 1);
+                siblings.splice(index - 1, 0, tmp[0]);
+
+                self.Constraints = siblings;
+
+                var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
+                var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
+                var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
+                siblingNodes.splice(currentNodeIndex - 1, 0, tmpNode[0]);
+            }
+            // if already first in the list, do nothing
+        }
+    };
+
+    self.moveDown = function () {
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
+            return false;
+        }
+
+        var constraint = self.CurrentNode().Constraint();
+
+        //Find location of current node in constraint list
+        for (var x = 0; x < self.Constraints().length; x++) {
+            if (constraint.Id() == self.Constraints()[x].Id()) {
+                var index = x;
+                break;
+            }
+        }
+        //var index = self.Constraints.indexOf(constraint);
+
+        if (!constraint.IsPrimitive()) {
+            // search self.Constraints() for duplicates, siblings to constraint
+            if (index != self.Constraints().length - 1 && self.Constraints()[index + 1].Context() === constraint.Context()){
+                var tmp = self.Constraints.splice(index, 1);
+                self.Constraints.splice(index + 1, 0, tmp[0]);
+
+                var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
+                var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
+                var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
+                siblingNodes.splice(currentNodeIndex + 1, 0, tmpNode[0]);
+            }
+            // if already first in the list, do nothing
+        } else {
+            // search self.Constraints() for other primitives, siblings to constraint, use constraint.Context()
+            var siblings = constraint.Parent().Children;
+            var index = siblings().indexOf(constraint);
+
+            if (index != 0 && siblings()[index + 1].Context() === constraint.Context()) {
+                var tmp = siblings.splice(index, 1);
+                siblings.splice(index + 1, 0, tmp[0]);
+
+                var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
+                var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
+                var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
+                siblingNodes.splice(currentNodeIndex + 1, 0, tmpNode[0]);
+            }
+            // if already first in the list, do nothing
+        }
+    }
+
     self.IsFhir = ko.observable(false);
     self.IsFhirExtension = ko.observable(false);
 
