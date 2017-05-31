@@ -427,8 +427,10 @@
                                     </td>
                                     <td>
                                         <div data-bind="visible: $parent.duplicateNode()">
-                                            <button class="btn btn-default" data-bind="visible: $parent.showMoveUp(), click: $parent.moveUp"><i class="glyphicon glyphicon-chevron-up"></i></button>
-                                            <button class="btn btn-default" data-bind="visible: $parent.showMoveDown(), click: $parent.moveDown"><i class="glyphicon glyphicon-chevron-down"></i></button>
+                                            <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-default" data-bind="visible: $parent.showMoveUp(), click: $parent.moveUp"><i class="glyphicon glyphicon-chevron-up"></i></button>
+                                                <button class="btn btn-default" data-bind="visible: $parent.showMoveDown(), click: $parent.moveDown"><i class="glyphicon glyphicon-chevron-down"></i></button>
+                                            </div>
                                         </div>
                                     </td>
                                     <td>

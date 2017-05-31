@@ -39,8 +39,8 @@ var templateEditViewModel = function (templateId, defaults) {
             }
         } else {
             var siblings = constraint.Parent().Children();
-            for (var x = 0; x < self.siblings.length; x++) {
-                if (constraint.Context() === self.Constraints()[x].Context() && constraint.Id() !== self.Constraints()[x].Id()) {
+            for (var x = 0; x < siblings.length; x++) {
+                if (constraint.Context() === siblings[x].Context() && constraint.Id() !== siblings[x].Id()) {
                     return true;
                 }
             }
@@ -139,44 +139,20 @@ var templateEditViewModel = function (templateId, defaults) {
 
         var constraint = self.CurrentNode().Constraint();
 
-        //Find location of current node in constraint list
-        for (var x = 0; x < self.Constraints().length; x++) {
-            if (constraint.Id() == self.Constraints()[x].Id()) {
-                var index = x;
-                break;
-            }
-        }
-        //var index = self.Constraints.indexOf(constraint);
+        
+        var siblings = constraint.IsPrimitive() ? constraint.Parent().Children : self.Constraints;
+        var index = siblings.indexOf(constraint);
 
-        if (!constraint.IsPrimitive()) {
-            // search self.Constraints() for duplicates, siblings to constraint
-            if (index != 0 && self.Constraints()[index - 1].Context() === constraint.Context()) {
-                var tmp = self.Constraints.splice(index, 1);
-                self.Constraints.splice(index - 1, 0, tmp[0]);
+        if (index != 0 && siblings()[index - 1].Context() === constraint.Context()) {
+            var tmp = siblings()[index];
+            siblings()[index] = siblings()[index - 1];
+            siblings()[index - 1] = tmp;
+            siblings.valueHasMutated();
 
-                var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
-                var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
-                var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
-                siblingNodes.splice(currentNodeIndex - 1, 0, tmpNode[0]);
-            }
-            // if already first in the list, do nothing
-        } else {
-        // search self.Constraints() for other primitives, siblings to constraint, use constraint.Context()
-            var siblings = constraint.Parent().Children;
-            var index = siblings().indexOf(constraint);
-
-            if (index != 0 && siblings()[index - 1].Context() === constraint.Context()) {
-                var tmp = siblings.splice(index, 1);
-                siblings.splice(index - 1, 0, tmp[0]);
-
-                self.Constraints = siblings;
-
-                var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
-                var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
-                var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
-                siblingNodes.splice(currentNodeIndex - 1, 0, tmpNode[0]);
-            }
-            // if already first in the list, do nothing
+            var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
+            var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
+            var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
+            siblingNodes.splice(currentNodeIndex - 1, 0, tmpNode[0]);
         }
     };
 
@@ -187,42 +163,20 @@ var templateEditViewModel = function (templateId, defaults) {
 
         var constraint = self.CurrentNode().Constraint();
 
-        //Find location of current node in constraint list
-        for (var x = 0; x < self.Constraints().length; x++) {
-            if (constraint.Id() == self.Constraints()[x].Id()) {
-                var index = x;
-                break;
-            }
-        }
-        //var index = self.Constraints.indexOf(constraint);
+        
+        var siblings = constraint.IsPrimitive() ? constraint.Parent().Children : self.Constraints;
+        var index = siblings.indexOf(constraint);
 
-        if (!constraint.IsPrimitive()) {
-            // search self.Constraints() for duplicates, siblings to constraint
-            if (index != self.Constraints().length - 1 && self.Constraints()[index + 1].Context() === constraint.Context()){
-                var tmp = self.Constraints.splice(index, 1);
-                self.Constraints.splice(index + 1, 0, tmp[0]);
+        if (index != siblings().length - 1 && siblings()[index + 1].Context() === constraint.Context()) {
+            var tmp = siblings()[index];
+            siblings()[index] = siblings()[index + 1];
+            siblings()[index + 1] = tmp;
+            siblings.valueHasMutated();
 
-                var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
-                var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
-                var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
-                siblingNodes.splice(currentNodeIndex + 1, 0, tmpNode[0]);
-            }
-            // if already first in the list, do nothing
-        } else {
-            // search self.Constraints() for other primitives, siblings to constraint, use constraint.Context()
-            var siblings = constraint.Parent().Children;
-            var index = siblings().indexOf(constraint);
-
-            if (index != 0 && siblings()[index + 1].Context() === constraint.Context()) {
-                var tmp = siblings.splice(index, 1);
-                siblings.splice(index + 1, 0, tmp[0]);
-
-                var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
-                var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
-                var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
-                siblingNodes.splice(currentNodeIndex + 1, 0, tmpNode[0]);
-            }
-            // if already first in the list, do nothing
+            var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
+            var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
+            var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
+            siblingNodes.splice(currentNodeIndex + 1, 0, tmpNode[0]);
         }
     }
 
