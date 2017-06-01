@@ -35,8 +35,9 @@
         </div>
     </script>
 
+    <label ng-if="captionAsLabel">{{caption}}</label>
     <div class="input-group template-select-group" ng-class="{ 'input-group-sm': smallFields }" ng-init="initTemplateSelect()">
-        <div class="input-group-addon">{{caption}}</div>
+        <div class="input-group-addon" ng-if="!captionAsLabel">{{caption}}</div>
         <input type="text" class="form-control"
                ng-model="selectedTemplate"
                ng-model-options="{ debounce: 500 }"
@@ -46,10 +47,13 @@
                typeahead-on-select="templateSelected($model)"
                typeahead-popup-template-url="templateSelectTypeahead.html" />
         <div class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="openModal()">
+            <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="openNew()" ng-if="allowNew" title="Create new template/profile">
+                <i class="glyphicon glyphicon-plus"></i>
+            </button>
+            <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="openModal()" title="Select template/profile with additional search options">
                 <i class="glyphicon glyphicon-edit"></i>
             </button>
-            <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="clearSelection()">
+            <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="clearSelection()" title="Remove the selected template/profile">
                 <i class="glyphicon glyphicon-remove"></i>
             </button>
         </div>

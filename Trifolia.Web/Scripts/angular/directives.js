@@ -24,17 +24,22 @@
             scope: {
                 'templateId': '=templateId',
                 'caption': '@caption',
+                'captionAsLabel': '=?captionAsLabel',
                 'size': '@?size',
                 'restrictType': '=?restrictType',
                 'restrictedType': '=?restrictedType',
                 'onChanged': '&?onChanged',
-                'formGroup': '=formGroup'
+                'formGroup': '=formGroup',
+                'allowNew': '=?allowNew',
+                'implementationGuideId': '=?implementationGuideId'
             },
             templateUrl: '/Scripts/angular/templates/templateSelect.html',
             link: function ($scope, $element, $attr) {
                 $scope.smallFields = $scope.size == 'sm' ? true : false;
                 $scope.selectedTemplate = null;
                 $scope.restrictType = $scope.restrictType === 'undefined' ? false : $scope.restrictType;
+                $scope.allowNew = $scope.allowNew === 'undefined' ? false : $scope.allowNew == true;
+                $scope.captionAsLabel = $scope.captionAsLabel === 'undefined' ? false : $scope.captionAsLabel == true;
 
                 $scope.searchTemplates = function (query) {
                     var deferred = $q.defer();
@@ -87,38 +92,28 @@
                     $scope.templateSelected(null);
                 };
 
+                $scope.openNew = function () {
+                    var modalInstance = $uibModal.open({
+                        templateUrl: '/Scripts/angular/templates/newTemplateModal.html',
+                        controller: 'NewTemplateModalCtrl',
+                        size: 'lg',
+                        resolve: {
+                            implementationGuideId: function () { return $scope.implementationGuideId; },
+                            restrictType: function () { return $scope.restrictType; },
+                            restrictedType: function () { return $scope.restrictedType }
+                        }
+                    });
+
+                    modalInstance.result.then(function (selectedItem) {
+                        $scope.selectedTemplate = selectedItem;
+                        $scope.templateSelected(selectedItem);
+                    });
+                };
+
                 $scope.openModal = function () {
                     var modalInstance = $uibModal.open({
                         templateUrl: '/Scripts/angular/templates/templateSelectModal.html',
-                        controller: function ($scope, $uibModalInstance, TemplateService, caption, restrictType, restrictedType) {
-                            $scope.caption = caption;
-                            $scope.searchText = '';
-                            $scope.searchResults = null;
-
-                            $scope.search = function () {
-                                var searchOptions = {
-                                    count: 100,
-                                    queryText: $scope.searchText
-                                };
-
-                                if (restrictType && restrictedType) {
-                                    searchOptions.filterContextType = restrictedType;
-                                }
-
-                                TemplateService.getTemplates(searchOptions)
-                                    .then(function (results) {
-                                        $scope.searchResults = results;
-                                    });
-                            };
-
-                            $scope.select = function (template) {
-                                $uibModalInstance.close(template);
-                            };
-
-                            $scope.close = function () {
-                                $uibModalInstance.dismiss('cancel');
-                            };
-                        },
+                        controller: 'SelectTemplateModalCtrl',
                         size: 'lg',
                         resolve: {
                             caption: function () { return $scope.caption; },
@@ -140,5 +135,173 @@
                     }
                 });
             }
+        };
+    })
+    .controller('SelectTemplateModalCtrl', function ($scope, $uibModalInstance, TemplateService, caption, restrictType, restrictedType) {
+        $scope.caption = caption;
+        $scope.searchText = '';
+        $scope.searchResults = null;
+
+        $scope.search = function () {
+            var searchOptions = {
+                count: 100,
+                queryText: $scope.searchText
+            };
+
+            if (restrictType && restrictedType) {
+                searchOptions.filterContextType = restrictedType;
+            }
+
+            TemplateService.getTemplates(searchOptions)
+                .then(function (results) {
+                    $scope.searchResults = results;
+                });
+        };
+
+        $scope.select = function (template) {
+            $uibModalInstance.close(template);
+        };
+
+        $scope.close = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    })
+    .controller('NewTemplateModalCtrl', function ($scope, $uibModalInstance, $uibModal, ImplementationGuideService, implementationGuideId, restrictType, restrictedType) {
+        $scope.template = {
+            Name: '',
+            Oid: '',
+            Bookmark: '',
+            IsOpen: true,
+            StatusId: null,
+            Description: '',
+            Notes: '',
+            OwningImplementationGuideId: implementationGuideId,
+            TemplateTypeId: null,
+            ImpliedTemplateId: null,
+            PrimaryContextType: '',
+            PrimaryContext: ''
+        };
+        $scope.identifier = {
+            base: '',
+            ext: ''
+        };
+        $scope.statuses = [];
+        $scope.implementationGuides = [];
+        $scope.implementationGuide = null;
+        $scope.templateTypes = [];
+        $scope.templateType = null;
+        $scope.restrictedType = restrictedType;
+
+        $scope.identifierChanged = function () {
+
+        };
+
+        $scope.implementationGuideChanged = function () {
+            if (!$scope.template.OwningImplementationGuideId) {
+                $scope.implementationGuide = null;
+            } else {
+                $scope.implementationGuide = _.find($scope.implementationGuides, function (implementationGuide) {
+                    return implementationGuide.Id == $scope.template.OwningImplementationGuideId;
+                });
+
+                // Load template types
+                ImplementationGuideService.getTemplateTypes($scope.template.OwningImplementationGuideId)
+                    .then(function (templateTypes) {
+                        $scope.templateTypes = templateTypes;
+                    })
+                    .catch(function (err) {
+                        // TODO
+                    });
+            }
+        };
+
+        $scope.templateTypeChanged = function () {
+            if (!$scope.template.TemplateTypeId) {
+                $scope.templateType = null;
+            } else {
+                $scope.templateType = _.find($scope.templateTypes, function (templateType) {
+                    return templateType.Id == $scope.template.TemplateTypeId;
+                });
+
+                if ($scope.templateType) {
+                    $scope.template.PrimaryContext = $scope.templateType.RootContext;
+                    $scope.template.PrimaryContextType = $scope.templateType.RootContextType;
+                } else {
+                    $scope.template.PrimaryContext = '';
+                    $scope.template.PrimaryContextType = '';
+                }
+            }
+        };
+
+        $scope.isTypeValid = function () {
+            return !restrictType || ($scope.templateType && $scope.templateType.RootContextType == restrictedType);
+        };
+
+        $scope.isValid = function () {
+            if (!$scope.isTypeValid()) {
+                return false;
+            }
+
+            // TODO
+            return false;
+        };
+
+        $scope.openAppliesTo = function () {
+            var modalInstance = $uibModal.open({
+                templateUrl: '/Scripts/angular/templates/appliesToModal.html',
+                controller: 'AppliesToModalCtrl',
+                size: 'lg',
+                resolve: {
+                    baseType: function() { return $scope.templateType.RootContextType }
+                }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+            });
+        };
+
+        $scope.ok = function () {
+            // TODO
+            // Save the template
+            // Return the template when closing the modal
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('close');
+        };
+
+        $scope.init = function () {
+            // Load all editable implementation guides
+            ImplementationGuideService.getEditable($scope.template.OwningImplementationGuideId)
+                .then(function (implementationGuides) {
+                    $scope.implementationGuides = implementationGuides;
+
+                    // Find the implementation guide that is pre-selected
+                    $scope.implementationGuide = _.find(implementationGuides, function (implementationGuide) {
+                        return implementationGuide.Id == $scope.template.OwningImplementationGuideId;
+                    });
+
+                    $scope.implementationGuideChanged();
+                })
+                .catch(function (err) {
+                    // TODO
+                });
+        };
+    })
+    .controller('AppliesToModalCtrl', function ($scope, $uibModalInstance, baseType) {
+        $scope.isValid = function () {
+            return false;
+        };
+
+        $scope.ok = function () {
+
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('close');
+        };
+
+        $scope.init = function () {
+            
         };
     });

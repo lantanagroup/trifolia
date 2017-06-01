@@ -374,19 +374,33 @@ angular.module('Trifolia').factory('ImplementationGuideService', function ($http
         return deferred.promise;
     };
 
-    service.getEditable = function () {
+    service.getEditable = function (includeImplementationGuideId) {
         var deferred = $q.defer();
 
         $http.get('/api/ImplementationGuide/Editable')
             .then(function (results) {
-                // TODO: Filter out non-published IGs, unless they are from the same implementation guide as the IG
+                // Filter out non-published IGs, unless they are from the same implementation guide as the IG
                 var filtered = _.filter(results.data, function (implementationGuide) {
-                    return !implementationGuide.IsPublished;
+                    return !implementationGuide.IsPublished || implementationGuide.Id == includeImplementationGuideId;
                 });
 
                 deferred.resolve(filtered);
             }, function (err) {
                 console.log('Errror retrieving list of editable implementation guides');
+                console.log(err);
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
+    service.getTemplateTypes = function (implementationGuideId) {
+        var deferred = $q.defer();
+        $http.get('/api/ImplementationGuide/' + implementationGuideId + '/TemplateType')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            }, function (err) {
+                console.log('Error retriving template types for implementation guide');
                 console.log(err);
                 deferred.reject(err);
             });

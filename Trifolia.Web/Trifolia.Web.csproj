@@ -1686,6 +1686,8 @@
     <Content Include="Scripts\angular\filters.js" />
     <Content Include="Scripts\angular\services.js" />
     <Content Include="Scripts\angular\startup.js" />
+    <Content Include="Scripts\angular\templates\newTemplateModal.html" />
+    <Content Include="Scripts\angular\templates\appliesToModal.html" />
     <Content Include="Scripts\angular\templates\templateSelect.html" />
     <Content Include="Scripts\angular\templates\templateSelectModal.html" />
     <Content Include="Scripts\angular\treegrid\treegrid.html" />
