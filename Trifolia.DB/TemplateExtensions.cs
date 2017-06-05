@@ -76,6 +76,14 @@ namespace Trifolia.DB
                 return this.ChildConstraints.ToList<IConstraint>();
             }
         }
+        
+        string ITemplate.Status
+        {
+            get
+            {
+                return this.Status.Status;
+            }
+        }
 
         #endregion
 
