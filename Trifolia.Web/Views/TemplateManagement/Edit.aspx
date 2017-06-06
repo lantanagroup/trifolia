@@ -426,7 +426,7 @@
                                         <!-- /ko -->
                                     </td>
                                     <td>
-                                        <div data-bind="visible: $parent.duplicateNode()">
+                                        <div data-bind="visible: $parent.isDuplicateNode()">
                                             <div class="btn-group btn-group-sm">
                                                 <button class="btn btn-default" data-bind="visible: $parent.showMoveUp(), click: $parent.moveUp"><i class="glyphicon glyphicon-chevron-up"></i></button>
                                                 <button class="btn btn-default" data-bind="visible: $parent.showMoveDown(), click: $parent.moveDown"><i class="glyphicon glyphicon-chevron-down"></i></button>

@@ -24,73 +24,66 @@ var templateEditViewModel = function (templateId, defaults) {
     self.AvailableExtensions = ko.observableArray([]);
     self.SelectedAvailableExtensionId = ko.observable();
 
-    self.duplicateNode = function () {
-        if (!self.CurrentNode() || !self.CurrentNode().Constraint()) {
+    /**
+     * Check to see if a constraint is a duplicate node within the same level of the tree
+     */
+    self.isDuplicateNode = function () {
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
             return false;
         }
 
         var constraint = self.CurrentNode().Constraint();
+        var siblings = constraint.Parent() ? constraint.Parent().Children : self.Constraints();
 
-        if (!constraint.IsPrimitive()) {
-            for (var x = 0; x < self.Constraints().length; x++) {
-                if (constraint.Context() === self.Constraints()[x].Context() && constraint.Id() !== self.Constraints()[x].Id()) {
-                    return true;
-                }
-            }
-        } else {
-            var siblings = constraint.Parent().Children();
-            for (var x = 0; x < siblings.length; x++) {
-                if (constraint.Context() === siblings[x].Context() && constraint.Id() !== siblings[x].Id()) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        var found = _.find(siblings, function (sibling) {
+            return constraint.Context() === sibling.Context() && constraint.Id() != sibling.Id();
+        })
+        return found ? true : false;
     }
 
+    /**
+     * Checks to see if there's a possible shift up for the node (duplicate above the node in the tree)
+     */
     self.showMoveUp = function () {
         if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
             return false;
         }
 
         var constraint = self.CurrentNode().Constraint();
-
         var siblings = constraint.Parent() ? constraint.Parent().Children : self.Constraints;
         var index = siblings.indexOf(constraint);
 
-        //Abusing Javascript zero handling here (index === 0 is a hide case for showMoveUp) as well as generic no index found case
-        if (!index) return false;
+        if (index === -1) return false;
 
-        if (siblings().length > 0 && siblings()[index - 1].Context() === constraint.Context())
-            return true;
-        else return false;
+        return index != 0 && siblings().length > 0 && siblings()[index - 1].Context() === constraint.Context();
     };
 
+    /**
+     * Checks to see if there's a possible shift down for the node (duplicate below the node in the tree)
+     */
     self.showMoveDown = function () {
         if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
             return false;
         }
 
         var constraint = self.CurrentNode().Constraint();
-
         var siblings = constraint.Parent() ? constraint.Parent().Children : self.Constraints;
         var index = siblings.indexOf(constraint);
 
-        if (!index && index != 0) return false;
+        if (index === -1) return false;
 
-        if (siblings().length > 0 && index < siblings().length - 1 && siblings()[index + 1].Context() === constraint.Context())
-            return true;
-        else return false;
+        return siblings().length > 0 && index < siblings().length - 1 && siblings()[index + 1].Context() === constraint.Context();
     }
 
+    /**
+     * Swaps the order of the tree such that the duplicate constraint above the currently examined constraint exchange places
+     */
     self.moveUp = function () {
         if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
             return false;
         }
 
         var constraint = self.CurrentNode().Constraint();
-
-        
         var siblings = constraint.IsPrimitive() ? constraint.Parent().Children : self.Constraints;
         var index = siblings.indexOf(constraint);
 
@@ -107,14 +100,15 @@ var templateEditViewModel = function (templateId, defaults) {
         }
     };
 
+    /**
+     * Swaps the order of the tree such that the duplicate constraint below the currently examined constraint exchange places
+     */
     self.moveDown = function () {
         if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
             return false;
         }
 
         var constraint = self.CurrentNode().Constraint();
-
-        
         var siblings = constraint.IsPrimitive() ? constraint.Parent().Children : self.Constraints;
         var index = siblings.indexOf(constraint);
 
