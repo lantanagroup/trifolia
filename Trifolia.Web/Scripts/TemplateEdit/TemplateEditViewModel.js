@@ -53,9 +53,7 @@ var templateEditViewModel = function (templateId, defaults) {
         var siblings = constraint.Parent() ? constraint.Parent().Children : self.Constraints;
         var index = siblings.indexOf(constraint);
 
-        if (index === -1) return false;
-
-        return index != 0 && siblings().length > 0 && siblings()[index - 1].Context() === constraint.Context();
+        return index !== -1 && index != 0 && siblings().length > 0 && siblings()[index - 1].Context() === constraint.Context();
     };
 
     /**
@@ -70,9 +68,7 @@ var templateEditViewModel = function (templateId, defaults) {
         var siblings = constraint.Parent() ? constraint.Parent().Children : self.Constraints;
         var index = siblings.indexOf(constraint);
 
-        if (index === -1) return false;
-
-        return siblings().length > 0 && index < siblings().length - 1 && siblings()[index + 1].Context() === constraint.Context();
+        return index !== -1 && siblings().length > 0 && index < siblings().length - 1 && siblings()[index + 1].Context() === constraint.Context();
     }
 
     /**
