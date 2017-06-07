@@ -24,7 +24,7 @@
     self.IncludeChangeList = ko.observable(true);
     self.IncludeTemplateStatus = ko.observable(true);
     self.IncludeNotes = ko.observable(false);
-    self.ValuesetAppendix = ko.observable(true);
+    self.ValuesetAppendix = ko.observable(false);
     self.SaveSettings = ko.observable(false);
     self.SelectedCategories = ko.observableArray([]);
     self.Categories = ko.observableArray([]);
