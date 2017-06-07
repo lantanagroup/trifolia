@@ -174,3 +174,27 @@ angular.module('Trifolia').service('HelperService', function ($httpParamSerializ
         emailRegex: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/
     };
 });
+
+angular.module('Trifolia').service('ImportService', function ($http, $q) {
+    return {
+        importValueSet: function (source, id, username, password) {
+            var url = '/api/Import/ValueSet';
+            var body = {
+                Source: source,
+                Id: id,
+                Username: username,
+                Password: password
+            };
+
+            var deferred = $q.defer();
+
+            $http.post(url, body)
+                .then(function (results) {
+                    deferred.resolve(results.data);
+                })
+                .catch(deferred.reject);
+
+            return deferred.promise;
+        }
+    };
+});

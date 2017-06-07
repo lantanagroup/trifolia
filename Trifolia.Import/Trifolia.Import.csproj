@@ -152,6 +152,7 @@
     <Compile Include="Terminology\External\ImportValueSetMember.cs" />
     <Compile Include="Terminology\External\IValueSetImportProcessor.cs" />
     <Compile Include="Terminology\External\PhinVadsValueSetImportProcessor.cs" />
+    <Compile Include="VSAC\VSACImporter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FHIR\DSTU1\FHIRProfile2Trifolia.xslt" />

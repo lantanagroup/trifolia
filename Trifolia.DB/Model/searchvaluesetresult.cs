@@ -46,6 +46,11 @@ namespace Trifolia.DB
 
         [Column("canEditPublishedIg")]
         public bool CanEditPublishedIg { get; set; }
+        
+        [Column("importSource")]
+        public ValueSetImportSources? ImportSource { get; set; }
 
+        [Column("importSourceId")]
+        public string ImportSourceId { get; set; }
     }
 }

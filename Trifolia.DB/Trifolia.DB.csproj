@@ -104,6 +104,10 @@
     <Compile Include="Migrations\201705121726509_implementationGuideAccessRequests.Designer.cs">
       <DependentUpon>201705121726509_implementationGuideAccessRequests.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706062133119_valueSetImportMetadata.cs" />
+    <Compile Include="Migrations\201706062133119_valueSetImportMetadata.Designer.cs">
+      <DependentUpon>201706062133119_valueSetImportMetadata.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -212,6 +216,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705121726509_implementationGuideAccessRequests.resx">
       <DependentUpon>201705121726509_implementationGuideAccessRequests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706062133119_valueSetImportMetadata.resx">
+      <DependentUpon>201706062133119_valueSetImportMetadata.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
   </ItemGroup>

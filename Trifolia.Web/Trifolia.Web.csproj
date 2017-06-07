@@ -410,6 +410,8 @@
     <Compile Include="Models\IGManagement\ListItem.cs" />
     <Compile Include="Models\IGManagement\ViewTemplateType.cs" />
     <Compile Include="Models\IG\ViewDataModel.cs" />
+    <Compile Include="Models\ImportValueSetModel.cs" />
+    <Compile Include="Models\ImportValueSetResponseModel.cs" />
     <Compile Include="Models\LocalizationModel.cs" />
     <Compile Include="Models\OrganizationManagement\OrganizationRole.cs" />
     <Compile Include="Models\PermissionManagement\PermissionsInfoModel.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Trifolia.DB;
 
 namespace Trifolia.Web.Models.TerminologyManagement
 {
@@ -19,5 +20,7 @@ namespace Trifolia.Web.Models.TerminologyManagement
         public bool PermitModify { get; set; }
         public bool CanModify { get; set; }
         public bool CanOverride { get; set; }
+        public ValueSetImportSources? ImportSource { get; set; }
+        public string ImportSourceId { get; set; }
     }
 }

@@ -46,6 +46,8 @@
             <uib-tab heading="Value Sets" ng-if="showValueSets" select="tabChanged(0)">
                 <div ng-controller="BrowseValueSetsController" ng-init="contextTabChanged()">
                     <form id="ValueSetSearchForm">
+                        <div class="alert alert-info" ng-if="message">{{message}}</div>
+
                         <div class="input-group" style="padding-bottom: 10px;">
                             <input type="text" class="form-control" ng-model="criteria.query" />
                             <span class="input-group-btn">
@@ -63,7 +65,10 @@
                         </div>
                         <div class="col-md-4">
                             <div class="pull-right">
-                                <button type="button" class="btn btn-primary" ng-if="canEdit" ng-click="editValueSet()">Add Value Set</button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" ng-if="canEdit" ng-click="editValueSet()">Add Value Set</button>
+                                    <button type="button" class="btn btn-primary" ng-click="openImportValueSet()">Import Value Set</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -102,11 +107,14 @@
                                         <i ng-show="r.IsPublished" class="glyphicon glyphicon-exclamation-sign" title="This value set is used by a published implementation guide!"></i>
                                         <ul class="dropdown-menu">
                                             <li><a href="/TerminologyManagement/ValueSet/View/{{r.Id}}">View</a></li>
-                                            <li ng-disabled="r.disableModify"><a href="#" ng-click="editValueSet(r)">Edit Value Set</a></li>
-                                            <li ng-disabled="r.disableModify"><a href="/TerminologyManagement/ValueSet/Edit/{{r.Id}}/Concept" ng-click="editConcepts(r)">Edit Concepts</a></li>
-                                            <li ng-disabled="r.disableModify"><a href="#" ng-click="removeValueSet(r)">Remove</a></li>
+                                            <li ng-if="r.ImportSource"><a href="#" ng-click="openImportValueSet(r.ImportSource, r.ImportSourceId)">Re-import</a></li>
+                                            <li ng-class="{ disabled: r.disableModify }" ng-if="!r.ImportSource"><a href="#" ng-click="editValueSet(r)" ng-disabled="r.disableModify">Edit Value Set</a></li>
+                                            <li ng-class="{ disabled: r.disableModify }" ng-if="!r.ImportSource"><a href="/TerminologyManagement/ValueSet/Edit/{{r.Id}}/Concept" ng-disabled="r.disableModify">Edit Concepts</a></li>
+                                            <li ng-class="{ disabled: r.disableModify }" ng-if="!r.ImportSource"><a href="#" ng-click="removeValueSet(r)" ng-disabled="r.disableModify">Remove</a></li>
                                         </ul>
                                     </div>
+
+                                    <span class="label label-success" ng-if="r.ImportSource" title="This value set has been imported from an external source. It cannot be edited, it can only be re-imported.">{{getImportSourceDisplay(r.ImportSource)}}</span>
                                 </td>
                                 <td ng-bind-html="r.IdentifiersDisplay"></td>
                                 <td>{{r.IsComplete ? 'Yes' : 'No'}}</td>
@@ -462,6 +470,48 @@
                     <li><a href="#" ng-click="criteria.rows = 100; search();">100</a></li>
                 </ul>
             </div>
+        </script>
+
+        <script type="text/html" id="importValueSetModal.html">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Import Value Set</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info" ng-show="message">{{message}}</div>
+
+                    <div class="form-group">
+                        <label>Source</label>
+                        <select ng-model="source" class="form-control" ng-disabled="disableSource">
+                            <option ng-value="1">VSAC</option>
+                            <option ng-value="2">PHIN VADS</option>
+                            <option ng-value="3">ROSE TREE</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codeSystemName">Identifier</label>
+                        <input type="text" class="form-control" ng-model="id" required maxlength="255" ng-disabled="disableId" />
+                        <span class="help-block" ng-show="!id">Identifier is required.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control" ng-model="username" />
+                        <span class="help-block">The username to authenticate with the source.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" ng-model="password" />
+                        <span class="help-block">The password to authenticate with the source.</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="!isValid()">OK</button>
+                    <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+                </div>
+            </form>
         </script>
     </div>
 </asp:Content>

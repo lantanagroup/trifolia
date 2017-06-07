@@ -23,6 +23,44 @@
         $scope.isSearching = false;
         $scope.totalPages = 0;
 
+        var importSources = [{
+            id: 1,
+            display: 'VSAC'
+        }, {
+            id: 2,
+            display: 'PHIN VADS'
+        }, {
+            id: 3,
+            display: 'ROSE TREE'
+        }];
+
+        $scope.getImportSourceDisplay = function (id) {
+            if (!id) {
+                return '';
+            }
+
+            return _.find(importSources, function (importSource) {
+                return importSource.id == id;
+            }).display;
+        };
+
+        $scope.openImportValueSet = function (source, id) {
+            var modalInstance = $uibModal.open({
+                controller: 'ImportValueSetModalController',
+                templateUrl: 'importValueSetModal.html',
+                size: 'lg',
+                resolve: {
+                    source: function () { return source; },
+                    id: function () { return id; }
+                }
+            });
+
+            modalInstance.result.then(function () {
+                $scope.message = 'Successfully imported value set!';
+                $scope.search();
+            });
+        };
+
         $scope.search = function () {
             $scope.searchResults = [];
             $scope.totalPages = 0;
@@ -432,5 +470,45 @@
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
+        };
+    })
+    .controller('ImportValueSetModalController', function ($scope, $uibModalInstance, ImportService, source, id) {
+        $scope.source = source;
+        $scope.id = id;
+        $scope.username = '';
+        $scope.password = '';
+        $scope.disableSource = source ? true : false;
+        $scope.disableId = id ? true : false;
+
+        $scope.isValid = function () {
+            if ($scope.source == 1) {
+                return $scope.id && $scope.username && $scope.password;
+            }
+
+            return $scope.source && $scope.id;
+        };
+
+        $scope.ok = function () {
+            ImportService.importValueSet($scope.source, $scope.id, $scope.username, $scope.password)
+                .then(function (results) {
+                    if (results.Success) {
+                        $uibModalInstance.close();
+                    } else {
+                        $scope.message = results.Message;
+                    }
+                })
+                .catch(function (err) {
+                    if (typeof err === 'string') {
+                        $scope.message = err;
+                    } else if (typeof err.data === 'string') {
+                        $scope.message = err.data;
+                    } else if (err.message) {
+                        $scope.message = err.message;
+                    }
+                });
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('close');
         };
     });

@@ -189,7 +189,9 @@ namespace Trifolia.Web.Controllers.API
                                 SourceUrl = r.SourceUrl,
                                 PermitModify = permitModify,
                                 CanModify = !r.HasPublishedIg,
-                                CanOverride = permitOverride && (userIsInternal || r.CanEditPublishedIg)
+                                CanOverride = permitOverride && (userIsInternal || r.CanEditPublishedIg),
+                                ImportSource = r.ImportSource,
+                                ImportSourceId = r.ImportSourceId
                             }).ToList();
 
             return result;
