@@ -81,7 +81,7 @@ namespace Trifolia.DB
         {
             get
             {
-                return this.Status.Status;
+                return this.Status != null ? this.Status.Status : "Draft";
             }
         }
 
