@@ -981,6 +981,7 @@ namespace Trifolia.Web.Controllers.API
                                 throw new Exception("An implementation guide with that name already exists!");
 
                             ig = new ImplementationGuide();
+                            ig.Version = 1;
                             auditedTdb.ImplementationGuides.Add(ig);
                         }
                         else
@@ -1010,20 +1011,16 @@ namespace Trifolia.Web.Controllers.API
                         if (ig.PublishStatus == null)
                             ig.PublishStatus = PublishStatus.GetDraftStatus(auditedTdb);
 
-                        if (aModel.PreviousVersionId.HasValue && ig.PreviousVersionImplementationGuideId != aModel.PreviousVersionId)
+                        if (aModel.PreviousVersionId.HasValue)
                         {
                             ig.PreviousVersionImplementationGuideId = aModel.PreviousVersionId;
                             ImplementationGuide lPreviousVersion
                                 = auditedTdb.ImplementationGuides.Single(previousIg => previousIg.Id == aModel.PreviousVersionId.Value);
 
-                            if (lPreviousVersion.Version >= 1)
-                                ig.Version = lPreviousVersion.Version + 1;
-                            else
-                                ig.Version = 1;
-                        }
-                        else
-                        {
-                            ig.Version = 1;
+                            int nextVersion = (lPreviousVersion.Version != null ? lPreviousVersion.Version.Value : 1) + 1;
+
+                            if (ig.Version != nextVersion)
+                                ig.Version = nextVersion;
                         }
 
                         // Delete sections that don't exist in the model
