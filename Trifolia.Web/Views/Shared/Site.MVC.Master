@@ -138,11 +138,23 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-asterisk"></i> <span data-bind="text: DisplayName, attr: { title: DisplayToolTip }"></span> <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="glyphicon glyphicon-asterisk" data-bind="css: { 'glyphicon-asterisk': !HasApprovalRequests(), 'glyphicon-exclamation-sign': HasApprovalRequests() }"></i>
+                            <span data-bind="text: DisplayName, attr: { title: DisplayToolTip }"></span>
+                            <b class="caret"></b>
+                        </a>
                         <ul class="dropdown-menu">
                             <!-- ko if: Me() -->
                             <li><a href="/Account/MyProfile">My Profile</a></li>
                             <li><a href="/Account/Groups">My Groups</a></li>
+                            <!-- ko if: HasApprovalRequests() || HasMyRequests() -->
+                            <li><a href="#" data-bind="click: function () { ShowAccessRequests(); }">
+                                <!-- ko if: HasApprovalRequests() -->
+                                <i class="glyphicon glyphicon-exclamation-sign"></i>
+                                <!-- /ko -->
+                                <span>Access Requests</span></a>
+                            </li>
+                            <!-- /ko -->
                             <li class="divider"></li>
                             <li><a href="/Account/LogOff">Logout</a></li>
                             <!-- /ko -->
@@ -275,11 +287,90 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="accessRequestsDialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Access Requests</h4>
+                </div>
+                <div class="modal-body" style="padding: 2px 0 0 0;">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#myApprovals" aria-controls="profile" role="tab" data-toggle="tab">Pending Approvals</a></li>
+                        <li role="presentation"><a href="#myRequests" aria-controls="profile" role="tab" data-toggle="tab">My Requests</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="myApprovals">
+                            <!-- ko if: !HasApprovalRequests() -->
+                            <i>No requests are pending your approval.</i>
+                            <!-- /ko -->
+                            <!-- ko if: HasApprovalRequests() -->
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>IG</th>
+                                        <th>Requestor</th>
+                                        <th>Permission</th>
+                                        <th>Date</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="foreach: AccessRequests().MyApprovals()">
+                                    <tr>
+                                        <td data-bind="text: ImplementationGuideName"></td>
+                                        <td data-bind="text: RequestUserName"></td>
+                                        <td data-bind="text: RequestPermission"></td>
+                                        <td data-bind="text: moment(RequestDate()).format('LLL')"></td>
+                                        <td>
+                                            <div class="pull-right">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-default btn-sm" data-bind="click: function () { $parent.CompleteAccessRequest($data, true); }">Approve</button>
+                                                    <button type="button" class="btn btn-default btn-sm" data-bind="click: function () { $parent.CompleteAccessRequest($data, false); }">Deny</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- /ko -->
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="myRequests">
+                            <!-- ko if: !HasMyRequests() -->
+                            <i>You have no pending requests.</i>
+                            <!-- /ko -->
+                            <!-- ko if: HasMyRequests() -->
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>IG</th>
+                                        <th>Permission</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="foreach: AccessRequests().MyRequests()">
+                                    <tr>
+                                        <td data-bind="text: ImplementationGuideName"></td>
+                                        <td data-bind="text: RequestPermission"></td>
+                                        <td data-bind="text: moment(RequestDate()).format('LLL')"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
         
     <!-- Template Selector Knockout Template -->
     <script type="text/html" id="selectTemplateDialogTemplate">
@@ -399,7 +490,7 @@
                 <div class="selectTypeAheadResults" data-bind="foreach: TypeAheadResults">
                     <div class="row selectTypeAheadResult" data-bind="click: function () { $parent.SelectTypeAhead($index(), true); }, css: { selected: $index() == $parent.SelectedTypeAheadIndex() }">
                         <div class="col-xs-6" data-bind="text: Name"></div>
-                        <div class="col-xs-6" data-bind="text: Oid"></div>
+                        <div class="col-xs-6" data-bind="text: Identifiers"></div>
                     </div>
                 </div>
             </div>
@@ -431,7 +522,7 @@
                                         <i class="glyphicon glyphicon-comment" data-bind="tooltip: Description"></i>
                                         <!-- /ko -->
                                     </td>
-                                    <td data-bind="text: Oid"></td>
+                                    <td data-bind="text: Identifiers"></td>
                                 </tr>
                                 <!-- /ko -->
                                 <!-- ko if: $parent.IsSearching() -->
@@ -467,6 +558,7 @@
             $(document).ready(function () {
                 ko.applyBindings(containerViewModel, $('#appnav')[0]);
                 ko.applyBindings(containerViewModel, $('#GroupDisclaimersDialog')[0]);
+                ko.applyBindings(containerViewModel, $('#accessRequestsDialog')[0]);
             });
 
             $(document).mousemove(function (e) {
@@ -480,15 +572,7 @@
 
             ko.applyBindings(supportViewModel, $('#supportPopup')[0]);
 
-            $("#supportPopup").modal({
-                show: false
-            });
-
-            $("#keyboardShortcutsDialog").modal({
-                show: false
-            });
-
-            $('#GroupDisclaimersDialog').modal({
+            $("#supportPopup, #keyboardShortcutsDialog, #GroupDisclaimersDialog, #accessRequestsDialog").modal({
                 show: false
             });
 

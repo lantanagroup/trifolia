@@ -45,6 +45,23 @@ namespace Trifolia.DB
 
             List<TemplateValidationResult> errors = new List<TemplateValidationResult>();
 
+            var igType = template.ImplementationGuideType;
+
+            if (igType.SchemaURI == ImplementationGuideType.FHIR_NS)
+            {
+                if (!template.IsIdentifierURL())
+                    errors.Add(TemplateValidationResult.CreateResult(ValidationLevels.Error, "FHIR profiles should use HTTP(S) identifiers."));
+
+                if (template.Oid.IndexOf("_") >= 0)
+                    errors.Add(TemplateValidationResult.CreateResult(ValidationLevels.Warning, "FHIR profile's long identifier should use - (dash) instead of _ (underscore)"));
+
+                if (template.Bookmark.IndexOf("_") >= 0)
+                    errors.Add(TemplateValidationResult.CreateResult(ValidationLevels.Warning, "FHIR profile's short identifier should use - (dash) instead of _ (underscore)"));
+
+                if (template.IsIdentifierURL() && !template.Oid.EndsWith(template.Bookmark))
+                    errors.Add(TemplateValidationResult.CreateResult(ValidationLevels.Error, "FHIR profile's long identifier should end with the short identifier"));
+            }
+
             XmlDocument tempDoc = new XmlDocument();
             XPathNavigator xpathNavigator = tempDoc.CreateNavigator();
 

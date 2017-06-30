@@ -20,8 +20,9 @@ namespace Trifolia.Shared.FHIR
         /// </remarks>
         /// <param name="constraint">The lowest level constraint that the path should be built for</param>
         /// <param name="resourceType">If not null or empty, the type of resource that the path is being built for; used as the starting element in the path.</param>
+        /// <param name="stopConstraint">Stop building the element path when this constraint is reached</param>
         /// <returns></returns>
-        public static string GetElementPath(this TemplateConstraint constraint, string resourceType)
+        public static string GetElementPath(this TemplateConstraint constraint, string resourceType, TemplateConstraint stopConstraint = null)
         {
             string elementPath = "";
 
@@ -38,9 +39,15 @@ namespace Trifolia.Shared.FHIR
                 }
 
                 current = current.ParentConstraint;
+
+                if (current == stopConstraint)
+                    break;
             }
 
-            return (string.IsNullOrEmpty(resourceType) ? "Resource" : resourceType) + "." + elementPath;
+            if (!string.IsNullOrEmpty(resourceType))
+                return resourceType + "." + elementPath;
+
+            return elementPath;
         }
     }
 }

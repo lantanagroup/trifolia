@@ -20,6 +20,7 @@ namespace Trifolia.DB
             Settings = new HashSet<ImplementationGuideSetting>();
             TemplateTypes = new HashSet<ImplementationGuideTemplateType>();
             ChildTemplates = new HashSet<Template>();
+            AccessRequests = new HashSet<ImplementationGuideAccessRequest>();
         }
 
         [Column("id")]
@@ -105,5 +106,8 @@ namespace Trifolia.DB
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Template> ChildTemplates { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ImplementationGuideAccessRequest> AccessRequests { get; set; }
     }
 }

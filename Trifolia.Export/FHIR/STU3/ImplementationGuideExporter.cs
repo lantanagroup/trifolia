@@ -140,17 +140,23 @@ namespace Trifolia.Export.FHIR.STU3
                 if (includeVocabulary)
                 {
                     // Add value sets to the implementation guide
-                    var valueSets = (from t in templates
-                                     join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
-                                     where tc.ValueSet != null
-                                     select tc.ValueSet).Distinct().ToList();
+                    var valueSetsIds = (from t in templates
+                                        join tc in this.tdb.TemplateConstraints.AsNoTracking() on t.Id equals tc.TemplateId
+                                        where tc.ValueSetId != null
+                                        select tc.ValueSetId)
+                                       .Distinct()
+                                       .ToList();
+                    var valueSets = (from vs in this.tdb.ValueSets
+                                     join vsi in valueSetsIds on vs.Id equals vsi
+                                     select vs).ToList();
                     var valueSetResources = (from vs in valueSets
+                                             where vs.GetIdentifier() != null && !vs.GetIdentifier().StartsWith("http://hl7.org/fhir/ValueSet/")    // Ignore value sets in the base spec
                                              select new FhirImplementationGuide.ResourceComponent()
                                              {
                                                  Example = false,
                                                  Source = new ResourceReference()
                                                  {
-                                                     Reference = string.Format("ValueSet/{0}", vs.Id.ToString()),
+                                                     Reference = string.Format("ValueSet/{0}", vs.GetFhirId()),
                                                      Display = vs.Name
                                                  }
                                              });
@@ -228,6 +234,11 @@ namespace Trifolia.Export.FHIR.STU3
                         {
                             Reference = string.Format("{0}/{1}", resource.ResourceType, resource.Id),
                             Display = GetResourceName(resource, templateExample.Sample.Name)
+                        },
+                        ExampleFor = new ResourceReference()
+                        {
+                            Reference = string.Format("StructureDefinition/{0}", templateExample.Template.Bookmark),
+                            Display = templateExample.Template.Name
                         }
                     };
 

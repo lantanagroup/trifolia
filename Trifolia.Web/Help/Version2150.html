@@ -185,216 +185,216 @@
 <p></p>
 <p class="rvps2"><span class="rvts6">Released on Thursday, July 24, 2014</span></p>
 <h2 class="rvps23"><span class="rvts0"><span class="rvts21">Template Identifier Changes</span></span></h2>
-<p class="rvps24"><span class="rvts63">Templates do not require identifiers to be OIDs any longer. They can be one of four formats:</span></p>
+<p class="rvps24"><span class="rvts65">Templates do not require identifiers to be OIDs any longer. They can be one of four formats:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: disc;">
-<li style="margin-left: 0px" class="rvps27"><span class="rvts63">OID: “oid:2.17.840.113883…”</span></li>
-<li style="margin-left: 0px" class="rvps27"><span class="rvts63">II: “urn:hl7ii:ROOT:EXTENSION”</span></li>
-<li style="margin-left: 0px" class="rvps27"><span class="rvts63">HTTP/HTTPS: “http://myidentifier.com” or “https://myidentifier.com”</span></li>
+<li style="margin-left: 0px" class="rvps27"><span class="rvts65">OID: “oid:2.17.840.113883…”</span></li>
+<li style="margin-left: 0px" class="rvps27"><span class="rvts65">II: “urn:hl7ii:ROOT:EXTENSION”</span></li>
+<li style="margin-left: 0px" class="rvps27"><span class="rvts65">HTTP/HTTPS: “http://myidentifier.com” or “https://myidentifier.com”</span></li>
 </ul>
-<p class="rvps24"><span class="rvts63">MS Word exports use the label “identifier” instead of “templateId” when outputting the template identifier.</span></p>
-<p class="rvps24"><span class="rvts63">Schematron is updated to detect if the identifier as in II format and look for @root=XXX and @extension=YYY</span></p>
-<p class="rvps24"><span class="rvts63">Creating a copy of a template automatically converts OID identifiers to II type and creates an extension for the identifier based on the date that the template is copied.</span></p>
-<p class="rvps24"><span class="rvts63">Note: Only “oid:XXX” and “urn:hl7ii:XX:YY” are valid formats for CDA documents.</span></p>
-<p class="rvps24"><span class="rvts65">Known Bug: Trifolia 2.15 supports a URI:XXXX format for identifiers. We have identified that this is invalid and support for this format of identifier will be removed in the 2.16 release of Trifolia.</span></p>
+<p class="rvps24"><span class="rvts65">MS Word exports use the label “identifier” instead of “templateId” when outputting the template identifier.</span></p>
+<p class="rvps24"><span class="rvts65">Schematron is updated to detect if the identifier as in II format and look for @root=XXX and @extension=YYY</span></p>
+<p class="rvps24"><span class="rvts65">Creating a copy of a template automatically converts OID identifiers to II type and creates an extension for the identifier based on the date that the template is copied.</span></p>
+<p class="rvps24"><span class="rvts65">Note: Only “oid:XXX” and “urn:hl7ii:XX:YY” are valid formats for CDA documents.</span></p>
+<p class="rvps24"><span class="rvts67">Known Bug: Trifolia 2.15 supports a URI:XXXX format for identifiers. We have identified that this is invalid and support for this format of identifier will be removed in the 2.16 release of Trifolia.</span></p>
 <h2 class="rvps23"><span class="rvts0"><span class="rvts21">Export Notes</span></span></h2>
-<p class="rvps24"><span class="rvts63">Template and constraint notes can now be exported as part of the MS Word document. Trifolia notes will be exported as MS Word “Review Comments” so that readers can easily navigate through the notes.</span></p>
-<p class="rvps24"><span class="rvts63">Remember: Notes are not intended to be included in balloted artifacts. They are only intended to help manage the lifecycle of template design.</span></p>
-<p class="rvps24"><span class="rvts63">The “Export Settings” for MS Word has a checkbox for “Notes” which is un-checked by default.</span></p>
+<p class="rvps24"><span class="rvts65">Template and constraint notes can now be exported as part of the MS Word document. Trifolia notes will be exported as MS Word “Review Comments” so that readers can easily navigate through the notes.</span></p>
+<p class="rvps24"><span class="rvts65">Remember: Notes are not intended to be included in balloted artifacts. They are only intended to help manage the lifecycle of template design.</span></p>
+<p class="rvps24"><span class="rvts65">The “Export Settings” for MS Word has a checkbox for “Notes” which is un-checked by default.</span></p>
 <p class="rvps25"><img width="569" height="129" alt="" style="padding : 1px;" src="lib/V_2_15_ExportMSWordNotes.png"></p>
-<p class="rvps24"><span class="rvts63"><br/></span></p>
+<p class="rvps24"><span class="rvts65"><br/></span></p>
 <p class="rvps25"><img width="569" height="120" alt="" style="padding : 1px;" src="lib/V2_15_ExportMSWordNotes2.png"></p>
 <h2 class="rvps23"><span class="rvts0"><span class="rvts21">Implementation Guide Changes</span></span></h2>
-<p class="rvps24"><span class="rvts63">Implementation guides now contain a “Display Name” which are used by exports. The display name is not required. When display name is not specified, exports will use the name of the implementation guide. </span></p>
-<p class="rvps24"><span class="rvts63">MS Exports now include a footer and a header. The footer contains page numbers and the name of the implementation guide. The header contains the date of the export and the calculated name of the implementation guide.</span></p>
+<p class="rvps24"><span class="rvts65">Implementation guides now contain a “Display Name” which are used by exports. The display name is not required. When display name is not specified, exports will use the name of the implementation guide. </span></p>
+<p class="rvps24"><span class="rvts65">MS Exports now include a footer and a header. The footer contains page numbers and the name of the implementation guide. The header contains the date of the export and the calculated name of the implementation guide.</span></p>
 <h2 class="rvps23"><span class="rvts0"><span class="rvts21">Navigation</span></span></h2>
-<p class="rvps24"><span class="rvts63">The “View Template” and “View Implementation Guide” pages have a more user-friendly navigation bar for selecting actions.</span></p>
-<p class="rvps24"><span class="rvts63">The “View Implementation Guide” page allows users to search for templates within the implementation guide.</span></p>
-<p class="rvps22"><span class="rvts62">View Implementation Guide Navigation</span></p>
+<p class="rvps24"><span class="rvts65">The “View Template” and “View Implementation Guide” pages have a more user-friendly navigation bar for selecting actions.</span></p>
+<p class="rvps24"><span class="rvts65">The “View Implementation Guide” page allows users to search for templates within the implementation guide.</span></p>
+<p class="rvps22"><span class="rvts64">View Implementation Guide Navigation</span></p>
 <p class="rvps25"><img width="570" height="247" alt="" style="padding : 1px;" src="lib/V2_15_NavigationExport.png"></p>
-<p class="rvps22"><span class="rvts62">View Template Navigation</span></p>
+<p class="rvps22"><span class="rvts64">View Template Navigation</span></p>
 <p class="rvps25"><img width="575" height="114" alt="" style="padding : 1px;" src="lib/V2_15_TemplateNavigation.png"></p>
-<p class="rvps22"><span class="rvts62">View Implementation Guide Template Search</span></p>
+<p class="rvps22"><span class="rvts64">View Implementation Guide Template Search</span></p>
 <p class="rvps25"><img width="575" height="166" alt="" style="padding : 1px;" src="lib/V2_15_IGTemplateSearch.png"></p>
 <h2 class="rvps5"><span class="rvts0"><span class="rvts21">Development Log</span></span></h2>
 <div class="rvps2"><table width="566" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse;">
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">New Feature</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">New Feature</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Option to export Notes</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">New Feature</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">MS Export footer and title page</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Option to export Notes</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">New Feature</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">New Feature</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Create a new field that has the "display" name of the IG</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">New Feature</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Document/Section level tables - add templates to "Fixed Value" column (&amp; maybe change name)</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">MS Export footer and title page</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">New Feature</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">New Feature</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Drop-down on View IG to select template</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Export templates to MS Word - value sets create as appendix default</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Create a new field that has the "display" name of the IG</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">New Feature</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Use plugin interfaces in Schematron engine</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Use interfaces for Schematron Engine</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Document/Section level tables - add templates to "Fixed Value" column (&amp; maybe change name)</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">New Feature</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improved navigability of "View Implementation Guide" and "View Template"</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Warn user when leaving publish settings without saving changes</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Drop-down on View IG to select template</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Make the description text boxes of IG Template Type Descriptions larger</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Allow typing a binding date for valueset</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Export templates to MS Word - value sets create as appendix default</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Allow typing a template oid in addition to opening dialog</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Allow typing value set oid instead of opening dialog</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Use plugin interfaces in Schematron engine</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Version without new template oid</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Sample Generation w/ Data</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Use interfaces for Schematron Engine</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Improvement</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Automatically refresh client-side javascript files after release</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">General</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Can't edit description or source URL for value set</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improved navigability of "View Implementation Guide" and "View Template"</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Terminology: Description and URL fields missing</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Allows the creation of members with duplicate user names.</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Warn user when leaving publish settings without saving changes</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">IG Viewer - Exception appearing when Versioning an IG</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">IG Deletion - Error appearing when removing a Versioned IG</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Make the description text boxes of IG Template Type Descriptions larger</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Constraint Editor - can't add value set to a primitive</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Template Editor - Exception appearing when user clicks "Move"</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Allow typing a binding date for valueset</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">FHIR - Templates Identifiers with plain “http” and “https” based URIs</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Move Template - Server error in '/' Application.</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Allow typing a template oid in addition to opening dialog</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Export templates to MS Word: Inferred templates radio not working</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
-</td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Browse Terminology - Complete : Yes/No -appears to be opposite</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Allow typing value set oid instead of opening dialog</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Can't add sdtc:dischargeDispositionCode to template</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Version without new template oid</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Defect</span></p>
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
 </td>
-<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts66">Template- constraint order not appearing the same in Editor and Viewer for pre-existing templates</span></p>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Sample Generation w/ Data</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Improvement</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Automatically refresh client-side javascript files after release</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">General</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Can't edit description or source URL for value set</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Terminology: Description and URL fields missing</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Allows the creation of members with duplicate user names.</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">IG Viewer - Exception appearing when Versioning an IG</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">IG Deletion - Error appearing when removing a Versioned IG</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Constraint Editor - can't add value set to a primitive</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Template Editor - Exception appearing when user clicks "Move"</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">FHIR - Templates Identifiers with plain “http” and “https” based URIs</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Move Template - Server error in '/' Application.</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Export templates to MS Word: Inferred templates radio not working</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Browse Terminology - Complete : Yes/No -appears to be opposite</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Can't add sdtc:dischargeDispositionCode to template</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="88" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Defect</span></p>
+</td>
+<td width="451" height="17" valign="bottom" style="border-width : 1px; border-color: #000000; border-style: solid; padding: 0px 7px;"><p class="rvps2"><span class="rvts68">Template- constraint order not appearing the same in Editor and Viewer for pre-existing templates</span></p>
 </td>
 </tr>
 </table>
@@ -403,7 +403,7 @@
 
             </div>
             
-            <div id="topic_footer"><div id="topic_footer_content">Copyright &copy; 2016 by Lantana Consulting Group. All Rights Reserved.</div></div>
+            <div id="topic_footer"><div id="topic_footer_content">Copyright &copy; 2017 by Lantana Consulting Group. All Rights Reserved.</div></div>
         </div>  <!-- /#topic-content -->
     </article>
 

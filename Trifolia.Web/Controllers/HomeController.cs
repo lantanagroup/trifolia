@@ -16,12 +16,12 @@ namespace Trifolia.Web.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        public ActionResult LoggedInIndex()
+        public ActionResult LoggedInIndex(string message = null)
         {
             if (User.Identity.IsAuthenticated && CheckPoint.Instance.User == null)
                 return RedirectToAction("NewProfile", "Account");
 
-            return Home();
+            return Home(message);
         }
 
         //
@@ -34,11 +34,12 @@ namespace Trifolia.Web.Controllers
             return Home();
         }
 
-        private ActionResult Home()
+        private ActionResult Home(string message = null)
         {
             HomeModel model = new HomeModel();
 
             model.DisplayInternalTechSupportPanel = CheckPoint.Instance.IsDataAdmin;
+            model.Message = message;
 
             return View("Index", model);
         }

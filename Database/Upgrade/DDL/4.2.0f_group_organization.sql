@@ -1,5 +1,0 @@
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'group' AND COLUMN_NAME = 'organizationId')
-BEGIN
-	ALTER TABLE dbo.[group] DROP CONSTRAINT FK_group_organization
-	ALTER TABLE dbo.[group] DROP COLUMN organizationId
-END

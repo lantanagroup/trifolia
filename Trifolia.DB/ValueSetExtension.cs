@@ -38,6 +38,31 @@ namespace Trifolia.DB
             return members;
         }
 
+        public string GetReference()
+        {
+            string identifier = this.GetIdentifier(ValueSetIdentifierTypes.HTTP);
+
+            if (identifier.StartsWith("urn:oid:"))
+            {
+                return "ValueSet/" + identifier.Substring(8);
+            }
+            else if (identifier.StartsWith("urn:hl7ii:"))
+            {
+                return "ValueSet/" + identifier.Substring(10);
+            }
+            else if (identifier.StartsWith("http://") || identifier.StartsWith("https://"))
+            {
+                string id = identifier.Substring(identifier.LastIndexOf('/') + 1);
+
+                if (identifier == "http://hl7.org/fhir/ValueSet/" + id)
+                    return identifier;
+
+                return "ValueSet/" + id;
+            }
+
+            return identifier;
+        }
+
         public string GetIdentifier(ValueSetIdentifierTypes? preferredType = null)
         {
             if (preferredType != null)

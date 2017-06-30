@@ -36,6 +36,7 @@ namespace Trifolia.Web.Models.IGManagement
             public string Status { get; set; }
             public string Url { get; set; }
             public bool CanEdit { get; set; }
+            public string DisplayName { get; set; }
 
             #endregion
         }

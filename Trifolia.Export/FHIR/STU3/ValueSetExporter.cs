@@ -28,7 +28,7 @@ namespace Trifolia.Export.FHIR.STU3
         /// <param name="summaryType">Does not populate certain fields when a summaryType is specified.</param>
         /// <param name="publishedValueSets">Optional list of ValueSets that are used by a published implementation guide. If not specified, queries the database for implementation guides that this value set may be published under.</param>
         /// <returns>A FHIR ValueSet model</returns>
-        public FhirValueSet Convert(ValueSet valueSet, SummaryType? summaryType = null, IEnumerable<ValueSet> publishedValueSets = null)
+        public FhirValueSet Convert(ValueSet valueSet, SummaryType? summaryType = null, IEnumerable<ValueSet> publishedValueSets = null, string baseUrl = null)
         {
             bool usedByPublishedIgs = false;
 
@@ -52,6 +52,13 @@ namespace Trifolia.Export.FHIR.STU3
                 Description = new Markdown(valueSet.Description),
                 Url = valueSet.GetIdentifier(ValueSetIdentifierTypes.HTTP)
             };
+
+            // Handle urn:oid: and urn:hl7ii: identifiers differently if a base url is provided
+            // baseUrl is most likely provided when within the context of an implementation guide
+            if (fhirValueSet.Url.StartsWith("urn:oid:") && !string.IsNullOrEmpty(baseUrl))
+                fhirValueSet.Url = baseUrl.TrimEnd('/') + "/ValueSet/" + fhirValueSet.Url.Substring(8);
+            else if (fhirValueSet.Url.StartsWith("urn:hl7ii:") && !string.IsNullOrEmpty(baseUrl))
+                fhirValueSet.Url = baseUrl.TrimEnd('/') + "/ValueSet/" + fhirValueSet.Url.Substring(10);
 
             if (summaryType == null || summaryType == SummaryType.Data)
             {

@@ -332,13 +332,7 @@ namespace Trifolia.Generation.IG
 
                 foreach (Template lChildTemplate in versionedTemplates)
                 {
-                    IGDifferenceViewModel lModel
-                        = new IGDifferenceViewModel()
-                        {
-                            TemplateName = lChildTemplate.Name,
-                            TemplateOid = lChildTemplate.Oid,
-                            TemplateBookmark = lChildTemplate.Bookmark
-                        };
+                    IGDifferenceViewModel lModel = new IGDifferenceViewModel(lChildTemplate);
 
                     if (lChildTemplate.PreviousVersionTemplateId.HasValue)
                     {
@@ -370,10 +364,15 @@ namespace Trifolia.Generation.IG
                         DocHelper.CreateRun(lDifference.TemplateName));
                 this.document.MainDocumentPart.Document.Body.AppendChild(changeHeadingPara);
 
+                OpenXmlElement templateTitleElement = DocHelper.CreateRun(string.Format("{0} ({1})", lDifference.TemplateName, lDifference.TemplateOid));
+
+                if (lDifference.ShouldLink)
+                    templateTitleElement = DocHelper.CreateAnchorHyperlink(
+                        string.Format("{0} ({1})", lDifference.TemplateName, lDifference.TemplateOid), lDifference.TemplateBookmark, Properties.Settings.Default.LinkStyle);
+
                 Paragraph changeLinkPara = new Paragraph(
                     new ParagraphProperties(new KeepNext()),
-                    DocHelper.CreateAnchorHyperlink(
-                            string.Format("{0} ({1})", lDifference.TemplateName, lDifference.TemplateOid), lDifference.TemplateBookmark, Properties.Settings.Default.LinkStyle),
+                    templateTitleElement,
                     new Break());
                 this.document.MainDocumentPart.Document.Body.AppendChild(changeLinkPara);
 
@@ -732,6 +731,11 @@ namespace Trifolia.Generation.IG
 
             foreach (Template cTemplate in sortedTemplates)
             {
+                OpenXmlElement titleElement = DocHelper.CreateRun(cTemplate.Name);
+
+                if (cTemplate.Status != this.retiredStatus)
+                    titleElement = DocHelper.CreateAnchorHyperlink(cTemplate.Name, cTemplate.Bookmark, Properties.Settings.Default.TableLinkStyle);
+
                 t.AppendChild(
                     new TableRow(
                         new TableCell(
@@ -741,7 +745,7 @@ namespace Trifolia.Generation.IG
                                     {
                                         Val = Properties.Settings.Default.TableContentStyle
                                     }),
-                                DocHelper.CreateAnchorHyperlink(cTemplate.Name, cTemplate.Bookmark, Properties.Settings.Default.TableLinkStyle))),
+                                titleElement)),
                         new TableCell(
                             new Paragraph(
                                 new ParagraphProperties(

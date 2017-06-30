@@ -281,6 +281,18 @@ namespace Trifolia.Web.Controllers
                 newIg.Sections.Add(newSection);
             }
 
+            // Copy custom schematron
+            foreach (var cSchematron in ig.SchematronPatterns)
+            {
+                var newSchematron = new ImplementationGuideSchematronPattern()
+                {
+                    PatternId = cSchematron.PatternId,
+                    PatternContent = cSchematron.PatternContent,
+                    Phase = cSchematron.Phase
+                };
+                newIg.SchematronPatterns.Add(newSchematron);
+            }
+
             this.tdb.ImplementationGuides.Add(newIg);
             this.tdb.SaveChanges();
 
@@ -317,6 +329,45 @@ namespace Trifolia.Web.Controllers
             newIgSettings.SaveBoolSetting(IGSettingsManager.SettingProperty.UseConsolidatedConstraintFormat, useConsolidationConstraintFormat);
 
             return Json(new { ImplementationGuideId = newIg.Id });
+        }
+
+        #endregion
+
+        #region Access Requests
+
+        [Securable(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
+        public ActionResult ApproveAuthorizationRequest(int accessRequestId)
+        {
+            return this.CompleteAuthorizationRequest(accessRequestId, true);
+        }
+
+        [Securable(SecurableNames.IMPLEMENTATIONGUIDE_EDIT)]
+        public ActionResult DenyAuthorizationRequest(int accessRequestId)
+        {
+            return this.CompleteAuthorizationRequest(accessRequestId, false);
+        }
+
+        private ActionResult CompleteAuthorizationRequest(int accessRequestId, bool approved)
+        {
+            ImplementationGuideAccessRequest igac = this.tdb.ImplementationGuideAccessRequests.SingleOrDefault(y => y.Id == accessRequestId);
+
+            if (igac == null)
+                return RedirectToAction("LoggedInIndex", "Home", new { message = "Authorization request no longer exists. It may have already been approved/denied." });
+
+            User requestUser = igac.RequestUser;
+            ImplementationGuide ig = igac.ImplementationGuide;
+
+            API.ImplementationGuideController igController = new API.ImplementationGuideController(this.tdb);
+            igController.CompleteAccessRequest(accessRequestId, approved);
+
+            string msgFormat = "{0} {1} {2} access to {3}";
+            string msg = string.Format(msgFormat,
+                approved ? "Granted" : "Denied",
+                requestUser.FirstName,
+                requestUser.LastName,
+                ig.GetDisplayName());
+
+            return RedirectToAction("LoggedInIndex", "Home", new { message = msg });
         }
 
         #endregion

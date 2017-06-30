@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 
 using Trifolia.DB;
-using Trifolia.Generation.IG;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
@@ -64,96 +63,56 @@ namespace Trifolia.Generation.Versioning
 
             this.CompareTemplate(previousTemplate, newTemplate);
 
-            // Pre-retrieve all template data
-            var constraintTemplates = (from tcr in newTemplate.Constraints.SelectMany(y => y.References)
-                                       join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
-                                       where tcr.ReferenceType == ConstraintReferenceTypes.Template
-                                       select new { t.Id, t.Oid, t.Name, t.Bookmark })
-                                       .Union(from tcr in previousTemplate.Constraints.SelectMany(y => y.References)
-                                              join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
-                                              where tcr.ReferenceType == ConstraintReferenceTypes.Template
-                                              select new { t.Id, t.Oid, t.Name, t.Bookmark })
-                                              .ToList();
-            
-            // Added constraints
-            foreach (var cConstraint in newTemplate.Constraints.Where(b => !previousTemplate.Constraints.Exists(a => a.Number == b.Number)))
+            if (newTemplate.Status != PublishStatus.RETIRED_STATUS)
             {
-                var constraintReferences = (from tcr in cConstraint.References
-                                            join t in constraintTemplates on tcr.ReferenceIdentifier equals t.Oid
-                                            select new ConstraintReference()
-                                            {
-                                                Bookmark = t.Bookmark,
-                                                Identifier = t.Oid,
-                                                Name = t.Name
-                                            }).ToList();
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint, constraintReferences);
-
-                ComparisonConstraintResult cResult = new ComparisonConstraintResult()
+                // Added constraints
+                foreach (var cConstraint in newTemplate.Constraints.Where(b => !previousTemplate.Constraints.Exists(a => a.Number == b.Number)))
                 {
-                    ParentNumber = cConstraint.Parent != null ? 
-                        string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Parent.Number) : 
-                        null,
-                    Number = string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Number.Value),
-                    Order = cConstraint.Order,
-                    Type = CompareStatuses.Added,
-                    NewNarrative = fc.GetPlainText()
-                };
+                    IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint);
 
-                this.result.ChangedConstraints.Add(cResult);
-            }
+                    ComparisonConstraintResult cResult = new ComparisonConstraintResult()
+                    {
+                        ParentNumber = cConstraint.Parent != null ?
+                            string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Parent.Number) :
+                            null,
+                        Number = string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Number.Value),
+                        Order = cConstraint.Order,
+                        Type = CompareStatuses.Added,
+                        NewNarrative = fc.GetPlainText()
+                    };
 
-            // Deleted constraints
-            foreach (var cConstraint in previousTemplate.Constraints.Where(a => !newTemplate.Constraints.Exists(b => b.Number == a.Number)))
-            {
-                var constraintReferences = (from tcr in cConstraint.References
-                                            join t in constraintTemplates on tcr.ReferenceIdentifier equals t.Oid
-                                            select new ConstraintReference()
-                                            {
-                                                Bookmark = t.Bookmark,
-                                                Identifier = t.Oid,
-                                                Name = t.Name
-                                            }).ToList();
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint, constraintReferences);
+                    this.result.ChangedConstraints.Add(cResult);
+                }
 
-                ComparisonConstraintResult cResult = new ComparisonConstraintResult()
+                // Deleted constraints
+                foreach (var cConstraint in previousTemplate.Constraints.Where(a => !newTemplate.Constraints.Exists(b => b.Number == a.Number)))
                 {
-                    ParentNumber = cConstraint.Parent != null ? 
-                        string.Format("{0}-{1}", cConstraint.Parent.Template.OwningImplementationGuideId, cConstraint.Parent.Number) : 
-                        null,
-                    Number = string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Number),
-                    Order = cConstraint.Order,
-                    Type = CompareStatuses.Removed,
-                    OldNarrative = fc.GetPlainText()
-                };
+                    IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint);
 
-                this.result.ChangedConstraints.Add(cResult);
-            }
+                    ComparisonConstraintResult cResult = new ComparisonConstraintResult()
+                    {
+                        ParentNumber = cConstraint.Parent != null ?
+                            string.Format("{0}-{1}", cConstraint.Parent.Template.OwningImplementationGuideId, cConstraint.Parent.Number) :
+                            null,
+                        Number = string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Number),
+                        Order = cConstraint.Order,
+                        Type = CompareStatuses.Removed,
+                        OldNarrative = fc.GetPlainText()
+                    };
 
-            // Modified constraints
-            foreach (var oldConstraint in previousTemplate.Constraints.Where(a => newTemplate.Constraints.Exists(b => b.Number == a.Number)))
-            {
-                var oldConstraintReferences = (from tcr in oldConstraint.References
-                                               join t in constraintTemplates on tcr.ReferenceIdentifier equals t.Oid
-                                               select new ConstraintReference()
-                                               {
-                                                   Bookmark = t.Bookmark,
-                                                   Identifier = t.Oid,
-                                                   Name = t.Name
-                                               }).ToList();
-                var newConstraint = newTemplate.Constraints.Single(b => b.Number == oldConstraint.Number);
-                var newConstraintReferences = (from tcr in newConstraint.References
-                                               join t in constraintTemplates on tcr.ReferenceIdentifier equals t.Oid
-                                               select new ConstraintReference()
-                                               {
-                                                   Bookmark = t.Bookmark,
-                                                   Identifier = t.Oid,
-                                                   Name = t.Name
-                                               }).ToList();
+                    this.result.ChangedConstraints.Add(cResult);
+                }
 
-                ComparisonConstraintResult compareResult = this.CompareConstraint(this.igSettings, oldConstraint, newConstraint, oldConstraintReferences, newConstraintReferences);
+                // Modified constraints
+                foreach (var oldConstraint in previousTemplate.Constraints.Where(a => newTemplate.Constraints.Exists(b => b.Number == a.Number)))
+                {
+                    var newConstraint = newTemplate.Constraints.Single(b => b.Number == oldConstraint.Number);
 
-                if (compareResult != null)
-                    result.ChangedConstraints.Add(compareResult);
+                    ComparisonConstraintResult compareResult = this.CompareConstraint(this.igSettings, oldConstraint, newConstraint);
+
+                    if (compareResult != null)
+                        result.ChangedConstraints.Add(compareResult);
+                }
             }
 
             return this.result;
@@ -165,6 +124,7 @@ namespace Trifolia.Generation.Versioning
 
         private void CompareTemplate(ITemplate previousTemplate, ITemplate newTemplate)
         {
+            CheckField(this.result, "Status", previousTemplate.Status, newTemplate.Status);
             CheckField(this.result, "Name", previousTemplate.Name, newTemplate.Name);
             CheckField(this.result, "Oid", previousTemplate.Oid, newTemplate.Oid);
             CheckField(this.result, "Description", previousTemplate.Description, newTemplate.Description);
@@ -172,10 +132,10 @@ namespace Trifolia.Generation.Versioning
             CheckField(this.result, "Implied Template", GetImpliedName(previousTemplate), GetImpliedName(newTemplate));
         }
 
-        private ComparisonConstraintResult CompareConstraint(IGSettingsManager igSettings, IConstraint oldConstraint, IConstraint newConstraint, List<ConstraintReference> oldConstraintReferences, List<ConstraintReference> newConstraintReferences)
+        private ComparisonConstraintResult CompareConstraint(IGSettingsManager igSettings, IConstraint oldConstraint, IConstraint newConstraint)
         {
-            var oldFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, oldConstraint, oldConstraintReferences);
-            var newFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, newConstraint, newConstraintReferences);
+            var oldFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, oldConstraint);
+            var newFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, newConstraint);
 
             var newNarrative = newFc.GetPlainText();
             var oldNarrative = oldFc.GetPlainText();
@@ -232,12 +192,13 @@ namespace Trifolia.Generation.Versioning
 
         private string GetContainedTemplateDisplay(IConstraint constraint)
         {
-            var containedTemplates = (from tcr in constraint.References
-                                      join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
-                                      where tcr.ReferenceType == ConstraintReferenceTypes.Template
-                                      select string.Format("{0} ({1})", t.Name, t.Oid));
+            if (constraint.ContainedTemplateId != null)
+            {
+                Template containedTemplate = this.tdb.Templates.Single(y => y.Id == constraint.ContainedTemplateId);
+                return string.Format("{0} ({1})", containedTemplate.Name, containedTemplate.Oid);
+            }
 
-            return string.Join(" or ", containedTemplates);
+            return string.Empty;
         }
 
         private string GetCodeSystemDisplay(IConstraint constraint)

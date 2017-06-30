@@ -9,5 +9,6 @@ namespace Trifolia.Web.Models
     public class HomeModel
     {
         public bool DisplayInternalTechSupportPanel { get; set; }
+        public string Message { get; set; }
     }
 }

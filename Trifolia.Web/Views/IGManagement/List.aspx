@@ -75,7 +75,13 @@
             </thead>
             <tbody data-bind="foreach: $parent.GetItems">
                 <tr>
-                    <td data-bind="text: Title"></td>
+                    <td>
+                        <span data-bind="text: Title"></span>
+                        <!-- ko if: DisplayName() && DisplayName() != Title() -->
+                        <br />
+                        <sub data-bind="text: DisplayName"></sub>
+                        <!-- /ko -->
+                    </td>
                     <td data-bind="text: Status"></td>
                     <td data-bind="text: formatDateObj(PublishDate())"></td>
                     <!-- ko if: !$parent.HideOrganization() -->
@@ -103,10 +109,6 @@
                         <h4 class="modal-title">Request Access</h4>
                     </div>
                     <div class="modal-body" style="max-height: 350px; overflow-y: auto;">
-                        <!-- ko if: AccessRequestMessage -->
-                        <p class="alert alert-info" data-bind="text: AccessRequestMessage"></p>
-                        <!-- /ko -->
-
                         <div class="form-group">
                             <label>Access Level</label>
                             <input type="radio" name="RequestEditAccess" value="false" data-bind="checked: RequestEditAccessString" /> View 
@@ -134,6 +136,10 @@
                         <!-- /ko -->
                     </div>
                     <div class="modal-footer">
+                        <!-- ko if: AccessRequestMessage -->
+                        <p class="alert alert-info" data-bind="text: AccessRequestMessage"></p>
+                        <!-- /ko -->
+
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>

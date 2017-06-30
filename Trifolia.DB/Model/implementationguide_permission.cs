@@ -9,6 +9,13 @@ namespace Trifolia.DB
     [Table("implementationguide_permission")]
     public partial class ImplementationGuidePermission
     {
+        public const string PermissionView = "View";
+        public const string PermissionEdit = "Edit";
+
+        public const string TypeUser = "User";
+        public const string TypeGroup = "Group";
+        public const string TypeEveryone = "Everyone";
+
         [Column("id")]
         public int Id { get; set; }
 

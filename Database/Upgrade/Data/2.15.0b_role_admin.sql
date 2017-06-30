@@ -1,1 +1,0 @@
-update [role] set isAdmin = 1 where name = 'Administrators'

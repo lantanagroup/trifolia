@@ -100,10 +100,16 @@
     <Compile Include="Migrations\201704111943303_multipleContainedTemplates.cs" />
     <Compile Include="Migrations\201704111943303_multipleContainedTemplates.Designer.cs">
       <DependentUpon>201704111943303_multipleContainedTemplates.cs</DependentUpon>
+    <Compile Include="Migrations\201705041941253_vImplementationGuideCodeSystems.cs" />
+    <Compile Include="Migrations\201705041941253_vImplementationGuideCodeSystems.Designer.cs">
+      <DependentUpon>201705041941253_vImplementationGuideCodeSystems.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201704121627210_vTemplateRelationship.cs" />
     <Compile Include="Migrations\201704121627210_vTemplateRelationship.Designer.cs">
       <DependentUpon>201704121627210_vTemplateRelationship.cs</DependentUpon>
+    <Compile Include="Migrations\201705121726509_implementationGuideAccessRequests.cs" />
+    <Compile Include="Migrations\201705121726509_implementationGuideAccessRequests.Designer.cs">
+      <DependentUpon>201705121726509_implementationGuideAccessRequests.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201704121915528_vCodeSystemUsage.cs" />
     <Compile Include="Migrations\201704121915528_vCodeSystemUsage.Designer.cs">
@@ -115,6 +121,7 @@
     <Compile Include="Model\audit.cs" />
     <Compile Include="Model\codesystem.cs" />
     <Compile Include="Model\template_constraint_reference.cs" />
+    <Compile Include="Model\implementationguide_accessreq.cs" />
     <Compile Include="Model\TrifoliaDatabase.cs" />
     <Compile Include="Model\green_constraint.cs" />
     <Compile Include="Model\green_template.cs" />
@@ -158,6 +165,7 @@
     <Compile Include="Model\v_template.cs" />
     <Compile Include="Model\v_templateList.cs" />
     <Compile Include="Model\v_templatePermissions.cs" />
+    <Compile Include="Model\v_implementationGuideCodeSystems.cs" />
     <Compile Include="Model\v_templateusage.cs" />
     <Compile Include="Model\v_userSecurables.cs" />
     <Compile Include="ObjectContextExtension.cs" />
@@ -215,14 +223,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704111943303_multipleContainedTemplates.resx">
       <DependentUpon>201704111943303_multipleContainedTemplates.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705041941253_vImplementationGuideCodeSystems.resx">
+      <DependentUpon>201705041941253_vImplementationGuideCodeSystems.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704121627210_vTemplateRelationship.resx">
       <DependentUpon>201704121627210_vTemplateRelationship.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705121726509_implementationGuideAccessRequests.resx">
+      <DependentUpon>201705121726509_implementationGuideAccessRequests.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FHIR_Latest_Resources.txt" />
     <EmbeddedResource Include="Migrations\201704121915528_vCodeSystemUsage.resx">
       <DependentUpon>201704121915528_vCodeSystemUsage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FHIR_Latest_Resources.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703292147411_searchValueSet_down.sql" />

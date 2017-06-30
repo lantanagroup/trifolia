@@ -145,6 +145,7 @@ namespace Trifolia.Web.Controllers.API
                 IsOpen = template.IsOpen,
                 Name = template.Name,
                 Oid = template.Oid,
+                Bookmark = template.Bookmark,
                 Organization = template.OwningImplementationGuide != null && template.OwningImplementationGuide.Organization != null ? template.OwningImplementationGuide.Organization.Name : string.Empty,
                 ShowNotes = CheckPoint.Instance.GrantEditTemplate(template.Id),
                 CanEdit = canEditTemplate,
@@ -333,21 +334,30 @@ namespace Trifolia.Web.Controllers.API
             return model;
         }
 
-        [HttpGet, Route("api/Template/Permissions/{templateId}")]
+        [HttpGet, Route("api/Template/{templateId}/Permissions")]
         public List<SearchUserModel> GetTemplatePermissionsName(int templateId)
         {
-            var userIds =  (from tp in this.tdb.ViewTemplatePermissions
-                                        where tp.TemplateId == templateId && tp.Permission == "Edit"
-                                        select tp.UserId).ToList();
-
-            var users = (from user in this.tdb.Users
-                                           join u in userIds on user.Id equals u
-                                           select user)
-                                           .ToList();
+            Template template = this.tdb.Templates.Single(y => y.Id == templateId);
+            var users = (from tp in this.tdb.ViewTemplatePermissions
+                         join u in this.tdb.Users on tp.UserId equals u.Id
+                         where tp.TemplateId == templateId && tp.Permission == "Edit"
+                         select u).ToList();
 
             var usersList = users.Select(y => new SearchUserModel(y)).ToList();
 
-            return usersList;
+            // Add the current user to the list if they are a data admin.
+            // Data admins don't require explicit permissions.
+            if (CheckPoint.Instance.IsDataAdmin)
+            {
+                User currentUser = CheckPoint.Instance.GetUser(this.tdb);
+                usersList.Add(new SearchUserModel(currentUser));
+            }
+
+            // Add the current author of the template to the list if they are not already there
+            if (!users.Any(y => y.Id == template.AuthorId))
+                usersList.Add(new SearchUserModel(template.Author));
+
+            return usersList.OrderBy(y => y.Name).ToList();
         }
 
         /// <summary>

@@ -128,12 +128,11 @@ namespace Trifolia.Export.FHIR.STU3
 
             ElementDefinition newElementDef = new ElementDefinition()
             {
-                ElementId = constraint.Id.ToString(),
                 Short = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : constraint.Context,
                 Label = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : null,
                 Comment = !string.IsNullOrEmpty(constraint.Notes) ? constraint.Notes : null,
                 Path = constraint.GetElementPath(strucDef.Type != null ? strucDef.Type.ToString() : null),
-                SliceName = constraint.IsBranch ? newSliceName : sliceName,
+                SliceName = constraint.IsBranch ? newSliceName : null,
                 Definition = definition
             };
 
@@ -142,6 +141,7 @@ namespace Trifolia.Export.FHIR.STU3
                 newElementDef.Slicing = new ElementDefinition.SlicingComponent();
                 newElementDef.Slicing.Discriminator.Add(new ElementDefinition.DiscriminatorComponent()
                 {
+                    Type = ElementDefinition.DiscriminatorType.Value,
                     Path = "@type"
                 });
                 newElementDef.Slicing.Rules = ElementDefinition.SlicingRules.Open;
@@ -161,11 +161,11 @@ namespace Trifolia.Export.FHIR.STU3
             if (constraint.ValueSet != null && valueConformance.IndexOf("NOT") < 0)
             {
                 hasBinding = true;
-                newElementDef.Binding = new ElementDefinition.BindingComponent()
+                newElementDef.Binding = new ElementDefinition.ElementDefinitionBindingComponent()
                 {
                     ValueSet = new ResourceReference()
                     {
-                        Reference = constraint.ValueSet.GetIdentifier(ValueSetIdentifierTypes.HTTP),
+                        Reference = constraint.ValueSet.GetReference(),
                         Display = constraint.ValueSet.Name
                     }
                 };
@@ -197,9 +197,6 @@ namespace Trifolia.Export.FHIR.STU3
                         if (constraint.CodeSystem != null)
                             coding.System = constraint.CodeSystem.Oid;
 
-                        if (!string.IsNullOrEmpty(constraint.DisplayName))
-                            coding.Display = constraint.DisplayName;
-
                         elementBinding = codableConceptBinding;
                         break;
                     case "Coding":
@@ -210,9 +207,6 @@ namespace Trifolia.Export.FHIR.STU3
 
                         if (constraint.CodeSystem != null)
                             codingBinding.System = constraint.CodeSystem.Oid;
-
-                        if (!string.IsNullOrEmpty(constraint.DisplayName))
-                            codingBinding.Display = constraint.DisplayName;
 
                         elementBinding = codingBinding;
                         break;
@@ -298,14 +292,22 @@ namespace Trifolia.Export.FHIR.STU3
                 Id = template.FhirId(),
                 Name = template.Name,
                 Description = template.Description != null ? new Markdown(template.Description.RemoveInvalidUtf8Characters()) : null,
-                Kind = StructureDefinition.StructureDefinitionKind.Resource,
+                Kind = template.PrimaryContextType == "Extension" ? StructureDefinition.StructureDefinitionKind.ComplexType : StructureDefinition.StructureDefinitionKind.Resource,
                 Url = template.FhirUrl(),
                 Type = template.TemplateType.RootContextType,
                 Context = new List<string> { template.PrimaryContextType },
-                ContextType = template.PrimaryContextType == "Extension" ? StructureDefinition.ExtensionContext.Extension : StructureDefinition.ExtensionContext.Resource,
+                ContextType = StructureDefinition.ExtensionContext.Resource,
                 Abstract = false,
                 Derivation = StructureDefinition.TypeDerivationRule.Constraint
             };
+
+            // If this is an extension, determine what uses the extension and list them in the
+            // "context" field so that the extension knows where it can be used.
+            if (template.PrimaryContextType == "Extension")
+            {
+                var containingTemplateTypes = template.ContainingConstraints.Select(y => y.Template.PrimaryContextType);
+                fhirStructureDef.Context = containingTemplateTypes.ToList();
+            }
 
             // Extensions
             foreach (var extension in template.Extensions)
@@ -385,7 +387,7 @@ namespace Trifolia.Export.FHIR.STU3
                 foreach (var sliceGroup in sliceGroups)
                 {
                     ElementDefinition newElementDef = new ElementDefinition();
-                    newElementDef.ElementId = string.Format("{0}-{1}", template.Id, currentSliceGroupCount.ToString("00000"));
+                    newElementDef.ElementId = string.Format("{0}-{1}", template.Id, currentSliceGroupCount.ToString("00"));
                     newElementDef.Path = sliceGroup.Key;
 
                     foreach (var branchConstraint in sliceGroup)
@@ -397,16 +399,27 @@ namespace Trifolia.Export.FHIR.STU3
                         newElementDef.Definition = constraintFormatter.GetPlainText(false, false, false);
                         newElementDef.Slicing = new ElementDefinition.SlicingComponent()
                         {
-                            Discriminator = (from bi in branchIdentifiers
-                                             select new ElementDefinition.DiscriminatorComponent()
-                                             {
-                                                 Path = bi.GetElementPath(template.TemplateType.RootContextType)
-                                             }).ToList(),
                             Rules = template.IsOpen ? ElementDefinition.SlicingRules.Open : ElementDefinition.SlicingRules.Closed
                         };
 
-                        // If no discriminators are specified, assume the child SHALL constraints are discriminators
-                        if (newElementDef.Slicing.Discriminator.Count() == 0)
+                        if (branchIdentifiers.Count() > 0)
+                        {
+                            newElementDef.Slicing.Discriminator = (from bi in branchIdentifiers
+                                                                   select new ElementDefinition.DiscriminatorComponent()
+                                                                   {
+                                                                       Type = ElementDefinition.DiscriminatorType.Value,
+                                                                       Path = bi.GetElementPath(null, branchConstraint)
+                                                                   }).ToList();
+                        }
+                        else if (branchConstraint.Context == "extension")
+                        {
+                            newElementDef.Slicing.Discriminator.Add(new ElementDefinition.DiscriminatorComponent()
+                            {
+                                Type = ElementDefinition.DiscriminatorType.Value,
+                                Path = "url"
+                            });
+                        }
+                        else        // If no discriminators are specified, assume the child SHALL constraints are discriminators
                         {
                             var discriminatorConstraints = branchConstraint.ChildConstraints.Where(y => y.Conformance == "SHALL");
 
@@ -430,7 +443,8 @@ namespace Trifolia.Export.FHIR.STU3
                             newElementDef.Slicing.Discriminator = (from d in discriminatorConstraints
                                                                    select new ElementDefinition.DiscriminatorComponent()
                                                                    {
-                                                                       Path = d.GetElementPath(template.PrimaryContextType)
+                                                                       Type = ElementDefinition.DiscriminatorType.Value,
+                                                                       Path = d.GetElementPath(template.PrimaryContextType, branchConstraint)
                                                                    }).ToList();
                         }
                     }
@@ -439,6 +453,7 @@ namespace Trifolia.Export.FHIR.STU3
                     var firstElement = fhirStructureDef.Differential.Element.First(y => y.Path == sliceGroup.Key);
                     var firstElementIndex = fhirStructureDef.Differential.Element.IndexOf(firstElement);
                     differential.Element.Insert(firstElementIndex, newElementDef);
+                    currentSliceGroupCount++;
                 }
             }
 
