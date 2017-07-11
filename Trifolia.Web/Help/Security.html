@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -185,10 +185,10 @@
 <p></p>
 <p class="rvps2"><span class="rvts6">Trifolia uses two different methods of security:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts19">Role-based security</span><span class="rvts6"> - Controls what a user can do. This includes all actions and controls. It controls what a user can select to initiate an action. Roles are assigned on a system-wide basis, meaning that the role does not change for the different areas of functionality within the application.</span></li>
-<li class="rvps2"><span class="rvts19">Permissions-based security</span><span class="rvts6"> - Controls what a user can view or edit. This controls the user's ability to view and edit implementation guides and Templates/Profiles. Permissions are assigned to implementation guides using the Permissions tab in the Implementation Guide Editor. &nbsp;See the</span><a class="rvts20" href="ImplementationGuidePermissions.html"> Permissions</a><span class="rvts6"> section in </span><a class="rvts20" href="AuthorImplementationGuides.html">Authoring Implementation Guides</a><span class="rvts6">.</span></li>
+<li class="rvps2"><span class="rvts20">Role-based security</span><span class="rvts6"> - Controls what a user can do. This includes all actions and controls. It controls what a user can select to initiate an action. Roles are assigned on a system-wide basis, meaning that the role does not change for the different areas of functionality within the application.</span></li>
+<li class="rvps2"><span class="rvts20">Permissions-based security</span><span class="rvts6"> - Controls what a user can view or edit. This controls the user's ability to view and edit implementation guides and Templates/Profiles. Permissions are assigned to implementation guides using the Permissions tab in the Implementation Guide Editor. &nbsp;See the</span><a class="rvts11" href="ImplementationGuidePermissions.html"> Permissions</a><span class="rvts6"> section in </span><a class="rvts11" href="AuthorImplementationGuides.html">Authoring Implementation Guides</a><span class="rvts6">.</span></li>
 </ul>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Organizations</span></span></h2>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts21">Organizations</span></span></h2>
 <p class="rvps2"><span class="rvts6">Trifolia organizes users and groups for each configured organization. For example, Lantana Consulting Group is configured to be an organization that has access to Trifolia, using it's own authentication method, and granting access to implementation guides and templates/profiles to users within that organization. HL7 is another organization configured to have access to Trifolia with its own set of users and roles.</span></p>
 <p></p>
 
@@ -198,19 +198,35 @@
         </div>  <!-- /#topic-content -->
     </article>
 
-    <footer>
-        
-    </footer>
+    <footer></footer>
 
   </div>  <!-- /#main -->
 
   <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
   <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
   <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
   
@@ -236,10 +252,16 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Custom JS
+	  
       // Boot the app
       app.Boot();
     });
   </script>
 
-  
+
+
+</body>
+
+</html>
 

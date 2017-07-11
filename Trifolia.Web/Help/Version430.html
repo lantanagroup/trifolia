@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -183,9 +183,9 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts14">Version 4.3.0</span></span></h2>
-<p class="rvps6"><span class="rvts13">Released on Friday, Dec 2, 2016</span></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts54">Schema Choice Support</span></span></h3>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts15">Version 4.3.0</span></span></h2>
+<p class="rvps8"><span class="rvts14">Released on Friday, Dec 2, 2016</span></p>
+<h3 class="rvps9"><span class="rvts0"><span class="rvts54">Schema Choice Support</span></span></h3>
 <p class="rvps2"><span class="rvts56">XML Schema supports a notion of "choices", where you can select one element out of several options. Prior to this release, Trifolia showed those options as though you could select more than one of the options at a time. Now, Trifolia fully supports the notion of a schema choice, by wrapping the options in a parent element (such as "effective[x]"). The conformance and cardinality is defined in the parent element and does not apply to the options within the parent element.</span></p>
 <p class="rvps2"><span class="rvts56">Narrative generation is modified so that it is clear that only one option may be used at a time. For example:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
@@ -196,7 +196,7 @@
 </ul></ul>
 <p class="rvps2"><span class="rvts56"><br/></span></p>
 <p class="rvps2"><span class="rvts56">Note: The schematron generation engine has not been updated yet to handle schema choices. This will be done in a future (most likely the next) release.</span></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts54">FHIR Build Package</span></span></h3>
+<h3 class="rvps9"><span class="rvts0"><span class="rvts54">FHIR Build Package</span></span></h3>
 <p class="rvps2"><span class="rvts56">The export for "FHIR Build Package" (available under Export &gt; "Templates/Profiles to XML/JSON" menu) has been updated to work with the latest version of the FHRI IG Publisher.</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts56">Template/Profile samples are added to the control file</span></li>
@@ -209,42 +209,42 @@
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
 <li class="rvps2"><span class="rvts56">As a result of this, the FHIR REST API (/api/FHRI3/) has been updated to support CapabilityStatement instead of Conformance</span></li>
 </ul></ul>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts22">Development Log</span></span></h3>
-<div class="rvps11"><table width="498" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse;">
+<h3 class="rvps9"><span class="rvts0"><span class="rvts22">Development Log</span></span></h3>
+<div class="rvps13"><table width="498" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse;">
 <tr valign="top">
-<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps19"><span class="rvts55">Type</span></p>
+<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps21"><span class="rvts55">Type</span></p>
 </td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps19"><span class="rvts55">Description</span></p>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps21"><span class="rvts55">Description</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts13">Feature</span></p>
+<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps8"><span class="rvts14">Feature</span></p>
 </td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps18"><span class="rvts13">UI changes for schema choices</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts13">Feature</span></p>
-</td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps18"><span class="rvts13">Narrative generation updates for schema choices</span></p>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps20"><span class="rvts14">UI changes for schema choices</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts13">Improvement</span></p>
+<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps8"><span class="rvts14">Feature</span></p>
 </td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps18"><span class="rvts13">Include implementation guide files in Native XML export/import</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts13">Improvement</span></p>
-</td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps18"><span class="rvts13">FHIR Resource Instances in Web-based IG</span></p>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps20"><span class="rvts14">Narrative generation updates for schema choices</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps6"><span class="rvts13">Defect</span></p>
+<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps8"><span class="rvts14">Improvement</span></p>
 </td>
-<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps18"><span class="rvts13">Trifolla FHIR Build: Review/resolve errors in IG Publisher for Trifolia export</span></p>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps20"><span class="rvts14">Include implementation guide files in Native XML export/import</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps8"><span class="rvts14">Improvement</span></p>
+</td>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps20"><span class="rvts14">FHIR Resource Instances in Web-based IG</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="95" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps8"><span class="rvts14">Defect</span></p>
+</td>
+<td width="371" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps20"><span class="rvts14">Trifolla FHIR Build: Review/resolve errors in IG Publisher for Trifolia export</span></p>
 </td>
 </tr>
 </table>
@@ -257,19 +257,35 @@
         </div>  <!-- /#topic-content -->
     </article>
 
-    <footer>
-        
-    </footer>
+    <footer></footer>
 
   </div>  <!-- /#main -->
 
   <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
   <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
   <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
   
@@ -295,10 +311,16 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Custom JS
+	  
       // Boot the app
       app.Boot();
     });
   </script>
 
-  
+
+
+</body>
+
+</html>
 
