@@ -46,6 +46,10 @@ namespace Trifolia.Import.Native
             importStatus.AddImportedTemplates(importedTemplates);
             importStatus.Messages.AddRange(templateImporter.Errors);
 
+            TerminologyImporter termImporter = new TerminologyImporter(this.tdb);
+            termImporter.ImportCodeSystems(model.CodeSystem);
+            termImporter.ImportValueSets(model.ValueSet);
+
             if (importStatus.Messages.Count == 0)
             {
                 try
