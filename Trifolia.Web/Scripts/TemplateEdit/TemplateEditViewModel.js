@@ -1090,14 +1090,14 @@ var templateEditViewModel = function (templateId, defaults) {
 
         var shouldCallServer = !node || !node.Constraint() || !node.Constraint().IsPrimitive();
 
-        if (node && (node.IsAttribute() || node.AreChildrenLoaded()))
+        if (node && ((node.IsAttribute() && node.Constraint().Children().length == 0) || node.AreChildrenLoaded()))
             shouldCallServer = false;
 
         // Only get the list of nodes (for the schema) from the server if 
         // 1) There is no parent node (this means that we are getting the nodes for the root level of the tree).
         // 2) or There is a node, but no constraint. This means we either already have the node definition, or it potentially a primitive.
         // 3) or There is a node and a constraint, and the constraint is not a primitive. There are no association to the schema for primitive constraints.
-        // 4) and never call to the server when the node is an attribute (attributes don't have children). 
+        // [NO LONGER TRUE (?)] 4) and never call to the server when the node is an attribute (attributes don't have children). 
         if (shouldCallServer) {
             if (node) {
                 node.ChildrenLoadingPromise(deferred.promise);

@@ -5,7 +5,8 @@
   <helpPages>
     <!-- Home Page -->
     <add route="/" helpLocation="Trifolia.html" windowType="NewWindow"/>
-    <add route="/Home/LoggedInIndex" helpLocation="Trifolia.html" windowType="NewWindow" />
+    <add route="/Home/Index" helpLocation="Trifolia.html" windowType="NewWindow" />
+    <add route="/home/loggedinindex" helpLocation="Trifolia.html" windowType="NewWindow" />
     
     <!-- My Profile and Login -->
     <add route="/Account/MyProfile" helpLocation="UserProfiles.html" windowType="NewWindow"/>
@@ -22,15 +23,15 @@
     <add route="/IGManagement/Delete/*" helpLocation="AuthorImplementationGuides.html#delete" windowType="NewWindow" />
 
     <!-- Templates: List and View -->
-    <add route="/TemplateManagement/List" helpLocation="BrowseTemplates.html" windowType="NewWindow" />
-    <add route="/TemplateManagement/View/*" helpLocation="BrowseTemplates.html" windowType="NewWindow" />
+    <add route="/TemplateManagement/List" helpLocation="TemplatesProfiles.html" windowType="NewWindow" />
+    <add route="/TemplateManagement/View/*" helpLocation="TemplatesProfiles.html" windowType="NewWindow" />
 
     <!-- Templates: Editing -->
     <add route="/TemplateManagement/Edit/*" helpLocation="Editor.html" windowType="NewWindow" />
 	  <add route="/TemplateManagement/PublishSettings" helpLocation="TemplatePublishSettings.html" windowType="NewWindow" />
     <add route="/TemplateManagement/Copy" helpLocation="CopyingTemplates.html" windowType="NewWindow" />
-    <add route="/TemplateManagement/Delete/*" helpLocation="AuthorTemplates.html#delete" windowType="NewWindow" />
-    <add route="/TemplateManagement/Move/*" helpLocation="AuthorTemplates.html#move" windowType="NewWindow" />
+    <add route="/TemplateManagement/Delete/*" helpLocation="DeletingTemplates.html" windowType="NewWindow" />
+    <add route="/TemplateManagement/Move/*" helpLocation="MovingTemplates.html" windowType="NewWindow" />
     <!-- <add route="/Green/Index" helpLocation="" /> -->
 
     <!-- Terminology (value sets and code systems) -->
@@ -41,8 +42,8 @@
     <!-- Export Menu -->
     <add route="/IGManagement/List/ExportMSWord" helpLocation="ExportMSWord.html" windowType="NewWindow" />
     <add route="/Export/MSWord/*" helpLocation="ExportMSWord.html" windowType="NewWindow" />
-    <add route="/IGManagement/List/ExportXML" helpLocation="XMLJSON.html" windowType="NewWindow" />
-    <add route="/Export/Xml/*" helpLocation="ExportXML.html" windowType="NewWindow" />
+    <add route="/IGManagement/List/ExportXML" helpLocation="ExportXMLJSON.html" windowType="NewWindow" />
+    <add route="/Export/Xml/*" helpLocation="ExportXMLJSON.html" windowType="NewWindow" />
     <add route="/IGManagement/List/ExportSchematron" helpLocation="ExportSchematron.html" windowType="NewWindow" />
     <add route="/Export/Schematron/*" helpLocation="ExportSchematron.html" windowType="NewWindow" />
     <add route="/IGManagement/List/ExportVocab" helpLocation="ExportTerminology.html" windowType="NewWindow" />

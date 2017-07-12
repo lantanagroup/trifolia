@@ -398,14 +398,14 @@
         <!-- TODO: Separate field to capture display name -->
         <h2 class="page-header">Welcome to the Web-based Implementation Guide for {{Model.ImplementationGuideDisplayName}}</h2>
 
-        <p ng-bind-html="GetHtml(Model.ImplementationGuideDescription)"></p>
-
         <h3>Table of Contents</h3>
         <h4><span class="glyphicon glyphicon-book"></span> <a href="#overview">Overview</a></h4>
         <h4><span class="glyphicon glyphicon-list-alt"></span> <a href="#volume2">Templates/Profiles</a></h4>
         <h4 ng-if="Model.FHIRResources && Model.FHIRResources.length > 0"><span class="glyphicon glyphicon-registration-mark"></span> <a href="#resources">Resources</a></h4>
         <h4><span class="glyphicon glyphicon-list"></span> <a href="#valuesets">Value sets in this guide</a></h4>
         <h4><span class="glyphicon glyphicon-list"></span> <a href="#codesystems">Code systems in this guide</a></h4>
+
+        <p ng-bind-html="GetHtml(Model.ImplementationGuideDescription)"></p>
     </script>
 
     <script type="text/html" id="overview.html">

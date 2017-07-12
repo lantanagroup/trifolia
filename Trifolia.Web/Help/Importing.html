@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -171,7 +171,7 @@
                         
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="XMLJSON.html" title="XML/JSON" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Reports.html" title="Reports" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="ExportXMLJSON.html" title="XML/JSON" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Reports.html" title="Reports" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
@@ -183,7 +183,7 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Importing using the native XML format with the web interface</span></span></h2>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts21">Importing using the native XML format with the web interface</span></span></h2>
 <p class="rvps2"><span class="rvts6">Trifolia can import implementation guide and template/profile data via the "Import" tab. The Trifolia native XML format includes all information that Trifolia uses to generate various exports, including sample information for both templates/profiles and constraints, heading information, template type descriptions, etc. This export/import format is designed to transfer information between different installations of Trifolia.</span></p>
 <p class="rvps2"><span class="rvts6">To import this format:</span></p>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
@@ -200,7 +200,7 @@
 <li class="rvps2"><span class="rvts6">Templates/profiles, constraints and samples that already exist and are not included in the import XML file are </span><span class="rvts36">not </span><span class="rvts6">deleted. For example, if Trifolia already has templates/profiles A, B and C in "My Implementation Guide", and the import XML file only contains templates/profiles A and B, then template/profile C will still remain in "My Implementation Guide" after the import is complete.</span></li>
 </ul>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Importing using FHIR REST interface</span></span></h2>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts21">Importing using FHIR REST interface</span></span></h2>
 <p class="rvps2"><span class="rvts6">Trifolia provides </span><span class="rvts36">some </span><span class="rvts6">(but not all) POST/PUT/DELETE functionality for FHIR profiles. Below is a list of the operations supported by Trifolia:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">FHIR DSTU2 /api/FHIR2/</span></li>
@@ -227,19 +227,35 @@
         </div>  <!-- /#topic-content -->
     </article>
 
-    <footer>
-        
-    </footer>
+    <footer></footer>
 
   </div>  <!-- /#main -->
 
   <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
   <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
   <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
   
@@ -265,10 +281,16 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Custom JS
+	  
       // Boot the app
       app.Boot();
     });
   </script>
 
-  
+
+
+</body>
+
+</html>
 

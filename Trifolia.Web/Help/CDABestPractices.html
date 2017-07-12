@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -183,17 +183,17 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Assert the Template Identifier as a Constraint(s)</span></span></h2>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts21">Assert the Template Identifier as a Constraint(s)</span></span></h2>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">On every template, create a constraint for "templateId"</span></li>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" style="margin-left: 0px" class="rvps10"><span class="rvts6">Create a constraint for "@root" equal to the OID of the template's identifier</span></li>
-<li value="2" style="margin-left: 0px" class="rvps10"><span class="rvts6">Create a constraint for "@extension" equal to the extension of the template's identifier (if any)</span></li>
+<li value="1" style="margin-left: 0px" class="rvps12"><span class="rvts6">Create a constraint for "@root" equal to the OID of the template's identifier</span></li>
+<li value="2" style="margin-left: 0px" class="rvps12"><span class="rvts6">Create a constraint for "@extension" equal to the extension of the template's identifier (if any)</span></li>
 </ol></ol>
 <p class="rvps2"><img width="800" height="239" alt="" style="padding : 1px;" src="lib/BestPrac_TemplateIdExample.jpg"></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Constraints with Data-type CS</span></span></h2>
-<p class="rvps17"><span class="rvts47">Coded Simple Value (CS)</span></p>
-<p class="rvps17"><span class="rvts47">Definition: Coded data in its simplest form, where only the code is not predetermined. The code system and code system version are fixed by the context in which the CS value occurs. CS is used for coded attributes that have a single HL7-defined value set.</span></p>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts21">Constraints with Data-type CS</span></span></h2>
+<p class="rvps19"><span class="rvts47">Coded Simple Value (CS)</span></p>
+<p class="rvps19"><span class="rvts47">Definition: Coded data in its simplest form, where only the code is not predetermined. The code system and code system version are fixed by the context in which the CS value occurs. CS is used for coded attributes that have a single HL7-defined value set.</span></p>
 <p class="rvps2"><span class="rvts6">This means that you should only specify the "Code" attribute for a single-value binding. An example of where this is commonly the case is with the "statusCode" element.</span></p>
 <p class="rvps2"><img width="800" height="287" alt="" style="padding : 1px;" src="lib/BestPrac_StatusCodeExample.jpg"></p>
 <p></p>
@@ -204,19 +204,35 @@
         </div>  <!-- /#topic-content -->
     </article>
 
-    <footer>
-        
-    </footer>
+    <footer></footer>
 
   </div>  <!-- /#main -->
 
   <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
   <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
   <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
   
@@ -242,10 +258,16 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Custom JS
+	  
       // Boot the app
       app.Boot();
     });
   </script>
 
-  
+
+
+</body>
+
+</html>
 

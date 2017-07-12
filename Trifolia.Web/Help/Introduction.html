@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -183,17 +183,26 @@
             <div class="main-content">
                 
 <p></p>
-<p class="rvps2"><span class="rvts6">Trifolia Workbench is a web-based application connected to a SQL Server database. Use it to browse, edit and create templates/profiles, value sets, and implementation guides. You can export the information created in a variety of formats, and can generate Schematron code for use in validating the implementation in applications.</span></p>
-<p class="rvps2"><span class="rvts6">Trifolia supports the following core standards:</span></p>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts6">Clinical Document Architecture (CDA)</span></li>
-<li class="rvps2"><span class="rvts6">E-Measure</span></li>
-<li class="rvps2"><span class="rvts6">FHIR DSTU1</span></li>
-<li class="rvps2"><span class="rvts6">FHIR DSTU2</span></li>
-<li class="rvps2"><span class="rvts6">FHIR STU3</span></li>
+<p class="rvps4"><span class="rvts6">Trifolia is an open source tool for creating FHIR profiles and CDA templates. Users can export templates/profiles to:</span></p>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: disc;">
+<li style="margin-left: 0px" class="rvps5"><span class="rvts6">MS Word (DOCX)</span></li>
+<li style="margin-left: 0px" class="rvps5"><span class="rvts6">Web (HTML)</span></li>
+<li style="margin-left: 0px" class="rvps5"><span class="rvts6">Excel (XLSX)</span></li>
+<li style="margin-left: 0px" class="rvps5"><span class="rvts6">Other XML formats</span></li>
 </ul>
-<p class="rvps2"><span class="rvts6"></span></p>
-<p class="rvps2"><span class="rvts6"><div class="additionalFormats">
+<p class="rvps4"><span class="rvts6">Trifolia exposes FHIR DSTU1, DSTU2, and STU3 REST APIs, as well as a native API.</span></p>
+<p class="rvps4"><span class="rvts6">Trifolia is available to download and install locally. Users should know Trifolia requires the following technologies:</span></p>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: disc;">
+<li style="margin-left: 0px" class="rvps5"><span class="rvts6">Microsoft C# .NET 4.5</span></li>
+<li style="margin-left: 0px" class="rvps5"><span class="rvts6">OAuth 2.0 Authentication</span></li>
+<li style="margin-left: 0px" class="rvps5"><span class="rvts6">NET MVC and Web API</span></li>
+<li style="margin-left: 0px" class="rvps5"><span class="rvts6">SQL Server 2012+</span></li>
+<li style="margin-left: 0px" class="rvps5"><span class="rvts6">JS and Angular.JS</span></li>
+<li style="margin-left: 0px" class="rvps5"><span class="rvts6">Bootstrap&nbsp;</span></li>
+</ul>
+<p class="rvps4"><span class="rvts6">The public code repository is available at</span><a class="rvts11" href="https://github.com/lantanagroup/trifolia">&nbsp;https://github.com/lantanagroup/trifolia</a><span class="rvts6">.</span></p>
+<p class="rvps4"><span class="rvts6"></span></p>
+<p class="rvps4"><span class="rvts6"><div class="additionalFormats">
 	<p>This documentation can be downloaded the following additional formats:</p>
 	<ul>
 		<li><a href="Trifolia.chm">CHM</a><span class="rvts11"> (.chm)</span></li>
@@ -202,7 +211,7 @@
 		<li><a href="Trifolia.epub">E-Pub</a><span class="rvts11"> (.epub)</span></li>
 	</ul>
 </div></span></p>
-<p class="rvps2"><span class="rvts6"></span></p>
+<p class="rvps4"><span class="rvts6"></span></p>
 <p></p>
 
             </div>
@@ -211,19 +220,35 @@
         </div>  <!-- /#topic-content -->
     </article>
 
-    <footer>
-        
-    </footer>
+    <footer></footer>
 
   </div>  <!-- /#main -->
 
   <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
   <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
   <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
   
@@ -249,10 +274,16 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Custom JS
+	  
       // Boot the app
       app.Boot();
     });
   </script>
 
-  
+
+
+</body>
+
+</html>
 

@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -171,7 +171,7 @@
                         <li><a href="Authoring.html">Authoring</a></li><li>Templates/Profiles</li>
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="TemplatesProfiles1.html" title="Templates/Profiles" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="FHIRBestPractices.html" title="FHIR Best Practices" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="AuthorTerminology.html" title="Terminology" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="TemplatesProfiles1.html" title="Templates/Profiles" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="FHIRBestPractices.html" title="FHIR Best Practices" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="CopyingTemplates.html" title="Copying" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
@@ -189,12 +189,12 @@
 <li class="rvps2"><span class="rvts6">Generate and customize code samples to associate with the template.</span></li>
 <li class="rvps2"><span class="rvts6">Control whether one or more constraints has its own heading in the implementation guide.</span></li>
 </ul>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">View the Publish Settings page</span></span></h2>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts21">View the Publish Settings page</span></span></h2>
 <p class="rvps2"><span class="rvts6">Select Publish Settings from the Template Viewer's Quick Buttons.</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Constraint Headings</span></span></h2>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts21">Constraint Headings</span></span></h2>
 <p class="rvps2"><span class="rvts6">For complex template/profile structures, it is best practice to document certain elements of the template/profile in greater detail.</span></p>
 <p class="rvps2"><span class="rvts6">Use the Constraints tab of the Publish Settings page to add headings to constraints that appear in an implementation guide. This allows complex templates to be broken into sections within the implementation guide.</span></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts22">Add a Heading to a Constraint</span></span></h3>
+<h3 class="rvps9"><span class="rvts0"><span class="rvts22">Add a Heading to a Constraint</span></span></h3>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">In the Constraints section of the Publish Settings page, select Edit for the constraint you want to edit.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">To add to the constraint heading text, select the Heading check box. The Heading Description box appears.</span></li>
@@ -203,9 +203,9 @@
 <li value="5" class="rvps2"><span class="rvts6">When finished, select OK. Heading text, Description text, Label text, and Sample Code are added to the selected constraint. The effect is shown below.</span></li>
 <li value="6" class="rvps2"><span class="rvts6">When finished, select Save in the Edit Publish Settings.</span></li>
 </ol>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Samples</span></span></h2>
-<p class="rvps2"><span class="rvts6">Use the </span><span class="rvts19">Template Samples</span><span class="rvts6"> tab of the </span><span class="rvts19">Publish Settings</span><span class="rvts6"> page to generate, customize, and format code samples to associate with a particular template.</span></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts22">Generate a Code Sample</span></span></h3>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts21">Samples</span></span></h2>
+<p class="rvps2"><span class="rvts6">Use the </span><span class="rvts20">Template Samples</span><span class="rvts6"> tab of the </span><span class="rvts20">Publish Settings</span><span class="rvts6"> page to generate, customize, and format code samples to associate with a particular template.</span></p>
+<h3 class="rvps9"><span class="rvts0"><span class="rvts22">Generate a Code Sample</span></span></h3>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">In the Template Samples tab, select Add. The Edit Sample page appears.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">Enter a Name for the sample.</span></li>
@@ -222,19 +222,35 @@
         </div>  <!-- /#topic-content -->
     </article>
 
-    <footer>
-        
-    </footer>
+    <footer></footer>
 
   </div>  <!-- /#main -->
 
   <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
   <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
   <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
   
@@ -260,10 +276,16 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Custom JS
+	  
       // Boot the app
       app.Boot();
     });
   </script>
 
-  
+
+
+</body>
+
+</html>
 

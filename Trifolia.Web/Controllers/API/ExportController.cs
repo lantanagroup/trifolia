@@ -451,7 +451,9 @@ namespace Trifolia.Web.Controllers.API
                     string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, 0, (int)vocOutputType, "UTF-8");
 
                     byte[] vocData = ASCIIEncoding.UTF8.GetBytes(vocXml);
-                    string vocFileName = string.Format("{0}.xml", ig.GetDisplayName(true));
+                    string vocFileName = string.Format("{0}", model.VocabularyFileName);
+                    //Ensuring the extension is present in case input doesn't have it
+                    if (vocFileName.IndexOf(".xml") == -1) vocFileName += ".xml";
                     zip.AddEntry(vocFileName, vocData);
 
                     using (MemoryStream ms = new MemoryStream())
