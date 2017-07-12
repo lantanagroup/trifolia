@@ -82,6 +82,20 @@ namespace Trifolia.Export.FHIR.STU3
             this.control = new Models.Control();
             this.control.canonicalBase = this.ig.Identifier;
 
+            var igDependencies = (from t in templates
+                                  join tc in this.tdb.TemplateConstraints.AsNoTracking() on t.Id equals tc.TemplateId
+                                  join dt in this.tdb.Templates.AsNoTracking() on tc.ContainedTemplateId equals dt.Id
+                                  join ig in this.tdb.ImplementationGuides on dt.OwningImplementationGuideId equals ig.Id
+                                  where ig.Id != this.ig.Id && ig.Identifier != "http://hl7.org/fhir/"
+                                  select ig).Distinct();
+
+            this.control.dependencyList = (from ig in igDependencies
+                                           select new Control.Dependency()
+                                           {
+                                               name = ig.Name,
+                                               location = ig.Identifier
+                                           }).ToList();
+
             if (!string.IsNullOrEmpty(this.control.canonicalBase) && this.control.canonicalBase.LastIndexOf("/") == this.control.canonicalBase.Length - 1)
                 this.control.canonicalBase = this.control.canonicalBase.Substring(0, this.control.canonicalBase.Length - 1);
 
