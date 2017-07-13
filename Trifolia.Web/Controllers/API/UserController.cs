@@ -14,6 +14,8 @@ using Trifolia.Logging;
 using Newtonsoft.Json;
 using System.IO;
 using System.Dynamic;
+using Trifolia.Web.Models.Account;
+using Trifolia.Shared;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -293,6 +295,10 @@ namespace Trifolia.Web.Controllers.API
             return matches.OrderBy(y => y.Name);
         }
 
+        /// <summary>
+        /// Gets a list of all users in the database. Can only be executed by admins.
+        /// </summary>
+        /// <returns>A list of UserModel, populated with user meta-data, groups and roles.</returns>
         [HttpGet, Route("api/User"), SecurableAction(SecurableNames.ADMIN)]
         public IEnumerable<UserModel> GetUsers()
         {
@@ -314,8 +320,127 @@ namespace Trifolia.Web.Controllers.API
             return userModels;
         }
 
+        /// <summary>
+        /// Gets the profile model for the currently logged-in user.
+        /// </summary>
+        [HttpGet, Route("api/User/Me"), SecurableAction]
+        public UserProfile GetMyUser()
+        {
+            User currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+            UserProfile model = new UserProfile()
+            {
+                UserName = currentUser.UserName,
+                FirstName = currentUser.FirstName,
+                LastName = currentUser.LastName,
+                Phone = currentUser.Phone,
+                Email = currentUser.Email,
+                OkayToContact = currentUser.OkayToContact.HasValue ? currentUser.OkayToContact.Value : false,
+                Organization = currentUser.ExternalOrganizationName,
+                OrganizationType = currentUser.ExternalOrganizationType,
+                UmlsUsername = !string.IsNullOrEmpty(currentUser.UMLSUsername) ? "******" : string.Empty,
+                UmlsPassword = !string.IsNullOrEmpty(currentUser.UMLSPassword) ? "******" : string.Empty
+            };
+
+            if (!string.IsNullOrEmpty(AppSettings.OpenIdConfigUrl))
+                model.OpenIdConfigUrl = AppSettings.OpenIdConfigUrl;
+
+            var authData = CheckPoint.Instance.GetAuthenticatedData();
+
+            if (authData.ContainsKey(CheckPoint.AUTH_DATA_OAUTH2_TOKEN))
+                model.AuthToken = authData[CheckPoint.AUTH_DATA_OAUTH2_TOKEN];
+
+            return model;
+        }
+
+
+        /// <summary>
+        /// This method is a public route for <see cref="ValidateUmlsCredentials(IObjectRepository, ValidateUmlsCredentialsRequestModel)"></see>
+        /// </summary>
+        [HttpPost, Route("api/User/ValidateUmlsCredentials"), SecurableAction]
+        public ValidateUmlsCredentialsResponseModel ValidateUmlsCredentials(ValidateUmlsCredentialsRequestModel model)
+        {
+            return ValidateUmlsCredentials(this.tdb, model);
+        }
+
+        /// <summary>
+        /// Validates the specified credentials against the UMLS/VSAC server. Confirms if the credentials are valid, 
+        /// and if they, whether the credentials are associated with a valid/active UMLS license.
+        /// </summary>
+        /// <param name="tdb">The EF object context to access the current user</param>
+        /// <param name="credentials">The credentials to use to validate. If not specified, attempts to use the credentials associated with the currently logged-in user's profile.</param>
+        /// <returns>A model containing properties indicating if the credentials are valid. When the credentials are valid, model contains a property to indicate if the credentials are associated with a valid UMLS/VSAC license.</returns>
+        public static ValidateUmlsCredentialsResponseModel ValidateUmlsCredentials(IObjectRepository tdb, ValidateUmlsCredentialsRequestModel credentials = null)
+        {
+            var currentUser = CheckPoint.Instance.GetUser(tdb);
+
+            if (credentials == null)
+                credentials = new ValidateUmlsCredentialsRequestModel();
+
+            if (credentials.Username == null)
+                credentials.Username = currentUser.UMLSUsername.DecryptStringAES();
+
+            if (credentials.Password == null)
+                credentials.Password = currentUser.UMLSPassword.DecryptStringAES();
+
+            if (string.IsNullOrEmpty(credentials.Username) || string.IsNullOrEmpty(credentials.Password))
+                return new ValidateUmlsCredentialsResponseModel();
+
+            // TODO: Test that the credentials are valid
+
+            return new ValidateUmlsCredentialsResponseModel()
+            {
+                CredentialsValid = true,
+                LicenseValid = false
+            };
+        }
+
+        /// <summary>
+        /// Persists/updates the information in the model to the current user's profile.
+        /// </summary>
+        [HttpPost, Route("api/User/Me"), SecurableAction]
+        public void SaveMyUser(UserProfile model)
+        {
+            // CheckPoint.Instance.GetUser should always return a user model. If not, this method was called incorrectly.
+            User currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+            if (currentUser.FirstName != model.FirstName)
+                currentUser.FirstName = model.FirstName;
+
+            if (currentUser.LastName != model.LastName)
+                currentUser.LastName = model.LastName;
+
+            if (currentUser.Phone != model.Phone)
+                currentUser.Phone = model.Phone;
+
+            if (currentUser.Email != model.Email)
+                currentUser.Email = model.Email;
+
+            if (currentUser.OkayToContact != model.OkayToContact)
+                currentUser.OkayToContact = model.OkayToContact;
+
+            if (currentUser.ExternalOrganizationName != model.Organization)
+                currentUser.ExternalOrganizationName = model.Organization;
+
+            if (currentUser.ExternalOrganizationType != model.OrganizationType)
+                currentUser.ExternalOrganizationType = model.OrganizationType;
+
+            if (currentUser.UMLSUsername != model.UmlsUsername && model.UmlsUsername != "******")
+                currentUser.UMLSUsername = model.UmlsUsername.EncryptStringAES();
+
+            if (currentUser.UMLSPassword != model.UmlsPassword && model.UmlsPassword != "******")
+                currentUser.UMLSPassword = model.UmlsPassword.EncryptStringAES();
+
+            tdb.SaveChanges();
+        }
+
+        /// <summary>
+        /// Updates the currently logged-in user's profiles with the data in the specified model
+        /// </summary>
+        /// <param name="model">The object model containing the properties of the user to update.</param>
+        /// <remarks>The Username property is not updated. Username cannot be changed by the user.</remarks>
         [HttpPost, Route("api/User"), SecurableAction(SecurableNames.ADMIN)]
-        public User SaveUser(int organizationId, UserModel model)
+        public void SaveUser(UserModel model)
         {
             User user = this.tdb.Users.SingleOrDefault(y => y.Id == model.Id);
 
@@ -352,8 +477,6 @@ namespace Trifolia.Web.Controllers.API
             user.Phone = model.Phone;
 
             this.tdb.SaveChanges();
-
-            return user;
         }
 
         [HttpDelete, Route("api/User/{userId}"), SecurableAction(SecurableNames.ADMIN)]

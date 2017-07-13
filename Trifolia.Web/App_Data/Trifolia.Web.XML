@@ -568,6 +568,43 @@
             <param name="searchText">The text to search for.</param>
             <returns></returns>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.GetUsers">
+            <summary>
+            Gets a list of all users in the database. Can only be executed by admins.
+            </summary>
+            <returns>A list of UserModel, populated with user meta-data, groups and roles.</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.GetMyUser">
+            <summary>
+            Gets the profile model for the currently logged-in user.
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.ValidateUmlsCredentials(Trifolia.Web.Models.User.ValidateUmlsCredentialsRequestModel)">
+            <summary>
+            This method is a public route for <see cref="M:Trifolia.Web.Controllers.API.UserController.ValidateUmlsCredentials(Trifolia.DB.IObjectRepository,Trifolia.Web.Models.User.ValidateUmlsCredentialsRequestModel)"></see>
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.ValidateUmlsCredentials(Trifolia.DB.IObjectRepository,Trifolia.Web.Models.User.ValidateUmlsCredentialsRequestModel)">
+            <summary>
+            Validates the specified credentials against the UMLS/VSAC server. Confirms if the credentials are valid, 
+            and if they, whether the credentials are associated with a valid/active UMLS license.
+            </summary>
+            <param name="tdb">The EF object context to access the current user</param>
+            <param name="credentials">The credentials to use to validate. If not specified, attempts to use the credentials associated with the currently logged-in user's profile.</param>
+            <returns>A model containing properties indicating if the credentials are valid. When the credentials are valid, model contains a property to indicate if the credentials are associated with a valid UMLS/VSAC license.</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.SaveMyUser(Trifolia.Web.Models.Account.UserProfile)">
+            <summary>
+            Persists/updates the information in the model to the current user's profile.
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.SaveUser(Trifolia.Web.Models.User.UserModel)">
+            <summary>
+            Updates the currently logged-in user's profiles with the data in the specified model
+            </summary>
+            <param name="model">The object model containing the properties of the user to update.</param>
+            <remarks>The Username property is not updated. Username cannot be changed by the user.</remarks>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.GroupController.GetMyGroupDisclaimers">
             <summary>
             Gets disclaimers from groups (that have disclaimers) that the current user is a member of
@@ -1204,6 +1241,14 @@
             When user is logged in via "remember me", Login does not have to occur.
             </remarks>
         </member>
+        <member name="T:Trifolia.Web.Models.User.UserModel">
+            <summary>
+            Models a user as a view model
+            </summary>
+            <remarks>Although the underlying model allows us to link a user to many organizations, this view model represents 
+            a single organization, and therefore in this context, a user either belongs to the current organization
+            or not.</remarks>
+        </member>
         <member name="T:Trifolia.Web.Models.Export.MSWordSettingsModel">
             <summary>
             Models used to define settings for exporting to MS Word
@@ -1364,14 +1409,6 @@
             <summary>
             Gets or sets the organization name
             </summary>
-        </member>
-        <member name="T:Trifolia.Web.Models.User.UserModel">
-            <summary>
-            Models a user as a view model
-            </summary>
-            <remarks>Although the underlying model allows us to link a user to many organizations, this view model represents 
-            a single organization, and therefore in this context, a user either belongs to the current organization
-            or not.</remarks>
         </member>
         <member name="T:Trifolia.Web.Models.TemplateManagement.BigListItem">
             <summary>

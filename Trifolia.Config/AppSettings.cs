@@ -25,6 +25,11 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string EncryptionSecret
+        {
+            get { return ConfigurationManager.AppSettings["EncryptionSecret"]; }
+        }
+
         public static string DebugMailTo
         {
             get { return ConfigurationManager.AppSettings["DebugMailTo"]; }

@@ -357,11 +357,11 @@
     <Compile Include="Formatters\JavaScriptFormatter.cs" />
     <Compile Include="Formatters\TrifoliaXmlFormatter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Models\Account\HL7LoginModel.cs" />
-    <Compile Include="Models\Account\WhoAmIModel.cs" />
-    <Compile Include="Models\Account\LoginModel.cs" />
-    <Compile Include="Models\Account\NewProfileModel.cs" />
-    <Compile Include="Models\Account\UserProfile.cs" />
+    <Compile Include="Models\User\ValidateUmlsCredentialsRequestModel.cs" />
+    <Compile Include="Models\User\ValidateUmlsCredentialsResponseModel.cs" />
+    <Compile Include="Models\User\WhoAmIModel.cs" />
+    <Compile Include="Models\User\NewProfileModel.cs" />
+    <Compile Include="Models\User\UserProfile.cs" />
     <Compile Include="Models\Admin\ClientConfigModel.cs" />
     <Compile Include="Models\BulkCopy\CopyConfig.cs" />
     <Compile Include="Models\BulkCopy\CopyModel.cs" />
@@ -1677,6 +1677,7 @@
     <None Include="Properties\PublishProfiles\DEV2 %28SHARE%29.pubxml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
+    <Content Include="Scripts\Account\controllers.js" />
     <Content Include="Scripts\Account\MyGroup.js" />
     <Content Include="Scripts\Account\MyGroups.js" />
     <Content Include="Scripts\Account\MyProfile.js" />

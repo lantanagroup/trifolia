@@ -10,110 +10,111 @@
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-
-    <script type="text/javascript" src="/Scripts/Account/MyProfile.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
-
     <h2>My Profile</h2>
 
-    <div id="mainBody">
-        <div class="row">
-            <div class="col-md-6">
-                <p style="font-style: italic">This information, including name, email address, and phone number, is collected from users that voluntarily enter the information in the process of authoring templates.  It is stored in a manner appropriate to the nature of the data and is used only for purposes related to the authoring and maintenance of the templates entered by the user. The information collected is never provided to any other company for that company's independent use.</p>
+    <div class="ng-cloak" ng-app="Trifolia" ng-controller="MyProfileCtrl" ng-init="init()">
+        <form name="userProfileForm">
+            <p class="alert" ng-class="{'alert-info': !messageIsWarning, 'alert-warning': messageIsWarning }" ng-if="message">{{message}}</p>
+            <p style="font-style: italic">This information, including name, email address, and phone number, is collected from users that voluntarily enter the information in the process of authoring templates.  It is stored in a manner appropriate to the nature of the data and is used only for purposes related to the authoring and maintenance of the templates entered by the user. The information collected is never provided to any other company for that company's independent use.</p>
 
-                <div class="form-group">
-                    <label>User Name:</label>
-                    <input type="text" class="form-control" data-bind="value: model.userName" readonly="readonly" />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">General Information</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Username:</label>
+                                <input type="text" class="form-control" ng-model="userModel.UserName" readonly="readonly" />
+                            </div>
+
+                            <div class="form-group has-feedback" ng-class="{'has-error': !userModel.FirstName}">
+                                <label>First Name</label>
+                                <input type="text" class="form-control" ng-model="userModel.FirstName" ng-required="true" />
+                            </div>
+
+                            <div class="form-group has-feedback" ng-class="{'has-error': !userModel.LastName}">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" ng-model="userModel.LastName" ng-required="true" />
+                            </div>
+
+                            <div class="form-group has-feedback" ng-class="{'has-error': !userModel.Email}">
+                                <label>Email</label>
+                                <input type="email" class="form-control" ng-model="userModel.Email" ng-required="true" />
+                            </div>
+
+                            <div class="form-group has-feedback" ng-class="{'has-error': !userModel.Phone}">
+                                <label>Phone</label>
+                                <input type="text" class="form-control" ng-model="userModel.Phone" ng-required="true" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Organization</label>
+                                <input type="text" class="form-control" ng-model="userModel.Organization" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Organization Type</label>
+                                <select class="form-control" ng-model="userModel.OrganizationType" ng-options="ot for ot in orgTypes">
+                                    <option value="">SELECT</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="panel panel-default">
+                        <div class="panel-heading">OAuth Information</div>
+                        <div class="panel-body">
+                            <p><strong>Auth Token</strong></p>
+                            <p><pre>{{userModel.AuthToken}}</pre></p>
+
+                            <div ng-if="userModel.OpenIdConfigUrl">
+                                <p><strong>OpenId Config Url</strong> <a href="{{userModel.OpenIdConfigUrl}}" target="_new">{{userModel.OpenIdConfigUrl}}</a></p>
+                                <p ng-if="openIdConfig"><pre>{{openIdConfig | json}}</pre></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>First Name</label>
-                    <input type="text" class="form-control" data-bind="value: model.firstName" />
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">UMLS/VSAC Licensing Credentials</div>
+                        <div class="panel-body">
+                            <p>To import value sets from VSAC and view/export implementation guides that include VSAC content, please specify your credentials so that we can verify you have an active UMLS license. These credentials are encrypted and stored in the Trifolia database to limit the number of times you have to authenticate against UMLS/VSAC. These credentials are <strong>not</strong> used for any purpose other than to validate your UMLS/VSAC license.</p>
+
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" class="form-control" ng-model="userModel.UmlsUsername" ng-change="umlsCredentialsConfirmed = false" />
+                            </div>
+                        
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" ng-model="userModel.UmlsPassword" ng-change="umlsCredentialsConfirmed = false" />
+                            </div>
+
+                            <p>
+                                <button type="button" class="btn btn-default" ng-click="validateUmlsCredentials()" ng-disabled="!userModel.UmlsUsername || !userModel.UmlsPassword || userModel.UmlsUsername == '******' || userModel.UmlsPassword == '******'">Test</button>
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Last Name</label>
-                    <input type="text" class="form-control" data-bind="value: model.lastName" />
-                </div>
-
-                <div class="form-group">
-                    <label>Phone</label>
-                    <input type="text" class="form-control" data-bind="value: model.phone" />
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" class="form-control" data-bind="value: model.email" />
-                </div>
-
-                <div class="form-group">
-                    <label>Organization</label>
-                    <input type="text" class="form-control" data-bind="value: model.organization" />
-                </div>
-
-                <div class="form-group">
-                    <label>Organization Type</label>
-                    <select class="form-control" data-bind="value: model.organizationType, options: orgTypes, optionsCaption: 'Select'"></select>
-                </div>
-
-                <!-- ko if: enableReleaseAnnouncement() -->
-                <div class="form-group">    
-                    <label>Release Announcements</label>
-                    <p>
-                        <!-- ko if: releaseAnnouncementsSubscription() == true -->
-                        <button type="button" class="btn btn-default" data-bind="click: toggleReleaseAnnouncementSubscription">Unsubscribe</button>
-                        <!-- /ko -->
-                        <!-- ko if: releaseAnnouncementsSubscription() != true -->
-                        <button type="button" class="btn btn-default" data-bind="click: toggleReleaseAnnouncementSubscription">Subscribe</button>
-                        <!-- /ko -->
-                    </p>
-                </div>
-                <!-- /ko -->
-
-                <p>
-                    <button type="button" class="btn btn-primary" data-bind="click: saveChanges, enable: model.validation.isValid">Save</button>
-                </p>
-            </div>
-        
-            <!-- ko if: model.openIdConfigUrl() -->
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">OpenID Configuration</div>
-                    <div class="panel-body">
-                        <p><strong>Url:</strong> <span data-bind="text: model.openIdConfigUrl"></span></p>
-
-                        <!-- ko if: openIdConfig() -->
-                        <p>
-                            <pre data-bind="text: openIdConfig"></pre>
-                        </p>
-                        <!-- /ko -->
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Release Announcements</div>
+                        <div class="panel-body">
+                            <p>When Trifolia (<a href="https://trifolia.lantanagroup.com">https://trifolia.lantanagroup.com</a>) has released a new version, a release announcement is sent to everyone that is subscribed.</p>
+                            
+                            <p><strong>Currently {{subscribed ? 'subscribed to' : 'unsubscribed from'}} announcements</strong></p>
+                            <p><button type="button" class="btn btn-default" ng-click="toggleReleaseAnnouncementSubscription()">{{subscribed ? 'Unsubscribe' : 'Subscribe'}}</button></p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- /ko -->
 
-            <!-- ko if: model.authToken() -->
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Current User OAuth Token</div>
-                    <div class="panel-body">
-                        <pre data-bind="text: model.authToken"></pre>
-                    </div>
-                </div>
-            </div>
-            <!-- /ko -->
-        </div>
+            <p class="alert alert-info" ng-if="!umlsCredentialsConfirmed && (userModel.UmlsUsername || userModel.UmlsPassword)">Confirm/test your UMLS credentials before saving.</p>
+            <p><button type="submit" class="btn btn-primary" ng-click="save()" ng-disabled="!umlsCredentialsConfirmed || !userProfileForm.$valid">Save</button></p>
+        </form>
     </div>
-
-    <script type="text/javascript">
-        var vm = new myProfileViewModel(
-            '<%: Url.Action("ProfileData") %>',
-            '<%: Url.Action("SaveProfile") %>'
-        );
-
-        $(document).ready(function () {
-            var mainBody = document.getElementById('mainBody');
-            ko.applyBindings(vm, mainBody);
-        });
-    </script>
-
+    
+    <script type="text/javascript" src="/Scripts/Account/controllers.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 </asp:Content>

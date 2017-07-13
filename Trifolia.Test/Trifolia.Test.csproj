@@ -215,6 +215,7 @@
     <Compile Include="Import\ImportTest.cs" />
     <Compile Include="Generation\Sample\TemplateSampleGeneratorTest.cs" />
     <Compile Include="Shared\HelperTests.cs" />
+    <Compile Include="Shared\StringTests.cs" />
     <Compile Include="TemplateExtensions.cs" />
     <Compile Include="TestDataGenerator.cs" />
     <Compile Include="XmlTestHelper.cs" />

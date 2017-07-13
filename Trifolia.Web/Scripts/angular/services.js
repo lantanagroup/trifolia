@@ -198,3 +198,79 @@ angular.module('Trifolia').service('ImportService', function ($http, $q) {
         }
     };
 });
+
+angular.module('Trifolia').service('UserService', function ($http, $q) {
+    var service = {};
+
+    service.getMyUser = function () {
+        var deferred = $q.defer();
+
+        $http.get('/api/User/Me')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    service.saveMyUser = function (model) {
+        return $http.post('/api/User/Me', model);
+    };
+
+    service.getReleaseAnnouncementSubscription = function () {
+        var deferred = $q.defer();
+
+        $http.get('/api/User/Me/ReleaseAnnouncement')
+            .then(function (results) {
+                deferred.resolve(results);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    service.subscribeToReleaseAnnouncements = function () {
+        return $http.post('/api/User/Me/ReleaseAnnouncement');
+    };
+
+    service.unsubscribeFromReleaseAnnouncements = function () {
+        return $http.delete('/api/User/Me/ReleaseAnnouncement');
+    };
+
+    service.validateUmlsCredentials = function (username, password) {
+        var deferred = $q.defer();
+        var data = {
+            Username: username,
+            Password: password
+        };
+
+        $http.post('/api/User/ValidateUmlsCredentials', data)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    return service;
+});
+
+angular.module('Trifolia').service('ConfigService', function ($http, $q) {
+    var service = {};
+
+    service.getEnableReleaseAnnouncements = function () {
+        var deferred = $q.defer();
+
+        $http.get('/api/Config/ReleaseAnnouncement')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    return service;
+});
