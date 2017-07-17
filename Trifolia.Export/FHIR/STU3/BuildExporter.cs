@@ -17,6 +17,7 @@ using Trifolia.Config;
 using System.Net;
 using Trifolia.Shared.Plugins;
 using Trifolia.Export.FHIR.STU3.Models;
+using Trifolia.Shared;
 
 namespace Trifolia.Export.FHIR.STU3
 {
@@ -92,7 +93,7 @@ namespace Trifolia.Export.FHIR.STU3
             this.control.dependencyList = (from ig in igDependencies
                                            select new Control.Dependency()
                                            {
-                                               name = ig.Name,
+                                               name = ig.Name.RemoveSpecialCharacters().Replace(" ", "-").ToLower(),
                                                location = ig.Identifier
                                            }).ToList();
 

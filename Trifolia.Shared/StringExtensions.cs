@@ -15,5 +15,10 @@ namespace Trifolia.Shared
         {
             return invalidUtf8Characters.Replace(theString, replacement);
         }
+
+        public static string RemoveSpecialCharacters(this string str)
+        {
+            return Regex.Replace(str, "[^a-zA-Z0-9_. ]+", "", RegexOptions.Compiled);
+        }
     }
 }
