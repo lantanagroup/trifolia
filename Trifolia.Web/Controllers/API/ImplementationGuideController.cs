@@ -134,13 +134,31 @@ namespace Trifolia.Web.Controllers.API
                                PublishDate = ig.PublishDate,
                                Title = string.Format("{0} {1}", ig.Name, (ig.Version > 1 ? "V" + ig.Version.ToString() : string.Empty)),
                                DisplayName = ig.DisplayName,
+                               Identifier = ig.Identifier,
                                Type = ig.ImplementationGuideType.Name,
+                               TypeNamespace = ig.ImplementationGuideType.SchemaURI,
                                Status = ig.PublishStatus != null ? ig.PublishStatus.Status : string.Empty,
                                Url = GetUrlForImplementationGuide(listMode, ig.Id),
                                CanEdit = canEdit && (userIsInternal || editableImplementationGuides.Contains(ig.Id))
                            })
                            .OrderBy(y => y.Title)
                            .ToList();
+
+            model.Organizations = (from ig in implementationGuides
+                                   join o in this.tdb.Organizations on ig.OrganizationId equals o.Id
+                                   select new FilterItem()
+                                   {
+                                       Id = o.Id,
+                                       Name = o.Name
+                                   }).Distinct(new FilterItem.Comparer()).ToList();
+
+            model.Statuses = (from ig in implementationGuides
+                              join ps in this.tdb.PublishStatuses on ig.PublishStatusId equals ps.Id
+                              select new ListModel.Status()
+                              {
+                                  Id = ps.Id,
+                                  Name = ps.Status
+                              }).Distinct(new ListModel.Status.Comparer()).ToList();
 
             Log.For(this).Trace("END: Getting list model for List and ListPartial");
 
@@ -386,6 +404,30 @@ namespace Trifolia.Web.Controllers.API
             return notes;
         }
 
+        [HttpGet, Route("api/ImplementationGuide/{implementationGuideId}/Category"), SecurableAction]
+        public IEnumerable<string> GetImplementationGuideCategories(int implementationGuideId)
+        {
+            if (!CheckPoint.Instance.GrantViewImplementationGuide(implementationGuideId))
+                throw new UnauthorizedAccessException();
+
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
+            List<string> categoriesList = new List<string>();
+
+            // Get categories from the IG's settings
+            string categories = igSettings.GetSetting(IGSettingsManager.SettingProperty.Categories);
+            if (!string.IsNullOrEmpty(categories))
+            {
+                string[] categoriesSplit = categories.Split(',');
+
+                foreach (string category in categoriesSplit)
+                {
+                    categoriesList.Add(category.Replace("###", ","));
+                }
+            }
+
+            return categoriesList;
+        }
+
         [HttpGet, Route("api/ImplementationGuide/{implementationGuideId}/Primitive"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_PRIMITIVES)]
         public IEnumerable<ImplementationGuidePrimitiveModel> GetImplementationGuidePrimitives(int implementationGuideId)
         {
@@ -481,10 +523,13 @@ namespace Trifolia.Web.Controllers.API
         }
 
         [HttpGet, Route("api/ImplementationGuide/{implementationGuideId}/Template"), SecurableAction(SecurableNames.TEMPLATE_LIST)]
-        public dynamic GetTemplates(int implementationGuideId, [FromUri] int[] parentTemplateIds, bool inferred = true, [FromUri] string[] categories = null)
+        public dynamic GetTemplates(int implementationGuideId, [FromUri] int[] parentTemplateIds = null, bool inferred = true, [FromUri] string[] categories = null)
         {
             if (!CheckPoint.Instance.GrantViewImplementationGuide(implementationGuideId))
                 throw new AuthorizationException("You do not have permission to view this implementation guide");
+
+            if (parentTemplateIds != null && parentTemplateIds.Length == 1 && parentTemplateIds[0] == 0)
+                parentTemplateIds = null;
 
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
 

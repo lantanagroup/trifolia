@@ -50,6 +50,12 @@ namespace Trifolia.Web.Controllers
 
         #endregion
 
+        [Securable(SecurableNames.EXPORT_SCHEMATRON, SecurableNames.EXPORT_VOCAB, SecurableNames.EXPORT_WORD, SecurableNames.EXPORT_XML)]
+        public ActionResult Index()
+        {
+            return View("Export");
+        }
+
         #region MS Word
 
         [Securable(SecurableNames.EXPORT_WORD)]

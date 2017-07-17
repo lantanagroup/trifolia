@@ -274,3 +274,80 @@ angular.module('Trifolia').service('ConfigService', function ($http, $q) {
 
     return service;
 });
+
+angular.module('Trifolia').service('ImplementationGuideService', function ($http, $q) {
+    var service = {};
+
+    service.getImplementationGuides = function () {
+        var deferred = $q.defer();
+
+        $http.get('/api/ImplementationGuide')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    service.getImplementationGuideCategories = function (implementationGuideId) {
+        var deferred = $q.defer();
+
+        $http.get('/api/ImplementationGuide/' + encodeURIComponent(implementationGuideId) + '/Category')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    service.getImplementationGuideValueSets = function (implementationGuideId, onlyStatic) {
+        if (onlyStatic === 'undefined') {
+            onlyStatic = false;
+        }
+
+        var deferred = $q.defer();
+
+        $http.get('/api/ImplementationGuide/' + encodeURIComponent(implementationGuideId) + '/ValueSet?onlyStatic=' + encodeURIComponent(onlyStatic))
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    service.getImplementationGuideTemplates = function (implementationGuideId, parentTemplateIds, inferred, categories) {
+        var deferred = $q.defer();
+        var url = '/api/ImplementationGuide/' + encodeURIComponent(implementationGuideId) + '/Template?';
+
+        if (parentTemplateIds) {
+            url += 'parentTemplateIds=' + encodeURIComponent(parentTemplateIds.join(',')) + '&';
+        }
+
+        if (typeof(inferred) !== 'undefined') {
+            url += 'inferred=' + encodeURIComponent(inferred) + '&';
+        }
+
+        if (categories) {
+            url += 'categories=' + encodeURIComponent(categories.join(',')) + '&';
+        }
+
+        $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    return service;
+});
+
+angular.module('Trifolia').filter('contains', function () {
+    return function (array, needle) {
+        return array.indexOf(needle) >= 0;
+    };
+});

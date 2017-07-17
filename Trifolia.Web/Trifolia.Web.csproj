@@ -1687,6 +1687,7 @@
     <Content Include="Scripts\Admin\Users.js" />
     <Content Include="Scripts\angular\services.js" />
     <Content Include="Scripts\angular\startup.js" />
+    <Content Include="Scripts\Export\controllers.js" />
     <Content Include="Scripts\lib\angular\angular-cookies.js" />
     <Content Include="Scripts\lib\angular\angular-highlight.min.js" />
     <Content Include="Scripts\lib\angular\angular-route.min.js" />
@@ -1852,6 +1853,7 @@
     <Content Include="Views\Admin\Group.aspx" />
     <Content Include="Views\Admin\Groups.aspx" />
     <Content Include="Views\Admin\Users.aspx" />
+    <Content Include="Views\Export\Export.aspx" />
     <Content Include="Views\Export\Green.aspx" />
     <Content Include="Views\Export\Schematron.aspx" />
     <Content Include="Views\Export\Vocabulary.aspx" />
