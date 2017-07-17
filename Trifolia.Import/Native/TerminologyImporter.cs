@@ -54,7 +54,7 @@ namespace Trifolia.Import.Native
 
         public void ImportValueSets(List<TrifoliaValueSet> models)
         {
-            var codeSystems = this.tdb.CodeSystems.Union(this.addedCodeSystems);
+            var codeSystems = this.tdb.CodeSystems.ToList().Union(this.addedCodeSystems);
             var allValueSetIdentifiers = (from vs in this.tdb.ValueSets
                                           join vsi in this.tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
                                           select vsi.Identifier).ToList();
@@ -102,7 +102,8 @@ namespace Trifolia.Import.Native
                     DateTime statusDate = DateTime.Now;
                     DateTime.TryParse(modelMember.statusDate, out statusDate);
 
-                    CodeSystem codeSystem = codeSystems.SingleOrDefault(y => y.Oid == modelMember.codeSystemIdentifier);
+                    string modelIdentifier = modelMember.codeSystemIdentifier;
+                    CodeSystem codeSystem = codeSystems.SingleOrDefault(y => y.Oid == modelIdentifier);
 
                     if (codeSystem == null)
                         continue;

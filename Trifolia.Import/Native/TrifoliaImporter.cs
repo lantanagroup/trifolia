@@ -41,14 +41,24 @@ namespace Trifolia.Import.Native
                 importStatus.Messages.AddRange(importer.Errors);
             }
 
-            TemplateImporter templateImporter = new TemplateImporter(this.tdb, shouldUpdate: true);
-            List<Template> importedTemplates = templateImporter.Import(model.Template);
-            importStatus.AddImportedTemplates(importedTemplates);
-            importStatus.Messages.AddRange(templateImporter.Errors);
-
             TerminologyImporter termImporter = new TerminologyImporter(this.tdb);
             termImporter.ImportCodeSystems(model.CodeSystem);
             termImporter.ImportValueSets(model.ValueSet);
+
+            foreach (var addedValueSet in termImporter.AddedValueSets)
+            {
+                importStatus.AddValueSet(addedValueSet);
+            }
+
+            foreach (var addedCodeSystem in termImporter.AddedCodeSystems)
+            {
+                importStatus.AddCodeSystem(addedCodeSystem);
+            }
+
+            TemplateImporter templateImporter = new TemplateImporter(this.tdb, termImporter.AddedValueSets, shouldUpdate: true);
+            List<Template> importedTemplates = templateImporter.Import(model.Template);
+            importStatus.AddImportedTemplates(importedTemplates);
+            importStatus.Messages.AddRange(templateImporter.Errors);
 
             if (importStatus.Messages.Count == 0)
             {

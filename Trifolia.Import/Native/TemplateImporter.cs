@@ -27,6 +27,7 @@ namespace Trifolia.Import.Native
         private List<string> errors = null;
         private List<TDBTemplate> importedTemplates = null;
         private bool shouldUpdate = false;
+        private IEnumerable<ValueSet> valueSets;
 
         public ImplementationGuide DefaultImplementationGuide { get; set; }
         public User DefaultAuthorUser { get; set; }
@@ -37,10 +38,15 @@ namespace Trifolia.Import.Native
             set { errors = value; }
         }
 
-        public TemplateImporter(IObjectRepository tdb, bool shouldUpdate = false)
+        public TemplateImporter(IObjectRepository tdb, List<ValueSet> addedValueSets = null, bool shouldUpdate = false)
         {
             this.tdb = tdb;
             this.shouldUpdate = shouldUpdate;
+
+            if (addedValueSets != null)
+                this.valueSets = tdb.ValueSets.Include("Identifiers").ToList().Concat(addedValueSets);
+            else
+                this.valueSets = tdb.ValueSets.Include("Identifiers");
         }
 
         public List<TDBTemplate> Import(List<ImportTemplate> importTemplates)
@@ -604,10 +610,9 @@ namespace Trifolia.Import.Native
                     constraint.IsStatic = importVs.isStatic;
 
                 // Old bug in Trifolia allowing the same value set identifier to be used more than once
-                var foundValueSets = (from v in this.tdb.ValueSets
-                                      join vsi in this.tdb.ValueSetIdentifiers on v.Id equals vsi.ValueSetId
+                var foundValueSets = (from vsi in this.valueSets.SelectMany(y => y.Identifiers)
                                       where vsi.Identifier.ToLower().Trim() == importVs.identifier.ToLower().Trim()
-                                      select v).Distinct().ToList();
+                                      select vsi.ValueSet).Distinct().ToList();
 
                 if (foundValueSets.Count() == 0)
                 {

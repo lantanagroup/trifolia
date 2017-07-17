@@ -207,8 +207,6 @@
     <Compile Include="Generation\WIKIParserTest.cs" />
     <Compile Include="Generation\Versioning\VersionComparerTest.cs" />
     <Compile Include="Generation\IG\FormattedConstraintTest.cs" />
-    <Compile Include="Generation\Green\GreenSchemaGeneratorTest.cs" />
-    <Compile Include="Generation\Green\GreenTransformGeneratorTest.cs" />
     <Compile Include="Generation\IG\ImplementationGuideGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\SimpleSchemaTest.cs" />
