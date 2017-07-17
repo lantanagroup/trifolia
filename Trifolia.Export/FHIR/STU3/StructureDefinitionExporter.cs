@@ -355,11 +355,9 @@ namespace Trifolia.Export.FHIR.STU3
                 fhirStructureDef.Differential = differential;
 
                 // Add base element for resource
-                differential.Element.Add(new ElementDefinition()
-                {
-                    ElementId = string.Format("{0}-00001", template.Id.ToString()),
-                    Path = template.PrimaryContextType
-                });
+                var rootElement = new ElementDefinition();
+                rootElement.Path = template.PrimaryContextType;
+                differential.Element.Add(rootElement);
 
                 foreach (var constraint in template.ChildConstraints.Where(y => y.ParentConstraint == null).OrderBy(y => y.Order))
                 {
@@ -379,7 +377,7 @@ namespace Trifolia.Export.FHIR.STU3
                 foreach (var sliceGroup in sliceGroups)
                 {
                     ElementDefinition newElementDef = new ElementDefinition();
-                    newElementDef.ElementId = string.Format("{0}-{1}", template.Id, currentSliceGroupCount.ToString("00"));
+                    //newElementDef.ElementId = string.Format("{0}-{1}", template.Id, currentSliceGroupCount.ToString("00"));
                     newElementDef.Path = sliceGroup.Key;
 
                     foreach (var branchConstraint in sliceGroup)
