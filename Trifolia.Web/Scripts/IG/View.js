@@ -47,7 +47,7 @@ igViewApp.config(function ($routeProvider, $locationProvider, hljsServiceProvide
             controller: 'ResourceCtrl'
         })
         .otherwise({
-            redirectTo: '/overview'
+            redirectTo: '/home'
         });
 });
 
