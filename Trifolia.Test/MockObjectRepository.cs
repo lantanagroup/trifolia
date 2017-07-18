@@ -312,6 +312,7 @@ namespace Trifolia.Test
             mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => dataQueryable.GetEnumerator());
             mockSet.Setup(m => m.AsNoTracking()).Returns(() => mockSet.Object);
             mockSet.Setup(d => d.Remove(It.IsAny<T>())).Callback<T>((s) => data.Remove(s));
+            mockSet.Setup(d => d.Include(It.IsAny<string>())).Returns(mockSet.Object);
             
             mockSet.Setup(d => d.Add(It.IsAny<T>())).Callback<T>((s) =>
             {

@@ -120,7 +120,11 @@
             url: "/api/ImplementationGuide/Unauthorized",
             async: true,
             success: function (results) {
-                ko.mapping.fromJS({ UnauthorizedImplementationGuides: results }, {}, self);
+                var sortedResults = _.sortBy(results, function (result) {
+                    return result.Name;
+                });
+
+                ko.mapping.fromJS({ UnauthorizedImplementationGuides: sortedResults }, {}, self);
             }
         });
     };

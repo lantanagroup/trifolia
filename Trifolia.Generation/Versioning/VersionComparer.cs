@@ -62,54 +62,57 @@ namespace Trifolia.Generation.Versioning
             this.result = new ComparisonResult();
 
             this.CompareTemplate(previousTemplate, newTemplate);
-            
-            // Added constraints
-            foreach (var cConstraint in newTemplate.Constraints.Where(b => !previousTemplate.Constraints.Exists(a => a.Number == b.Number)))
-            {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint);
 
-                ComparisonConstraintResult cResult = new ComparisonConstraintResult()
+            if (newTemplate.Status != PublishStatus.RETIRED_STATUS)
+            {
+                // Added constraints
+                foreach (var cConstraint in newTemplate.Constraints.Where(b => !previousTemplate.Constraints.Exists(a => a.Number == b.Number)))
                 {
-                    ParentNumber = cConstraint.Parent != null ? 
-                        string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Parent.Number) : 
-                        null,
-                    Number = string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Number.Value),
-                    Order = cConstraint.Order,
-                    Type = CompareStatuses.Added,
-                    NewNarrative = fc.GetPlainText()
-                };
+                    IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint);
 
-                this.result.ChangedConstraints.Add(cResult);
-            }
+                    ComparisonConstraintResult cResult = new ComparisonConstraintResult()
+                    {
+                        ParentNumber = cConstraint.Parent != null ?
+                            string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Parent.Number) :
+                            null,
+                        Number = string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Number.Value),
+                        Order = cConstraint.Order,
+                        Type = CompareStatuses.Added,
+                        NewNarrative = fc.GetPlainText()
+                    };
 
-            // Deleted constraints
-            foreach (var cConstraint in previousTemplate.Constraints.Where(a => !newTemplate.Constraints.Exists(b => b.Number == a.Number)))
-            {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint);
+                    this.result.ChangedConstraints.Add(cResult);
+                }
 
-                ComparisonConstraintResult cResult = new ComparisonConstraintResult()
+                // Deleted constraints
+                foreach (var cConstraint in previousTemplate.Constraints.Where(a => !newTemplate.Constraints.Exists(b => b.Number == a.Number)))
                 {
-                    ParentNumber = cConstraint.Parent != null ? 
-                        string.Format("{0}-{1}", cConstraint.Parent.Template.OwningImplementationGuideId, cConstraint.Parent.Number) : 
-                        null,
-                    Number = string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Number),
-                    Order = cConstraint.Order,
-                    Type = CompareStatuses.Removed,
-                    OldNarrative = fc.GetPlainText()
-                };
+                    IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint);
 
-                this.result.ChangedConstraints.Add(cResult);
-            }
+                    ComparisonConstraintResult cResult = new ComparisonConstraintResult()
+                    {
+                        ParentNumber = cConstraint.Parent != null ?
+                            string.Format("{0}-{1}", cConstraint.Parent.Template.OwningImplementationGuideId, cConstraint.Parent.Number) :
+                            null,
+                        Number = string.Format("{0}-{1}", cConstraint.Template.OwningImplementationGuideId, cConstraint.Number),
+                        Order = cConstraint.Order,
+                        Type = CompareStatuses.Removed,
+                        OldNarrative = fc.GetPlainText()
+                    };
 
-            // Modified constraints
-            foreach (var oldConstraint in previousTemplate.Constraints.Where(a => newTemplate.Constraints.Exists(b => b.Number == a.Number)))
-            {
-                var newConstraint = newTemplate.Constraints.Single(b => b.Number == oldConstraint.Number);
+                    this.result.ChangedConstraints.Add(cResult);
+                }
 
-                ComparisonConstraintResult compareResult = this.CompareConstraint(this.igSettings, oldConstraint, newConstraint);
+                // Modified constraints
+                foreach (var oldConstraint in previousTemplate.Constraints.Where(a => newTemplate.Constraints.Exists(b => b.Number == a.Number)))
+                {
+                    var newConstraint = newTemplate.Constraints.Single(b => b.Number == oldConstraint.Number);
 
-                if (compareResult != null)
-                    result.ChangedConstraints.Add(compareResult);
+                    ComparisonConstraintResult compareResult = this.CompareConstraint(this.igSettings, oldConstraint, newConstraint);
+
+                    if (compareResult != null)
+                        result.ChangedConstraints.Add(compareResult);
+                }
             }
 
             return this.result;
@@ -121,6 +124,7 @@ namespace Trifolia.Generation.Versioning
 
         private void CompareTemplate(ITemplate previousTemplate, ITemplate newTemplate)
         {
+            CheckField(this.result, "Status", previousTemplate.Status, newTemplate.Status);
             CheckField(this.result, "Name", previousTemplate.Name, newTemplate.Name);
             CheckField(this.result, "Oid", previousTemplate.Oid, newTemplate.Oid);
             CheckField(this.result, "Description", previousTemplate.Description, newTemplate.Description);

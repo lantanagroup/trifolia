@@ -1,22 +1,22 @@
 ﻿extern alias fhir_stu3;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
-using Trifolia.DB;
-using Trifolia.Logging;
+using fhir_stu3.Hl7.Fhir.Serialization;
+using fhir_stu3.Hl7.Fhir.Model;
 using Ionic.Zip;
 using Newtonsoft.Json;
-using Trifolia.Shared;
-using fhir_stu3.Hl7.Fhir.Serialization;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Linq;
 using Trifolia.Config;
-using System.Net;
-using Trifolia.Shared.Plugins;
+using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3.Models;
+using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
+using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 
 namespace Trifolia.Export.FHIR.STU3
 {
@@ -81,6 +81,20 @@ namespace Trifolia.Export.FHIR.STU3
         {
             this.control = new Models.Control();
             this.control.canonicalBase = this.ig.Identifier;
+
+            var igDependencies = (from t in templates
+                                  join tc in this.tdb.TemplateConstraints.AsNoTracking() on t.Id equals tc.TemplateId
+                                  join dt in this.tdb.Templates.AsNoTracking() on tc.ContainedTemplateId equals dt.Id
+                                  join ig in this.tdb.ImplementationGuides on dt.OwningImplementationGuideId equals ig.Id
+                                  where ig.Id != this.ig.Id && ig.Identifier != "http://hl7.org/fhir/"
+                                  select ig).Distinct();
+
+            this.control.dependencyList = (from ig in igDependencies
+                                           select new Control.Dependency()
+                                           {
+                                               name = ig.Name.RemoveSpecialCharacters().Replace(" ", "-").ToLower(),
+                                               location = ig.Identifier
+                                           }).ToList();
 
             if (!string.IsNullOrEmpty(this.control.canonicalBase) && this.control.canonicalBase.LastIndexOf("/") == this.control.canonicalBase.Length - 1)
                 this.control.canonicalBase = this.control.canonicalBase.Substring(0, this.control.canonicalBase.Length - 1);
@@ -204,11 +218,7 @@ namespace Trifolia.Export.FHIR.STU3
                 try
                 {
                     // Convert the resource to the desired format for output
-                    if (this.JsonFormat)
-                        resourceContent = FhirSerializer.SerializeResourceToJson(resource);
-                    else
-                        resourceContent = FhirSerializer.SerializeResourceToXml(resource);
-
+                    resourceContent = this.Serialize(resource);
                     fileExtension = this.JsonFormat ? "json" : "xml";
                     string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString(), resource.Id, fileExtension);
 
@@ -444,11 +454,11 @@ namespace Trifolia.Export.FHIR.STU3
 
         private void AddControlAndDataExamples()
         {
-            string controlContent = JsonConvert.SerializeObject(this.control, Formatting.Indented);
+            string controlContent = JsonConvert.SerializeObject(this.control, Newtonsoft.Json.Formatting.Indented);
 
             this.zip.AddEntry(this.controlFileName, controlContent);
 
-            string dataExamplesContent = JsonConvert.SerializeObject(this.dataExamples.StructureDefinitions, Formatting.Indented);
+            string dataExamplesContent = JsonConvert.SerializeObject(this.dataExamples.StructureDefinitions, Newtonsoft.Json.Formatting.Indented);
 
             this.zip.AddEntry("pages/_data/examples.json", dataExamplesContent);
         }
@@ -477,7 +487,7 @@ namespace Trifolia.Export.FHIR.STU3
             foreach (var valueSet in valueSets)
             {
                 var fhirValueSet = exporter.Convert(valueSet, null, null, this.ig.Identifier);
-                var fhirValueSetContent = this.JsonFormat ? FhirSerializer.SerializeResourceToJson(fhirValueSet) : FhirSerializer.SerializeResourceToXml(fhirValueSet);
+                var fhirValueSetContent = this.Serialize(fhirValueSet);
                 var fhirValueSetFileName = string.Format("resources/ValueSet/{0}.{1}", fhirValueSet.Id, fileExtension);
 
                 // Ignore value sets from the base spec
@@ -507,8 +517,7 @@ namespace Trifolia.Export.FHIR.STU3
         {
             ImplementationGuideExporter igExporter = new ImplementationGuideExporter(this.tdb, this.schema, "http", "test.com");
             var fhirIg = igExporter.Convert(this.ig, includeVocabulary: includeVocabulary);
-
-            var fhirIgContent = this.JsonFormat ? FhirSerializer.SerializeResourceToJson(fhirIg) : FhirSerializer.SerializeResourceToXml(fhirIg);
+            var fhirIgContent = this.Serialize(fhirIg);
             string fileExtension = this.JsonFormat ? "json" : "xml";
             string fhirIgFileName = string.Format("resources/ImplementationGuide/ImplementationGuide_{0}.{1}", ig.Id, fileExtension);
 
@@ -535,12 +544,54 @@ namespace Trifolia.Export.FHIR.STU3
 
                 StructureDefinitionExporter sdExporter = new StructureDefinitionExporter(this.tdb, "http", "test.com");
                 var strucDef = sdExporter.Convert(template, templateSchema);
-                var strucDefContent = this.JsonFormat ? FhirSerializer.SerializeResourceToJson(strucDef) : FhirSerializer.SerializeResourceToXml(strucDef);
+                var strucDefContent = this.Serialize(strucDef);
                 string fileExtension = this.JsonFormat ? "json" : "xml";
                 string strucDefFileName = "resources/StructureDefinition/" + template.FhirId() + "." + fileExtension;
                 this.zip.AddEntry(strucDefFileName, strucDefContent);
 
                 this.control.resources.Add(location, new Models.Control.ResourceReference("StructureDefinition-" + template.FhirId() + ".html"));
+            }
+        }
+
+        private string Serialize(Resource resource)
+        {
+            if (this.JsonFormat)
+            {
+                return FhirSerializer.SerializeResourceToJson(resource);
+            }
+            else
+            {
+                string xml = FhirSerializer.SerializeResourceToXml(resource);
+                return PrettyXml(xml);
+            }
+        }
+
+        private static string PrettyXml(string xml)
+        {
+            if (string.IsNullOrEmpty(xml))
+                return xml;
+
+            try
+            {
+                var stringBuilder = new StringBuilder();
+
+                var element = XElement.Parse(xml);
+
+                var settings = new XmlWriterSettings();
+                settings.OmitXmlDeclaration = true;
+                settings.Indent = true;
+                settings.NewLineOnAttributes = true;
+
+                using (var xmlWriter = XmlWriter.Create(stringBuilder, settings))
+                {
+                    element.Save(xmlWriter);
+                }
+
+                return stringBuilder.ToString();
+            }
+            catch
+            {
+                return xml;
             }
         }
 

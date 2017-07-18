@@ -21843,4 +21843,327 @@ An example free text sig: Thyroxin 150 ug, take one tab by mouth every morning.<
     </CustomSchematron>
     <Category name="" />
   </ImplementationGuide>
+  <CodeSystem name="HL7EntityNameUse">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.45" />
+    <Description>EntityNameUse Value Set</Description>
+  </CodeSystem>
+  <CodeSystem name="HL7EntityNamePartQualifier">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.43" />
+  </CodeSystem>
+  <CodeSystem name="HL7AddressUse">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.1119" />
+  </CodeSystem>
+  <CodeSystem name="FIPS 5-2 (State)">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.92" />
+    <Description>Codes for identification of US states</Description>
+  </CodeSystem>
+  <CodeSystem name="USPostalCodes">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.231" />
+  </CodeSystem>
+  <CodeSystem name="Country">
+    <Identifier value="urn:oid:2.16.840.1.113883.3.88.12.80.63" />
+  </CodeSystem>
+  <CodeSystem name="UCUM">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.8" />
+    <Description>The Unified Code for Units of Measur</Description>
+  </CodeSystem>
+  <CodeSystem name="HL7 HealthcareServiceLocation">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.259" />
+  </CodeSystem>
+  <CodeSystem name="HL7ActReason">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.8" />
+  </CodeSystem>
+  <CodeSystem name="DCM">
+    <Identifier value="urn:oid:1.2.840.10008.2.16.4" />
+    <Description>DICOM</Description>
+  </CodeSystem>
+  <CodeSystem name="SNOMED CT">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.96" />
+  </CodeSystem>
+  <CodeSystem name="LOINC">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.1" />
+    <Description>LOINC (Logical Observation Identifiers Names and Codes) was developed to provide a definitive standard for identifying clinical information in electronic reports. The LOINC database provides a set of universal names and ID codes for identifying laboratory and clinical test results in the context of existing HL7, ASTM E1238, and CEN TC251 observation report messages. One of the main goals of LOINC is to facilitate the exchange and pooling of results for clinical care, outcomes management, and research. LOINC codes are intended to identify the test result or clinical observation. Other fields in the message can transmit the identity of the source laboratory and special details about the sample.</Description>
+  </CodeSystem>
+  <CodeSystem name="HL7ActMood">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.1001" />
+  </CodeSystem>
+  <CodeSystem name="NCI Thesaurus (NCIt)">
+    <Identifier value="urn:oid:2.16.840.1.113883.3.26.1.1" />
+  </CodeSystem>
+  <CodeSystem name="HL7ActStatus">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.14" />
+  </CodeSystem>
+  <CodeSystem name="HL7ActPriority">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.7" />
+  </CodeSystem>
+  <CodeSystem name="RxNorm">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.88" />
+    <Description>RxNorm provides normalized names for clinical drugs and links its names to many of the drug vocabularies commonly used in pharmacy management and drug interaction software, including those of First Databank, Micromedex, MediSpan, Gold Standard Drug Database, and Multum. By providing links between these vocabularies, RxNorm can mediate messages between systems not using the same software and vocabulary.
+
+RxNorm now includes the National Drug File - Reference Terminology (NDF-RT) from the Veterans Health Administration. NDF-RT is a terminology used to code clinical drug properties, including mechanism of action, physiologic effect, and therapeutic category.</Description>
+  </CodeSystem>
+  <CodeSystem name="NDFRT">
+    <Identifier value="urn:oid:2.16.840.1.113883.3.26.1.5" />
+  </CodeSystem>
+  <CodeSystem name="Unique Ingredient Identifier (UNII)">
+    <Identifier value="urn:oid:2.16.840.1.113883.4.9" />
+  </CodeSystem>
+  <CodeSystem name="Healthcare Provider Taxonomy (HIPAA)">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.101" />
+  </CodeSystem>
+  <CodeSystem name="HITSP-CS-83">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.83" />
+  </CodeSystem>
+  <CodeSystem name="HL7RoleCode">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.111" />
+  </CodeSystem>
+  <CodeSystem name="CDC Vaccine Code (CVX)">
+    <Identifier value="urn:oid:2.16.840.1.113883.12.292" />
+    <Description>Also known as CVX codes. Values can be fount here: http://www.cdc.gov/nip/registry/st_terr/tech/stds/hl7-cvx.htm.</Description>
+  </CodeSystem>
+  <CodeSystem name="Source of Payment Typology (PHDSC)">
+    <Identifier value="urn:oid:2.16.840.1.113883.3.221.5" />
+  </CodeSystem>
+  <CodeSystem name="Insurance Type Code">
+    <Identifier value="urn:oid:2.16.840.1.113883.3.88.12.3221.5.2" />
+  </CodeSystem>
+  <CodeSystem name="HL7RoleClass">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.110" />
+  </CodeSystem>
+  <CodeSystem name="HL7ActRelationshipType">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.1002" />
+  </CodeSystem>
+  <CodeSystem name="nubc-UB-04-Manual-code set">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.301" />
+    <Description>The National Uniform Billing Committee (NUBC) is a voluntary committee whose work is coordinated through the offices of the American Hospital Association (AHA).  The AHA's Health Data Management Group serves as chair and secretary to the NUBC.  NUBC includes the participation of all the major national provider and payer organizations. The NUBC was formed to develop a single billing form and standard data set that could be used nationwide by institutional providers and payers for handling health care claims, the current UB-04 manual.
+
+In determining the data to be included, the NUBC strives to balance the need for the information against the burden of providing that information. In essence it applies the administrative simplification principles mentioned in the recently enacted Health Insurance Portability and Accountability Act of 1996 (HIPAA). Data elements identified as necessary for claims processing are, in most cases, assigned designated spaces on the form. The designated spaces are referred to as Form Locators and each one has a unique number. 
+
+The current UB-04 data specifications manual seeks to identify the national requirements for preparing Medicare, Medicaid, OCHAMPUS, BCBS, and commercial insurance claims. The UB-04 manual with the codes is available by subscription from NUBC at http://www.nubc.org/become.html</Description>
+  </CodeSystem>
+  <CodeSystem name="HL7AdministrativeGender">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.1" />
+  </CodeSystem>
+  <CodeSystem name="Provider Role (HL7)">
+    <Identifier value="urn:oid:2.16.840.1.113883.3.88.12.3221.4" />
+  </CodeSystem>
+  <CodeSystem name="Race &amp; Ethnicity - CDC">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.238" />
+  </CodeSystem>
+  <CodeSystem name="HL7Race">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.104" />
+  </CodeSystem>
+  <CodeSystem name="HL7Confidentiality">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.25" />
+  </CodeSystem>
+  <CodeSystem name="Language">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.121" />
+  </CodeSystem>
+  <CodeSystem name="HL7MaritalStatus">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.2" />
+  </CodeSystem>
+  <CodeSystem name="HL7ReligiousAffiliation">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.1076" />
+  </CodeSystem>
+  <CodeSystem name="HL7LanguageAbilityMode">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.60" />
+  </CodeSystem>
+  <CodeSystem name="HL7LanguageAbilityProficiency">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.61" />
+  </CodeSystem>
+  <CodeSystem name="HL7ParticipationType">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.90" />
+  </CodeSystem>
+  <CodeSystem name="HL7ParticipationFunction">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.88" />
+  </CodeSystem>
+  <CodeSystem name="Media Type">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.79" />
+    <Description>Internet Assigned Numbers Authority (IANA) Mime Media Types. Identifies the type of the encapsulated data and identifies a method to interpret or render the data. The IANA defined domain of media types is established by the Internet standard RFC 2045 [http://www.ietf.org/rfc/rfc2045.txt] and 2046 [http://www.ietf.org/rfc/rfc2046.txt]. RFC 2046 defines the media type to consist of two parts:
+
+1. top level media type, and
+2. media subtype
+
+However, this HL7 datatypes specification treats the entire media type as one atomic code symbol in the form defined by IANA, i.e., top level type followed by a slash "/" followed by media subtype. Currently defined media types are registered in a database [http://www.iana.org/assignments/media-types/index.html] maintained by IANA. Currently several hundred different MIME media types are defined, with the list growing rapidly. In general, all those types defined by the IANA MAY be used.</Description>
+  </CodeSystem>
+  <CodeSystem name="CPT4">
+    <Identifier value="urn:oid:2.16.840.1.113883.6.12" />
+  </CodeSystem>
+  <CodeSystem name="HL7ObservationValue">
+    <Identifier value="urn:oid:2.16.840.1.113883.5.1063" />
+  </CodeSystem>
+  <ValueSet intensional="false" source="https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=2.16.840.1.114222.4.11.1066" name="Healthcare Provider Taxonomy (HIPAA)" defaultIdentifier="urn:oid:2.16.840.1.114222.4.11.1066" code="PHVS_HealthcareProviderTaxonomy_HIPAA">
+    <Identifier value="urn:oid:2.16.840.1.114222.4.11.1066" type="Oid" />
+    <Member displayName="Acupuncturist" code="171100000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Nurse Practitioner - Acute Care" code="363LA2100X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Clinical Nurse Specialist - Acute Care" code="364SA2100X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName=" Counselor - Addiction (Substance Use Disorder)" code="101YA0400X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Psychologist - Addiction (Substance Use Disorder)" code="103TA0400X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Registered Nurse - Addiction (Substance Use Disorder)" code="163WA0400X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anesthesiology - Addiction Medicine" code="207LA0401X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Family Medicine - Addiction Medicine" code="207QA0401X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Internal Medicine - Addiction Medicine" code="207RA0401X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Psychiatry &amp; Neurology - Addiction Medicine" code="2084A0401X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Addiction Psychiatry" code="2084P0802X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Administrator" code="163WA2000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adolescent and Children Mental Health" code="261QM0855X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adolescent Medicine" code="2080A0000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adolescent Medicine" code="207RA0000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adolescent Medicine" code="207QA0000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Care Home" code="311ZA0620X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Companion" code="372600000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Day Care" code="261QA0600X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Development &amp; Aging" code="103TA0700X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Health" code="364SA2200X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Health" code="363LA2200X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Medicine" code="207QA0505X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Mental Health" code="261QM0850X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Reconstructive Orthopaedic Surgery" code="207XS0114X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Advanced Practice Midwife" code="367A00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Aerospace Medicine" code="2083A0100X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Air Transport" code="3416A0800X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Allergy" code="207KA0200X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Allergy &amp; Immunology" code="207K00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Allergy &amp; Immunology" code="207RA0201X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Alzheimer Center (Dementia Center)" code="311500000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Ambulance" code="341600000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Ambulatory Care" code="163WP2201X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Ambulatory Family Planning Facility" code="261QA0005X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Ambulatory Fertility Facility" code="261QA0006X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Ambulatory Surgical" code="261QA1903X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Amputee" code="261QA0900X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anaplastologist" code="229N00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anatomic Pathology" code="207ZP0101X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anatomic Pathology &amp; Clinical Pathology" code="207ZP0102X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anesthesiologist Assistant" code="367H00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anesthesiology" code="207L00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Art Therapist" code="221700000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <!-- INCOMPLETE LIST OF MEMBERS - FOR TESTING PURPOSES ONLY -->
+  </ValueSet>
+  <ValueSet intensional="true" source="http://search.loinc.org/search.zul?query=%28class%3A%22*rad%22+scale%3Adoc%29+OR+%2811525-3+OR+18746-8+OR+18753-4+OR+18748-4+OR+18751-8+OR+18744-3+OR+29757-2+OR+42148-7%29+-status%3Adeprecated" name="LOINC Imaging Document Codes" defaultIdentifier="urn:oid:1.3.6.1.4.1.12009.10.2.5">
+    <Identifier value="urn:oid:1.3.6.1.4.1.12009.10.2.5" type="Oid" />
+    <Member displayName="Administration of vasodilator into catheter of Vein" code="24754-4" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Administration of vasodilator into catheter of Vein - bilateral" code="26376-4" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Administration of vasodilator into catheter of Vein - left" code="26377-2" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Administration of vasodilator into catheter of Vein - right" code="26378-0" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Peripheral artery Fluoroscopic angiogram Additional angioplasty W contrast IA" code="30649-8" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Vein Fluoroscopic angiogram Additional angioplasty W contrast IV" code="30641-5" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="AV shunt Fluoroscopic angiogram Angioplasty W contrast" code="36760-7" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Extremity vessel Fluoroscopic angiogram Angioplasty W contrast" code="36762-3" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Unspecified body region Fluoroscopic angiogram Angioplasty W contrast" code="69067-7" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Aorta Fluoroscopic angiogram Angioplasty W contrast IA" code="24543-1" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Brachiocephalic artery Fluoroscopic angiogram Angioplasty W contrast IA" code="24580-3" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Brachiocephalic artery - left Fluoroscopic angiogram Angioplasty W contrast IA" code="26368-1" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Brachiocephalic artery - right Fluoroscopic angiogram Angioplasty W contrast IA" code="26369-9" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Carotid artery extracranial Fluoroscopic angiogram Angioplasty W contrast IA" code="24614-0" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Carotid artery intracranial Fluoroscopic angiogram Angioplasty W contrast IA" code="24615-7" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Extremity artery Fluoroscopic angiogram Angioplasty W contrast IA" code="35881-2" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Femoral artery Fluoroscopic angiogram Angioplasty W contrast IA" code="24698-3" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Femoral artery and Popliteal artery Fluoroscopic angiogram Angioplasty W contrast IA" code="36763-1" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Iliac artery Fluoroscopic angiogram Angioplasty W contrast IA" code="24766-8" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Iliac artery - bilateral Fluoroscopic angiogram Angioplasty W contrast IA" code="26370-7" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Iliac artery - left Fluoroscopic angiogram Angioplasty W contrast IA" code="26371-5" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Iliac artery - right Fluoroscopic angiogram Angioplasty W contrast IA" code="26372-3" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Mesenteric artery Fluoroscopic angiogram Angioplasty W contrast IA" code="24832-8" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <Member displayName="Peripheral artery Fluoroscopic angiogram Angioplasty W contrast IA" code="30648-0" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.1" statusDate="2014-06-27T00:00:00" status="active" />
+    <!-- INCOMPLETE LIST OF MEMBERS - FOR TESTING PURPOSES ONLY -->
+  </ValueSet>
+  <ValueSet intensional="false" source="https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=2.16.840.1.114222.4.11.1066" name="Healthcare Provider Taxonomy (HIPAA)" defaultIdentifier="urn:oid:2.16.840.1.114222.4.11.1066" code="PHVS_HealthcareProviderTaxonomy_HIPAA">
+    <Identifier value="urn:oid:2.16.840.1.114222.4.11.1066" type="Oid" />
+    <Member displayName="Acupuncturist" code="171100000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Nurse Practitioner - Acute Care" code="363LA2100X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Clinical Nurse Specialist - Acute Care" code="364SA2100X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName=" Counselor - Addiction (Substance Use Disorder)" code="101YA0400X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Psychologist - Addiction (Substance Use Disorder)" code="103TA0400X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Registered Nurse - Addiction (Substance Use Disorder)" code="163WA0400X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anesthesiology - Addiction Medicine" code="207LA0401X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Family Medicine - Addiction Medicine" code="207QA0401X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Internal Medicine - Addiction Medicine" code="207RA0401X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Psychiatry &amp; Neurology - Addiction Medicine" code="2084A0401X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Addiction Psychiatry" code="2084P0802X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Administrator" code="163WA2000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adolescent and Children Mental Health" code="261QM0855X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adolescent Medicine" code="2080A0000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adolescent Medicine" code="207RA0000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adolescent Medicine" code="207QA0000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Care Home" code="311ZA0620X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Companion" code="372600000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Day Care" code="261QA0600X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Development &amp; Aging" code="103TA0700X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Health" code="364SA2200X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Health" code="363LA2200X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Medicine" code="207QA0505X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Mental Health" code="261QM0850X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Adult Reconstructive Orthopaedic Surgery" code="207XS0114X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Advanced Practice Midwife" code="367A00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Aerospace Medicine" code="2083A0100X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Air Transport" code="3416A0800X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Allergy" code="207KA0200X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Allergy &amp; Immunology" code="207K00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Allergy &amp; Immunology" code="207RA0201X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Alzheimer Center (Dementia Center)" code="311500000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Ambulance" code="341600000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Ambulatory Care" code="163WP2201X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Ambulatory Family Planning Facility" code="261QA0005X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Ambulatory Fertility Facility" code="261QA0006X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Ambulatory Surgical" code="261QA1903X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Amputee" code="261QA0900X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anaplastologist" code="229N00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anatomic Pathology" code="207ZP0101X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anatomic Pathology &amp; Clinical Pathology" code="207ZP0102X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anesthesiologist Assistant" code="367H00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Anesthesiology" code="207L00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Art Therapist" code="221700000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Art, Medical" code="246ZA2600X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Assistant Record Technician" code="2470A2800X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Assistant, Podiatric" code="211D00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Assisted Living Facility" code="310400000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Assisted Living, Behavioral Disturbances" code="3104A0630X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Assisted Living, Mental Illness" code="3104A0625X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Assistive Technology Practitioner" code="225CA2400X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Community Health" code="261QC1500X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dental Laboratory" code="292200000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dental Laboratory Technician" code="126900000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dental Public Health" code="1223D0001X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dentist" code="122300000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Denturist" code="122400000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Department of Veterans Affairs (VA) Pharmacy" code="332100000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dermatology" code="207N00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dermatopathology" code="207ND0900X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dermatopathology" code="207ZD0900X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Developmental – Behavioral Pediatrics" code="2080P0006X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Developmental Disabilities" code="261QD1600X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Developmental Therapist" code="222Q00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Diabetes Educator" code="163WD0400X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Diagnostic Neuroimaging" code="2084D0003X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Diagnostic Neuroimaging" code="2085D0003X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Diagnostic Radiology" code="2085R0202X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Diagnostic Ultrasound" code="2085U0001X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dialysis Equipment &amp; Supplies" code="332BD1200X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dialysis, Peritoneal" code="163WD1100X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dietary Manager" code="132700000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dietetic Technician, Registered" code="136A00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Dietitian, Registered" code="133V00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Driver" code="172A00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Driving and Community Mobility" code="224ZR0403X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Driving and Community Mobility" code="225XR0403X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Durable Medical Equipment &amp; Medical Supplies" code="332B00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Early Intervention Provider Agency" code="252Y00000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Educational" code="2279E1000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Educational" code="2278E1000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Educational" code="103TE1000X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="EEG" code="246ZE0500X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="EEG" code="2472E0500X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Electroneurodiagnostic" code="246ZE0600X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Electrophysiology, Clinical" code="2251E1300X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Emergency" code="163WE0003X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <Member displayName="Emergency" code="364SE0003X" codeSystemIdentifier="urn:oid:2.16.840.1.113883.6.101" status="active" />
+    <!-- INCOMPLETE LIST OF MEMBERS - FOR TESTING PURPOSES ONLY -->
+  </ValueSet>
+  <ValueSet intensional="false" isIncomplete="false" name="Criticality Observation" defaultIdentifier="urn:oid:2.16.840.1.113883.1.11.20549">
+    <Identifier value="urn:oid:2.16.840.1.113883.1.11.20549" type="Oid" />
+    <Member displayName="Low criticality" code="CRITL" codeSystemIdentifier="urn:oid:2.16.840.1.113883.5.1063" />
+    <Member displayName="High criticality" code="CRITH" codeSystemIdentifier="urn:oid:2.16.840.1.113883.5.1063" />
+    <Member displayName="Unable to assess criticality" code="CRITU" codeSystemIdentifier="urn:oid:2.16.840.1.113883.5.1063" />
+  </ValueSet>
 </Trifolia>

@@ -39,7 +39,7 @@ namespace Trifolia.Import.FHIR.DSTU1
         {
             this.tdb = tdb;
 
-            this.importer = new TemplateImporter(this.tdb, shouldUpdate);
+            this.importer = new TemplateImporter(this.tdb, null, shouldUpdate);
         }
 
         #endregion

@@ -191,7 +191,7 @@
                                 </div>
 
                                 <div class="input-group notes-field">
-                                    <div class="input-group-addon" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorNotesTooltip }, html: Trifolia.Web.TemplateEditorMetaDataNotesField"></div>
+                                    <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorNotesTooltip }, html: Trifolia.Web.TemplateEditorMetaDataNotesField"></div>
                                     <textarea class="form-control" style="height: 100px;" data-bind="value: Notes, disable: DisableEngineerFields"></textarea>
                                 </div>
 
@@ -368,18 +368,18 @@
                         <div class="constraintRow constraintHeader">
                             <div class="constraintColumn" style="width: 15px;">&nbsp;</div>
                             <div class="constraintColumn constraintContext" data-bind="html: Trifolia.Web.TemplateEditorContextHeading"></div>
-                            <div class="constraintColumn constraintNumber" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorConstraintNumberHeadingTooltip }">
-                                <input type="text" class="searchConstraintText" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorSearchConstraintTooltip }, event: { keypress: SearchConstraintKeyPress }, value: SearchConstraintNumber, valueUpdate: 'afterkeydown'" placeholder="CONF#"/>
+                            <div class="constraintColumn constraintNumber" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintNumberHeadingTooltip }">
+                                <input type="text" class="searchConstraintText" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorSearchConstraintTooltip }, event: { keypress: SearchConstraintKeyPress }, value: SearchConstraintNumber, valueUpdate: 'afterkeydown'" placeholder="CONF#"/>
                                 <div class="glyphicon glyphicon-search" data-bind="click: function () { FindConstraintNode(SearchConstraintNumber()); }"></div>
                             </div>
-                            <div class="constraintColumn constraintBranch" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorBranchIdentifierHeadingTooltip }, html: Trifolia.Web.TemplateEditorBranchIdentifierHeading"></div>
-                            <div class="constraintColumn constraintConformance" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorConformanceHeadingTooltip }, html: Trifolia.Web.TemplateEditorConformanceHeadingTooltip"></div>
-                            <div class="constraintColumn constraintCardinality" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorCardinalityHeadingTooltip }, html: Trifolia.Web.TemplateEditorCardinalityHeading"></div>
+                            <div class="constraintColumn constraintBranch" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorBranchIdentifierHeadingTooltip }, html: Trifolia.Web.TemplateEditorBranchIdentifierHeading"></div>
+                            <div class="constraintColumn constraintConformance" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConformanceHeadingTooltip }, html: Trifolia.Web.TemplateEditorConformanceHeadingTooltip"></div>
+                            <div class="constraintColumn constraintCardinality" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorCardinalityHeadingTooltip }, html: Trifolia.Web.TemplateEditorCardinalityHeading"></div>
                             <div class="constraintColumn constraintDataType" data-bind="html: Trifolia.Web.TemplateEditorDataTypeHeading"></div>
                             <div class="constraintColumn constraintValue">
                                 Value
                                 <!-- ko if: (IsAnalyst() && !Template().Locked()) -->
-                                <a href="#" style="text-align: right" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorAddTopLevelPrimitiveTooltip }, click: function () { AddPrimitive(); }"><span class="glyphicon glyphicon-text-width" style="padding-right: 5px; float: right; margin-top: 9px;"></span></a>
+                                <a href="#" style="text-align: right" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorAddTopLevelPrimitiveTooltip }, click: function () { AddPrimitive(); }"><span class="glyphicon glyphicon-text-width" style="padding-right: 5px; float: right; margin-top: 9px;"></span></a>
                                 <!-- /ko -->
                             </div>
                         </div>
@@ -393,7 +393,7 @@
                             <table class="table" style="margin-bottom: 0px;">
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-resize-full" style="cursor: pointer;" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorExpandCollapseConstraintEditorTooltip }, click: function () { $parent.IsEditorMaximized(!$parent.IsEditorMaximized()); }"></span>
+                                        <span class="glyphicon glyphicon-resize-full" style="cursor: pointer;" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorExpandCollapseConstraintEditorTooltip }, click: function () { $parent.IsEditorMaximized(!$parent.IsEditorMaximized()); }"></span>
                                     </td>
                                     <td>
                                         <span data-bind="text: DisplayContext"></span>
@@ -402,6 +402,7 @@
                                         <!-- ko if: (Constraint() && $parent.IsAnalyst() && !$parent.Template().Locked() && $parent.IsEditorMaximized()) -->
                                         <span data-bind="text: ComputedNumber"></span>
                                         <a class="clickable" data-bind="click: function () { $('#constraintNumberEdit').slideToggle(); }" title="Edit Constraint Number"><i class="glyphicon glyphicon-pencil"></i></a>
+
                                         <div id="constraintNumberEdit" class="popover fade bottom in">
                                             <div class="arrow"></div>
                                             
@@ -425,20 +426,28 @@
                                         <!-- /ko -->
                                     </td>
                                     <td>
+                                        <div data-bind="visible: $parent.isDuplicateNode()">
+                                            <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-default" data-bind="visible: $parent.showMoveUp(), click: $parent.moveUp"><i class="glyphicon glyphicon-chevron-up"></i></button>
+                                                <button class="btn btn-default" data-bind="visible: $parent.showMoveDown(), click: $parent.moveDown"><i class="glyphicon glyphicon-chevron-down"></i></button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
                                         <div class="pull-right">
                                             <div class="btn-group btn-group-sm">
                                                 <!-- ko if: ($parent.IsAnalyst() && !$parent.Template().Locked() && $parent.IsEditorMaximized()) -->
 
                                                 <!-- ko if: !Constraint() -->
-                                                <button type="button" class="btn btn-default" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorCreateComputableTooltip }, click: CreateComputable"><i class="glyphicon glyphicon-plus"></i></button>
+                                                <button type="button" class="btn btn-default" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorCreateComputableTooltip }, click: CreateComputable"><i class="glyphicon glyphicon-plus"></i></button>
                                                 <!-- /ko -->
                                 
-                                                <button type="button" class="btn btn-default" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorAddChildPrimitiveTooltip }, click: function () { $parent.AddPrimitive($data); }, disable: $parent.DisableAddChildPrimitive()"><i class="glyphicon glyphicon-text-width"></i></button>
+                                                <button type="button" class="btn btn-default" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorAddChildPrimitiveTooltip }, click: function () { $parent.AddPrimitive($data); }, disable: $parent.DisableAddChildPrimitive()"><i class="glyphicon glyphicon-text-width"></i></button>
 
                                                 <!-- ko if: Constraint() -->
-                                                <button type="button" class="btn btn-default" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorDuplicateTooltip }, click: function () { $parent.DuplicateConstraint($data); }, disable: $parent.DisableDuplicateConstraint()"><i class="glyphicon glyphicon-repeat"></i></button>
-                                                <button type="button" class="btn btn-default" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorEditNoteTooltip }, click: $parent.EditNote"><i class="glyphicon glyphicon-comment"></i></button>
-                                                <button type="button" class="btn btn-default" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorRemoveTooltip }, click: function () { $parent.RemoveConstraint($data); }, disable: $parent.DisableConstraintRemove()"><i class="glyphicon glyphicon-trash"></i></button>
+                                                <button type="button" class="btn btn-default" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorDuplicateTooltip }, click: function () { $parent.DuplicateConstraint($data); }, disable: $parent.DisableDuplicateConstraint()"><i class="glyphicon glyphicon-repeat"></i></button>
+                                                <button type="button" class="btn btn-default" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorEditNoteTooltip }, click: $parent.EditNote"><i class="glyphicon glyphicon-comment"></i></button>
+                                                <button type="button" class="btn btn-default" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorRemoveTooltip }, click: function () { $parent.RemoveConstraint($data); }, disable: $parent.DisableConstraintRemove()"><i class="glyphicon glyphicon-trash"></i></button>
                                                 <!-- /ko -->
 
                                                 <!-- /ko -->
@@ -822,11 +831,11 @@ disable: $parents[1].Template().Locked">
             <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: PrimitiveText, disable: $parents[1].Template().Locked" placeholder="Constraint Prose"></textarea>
 
             <div class="input-group input-group-sm">
-                <div class="input-group-addon" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorConstraintEditorDescriptionTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorDescription"></div>
+                <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintEditorDescriptionTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorDescription"></div>
                 <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: Description, disable: $parents[1].Template().Locked" placeholder="Description"></textarea>
             </div>
             <div class="input-group input-group-sm">
-                <div class="input-group-addon" data-bind="attr: { 'data-original-title': Trifolia.Web.TemplateEditorConstraintEditorLabelTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorLabel"></div>
+                <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintEditorLabelTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorLabel"></div>
                 <input type="text" class="form-control input-sm" data-bind="value: Label, disable: $parents[1].Template().Locked" />
             </div>
         </div>
@@ -1055,7 +1064,7 @@ disable: $parents[1].Template().Locked">
                 <span class="glyphicon glyphicon-comment" data-bind="tooltip: DisplayNotes"></span>
                 <!-- /ko -->
             </div>
-            <div class="constraintColumn constraintNumber" data-bind="text: ComputedNumber, attr: { 'data-original-title': ComputedNumberTooltip }, click: function () { $parents[$parents.length - 1].SelectNode($data); }"></div>
+            <div class="constraintColumn constraintNumber" data-bind="text: ComputedNumber, attr: { 'title': ComputedNumberTooltip }, click: function () { $parents[$parents.length - 1].SelectNode($data); }"></div>
             <div class="constraintColumn constraintBranch" data-bind="click: function () { $parents[$parents.length - 1].SelectNode($data); }">
                 <!-- ko if: !IsChildOfChoice() -->
                 <span data-bind="text: DisplayBranchRoot"></span>

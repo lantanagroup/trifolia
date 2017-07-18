@@ -24,6 +24,103 @@ var templateEditViewModel = function (templateId, defaults) {
     self.AvailableExtensions = ko.observableArray([]);
     self.SelectedAvailableExtensionId = ko.observable();
 
+    /**
+     * Check to see if a constraint is a duplicate node within the same level of the tree
+     */
+    self.isDuplicateNode = function () {
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
+            return false;
+        }
+
+        var constraint = self.CurrentNode().Constraint();
+        var siblings = constraint.Parent() ? constraint.Parent().Children : self.Constraints();
+
+        var found = _.find(siblings, function (sibling) {
+            return constraint.Context() === sibling.Context() && constraint.Id() != sibling.Id();
+        })
+        return found ? true : false;
+    }
+
+    /**
+     * Checks to see if there's a possible shift up for the node (duplicate above the node in the tree)
+     */
+    self.showMoveUp = function () {
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
+            return false;
+        }
+
+        var constraint = self.CurrentNode().Constraint();
+        var siblings = constraint.Parent() ? constraint.Parent().Children : self.Constraints;
+        var index = siblings.indexOf(constraint);
+
+        return index !== -1 && index != 0 && siblings().length > 0 && siblings()[index - 1].Context() === constraint.Context();
+    };
+
+    /**
+     * Checks to see if there's a possible shift down for the node (duplicate below the node in the tree)
+     */
+    self.showMoveDown = function () {
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
+            return false;
+        }
+
+        var constraint = self.CurrentNode().Constraint();
+        var siblings = constraint.Parent() ? constraint.Parent().Children : self.Constraints;
+        var index = siblings.indexOf(constraint);
+
+        return index !== -1 && siblings().length > 0 && index < siblings().length - 1 && siblings()[index + 1].Context() === constraint.Context();
+    }
+
+    /**
+     * Swaps the order of the tree such that the duplicate constraint above the currently examined constraint exchange places
+     */
+    self.moveUp = function () {
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
+            return false;
+        }
+
+        var constraint = self.CurrentNode().Constraint();
+        var siblings = constraint.IsPrimitive() ? constraint.Parent().Children : self.Constraints;
+        var index = siblings.indexOf(constraint);
+
+        if (index != 0 && siblings()[index - 1].Context() === constraint.Context()) {
+            var tmp = siblings()[index];
+            siblings()[index] = siblings()[index - 1];
+            siblings()[index - 1] = tmp;
+            siblings.valueHasMutated();
+
+            var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
+            var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
+            var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
+            siblingNodes.splice(currentNodeIndex - 1, 0, tmpNode[0]);
+        }
+    };
+
+    /**
+     * Swaps the order of the tree such that the duplicate constraint below the currently examined constraint exchange places
+     */
+    self.moveDown = function () {
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint() || !self.Constraints()) {
+            return false;
+        }
+
+        var constraint = self.CurrentNode().Constraint();
+        var siblings = constraint.IsPrimitive() ? constraint.Parent().Children : self.Constraints;
+        var index = siblings.indexOf(constraint);
+
+        if (index != siblings().length - 1 && siblings()[index + 1].Context() === constraint.Context()) {
+            var tmp = siblings()[index];
+            siblings()[index] = siblings()[index + 1];
+            siblings()[index + 1] = tmp;
+            siblings.valueHasMutated();
+
+            var siblingNodes = self.CurrentNode().Parent() ? self.CurrentNode().Parent().Children : self.Nodes;
+            var currentNodeIndex = siblingNodes.indexOf(self.CurrentNode());
+            var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
+            siblingNodes.splice(currentNodeIndex + 1, 0, tmpNode[0]);
+        }
+    }
+
     self.IsFhir = ko.observable(false);
     self.IsFhirExtension = ko.observable(false);
 
@@ -993,14 +1090,14 @@ var templateEditViewModel = function (templateId, defaults) {
 
         var shouldCallServer = !node || !node.Constraint() || !node.Constraint().IsPrimitive();
 
-        if (node && (node.IsAttribute() || node.AreChildrenLoaded()))
+        if (node && ((node.IsAttribute() && node.Constraint().Children().length == 0) || node.AreChildrenLoaded()))
             shouldCallServer = false;
 
         // Only get the list of nodes (for the schema) from the server if 
         // 1) There is no parent node (this means that we are getting the nodes for the root level of the tree).
         // 2) or There is a node, but no constraint. This means we either already have the node definition, or it potentially a primitive.
         // 3) or There is a node and a constraint, and the constraint is not a primitive. There are no association to the schema for primitive constraints.
-        // 4) and never call to the server when the node is an attribute (attributes don't have children). 
+        // [NO LONGER TRUE (?)] 4) and never call to the server when the node is an attribute (attributes don't have children). 
         if (shouldCallServer) {
             if (node) {
                 node.ChildrenLoadingPromise(deferred.promise);

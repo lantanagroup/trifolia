@@ -15,5 +15,6 @@ namespace Trifolia.DB
         int OwningImplementationGuideId { get; }
         bool IsOpen { get; }
         int? ImpliedTemplateId { get; }
+        string Status { get; }
     }
 }

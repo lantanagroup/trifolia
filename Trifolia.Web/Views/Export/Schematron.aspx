@@ -44,9 +44,9 @@
 
                     <div class="form-group">
                         <label>Include Vocabulary</label>
-                        <input type="radio" name="IncludeVocabulary" value="true" checked /> Yes <input type="radio" name="IncludeVocabulary" value="false" /> No
+                        <input type="radio" name="IncludeVocabulary" value="true" /> Yes <input type="radio" name="IncludeVocabulary" value="false" checked /> No
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Include Custom Schematron</label>
                         <input type="radio" name="IncludeCustomSchematron" value="true" checked /> Yes <input type="radio" name="IncludeCustomSchematron" value="false" /> No
