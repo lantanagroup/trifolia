@@ -115,86 +115,82 @@ span.rvts19
 }
 span.rvts20
 {
- font-family: 'Garamond';
-}
-span.rvts21
-{
  font-weight: bold;
 }
-span.rvts22
+span.rvts21
 {
  font-size: 14pt;
  font-style: italic;
  font-weight: bold;
 }
-span.rvts23
+span.rvts22
 {
  font-size: 13pt;
  font-weight: bold;
 }
-span.rvts24
+span.rvts23
 {
  color: #000000;
 }
-span.rvts25
+span.rvts24
 {
  font-style: italic;
  color: #000000;
 }
-span.rvts26
+span.rvts25
 {
  font-size: 12pt;
  font-family: 'Times New Roman', 'Times', serif;
  color: #000000;
 }
-span.rvts27
+span.rvts26
 {
  background-color: #ffffff;
 }
-span.rvts28
+span.rvts27
 {
  font-size: 12pt;
  font-family: 'Garamond';
  color: #190000;
 }
-span.rvts29
+span.rvts28
 {
 }
-span.rvts30
+span.rvts29
 {
  font-weight: bold;
 }
-span.rvts31
+span.rvts30
 {
  font-size: 14pt;
  font-weight: bold;
 }
-span.rvts32
+span.rvts31
 {
  font-family: 'Garamond';
  color: #190000;
 }
-span.rvts33
+span.rvts32
 {
  color: #190000;
 }
-a.rvts34, span.rvts34
+a.rvts33, span.rvts33
 {
  color: #0000ff;
  text-decoration: underline;
 }
-span.rvts35
+span.rvts34
 {
  text-decoration: underline;
 }
-span.rvts36
+span.rvts35
 {
 }
-span.rvts37
+span.rvts36
 {
  font-style: italic;
 }
-span.rvts38
+span.rvts37
 {
  font-size: 9.5pt;
  font-family: 'Consolas';
@@ -202,82 +198,88 @@ span.rvts38
  font-weight: bold;
  color: #800000;
 }
-span.rvts39
+span.rvts38
 {
  color: #000000;
 }
-span.rvts40
+span.rvts39
 {
  color: #333333;
 }
-span.rvts41
+span.rvts40
 {
  font-weight: bold;
  text-decoration: underline;
 }
-span.rvts42
+span.rvts41
 {
  font-size: 7pt;
  vertical-align: super;
 }
-span.rvts43
+span.rvts42
 {
  font-size: 9pt;
  font-style: italic;
  font-weight: bold;
  vertical-align: sub;
 }
-span.rvts44
+span.rvts43
 {
+}
+a.rvts44, span.rvts44
+{
+ text-decoration: none;
 }
 a.rvts45, span.rvts45
 {
  text-decoration: none;
 }
-a.rvts46, span.rvts46
-{
- text-decoration: none;
-}
-span.rvts47
+span.rvts46
 {
  font-family: 'Consolas';
 }
-span.rvts48
+span.rvts47
 {
  font-style: italic;
 }
-span.rvts49
+span.rvts48
 {
  color: #3333ff;
  text-decoration: underline;
 }
-span.rvts50
+span.rvts49
 {
  color: ;
 }
-span.rvts51
+span.rvts50
 {
  font-size: 13pt;
  font-weight: bold;
  color: ;
 }
-span.rvts52
+span.rvts51
 {
  color: ;
  text-decoration: underline;
 }
-span.rvts53
+span.rvts52
 {
  font-size: 14pt;
  font-style: italic;
  font-weight: bold;
  color: ;
 }
-span.rvts54
+span.rvts53
 {
  font-size: 12pt;
  font-family: 'Garamond';
  font-style: italic;
+}
+span.rvts54
+{
+ font-size: 12pt;
+ font-family: 'Garamond';
+ font-weight: bold;
 }
 span.rvts55
 {
@@ -289,94 +291,88 @@ span.rvts56
 {
  font-size: 12pt;
  font-family: 'Garamond';
- font-weight: bold;
 }
 span.rvts57
 {
  font-size: 12pt;
  font-family: 'Garamond';
+ font-style: italic;
+ color: #190000;
 }
 span.rvts58
 {
  font-size: 12pt;
  font-family: 'Garamond';
- font-style: italic;
- color: #190000;
-}
-span.rvts59
-{
- font-size: 12pt;
- font-family: 'Garamond';
  font-weight: bold;
  color: #190000;
 }
-a.rvts60, span.rvts60
+a.rvts59, span.rvts59
 {
  font-size: 12pt;
  font-family: 'Garamond';
  color: #0000ff;
  text-decoration: underline;
 }
-span.rvts61
+span.rvts60
 {
  font-size: 13pt;
  font-family: 'Garamond';
  font-weight: bold;
 }
-span.rvts62
+span.rvts61
 {
  font-size: 12pt;
  font-family: 'Garamond';
  color: #0000ff;
  text-decoration: underline;
 }
-span.rvts63
+span.rvts62
 {
  font-size: 12pt;
  font-style: italic;
  font-weight: bold;
 }
-span.rvts64
+span.rvts63
 {
  font-size: 12pt;
  font-family: 'Garamond';
  font-style: italic;
  font-weight: bold;
 }
-span.rvts65
+span.rvts64
 {
  font-size: 9pt;
  font-weight: bold;
+}
+span.rvts65
+{
 }
 span.rvts66
 {
 }
 span.rvts67
 {
-}
-span.rvts68
-{
  font-weight: bold;
 }
-span.rvts69
+span.rvts68
 {
  font-family: 'Calibri';
  color: #000000;
 }
-span.rvts70
+span.rvts69
 {
  font-size: 16pt;
  font-weight: bold;
 }
-span.rvts71
+span.rvts70
 {
  font-style: italic;
 }
-span.rvts72
+span.rvts71
 {
  background-color: #ffff00;
 }
-a.rvts73, span.rvts73
+a.rvts72, span.rvts72
 {
  font-family: 'Calibri';
  color: #0000ff;
