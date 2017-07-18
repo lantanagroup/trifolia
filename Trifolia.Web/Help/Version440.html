@@ -171,7 +171,7 @@
                         <li>Previous Versions</li>
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="PreviousVersions.html" title="Previous Versions" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="PreviousVersions.html" title="Previous Versions" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Version431.html" title="Version 4.3.1" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="PreviousVersions.html" title="Previous Versions" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="Version450.html" title="Version 4.5.0" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Version431.html" title="Version 4.3.1" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
@@ -183,23 +183,23 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts15">Version 4.4.0</span></span></h2>
-<p class="rvps8"><span class="rvts14">Released on Wednesday, April 26, 2017</span></p>
-<h3 class="rvps9"><span class="rvts0"><span class="rvts16">FHIR Improvements</span></span></h3>
+<h2 class="rvps11"><span class="rvts0"><span class="rvts15">Version 4.4.0</span></span></h2>
+<p class="rvps23"><span class="rvts14">Released on Wednesday, April 26, 2017</span></p>
+<h3 class="rvps12"><span class="rvts0"><span class="rvts16">FHIR Improvements</span></span></h3>
 <p class="rvps2"><span class="rvts14">The schema used by Trifolia for "FHIR_Latest" is updated with the schema from FHIR STU3's recent publication. In the future, the Implementation Guide Type "FHIR_Latest" will be renamed to "FHIR STU3" and a new implementation guide will be created for "FHIR_Latest" that represents the latest build of FHIR.</span></p>
 <p class="rvps2"><span class="rvts14">The fixed[x] and pattern[x] fields are included in imports of StructureDefinition resources.</span></p>
-<h3 class="rvps9"><span class="rvts0"><span class="rvts16">Default field selection for exports</span></span></h3>
+<h3 class="rvps12"><span class="rvts0"><span class="rvts16">Default field selection for exports</span></span></h3>
 <p class="rvps2"><span class="rvts14">The "Save As Default" functionality for "Export templates/profiles to MS Word" was not saving all fields. This is now fixed so that when you indicate to save your preferences as default, the selected templates/profiles </span><span class="rvts53">and </span><span class="rvts14">the sort order are persisted.</span></p>
-<h3 class="rvps9"><span class="rvts0"><span class="rvts16">Implementation Guide Editing</span></span></h3>
+<h3 class="rvps12"><span class="rvts0"><span class="rvts16">Implementation Guide Editing</span></span></h3>
 <p class="rvps2"><span class="rvts14">Permissions management on the "Edit Implementation Guide" screen has been improved so that multiple users can be added with less effort. The "General" tab has been re-organized into two separate columns so that more fields can fit on a single screen, reducing the need to scroll to edit the fields.</span></p>
 <p class="rvps2"><span class="rvts14">When versioning an Implementation Guide, the identifier of the IG is copied to the new version.</span></p>
-<h3 class="rvps9"><span class="rvts0"><span class="rvts16">Exporting templates/profiles to MS Word</span></span></h3>
+<h3 class="rvps12"><span class="rvts0"><span class="rvts16">Exporting templates/profiles to MS Word</span></span></h3>
 <p class="rvps2"><span class="rvts14">The "Save as Default" functionality is improved so that it remembers the sort order of templates/profiles within the export, and the templates/profiles selected for export.</span></p>
-<h3 class="rvps9"><span class="rvts0"><span class="rvts16">Template/Profile Editing</span></span></h3>
+<h3 class="rvps12"><span class="rvts0"><span class="rvts16">Template/Profile Editing</span></span></h3>
 <p class="rvps2"><span class="rvts14">The author of a template can be changed in the template/profile editor.</span></p>
 <p class="rvps2"><span class="rvts14">A template/profile cannot reference itself as an implied template/profile anymore.</span></p>
 <p class="rvps2"><span class="rvts14">Bug fix to removing single-value binding from constraints.</span></p>
-<h3 class="rvps9"><span class="rvts0"><span class="rvts16">Schematron Export Improvements</span></span></h3>
+<h3 class="rvps12"><span class="rvts0"><span class="rvts16">Schematron Export Improvements</span></span></h3>
 <p class="rvps2"><span class="rvts14">Several of improvements have been made to Schematron exports including: </span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts14">Minor performance improvements</span></li>
@@ -207,14 +207,14 @@
 <li class="rvps2"><span class="rvts14">Specialized rule context for templates whose schema doesn't have the typical element used by the template predicate (ex: templateId)</span></li>
 <li class="rvps2"><span class="rvts14">Manual Schematron is exported for primitive constraints SHALL constraints that are a child of a MAY constraint</span></li>
 </ul>
-<h3 class="rvps9"><span class="rvts0"><span class="rvts16">Developer Improvements</span></span></h3>
+<h3 class="rvps12"><span class="rvts0"><span class="rvts16">Developer Improvements</span></span></h3>
 <p class="rvps2"><span class="rvts14">Several improvements have been made to make it easier for developers to work on Trifolia, including:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts14">Using the latest version of Entity Framework, with code-first approach. This will make it easier to modify the database, and apply those modifications during installation. It is also be easier to setup new installations of Trifolia.</span></li>
 <li class="rvps2"><span class="rvts14">Installation script improvements. Re-designing the installation script to automatically apply the database migrations, and to remove files that are no longer used by the application.</span></li>
 </ul>
-<h3 class="rvps9"><span class="rvts0"><span class="rvts16">Development Log</span></span></h3>
-<div class="rvps10"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
+<h3 class="rvps12"><span class="rvts0"><span class="rvts16">Development Log</span></span></h3>
+<div class="rvps24"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
 <tr valign="top">
 <td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Issue Type</span></p>
 </td>

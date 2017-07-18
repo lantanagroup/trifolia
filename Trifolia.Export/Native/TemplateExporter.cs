@@ -124,6 +124,7 @@ namespace Trifolia.Export.Native
                 var exportValueSet = new Shared.ImportExport.Model.TrifoliaValueSet()
                 {
                     name = valueSet.Name,
+                    Description = valueSet.Description,
                     code = valueSet.Code,
                     intensional = valueSet.Intensional.HasValue ? valueSet.Intensional.Value : false,
                     intensionalSpecified = valueSet.Intensional.HasValue,

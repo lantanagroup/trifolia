@@ -33,6 +33,11 @@
         .constraintModified {
             font-weight: bold;
         }
+
+        .panel.value-set > .table-responsive {
+            max-height: 300px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body ng-app="igViewApp">
@@ -574,7 +579,7 @@
     <script type="text/html" id="template_valuesets.html">
         <div ng-repeat="vs in CurrentValueSets | orderBy: 'Name'">
             <a id="{{GetValueSetAnchor(vs)}}"></a>
-            <div class="panel panel-default">
+            <div class="panel panel-default value-set">
                 <div class="panel-heading" ng-if="!Options.TemplateTabs">
                     <a data-toggle="collapse" href="#{{GetPath()}}#vs_{{GetElementIdentifier(vs.Identifier)}}">
                         {{vs.Name}} {{vs.Identifier}}

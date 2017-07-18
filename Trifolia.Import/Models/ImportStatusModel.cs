@@ -11,11 +11,13 @@ namespace Trifolia.Import.Models
     public class ImportStatusModel
     {
         private IObjectRepository tdb;
-        private Dictionary<Template, EntityState> ImportedTemplates { get; set; }
-        private Dictionary<ImplementationGuide, EntityState> ImportedImplementationGuides { get; set; }
-        private Dictionary<TemplateConstraint, EntityState> ImportedConstraints { get; set; }
-        private Dictionary<TemplateConstraintSample, EntityState> ImportedConstraintSamples { get; set; }
-        private Dictionary<TemplateSample, EntityState> ImportedTemplateSamples { get; set; }
+        private Dictionary<Template, EntityState> importedTemplates { get; set; }
+        private Dictionary<ImplementationGuide, EntityState> importedImplementationGuides { get; set; }
+        private Dictionary<TemplateConstraint, EntityState> importedConstraints { get; set; }
+        private Dictionary<TemplateConstraintSample, EntityState> importedConstraintSamples { get; set; }
+        private Dictionary<TemplateSample, EntityState> importedTemplateSamples { get; set; }
+        private List<ValueSet> importedValueSets { get; set; }
+        private List<CodeSystem> importedCodeSystems { get; set; }
 
         public List<string> Messages { get; set; }
         public bool Success { get; set; }
@@ -26,7 +28,7 @@ namespace Trifolia.Import.Models
             {
                 List<ImportedTemplate> templateStatuses = new List<ImportedTemplate>();
 
-                foreach (var importedTemplate in this.ImportedTemplates)
+                foreach (var importedTemplate in this.importedTemplates)
                 {
                     var templateStatus = new ImportedTemplate()
                     {
@@ -38,7 +40,7 @@ namespace Trifolia.Import.Models
 
                     foreach (var constraint in importedTemplate.Key.ChildConstraints)
                     {
-                        var constraintState = this.ImportedConstraints[constraint];
+                        var constraintState = this.importedConstraints[constraint];
                         var newConstraintStatus = new ImportedConstraint()
                         {
                             Number = constraint.GetFormattedNumber(),
@@ -47,7 +49,7 @@ namespace Trifolia.Import.Models
 
                         foreach (var constraintSample in constraint.Samples)
                         {
-                            var sampleState = this.ImportedConstraintSamples[constraintSample];
+                            var sampleState = this.importedConstraintSamples[constraintSample];
                             newConstraintStatus.Samples.Add(new ImportedConstraintSample()
                             {
                                 Name = constraintSample.Name,
@@ -60,7 +62,7 @@ namespace Trifolia.Import.Models
 
                     foreach (var sample in importedTemplate.Key.TemplateSamples)
                     {
-                        var sampleStatus = this.ImportedTemplateSamples[sample];
+                        var sampleStatus = this.importedTemplateSamples[sample];
                         templateStatus.Samples.Add(new ImportedTemplateSample()
                         {
                             Name = sample.Name,
@@ -81,7 +83,7 @@ namespace Trifolia.Import.Models
             {
                 List<ImportedImplementationGuide> implementationGuideStatuses = new List<ImportedImplementationGuide>();
 
-                foreach (var importedImplementationGuide in this.ImportedImplementationGuides)
+                foreach (var importedImplementationGuide in this.importedImplementationGuides)
                 {
                     var igStatus = new ImportedImplementationGuide()
                     {
@@ -97,28 +99,68 @@ namespace Trifolia.Import.Models
             }
         }
 
+        public List<ImportedValueSet> ValueSets
+        {
+            get
+            {
+                List<ImportedValueSet> importedValueSets = (from vs in this.importedValueSets
+                                                            select new ImportedValueSet()
+                                                            {
+                                                                Name = vs.Name,
+                                                                Identifier = vs.GetIdentifier()
+                                                            }).ToList();
+                return importedValueSets;
+            }
+        }
+
+        public List<ImportedCodeSystem> CodeSystems
+        {
+            get
+            {
+                List<ImportedCodeSystem> importedCodeSystems = (from cs in this.importedCodeSystems
+                                                                select new ImportedCodeSystem()
+                                                                {
+                                                                    Name = cs.Name,
+                                                                    Identifier = cs.Oid
+                                                                }).ToList();
+                return importedCodeSystems;
+            }
+        }
+
         public ImportStatusModel(IObjectRepository tdb)
         {
             this.Messages = new List<string>();
-            this.ImportedTemplates = new Dictionary<Template, EntityState>();
-            this.ImportedImplementationGuides = new Dictionary<ImplementationGuide, EntityState>();
-            this.ImportedConstraints = new Dictionary<TemplateConstraint, EntityState>();
-            this.ImportedConstraintSamples = new Dictionary<TemplateConstraintSample, EntityState>();
-            this.ImportedTemplateSamples = new Dictionary<TemplateSample, EntityState>();
+            this.importedTemplates = new Dictionary<Template, EntityState>();
+            this.importedImplementationGuides = new Dictionary<ImplementationGuide, EntityState>();
+            this.importedConstraints = new Dictionary<TemplateConstraint, EntityState>();
+            this.importedConstraintSamples = new Dictionary<TemplateConstraintSample, EntityState>();
+            this.importedTemplateSamples = new Dictionary<TemplateSample, EntityState>();
+            this.importedValueSets = new List<ValueSet>();
+            this.importedCodeSystems = new List<CodeSystem>();
             this.tdb = tdb;
+        }
+
+        public void AddValueSet(ValueSet valueSet)
+        {
+            this.importedValueSets.Add(valueSet);
+        }
+
+        public void AddCodeSystem(CodeSystem codeSystem)
+        {
+            this.importedCodeSystems.Add(codeSystem);
         }
 
         public void AddImportedImplementationGuide(ImplementationGuide implementationGuide)
         {
-            if (implementationGuide == null || this.ImportedImplementationGuides.ContainsKey(implementationGuide))
+            if (implementationGuide == null || this.importedImplementationGuides.ContainsKey(implementationGuide))
                 return;
 
             var dataSource = this.tdb as TrifoliaDatabase;
 
             if (dataSource != null)
-                this.ImportedImplementationGuides.Add(implementationGuide, dataSource.Entry(implementationGuide).State);
+                this.importedImplementationGuides.Add(implementationGuide, dataSource.Entry(implementationGuide).State);
             else
-                this.ImportedImplementationGuides.Add(implementationGuide, EntityState.Detached);
+                this.importedImplementationGuides.Add(implementationGuide, EntityState.Detached);
         }
 
         public void AddImportedTemplate(Template template)
@@ -135,12 +177,12 @@ namespace Trifolia.Import.Models
                 foreach (var constraint in template.ChildConstraints)
                 {
                     var constraintState = dataSource.Entry(constraint);
-                    this.ImportedConstraints.Add(constraint, constraintState.State);
+                    this.importedConstraints.Add(constraint, constraintState.State);
 
                     foreach (var constraintSample in constraint.Samples)
                     {
                         var constraintSampleState = dataSource.Entry(constraintState);
-                        this.ImportedConstraintSamples.Add(constraintSample, constraintSampleState.State);
+                        this.importedConstraintSamples.Add(constraintSample, constraintSampleState.State);
                     }
 
                 }
@@ -148,14 +190,14 @@ namespace Trifolia.Import.Models
                 foreach (var sample in template.TemplateSamples)
                 {
                     var sampleState = dataSource.Entry(sample);
-                    this.ImportedTemplateSamples.Add(sample, sampleState.State);
+                    this.importedTemplateSamples.Add(sample, sampleState.State);
                 }
 
-                this.ImportedTemplates.Add(template, state);
+                this.importedTemplates.Add(template, state);
             }
             else
             {
-                this.ImportedTemplates.Add(template, EntityState.Detached);
+                this.importedTemplates.Add(template, EntityState.Detached);
             }
         }
 
@@ -216,6 +258,18 @@ namespace Trifolia.Import.Models
             public string Name { get; set; }
             public int Version { get; set; }
             public string Status { get; set; }
+        }
+
+        public class ImportedValueSet
+        {
+            public string Name { get; set; }
+            public string Identifier { get; set; }
+        }
+
+        public class ImportedCodeSystem
+        {
+            public string Name { get; set; }
+            public string Identifier { get; set; }
         }
     }
 }

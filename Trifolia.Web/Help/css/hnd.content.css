@@ -440,25 +440,40 @@ p,ul,ol /* Paragraph Style */
 }
 .rvps10
 {
- margin: 5px 0px 0px 0px;
 }
 .rvps11
 {
- margin: 7px 0px 7px 0px;
+ text-align: left;
+ text-indent: 0px;
+ page-break-after: avoid;
+ padding: 0px 0px 0px 0px;
+ margin: 16px 0px 4px 0px;
 }
 .rvps12
 {
- margin: 5px 0px 0px 24px;
+ text-align: left;
+ text-indent: 0px;
+ page-break-after: avoid;
+ padding: 0px 0px 0px 0px;
+ margin: 16px 0px 4px 0px;
 }
 .rvps13
 {
- margin: 5px 0px 0px 1px;
+ margin: 7px 0px 7px 0px;
 }
 .rvps14
 {
- margin: 0px 0px 0px 24px;
+ margin: 5px 0px 0px 24px;
 }
 .rvps15
+{
+ margin: 5px 0px 0px 1px;
+}
+.rvps16
+{
+ margin: 0px 0px 0px 24px;
+}
+.rvps17
 {
  border-color: #000000;
  border-style: solid;
@@ -466,47 +481,32 @@ p,ul,ol /* Paragraph Style */
  padding: 5px 5px 5px 5px;
  margin: 4px 18px 0px 18px;
 }
-.rvps16
+.rvps18
 {
  background: #ffffff;
  margin: 7px 0px 7px 0px;
 }
-.rvps17
+.rvps19
 {
  border-color: #000000;
  border-style: solid;
  border-width: 1px;
 }
-.rvps18
+.rvps20
 {
  margin: 1px 1px 1px 1px;
 }
-.rvps19
-{
- margin: 5px 0px 0px 0px;
-}
-.rvps20
-{
- widows: 2;
- orphans: 2;
- margin: 5px 0px 8px 0px;
-}
 .rvps21
 {
- text-align: center;
- margin: 5px 0px 8px 0px;
+ margin: 5px 0px 0px 0px;
 }
 .rvps22
 {
- text-align: left;
- text-indent: 0px;
- page-break-after: avoid;
- padding: 0px 0px 0px 0px;
- margin: 16px 0px 4px 0px;
+ margin: 5px 0px 0px 0px;
 }
 .rvps23
 {
- margin: 5px 0px 0px 0px;
+ margin: 5px 0px 8px 0px;
 }
 .rvps24
 {
@@ -514,36 +514,30 @@ p,ul,ol /* Paragraph Style */
 }
 .rvps25
 {
+ widows: 2;
+ orphans: 2;
+ margin: 5px 0px 8px 0px;
+}
+.rvps26
+{
+ text-align: center;
+ margin: 5px 0px 8px 0px;
+}
+.rvps27
+{
  text-align: left;
  text-indent: 0px;
  page-break-after: avoid;
  padding: 0px 0px 0px 0px;
  margin: 16px 0px 4px 0px;
 }
-.rvps26
-{
- line-height: 17px;
- margin: 5px 0px 8px 0px;
-}
-.rvps27
-{
- text-align: center;
- border-color: #000000;
- border-style: solid;
- border-width: 1px;
- padding: 1px 5px 1px 5px;
- margin: 0px 0px 6px 0px;
-}
 .rvps28
 {
- line-height: 15px;
- page-break-after: avoid;
- margin: 3px 0px 3px 0px;
+ margin: 5px 0px 0px 0px;
 }
 .rvps29
 {
- line-height: 17px;
- margin: 5px 0px 8px 48px;
+ margin: 5px 0px 0px 0px;
 }
 .rvps30
 {
@@ -555,9 +549,42 @@ p,ul,ol /* Paragraph Style */
 }
 .rvps31
 {
- margin: 5px 0px 0px 48px;
+ line-height: 17px;
+ margin: 5px 0px 8px 0px;
 }
 .rvps32
+{
+ text-align: center;
+ border-color: #000000;
+ border-style: solid;
+ border-width: 1px;
+ padding: 1px 5px 1px 5px;
+ margin: 0px 0px 6px 0px;
+}
+.rvps33
+{
+ line-height: 15px;
+ page-break-after: avoid;
+ margin: 3px 0px 3px 0px;
+}
+.rvps34
+{
+ line-height: 17px;
+ margin: 5px 0px 8px 48px;
+}
+.rvps35
+{
+ text-align: left;
+ text-indent: 0px;
+ page-break-after: avoid;
+ padding: 0px 0px 0px 0px;
+ margin: 16px 0px 4px 0px;
+}
+.rvps36
+{
+ margin: 5px 0px 0px 48px;
+}
+.rvps37
 {
  margin: 5px 0px 0px 0px;
 }
