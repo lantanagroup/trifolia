@@ -1,0 +1,468 @@
+.main {
+  padding: 20px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+/* Messages 
+----------------------------------------------------------*/
+
+.windowMessage
+{
+    margin-top: 15px;
+    margin-bottom: 20px;
+    display:none; 
+    text-align: center; 
+    width: 100%;
+    opacity: 0.7;
+}
+
+.windowMessageText
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 15px;
+    padding-left: 15px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.infoMessage
+{
+    border: 2px solid #9CC525;
+    background-color: #D3E4A6;
+}
+
+.warningMessage
+{
+    border: 2px solid #D3E4A6;
+    background-color: #9CC525;
+    font-weight: bold;
+}
+
+.errorMessage
+{
+    border: 2px solid #D3E4A6;
+    background-color: red;
+    font-weight: bold;
+    color: white;
+}
+
+.validationMessage
+{
+    padding-left: 10px;
+    color: red;
+    font-style: italic;
+}
+
+/* DEFAULTS
+----------------------------------------------------------*/
+
+body   
+{
+    padding-top: 50px;
+}
+
+.linkText
+{
+    color: #034af3;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+a:link, a:visited
+{
+    color: #034af3;
+}
+
+a:hover
+{
+    color: #1d60ff;
+    text-decoration: none;
+}
+
+a:active
+{
+    color: #034af3;
+}
+
+p
+{
+    margin-bottom: 10px;
+    line-height: 1.6em;
+}
+
+.expandingPanel
+{
+    cursor: pointer;
+    border-bottom: 2px dotted black;
+}
+
+.controlInline
+{
+    display: inline-table;
+}
+
+.gridPreviewRowPadding td.dxgv
+{
+    padding: 2px 2px 2px 2px;
+}
+
+/* this rule styles <h1> and <h2> tags that are the 
+first child of the left and right table columns */
+.rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
+{
+    margin-top: 0px;
+}
+
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f5f5f5;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.main #footer {
+    margin-left: -55px;
+}
+
+.tab-pane {
+    padding: 15px;
+}
+
+/* TAB MENU   
+----------------------------------------------------------*/
+
+div.hideSkiplink
+{
+    background-color:#ECBA42;
+    width:100%;
+}
+
+/* FORM ELEMENTS   
+----------------------------------------------------------*/
+
+fieldset
+{
+    margin: 1em 0px;
+    padding: 1em;
+    border: 1px solid #ccc;
+}
+
+fieldset p 
+{
+    margin: 2px 12px 10px 10px;
+}
+
+fieldset.login label, fieldset.register label, fieldset.changePassword label
+{
+    display: block;
+}
+
+fieldset label.inline 
+{
+    display: inline;
+}
+
+legend 
+{
+    font-size: 1.1em;
+    font-weight: 600;
+    padding: 2px 4px 8px 4px;
+}
+
+input.textEntry 
+{
+    width: 320px;
+    border: 1px solid #ccc;
+}
+
+input.passwordEntry 
+{
+    width: 320px;
+    border: 1px solid #ccc;
+}
+
+div.accountInfo
+{
+    width: 42%;
+}
+
+/* MISC  
+----------------------------------------------------------*/
+
+.helpContext
+{
+    background-image: url(/Images/question.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    margin: -3px 0px 0px 0px;
+    line-height: 15px;
+    vertical-align: middle;
+}
+
+.title
+{
+    display: block;
+    float: left;
+    text-align: left;
+    width: auto;
+}
+
+.loginDisplay
+{
+    font-size: 1.1em;
+    display: block;
+    text-align: right;
+    padding: 10px;
+    color: White;
+}
+
+.loginDisplay a:link
+{
+    color: white;
+}
+
+.loginDisplay a:visited
+{
+    color: white;
+}
+
+.loginDisplay a:hover
+{
+    color: white;
+}
+
+.failureNotification
+{
+    font-size: 1.2em;
+    color: Red;
+}
+
+.bold
+{
+    font-weight: bold;
+}
+
+.submitButton
+{
+    text-align: right;
+    padding-right: 10px;
+}
+
+.borderless td {
+    border: none !important;
+}
+
+/* AUTOCOMPLETE
+------------------------------------------------------------- */
+ul.ui-autocomplete
+{
+    border: solid 1px green;
+    list-style-type: none;
+    margin: 0px;
+    overflow: auto;
+    padding: 0px;
+    width: 168px;
+    text-indent: 10px;
+}
+
+ul.ui-autocomplete a.ui-corner-all
+{
+    background-color: white;
+    display: block;
+    font-weight: normal;
+}
+
+ul.ui-autocomplete a.ui-state-hover
+{
+    background-color: gray;
+    color: #ffffff;
+    cursor: pointer;
+    display: block;
+}
+
+table.ReportGridHeader { width:100%;}
+
+table.ReportGridHeader  td.ReportExport { width:70px; text-align:center;}
+
+.highlight {
+    background-color: #FFFF88;
+}
+
+span.badge a {
+    color: white;
+}
+
+span.label a {
+    color: white;
+}
+
+.tooltip-inner {
+    white-space: pre-wrap;
+    max-width: 400px;
+    min-width: 200px;
+    max-height: 400px;
+    overflow: auto;
+    text-align: left;
+}
+
+.datepicker {
+    z-index: 1050 !important;
+}
+
+.modal-body {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+a.btn.btn-default {
+    color: black;
+}
+a.btn.btn-primary {
+    color: white;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.grid-striped > .row:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.selectTypeAheadResults {
+    margin-left: 0px;
+    margin-right: 0px;
+    border: 1px solid #ccc;
+    border-top: 0px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    position: absolute;
+    width: 100%;
+    background-color: #FFFFFF;
+    z-index: 3;
+    word-wrap: break-word;
+    font-size: 11px;
+    color: darkslategray;
+}
+
+.selectTypeAheadResult div {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.selectTypeAheadResult {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.selectTypeAheadResult:hover {
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+.selectTypeAheadResult.selected {
+    background-color: gray;
+    color: white;
+}
+
+.label a {
+    text-decoration: underline;
+}
+
+.wiki-markup table {
+    border: 1px solid #000000;
+}
+
+.wiki-markup table thead tr td {
+    background-color: #cccccc;
+}
+
+.wiki-markup table tr td {
+    padding: 5px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.wiki-markup table tr:last-child td {
+    padding: 5px;
+    border-bottom: 1px solid #000000;
+}
+
+/* Help window */
+
+#helpPopup .modal-body {
+    padding: 5px;
+}
+
+#helpFrame {
+    border: 0px;
+}
+
+#topic_header {
+    display: none;
+}
+
+/* Rich-text editor */
+.sceditor-container p {
+    margin-top: 5px;
+}
+
+#constraintNumberEdit {
+    margin-top: 61px;
+    padding: 15px;
+}
+
+.row-striped > .row:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.sceditor-create-anchor button {
+    width: 100%;
+}
+
+.sceditor-button-anchor div {
+    background-image: url('/Images/anchor.png') !important;
+}
+
+.sceditor-customimage {
+    margin: .5em;
+    border: 3px solid #fff;
+    max-width: 400px;
+    width: auto;
+    height: 200px;
+}
+
+.sceditor-customimage.selected {
+    border: 3px solid #ECBA42;
+}
+
+copy-button {
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    cursor: pointer;
+}
+
+/* Web based IG */
+p table td{
+    border: 1px solid #000;
+    empty-cells: show;
+}
