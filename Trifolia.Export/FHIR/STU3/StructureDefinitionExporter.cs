@@ -108,17 +108,13 @@ namespace Trifolia.Export.FHIR.STU3
         public void CreateElementDefinition(
             StructureDefinition strucDef,
             TemplateConstraint constraint,
-            SimpleSchema.SchemaObject schemaObject,
-            string sliceName = null)
+            SimpleSchema.SchemaObject schemaObject)
         {
             if (constraint.IsPrimitive)     // Skip primitives (for now, at least)
                 return;
 
-            string newSliceName = null;
-
-            if (constraint.IsBranch)
-                newSliceName = string.Format("{0}_slice_pos{1}", constraint.Context, constraint.Order);
-
+            string sliceName = constraint.GetSliceName();
+            string elementPath = constraint.GetElementPath(strucDef.Type != null ? strucDef.Type.ToString() : null);
             var igSettings = GetIGSettings(constraint);
             var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, this.igTypePlugin, constraint);
             string definition = constraintFormatter.GetPlainText(false, false, false);
@@ -131,9 +127,10 @@ namespace Trifolia.Export.FHIR.STU3
                 Short = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : constraint.Context,
                 Label = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : null,
                 Comment = !string.IsNullOrEmpty(constraint.Notes) ? constraint.Notes : null,
-                Path = constraint.GetElementPath(strucDef.Type != null ? strucDef.Type.ToString() : null),
-                SliceName = constraint.IsBranch ? newSliceName : null,
-                Definition = definition
+                Path = elementPath,
+                SliceName = constraint.IsBranch ? sliceName : null,
+                Definition = definition,
+                ElementId = !string.IsNullOrEmpty(sliceName) ? elementPath + ":" + sliceName : elementPath
             };
 
             if (constraint.IsChoice)
@@ -237,9 +234,7 @@ namespace Trifolia.Export.FHIR.STU3
                 // If there is a contained template/profile, make sure it supports a "Reference" type, and then output the profile identifier in the type
                 if (constraint.ContainedTemplate != null && newElementDef.Type.Exists(y => y.Code == "Reference" || y.Code == "Extension"))
                 {
-                    // FHIR requires that referenced profiles be represented by multiple types on a single element
-                    // TODO: There is some potential loss of properties on the second element definition
-                    if (!string.IsNullOrEmpty(sliceName))
+                    if (!string.IsNullOrEmpty(newElementDef.SliceName))
                     {
                         var foundMatchingElement = strucDef.Differential.Element.SingleOrDefault(y => y.Path == newElementDef.Path && y.SliceName == newElementDef.SliceName);
 
@@ -252,6 +247,8 @@ namespace Trifolia.Export.FHIR.STU3
 
                     bool isExtension = constraint.ContainedTemplate.PrimaryContextType == "Extension" && newElementDef.Type.Exists(y => y.Code == "Extension");
 
+                    // FHIR requires that referenced profiles be represented by multiple types on a single element
+                    // TODO: There is some potential loss of properties on the second element definition
                     var containedTypes = new List<ElementDefinition.TypeRefComponent>();
                     var typeRef = new ElementDefinition.TypeRefComponent()
                     {
@@ -273,7 +270,7 @@ namespace Trifolia.Export.FHIR.STU3
             foreach (var childConstraint in constraint.ChildConstraints.OrderBy(y => y.Order))
             {
                 var childSchemaObject = schemaObject != null ? schemaObject.Children.SingleOrDefault(y => y.Name == childConstraint.Context) : null;
-                CreateElementDefinition(strucDef, childConstraint, childSchemaObject, newSliceName);
+                CreateElementDefinition(strucDef, childConstraint, childSchemaObject);
             }
         }
 
@@ -357,6 +354,7 @@ namespace Trifolia.Export.FHIR.STU3
                 // Add base element for resource
                 var rootElement = new ElementDefinition();
                 rootElement.Path = template.PrimaryContextType;
+                rootElement.ElementId = template.PrimaryContextType;
                 differential.Element.Add(rootElement);
 
                 foreach (var constraint in template.ChildConstraints.Where(y => y.ParentConstraint == null).OrderBy(y => y.Order))
