@@ -3,15 +3,12 @@ Trifolia template/profile editor, repository and publication tool
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ch1e3gsaip09w2f2?svg=true)](https://ci.appveyor.com/project/seanmcilvenna/trifolia)
 
-> This repository has the current Trifolia source code in it. However, it has not been fully prepared for open source users; authentication is linked to Active Directory and HL7, db installation scripts may not be fully functional, and no initial data is loaded with a new installation. These are tasks that Lantana intends to work on over the next 6 months.
-
 ## Developer Setup
 
 - Visual Studio 2012 or 2015 (at least Express for Web)
 - SQL Server 2012 or newer
 - ASP NET 2 Required [Download|[https://www.microsoft.com/en-us/download/details.aspx?id=34600]
-- Run DB installation script
-- Seed the database (TODO)
+- Run DB installation using EF migrate.exe
 - Restore all NuGet packages either manually using "nuget restore" or via Visual Studio
 - Build all projects in the solution
 - Run/debug the Trifolia.Web project
@@ -80,3 +77,8 @@ powershell] .\Install.ps1 -appServicePath C:\trifolia -DBHost MSSQLSERVER -DBNam
 ** The site should use a .NET v4.5 application pool and ensure that the application pool has read/write access to the installation directory
 4. Configure the Trifolia installation
 ** Per-environment configurations can be used by creating an appSettings.user.config file in the installation directory. Any properties specified in this file will overwrite the default properties in the Web.config file.
+
+## Branches
+* master = Active development. Often changing. May contain breaking changes
+* latest = The latest version of changes released to trifolia.lantanagroup.com
+* **others** = feature branches that may be later be merged into "master" when development is complete and ready for testing. Eventually becomes part of "latest" after testing is complete, and ready to upgrade.

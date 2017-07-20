@@ -130,7 +130,7 @@ namespace Trifolia.Export.FHIR.STU3
                 Path = elementPath,
                 SliceName = constraint.IsBranch ? sliceName : null,
                 Definition = definition,
-                ElementId = !string.IsNullOrEmpty(sliceName) ? elementPath + ":" + sliceName : elementPath
+                ElementId = constraint.GetElementId()
             };
 
             if (constraint.IsChoice)

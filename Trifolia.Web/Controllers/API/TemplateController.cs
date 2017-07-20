@@ -644,6 +644,15 @@ namespace Trifolia.Web.Controllers.API
             return this.tdb.Templates.Count(y => y.Oid.ToLower() == identifier.ToLower()) == 0;
         }
 
+        [HttpGet, Route("api/Template/Validate/Bookmark"), SecurableAction]
+        public bool ValidateBookmark(string bookmark, int? ignoreTemplateId = null)
+        {
+            if (ignoreTemplateId != null)
+                return !this.tdb.Templates.Any(y => y.Id != ignoreTemplateId && y.Bookmark.Trim().ToLower() == bookmark.Trim().ToLower());
+
+            return !this.tdb.Templates.Any(y => y.Bookmark.Trim().ToLower() == bookmark.Trim().ToLower());
+        }
+
         [HttpGet, Route("api/Template/{sourceTemplateId}/Bookmark"), SecurableAction]
         public string GenerateBookmark(int sourceTemplateId, string newTemplateName)
         {
