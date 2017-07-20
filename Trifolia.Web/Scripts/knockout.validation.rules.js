@@ -83,6 +83,36 @@ ko.validation.rules['templateNameUnique'] = {
     message: 'This name is not available.'
 };
 
+ko.validation.rules['bookmarkUnique'] = {
+    validator: function (val, otherVal) {
+        var isValid = false;
+        var url = '/api/Template/Validate/Bookmark?bookmark=' + encodeURIComponent(val);
+        var ignoreTemplateId = null;
+
+        if (typeof otherVal === 'function') {
+            ignoreTemplateId = otherVal();
+        } else if (otherVal) {
+            ignoreTemplateId = otherVal;
+        }
+
+        if (ignoreTemplateId) {
+            url += '&ignoreTemplateId=' + encodeURIComponent(ignoreTemplateId);
+        }
+
+        $.ajax({
+            url: url,
+            async: false,
+            cache: false,
+            success: function (data) {
+                isValid = data;
+            }
+        });
+
+        return isValid;
+    },
+    message: 'This bookmark is not available.'
+};
+
 ko.validation.rules['templateOidFormat'] = {
     validator: function (val, otherVal) {
         var foundMatch = false;
@@ -212,13 +242,16 @@ ko.validation.rules['templateIdentifierUnique'] = {
     validator: function (val, otherVal) {
         var isValid = false;
         var url = '/api/Template/Validate/Oid?identifier=' + encodeURIComponent(val);
+        var ignoreTemplateId = null;
 
         if (typeof otherVal === 'function') {
-            var ignoreTemplateId = otherVal();
-        }        
+            ignoreTemplateId = otherVal();
+        } else if (otherVal) {
+            ignoreTemplateId = otherVal;
+        }
 
         if (ignoreTemplateId) {
-            url += '&ignoreTemplateId=' + ignoreTemplateId;
+            url += '&ignoreTemplateId=' + encodeURIComponent(ignoreTemplateId);
         }
 
         $.ajax({
