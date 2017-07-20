@@ -81,4 +81,4 @@ powershell] .\Install.ps1 -appServicePath C:\trifolia -DBHost MSSQLSERVER -DBNam
 ## Branches
 * master = Active development. Often changing. May contain breaking changes
 * latest = The latest version of changes released to trifolia.lantanagroup.com
-* <others> = feature branches that may be later be merged into "master" when development is complete and ready for testing. Eventually becomes part of "latest" after testing is complete, and ready to upgrade.
+* **others** = feature branches that may be later be merged into "master" when development is complete and ready for testing. Eventually becomes part of "latest" after testing is complete, and ready to upgrade.
