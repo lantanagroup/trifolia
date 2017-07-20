@@ -110,7 +110,7 @@ ko.validation.rules['bookmarkUnique'] = {
 
         return isValid;
     },
-    message: 'This bookmark is not available.'
+    message: 'This bookmark is not available. Another template/profile is already using this bookmark. Please modify the bookmark so that it is unique.'
 };
 
 ko.validation.rules['templateOidFormat'] = {
