@@ -357,6 +357,7 @@
     <Compile Include="Formatters\JavaScriptFormatter.cs" />
     <Compile Include="Formatters\TrifoliaXmlFormatter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Models\Export\ExportSettingsModel.cs" />
     <Compile Include="Models\User\ValidateUmlsCredentialsRequestModel.cs" />
     <Compile Include="Models\User\ValidateUmlsCredentialsResponseModel.cs" />
     <Compile Include="Models\User\WhoAmIModel.cs" />

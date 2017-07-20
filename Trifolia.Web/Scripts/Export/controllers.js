@@ -1,54 +1,27 @@
 ﻿angular.module('Trifolia').controller('ExportCtrl', function ($scope, $uibModal, ImplementationGuideService) {
     $scope.selectedImplementationGuide = null;
     $scope.message = '';
-    $scope.exportFormats = [{
-        id: 'MSW',
-        name: 'Microsoft Word (DOCX)'
-    }, {
-        id: 'HTML',
-        name: 'Web (HTML)'
-    }, {
-        id: 'SNAP',
-        name: 'Snapshot (JSON)'
-    }, {
-        id: 'XML',
-        name: 'Native (XML)'
-    }, {
-        id: 'FHIR_XML',
-        name: 'FHIR Bundle (XML)'
-    }, {
-        id: 'FHIR_BUILD_XML',
-        name: 'FHIR Build Package (XML)'
-    }, {
-        id: 'FHIR_BUILD_JSON',
-        name: 'FHIR Build Package (JSON)'
-    }, {
-        id: 'TEMPLATES',
-        name: 'Templates DSTU (XML)'
-    }, {
-        id: 'SCH',
-        name: 'Schematron (SCH)'
-    }, {
-        id: 'VOC_XLSX',
-        name: 'Vocabulary (XLSX)'
-    }, {
-        id: 'VOC_XML',
-        name: 'Vocabulary (Native XML)'
-    }, {
-        id: 'VOC_SINGLE_SVS',
-        name: 'Vocbulary (Single SVS XML)'
-    }, {
-        id: 'VOC_MULTI_SVS',
-        name: 'Vocabulary (Multiple SVS XML)'
-    }, {
-        id: 'VOC_FHIR_XML',
-        name: 'Vocbulary Bundle (FHIR XML)'
-    }];
-    $scope.templateSelectionFormats = ['MSW', 'SNAP', 'XML', 'TEMPLATES', 'SCH'];
-    $scope.xmlFormats = ['XML', 'TEMPLATES', 'FHIR_XML', 'FHIR_BUILD_XML', 'FHIR_BUILD_JSON', 'SNAP'];
-    $scope.categorySelectionFormats = $scope.xmlFormats.concat(['MSW', 'SCH']);
-    $scope.vocFormats = ['VOC_XML', 'VOC_SINGLE_SVS', 'VOC_MULTI_SVS', 'VOC_FHIR_XML'];
-    $scope.fhirFormats = $scope.vocFormats.concat(['MSW', 'HTML', 'SNAP', 'XML', 'FHIR_XML', 'FHIR_BUILD_XML', 'FHIR_BUILD_JSON']);
+    $scope.exportFormats = [
+        { id: 0, name: 'Microsoft Word (DOCX)' },
+        { id: 1, name: 'Web (HTML)' },
+        { id: 2, name: 'Snapshot (JSON)' },
+        { id: 3, name: 'Native (XML, JSON)' },
+        { id: 4, name: 'FHIR Bundle (XML, JSON)' },
+        { id: 5, name: 'FHIR Build Package (XML, JSON)' },
+        { id: 6, name: 'Templates DSTU (XML, JSON)' },
+        { id: 7, name: 'Schematron (SCH)' },
+        { id: 8, name: 'Vocabulary (XLSX)' },
+        { id: 9, name: 'Vocabulary (Native XML)' },
+        { id: 10, name: 'Vocbulary (Single SVS XML)' },
+        { id: 11, name: 'Vocabulary (Multiple SVS XML)' },
+        { id: 12, name: 'Vocbulary Bundle (FHIR XML)' }
+    ];
+    $scope.templateSelectionFormats = [0, 2, 3, 6, 7];
+    $scope.xmlFormats = [3, 4, 5, 6];
+    $scope.categorySelectionFormats = $scope.xmlFormats.concat([0, 7, 2]);
+    $scope.vocFormats = [9, 10, 11, 12];
+    $scope.fhirFormats = $scope.vocFormats.concat([0, 1, 2, 3, 4, 5]);
+    $scope.fhirOnlyFormats = [4, 5];
     $scope.categories = [];
     $scope.valueSets = [];
     $scope.templates = [];
@@ -61,38 +34,15 @@
         valuesetsAsAppendix: true
     };
 
-    $scope.getPostUrl = function () {
-        switch ($scope.criteria.selectedExportFormat) {
-            case 'MSW':
-                return '/api/Export/MSWord';
-            case 'HTML':
-                return '/api/Export/HTML';      // TODO
-            case 'SNAP':
-                return '/api/Export/Snapshot';  // TODO (move from IGController)
-            case 'XML':
-                return '/api/Export/Trifolia';
-            case 'FHIR_XML':
-            case 'FHIR_BUILD_XML':
-            case 'FHIR_BUILD_JSON':
-            case 'TEMPLATES':
-                return '/api/Export/XML';
-            case 'SCH':
-                return '/api/Export/Schematron';
-            case 'VOC_XLSX':
-            case 'VOC_XML':
-            case 'VOC_SINGLE_SVS':
-            case 'VOC_MULTI_SVS':
-            case 'VOC_FHIR_XML':
-                return '/api/Export/Vocabulary';
-        }
-    };
-
     $scope.getExportFormats = function() {
         return _.filter($scope.exportFormats, function (exportFormat) {
-            if ($scope.selectedImplementationGuide && $scope.selectedImplementationGuide.TypeNamespace == 'http://hl7.org/fhir') {
-                if ($scope.fhirFormats.indexOf(exportFormat.id) < 0) {
-                    return false;
-                }
+            var isFhirImplementationGuide = $scope.selectedImplementationGuide && $scope.selectedImplementationGuide.TypeNamespace == 'http://hl7.org/fhir';
+            var isFhirFormat = $scope.fhirFormats.indexOf(exportFormat.id) >= 0;
+            
+            if (isFhirImplementationGuide && !isFhirFormat) {
+                return false;
+            } else if (!isFhirImplementationGuide && $scope.fhirOnlyFormats.indexOf(exportFormat.id) >= 0) {
+                return false;
             }
 
             // TODO: Check if the user has the securable to export this format

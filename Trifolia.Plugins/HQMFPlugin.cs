@@ -186,12 +186,12 @@ namespace Trifolia.Plugins
 
             switch (format)
             {
-                case ExportFormats.FHIR:
+                case ExportFormats.FHIR_Bundle:
                     throw new NotImplementedException();
-                case ExportFormats.Proprietary:
+                case ExportFormats.Native_XML:
                     NativeExporter nativeExporter = new NativeExporter(tdb, templates, igSettings, true, categories);
                     return System.Text.Encoding.UTF8.GetBytes(nativeExporter.GenerateXMLExport());
-                case ExportFormats.TemplatesDSTU:
+                case ExportFormats.Templates_DSTU_XML:
                     DecorExporter decorExporter = new DecorExporter(templates, tdb, igSettings.ImplementationGuideId);
                     return System.Text.Encoding.UTF8.GetBytes(decorExporter.GenerateXML());
                 default:

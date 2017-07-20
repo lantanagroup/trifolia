@@ -13,6 +13,7 @@ using ExportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
 using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 using ExportImplementationGuide = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuide;
 using Trifolia.Shared;
+using Newtonsoft.Json;
 
 namespace Trifolia.Export.Native
 {
@@ -195,6 +196,12 @@ namespace Trifolia.Export.Native
 
                 return sw.ToString();
             }
+        }
+
+        public string GenerateJSONExport()
+        {
+            var export = GenerateExport();
+            return JsonConvert.SerializeObject(export);
         }
     }
 

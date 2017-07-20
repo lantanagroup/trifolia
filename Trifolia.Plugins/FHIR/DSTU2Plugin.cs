@@ -19,14 +19,18 @@ namespace Trifolia.Plugins.FHIR
 
             switch (format)
             {
-                case ExportFormats.FHIR:
+                case ExportFormats.FHIR_Bundle:
                     ImplementationGuideExporter exporter = new ImplementationGuideExporter(tdb, schema, uri.Scheme, uri.Authority);
                     fhir_dstu2.Hl7.Fhir.Model.Bundle bundle = exporter.GetImplementationGuides(include: "ImplementationGuide:resource", implementationGuideId: igSettings.ImplementationGuideId);
                     return ConvertToBytes(fhir_dstu2.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToXml(bundle));
-                case ExportFormats.Proprietary:
+                case ExportFormats.Native_XML:
                     NativeExporter proprietaryExporter = new NativeExporter(tdb, templates, igSettings, true, categories);
-                    return ConvertToBytes(proprietaryExporter.GenerateXMLExport());
-                case ExportFormats.TemplatesDSTU:
+
+                    if (returnJson)
+                        return ConvertToBytes(proprietaryExporter.GenerateJSONExport());
+                    else
+                        return ConvertToBytes(proprietaryExporter.GenerateXMLExport());
+                case ExportFormats.Templates_DSTU_XML:
                     DecorExporter decorExporter = new DecorExporter(templates, tdb, igSettings.ImplementationGuideId);
                     return ConvertToBytes(decorExporter.GenerateXML());
                 default:

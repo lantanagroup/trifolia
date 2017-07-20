@@ -15,7 +15,7 @@ namespace Trifolia.Plugins.FHIR
         {
             switch (format)
             {
-                case ExportFormats.FHIR:
+                case ExportFormats.FHIR_Bundle:
                     string export = FHIRExporter.GenerateExport(tdb, templates, igSettings, categories, includeVocabulary);
 
                     if (returnJson)
@@ -25,14 +25,16 @@ namespace Trifolia.Plugins.FHIR
                     }
 
                     return ConvertToBytes(export);
-                case ExportFormats.Proprietary:
+                case ExportFormats.Native_XML:
                     NativeExporter proprietaryExporter = new NativeExporter(tdb, templates, igSettings, true, categories);
-                    return ConvertToBytes(proprietaryExporter.GenerateXMLExport());
-                case ExportFormats.TemplatesDSTU:
+
+                    if (returnJson)
+                        return ConvertToBytes(proprietaryExporter.GenerateJSONExport());
+                    else
+                        return ConvertToBytes(proprietaryExporter.GenerateXMLExport());
+                case ExportFormats.Templates_DSTU_XML:
                     DecorExporter decorExporter = new DecorExporter(templates, tdb, igSettings.ImplementationGuideId);
                     return ConvertToBytes(decorExporter.GenerateXML());
-                case ExportFormats.Snapshot:
-
                 default:
                     throw new Exception("Invalid export format for the specified implementation guide type");
             }

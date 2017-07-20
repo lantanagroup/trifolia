@@ -63,6 +63,163 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
+        public HttpResponseMessage Export(ExportSettingsModel model)
+        {
+            ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == model.ImplementationGuideId);
+
+            if (model.TemplateIds == null)
+                model.TemplateIds = ig.GetRecursiveTemplates(this.tdb, categories: model.SelectedCategories.ToArray()).Select(y => y.Id).ToArray();
+
+            List<Template> templates = this.tdb.Templates.Where(y => model.TemplateIds.Contains(y.Id)).ToList();
+            SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, ig.ImplementationGuideType);
+            IIGTypePlugin igTypePlugin = IGTypePluginFactory.GetPlugin(ig.ImplementationGuideType);
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, model.ImplementationGuideId);
+            string fileName;
+            byte[] export;
+            string contentType = null;
+
+            switch (model.ExportFormat)
+            {
+                case ExportFormats.FHIR_Build_Package:
+                case ExportFormats.FHIR_Bundle:
+                case ExportFormats.Native_XML:
+                case ExportFormats.Templates_DSTU_XML:
+                    fileName = string.Format("{0}.{1}", ig.GetDisplayName(true), model.ReturnJson ? "json" : "xml");
+                    export = igTypePlugin.Export(this.tdb, schema, model.ExportFormat, igSettings, model.SelectedCategories, templates, model.IncludeVocabulary, model.ReturnJson);
+                    contentType = model.ReturnJson ? JSON_MIME_TYPE : XML_MIME_TYPE;
+                    break;
+
+                case ExportFormats.Snapshot_JSON:
+                    ImplementationGuideController ctrl = new ImplementationGuideController(this.tdb);
+                    var dataModel = ctrl.GetViewData(model.ImplementationGuideId, null, null, true);
+
+                    // Serialize the data to JSON
+                    var jsonSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    jsonSerializer.MaxJsonLength = Int32.MaxValue;
+                    export = System.Text.Encoding.UTF8.GetBytes(jsonSerializer.Serialize(dataModel));
+
+                    // Set the filename to JSON
+                    fileName = string.Format("{0}.json", ig.GetDisplayName(true));
+                    contentType = JSON_MIME_TYPE;
+                    break;
+
+                case ExportFormats.Microsoft_Word_DOCX:
+                    ImplementationGuideGenerator generator = new ImplementationGuideGenerator(this.tdb, model.ImplementationGuideId, model.TemplateIds);
+                    fileName = string.Format("{0}.docx", ig.GetDisplayName(true));
+
+                    ExportSettings lConfig = new ExportSettings();
+                    lConfig.Use(c =>
+                    {
+                        c.GenerateTemplateConstraintTable = model.TemplateTables == ExportSettingsModel.TemplateTableOptions.Overview || model.TemplateTables == ExportSettingsModel.TemplateTableOptions.Both;
+                        c.GenerateTemplateContextTable = model.TemplateTables == ExportSettingsModel.TemplateTableOptions.Context || model.TemplateTables == ExportSettingsModel.TemplateTableOptions.Both;
+                        c.GenerateDocTemplateListTable = model.DocumentTables == ExportSettingsModel.DocumentTableOptions.List || model.DocumentTables == ExportSettingsModel.DocumentTableOptions.Both;
+                        c.GenerateDocContainmentTable = model.DocumentTables == ExportSettingsModel.DocumentTableOptions.Containment || model.DocumentTables == ExportSettingsModel.DocumentTableOptions.Both;
+                        c.AlphaHierarchicalOrder = model.TemplateSortOrder == ExportSettingsModel.TemplateSortOrderOptions.AlphaHierarchical;
+                        c.DefaultValueSetMaxMembers = model.ValueSetTables ? model.MaximumValueSetMembers : 0;
+                        c.GenerateValueSetAppendix = model.ValueSetAppendix;
+                        c.IncludeXmlSamples = model.IncludeXmlSample;
+                        c.IncludeChangeList = model.IncludeChangeList;
+                        c.IncludeTemplateStatus = model.IncludeTemplateStatus;
+                        c.IncludeNotes = model.IncludeNotes;
+                        c.SelectedCategories = model.SelectedCategories;
+                    });
+
+                    if (model.ValueSetOid != null && model.ValueSetOid.Length > 0)
+                    {
+                        Dictionary<string, int> valueSetMemberMaximums = new Dictionary<string, int>();
+
+                        for (int i = 0; i < model.ValueSetOid.Length; i++)
+                        {
+                            if (valueSetMemberMaximums.ContainsKey(model.ValueSetOid[i]))
+                                continue;
+
+                            valueSetMemberMaximums.Add(model.ValueSetOid[i], model.ValueSetMaxMembers[i]);
+                        }
+
+                        lConfig.ValueSetMaxMembers = valueSetMemberMaximums;
+                    }
+
+                    generator.BuildImplementationGuide(lConfig, ig.ImplementationGuideType.GetPlugin());
+                    export = generator.GetDocument();
+                    contentType = DOCX_MIME_TYPE;
+                    break;
+
+                case ExportFormats.Schematron_SCH:
+                    string schematronResult = SchematronGenerator.Generate(tdb, ig, model.IncludeCustomSchematron, VocabularyOutputType.Default, model.VocabularyFileName, templates, model.SelectedCategories, model.DefaultSchematron);
+                    export = ASCIIEncoding.UTF8.GetBytes(schematronResult);
+                    fileName = string.Format("{0}.sch", ig.GetDisplayName(true));
+                    contentType = XML_MIME_TYPE;
+
+                    if (model.IncludeVocabulary)
+                    {
+                        VocabularyService service = new VocabularyService(tdb, ig.ImplementationGuideType.SchemaURI == "urn:hl7-org:v3");
+
+                        using (ZipFile zip = new ZipFile())
+                        {
+                            zip.AddEntry(fileName, export);
+
+                            string encoding = model.Encoding == ExportSettingsModel.EncodingOptions.UTF8 ? "UTF-8" : "Unicode";
+
+                            //Assuming default settings for vocabulary file
+                            string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, 0, (int)VocabularyOutputType.Default, encoding);
+
+                            byte[] vocData = ASCIIEncoding.UTF8.GetBytes(vocXml);
+                            string vocFileName = string.Format("{0}", model.VocabularyFileName);
+
+                            //Ensuring the extension is present in case input doesn't have it
+                            if (vocFileName.IndexOf(".xml") == -1)
+                                vocFileName += ".xml";
+
+                            zip.AddEntry(vocFileName, vocData);
+
+                            using (MemoryStream ms = new MemoryStream())
+                            {
+                                zip.Save(ms);
+
+                                fileName = string.Format("{0}.zip", ig.GetDisplayName(true));
+                                contentType = ZIP_MIME_TYPE;
+                                export = ms.ToArray();
+                            }
+                        }
+                    }
+                    break;
+
+                    /*
+                case ExportFormats.Vocabulary_XLSX:
+                case ExportFormats.Vocbulary_Single_SVS_XML:
+                case ExportFormats.Vocabulary_Multiple_SVS_XML:
+                case ExportFormats.Vocabulary_Native_XML:
+                    VocabularyService service = new VocabularyService(this.tdb, ig.ImplementationGuideType.SchemaURI == "urn:hl7-org:v3");
+
+                    switch (model.ExportFormat)
+                    {
+                        case VocabularySettingsModel.ExportFormatTypes.Standard:
+                        case VocabularySettingsModel.ExportFormatTypes.SVS:
+                        case VocabularySettingsModel.ExportFormatTypes.FHIR:
+                            fileType = "xml";
+                            contentType = XML_MIME_TYPE;
+                            string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, model.MaximumMembers, (int)model.ExportFormat, model.Encoding);
+                            Encoding encoding = Encoding.GetEncoding(model.Encoding);
+                            data = encoding.GetBytes(vocXml);
+                            break;
+                        case VocabularySettingsModel.ExportFormatTypes.Excel:
+                            fileType = "xlsx";
+                            contentType = XLSX_MIME_TYPE;
+                            data = service.GetImplementationGuideVocabularySpreadsheet(model.ImplementationGuideId, model.MaximumValueSetMembers);
+                            break;
+                    }
+
+                    fileName = string.Format("{0}.{1}", ig.GetDisplayName(true), fileType);
+                    break;
+                    */
+
+                default:
+                    throw new NotSupportedException();
+            }
+
+            return GetExportResponse(fileName, contentType, export);
+        }
+
         #region XML
 
         [HttpPost, Route("api/Export/XML/Validate"), SecurableAction(SecurableNames.EXPORT_XML)]
@@ -269,22 +426,22 @@ namespace Trifolia.Web.Controllers.API
 
             if (model.XmlType == XMLSettingsModel.ExportTypes.Proprietary)
             {
-                export = igTypePlugin.Export(tdb, schema, ExportFormats.Proprietary, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
+                export = igTypePlugin.Export(tdb, schema, ExportFormats.Native_XML, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
             }
             else if (model.XmlType == XMLSettingsModel.ExportTypes.DSTU)
             {
-                export = igTypePlugin.Export(tdb, schema, ExportFormats.TemplatesDSTU, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
+                export = igTypePlugin.Export(tdb, schema, ExportFormats.Templates_DSTU_XML, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
             }
             else if (model.XmlType == XMLSettingsModel.ExportTypes.FHIR)
             {
-                export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIR, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
+                export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIR_Bundle, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
             }
             else if (model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuild || model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuildJSON)
             {
                 if (model.XmlType == XMLSettingsModel.ExportTypes.FHIRBuildJSON)
                     returnJson = true;
 
-                export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIRBuild, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
+                export = igTypePlugin.Export(this.tdb, schema, ExportFormats.FHIR_Build_Package, igSettings, model.SelectedCategories, templates, includeVocabulary, returnJson);
                 contentType = ZIP_MIME_TYPE;
                 fileName = string.Format("{0}.zip", ig.GetDisplayName(true));
             }

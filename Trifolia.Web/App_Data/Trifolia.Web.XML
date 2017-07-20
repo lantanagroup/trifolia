@@ -1241,14 +1241,6 @@
             When user is logged in via "remember me", Login does not have to occur.
             </remarks>
         </member>
-        <member name="T:Trifolia.Web.Models.User.UserModel">
-            <summary>
-            Models a user as a view model
-            </summary>
-            <remarks>Although the underlying model allows us to link a user to many organizations, this view model represents 
-            a single organization, and therefore in this context, a user either belongs to the current organization
-            or not.</remarks>
-        </member>
         <member name="T:Trifolia.Web.Models.Export.MSWordSettingsModel">
             <summary>
             Models used to define settings for exporting to MS Word
@@ -1343,6 +1335,14 @@
             <summary>
             Categories used to filter constraints exported in the ms word ig
             </summary>
+        </member>
+        <member name="T:Trifolia.Web.Models.User.UserModel">
+            <summary>
+            Models a user as a view model
+            </summary>
+            <remarks>Although the underlying model allows us to link a user to many organizations, this view model represents 
+            a single organization, and therefore in this context, a user either belongs to the current organization
+            or not.</remarks>
         </member>
         <member name="T:Trifolia.Web.Models.Group.GroupModel">
             <summary>
