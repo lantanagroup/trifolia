@@ -1,25 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
-
-using Trifolia.Shared;
-using Trifolia.Generation.IG;
-using Trifolia.Export.Schematron;
-using Trifolia.Generation.Green;
-using Trifolia.Authentication;
-using Trifolia.Shared.ImportExport;
-
-using Trifolia.Web.Models.Export;
 using Trifolia.Authorization;
 using Trifolia.DB;
-using Trifolia.Terminology;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
-
-using Ionic.Zip;
 
 namespace Trifolia.Web.Controllers
 {

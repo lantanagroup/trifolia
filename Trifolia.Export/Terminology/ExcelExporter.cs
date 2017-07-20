@@ -1,129 +1,28 @@
-﻿using System;
-using System.IO;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
-using System.Xml.Serialization;
-using System.ServiceModel.Activation;
-
+using Trifolia.DB;
 using Trifolia.Logging;
 using Trifolia.Shared;
-using TDBImplementationGuide = Trifolia.DB.ImplementationGuide;
-using TDBValueSet = Trifolia.DB.ValueSet;
-using Trifolia.DB;
-
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Validation;
 using Trifolia.Shared.Plugins;
+using TDBImplementationGuide = Trifolia.DB.ImplementationGuide;
 
-namespace Trifolia.Terminology
+namespace Trifolia.Export.Terminology
 {
-    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
-    public class VocabularyService : IVocabularyService
+    public class ExcelExporter
     {
         private IObjectRepository tdb;
-        private bool isCDA;
 
-        #region Constructors
-
-        public VocabularyService(bool isCDA = true)
-            : this(DBContext.Create(), isCDA)
-        {
-
-        }
-
-        public VocabularyService(IObjectRepository tdb, bool isCDA = true)
+        public ExcelExporter(IObjectRepository tdb)
         {
             this.tdb = tdb;
-            this.isCDA = isCDA;
         }
 
-        #endregion
-
-        public int GetValueSetMemberLength(string valueSetIdentifier)
-        {
-            try
-            {
-                ValueSet valueSet = (from v in this.tdb.ValueSets
-                                     join vsi in this.tdb.ValueSetIdentifiers on v.Id equals vsi.ValueSetId
-                                     where vsi.Identifier.ToLower().Trim() == valueSetIdentifier.ToLower().Trim()
-                                     select v)
-                                     .FirstOrDefault();
-
-                if (valueSet == null)
-                    return 0;
-
-                return valueSet.Members.Count;
-            }
-            catch (Exception ex)
-            {
-                Log.For(this).Critical("Error occurred while retrieving valueset member length for valueset oid '" + valueSetIdentifier + "'.", ex);
-                throw;
-            }
-        }
-
-        public string GetValueSet(string valueSetIdentifier, int vocabOutputType, string encoding)
-        {
-            try
-            {
-                ValueSet valueSet = (from v in this.tdb.ValueSets
-                                     join vsi in this.tdb.ValueSetIdentifiers on v.Id equals vsi.ValueSetId
-                                     where vsi.Identifier.ToLower().Trim() == valueSetIdentifier.ToLower().Trim()
-                                     select v)
-                                     .FirstOrDefault();
-
-                if (valueSet == null)
-                    throw new Exception("Could not find ValueSet specified.");
-
-                VocabularySystems schema = new VocabularySystems();
-                schema.Systems = new VocabularySystem[] { GetSystem(null, tdb, valueSet, DateTime.Now) };
-                VocabularyOutputTypeAdapter adapter = new VocabularyOutputTypeAdapter(schema, VocabularyOutputTypeTranslator.FromInt(vocabOutputType), Encoding.GetEncoding(encoding));
-
-                return adapter.AsXML();
-            }
-            catch (Exception ex)
-            {
-                Log.For(this).Critical("Error occurred while retrieving a valueset for oid '" + valueSetIdentifier + "'", ex);
-                throw;
-            }
-        }
-
-        public string[] GetValueSetOidsForImplementationGuide(int implementationGuideId)
-        {
-            try
-            {
-                TDBImplementationGuide ig = tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId);
-
-                if (ig == null)
-                    throw new Exception("Could not find ImplementationGuide specified.");
-
-                var igTypePlugin = ig.ImplementationGuideType.GetPlugin();
-                List<Template> templates = ig.GetRecursiveTemplates(tdb);
-
-                var valueSets = (from t in templates
-                                 join tc in tdb.TemplateConstraints on t.Id equals tc.TemplateId
-                                 join vs in tdb.ValueSets on tc.ValueSetId equals vs.Id
-                                 where tc.ValueSetId != null
-                                 select vs)
-                                 .Distinct()
-                                 .ToList();
-                
-                return valueSets.Select(vs => vs.GetIdentifier(igTypePlugin)).ToArray();
-            }
-            catch (Exception ex)
-            {
-                Log.For(this).Critical("Error occurred while retrieving valueset oids for an implementation guide.", ex);
-                throw;
-            }
-        }
-
-        public byte[] GetImplementationGuideVocabularySpreadsheet(int implementationGuideId, int maxValueSetMembers)
+        public byte[] GetSpreadsheet(int implementationGuideId, int maxValueSetMembers)
         {
             try
             {
@@ -325,17 +224,6 @@ namespace Trifolia.Terminology
             }
         }
 
-        private string XmlEncodeText(string text)
-        {
-            if (text == null)
-                return text;
-
-            return text
-                .Replace("&", "&amp;")
-                .Replace("<", "&lt;")
-                .Replace(">", "&gt;");
-        }
-
         private Worksheet CreateWorksheet(Workbook workbook, string name)
         {
             SheetData newSheetData = new SheetData();
@@ -364,110 +252,15 @@ namespace Trifolia.Terminology
             return newWorksheetPart.Worksheet;
         }
 
-        public string GetImplementationGuideVocabulary(int implementationGuideId, int maxValueSetMembers, int vocabOutputType, string encoding)
+        private string XmlEncodeText(string text)
         {
-            try
-            {
-                TDBImplementationGuide ig = tdb.ImplementationGuides.SingleOrDefault(y => y.Id == implementationGuideId);
+            if (text == null)
+                return text;
 
-                if (ig == null)
-                    throw new Exception("Could not find ImplementationGuide specified.");
-
-                IIGTypePlugin igTypePlugin = ig.ImplementationGuideType.GetPlugin();
-                bool? onlyStatic = VocabularyOutputTypeTranslator.FromInt(vocabOutputType) != VocabularyOutputType.FHIR ? (bool?)true : null;
-                List<ImplementationGuideValueSet> valueSets = ig.GetValueSets(tdb, onlyStatic);
-                List<VocabularySystem> systems = new List<VocabularySystem>();
-
-                foreach (ImplementationGuideValueSet cValueSet in valueSets)
-                {
-                    VocabularySystem newSystem = this.GetSystem(igTypePlugin, tdb, cValueSet.ValueSet, cValueSet.BindingDate);
-                    systems.Add(newSystem);
-                }
-
-                VocabularySystems schema = new VocabularySystems();
-                schema.Systems = systems.ToArray();
-                VocabularyOutputTypeAdapter adapter = new VocabularyOutputTypeAdapter(schema, VocabularyOutputTypeTranslator.FromInt(vocabOutputType), Encoding.GetEncoding(encoding));
-                return adapter.AsXML();
-            }
-            catch (Exception ex)
-            {
-                Log.For(this).Critical("Error occurred while retrieving vocabulary for an implementation guide.", ex);
-                throw;
-            }
-        }
-
-        public List<ImplementationGuide> GetImplementationGuides()
-        {
-            try
-            {
-                return (from ig in tdb.ImplementationGuides
-                        select new ImplementationGuide()
-                        {
-                            Id = ig.Id,
-                            Name = ig.Name
-                        }).ToList();
-            }
-            catch (Exception ex)
-            {
-                Log.For(this).Critical("Error occurred while retrieving list of implementation guides.", ex);
-                throw;
-            }
-        }
-
-        public VocabularyOutputTypeSpecifier[] GetVocabularyOutputTypes()
-        {
-            int id = 1;
-            return System.Enum.GetNames(typeof(VocabularyOutputType)).Select(v => new VocabularyOutputTypeSpecifier() { Id = id++, OutputType = v }).ToArray();
-        }
-
-        private VocabularySystem GetSystem(IIGTypePlugin igTypePlugin, IObjectRepository tdb, TDBValueSet valueSet, DateTime? bindingDate)
-        {
-            if (valueSet == null)
-                throw new Exception("Could not find ValueSet specified.");
-
-            VocabularySystems schema = new VocabularySystems();
-            VocabularySystem schemaValueSet = new VocabularySystem()
-            {
-                ValueSetOid = valueSet.GetIdentifier(igTypePlugin),
-                ValueSetName = valueSet.Name
-            };
-
-            if (isCDA && schemaValueSet.ValueSetOid.StartsWith("urn:oid:"))
-                schemaValueSet.ValueSetOid = schemaValueSet.ValueSetOid.Substring(8);
-
-            schemaValueSet.Codes = GetCodes(valueSet, bindingDate).ToArray();
-
-            return schemaValueSet;
-        }
-
-        private List<VocabularyCode> GetCodes(TDBValueSet valueSet, DateTime? bindingDate)
-        {
-            List<ValueSetMember> members = valueSet.GetActiveMembers(bindingDate);
-            List<VocabularyCode> vocabularyCodes = new List<VocabularyCode>();
-
-            foreach (var vc in members)
-            {
-                VocabularyCode vocabularyCode = new VocabularyCode()
-                {
-                    Value = vc.Code,
-                    DisplayName = vc.DisplayName,
-                    CodeSystem = vc.CodeSystem.Oid,
-                    CodeSystemName = vc.CodeSystem.Name
-                };
-
-                if (this.isCDA && vocabularyCode.CodeSystem.StartsWith("urn:oid:"))
-                    vocabularyCode.CodeSystem = vocabularyCode.CodeSystem.Substring(8);
-
-                vocabularyCodes.Add(vocabularyCode);
-            }
-
-            return vocabularyCodes;
-        }
-
-        public string[] GetSupportedEncodings()
-        {
-            //TODO: make more dynamic
-            return new string[] { "UTF-8", "UTF-7", "UTF-32", "Unicode", "ASCII" };
+            return text
+                .Replace("&", "&amp;")
+                .Replace("<", "&lt;")
+                .Replace(">", "&gt;");
         }
     }
 }

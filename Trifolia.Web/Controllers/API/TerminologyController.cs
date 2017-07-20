@@ -11,7 +11,7 @@ using Trifolia.Import.Terminology.Excel;
 using Trifolia.Import.Terminology.External;
 using Trifolia.Logging;
 using Trifolia.Shared;
-using Trifolia.Terminology;
+using Trifolia.Shared.Plugins;
 using Trifolia.Web.Models.TerminologyManagement;
 
 namespace Trifolia.Web.Controllers.API
@@ -588,24 +588,6 @@ namespace Trifolia.Web.Controllers.API
             this.tdb.CodeSystems.Remove(foundCodeSystem);
 
             this.tdb.SaveChanges();
-        }
-
-        #endregion
-
-        #region Export
-
-        [HttpGet, Route("api/Terminology/Export/ValueSet/{valueSetOid}"), SecurableAction(SecurableNames.EXPORT_VOCAB)]
-        public string ExportValueSet(string valueSetOid, VocabularyOutputType format = VocabularyOutputType.Default, string encoding = "UTF-8")
-        {
-            VocabularyService service = new VocabularyService(this.tdb);
-            return service.GetValueSet(valueSetOid, (int)format, encoding);
-        }
-
-        [HttpGet, Route("api/Terminology/Export/ImplementationGuide/{implementationGuideId}"), SecurableAction(SecurableNames.EXPORT_VOCAB)]
-        public string ExportImplementationGuide(int implementationGuideId, int maxMembers = 100, VocabularyOutputType format = VocabularyOutputType.Default, string encoding = "UTF-8")
-        {
-            VocabularyService service = new VocabularyService(this.tdb);
-            return service.GetImplementationGuideVocabulary(implementationGuideId, maxMembers, (int)format, encoding);
         }
 
         #endregion

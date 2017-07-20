@@ -1,33 +1,29 @@
 ﻿extern alias fhir_dstu1;
 extern alias fhir_dstu2;
 extern alias fhir_stu3;
-
+using Ionic.Zip;
+using Microsoft.AspNet.WebApi.MessageHandlers.Compression.Attributes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
-using System.IO;
-using System.Xml;
-
-using NativeExporter = Trifolia.Export.Native.TemplateExporter;
-using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
-using Trifolia.Logging;
-using Trifolia.Export.Schematron;
-using Trifolia.Generation.IG;
-using Trifolia.Generation.Green;
-using Trifolia.DB;
-using Trifolia.Authorization;
-using Trifolia.Web.Models.Export;
-using Trifolia.Shared;
-using Trifolia.Terminology;
-using ImplementationGuide = Trifolia.DB.ImplementationGuide;
-using Ionic.Zip;
-using Trifolia.Shared.Plugins;
+using System.Text;
 using System.Web;
-using Microsoft.AspNet.WebApi.MessageHandlers.Compression.Attributes;
+using System.Web.Http;
+using Trifolia.Authorization;
+using Trifolia.DB;
+using Trifolia.Export.Schematron;
+using Trifolia.Export.Terminology;
+using Trifolia.Generation.Green;
+using Trifolia.Generation.IG;
+using Trifolia.Logging;
+using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
+using Trifolia.Web.Models.Export;
+using ImplementationGuide = Trifolia.DB.ImplementationGuide;
+using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -74,6 +70,7 @@ namespace Trifolia.Web.Controllers.API
             SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, ig.ImplementationGuideType);
             IIGTypePlugin igTypePlugin = IGTypePluginFactory.GetPlugin(ig.ImplementationGuideType);
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, model.ImplementationGuideId);
+            bool isCDA = ig.ImplementationGuideType.SchemaURI == "urn:hl7-org:v3";
             string fileName;
             byte[] export;
             string contentType = null;
@@ -152,18 +149,12 @@ namespace Trifolia.Web.Controllers.API
 
                     if (model.IncludeVocabulary)
                     {
-                        VocabularyService service = new VocabularyService(tdb, ig.ImplementationGuideType.SchemaURI == "urn:hl7-org:v3");
-
                         using (ZipFile zip = new ZipFile())
                         {
                             zip.AddEntry(fileName, export);
 
-                            string encoding = model.Encoding == ExportSettingsModel.EncodingOptions.UTF8 ? "UTF-8" : "Unicode";
-
-                            //Assuming default settings for vocabulary file
-                            string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, 0, (int)VocabularyOutputType.Default, encoding);
-
-                            byte[] vocData = ASCIIEncoding.UTF8.GetBytes(vocXml);
+                            NativeTerminologyExporter nativeTermExporter = new NativeTerminologyExporter(this.tdb);
+                            byte[] vocData = nativeTermExporter.GetExport(ig.Id, this.GetExportEncoding(model));
                             string vocFileName = string.Format("{0}", model.VocabularyFileName);
 
                             //Ensuring the extension is present in case input doesn't have it
@@ -184,34 +175,38 @@ namespace Trifolia.Web.Controllers.API
                     }
                     break;
 
-                    /*
                 case ExportFormats.Vocabulary_XLSX:
-                case ExportFormats.Vocbulary_Single_SVS_XML:
-                case ExportFormats.Vocabulary_Multiple_SVS_XML:
-                case ExportFormats.Vocabulary_Native_XML:
-                    VocabularyService service = new VocabularyService(this.tdb, ig.ImplementationGuideType.SchemaURI == "urn:hl7-org:v3");
+                    fileName = string.Format("{0}.xlsx", ig.GetDisplayName(true));
+                    contentType = XLSX_MIME_TYPE;
 
-                    switch (model.ExportFormat)
-                    {
-                        case VocabularySettingsModel.ExportFormatTypes.Standard:
-                        case VocabularySettingsModel.ExportFormatTypes.SVS:
-                        case VocabularySettingsModel.ExportFormatTypes.FHIR:
-                            fileType = "xml";
-                            contentType = XML_MIME_TYPE;
-                            string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, model.MaximumMembers, (int)model.ExportFormat, model.Encoding);
-                            Encoding encoding = Encoding.GetEncoding(model.Encoding);
-                            data = encoding.GetBytes(vocXml);
-                            break;
-                        case VocabularySettingsModel.ExportFormatTypes.Excel:
-                            fileType = "xlsx";
-                            contentType = XLSX_MIME_TYPE;
-                            data = service.GetImplementationGuideVocabularySpreadsheet(model.ImplementationGuideId, model.MaximumValueSetMembers);
-                            break;
-                    }
+                    ExcelExporter excelExporter = new ExcelExporter(this.tdb);
+                    export = excelExporter.GetSpreadsheet(ig.Id, model.MaximumValueSetMembers);
 
-                    fileName = string.Format("{0}.{1}", ig.GetDisplayName(true), fileType);
                     break;
-                    */
+                case ExportFormats.Vocbulary_Single_SVS_XML:
+                    fileName = string.Format("{0}_SingleSVS.xml", ig.GetDisplayName(true));
+                    contentType = XML_MIME_TYPE;
+
+                    SingleSVSExporter ssvsExporter = new SingleSVSExporter(this.tdb);
+                    export = ssvsExporter.GetExport(ig.Id, model.MaximumValueSetMembers, this.GetExportEncoding(model));
+
+                    break;
+                case ExportFormats.Vocabulary_Multiple_SVS_XML:
+                    fileName = string.Format("{0}_MultipleSVS.xml", ig.GetDisplayName(true));
+                    contentType = XML_MIME_TYPE;
+
+                    MultipleSVSExporter msvsExporter = new MultipleSVSExporter(this.tdb);
+                    export = msvsExporter.GetExport(ig.Id, model.MaximumValueSetMembers, this.GetExportEncoding(model));
+
+                    break;
+                case ExportFormats.Vocabulary_Native_XML:
+                    fileName = string.Format("{0}_MultipleSVS.xml", ig.GetDisplayName(true));
+                    contentType = XML_MIME_TYPE;
+
+                    NativeTerminologyExporter nativeExporter = new NativeTerminologyExporter(this.tdb);
+                    export = nativeExporter.GetExport(ig.Id, model.MaximumValueSetMembers, this.GetExportEncoding(model));
+
+                    break;
 
                 default:
                     throw new NotSupportedException();
@@ -486,27 +481,38 @@ namespace Trifolia.Web.Controllers.API
         public HttpResponseMessage ExportVocabulary(VocabularySettingsModel model)
         {
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == model.ImplementationGuideId);
+            Encoding encoding = Encoding.GetEncoding(model.Encoding);
             byte[] data = new byte[0];
             string fileType = string.Empty;
             string contentType = string.Empty;
 
-            VocabularyService service = new VocabularyService(this.tdb, ig.ImplementationGuideType.SchemaURI == "urn:hl7-org:v3");
-
             switch (model.ExportFormat)
             {
                 case VocabularySettingsModel.ExportFormatTypes.Standard:
+                    NativeTerminologyExporter nativeExporter = new NativeTerminologyExporter(this.tdb);
+                    data = nativeExporter.GetExport(ig.Id, model.MaximumMembers, encoding);
+                    fileType = "xml";
+                    contentType = XML_MIME_TYPE;
+                    break;
                 case VocabularySettingsModel.ExportFormatTypes.SVS:
+                    SingleSVSExporter ssvsExporter = new SingleSVSExporter(this.tdb);
+                    data = ssvsExporter.GetExport(ig.Id, model.MaximumMembers, encoding);
+                    fileType = "xml";
+                    contentType = XML_MIME_TYPE;
+                    break;
                 case VocabularySettingsModel.ExportFormatTypes.FHIR:
+                    /*
                     fileType = "xml";
                     contentType = XML_MIME_TYPE;
                     string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, model.MaximumMembers, (int)model.ExportFormat, model.Encoding);
-                    Encoding encoding = Encoding.GetEncoding(model.Encoding);
                     data = encoding.GetBytes(vocXml);
+                    */
                     break;
                 case VocabularySettingsModel.ExportFormatTypes.Excel:
+                    ExcelExporter exporter = new ExcelExporter(this.tdb);
+                    data = exporter.GetSpreadsheet(ig.Id, model.MaximumMembers);
                     fileType = "xlsx";
                     contentType = XLSX_MIME_TYPE;
-                    data = service.GetImplementationGuideVocabularySpreadsheet(model.ImplementationGuideId, model.MaximumMembers);
                     break;
             }
 
@@ -598,16 +604,13 @@ namespace Trifolia.Web.Controllers.API
 
             if (model.IncludeVocabulary)
             {
-                VocabularyService service = new VocabularyService(tdb, ig.ImplementationGuideType.SchemaURI == "urn:hl7-org:v3");
-
                 using (ZipFile zip = new ZipFile())
                 {
                     zip.AddEntry(fileName, data);
 
                     //Assuming default settings for vocabulary file
-                    string vocXml = service.GetImplementationGuideVocabulary(model.ImplementationGuideId, 0, (int)vocOutputType, "UTF-8");
-
-                    byte[] vocData = ASCIIEncoding.UTF8.GetBytes(vocXml);
+                    NativeTerminologyExporter nativeTermExporter = new NativeTerminologyExporter(this.tdb);
+                    byte[] vocData = nativeTermExporter.GetExport(ig.Id, Encoding.UTF8);
                     string vocFileName = string.Format("{0}", model.VocabularyFileName);
                     //Ensuring the extension is present in case input doesn't have it
                     if (vocFileName.IndexOf(".xml") == -1) vocFileName += ".xml";
@@ -816,6 +819,19 @@ namespace Trifolia.Web.Controllers.API
         #endregion
 
         #region Private Methods
+
+        private Encoding GetExportEncoding(ExportSettingsModel model)
+        {
+            switch (model.Encoding)
+            {
+                case ExportSettingsModel.EncodingOptions.UTF8:
+                    return Encoding.UTF8;
+                case ExportSettingsModel.EncodingOptions.UNICODE:
+                    return Encoding.Unicode;
+                default:
+                    throw new ArgumentException("Unexpected encoding " + model.Encoding.ToString());
+            }
+        }
 
         private string GetCancelUrl(int implementationGuideId)
         {
