@@ -78,5 +78,38 @@ namespace Trifolia.Shared.FHIR
 
             return sliceName;
         }
+
+        /// <summary>
+        /// Gets the @id value of the element/constraint.
+        /// </summary>
+        /// <param name="constraint"></param>
+        /// <returns></returns>
+        /// <remarks>Creates the value based on the context of the constraint and each parent, and based on whether the parents are a branch</remarks>
+        public static string GetElementId(this TemplateConstraint constraint)
+        {
+            string elementId = string.Empty;
+            TemplateConstraint current = constraint;
+            bool checkBranch = true;
+
+            while (current != null)
+            {
+                if (!string.IsNullOrEmpty(elementId))
+                    elementId = "." + elementId;
+
+                if (checkBranch && current.IsBranch)
+                {
+                    elementId = current.GetElementPath(constraint.Template.PrimaryContextType) + ":" + current.GetSliceName() + elementId;
+                    checkBranch = false;
+                }
+                else
+                {
+                    elementId = current.Context + elementId;
+                }
+
+                current = current.ParentConstraint;
+            }
+
+            return elementId;
+        }
     }
 }
