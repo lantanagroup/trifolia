@@ -25,6 +25,10 @@
     $scope.categories = [];
     $scope.valueSets = [];
     $scope.templates = [];
+    $scope.validationResults = [];
+    $scope.isValidating = false;
+    $scope.isGettingTemplates = false;
+    $scope.isGettingValuesets = false;
     $scope.criteria = {
         selectedExportFormat: null,
         includeInferred: true,
@@ -57,22 +61,6 @@
         });
     };
 
-    $scope.loadTemplates = function () {
-        $scope.criteria.selectedTemplates = [];
-
-        ImplementationGuideService.getImplementationGuideTemplates($scope.selectedImplementationGuide.Id, null, $scope.criteria.includeInferred)
-            .then(function (templates) {
-                _.each(templates, function (template) {
-                    $scope.criteria.selectedTemplates.push(template.Id);
-                });
-
-                $scope.templates = templates;
-            })
-            .catch(function (err) {
-                $scope.message = err;
-            });
-    };
-
     $scope.toggleSelectAllTemplates = function () {
         if ($scope.criteria.selectedTemplates.length == $scope.templates.length) {
             $scope.criteria.selectedTemplates = [];
@@ -95,6 +83,14 @@
     };
 
     $scope.loadValueSets = function () {
+        $scope.valueSets = [];
+
+        if (!$scope.selectedImplementationGuide || !$scope.selectedImplementationGuide.Id) {
+            return;
+        }
+
+        $scope.isGettingValuesets = true;
+
         ImplementationGuideService.getImplementationGuideValueSets($scope.selectedImplementationGuide.Id, false)
             .then(function (valueSets) {
                 $scope.valueSets = valueSets;
@@ -105,7 +101,122 @@
             })
             .catch(function (err) {
                 $scope.message = err;
+            })
+            .finally(function () {
+                $scope.isGettingValuesets = false;
             });
+    };
+
+    $scope.loadTemplates = function () {
+        $scope.criteria.selectedTemplates = [];
+
+        if (!$scope.selectedImplementationGuide || !$scope.selectedImplementationGuide.Id) {
+            return;
+        }
+
+        $scope.isGettingTemplates = true;
+
+        ImplementationGuideService.getImplementationGuideTemplates($scope.selectedImplementationGuide.Id, null, $scope.criteria.includeInferred)
+            .then(function (templates) {
+                _.each(templates, function (template) {
+                    $scope.criteria.selectedTemplates.push(template.Id);
+                });
+
+                $scope.templates = templates;
+            })
+            .catch(function (err) {
+                $scope.message = err;
+            })
+            .finally(function () {
+                $scope.isGettingTemplates = false;
+            });
+    };
+
+    $scope.getLevel = function (level) {
+        switch (level) {
+            case 0:
+                return 'Warning';
+            case 1:
+                return 'Error';
+            default:
+                return '';
+        }
+    };
+
+    $scope.hasValidationMessages = function () {
+        if (!$scope.validationResults) {
+            return false;
+        }
+
+        if ($scope.validationResults.Messages && $scope.validationResults.Messages.length > 0) {
+            return true;
+        }
+
+        if ($scope.validationResults.TemplateResults && $scope.validationResults.TemplateResults.length > 0) {
+            return true;
+        }
+
+        return false;
+    };
+
+    $scope.getTemplateValidationMessages = function () {
+        var validationMessages = [];
+
+        _.each($scope.validationResults.TemplateResults, function (templateResult) {
+            validationMessages = validationMessages.concat(templateResult.Items);
+        });
+
+        return validationMessages;
+    };
+
+    $scope.loadValidationResults = function () {
+        $scope.validationResults = {};
+
+        if (!$scope.selectedImplementationGuide || !$scope.selectedImplementationGuide.Id) {
+            return;
+        }
+
+        $scope.isValidating = true;
+
+        ImplementationGuideService.validate($scope.selectedImplementationGuide.Id)
+            .then(function (validationResults) {
+                $scope.validationResults = validationResults;
+            })
+            .catch(function (err) {
+                $scope.message = err;
+            })
+            .finally(function () {
+                $scope.isValidating = false;
+            });
+    };
+
+    $scope.loadCategories = function () {
+        $scope.categories = [];
+
+        if (!$scope.selectedImplementationGuide || !$scope.selectedImplementationGuide.Id) {
+            return;
+        }
+
+        // Get the categories for the implementation guide
+        ImplementationGuideService.getImplementationGuideCategories($scope.selectedImplementationGuide.Id)
+            .then(function (categories) {
+                $scope.categories = categories;
+            })
+            .catch(function (err) {
+                $scope.message = err;
+            });
+    };
+
+    $scope.isExportDisabled = function () {
+        if ($scope.isValidating || $scope.isGettingTemplates || $scope.isGettingValuesets) {
+            return true;
+        }
+
+        if (!$scope.selectedImplementationGuide || !$scope.selectedImplementationGuide.Id || $scope.criteria.selectedExportFormat == undefined) {
+            return true;
+        }
+
+        return false;
     };
 
     $scope.openSearch = function () {
@@ -118,18 +229,13 @@
         modalInstance.result.then(function (selectedItem) {
             $scope.selectedImplementationGuide = selectedItem;
 
-            // Get the categories for the implementation guide
-            ImplementationGuideService.getImplementationGuideCategories($scope.selectedImplementationGuide.Id)
-                .then(function (categories) {
-                    $scope.categories = categories;
-                })
-                .catch(function (err) {
-                    $scope.message = err;
-                });
+            $scope.loadCategories();
 
             $scope.loadValueSets();
 
             $scope.loadTemplates();
+
+            $scope.loadValidationResults();
         }, function () {
             // Do nothing when closed without selecting
         });

@@ -42,7 +42,8 @@ namespace Trifolia.Plugins.Validation
                     Items = this.ValidateTemplate(template, igSchema)
                 };
 
-                results.TemplateResults.Add(result);
+                if (result.Items.Count > 0)
+                    results.TemplateResults.Add(result);
             }
 
             return results;

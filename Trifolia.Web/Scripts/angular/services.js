@@ -278,6 +278,18 @@ angular.module('Trifolia').service('ConfigService', function ($http, $q) {
 angular.module('Trifolia').service('ImplementationGuideService', function ($http, $q) {
     var service = {};
 
+    service.validate = function (implementationGuideId) {
+        var deferred = $q.defer();
+
+        $http.get('/api/ImplementationGuide/' + encodeURIComponent(implementationGuideId) + '/Validate')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
     service.getImplementationGuides = function () {
         var deferred = $q.defer();
 

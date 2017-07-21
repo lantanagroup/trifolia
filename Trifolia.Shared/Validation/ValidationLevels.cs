@@ -8,7 +8,7 @@ namespace Trifolia.Shared.Validation
 {
     public enum ValidationLevels
     {
-        Warning,
-        Error
+        Warning = 0,
+        Error = 1
     }
 }

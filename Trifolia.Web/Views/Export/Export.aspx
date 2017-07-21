@@ -26,6 +26,10 @@
             width: 100px;
         }
 
+        .panel.validation .panel-body {
+            max-height: 250px;
+            overflow-y: scroll;
+        }
     </style>
 </asp:Content>
 
@@ -53,6 +57,32 @@
                 <select class="form-control" ng-model="criteria.selectedExportFormat" ng-options="o.id as o.name for o in getExportFormats()" ng-required>
                     <option value="">SELECT</option>
                 </select>
+            </div>
+
+            <div class="panel panel-default validation" ng-if="hasValidationMessages() || isValidating">
+                <div class="panel-heading">Validation Results</div>
+                <div class="panel-body">
+                    <span ng-show="isValidating">Validating...</span>
+                    <table class="table" ng-if="!isValidating">
+                        <thead>
+                            <th>Level</th>
+                            <th>Template/Profile</th>
+                            <th>Message</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="m in validationResults.Messages">
+                                <td>{{getLevel(m.Level)}}</td>
+                                <td></td>
+                                <td>{{m.Message}}</td>
+                            </tr>
+                            <tr ng-repeat="m in getTemplateValidationMessages()">
+                                <td>{{getLevel(m.Level)}}</td>
+                                <td>{{m.TemplateName}}</td>
+                                <td>{{m.Message}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <uib-tabset ng-if="criteria.selectedExportFormat != undefined && selectedImplementationGuide">
@@ -251,7 +281,7 @@
             </uib-tabset>
 
             <p>
-                <button type="submit" class="btn btn-default">Export</button>
+                <button type="submit" class="btn btn-default" ng-disabled="isExportDisabled()">Export</button>
             </p>
         </form>
     </div>
