@@ -220,110 +220,11 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Export/XML/Validate"), SecurableAction(SecurableNames.EXPORT_XML)]
         public IEnumerable<string> ValidateXml(XMLSettingsModel model)
         {
-            List<string> messages = new List<string>();
-            ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == model.ImplementationGuideId);
-            var templates = (from t in this.tdb.Templates
-                             join tid in model.TemplateIds on t.Id equals tid
-                             select t);
-
-            var parserSettings = new fhir_stu3.Hl7.Fhir.Serialization.ParserSettings();
-            parserSettings.AcceptUnknownMembers = true;
-            parserSettings.AllowUnrecognizedEnums = true;
-            parserSettings.DisallowXsiAttributesOnRoot = false;
-            var fhirXmlParser = new fhir_stu3.Hl7.Fhir.Serialization.FhirXmlParser(parserSettings);
-            var fhirJsonParser = new fhir_stu3.Hl7.Fhir.Serialization.FhirJsonParser(parserSettings);
-
-            if (ig == null)
-            {
-                messages.Add("Could not find implementation guide with id " + model.ImplementationGuideId);
-                return messages;
-            }
-
-            switch (model.XmlType)
-            {
-                case XMLSettingsModel.ExportTypes.FHIRBuild:
-                case XMLSettingsModel.ExportTypes.FHIRBuildJSON:
-                    // Check that the implementation guide has a base identifier/url
-                    if (string.IsNullOrEmpty(ig.Identifier))
-                        messages.Add("Implementation guide does not have a base identifier/url.");
-
-                    // Check that each FHIR resource instance is valid and has the required fields
-                    foreach (var file in ig.Files)
-                    {
-                        var fileData = file.GetLatestData();
-                        fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
-                        string fileContent = System.Text.Encoding.UTF8.GetString(fileData.Data);
-
-                        try
-                        {
-                            resource = fhirXmlParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
-                        }
-                        catch (Exception ex)
-                        {
-                            if (file.MimeType == "application/xml" || file.MimeType == "text/xml")
-                                messages.Add("FHIR Resource instance \"" + file.FileName + "\" cannot be parsed as valid XML: " + ex.Message);
-                        }
-
-                        try
-                        {
-                            if (resource == null)
-                                resource = fhirJsonParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
-                        }
-                        catch (Exception ex)
-                        {
-                            if (file.MimeType == "binary/octet-stream" || file.MimeType == "application/json")
-                                messages.Add("FHIR Resource instance \"" + file.FileName + "\" cannot be parsed as valid JSON: " + ex.Message);
-                        }
-
-                        if (resource != null && string.IsNullOrEmpty(resource.Id))
-                        {
-                            string msg = string.Format("FHIR resource instance \"" + file.FileName + "\" does not have an \"id\" property.");
-                            messages.Add(msg);
-                        }
-                    }
-
-                    // Validate that each of the samples associated with profiles has the required fields
-                    var templateExamples = (from t in templates
-                                        join ts in this.tdb.TemplateSamples on t.Id equals ts.TemplateId
-                                        select new { Template = t, Sample = ts });
-
-                    foreach (var templateExample in templateExamples)
-                    {
-                        fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
-
-                        try
-                        {
-                            resource = fhirXmlParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(templateExample.Sample.XmlSample);
-                        }
-                        catch
-                        {
-                        }
-
-                        try
-                        {
-                            if (resource == null)
-                                resource = fhirJsonParser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(templateExample.Sample.XmlSample);
-                        }
-                        catch
-                        {
-                        }
-
-                        if (resource == null)
-                        {
-                            string msg = string.Format("Profile sample \"" + templateExample.Sample.Name + "\" cannot be parsed as a valid XML or JSON resource.");
-                            messages.Add(msg);
-                        }
-                        else if (string.IsNullOrEmpty(resource.Id))
-                        {
-                            string msg = string.Format("Profile sample \"" + templateExample.Sample.Name + "\" does not have an \"id\" property.");
-                            messages.Add(msg);
-                        }
-                    }
-
-                    break;
-            }
-
-            return messages;
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == model.ImplementationGuideId);
+            var plugin = ig.ImplementationGuideType.GetPlugin();
+            var validator = plugin.GetValidator(this.tdb);
+            var results = validator.ValidateImplementationGuide(model.ImplementationGuideId);
+            return results.GetAllMessages();
         }
 
         [HttpGet, Route("api/Export/{implementationGuideId}/XML"), SecurableAction(SecurableNames.EXPORT_XML)]

@@ -33,9 +33,9 @@ namespace Trifolia.Export.Terminology
             return this.Serialize(model, encoding);
         }
 
-        public byte[] GetExport(int implementationGuideId, int maxValueSetMembers, Encoding encoding)
+        public byte[] GetExport(int implementationGuideId, int maxValueSetMembers, Encoding encoding, bool? onlyStatic = null)
         {
-            VocabularySystems systems = this.GetSystems(implementationGuideId, maxValueSetMembers);
+            VocabularySystems systems = this.GetSystems(implementationGuideId, maxValueSetMembers, onlyStatic);
             T model = this.Convert(systems);
 
             return this.Serialize(model, encoding);
@@ -53,7 +53,7 @@ namespace Trifolia.Export.Terminology
             }
         }
 
-        protected VocabularySystems GetSystems(int implementationGuideId, int maxValueSetMembers, bool isCDA = false, bool? onlyStatic = null)
+        protected VocabularySystems GetSystems(int implementationGuideId, int maxValueSetMembers, bool? onlyStatic = null)
         {
             try
             {
@@ -65,6 +65,7 @@ namespace Trifolia.Export.Terminology
                 IIGTypePlugin igTypePlugin = ig.ImplementationGuideType.GetPlugin();
                 List<ImplementationGuideValueSet> valueSets = ig.GetValueSets(tdb, onlyStatic);
                 List<VocabularySystem> systems = new List<VocabularySystem>();
+                bool isCDA = ig.ImplementationGuideType.SchemaURI == "urn:hl7-org:v3";
 
                 foreach (ImplementationGuideValueSet cValueSet in valueSets)
                 {

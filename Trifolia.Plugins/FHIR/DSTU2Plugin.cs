@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using Trifolia.Config;
+using Trifolia.DB;
 using Trifolia.Export.FHIR.DSTU2;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
+using Trifolia.Shared.Validation;
 using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
 using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
@@ -46,6 +48,11 @@ namespace Trifolia.Plugins.FHIR
         public string GetFHIRResourceInstanceXml(string content)
         {
             throw new NotImplementedException();
+        }
+
+        public IValidator GetValidator(IObjectRepository tdb)
+        {
+            return new Validation.RIMValidator(tdb);
         }
     }
 }

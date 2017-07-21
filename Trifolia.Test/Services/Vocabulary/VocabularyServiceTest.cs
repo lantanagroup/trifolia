@@ -158,7 +158,7 @@ namespace Trifolia.Test.Services.Vocabulary
             tc.IsStatic = false;
 
             NativeTerminologyExporter exporter = new NativeTerminologyExporter(this.tdb);
-            byte[] export = exporter.GetExport(ig.Id, 0, Encoding.UTF8);
+            byte[] export = exporter.GetExport(ig.Id, 0, Encoding.UTF8, true);
             string vocXml = Encoding.UTF8.GetString(export);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(vocXml);

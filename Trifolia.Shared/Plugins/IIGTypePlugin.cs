@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using Trifolia.DB;
 using Trifolia.Shared;
+using Trifolia.Shared.Validation;
 
 namespace Trifolia.Shared.Plugins
 {
     public interface IIGTypePlugin
     {
+        IValidator GetValidator(IObjectRepository tdb);
+
         /// <summary>
         /// The sub-xpath for schematron's closed template assertion, which is used on each template that should NOT be found within context.
         /// This xpath assumes that only a root is available for the template, not the extension

@@ -14,6 +14,8 @@ using Trifolia.Generation.IG;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Web.Extensions;
 using Trifolia.Shared.Plugins;
+using Trifolia.Shared.Validation;
+using Trifolia.Plugins.Validation;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -104,6 +106,9 @@ namespace Trifolia.Web.Controllers.API
             SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, lTemplate.ImplementationGuideType);
             schema = schema.GetSchemaFromContext(lTemplate.PrimaryContextType);
 
+            var plugin = lTemplate.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
+            var validator = plugin.GetValidator(this.tdb);
+
             TemplateMetaDataModel lViewModel = new TemplateMetaDataModel()
             {
                 Bookmark = lTemplate.Bookmark,
@@ -128,7 +133,7 @@ namespace Trifolia.Web.Controllers.API
             };
 
             // Parse the validation results for the template
-            lViewModel.ValidationResults = (from vr in lTemplate.ValidateTemplate(schema)
+            lViewModel.ValidationResults = (from vr in validator.ValidateTemplate(lTemplate, schema)
                                             select new
                                             {
                                                 ConstraintNumber = vr.ConstraintNumber,
@@ -457,7 +462,9 @@ namespace Trifolia.Web.Controllers.API
                     SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, template.ImplementationGuideType);
                     schema = schema.GetSchemaFromContext(template.PrimaryContextType);
 
-                    response.ValidationResults = (from vr in template.ValidateTemplate(schema)
+                    var validator = new RIMValidator(tdb);
+
+                    response.ValidationResults = (from vr in validator.ValidateTemplate(template, schema)
                                                   select new
                                                   {
                                                       ConstraintNumber = vr.ConstraintNumber,

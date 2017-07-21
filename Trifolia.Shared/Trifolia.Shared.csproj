@@ -127,7 +127,11 @@
     <Compile Include="SupportTypes.cs" />
     <Compile Include="TemplateConstraintExtensions.cs" />
     <Compile Include="TemplateExtensions.cs" />
-    <Compile Include="TemplateValidationResult.cs" />
+    <Compile Include="Validation\ValidationResults.cs" />
+    <Compile Include="Validation\IValidator.cs" />
+    <Compile Include="Validation\TemplateValidationResult.cs" />
+    <Compile Include="Validation\ValidationLevels.cs" />
+    <Compile Include="Validation\ValidationResult.cs" />
     <Compile Include="ValueSetExtensions.cs" />
     <Compile Include="VocabularyOutputType.cs" />
     <Compile Include="VocabularyOutputTypeTranslator.cs" />

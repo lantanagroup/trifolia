@@ -425,7 +425,6 @@
     <Compile Include="Models\Report\TemplateReviewFilter.cs" />
     <Compile Include="Models\Report\TemplateReviewModel.cs" />
     <Compile Include="Models\Report\TemplateReviewResultsModel.cs" />
-    <Compile Include="Models\Report\TemplateValidation.cs" />
     <Compile Include="Models\SchemaModel\NodeItemModel.cs" />
     <Compile Include="Models\SupportRequestModel.cs" />
     <Compile Include="Models\TemplateEditing\ConstraintModel.cs" />

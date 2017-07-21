@@ -5,6 +5,7 @@ using System.Xml;
 using Trifolia.DB;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
+using Trifolia.Shared.Validation;
 using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
 using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
@@ -220,6 +221,11 @@ namespace Trifolia.Plugins
         public string GetFHIRResourceInstanceJson(string content)
         {
             throw new NotImplementedException();
+        }
+
+        public IValidator GetValidator(IObjectRepository tdb)
+        {
+            return new Validation.RIMValidator(tdb);
         }
     }
 }

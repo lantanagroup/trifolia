@@ -26,6 +26,7 @@ using Trifolia.Generation.IG;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Generation.Versioning;
 using Trifolia.Shared.Plugins;
+using Trifolia.Shared.Validation;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -676,6 +677,19 @@ namespace Trifolia.Web.Controllers.API
                         Id = ig.Id,
                         Name = ig.GetDisplayName()
                     }).ToArray();
+        }
+
+        [HttpGet, Route("api/ImplementationGuide/{implementationGuideId}/Validate"), SecurableAction]
+        public ValidationResults Validate(int implementationGuideId)
+        {
+            if (!CheckPoint.Instance.GrantViewImplementationGuide(implementationGuideId))
+                throw new AuthorizationException("You are not authorized to view this implementation guide");
+
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            var plugin = ig.ImplementationGuideType.GetPlugin();
+            var validator = plugin.GetValidator(this.tdb);
+            var results = validator.ValidateImplementationGuide(implementationGuideId);
+            return results;
         }
 
         [HttpGet, Route("api/ImplementationGuide/URL/Validate"), SecurableAction(SecurableNames.IMPLEMENTATIONGUIDE_FILE_MANAGEMENT)]
