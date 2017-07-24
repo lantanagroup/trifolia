@@ -16,6 +16,7 @@ namespace Trifolia.Shared.Validation
 
         public List<string> Messages { get; set; }
         public List<TemplateValidationResult> TemplateResults { get; set; }
+        public bool RestrictDownload { get; set; }
 
         public List<string> GetAllMessages()
         {

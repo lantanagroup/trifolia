@@ -1,20 +1,20 @@
-﻿angular.module('Trifolia').controller('ExportCtrl', function ($scope, $uibModal, ImplementationGuideService) {
+﻿angular.module('Trifolia').controller('ExportCtrl', function ($scope, $uibModal, $sce, ImplementationGuideService, UserService) {
     $scope.selectedImplementationGuide = null;
     $scope.message = '';
     $scope.exportFormats = [
-        { id: 0, name: 'Microsoft Word (DOCX)' },
-        { id: 1, name: 'Web (HTML)' },
-        { id: 2, name: 'Snapshot (JSON)' },
-        { id: 3, name: 'Native (XML, JSON)' },
-        { id: 4, name: 'FHIR Bundle (XML, JSON)' },
-        { id: 5, name: 'FHIR Build Package (XML, JSON)' },
-        { id: 6, name: 'Templates DSTU (XML, JSON)' },
-        { id: 7, name: 'Schematron (SCH)' },
-        { id: 8, name: 'Vocabulary (XLSX)' },
-        { id: 9, name: 'Vocabulary (Native XML)' },
-        { id: 10, name: 'Vocbulary (Single SVS XML)' },
-        { id: 11, name: 'Vocabulary (Multiple SVS XML)' },
-        { id: 12, name: 'Vocbulary Bundle (FHIR XML)' }
+        { id: 0, name: 'Microsoft Word (DOCX)', securable: 'ExportWordDocuments' },
+        { id: 1, name: 'Web (HTML)', securable: 'ExportWordDocuments' },
+        { id: 2, name: 'Snapshot (JSON)', securable: 'ExportXML' },
+        { id: 3, name: 'Native (XML, JSON)', securable: 'ExportXML' },
+        { id: 4, name: 'FHIR Bundle (XML, JSON)', securable: 'ExportXML' },
+        { id: 5, name: 'FHIR Build Package (XML, JSON)', securable: 'ExportXML' },
+        { id: 6, name: 'Templates DSTU (XML, JSON)', securable: 'ExportXML' },
+        { id: 7, name: 'Schematron (SCH)', securable: 'ExportSchematron' },
+        { id: 8, name: 'Vocabulary (XLSX)', securable: 'ExportVocabulary' },
+        { id: 9, name: 'Vocabulary (Native XML)', securable: 'ExportVocabulary' },
+        { id: 10, name: 'Vocbulary (Single SVS XML)', securable: 'ExportVocabulary' },
+        { id: 11, name: 'Vocabulary (Multiple SVS XML)', securable: 'ExportVocabulary' },
+        { id: 12, name: 'Vocbulary Bundle (FHIR XML)', securable: 'ExportVocabulary' }
     ];
     $scope.templateSelectionFormats = [0, 2, 3, 6, 7];
     $scope.xmlFormats = [3, 4, 5, 6];
@@ -25,7 +25,7 @@
     $scope.categories = [];
     $scope.valueSets = [];
     $scope.templates = [];
-    $scope.validationResults = [];
+    $scope.validationResults = {};
     $scope.isValidating = false;
     $scope.isGettingTemplates = false;
     $scope.isGettingValuesets = false;
@@ -38,8 +38,14 @@
         valuesetsAsAppendix: true
     };
 
-    $scope.getExportFormats = function() {
-        return _.filter($scope.exportFormats, function (exportFormat) {
+    $scope.getExportFormats = function () {
+        // Get a list of the formats that the user has permission to export (based on securables)
+        var permittedFormats = _.filter($scope.exportFormats, function (exportFormat) {
+            return UserService.hasSecurable(exportFormat.securable);
+        });
+
+        // Get a list of the formats that are supported by the selected implementation guide
+        var supportedFormats = _.filter(permittedFormats, function (exportFormat) {
             var isFhirImplementationGuide = $scope.selectedImplementationGuide && $scope.selectedImplementationGuide.TypeNamespace == 'http://hl7.org/fhir';
             var isFhirFormat = $scope.fhirFormats.indexOf(exportFormat.id) >= 0;
             
@@ -49,10 +55,10 @@
                 return false;
             }
 
-            // TODO: Check if the user has the securable to export this format
-
             return true;
         });
+
+        return supportedFormats;
     };
 
     $scope.maximumMembersChanged = function () {
@@ -181,6 +187,10 @@
         ImplementationGuideService.validate($scope.selectedImplementationGuide.Id)
             .then(function (validationResults) {
                 $scope.validationResults = validationResults;
+
+                for (var i = 0; i < $scope.validationResults.Messages.length; i++) {
+                    $scope.validationResults.Messages[i] = $sce.trustAsHtml($scope.validationResults.Messages[i]);
+                }
             })
             .catch(function (err) {
                 $scope.message = err;
@@ -213,6 +223,10 @@
         }
 
         if (!$scope.selectedImplementationGuide || !$scope.selectedImplementationGuide.Id || $scope.criteria.selectedExportFormat == undefined) {
+            return true;
+        }
+
+        if ($scope.validationResults.RestrictDownload) {
             return true;
         }
 

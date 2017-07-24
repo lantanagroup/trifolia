@@ -689,6 +689,7 @@ namespace Trifolia.Web.Controllers.API
             var plugin = ig.ImplementationGuideType.GetPlugin();
             var validator = plugin.GetValidator(this.tdb);
             var results = validator.ValidateImplementationGuide(implementationGuideId);
+
             return results;
         }
 

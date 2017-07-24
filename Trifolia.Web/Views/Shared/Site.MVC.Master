@@ -54,26 +54,7 @@
                     </li>
                     <!-- /ko -->
                     <!-- ko if: HasSecurable(['ExportGreen', 'ExportSchematron', 'ExportVocabulary', 'ExportWordDocuments', 'ExportXML']) -->
-                    <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-save"></i> Export <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <!-- ko if: HasSecurable(['ExportWordDocuments']) -->
-                            <li><a href="/IGManagement/List/ExportMSWord">Templates/Profiles to MS Word</a></li>
-                            <!-- /ko -->
-                            <!-- ko if: HasSecurable(['ExportXML']) -->
-                            <li><a href="/IGManagement/List/ExportXML">Templates/Profiles to XML/JSON</a></li>
-                            <!-- /ko -->
-                            <!-- ko if: HasSecurable(['ExportSchematron']) -->
-                            <li><a href="/IGManagement/List/ExportSchematron">Standard IG Schematron</a></li>
-                            <!-- /ko -->
-                            <!-- ko if: HasSecurable(['ExportVocabulary']) -->
-                            <li><a href="/IGManagement/List/ExportVocab">Vocabulary</a></li>
-                            <!-- /ko -->
-                            <!-- ko if: HasSecurable(['ExportGreen']) -->
-                            <li><a href="/IGManagement/List/ExportGreen">Green Models</a></li>
-                            <!-- /ko -->
-                        </ul>
-                    </li>
+                    <li><a href="/Export"><i class="glyphicon glyphicon-save"></i> Export</a></li>
                     <!-- /ko -->
                     <!-- ko if: HasSecurable(['Import']) -->
                     <li>

@@ -46,6 +46,13 @@ namespace Trifolia.Plugins.Validation
                     results.TemplateResults.Add(result);
             }
 
+            if (implementationGuide.HasImportedValueSets(this.tdb, ValueSetImportSources.VSAC))
+            {
+                results.RestrictDownload = true;
+                // TODO: Validate if the user has a valid UMLS license
+                results.Messages.Add("This implementation guide contains VSAC content that you do not currently have a license to. <a href=\"/Account/MyProfile\">Update your profile</a> with your UMLS/VSAC credentials to export this implementation guide.");
+            }
+
             return results;
         }
 
@@ -175,11 +182,15 @@ namespace Trifolia.Plugins.Validation
                 }
                 else if (foundSchemaObject.Cardinality != null && currentConstraint.Cardinality != null)
                 {
+                    var siblings = currentConstraint.ParentConstraint != null ? currentConstraint.ParentConstraint.ChildConstraints : template.ChildConstraints.Where(y => y.ParentConstraint == null);
+                    var isDuplicate = siblings.Count(y => y.Context == currentConstraint.Context) > 1;
+
                     // Warn when a constraint that is associated with the schema that has multiple cardinality but is not branched
                     if (template.IsOpen &&
                         !foundSchemaObject.Cardinality.EndsWith("..1") &&
                         !foundSchemaObject.Cardinality.EndsWith("..0") &&
-                        !currentConstraint.IsBranch)
+                        !currentConstraint.IsBranch &&
+                        isDuplicate)
                     {
                         var error = ValidationResult.CreateResult(template.Id, template.Name, currentConstraint.Number.Value, ValidationLevels.Warning, "Schema allows multiple for \"{0}\" but the constraint is not branched. Consider branching this constraint.", currentConstraint.GetXpath());
                         results.Add(error);

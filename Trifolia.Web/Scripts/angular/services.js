@@ -254,6 +254,24 @@ angular.module('Trifolia').service('UserService', function ($http, $q) {
         return deferred.promise;
     };
 
+    service.hasSecurable = function (securableNames) {
+        if (!containerViewModel) {
+            console.log('containerViewModel does not exist');
+            return false;
+        }
+
+        if (typeof securableNames === 'string') {
+            securableNames = [securableNames];
+        }
+
+        if (!(securableNames instanceof Array)) {
+            console.log('UserService.hasSecurable() securableNames is not an array');
+            return false;
+        }
+
+        return containerViewModel.HasSecurable(securableNames);
+    };
+
     return service;
 });
 

@@ -63,18 +63,23 @@
                 <div class="panel-heading">Validation Results</div>
                 <div class="panel-body">
                     <span ng-show="isValidating">Validating...</span>
-                    <table class="table" ng-if="!isValidating">
+                    <table class="table" ng-if="!isValidating && validationResults.Messages.length > 0">
+                        <thead>
+                            <th>General Messages</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="m in validationResults.Messages">
+                                <td ng-bind-html="m"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table" ng-if="!isValidating && getTemplateValidationMessages().length > 0">
                         <thead>
                             <th>Level</th>
                             <th>Template/Profile</th>
                             <th>Message</th>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="m in validationResults.Messages">
-                                <td>{{getLevel(m.Level)}}</td>
-                                <td></td>
-                                <td>{{m.Message}}</td>
-                            </tr>
                             <tr ng-repeat="m in getTemplateValidationMessages()">
                                 <td>{{getLevel(m.Level)}}</td>
                                 <td>{{m.TemplateName}}</td>
@@ -85,7 +90,7 @@
                 </div>
             </div>
 
-            <uib-tabset ng-if="criteria.selectedExportFormat != undefined && selectedImplementationGuide">
+            <uib-tabset ng-if="criteria.selectedExportFormat != undefined && selectedImplementationGuide && !validationResults.RestrictDownload">
                 <uib-tab heading="General">
                     <div ng-show="categorySelectionFormats.indexOf(criteria.selectedExportFormat) >= 0" ng-include="'categorySelect.html'"></div>
 
@@ -281,7 +286,7 @@
             </uib-tabset>
 
             <p>
-                <button type="submit" class="btn btn-default" ng-disabled="isExportDisabled()">Export</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="isExportDisabled()">Export</button>
             </p>
         </form>
     </div>
