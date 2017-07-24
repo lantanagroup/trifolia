@@ -13,6 +13,8 @@ using Trifolia.Import.Models;
 using Trifolia.Import.Native;
 using Trifolia.Web.Models;
 using Trifolia.Import.VSAC;
+using Trifolia.Import.Terminology.External;
+using Trifolia.Shared;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -60,24 +62,48 @@ namespace Trifolia.Web.Controllers.API
         {
             ImportValueSetResponseModel responseModel = new ImportValueSetResponseModel();
 
-            switch (model.Source)
+            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
             {
-                case ValueSetImportSources.VSAC:
-                    VSACImporter importer = new VSACImporter(this.tdb);
-
-                    if (!importer.Authenticate(model.Username, model.Password))
+                try
+                {
+                    switch (model.Source)
                     {
-                        responseModel.Message = "Invalid username/password";
-                        break;
+                        case ValueSetImportSources.VSAC:
+                            User currentUser = CheckPoint.Instance.GetUser(auditedTdb);
+                            VSACImporter importer = new VSACImporter(auditedTdb);
+
+                            if (string.IsNullOrEmpty(currentUser.UMLSUsername) || string.IsNullOrEmpty(currentUser.UMLSPassword))
+                            {
+                                responseModel.Message = "Your profile does not have your UMLS credentials. Please update your profile to import from VSAC.";
+                                break;
+                            }
+
+                            if (!importer.Authenticate(currentUser.UMLSUsername.DecryptStringAES(), currentUser.UMLSPassword.DecryptStringAES()))
+                            {
+                                responseModel.Message = "Invalid username/password";
+                                break;
+                            }
+
+                            importer.ImportValueSet(model.Id);
+                            responseModel.Success = true;
+
+                            break;
+                        case ValueSetImportSources.PHINVADS:
+                            PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember> processor =
+                                new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>();
+
+                            ImportValueSet valueSet = processor.FindValueSet(auditedTdb, model.Id);
+                            processor.SaveValueSet(auditedTdb, valueSet);
+                            break;
+                        default:
+                            responseModel.Message = "Unknown or unsupported source";
+                            break;
                     }
-
-                    importer.ImportValueSet(model.Id);
-                    responseModel.Success = true;
-
-                    break;
-                default:
-                    responseModel.Message = "Unknown or unsupported source";
-                    break;
+                }
+                catch (Exception ex)
+                {
+                    responseModel.Message = ex.Message;
+                }
             }
 
             return responseModel;

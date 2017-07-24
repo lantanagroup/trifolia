@@ -15,7 +15,7 @@ namespace Trifolia.Import.VSAC
         private const string TGT_URL = "https://vsac.nlm.nih.gov/vsac/ws/Ticket";
         private const string TGT_BODY_FORMAT = "username={0}&password={1}";
         private const string ST_URL_FORMAT = "https://vsac.nlm.nih.gov/vsac/ws/Ticket/{0}";
-        private const string SVS_RETRIEVE_VALUE_SET_URL_FORMAT = "https://vsac.nlm.nih.gov/vsac/svs/RetrieveValueSet?id={0}&ticket={1}";
+        private const string SVS_RETRIEVE_VALUE_SET_URL_FORMAT = "https://vsac.nlm.nih.gov/vsac/svs/RetrieveMultipleValueSets?id={0}&ticket={1}";
         private const string SVS_NS = "urn:ihe:iti:svs:2008";
 
         private IObjectRepository tdb;
@@ -129,13 +129,22 @@ namespace Trifolia.Import.VSAC
             nsManager.AddNamespace("svs", SVS_NS);
             doc.LoadXml(retrieveValueSetResponse);
 
-            var svsValueSetNodes = doc.SelectNodes("/svs:RetrieveValueSetResponse/svs:ValueSet", nsManager);
+            var svsValueSetNodes = doc.SelectNodes("/svs:RetrieveMultipleValueSetsResponse/svs:DescribedValueSet", nsManager);
 
             foreach (XmlElement svsValueSetNode in svsValueSetNodes)
             {
                 string svsValueSetId = svsValueSetNode.Attributes["ID"].Value;
-                string identifier = string.Format("urn:hl7ii:{0}:{1}", svsValueSetId, svsValueSetNode.Attributes["version"].Value);
+                string svsValueSetVersion = svsValueSetNode.Attributes["version"].Value;
+                string identifier = string.Format("urn:hl7ii:{0}:{1}", svsValueSetId, svsValueSetVersion);
                 string name = svsValueSetNode.Attributes["displayName"].Value;
+                var purposeNode = svsValueSetNode.SelectSingleNode("svs:Purpose", nsManager);
+                string description = purposeNode != null ? purposeNode.InnerText : null;
+
+                if (!string.IsNullOrEmpty(description))
+                {
+                    if (description.StartsWith("(") && description.EndsWith(")"))
+                        description = description.Substring(1, description.Length - 2).Trim();
+                }
 
                 ValueSet foundValueSet = (from vs in this.tdb.ValueSets
                                           join vsi in this.tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
@@ -155,6 +164,21 @@ namespace Trifolia.Import.VSAC
                         IsDefault = true
                     });
                 }
+                else if (!foundValueSet.ImportSource.HasValue || foundValueSet.ImportSource == ValueSetImportSources.VSAC)
+                {
+                    // If the value set was manually created in Trifolia,
+                    // remove all members from the value-set, since VSAC is a better source
+                    var allMembers = foundValueSet.Members.ToList();
+
+                    foreach (var member in allMembers)
+                    {
+                        this.tdb.ValueSetMembers.Remove(member);
+                    }
+                }
+                else if (foundValueSet.ImportSource != ValueSetImportSources.VSAC)
+                {
+                    throw new Exception("This value set was imported from another source. It cannot be re-imported from a different source.");
+                }
 
                 if (foundValueSet.Name != name)
                     foundValueSet.Name = name;
@@ -164,6 +188,9 @@ namespace Trifolia.Import.VSAC
 
                 if (foundValueSet.ImportSourceId != svsValueSetId)
                     foundValueSet.ImportSourceId = svsValueSetId;
+
+                if (foundValueSet.Description != description)
+                    foundValueSet.Description = description;
 
                 var svsConceptNodes = svsValueSetNode.SelectNodes("svs:ConceptList/svs:Concept", nsManager);
 

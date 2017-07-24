@@ -475,21 +475,15 @@
     .controller('ImportValueSetModalController', function ($scope, $uibModalInstance, ImportService, source, id) {
         $scope.source = source;
         $scope.id = id;
-        $scope.username = '';
-        $scope.password = '';
         $scope.disableSource = source ? true : false;
         $scope.disableId = id ? true : false;
 
         $scope.isValid = function () {
-            if ($scope.source == 1) {
-                return $scope.id && $scope.username && $scope.password;
-            }
-
             return $scope.source && $scope.id;
         };
 
         $scope.ok = function () {
-            ImportService.importValueSet($scope.source, $scope.id, $scope.username, $scope.password)
+            ImportService.importValueSet($scope.source, $scope.id)
                 .then(function (results) {
                     if (results.Success) {
                         $uibModalInstance.close();

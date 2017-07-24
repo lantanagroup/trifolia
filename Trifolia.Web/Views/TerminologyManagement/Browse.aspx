@@ -97,6 +97,7 @@
                                         <i ng-show="criteria.order == 'asc'" class="glyphicon glyphicon-chevron-up"></i>
                                     </span>
                                 </th>
+                                <th>Source</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -113,11 +114,13 @@
                                             <li ng-class="{ disabled: r.disableModify }" ng-if="!r.ImportSource"><a href="#" ng-click="removeValueSet(r)" ng-disabled="r.disableModify">Remove</a></li>
                                         </ul>
                                     </div>
-
-                                    <span class="label label-success" ng-if="r.ImportSource" title="This value set has been imported from an external source. It cannot be edited, it can only be re-imported.">{{getImportSourceDisplay(r.ImportSource)}}</span>
                                 </td>
                                 <td ng-bind-html="r.IdentifiersDisplay"></td>
                                 <td>{{r.IsComplete ? 'Yes' : 'No'}}</td>
+                                <td>
+                                    <span ng-if="r.ImportSource" title="This value set has been imported from an external source. It cannot be edited, it can only be re-imported.">{{getImportSourceDisplay(r.ImportSource)}}</span>
+                                    <span ng-if="!r.ImportSource">Trifolia</span>
+                                </td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -485,7 +488,6 @@
                         <select ng-model="source" class="form-control" ng-disabled="disableSource">
                             <option ng-value="1">VSAC</option>
                             <option ng-value="2">PHIN VADS</option>
-                            <option ng-value="3">ROSE TREE</option>
                         </select>
                     </div>
 
@@ -493,18 +495,6 @@
                         <label for="codeSystemName">Identifier</label>
                         <input type="text" class="form-control" ng-model="id" required maxlength="255" ng-disabled="disableId" />
                         <span class="help-block" ng-show="!id">Identifier is required.</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" class="form-control" ng-model="username" />
-                        <span class="help-block">The username to authenticate with the source.</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" class="form-control" ng-model="password" />
-                        <span class="help-block">The password to authenticate with the source.</span>
                     </div>
                 </div>
                 <div class="modal-footer">

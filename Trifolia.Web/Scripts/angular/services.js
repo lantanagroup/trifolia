@@ -177,13 +177,11 @@ angular.module('Trifolia').service('HelperService', function ($httpParamSerializ
 
 angular.module('Trifolia').service('ImportService', function ($http, $q) {
     return {
-        importValueSet: function (source, id, username, password) {
+        importValueSet: function (source, id) {
             var url = '/api/Import/ValueSet';
             var body = {
                 Source: source,
-                Id: id,
-                Username: username,
-                Password: password
+                Id: id
             };
 
             var deferred = $q.defer();
