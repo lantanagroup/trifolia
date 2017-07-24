@@ -1703,11 +1703,6 @@
     <Content Include="Scripts\lib\bootstrap\bootstrap-treenav.min.js" />
     <Content Include="Scripts\lib\bootstrap\bootstrap.js" />
     <Content Include="Scripts\lib\dagre.core.min.js" />
-    <Content Include="Scripts\Export\Green.js" />
-    <Content Include="Scripts\Export\Schematron.js" />
-    <Content Include="Scripts\Export\MSWord.js" />
-    <Content Include="Scripts\Export\Vocabulary.js" />
-    <Content Include="Scripts\Export\XML.js" />
     <Content Include="Scripts\lib\graphlib.core.min.js" />
     <Content Include="Scripts\GreenManagement\GreenManagementViewModel.js" />
     <Content Include="Scripts\GreenManagement\greenModels.js" />
@@ -1854,11 +1849,6 @@
     <Content Include="Views\Admin\Groups.aspx" />
     <Content Include="Views\Admin\Users.aspx" />
     <Content Include="Views\Export\Export.aspx" />
-    <Content Include="Views\Export\Green.aspx" />
-    <Content Include="Views\Export\Schematron.aspx" />
-    <Content Include="Views\Export\Vocabulary.aspx" />
-    <Content Include="Views\Export\XML.aspx" />
-    <Content Include="Views\Export\MSWord.aspx" />
     <Content Include="Views\Home\Error.aspx" />
     <Content Include="Views\IGManagementFiles\Files.aspx" />
     <Content Include="Views\Green\Index.aspx" />

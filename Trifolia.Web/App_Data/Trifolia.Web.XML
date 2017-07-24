@@ -962,36 +962,6 @@
             <returns></returns>
             <remarks>Not implemented</remarks>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.ExportController.ExportXML(Trifolia.Web.Models.Export.XMLSettingsModel)">
-            <summary>
-            Exports data from Trifolia using the export format specified in the export model.
-            </summary>
-            <param name="model">Settings/information on what XML format should be generated.</param>
-            <returns>HttpResponseMessage</returns>
-            <remarks>Compression is disabled for this Web API endpoint because there are problems with the FHIRBuild export being zipped/compressed, and then WebAPI tries to re-compress the content and fails.</remarks>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.ExportController.GetExportSettings(System.Int32)">
-            <summary>
-            Gets default settings for the specified implementation guide
-            </summary>
-            <param name="implementationGuideId">The id of the implementation guide being exported</param>
-            <returns>Trifolia.Web.Models.Export.MSWordSettingsModel</returns>
-            <permission cref="F:Trifolia.Authorization.SecurableNames.EXPORT_WORD">User must have access to the EXPORT_WORD securable</permission>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.ExportController.MSWord(System.Int32)">
-            <summary>
-            Gets a model for displaying information about the implementation guide being exported
-            </summary>
-            <param name="implementationGuideId">The id of the implementation guide being exported</param>
-            <returns>Trifolia.Web.Models.Export.MSWordModel</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.ExportController.ExportMSWord(Trifolia.Web.Models.Export.MSWordSettingsModel)">
-            <summary>
-            Exports an MS Word implementation guide with the specified settings.
-            </summary>
-            <param name="exportSettings">The settings for the export</param>
-            <returns>A file-download of the .docx MS Word implementation guide</returns>
-        </member>
         <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.GetEditableImplementationGuides">
             <summary>
             Returns a list of implementation guides that are editable by the current user
