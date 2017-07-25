@@ -1818,7 +1818,6 @@
     <Content Include="Scripts\TerminologyManagement\Browse.js" />
     <Content Include="Scripts\TerminologyManagement\EditValueSetConcepts.js" />
     <Content Include="Scripts\TerminologyManagement\ImportExcel.js" />
-    <Content Include="Scripts\TerminologyManagement\ImportExternal.js" />
     <Content Include="Scripts\TerminologyManagement\View.js" />
     <Content Include="Scripts\Type\EditType.js" />
     <Content Include="Scripts\Type\SchemaChoices.js" />
@@ -1886,7 +1885,6 @@
     <Content Include="Views\IGTypeManagement\Types.aspx" />
     <Content Include="Views\TerminologyManagement\EditValueSetConcepts.aspx" />
     <Content Include="Views\TerminologyManagement\ImportExcel.aspx" />
-    <Content Include="Views\TerminologyManagement\ImportExternal.aspx" />
     <Content Include="Views\TerminologyManagement\View.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

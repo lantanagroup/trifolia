@@ -612,63 +612,6 @@ namespace Trifolia.Web.Controllers.API
         }
 
         #endregion
-
-        #region Import External
-
-        [HttpGet, Route("api/Terminology/Import/PhinVads/Search"), SecurableAction(SecurableNames.ADMIN)]
-        public ImportValueSet SearchPhinVads(string oid)
-        {
-            PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember> processor = 
-                new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>();
-
-            ImportValueSet valueSet = processor.FindValueSet(this.tdb, oid);
-            return valueSet;
-        }
-
-        [HttpGet, Route("api/Terminology/Import/RoseTree/Search"), SecurableAction(SecurableNames.ADMIN)]
-        public ImportValueSet SearchRoseTree(string oid)
-        {
-            string roseTreeLocation = AppSettings.HL7RoseTreeLocation;
-            XmlDocument roseTreeDoc = new XmlDocument();
-            roseTreeDoc.Load(roseTreeLocation);
-
-            HL7RIMValueSetImportProcessor<ImportValueSet, ImportValueSetMember> processor =
-                new HL7RIMValueSetImportProcessor<ImportValueSet, ImportValueSetMember>(roseTreeDoc);
-
-            ImportValueSet valueSet = processor.FindValueSet(this.tdb, oid);
-            return valueSet;
-        }
-
-        [HttpPost, Route("api/Terminology/Import/External"), SecurableAction(SecurableNames.ADMIN)]
-        public void SaveExternalValueSet(ImportValueSet valueSet)
-        {
-            BaseValueSetImportProcess<ImportValueSet, ImportValueSetMember> processor;
-
-            if (valueSet.ImportSource == "PHIN VADS")
-            {
-                processor = new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>();
-            }
-            else if (valueSet.ImportSource == "HL7 RIM/RoseTree")
-            {
-                string roseTreeLocation = AppSettings.HL7RoseTreeLocation;
-                XmlDocument roseTreeDoc = new XmlDocument();
-                roseTreeDoc.Load(roseTreeLocation);
-
-                processor = new HL7RIMValueSetImportProcessor<ImportValueSet, ImportValueSetMember>(roseTreeDoc);
-            }
-            else
-                throw new Exception("Cannot identify which external soure the value set came from.");
-
-            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
-            {
-                Log.For(this).Info("Importing external ({0}) value set {1} ({2})", valueSet.ImportSource, valueSet.Name, valueSet.Oid);
-
-                processor.SaveValueSet(auditedTdb, valueSet);
-                auditedTdb.SaveChanges();
-            }
-        }
-
-        #endregion
     }
 
     public static class ValueSetExtensions

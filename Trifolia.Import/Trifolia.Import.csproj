@@ -158,7 +158,9 @@
   <ItemGroup>
     <EmbeddedResource Include="FHIR\DSTU1\FHIRProfile2Trifolia.xslt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Terminology\hl7_rim_repo.xml" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trifolia.Authorization\Trifolia.Authorization.csproj">
       <Project>{d90e0eee-7ac3-4726-9a56-5b77632e9b3b}</Project>

@@ -83,7 +83,6 @@
                         <ul class="dropdown-menu">
                             <!-- ko if: HasSecurable(['Admin']) -->
                             <li><a href="/TerminologyManagement/Import/Excel">Import Value Sets</a></li>
-                            <li><a href="/TerminologyManagement/Import/External">Import External Value Sets</a></li>
                             <li class="divider"></li>
                             <li><a href="/Admin/Role">Roles</a></li>
                             <li><a href="/Admin/Group">Groups</a></li>

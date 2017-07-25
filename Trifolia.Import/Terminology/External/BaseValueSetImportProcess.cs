@@ -167,6 +167,17 @@ namespace Trifolia.Import.Terminology.External
                     changed = true;
                 }
             }
+            else if (valueSet.ImportSource == "HL7 RIM/RoseTree")
+            {
+                if (foundValueSet.ImportSource.HasValue && foundValueSet.ImportSource != ValueSetImportSources.ROSETREE)
+                    throw new Exception("Cannot re-import this value set as it was imported from a different source.");
+
+                if (!foundValueSet.ImportSource.HasValue)
+                {
+                    foundValueSet.ImportSource = ValueSetImportSources.ROSETREE;
+                    changed = true;
+                }
+            }
 
             if (foundValueSet.ImportSourceId != valueSet.ImportSourceId)
             {
