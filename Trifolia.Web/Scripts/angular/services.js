@@ -163,7 +163,7 @@ angular.module('Trifolia').service('HelperService', function ($httpParamSerializ
                 return parseInt($cookies.get(key));
             }
 
-            if (defaultValue != undefined) {
+            if (defaultValue !== undefined) {
                 return defaultValue;
             }
         },
@@ -171,11 +171,22 @@ angular.module('Trifolia').service('HelperService', function ($httpParamSerializ
         oidRegex: /^urn:oid:([\d+][\.]?)+$/g,
         hl7iiRegex: /^urn:hl7ii:([\d+][\.]?)+:(.+?)$/g,
         urlRegex: /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/,
-        emailRegex: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/
+        emailRegex: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+        getErrorMessage: function (err) {
+            if (err.data && err.data.Message) {
+                return err.data.Message;
+            } else if (typeof err.data == 'string') {
+                return err.data;
+            } else if (err.message) {
+                return err.message;
+            }
+
+            return err;
+        }
     };
 });
 
-angular.module('Trifolia').service('ImportService', function ($http, $q) {
+angular.module('Trifolia').service('ImportService', function ($http, $q, HelperService) {
     return {
         importValueSet: function (source, id) {
             var url = '/api/Import/ValueSet';
@@ -190,14 +201,51 @@ angular.module('Trifolia').service('ImportService', function ($http, $q) {
                 .then(function (results) {
                     deferred.resolve(results.data);
                 })
-                .catch(deferred.reject);
+                .catch(function (err) {
+                    deferred.reject(HelperService.getErrorMessage(err));
+                });
 
             return deferred.promise;
         }
     };
 });
 
-angular.module('Trifolia').service('UserService', function ($http, $q) {
+angular.module('Trifolia').service('ExportService', function ($http, $q, HelperService) {
+    var service = {};
+
+    service.getExportSettings = function (implementationGuideId, format) {
+        var deferred = $q.defer();
+        var url = '/api/Export/Settings?implementationGuideId=' + encodeURIComponent(implementationGuideId) + '&format=' + encodeURIComponent(format);
+
+        $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.saveExportSettings = function (settings) {
+        var deferred = $q.defer();
+        var url = '/api/Export/Settings?implementationGuideId=' + encodeURIComponent(settings.ImplementationGuideId) + '&format=' + encodeURIComponent(settings.ExportFormat);
+        $http.post(url, settings)
+            .then(function () {
+                deferred.resolve();
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    return service;
+});
+
+angular.module('Trifolia').service('UserService', function ($http, $q, HelperService) {
     var service = {};
 
     service.getMyUser = function () {
@@ -207,13 +255,23 @@ angular.module('Trifolia').service('UserService', function ($http, $q) {
             .then(function (results) {
                 deferred.resolve(results.data);
             })
-            .catch(deferred.reject);
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
 
         return deferred.promise;
     };
 
     service.saveMyUser = function (model) {
-        return $http.post('/api/User/Me', model);
+        var deferred = $q.defer();
+
+        $http.post('/api/User/Me', model)
+            .then(deferred.resolve)
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
     };
 
     service.getReleaseAnnouncementSubscription = function () {
@@ -223,7 +281,9 @@ angular.module('Trifolia').service('UserService', function ($http, $q) {
             .then(function (results) {
                 deferred.resolve(results);
             })
-            .catch(deferred.reject);
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
 
         return deferred.promise;
     };
@@ -247,7 +307,9 @@ angular.module('Trifolia').service('UserService', function ($http, $q) {
             .then(function (results) {
                 deferred.resolve(results.data);
             })
-            .catch(deferred.reject);
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
 
         return deferred.promise;
     };
@@ -273,7 +335,7 @@ angular.module('Trifolia').service('UserService', function ($http, $q) {
     return service;
 });
 
-angular.module('Trifolia').service('ConfigService', function ($http, $q) {
+angular.module('Trifolia').service('ConfigService', function ($http, $q, HelperService) {
     var service = {};
 
     service.getEnableReleaseAnnouncements = function () {
@@ -283,7 +345,9 @@ angular.module('Trifolia').service('ConfigService', function ($http, $q) {
             .then(function (results) {
                 deferred.resolve(results.data);
             })
-            .catch(deferred.reject);
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
 
         return deferred.promise;
     };
@@ -291,7 +355,7 @@ angular.module('Trifolia').service('ConfigService', function ($http, $q) {
     return service;
 });
 
-angular.module('Trifolia').service('ImplementationGuideService', function ($http, $q) {
+angular.module('Trifolia').service('ImplementationGuideService', function ($http, $q, HelperService) {
     var service = {};
 
     service.validate = function (implementationGuideId) {
@@ -301,7 +365,9 @@ angular.module('Trifolia').service('ImplementationGuideService', function ($http
             .then(function (results) {
                 deferred.resolve(results.data);
             })
-            .catch(deferred.reject);
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
 
         return deferred.promise;
     };
@@ -313,7 +379,9 @@ angular.module('Trifolia').service('ImplementationGuideService', function ($http
             .then(function (results) {
                 deferred.resolve(results.data);
             })
-            .catch(deferred.reject);
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
 
         return deferred.promise;
     };
@@ -325,7 +393,9 @@ angular.module('Trifolia').service('ImplementationGuideService', function ($http
             .then(function (results) {
                 deferred.resolve(results.data);
             })
-            .catch(deferred.reject);
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
 
         return deferred.promise;
     };
@@ -341,7 +411,9 @@ angular.module('Trifolia').service('ImplementationGuideService', function ($http
             .then(function (results) {
                 deferred.resolve(results.data);
             })
-            .catch(deferred.reject);
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
 
         return deferred.promise;
     };
@@ -366,7 +438,9 @@ angular.module('Trifolia').service('ImplementationGuideService', function ($http
             .then(function (results) {
                 deferred.resolve(results.data);
             })
-            .catch(deferred.reject);
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
 
         return deferred.promise;
     };

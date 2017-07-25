@@ -1,4 +1,4 @@
-﻿angular.module('Trifolia').controller('ExportCtrl', function ($scope, $uibModal, $sce, ImplementationGuideService, UserService) {
+﻿angular.module('Trifolia').controller('ExportCtrl', function ($scope, $uibModal, $sce, ImplementationGuideService, UserService, ExportService) {
     $scope.selectedImplementationGuide = null;
     $scope.message = '';
     $scope.exportFormats = [
@@ -29,14 +29,38 @@
     $scope.isValidating = false;
     $scope.isGettingTemplates = false;
     $scope.isGettingValuesets = false;
+    $scope.saveSettingsMessage = '';
     $scope.criteria = {
-        selectedExportFormat: null,
-        includeInferred: true,
-        selectedCategories: [],
-        valueSetTables: true,
-        maximumMembers: 10,
-        valuesetsAsAppendix: true
+        ImplementationGuideId: null,
+        TemplateIds: [],
+        ExportFormat: null,
+        IncludeInferred: true,
+        SelectedCategories: [],
+        ValueSetTables: true,
+        MaximumValueSetMembers: 10,
+        ValueSetAppendix: true,
+        TemplateSortOrder: 1,
+        DocumentTables: 1,
+        TemplateTables: 1,
+        IncludeXmlSample: true,
+        IncludeChangeList: true,
+        IncludeTemplateStatus: true,
+        IncludeNotes: true,
+        VocabularyFileName: 'voc.xml',
+        IncludeVocabulary: false,
+        IncludeCustomSchematron: true,
+        DefaultSchematron: 'not(.)',
+        Encoding: 0,
+        ReturnJSON: false,
+        ValueSetOid: [],
+        ValueSetMaxMembers: []
     };
+
+    $scope.isExportFormatSpecified = function () {
+        return $scope.criteria.ExportFormat >= 0 &&
+            $scope.criteria.ExportFormat !== null &&
+            $scope.criteria.ExportFormat !== undefined;
+    }
 
     $scope.getExportFormats = function () {
         // Get a list of the formats that the user has permission to export (based on securables)
@@ -46,7 +70,7 @@
 
         // Get a list of the formats that are supported by the selected implementation guide
         var supportedFormats = _.filter(permittedFormats, function (exportFormat) {
-            var isFhirImplementationGuide = $scope.selectedImplementationGuide && $scope.selectedImplementationGuide.TypeNamespace == 'http://hl7.org/fhir';
+            var isFhirImplementationGuide = $scope.selectedImplementationGuide && $scope.selectedImplementationGuide.TypeNamespace === 'http://hl7.org/fhir';
             var isFhirFormat = $scope.fhirFormats.indexOf(exportFormat.id) >= 0;
             
             if (isFhirImplementationGuide && !isFhirFormat) {
@@ -61,35 +85,78 @@
         return supportedFormats;
     };
 
-    $scope.maximumMembersChanged = function () {
-        _.each($scope.valueSets, function (valueSet) {
-            valueSet.MaximumMembers = $scope.criteria.maximumMembers;
-        });
+    $scope.maximumValueSetMembersChanged = function () {
+        for (var i = 0; i < $scope.criteria.ValueSetMaxMembers.length; i++) {
+            $scope.criteria.ValueSetMaxMembers[i] = $scope.criteria.MaximumValueSetMembers;
+        }
     };
 
     $scope.toggleSelectAllTemplates = function () {
-        if ($scope.criteria.selectedTemplates.length == $scope.templates.length) {
-            $scope.criteria.selectedTemplates = [];
+        if ($scope.criteria.TemplateIds.length === $scope.templates.length) {
+            $scope.criteria.TemplateIds = [];
         } else {
-            $scope.criteria.selectedTemplates = [];
+            $scope.criteria.TemplateIds = [];
             _.each($scope.templates, function (template) {
-                $scope.criteria.selectedTemplates.push(template.Id);
+                $scope.criteria.TemplateIds.push(template.Id);
             });
         }
     };
 
     $scope.toggleSelectedTemplate = function (templateId) {
-        var index = $scope.criteria.selectedTemplates.indexOf(templateId);
+        var index = $scope.criteria.TemplateIds.indexOf(templateId);
 
         if (index >= 0) {
-            $scope.criteria.selectedTemplates.splice(index, 1);
+            $scope.criteria.TemplateIds.splice(index, 1);
         } else {
-            $scope.criteria.selectedTemplates.push(templateId);
+            $scope.criteria.TemplateIds.push(templateId);
         }
+    };
+
+    $scope.loadSettings = function () {
+        if (!$scope.criteria.ImplementationGuideId || !($scope.criteria.ExportFormat >= 0)) {
+            return;
+        }
+
+        // Don't get the default export settings before the templates and value sets are done loading.
+        if ($scope.isGettingTemplates || $scope.isGettingValuesets) {
+            return;
+        }
+
+        ExportService.getExportSettings($scope.criteria.ImplementationGuideId, $scope.criteria.ExportFormat)
+            .then(function (settings) {
+                // The number of value sets have changed. Only update the ones that are recorded in the settings
+                for (var i = 0; i < settings.ValueSetOid.length; i++) {
+                    var currentIndex = $scope.criteria.ValueSetOid.indexOf(settings.ValueSetOid[i]);
+
+                    if (currentIndex >= 0) {
+                        $scope.criteria.ValueSetMaxMembers[currentIndex] = settings.ValueSetMaxMembers[i];
+                    }
+                }
+
+                delete settings.ValueSetOid;
+                delete settings.ValueSetMaxMembers;
+
+                angular.extend($scope.criteria, settings);
+            })
+            .catch(function (err) {
+                console.error('Error loading default export settings: ' + err);
+            });
+    };
+
+    $scope.saveDefaultSettings = function () {
+        ExportService.saveExportSettings($scope.criteria)
+            .then(function () {
+                $scope.saveSettingsMessage = 'Successfully saved default export settings.';
+            })
+            .catch(function (err) {
+                $scope.saveSettingsMessage = 'Error saving settings: ' + err;
+            });
     };
 
     $scope.loadValueSets = function () {
         $scope.valueSets = [];
+        $scope.criteria.ValueSetOid = [];
+        $scope.criteria.ValueSetMaxMembers = [];
 
         if (!$scope.selectedImplementationGuide || !$scope.selectedImplementationGuide.Id) {
             return;
@@ -102,7 +169,8 @@
                 $scope.valueSets = valueSets;
 
                 _.each($scope.valueSets, function (valueSet) {
-                    valueSet.MaximumMembers = $scope.criteria.maximumMembers;
+                    $scope.criteria.ValueSetOid.push(valueSet.Oid);
+                    $scope.criteria.ValueSetMaxMembers.push($scope.criteria.MaximumValueSetMembers);
                 });
             })
             .catch(function (err) {
@@ -110,11 +178,12 @@
             })
             .finally(function () {
                 $scope.isGettingValuesets = false;
+                $scope.loadSettings();
             });
     };
 
     $scope.loadTemplates = function () {
-        $scope.criteria.selectedTemplates = [];
+        $scope.criteria.TemplateIds = [];
 
         if (!$scope.selectedImplementationGuide || !$scope.selectedImplementationGuide.Id) {
             return;
@@ -122,10 +191,10 @@
 
         $scope.isGettingTemplates = true;
 
-        ImplementationGuideService.getImplementationGuideTemplates($scope.selectedImplementationGuide.Id, null, $scope.criteria.includeInferred)
+        ImplementationGuideService.getImplementationGuideTemplates($scope.selectedImplementationGuide.Id, null, $scope.criteria.IncludeInferred)
             .then(function (templates) {
                 _.each(templates, function (template) {
-                    $scope.criteria.selectedTemplates.push(template.Id);
+                    $scope.criteria.TemplateIds.push(template.Id);
                 });
 
                 $scope.templates = templates;
@@ -135,6 +204,7 @@
             })
             .finally(function () {
                 $scope.isGettingTemplates = false;
+                $scope.loadSettings();
             });
     };
 
@@ -222,7 +292,7 @@
             return true;
         }
 
-        if (!$scope.selectedImplementationGuide || !$scope.selectedImplementationGuide.Id || $scope.criteria.selectedExportFormat == undefined) {
+        if (!$scope.selectedImplementationGuide || !$scope.selectedImplementationGuide.Id || $scope.criteria.ExportFormat === undefined) {
             return true;
         }
 
@@ -242,6 +312,7 @@
 
         modalInstance.result.then(function (selectedItem) {
             $scope.selectedImplementationGuide = selectedItem;
+            $scope.criteria.ImplementationGuideId = selectedItem.Id;
 
             $scope.loadCategories();
 
@@ -254,6 +325,10 @@
             // Do nothing when closed without selecting
         });
     };
+
+    $scope.$watch('criteria', function () {
+        $scope.saveSettingsMessage = '';
+    }, true);
 });
 
 angular.module('Trifolia').controller('SearchIGModalCtrl', function ($scope, $uibModalInstance, ImplementationGuideService) {

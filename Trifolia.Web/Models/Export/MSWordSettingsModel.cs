@@ -106,27 +106,5 @@ namespace Trifolia.Web.Models.Export
         /// Categories used to filter constraints exported in the ms word ig
         /// </summary>
         public List<string> SelectedCategories { get; set; }
-
-        public enum TemplateSortOrderOptions
-        {
-            Alphabetically = 0,
-            AlphaHierarchically = 1
-        }
-
-        public enum DocumentTableOptions
-        {
-            None = 0,
-            Both = 1,
-            List = 2,
-            Containment = 3
-        }
-
-        public enum TemplateTableOptions
-        {
-            None = 0,
-            Both = 1,
-            Context = 2,
-            ConstraintOverview = 3
-        }
     }
 }

@@ -3,6 +3,7 @@ extern alias fhir_dstu2;
 extern alias fhir_stu3;
 using Ionic.Zip;
 using Microsoft.AspNet.WebApi.MessageHandlers.Compression.Attributes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,10 +28,10 @@ using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
 namespace Trifolia.Web.Controllers.API
 {
+    [RoutePrefix("api/Export")]
     public class ExportController : ApiController
     {
         private IObjectRepository tdb;
-        private const string MSWordExportSettingsPropertyName = "MSWordExportSettingsJson";
         private const string DOCX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
         private const string XML_MIME_TYPE = "application/xml";
         private const string JSON_MIME_TYPE = "application/json";
@@ -59,21 +60,93 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
-        public ExportSettingsModel GetExportSettings(int implementationGuideId, ExportFormats format)
+        private ExportSettingsModel GetLegacyMSWordExportSettings(IGSettingsManager igSettings, string newSettingsProperty)
         {
-            /*
-            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
+            string exportSettingsJson = igSettings.GetSetting(IGSettingsManager.SettingProperty.MSWordExportSettingsJson);
+            ExportSettingsModel exportSettings;
 
-            switch (format)
+            // If we have an old export settings format, convert it to the new one.
+            if (!string.IsNullOrEmpty(exportSettingsJson))
             {
-                case ExportFormats.Microsoft_Word_DOCX:
+                MSWordSettingsModel oldExportSettings = JsonConvert.DeserializeObject<MSWordSettingsModel>(exportSettingsJson);
 
+                exportSettings = new ExportSettingsModel();
+                exportSettings.ExportFormat = ExportFormats.Microsoft_Word_DOCX;
+                exportSettings.DocumentTables = oldExportSettings.DocumentTables;
+                exportSettings.IncludeVocabulary = oldExportSettings.GenerateValuesets;
+                exportSettings.ImplementationGuideId = oldExportSettings.ImplementationGuideId;
+                exportSettings.IncludeChangeList = oldExportSettings.IncludeChangeList;
+                exportSettings.IncludeNotes = oldExportSettings.IncludeNotes;
+                exportSettings.IncludeTemplateStatus = oldExportSettings.IncludeTemplateStatus;
+                exportSettings.IncludeXmlSample = oldExportSettings.IncludeXmlSample;
+                exportSettings.IncludeInferred = oldExportSettings.Inferred;
+                exportSettings.MaximumValueSetMembers = oldExportSettings.MaximumValuesetMembers;
+                exportSettings.ParentTemplateIds = oldExportSettings.ParentTemplateIds != null ? oldExportSettings.ParentTemplateIds.ToArray() : new int[] { };
+                exportSettings.SelectedCategories = oldExportSettings.SelectedCategories;
+                exportSettings.TemplateIds = oldExportSettings.TemplateIds != null ? oldExportSettings.TemplateIds.ToArray() : new int[] { };
+                exportSettings.TemplateSortOrder = oldExportSettings.TemplateSortOrder;
+                exportSettings.TemplateTables = oldExportSettings.TemplateTables;
+                exportSettings.ValueSetAppendix = oldExportSettings.ValuesetAppendix;
+                exportSettings.ValueSetMaxMembers = oldExportSettings.ValueSetMaxMembers != null ? oldExportSettings.ValueSetMaxMembers.ToArray() : new int[] { };
+                exportSettings.ValueSetOid = oldExportSettings.ValueSetOid.ToArray();
+
+                // Save the converted/new settings format
+                igSettings.SaveSetting(newSettingsProperty, JsonConvert.SerializeObject(exportSettings));
+
+                // Remove the old settings format
+                igSettings.SaveSetting(IGSettingsManager.SettingProperty.MSWordExportSettingsJson, null);
+
+                return exportSettings;
             }
-            */
 
             return null;
         }
 
+        [HttpGet, Route("Settings")]
+        public ExportSettingsModel GetExportSettings(int implementationGuideId, ExportFormats format)
+        {
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
+            string settingsProperty = "ExportSettings_" + format.ToString();
+
+            if (format == ExportFormats.Microsoft_Word_DOCX)
+            {
+                var legacyExportSettings = this.GetLegacyMSWordExportSettings(igSettings, settingsProperty);
+
+                if (legacyExportSettings != null)
+                    return legacyExportSettings;
+            }
+
+            string exportSettingsJson = igSettings.GetSetting(settingsProperty);
+
+            if (!string.IsNullOrEmpty(exportSettingsJson))
+            {
+                var settings = JsonConvert.DeserializeObject<ExportSettingsModel>(exportSettingsJson);
+                settings.ImplementationGuideId = implementationGuideId;
+                settings.ExportFormat = format;
+                return settings;
+            }
+
+            return new ExportSettingsModel()
+            {
+                ImplementationGuideId = implementationGuideId,
+                ExportFormat = format
+            };
+        }
+
+        [HttpPost, Route("Settings")]
+        public void SaveExportSettings([FromBody] ExportSettingsModel model, [FromUri] int implementationGuideId, [FromUri] ExportFormats format)
+        {
+            if (!CheckPoint.Instance.GrantEditImplementationGuide(implementationGuideId))
+                throw new UnauthorizedAccessException("You do not have permissions to save default settings for this implementation guide.");
+
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
+            string settingsJson = JsonConvert.SerializeObject(model);
+            string settingsProperty = "ExportSettings_" + format.ToString();
+
+            igSettings.SaveSetting(settingsProperty, settingsJson);
+        }
+
+        [HttpPost]
         public HttpResponseMessage Export(ExportSettingsModel model)
         {
             ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == model.ImplementationGuideId);
@@ -122,11 +195,11 @@ namespace Trifolia.Web.Controllers.API
                     ExportSettings lConfig = new ExportSettings();
                     lConfig.Use(c =>
                     {
-                        c.GenerateTemplateConstraintTable = model.TemplateTables == ExportSettingsModel.TemplateTableOptions.Overview || model.TemplateTables == ExportSettingsModel.TemplateTableOptions.Both;
-                        c.GenerateTemplateContextTable = model.TemplateTables == ExportSettingsModel.TemplateTableOptions.Context || model.TemplateTables == ExportSettingsModel.TemplateTableOptions.Both;
-                        c.GenerateDocTemplateListTable = model.DocumentTables == ExportSettingsModel.DocumentTableOptions.List || model.DocumentTables == ExportSettingsModel.DocumentTableOptions.Both;
-                        c.GenerateDocContainmentTable = model.DocumentTables == ExportSettingsModel.DocumentTableOptions.Containment || model.DocumentTables == ExportSettingsModel.DocumentTableOptions.Both;
-                        c.AlphaHierarchicalOrder = model.TemplateSortOrder == ExportSettingsModel.TemplateSortOrderOptions.AlphaHierarchical;
+                        c.GenerateTemplateConstraintTable = model.TemplateTables == TemplateTableOptions.ConstraintOverview || model.TemplateTables == TemplateTableOptions.Both;
+                        c.GenerateTemplateContextTable = model.TemplateTables == TemplateTableOptions.Context || model.TemplateTables == TemplateTableOptions.Both;
+                        c.GenerateDocTemplateListTable = model.DocumentTables == DocumentTableOptions.List || model.DocumentTables == DocumentTableOptions.Both;
+                        c.GenerateDocContainmentTable = model.DocumentTables == DocumentTableOptions.Containment || model.DocumentTables == DocumentTableOptions.Both;
+                        c.AlphaHierarchicalOrder = model.TemplateSortOrder == TemplateSortOrderOptions.AlphaHierarchically;
                         c.DefaultValueSetMaxMembers = model.ValueSetTables ? model.MaximumValueSetMembers : 0;
                         c.GenerateValueSetAppendix = model.ValueSetAppendix;
                         c.IncludeXmlSamples = model.IncludeXmlSample;
@@ -234,9 +307,9 @@ namespace Trifolia.Web.Controllers.API
         {
             switch (model.Encoding)
             {
-                case ExportSettingsModel.EncodingOptions.UTF8:
+                case EncodingOptions.UTF8:
                     return Encoding.UTF8;
-                case ExportSettingsModel.EncodingOptions.UNICODE:
+                case EncodingOptions.UNICODE:
                     return Encoding.Unicode;
                 default:
                     throw new ArgumentException("Unexpected encoding " + model.Encoding.ToString());

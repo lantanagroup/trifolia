@@ -1211,6 +1211,17 @@
             When user is logged in via "remember me", Login does not have to occur.
             </remarks>
         </member>
+        <member name="P:Trifolia.Web.Models.Export.ExportSettingsModel.ValueSetMaxMembers">
+            <summary>
+            An ordered array indicating the maximum members for each of the value sets
+            </summary>
+            <remarks>ValueSetMaxMembers[i] is the maximum number of members for ValueSetOid[i]</remarks>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.ExportSettingsModel.MaximumValueSetMembers">
+            <summary>
+            The default maximum members for each value set, if not specified by ValueSetMaxMembers[i]
+            </summary>
+        </member>
         <member name="T:Trifolia.Web.Models.Export.MSWordSettingsModel">
             <summary>
             Models used to define settings for exporting to MS Word

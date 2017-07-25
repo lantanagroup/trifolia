@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +9,9 @@ namespace Trifolia.Web.Models.Export
 {
     public class ExportSettingsModel
     {
+        [JsonIgnore]
         public int ImplementationGuideId { get; set; }
+        [JsonIgnore]
         public ExportFormats ExportFormat { get; set; }
 
         // MS Word Export Settings
@@ -21,6 +24,11 @@ namespace Trifolia.Web.Models.Export
         public TemplateSortOrderOptions TemplateSortOrder { get; set; }
         public bool ValueSetTables { get; set; }
         public string[] ValueSetOid { get; set; }
+
+        /// <summary>
+        /// An ordered array indicating the maximum members for each of the value sets
+        /// </summary>
+        /// <remarks>ValueSetMaxMembers[i] is the maximum number of members for ValueSetOid[i]</remarks>
         public int[] ValueSetMaxMembers { get; set; }
 
         // SCH Export Settings
@@ -31,40 +39,18 @@ namespace Trifolia.Web.Models.Export
 
         // Vocabulary Settings
         public EncodingOptions Encoding { get; set; }
+
+        /// <summary>
+        /// The default maximum members for each value set, if not specified by ValueSetMaxMembers[i]
+        /// </summary>
         public int MaximumValueSetMembers { get; set; }
         public bool ValueSetAppendix { get; set; }
 
         // General Settings
+        public int[] ParentTemplateIds { get; set; }
         public int[] TemplateIds { get; set; }
+        public bool IncludeInferred { get; set; }
         public List<string> SelectedCategories { get; set; }
         public bool ReturnJson { get; set; }
-
-        public enum EncodingOptions
-        {
-            UTF8 = 0,
-            UNICODE = 1
-        }
-
-        public enum TemplateSortOrderOptions
-        {
-            AlphaHierarchical = 0,
-            Alphabetical = 1
-        }
-
-        public enum DocumentTableOptions
-        {
-            None = 0,
-            Both = 1,
-            List = 2,
-            Containment = 3
-        }
-
-        public enum TemplateTableOptions
-        {
-            None = 0,
-            Both = 1,
-            Context = 2,
-            Overview = 3
-        }
     }
 }
