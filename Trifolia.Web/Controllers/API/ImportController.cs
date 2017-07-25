@@ -93,12 +93,25 @@ namespace Trifolia.Web.Controllers.API
                                 new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>();
 
                             ImportValueSet valueSet = processor.FindValueSet(auditedTdb, model.Id);
+
                             processor.SaveValueSet(auditedTdb, valueSet);
+                            responseModel.Success = true;
+
                             break;
                         default:
                             responseModel.Message = "Unknown or unsupported source";
                             break;
                     }
+
+                    if (responseModel.Success)
+                        auditedTdb.SaveChanges();
+                }
+                catch (WebException wex)
+                {
+                    if (wex.Response != null && wex.Response is HttpWebResponse && ((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
+                        responseModel.Message = string.Format("Value set with identifier \"{0}\" was not found on the terminology server.", model.Id);
+                    else
+                        responseModel.Message = wex.Message;
                 }
                 catch (Exception ex)
                 {

@@ -164,18 +164,7 @@ namespace Trifolia.Import.VSAC
                         IsDefault = true
                     });
                 }
-                else if (!foundValueSet.ImportSource.HasValue || foundValueSet.ImportSource == ValueSetImportSources.VSAC)
-                {
-                    // If the value set was manually created in Trifolia,
-                    // remove all members from the value-set, since VSAC is a better source
-                    var allMembers = foundValueSet.Members.ToList();
-
-                    foreach (var member in allMembers)
-                    {
-                        this.tdb.ValueSetMembers.Remove(member);
-                    }
-                }
-                else if (foundValueSet.ImportSource != ValueSetImportSources.VSAC)
+                else if (foundValueSet.ImportSource.HasValue && foundValueSet.ImportSource != ValueSetImportSources.VSAC)
                 {
                     throw new Exception("This value set was imported from another source. It cannot be re-imported from a different source.");
                 }
@@ -231,8 +220,6 @@ namespace Trifolia.Import.VSAC
 
                 importCount++;
             }
-
-            this.tdb.SaveChanges();
 
             return importCount > 0;
         }
