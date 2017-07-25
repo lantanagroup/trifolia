@@ -40,8 +40,6 @@
         <form method="post" action="/api/Export">
             <div class="alert alert-info" ng-show="message">{{message}}</div>
 
-            <pre>{{criteria}}</pre>
-
             <div class="form-group">
                 <label>Select an implementation guide</label>
                 <div class="input-group">
