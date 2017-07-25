@@ -59,6 +59,21 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
+        public ExportSettingsModel GetExportSettings(int implementationGuideId, ExportFormats format)
+        {
+            /*
+            IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
+
+            switch (format)
+            {
+                case ExportFormats.Microsoft_Word_DOCX:
+
+            }
+            */
+
+            return null;
+        }
+
         public HttpResponseMessage Export(ExportSettingsModel model)
         {
             ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == model.ImplementationGuideId);
