@@ -23,52 +23,186 @@
         $scope.authTimeout = false;
         $scope.message = '';
 
-        // TODO
+        /**
+         * Check to see if a constraint is a duplicate node within the same level of the tree
+         */
+        $scope.isDuplicateNode = function (selectedNode) {
+            if (!selectedNode || !selectedNode.Constraint || !$scope.constraints) {
+                return false;
+            }
+            var constraint = selectedNode.Constraint;
+            var siblings = constraint.Parent ? constraint.Parent.Children : $scope.constraints;
+
+            var found = _.find(siblings, function (sibling) {
+                return constraint.Context === sibling.Context && constraint.Id != sibling.Id;
+            });
+
+            return found ? true : false;
+        }
+
+        /**
+         * Checks to see if there's a possible shift up for the node (duplicate above the node in the tree)
+         */
         $scope.showMoveUp = function (selectedNode) {
-            if (!selectedNode || !selectedNode.Constraint) {
+            if (!selectedNode || !selectedNode.Constraint || !$scope.constraints) {
                 return false;
             }
+            var constraint = selectedNode.Constraint;
+            var siblings = constraint.Parent ? constraint.Parent.Children : $scope.constraints;
+            var index = siblings.indexOf(constraint);
 
-            return true;
+            if (index === -1) return false;
+
+            return index != 0 && siblings.length > 0 && siblings[index - 1].Context === constraint.Context;
         };
 
-        // TODO
-        $scope.moveUp = function (selectedNode) {
-            alert('todo');
-        };
 
-        // TODO
+        /**
+         * Checks to see if there's a possible shift down for the node (duplicate below the node in the tree)
+         */
         $scope.showMoveDown = function (selectedNode) {
-            if (!selectedNode || !selectedNode.Constraint) {
+            if (!selectedNode || !selectedNode.Constraint || !$scope.constraints) {
                 return false;
             }
-            
-            return true;
+            var constraint = selectedNode.Constraint;
+            var siblings = constraint.Parent ? constraint.Parent.Children : $scope.constraints;
+            var index = siblings.indexOf(constraint);
+
+            if (index === -1) return false;
+
+            return index < siblings.length - 1 && siblings.length > 0 && siblings[index + 1].Context === constraint.Context;
         };
 
-        // TODO
+        /**
+         * Swaps the order of the tree such that the duplicate constraint above the currently examined constraint exchange places
+         */
+        $scope.moveUp = function (selectedNode) {
+            if (!selectedNode || !selectedNode.Constraint || !$scope.constraints) {
+                return;
+            }
+
+            var constraint = selectedNode.Constraint;
+            var siblings = constraint.IsPrimitive ? constraint.Parent.Children : $scope.constraints;
+            var index = siblings.indexOf(constraint);
+
+            if (index != 0 && siblings[index - 1].Context === constraint.Context) {
+                //Rearrange the constraints first
+                var tmp = siblings[index];
+                siblings[index] = siblings[index - 1];
+                siblings[index - 1] = tmp;
+                
+                //Now rearrange the nodes
+                var siblingNodes = selectedNode.Parent ? selectedNode.Parent.Children : $scope.nodes;
+                var currentNodeIndex = siblingNodes.indexOf(selectedNode);
+                var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
+                siblingNodes.splice(currentNodeIndex - 1, 0, tmpNode[0]);
+
+                $scope.templateChanged();
+            }
+        };
+
+        /**
+         * Swaps the order of the tree such that the duplicate constraint below the currently examined constraint exchange places
+         */
         $scope.moveDown = function (selectedNode) {
-            alert('todo');
+            if (!selectedNode || !selectedNode.Constraint || !$scope.constraints) {
+                return false;
+            }
+
+            var constraint = selectedNode.Constraint();
+            var siblings = constraint.IsPrimitive ? constraint.Parent.Children : $scope.constraints;
+            var index = siblings.indexOf(constraint);
+
+            if (index != siblings.length - 1 && siblings[index + 1].Context === constraint.Context) {
+                var tmp = siblings[index];
+                siblings[index] = siblings[index + 1];
+                siblings[index + 1] = tmp;
+
+                var siblingNodes = selectedNode.Parent ? selectedNode.Parent.Children : $scope.nodes;
+                var currentNodeIndex = siblingNodes.indexOf(selectedNode);
+                var tmpNode = siblingNodes.splice(currentNodeIndex, 1);
+                siblingNodes.splice(currentNodeIndex + 1, 0, tmpNode[0]);
+
+                $scope.templateChanged();
+            }
         };
 
         // TODO
         $scope.createComputableConstraint = function (selectedNode) {
-            // recursively create computable constraints for parent nodes that don't have constraints, first.
 
             // create a new constraint based on the node selected. initially, data-type should be left empty (representing "Default"), copy the context, cardinality and conformance from the node
+            var createDefaultComputable = function (node) {
+                var parentConstraint = node.Parent ? node.Parent.Constraint : null;
+                var siblingNodes = node.Parent ? node.Parent.Children : $scope.nodes;
+                var siblingConstraints = node.Parent && node.Parent.Constraint ? node.Parent.Constraint.Children : $scope.constraints;
+                var nodeIndex = siblingNodes.indexOf(node);
+                var constraintIndex = 0;
+
+                // Determine where to place the constraint in the list. This is important so that when saving,
+                // the list is sent back to the server in the correct order.
+                for (var i = nodeIndex - 1; i >= 0; i--) {
+                    var siblingConstraint = siblingNodes[i].Constraint;
+
+                    if (siblingConstraint) {
+                        constraintIndex = siblingConstraints.indexOf(siblingConstraint) + 1;
+                        break;
+                    }
+                }
+                //var constraint = new ConstraintModel(null, parentConstraint, $scope);
+                var constraint = {};
+
+                constraint.Context = node.Context;
+                constraint.Conformance = node.Conformance;
+                constraint.Cardinality = node.Cardinality;
+                constraint.isNew = true;
+                //constraint.IsChoice = node.IsChoice;
+                constraint.IsPrimitive = false;
+
+                // Set as branch identifier if parent is a branch root, default conformance is SHALL
+                if (parentConstraint && parentConstraint.IsBranch && constraint.Conformance == "SHALL") {
+                    constraint.IsBranchIdentifier = true;
+                } else {
+                    constraint.IsBranchIdentifier = false
+                }
+
+                constraintIndex <= siblingConstraints.length - 1 ? siblingConstraints.splice(constraintIndex, 0, constraint) : siblingConstraints.push(constraint);
+                
+                node.Constraint = constraint;
+                constraint.ConstraintAndProseChanged = true;
+                $scope.templateChanged();
+                //constraint.SubscribeForUpdates();
+            };
+
+            // recursively create computable constraints for parent nodes that don't have constraints, first.
+            if (selectedNode.Parent && !selectedNode.Parent.Constraint) {
+                $scope.createComputableConstraint(selectedNode.Parent);
+            }
             
-            alert('todo');
+            createDefaultComputable(selectedNode);
+            $scope.templateChanged();
         };
 
         // TODO
         $scope.createPrimitiveConstraint = function (selectedNode) {
-            // selectedNode may be undefined/null. In this case, add a primitive to the top/root level
-
-            // if selectedNode is not undefined/null, create a primtive within the selectedNode
+            
+            var primitive = {};
+            primitive.Constraint = {
+                IsPrimitive: true,
+                Conformance: "SHALL"
+            };
 
             // if selectedNode does not have a Constraint associated with it yet, then use createComputableConstraint() to create one for it
+            if (selectedNode && !selectedNode.Constraint) $scope.createComputableConstraint(selectedNode);
 
-            alert('todo');
+            // selectedNode may be undefined/null. In this case, add a primitive to the top/root level
+            if (!selectedNode) {
+                $scope.nodes.push(primitive);
+                $scope.constraints.push(primitive.Constraint);
+            } else {
+                if (!selectedNode.HasChildren())
+                selectedNode.Children.push(primitive);
+                selectedNode.Constraint.Children.push(primitive.Constraint);
+            }
         };
 
         // TODO
@@ -78,16 +212,58 @@
             }
 
             // create a copy of the node so that a new node shows up in the constraints table. can use angular.copy()
+            var newNode, newConstraint;
+            angular.copy(selectedNode, newNode);
+            var siblings = selectedNode.Parent ? selectedNode.Parent.Children : $scope.nodes;
+            
+            // position the new node in the list immediately after the selected node
+            var nodeIndex = siblings.indexOf(selectedNode);
+            nodeIndex < siblings.length - 1 ? siblings.splice(nodeIndex, 0, newNode) : siblings.push(newNode);
 
-            // create a copy of the constraint. associate it with the copy of the node.
+            // create a copy of the constraint
+            angular.copy(selectedNode.Constraint, newConstraint);
+            newConstraint.isNew = true;
+            var constraint = selectedNode.Constraint;
+            var sibConstraints = constraint.Parent ? constraint.Parent.Children : $scope.constraints;
+            
+            // position the new constraint in the list immediately after the selected constraint
+            var constraintIndex = sibConstraints.indexOf(constraint);
+            constraintIndex < sibConstraints.length - 1 ? sibConstraints.splice(constraintIndex, 0, newConstraint) : sibConstraints.push(newConstraint);
 
             // update the copy of the constraint to not have the same number. the number should be automatically generated. any customized number should be removed, as well.
-
-            // position the new constraint in the list immediately after the selected constraint
+            //TODO
 
             // set the selectedNode to the duplicate node
+            selectedNode = newNode;
+        };
 
-            alert('todo');
+        //Not used but potentially useful in the future
+        var getParent = function (node) {
+            var searchChildren = function (parent) {
+                var result;
+                var found = false;
+                var children = parent.Children;
+                for(var i in children){
+                    if (children[i].$$hashKey === node.$$hashKey) found = true;
+                    if (!found && children[i].Children.length > 0) {
+                        result = searchChildren(children[i].Children, node);
+                        if(result) break;
+                    }
+                    else if (found) {
+                        result = parent;
+                        break;
+                    }
+                }
+                return result;
+            };
+            var parent;
+            //Start with root's children
+            for(var n in $scope.nodes){
+                if($scope.nodes[n].$$hashKey === node.$$hashKey) break; //do nothing, parent is root node
+                parent = searchChildren($scope.nodes[n]);  //else, search children of node
+                if (parent) break;
+            }
+            return parent;
         };
 
         // TODO
@@ -96,15 +272,189 @@
                 return;
             }
 
+            var constraintIndex = $scope.constraints.indexOf(selectedNode.Constraint);
+
             // if the constraint has not already been saved (doesn't have an Id value), just remove the constraint
+            // if the constraint HAS been saved (has an Id value), then flag it as deleted and remove (TODO: How??)
+            if (selectedNode.Constraint.Id) {
+                if (!$scope.removedConstraints) $scope.removedConstraints = [];
+                $scope.removedConstraints.push(constraint);
+            }
 
-            // if the constraint HAS been saved (has an Id value), then flag it as deleted
+            if (constraintIndex !== -1) $scope.constraints.splice(constraintIndex, 1);
 
-            alert('todo');
+            delete selectedNode.Constraint;
+            $scope.templateChanged();
+
         };
 
-        // TODO
+        // If a message is returned, the node is invalid. If nothing is returned, it is valid.
+        $scope.isNodeValid = function (node) {
+            if (!node.Constraint) {
+                return;
+            }
+
+            var invalidChildren = _.filter(node.Children, function (child) {
+                return $scope.isNodeValid(child);
+            });
+
+            if (invalidChildren.length > 0) {
+                return 'A child node/constraint is invalid.';
+            }
+
+            var constraint = node.Constraint;
+
+            if (!constraint.Cardinality) {
+                return 'The cardinality of a constraint is required';
+            }
+
+            var nodeCard = node.Cardinality;
+            var constraintCard = node.Constraint.Cardinality;
+
+            if (!/\d+\.\.[\d+|*]/.test(constraintCard)) {
+                return 'The format of the cardinality is incorrect. Must be in the form of "X..Y" where X >= 0, X <= Y, and Y can be set to * to represent infinity.';
+            }
+
+            var startingNumber = parseInt(constraintCard.substring(0, constraintCard.indexOf('..')));
+            var endingNumberString = constraintCard.substring(constraintCard.indexOf('..') + 2);
+            var endingNumber = endingNumberString == '*' ? 1000000 : parseInt(endingNumberString);
+
+            if (nodeCard.endsWith('..1') && endingNumber > 1) {
+                return 'The schema allows only one, but you have constrained the node in the schema to allow multiple';
+            } else if (nodeCard.endsWith('..0') && !constraintCard.endsWith('..0')) {
+                return 'The schema does not allow any';
+            } else if (startingNumber > endingNumber) {
+                return 'The starting cardinality cannot be greater than the ending cardinality.';
+            }
+        };
+
+        $scope.isValid = function () {
+            if (!$scope.template) {
+                return false;
+            }
+
+            if (!$scope.template.Name) {
+                return false;
+            }
+
+            if (!$scope.template.Oid) {
+                return false;
+            }
+
+            // TODO: Other template metadata tests
+            
+            var isAllNodesValid = function (node) {
+                if (!node.$$valid) {
+                    return false;
+                }
+
+                for (var i = 0; i < node.Children.length; i++) {
+                    if (!isAllNodesValid(node.Children[i])) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+
+            for (var i = 0; i < $scope.nodes.length; i++) {
+                if (!isAllNodesValid($scope.nodes[i])) {
+                    return false;
+                }
+            }
+
+            return true;
+        };
+
         $scope.save = function () {
+            if (!$scope.isValid()) {
+                return;
+            }
+
+            var data = {
+                Template: $scope.template,
+                RemovedConstraints: $scope.removedConstraints,
+                Constraints: $scope.constraints
+            };
+
+            var removeIdFromNewConstraints = function (list) {
+                _.forEach(list, function (constraint) {
+                    if (constraint.IsNew) {
+                        constraint.Id = null;
+                    }
+
+                    removeIdFromNewConstraints(constraint.Children);
+                });
+            };
+
+            removeIdFromNewConstraints(data.Constraints);
+
+            // Recursively updates the constraints in currentList (and its children)
+            // based on the newList. newList is plain JS objects, not KO'd objects.
+            var updateConstraints = function (currentList, newList) {
+                if (currentList.length != newList.length) {
+                    throw "Updating client-side constraints failed. Server and client mis-match.";
+                }
+
+                for (var i in currentList) {
+                    var currentConstraint = currentList[i];
+                    var newConstraint = newList[i];
+
+                    currentConstraint.Id = newConstraint.Id;
+                    currentConstraint.Number = newConstraint.Number;
+                    currentConstraint.IsNew = false;
+
+                    updateConstraints(currentConstraint.Children, newConstraint.Children);
+                }
+            };
+
+            $.blockUI({ message: "Saving..." });
+            $.ajax({
+                method: 'POST',
+                url: '/api/Template/Edit/Save',
+                data: JSON.stringify(data),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Error) {
+                        alert(response.Error);
+                    } else if (response.TemplateId) {
+                        // Update the template id on the client so that we save against the new template going forward
+                        $scope.TemplateId = response.TemplateId;
+                        $scope.Template.Id = response.TemplateId;
+                        $scope.Template.AuthorId = response.AuthorId;
+                        $scope.isModified = false;
+
+                        if (actionAfter == 'list') {
+                            $scope.Status = "Done saving... Redirecting to Browse Templates.";
+                            location.href = '/TemplateManagement/List';
+                        } else if (actionAfter == 'view') {
+                            $scope.Status = "Done saving... Redirecting to View Template.";
+                            location.href = getTemplateViewUrl($scope.Template.Id, $scope.Template.Oid);
+                        } else if (actionAfter == 'publishSettings') {
+                            $scope.Status("Done saving... Redirecting to Publish Settings.");
+                            location.href = '/TemplateManagement/PublishSettings?id=' + $scope.TemplateId;
+                        } else {
+                            self.Status("Done saving.");
+
+                            // Empty the removed constraints list
+                            self.RemovedConstraints = [];
+
+                            // Update the constraints on the client (possibly new IDs and new Numbers)
+                            updateConstraints($scope.Constraints, response.Constraints);
+                            angular.extend($scope.Template, { ValidationResults: response.ValidationResults });
+
+                            // Clear the status after 10 seconds
+                            setTimeout(function () {
+                                $scope.Status = "";
+                            }, 10000);
+                        }
+                    }
+                },
+                complete: function () {
+                    $.unblockUI();
+                }
+            });
 
         };
 
@@ -117,14 +467,16 @@
         };
 
         $scope.nodeExpanded = function (selectedNode) {
-            return EditorService.getNodes($scope.template.OwningImplementationGuideId, selectedNode.DataType)
-                .then(function (nodes) {
-                    if (selectedNode.Constraint) {
-                        associateNodes(nodes, selectedNode.Constraint.Children);
-                    }
+            if (selectedNode.Children.length === 0) {
+                return EditorService.getNodes($scope.template.OwningImplementationGuideId, selectedNode.DataType)
+                    .then(function (nodes) {
+                        if (selectedNode.Constraint) {
+                            associateNodes(nodes, selectedNode.Constraint.Children);
+                        }
 
-                    selectedNode.Children = nodes;
-                });
+                        selectedNode.Children = nodes;
+                    });
+            }
         };
 
         $scope.nodeSelected = function (selectedNode) {

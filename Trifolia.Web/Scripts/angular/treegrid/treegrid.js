@@ -8,7 +8,8 @@
                 template: '=template',
                 constraints: '=constraints',
                 onNodeSelected: '&nodeSelected',
-                onNodeExpanded: '&nodeExpanded'
+                onNodeExpanded: '&nodeExpanded',
+                validateNode: '&validateNode'
             },
             link: function ($scope, $element, $attributes) {
                 $scope.flattenedNodes = [];
@@ -20,21 +21,6 @@
                     }
 
                     return node[column];
-                };
-
-                $scope.isInvalidCardinality = function (node) {
-                    if (!node.Constraint) {
-                        return false;
-                    }
-
-                    var nodeCard = node.Cardinality;
-                    var constraintCard = node.Constraint.Cardinality;
-
-                    if (nodeCard.endsWith('..1') && constraintCard.endsWith('..*')) {
-                        return 'The schema allows only one, but you have constrained the node in the schema to allow multiple';
-                    } else if (nodeCard.endsWith('..0') && !constraintCard.endsWith('..0')) {
-                        return 'The schema does not allow any';
-                    }
                 };
 
                 $scope.getNodeTabs = function (node) {
@@ -61,6 +47,19 @@
                     }
 
                     $scope.onNodeSelected({ selectedNode: $scope.selectedNode });
+                };
+
+                $scope.isNodeValid = function (node) {
+                    var message = $scope.validateNode({ node: node });
+
+                    if (message) {
+                        node.$$valid = false;
+                        node.$$message = message;
+                    } else {
+                        node.$$valid = true;
+                    }
+
+                    return node.$$valid;
                 };
 
                 var getFlattenedNodes = function () {

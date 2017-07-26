@@ -16,13 +16,11 @@
                     <span style="white-space: pre">{{getNodeTabs(node)}}</span>
                     <i ng-if="node.HasChildren" class="glyphicon clickable" ng-class="{ 'glyphicon-plus': !node.$expanded, 'glyphicon-minus': node.$expanded }" ng-click="toggleExpand(node)"></i>
                     {{node.Context}}
+                    <i ng-if="!isNodeValid(node)" class="glyphicon glyphicon-exclamation-sign" title="{{node.$$message}}"></i>
                 </td>
                 <td>{{getCellDisplay(node, 'Number')}}</td>
                 <td>{{getCellDisplay(node, 'Conformance')}}</td>
-                <td>
-                    {{getCellDisplay(node, 'Cardinality')}}
-                    <i class="glyphicon glyphicon-exclamation-sign" ng-if="isInvalidCardinality(node)" title="{{isInvalidCardinality(node)}}"></i>
-                </td>
+                <td>{{getCellDisplay(node, 'Cardinality')}}</td>
                 <td>{{getCellDisplay(node, 'DataType')}}</td>
                 <td>{{getCellDisplay(node, 'Value')}}</td>
             </tr>

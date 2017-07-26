@@ -278,7 +278,7 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                        <li ng-click="save()"><a href="#">Save</a></li>
+                        <li ng-click="save()" ng-class="{ disabled: !isValid() }"><a href="#">Save</a></li>
                         <li ng-click="discard()"><a href="#">Discard</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
@@ -399,7 +399,8 @@
                             template="template" 
                             nodes="nodes" 
                             node-selected="nodeSelected(selectedNode)" 
-                            node-expanded="nodeExpanded(selectedNode)">
+                            node-expanded="nodeExpanded(selectedNode)"
+                            validate-node="isNodeValid(node)">
                         </tree-grid>
                     </div>
                     <div class="constraint-properties">
@@ -416,8 +417,8 @@
                                     </div>
                                     <span><strong>Properties</strong></span>
                                     <div class="pull-right">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default btn-sm" title="Move the duplicated constraint up" ng-show="showMoveUp(selectedNode)" ng-click="moveUp(selectedNode)">
+                                        <div ng-if="isDuplicateNode(selectedNode)" class="btn-group">
+                                            <button type="button" class="btn btn-default btn-sm" title="Move the duplicated constraint up"  ng-show="showMoveUp(selectedNode)" ng-click="moveUp(selectedNode)">
                                                 <i class="glyphicon glyphicon-arrow-up"></i>
                                             </button>
                                             <button type="button" class="btn btn-default btn-sm" title="Move the duplicated constraint down" ng-show="showMoveDown(selectedNode)" ng-click="moveDown(selectedNode)">
