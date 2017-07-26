@@ -175,7 +175,7 @@ angular.module('Trifolia').service('HelperService', function ($httpParamSerializ
         getErrorMessage: function (err) {
             if (err.data && err.data.Message) {
                 return err.data.Message;
-            } else if (typeof err.data == 'string') {
+            } else if (typeof err.data === 'string') {
                 return err.data;
             } else if (err.message) {
                 return err.message;
@@ -435,6 +435,129 @@ angular.module('Trifolia').service('ImplementationGuideService', function ($http
         }
 
         $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.getTemplateTypes = function (implementationGuideId) {
+        var deferred = $q.defer();
+        $http.get('/api/ImplementationGuide/' + implementationGuideId + '/TemplateType')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.getEditable = function (includeImplementationGuideId) {
+        var deferred = $q.defer();
+
+        $http.get('/api/ImplementationGuide/Editable')
+            .then(function (results) {
+                // Filter out non-published IGs, unless they are from the same implementation guide as the IG
+                var filtered = _.filter(results.data, function (implementationGuide) {
+                    return !implementationGuide.IsPublished || implementationGuide.Id === includeImplementationGuideId;
+                });
+
+                deferred.resolve(filtered);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    return service;
+});
+
+angular.module('Trifolia').factory('TemplateService', function ($http, $q) {
+    var service = {};
+
+    service.getTemplate = function (templateId) {
+        var deferred = $q.defer();
+        var url = '/api/Template/' + templateId;
+
+        $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    service.getTemplates = function (options) {
+        var paramOptions = {
+            count: 50,
+            page: 1,
+            sortProperty: 'Name',
+            sortDescending: false,
+            queryText: '',
+            filterName: null,
+            filterOid: null,
+            filterImplementationGuideId: null,
+            filterTemplateTypeId: null,
+            filterOrganizationId: null,
+            filterContextType: null,
+            inferred: true
+        };
+        angular.extend(paramOptions, options);
+        
+        var params = {};
+
+        params['count'] = paramOptions.count;
+        params['page'] = paramOptions.page;
+        params['sortProperty'] = paramOptions.sortProperty;
+        params['sortDescending'] = paramOptions.sortDescending;
+        params['inferred'] = paramOptions.inferred;
+
+        if (paramOptions.queryText) {
+            params['queryText'] = paramOptions.queryText;
+        }
+            
+        if (paramOptions.filterName) {
+            params['filterName'] = paramOptions.filterName;
+        }
+
+        if (paramOptions.filterOid) {
+            params['filterOid'] = paramOptions.filterOid;
+        }
+
+        if (paramOptions.filterImplementationGuideId) {
+            params['filterImplementationGuideId'] = paramOptions.filterImplementationGuideId;
+        }
+
+        if (paramOptions.filterTemplateTypeId) {
+            params['filterTemplateTypeId'] = paramOptions.filterTemplateTypeId;
+        }
+
+        if (paramOptions.filterOrganizationId) {
+            params['filterOrganizationId'] = paramOptions.filterOrganizationId;
+        }
+
+        if (paramOptions.filterContextType) {
+            params['filterContextType'] = paramOptions.filterContextType;
+        }
+
+        var url = '/api/Template?';
+        var queryArray = _.map(Object.keys(params), function (paramKey) {
+            return paramKey + '=' + encodeURIComponent(params[paramKey]);
+        });
+        var queryString = queryArray.join('&');
+
+        var deferred = $q.defer();
+
+        $http.get(url + queryString)
             .then(function (results) {
                 deferred.resolve(results.data);
             })

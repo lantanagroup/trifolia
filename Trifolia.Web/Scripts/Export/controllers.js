@@ -33,6 +33,7 @@
     $scope.criteria = {
         ImplementationGuideId: null,
         TemplateIds: [],
+        ParentTemplateIds: [],
         ExportFormat: null,
         IncludeInferred: true,
         SelectedCategories: [],

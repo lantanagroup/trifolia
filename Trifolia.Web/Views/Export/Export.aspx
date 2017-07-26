@@ -40,6 +40,8 @@
         <form method="post" action="/api/Export">
             <div class="alert alert-info" ng-show="message">{{message}}</div>
 
+            <pre>{{criteria}}</pre>
+
             <div class="form-group">
                 <label>Select an implementation guide</label>
                 <div class="input-group">
@@ -241,16 +243,7 @@
                     </table>
                 </uib-tab>
                 <uib-tab heading="Templates/Profiles" ng-show="templateSelectionFormats | contains:criteria.ExportFormat">
-                    <div class="form-group">
-                        <label>Parent Templates/Profiles</label>    
-                        <div class="input-group">
-                            <input type="text" class="form-control" readonly="true">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-remove"></i></button>
-                                <button class="btn btn-default" type="button" title="Select">...</button>
-                            </span>
-                        </div>
-                    </div>
+                    <template-select template-id="criteria.ParentTemplateIds" caption="Parent Templates/Profiles" form-group="true"></template-select>
 
                     <div class="form-group">
                         <label>Include Inferred?</label>

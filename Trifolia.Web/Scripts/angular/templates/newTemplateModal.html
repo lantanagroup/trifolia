@@ -1,0 +1,79 @@
+﻿<form>
+    <style type="text/css">
+        .applies-to > .input-group > input {
+            width: 50%;
+        }
+    </style>
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">New Template/Profile</h3>
+    </div>
+    <div class="modal-body" id="modal-body" ng-init="init()">
+        <div class="form-group" ng-class="{ 'has-error': !template.Name }">
+            <label>Name</label>
+            <input type="text" class="form-control" ng-model="template.Name" />
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': !template.OwningImplementationGuideId }">
+            <label>Implementation Guide</label>
+            <select class="form-control" ng-model="template.OwningImplementationGuideId" ng-options="ig.Id as ig.Name for ig in implementationGuides" ng-change="implementationGuideChanged()">
+                <option value="">SELECT</option>
+            </select>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': !template.TemplateTypeId }" ng-show="template.OwningImplementationGuideId">
+            <label>Type</label>
+            <select class="form-control" ng-model="template.TemplateTypeId" ng-options="tt.Id as tt.Name for tt in templateTypes" ng-change="templateTypeChanged()">
+                <option value="">SELECT</option>
+            </select>
+        </div>
+        <div class="form-group applies-to" ng-class="{ 'has-error': !isTypeValid() }" ng-show="template.TemplateTypeId">
+            <label>Applies To</label>
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="template.PrimaryContext" />
+                <input type="text" class="form-control" ng-model="template.PrimaryContextType" />
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openAppliesTo()">Select</button>
+                </div>
+            </div>
+            <span class="help-block" ng-show="!isTypeValid()">The elements this template/profile applies to is not valid for the selection. You must choose an element that applies to <strong>{{restrictedType}}</strong>.</span>
+        </div>
+        <div ng-show="template.TemplateTypeId">
+            <div class="long-id form-group">
+                <label>Long Id</label>
+                <div class="input-group identifier-field">
+                    <select class="form-control" ng-model="identifier.base" ng-change="identifierChanged()">
+                        <option ng-if="implementationGuide">{{implementationGuide.Identifier + '.'}}</option>
+                        <option ng-if="!isFhir">urn:oid:</option>
+                        <option ng-if="!isFhir">urn:hl7ii:</option>
+                        <option>http://</option>
+                        <option>https://</option>
+                    </select>
+                    <input class="form-control" type="text" ng-model="identifier.ext" ng-change="identifierChanged()" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Short Id</label>
+                <input type="text" class="form-control" ng-model="template.Bookmark" />
+            </div>
+            <template-select caption="Implied Template/Profile:" caption-as-label="true" template-id="template.ImpliedTemplateId" restrict-type="!isFhir" restricted-type="template.PrimaryContextType" form-group="true"></template-select>
+            <div class="form-group">
+                <label>Extensibility</label>
+                <select class="form-control" ng-model="template.IsOpen" ng-options="i.v as i.d for i in [{ v: true, d: 'Open' }, {v: false, d: 'Closed' }]"></select>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error': !template.StatusId }">
+                <label>Status</label>
+                <select class="form-control" ng-model="template.StatusId" ng-options="s.Id as s.Status for s in statuses"></select>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-control" ng-model="template.Description"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea class="form-control" ng-model="template.Notes"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" ng-click="ok()" ng-disabled="!isValid()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</form>

@@ -1677,8 +1677,14 @@
     <Content Include="Scripts\Admin\Group.js" />
     <Content Include="Scripts\Admin\Groups.js" />
     <Content Include="Scripts\Admin\Users.js" />
+    <Content Include="Scripts\angular\directives.js" />
     <Content Include="Scripts\angular\services.js" />
     <Content Include="Scripts\angular\startup.js" />
+    <Content Include="Scripts\angular\templates\appliesToModal.html" />
+    <Content Include="Scripts\angular\templates\newTemplateModal.html" />
+    <Content Include="Scripts\angular\templates\multipleTemplateSelect.html" />
+    <Content Include="Scripts\angular\templates\templateSelect.html" />
+    <Content Include="Scripts\angular\templates\templateSelectModal.html" />
     <Content Include="Scripts\Export\controllers.js" />
     <Content Include="Scripts\lib\angular\angular-cookies.js" />
     <Content Include="Scripts\lib\angular\angular-highlight.min.js" />
