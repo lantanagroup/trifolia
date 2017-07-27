@@ -581,17 +581,8 @@
         </member>
         <member name="M:Trifolia.Web.Controllers.API.UserController.ValidateUmlsCredentials(Trifolia.Web.Models.User.ValidateUmlsCredentialsRequestModel)">
             <summary>
-            This method is a public route for <see cref="M:Trifolia.Web.Controllers.API.UserController.ValidateUmlsCredentials(Trifolia.DB.IObjectRepository,Trifolia.Web.Models.User.ValidateUmlsCredentialsRequestModel)"></see>
+            This method is a public route for <see cref="!:ValidateUmlsCredentials(IObjectRepository, ValidateUmlsCredentialsRequestModel)"></see>
             </summary>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.UserController.ValidateUmlsCredentials(Trifolia.DB.IObjectRepository,Trifolia.Web.Models.User.ValidateUmlsCredentialsRequestModel)">
-            <summary>
-            Validates the specified credentials against the UMLS/VSAC server. Confirms if the credentials are valid, 
-            and if they, whether the credentials are associated with a valid/active UMLS license.
-            </summary>
-            <param name="tdb">The EF object context to access the current user</param>
-            <param name="credentials">The credentials to use to validate. If not specified, attempts to use the credentials associated with the currently logged-in user's profile.</param>
-            <returns>A model containing properties indicating if the credentials are valid. When the credentials are valid, model contains a property to indicate if the credentials are associated with a valid UMLS/VSAC license.</returns>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.UserController.SaveMyUser(Trifolia.Web.Models.Account.UserProfile)">
             <summary>

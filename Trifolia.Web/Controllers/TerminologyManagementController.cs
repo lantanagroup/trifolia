@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 
 using Trifolia.Shared;
-using Trifolia.Web.Models.Shared;
 using Trifolia.Web.Models.TerminologyManagement;
 using Trifolia.Authorization;
 using Trifolia.DB;

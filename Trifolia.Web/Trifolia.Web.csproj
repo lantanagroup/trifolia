@@ -494,11 +494,6 @@
     <Compile Include="Models\IGManagement\ViewModel.cs" />
     <Compile Include="Models\LogInViewModel.cs" />
     <Compile Include="Models\RoleManagement\RolesModel.cs" />
-    <Compile Include="Models\Shared\IGTypeComboModel.cs" />
-    <Compile Include="Models\Shared\ImplementationGuideComboModel.cs" />
-    <Compile Include="Models\Shared\OrganizationComboModel.cs" />
-    <Compile Include="Models\Shared\TemplateComboModel.cs" />
-    <Compile Include="Models\Shared\TemplateTypeComboModel.cs" />
     <Compile Include="Models\TemplateManagement\DeleteModel.cs" />
     <Compile Include="Models\TemplateManagement\ListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

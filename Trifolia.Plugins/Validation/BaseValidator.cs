@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
+using Trifolia.Authorization;
 using Trifolia.DB;
 using Trifolia.Shared;
 using Trifolia.Shared.Validation;
@@ -48,9 +49,13 @@ namespace Trifolia.Plugins.Validation
 
             if (implementationGuide.HasImportedValueSets(this.tdb, ValueSetImportSources.VSAC))
             {
-                results.RestrictDownload = true;
-                // TODO: Validate if the user has a valid UMLS license
-                results.Messages.Add("This implementation guide contains VSAC content that you do not currently have a license to. <a href=\"/Account/MyProfile\">Update your profile</a> with your UMLS/VSAC credentials to export this implementation guide.");
+                User currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (!currentUser.HasValidUmlsLicense())
+                {
+                    results.RestrictDownload = true;
+                    results.Messages.Add("This implementation guide contains VSAC content that you do not currently have a license to. <a href=\"/Account/MyProfile\">Update your profile</a> with your UMLS/VSAC credentials to export this implementation guide.");
+                }
             }
 
             return results;

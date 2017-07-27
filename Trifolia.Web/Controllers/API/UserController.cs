@@ -16,6 +16,7 @@ using System.IO;
 using System.Dynamic;
 using Trifolia.Web.Models.Account;
 using Trifolia.Shared;
+using Trifolia.Import.VSAC;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -360,39 +361,26 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/User/ValidateUmlsCredentials"), SecurableAction]
         public ValidateUmlsCredentialsResponseModel ValidateUmlsCredentials(ValidateUmlsCredentialsRequestModel model)
         {
-            return ValidateUmlsCredentials(this.tdb, model);
-        }
+            User current = CheckPoint.Instance.GetUser(this.tdb);
+            ValidateUmlsCredentialsResponseModel response = new ValidateUmlsCredentialsResponseModel();
 
-        /// <summary>
-        /// Validates the specified credentials against the UMLS/VSAC server. Confirms if the credentials are valid, 
-        /// and if they, whether the credentials are associated with a valid/active UMLS license.
-        /// </summary>
-        /// <param name="tdb">The EF object context to access the current user</param>
-        /// <param name="credentials">The credentials to use to validate. If not specified, attempts to use the credentials associated with the currently logged-in user's profile.</param>
-        /// <returns>A model containing properties indicating if the credentials are valid. When the credentials are valid, model contains a property to indicate if the credentials are associated with a valid UMLS/VSAC license.</returns>
-        public static ValidateUmlsCredentialsResponseModel ValidateUmlsCredentials(IObjectRepository tdb, ValidateUmlsCredentialsRequestModel credentials = null)
-        {
-            var currentUser = CheckPoint.Instance.GetUser(tdb);
-
-            if (credentials == null)
-                credentials = new ValidateUmlsCredentialsRequestModel();
-
-            if (credentials.Username == null)
-                credentials.Username = currentUser.UMLSUsername.DecryptStringAES();
-
-            if (credentials.Password == null)
-                credentials.Password = currentUser.UMLSPassword.DecryptStringAES();
-
-            if (string.IsNullOrEmpty(credentials.Username) || string.IsNullOrEmpty(credentials.Password))
-                return new ValidateUmlsCredentialsResponseModel();
-
-            // TODO: Test that the credentials are valid
-
-            return new ValidateUmlsCredentialsResponseModel()
+            // If they have a valid umls license, they have valid credentials
+            if (current.HasValidUmlsLicense(model.Username, model.Password))
             {
-                CredentialsValid = true,
-                LicenseValid = false
-            };
+                response.CredentialsValid = true;
+                response.LicenseValid = true;
+            }
+            else
+            {
+                // If they don't have a valid umls license,
+                // check if they can authenticate... Their credentials may be valid.
+                if (current.HasValidUmlsCredentials(model.Username, model.Password))
+                {
+                    response.CredentialsValid = true;
+                }
+            }
+
+            return response;
         }
 
         /// <summary>

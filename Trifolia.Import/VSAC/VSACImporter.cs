@@ -7,13 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Trifolia.DB;
+using Trifolia.Shared;
 
 namespace Trifolia.Import.VSAC
 {
     public class VSACImporter
     {
-        private const string TGT_URL = "https://vsac.nlm.nih.gov/vsac/ws/Ticket";
-        private const string TGT_BODY_FORMAT = "username={0}&password={1}";
         private const string ST_URL_FORMAT = "https://vsac.nlm.nih.gov/vsac/ws/Ticket/{0}";
         private const string SVS_RETRIEVE_VALUE_SET_URL_FORMAT = "https://vsac.nlm.nih.gov/vsac/svs/RetrieveMultipleValueSets?id={0}&ticket={1}";
         private const string SVS_NS = "urn:ihe:iti:svs:2008";
@@ -24,6 +23,13 @@ namespace Trifolia.Import.VSAC
         public VSACImporter(IObjectRepository tdb)
         {
             this.tdb = tdb;
+        }
+
+        public bool Authenticate(string username, string password)
+        {
+            string tgt = UmlsHelper.Authenticate(username, password);
+            this.ticketGrantingTicket = tgt;
+            return !string.IsNullOrEmpty(this.ticketGrantingTicket);
         }
 
         /// <summary>
@@ -46,47 +52,6 @@ namespace Trifolia.Import.VSAC
                     string responseBody = sr.ReadToEnd();
                     return this.ImportRetrieveValueSet(responseBody);
                 }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Authenticates the user with the VSAC using the credentials specified.
-        /// </summary>
-        /// <param name="username">The VSAC username</param>
-        /// <param name="password">The VSAC password</param>
-        /// <returns>True if authenticated, otherwise false.</returns>
-        public bool Authenticate(string username, string password)
-        {
-            HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(TGT_URL);
-            string body = string.Format(TGT_BODY_FORMAT, username, password);
-            byte[] rawBody = Encoding.UTF8.GetBytes(body);
-            webRequest.Method = "POST";
-            webRequest.ContentType = "text/plain";
-            webRequest.ContentLength = rawBody.Length;
-
-            using (var sw = webRequest.GetRequestStream())
-            {
-                sw.Write(rawBody, 0, rawBody.Length);
-            }
-
-            try
-            {
-                HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
-
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    using (StreamReader sr = new StreamReader(response.GetResponseStream()))
-                    {
-                        this.ticketGrantingTicket = sr.ReadToEnd();
-                        return true;
-                    }
-                }
-            }
-            catch (WebException wex)
-            {
-                Console.WriteLine(wex.ToString());
             }
 
             return false;
