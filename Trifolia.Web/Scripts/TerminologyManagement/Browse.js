@@ -316,13 +316,6 @@
             SourceUrl: '',
             Identifiers: []
         };
-        $scope.newIdentifier = {
-            Id: null,
-            Type: 0,
-            Identifier: '',
-            IsDefault: false
-        };
-        $scope.newIdentifierIsUnique = false;
         $scope.identifierOptions = [{ value: 0, display: 'OID' }, { value: 1, display: 'HL7-II' }, { value: 2, display: 'HTTP' }];
         $scope.urlRegex = HelperService.urlRegex;
 
@@ -338,53 +331,113 @@
             }
         };
 
-        $scope.isNewIdentifierFormatInvalid = function () {
-            if (!$scope.newIdentifier.Identifier) {
-                return 'Identifier is required.';
-            }
-
-            switch ($scope.newIdentifier.Type) {
-                case 0:
-                    if (!$scope.newIdentifier.Identifier.match(HelperService.oidRegex)) {
-                        return 'Identifier must be in the format urn:oid:XXXX';
-                    }
-                    break;
-                case 1:
-                    if (!$scope.newIdentifier.Identifier.match(HelperService.hl7iiRegex)) {
-                        return 'Identifier must be in the format urn:hl7ii:XXXX:YYYY';
-                    }
-                    break;
-                case 2:
-                    if (!$scope.newIdentifier.Identifier.match(HelperService.urlRegex)) {
-                        return 'Identifier must be in the format http[s]://XXXX.YYY/';
-                    }
-                    break;
-            }
-        };
-
         $scope.identifierChanged = function (identifier) {
+            $scope.$$typeError = false;
+            $scope.$$valueError = false;
+
+            if (identifier.Type === undefined) {
+                identifier.$$typeError = true;
+                identifier.$$typeErrorMessage = 'You must specify a type for the identifier.';
+                return;
+            }
+
             if (!identifier || !identifier.Identifier) {
+                identifier.$$valueError = true;
+                identifier.$$valueErrorMessage = 'You must specify a value for the identifier.';
                 return;
             }
 
             // Look for the identifier in the current value set first, so we don't have to make an AJAX GET if we don't need to
             var found = _.find($scope.valueSet.Identifiers, function (nextIdentifier) {
-                return nextIdentifier.Identifier.toLowerCase().trim() == identifier.Identifier.toLowerCase().trim();
+                return nextIdentifier != identifier && nextIdentifier.Identifier.toLowerCase().trim() == identifier.Identifier.toLowerCase().trim();
             });
 
             if (found) {
-                $scope.newIdentifierIsUnique = false;
+                identifier.$$valueError = true;
+                identifier.$$valueErrorMessage = 'This identifier is a duplicate.';
+                return;
+            }
+
+            if (identifier.Type == 0 && !HelperService.oidRegex.test(identifier.Identifier)) {
+                identifier.$$valueError = true;
+                identifier.$$valueErrorMessage = 'The format of the identifier is incorrect. Please specify the identifier in the format urn:oid:XX.YY.ZZ';
+                return;
+            } else if (identifier.Type == 1 && !HelperService.hl7iiRegex.test(identifier.Identifier)) {
+                identifier.$$valueError = true;
+                identifier.$$valueErrorMessage = 'The format of the identifier is incorrect. Please specify the identifier in the format urn:hl7ii:XX.YY.ZZ:aa';
+                return;
+            } else if (identifier.Type == 2 && !HelperService.urlRegex.test(identifier.Identifier)) {
+                identifier.$$valueError = true;
+                identifier.$$valueErrorMessage = 'The format of the identifier is incorrect. Please specify the identifier in the format http(s)://xxx.yyy/zzz';
                 return;
             }
 
             // Ask the server to validate the identifier, to see if other value sets use the same identifier
             TerminologyService.validateValueSetIdentifier(identifier.Identifier, identifier.Id)
                 .then(function (isValid) {
-                    $scope.newIdentifierIsUnique = isValid;
+                    identifier.$$valueError = !isValid;
+
+                    if (!isValid) {
+                        identifier.$$valueErrorMessage = 'This identifier is in use by another value set.';
+                    }
                 })
                 .catch(function (err) {
                     alert('Error while validating the identifier: ' + err);
                 });
+        };
+
+        $scope.hasActiveIdentifier = function () {
+            var activeIdentifiers = _.filter($scope.valueSet.Identifiers, function (identifier) {
+                return !identifier.ShouldRemove && !identifier.$$typeError && !identifier.$$valueError;
+            });
+
+            return activeIdentifiers.length > 0;
+        };
+
+        $scope.getAvailableIdentifierTypes = function (identifier) {
+            if (identifier && identifier.ShouldRemove) {
+                return $scope.identifierOptions;
+            }
+
+            return _.filter($scope.identifierOptions, function (identifierType) {
+                var foundIdentifier = _.filter($scope.valueSet.Identifiers, function (next) {
+                    return next != identifier && next.Type == identifierType.value && !next.ShouldRemove;
+                });
+
+                if (foundIdentifier.length > 0) {
+                    return false;
+                }
+
+                return true;
+            });
+        };
+
+        $scope.isValid = function () {
+            if (!$scope.valueSet.Name) {
+                return false;
+            }
+
+            var activeIdentifiers = _.filter($scope.valueSet.Identifiers, function (identifier) {
+                return !identifier.ShouldRemove;
+            });
+
+            if (activeIdentifiers.length == 0) {
+                return false;
+            }
+
+            var invalidIdentifiers = _.filter($scope.valueSet.Identifiers, function (identifier) {
+                return identifier.$$valueError || identifier.$$typeError;
+            });
+
+            if (invalidIdentifiers.length > 0) {
+                return false;
+            }
+
+            if (!$scope.valueSet.IsComplete && !$scope.valueSet.SourceUrl) {
+                return false;
+            }
+
+            return true;
         };
 
         $scope.defaultIdentifierChanged = function (defaultIdentifier) {
@@ -409,15 +462,29 @@
         };
 
         $scope.addIdentifier = function () {
-            $scope.valueSet.Identifiers.push($scope.newIdentifier);
-            $scope.defaultIdentifierChanged($scope.newIdentifier);
+            var hasDefault = _.filter($scope.valueSet.Identifiers, function (identifier) {
+                return identifier.IsDefault;
+            }).length > 0;
+            var availableIdentifierTypes = $scope.getAvailableIdentifierTypes();
 
-            $scope.newIdentifier = {
+            if (availableIdentifierTypes.length == 0) {
+                alert('You cannot add a new identifier because there is already one identifier for each type allowed.');
+                return;
+            }
+
+            var newIdentifier = {
                 Id: null,
-                Type: 0,
+                Type: availableIdentifierTypes[0].value,
                 Identifier: '',
-                IsDefault: false
+                IsDefault: !hasDefault
             };
+
+            $scope.identifierChanged(newIdentifier);
+            $scope.valueSet.Identifiers.push(newIdentifier);
+
+            if (!hasDefault) {
+                $scope.defaultIdentifierChanged(newIdentifier);
+            }
         };
 
         $scope.ok = function () {
