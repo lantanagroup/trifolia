@@ -137,7 +137,15 @@
                 delete settings.ValueSetOid;
                 delete settings.ValueSetMaxMembers;
 
+                var shouldReloadTemplates =
+                    $scope.criteria.IncludeInferred != settings.IncludeInferred ||
+                    $scope.criteria.ParentTemplateIds.length != settings.ParentTemplateIds.length;
+
                 angular.extend($scope.criteria, settings);
+
+                if (shouldReloadTemplates) {
+                    $scope.loadTemplates();
+                }
             })
             .catch(function (err) {
                 console.error('Error loading default export settings: ' + err);
@@ -191,8 +199,8 @@
         }
 
         $scope.isGettingTemplates = true;
-
-        ImplementationGuideService.getImplementationGuideTemplates($scope.selectedImplementationGuide.Id, null, $scope.criteria.IncludeInferred)
+        
+        ImplementationGuideService.getImplementationGuideTemplates($scope.selectedImplementationGuide.Id, $scope.criteria.ParentTemplateIds, $scope.criteria.IncludeInferred)
             .then(function (templates) {
                 _.each(templates, function (template) {
                     $scope.criteria.TemplateIds.push(template.Id);
@@ -205,7 +213,6 @@
             })
             .finally(function () {
                 $scope.isGettingTemplates = false;
-                $scope.loadSettings();
             });
     };
 
@@ -320,6 +327,8 @@
             $scope.loadValueSets();
 
             $scope.loadTemplates();
+
+            $scope.loadSettings();
 
             $scope.loadValidationResults();
         }, function () {

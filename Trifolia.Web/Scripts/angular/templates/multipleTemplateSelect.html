@@ -1,61 +1,16 @@
 ﻿<div ng-class="{ 'form-group': formGroup }">
-    <style type="text/css">
-        .custom-popup-wrapper {
-            position: absolute;
-            z-index: 3;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-top: none;
-            border-bottom-right-radius: 5px;
-            border-bottom-left-radius: 5px;
-            cursor: pointer;
-        }
+    <label>{{caption}}</label>
 
-        .template-select-group input {
-            height: 35px;
+    <style type="text/css">
+        .selected-templates .glyphicon-remove {
+            cursor: pointer;
         }
     </style>
 
-    <script type="text/ng-template" id="templateSelectTypeahead.html">
-        <div class="custom-popup-wrapper"
-             ng-style="{top: position().top+'px', left: position().left+'px'}"
-             style="display: block;"
-             ng-show="isOpen() && !moveInProgress"
-             aria-hidden="{{!isOpen()}}">
+    <ul class="selected-templates">
+        <li ng-if="selectedTemplates.length == 0">No templates/profiles selected</li>
+        <li ng-repeat="t in selectedTemplates">{{t.Name}} ({{t.Oid}}) <i class="glyphicon glyphicon-remove" ng-click="removeSelectedTemplate(t)"></i></li>
+    </ul>
 
-            <table class="table" style="width: 200px;">
-                <tbody>
-                    <tr class="uib-typeahead-match" ng-repeat="match in matches track by $index" ng-class="{active: isActive($index) }"
-                        ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" id="{{::match.id}}">
-                        <td>{{match.model.Name}}</td>
-                        <td>{{match.model.Oid}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </script>
-
-    <label ng-if="captionAsLabel">{{caption}}</label>
-    <div class="input-group template-select-group" ng-class="{ 'input-group-sm': smallFields }" ng-init="initTemplateSelect()">
-        <div class="input-group-addon" ng-if="!captionAsLabel">{{caption}}</div>
-        <input type="text" class="form-control"
-               ng-model="selectedTemplate"
-               ng-model-options="{ debounce: 500 }"
-               uib-typeahead="template for template in searchTemplates($viewValue)"
-               typeahead-input-formatter="$model.Name"
-               typeahead-editable="false"
-               typeahead-on-select="templateSelected($model)"
-               typeahead-popup-template-url="templateSelectTypeahead.html" />
-        <div class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="openNew()" ng-if="allowNew" title="Create new template/profile">
-                <i class="glyphicon glyphicon-plus"></i>
-            </button>
-            <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="openModal()" title="Select template/profile with additional search options">
-                <i class="glyphicon glyphicon-edit"></i>
-            </button>
-            <button type="button" class="btn btn-default" ng-class="{ 'btn-sm': smallFields }" ng-click="clearSelection()" title="Remove the selected template/profile">
-                <i class="glyphicon glyphicon-remove"></i>
-            </button>
-        </div>
-    </div>
+    <button type="button" class="btn btn-default btn-sm" ng-click="openModal()">Select</button>
 </div>

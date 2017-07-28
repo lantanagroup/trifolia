@@ -40,8 +40,6 @@
         <form method="post" action="/api/Export">
             <div class="alert alert-info" ng-show="message">{{message}}</div>
 
-            <pre>{{criteria}}</pre>
-
             <div class="form-group">
                 <label>Select an implementation guide</label>
                 <div class="input-group">
@@ -243,7 +241,7 @@
                     </table>
                 </uib-tab>
                 <uib-tab heading="Templates/Profiles" ng-show="templateSelectionFormats | contains:criteria.ExportFormat">
-                    <template-select template-id="criteria.ParentTemplateIds" caption="Parent Templates/Profiles" form-group="true"></template-select>
+                    <multiple-template-select template-ids="criteria.ParentTemplateIds" caption="Parent Templates/Profiles" form-group="true" implementation-guide-id="criteria.ImplementationGuideId" on-changed="loadTemplates()"></multiple-template-select>
 
                     <div class="form-group">
                         <label>Include Inferred?</label>
@@ -259,7 +257,7 @@
                                 <th>This IG?</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody ng-show="!isGettingTemplates">
                             <tr ng-repeat="t in templates">
                                 <td><input type="checkbox" name="TemplateIds" class="templateIdCheckboxes" ng-value="t.Id" ng-checked="criteria.TemplateIds.indexOf(t.Id) >= 0" ng-click="toggleSelectedTemplate(t.Id)"></td>
                                 <td>{{t.Name}}</td>
@@ -269,7 +267,8 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="4"><b>Total Templates/Profiles: <span>{{templates.length}}</span></b></td>
+                                <td colspan="4" ng-show="!isGettingTemplates"><b>Total templates/profiles: <span>{{templates.length}}</span></b></td>
+                                <td colspan="4" ng-show="isGettingTemplates">Retrieving list of templates/profiles...</td>
                             </tr>
                         </tfoot>
                     </table>

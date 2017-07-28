@@ -40,7 +40,6 @@ angular.module('Trifolia').directive('templateSelect', function ($uibModal, $q, 
             $scope.restrictType = $scope.restrictType === 'undefined' ? false : $scope.restrictType;
             $scope.allowNew = $scope.allowNew === 'undefined' ? false : $scope.allowNew === true;
             $scope.captionAsLabel = $scope.captionAsLabel === 'undefined' ? false : $scope.captionAsLabel === true;
-            $scope.selectMultiple = $scope.selectMultiple === 'undefined' ? false : $scope.selectMultiple === true;
 
             $scope.searchTemplates = function (query) {
                 var deferred = $q.defer();
@@ -101,8 +100,7 @@ angular.module('Trifolia').directive('templateSelect', function ($uibModal, $q, 
                     resolve: {
                         implementationGuideId: function () { return $scope.implementationGuideId; },
                         restrictType: function () { return $scope.restrictType; },
-                        restrictedType: function () { return $scope.restrictedType; },
-                        selectMultiple: function () { return $scope.selectMultiple; }
+                        restrictedType: function () { return $scope.restrictedType; }
                     }
                 });
 
@@ -120,7 +118,9 @@ angular.module('Trifolia').directive('templateSelect', function ($uibModal, $q, 
                     resolve: {
                         caption: function () { return $scope.caption; },
                         restrictType: function () { return $scope.restrictType },
-                        restrictedType: function () { return $scope.restrictedType }
+                        restrictedType: function () { return $scope.restrictedType },
+                        selectMultiple: function () { return false; },
+                        selectedTemplates: function () { return null; }
                     }
                 });
 
@@ -144,63 +144,47 @@ angular.module('Trifolia').directive('multipleTemplateSelect', function ($uibMod
     return {
         restrict: 'E',
         scope: {
-            'templateIds': '=templateIds',
+            'selectedTemplateIds': '=templateIds',
             'caption': '@caption',
-            'captionAsLabel': '=?captionAsLabel',
-            'size': '@?size',
             'restrictType': '=?restrictType',
             'restrictedType': '=?restrictedType',
-            'onChanged': '&?onChanged',
             'formGroup': '=formGroup',
-            'allowNew': '=?allowNew',
-            'implementationGuideId': '=?implementationGuideId'
+            'implementationGuideId': '=?implementationGuideId',
+            'onChanged': '&?onChanged'
         },
         templateUrl: '/Scripts/angular/templates/multipleTemplateSelect.html',
         link: function ($scope, $element, $attr) {
-            $scope.smallFields = $scope.size === 'sm' ? true : false;
             $scope.selectedTemplates = [];
             $scope.restrictType = $scope.restrictType === 'undefined' ? false : $scope.restrictType;
-            $scope.allowNew = $scope.allowNew === 'undefined' ? false : $scope.allowNew === true;
-            $scope.captionAsLabel = $scope.captionAsLabel === 'undefined' ? false : $scope.captionAsLabel === true;
-            $scope.selectMultiple = $scope.selectMultiple === 'undefined' ? false : $scope.selectMultiple === true;
 
-            if (!($scope.templateIds instanceof Array)) {
-                $scope.templateIds = [];
+            var changingTemplateIds = false;
+
+            if (!($scope.selectedTemplateIds instanceof Array)) {
+                $scope.selectedTemplateIds = [];
             }
 
-            $scope.searchTemplates = function (query) {
-                var deferred = $q.defer();
+            $scope.selectedTemplatesChanged = function () {
+                changingTemplateIds = true;
 
-                var searchOptions = {
-                    count: 10,
-                    queryText: query
-                };
+                for (var i in $scope.selectedTemplates) {
+                    var templateId = $scope.selectedTemplates[i].Id;
 
-                if ($scope.restrictType && $scope.restrictedType) {
-                    searchOptions.filterContextType = $scope.restrictedType;
-                }
-
-                TemplateService.getTemplates(searchOptions)
-                    .then(function (results) {
-                        deferred.resolve(results.Items);
-                    })
-                    .catch(deferred.reject);
-
-                return deferred.promise;
-            };
-
-            $scope.templateSelected = function (selectedTemplate) {
-                if (selectedTemplate) {
-                    $scope.templateIds.push(selectedTemplate.Id);
+                    if ($scope.selectedTemplateIds.indexOf(templateId) < 0) {
+                        $scope.selectedTemplateIds.push(templateId);
+                    }
                 }
 
                 $scope.onChanged();
+                changingTemplateIds = false;
             };
 
             $scope.initTemplateSelect = function () {
-                var promises = _.map($scope.templateIds, function (templateId) {
-                    return TemplateService.getTemplate(templateId);
-                });
+                // Find selectedTemplateIds not in the selectedTemplates list and request a retrieve from the server
+                var promises = _.chain($scope.selectedTemplateIds)
+                    .map(function (templateId) {
+                        return TemplateService.getTemplate(templateId);
+                    })
+                    .value();
 
                 $q.all(promises)
                     .then(function (templates) {
@@ -211,28 +195,17 @@ angular.module('Trifolia').directive('multipleTemplateSelect', function ($uibMod
                     });
             };
 
-            $scope.clearSelection = function () {
-                $scope.selectedTemplates = [];
-                $scope.templateSelected();
-            };
+            $scope.removeSelectedTemplate = function (template) {
+                var selectedTemplatesIndex = $scope.selectedTemplates.indexOf(template);
+                var templateIdsIndex = $scope.selectedTemplateIds.indexOf(template.Id);
 
-            $scope.openNew = function () {
-                var modalInstance = $uibModal.open({
-                    templateUrl: '/Scripts/angular/templates/newTemplateModal.html',
-                    controller: 'NewTemplateModalCtrl',
-                    size: 'lg',
-                    resolve: {
-                        implementationGuideId: function () { return $scope.implementationGuideId; },
-                        restrictType: function () { return $scope.restrictType; },
-                        restrictedType: function () { return $scope.restrictedType; },
-                        selectMultiple: function () { return $scope.selectMultiple; }
-                    }
-                });
+                $scope.selectedTemplates.splice(selectedTemplatesIndex, 1);
 
-                modalInstance.result.then(function (selectedItem) {
-                    $scope.selectedTemplate = selectedItem;
-                    $scope.templateSelected(selectedItem);
-                });
+                changingTemplateIds = true;
+                $scope.selectedTemplateIds.splice(templateIdsIndex, 1);
+                changingTemplateIds = false;
+
+                $scope.onChanged();
             };
 
             $scope.openModal = function () {
@@ -243,23 +216,58 @@ angular.module('Trifolia').directive('multipleTemplateSelect', function ($uibMod
                     resolve: {
                         caption: function () { return $scope.caption; },
                         restrictType: function () { return $scope.restrictType },
-                        restrictedType: function () { return $scope.restrictedType }
+                        restrictedType: function () { return $scope.restrictedType },
+                        selectMultiple: function () { return true; },
+                        selectedTemplates: function () { return $scope.selectedTemplates; }
                     }
                 });
 
-                modalInstance.result.then(function (selectedItem) {
-                    $scope.selectedTemplates.push(selectedItem);
-                    $scope.templateSelected(selectedItem);
+                modalInstance.result.then(function (selectedItems) {
+                    var changed = false;
+
+                    _.each(selectedItems, function (selectedItem) {
+                        var found = _.find($scope.selectedTemplates, function (next) {
+                            return next.Id == selectedItem.Id;
+                        });
+
+                        if (!found) {
+                            changed = true;
+                            $scope.selectedTemplates.push(selectedItem);
+                        }
+                    });
+
+                    for (var i = $scope.selectedTemplates.length - 1; i >= 0; i--) {
+                        var found = _.find(selectedItems, function (next) {
+                            return next.Id == $scope.selectedTemplates[i].Id;
+                        });
+
+                        if (!found) {
+                            changed = true;
+                            $scope.selectedTemplates.splice(i, 1);
+                        }
+                    }
+
+                    if (changed) {
+                        $scope.selectedTemplatesChanged();
+                    }
                 });
             };
+
+            $scope.$watch('selectedTemplateIds', function (newTemplateIds, oldTemplateIds) {
+                if (!changingTemplateIds) {
+                    $scope.initTemplateSelect();
+                }
+            }, true);
         }
     };
 });
 
-angular.module('Trifolia').controller('SelectTemplateModalCtrl', function ($scope, $uibModalInstance, TemplateService, caption, restrictType, restrictedType, selectMultiple) {
+angular.module('Trifolia').controller('SelectTemplateModalCtrl', function ($scope, $uibModalInstance, TemplateService, caption, restrictType, restrictedType, selectMultiple, selectedTemplates) {
     $scope.caption = caption;
     $scope.searchText = '';
     $scope.searchResults = null;
+    $scope.selectMultiple = selectMultiple;
+    $scope.selectedTemplates = selectedTemplates instanceof Array ? angular.copy(selectedTemplates) : [];
 
     $scope.search = function () {
         var searchOptions = {
@@ -277,8 +285,47 @@ angular.module('Trifolia').controller('SelectTemplateModalCtrl', function ($scop
             });
     };
 
+    $scope.getTemplateDisplayName = function (template) {
+        var name = template.Name;
+
+        if (!name) {
+            return '';
+        }
+
+        if (name.length > 40) {
+            return name.substring(0, 40) + '...';
+        }
+
+        return name;
+    };
+
+    $scope.selectTemplate = function (template) {
+        var found = _.find($scope.selectedTemplates, function (next) {
+            return next.Id == template.Id;
+        });
+
+        if (found) {
+            var index = $scope.selectedTemplates.indexOf(found);
+            $scope.selectedTemplates.splice(index, 1);
+        } else {
+            $scope.selectedTemplates.push(template);
+        }
+    };
+
+    $scope.isTemplateSelected = function (template) {
+        var found = _.find($scope.selectedTemplates, function (next) {
+            return next.Id == template.Id;
+        });
+
+        return !!found;
+    };
+
     $scope.select = function (template) {
-        $uibModalInstance.close(template);
+        if ($scope.selectMultiple) {
+            $uibModalInstance.close($scope.selectedTemplates);
+        } else {
+            $uibModalInstance.close(template);
+        }
     };
 
     $scope.close = function () {
