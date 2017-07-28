@@ -472,11 +472,12 @@
             $uibModalInstance.dismiss('cancel');
         };
     })
-    .controller('ImportValueSetModalController', function ($scope, $uibModalInstance, ImportService, source, id) {
+    .controller('ImportValueSetModalController', function ($scope, $uibModalInstance, $sce, ImportService, source, id) {
         $scope.source = source;
         $scope.id = id;
         $scope.disableSource = source ? true : false;
         $scope.disableId = id ? true : false;
+        $scope.message = '';
 
         $scope.isValid = function () {
             return $scope.source && $scope.id;
@@ -488,16 +489,16 @@
                     if (results.Success) {
                         $uibModalInstance.close();
                     } else {
-                        $scope.message = results.Message;
+                        $scope.message = $sce.trustAsHtml(results.Message);
                     }
                 })
                 .catch(function (err) {
                     if (typeof err === 'string') {
-                        $scope.message = err;
+                        $scope.message = $sce.trustAsHtml(err);
                     } else if (typeof err.data === 'string') {
-                        $scope.message = err.data;
+                        $scope.message = $sce.trustAsHtml(err.data);
                     } else if (err.message) {
-                        $scope.message = err.message;
+                        $scope.message = $sce.trustAsHtml(err.message);
                     }
                 });
         };

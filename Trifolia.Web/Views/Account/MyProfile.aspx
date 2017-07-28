@@ -83,12 +83,12 @@
 
                             <div class="form-group">
                                 <label>Username</label>
-                                <input type="text" class="form-control" ng-model="userModel.UmlsUsername" ng-change="umlsCredentialsConfirmed = false" />
+                                <input type="text" class="form-control" ng-model="userModel.UmlsUsername" ng-change="umlsCredentialsChanged()" />
                             </div>
                         
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="password" class="form-control" ng-model="userModel.UmlsPassword" ng-change="umlsCredentialsConfirmed = false" />
+                                <input type="password" class="form-control" ng-model="userModel.UmlsPassword" ng-change="umlsCredentialsChanged()" />
                             </div>
 
                             <p>

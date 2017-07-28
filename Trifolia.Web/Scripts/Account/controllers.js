@@ -34,6 +34,15 @@
         }
     };
 
+    $scope.umlsCredentialsChanged = function () {
+        if (!$scope.userModel.UmlsUsername && !$scope.userModel.UmlsPassword) {
+            $scope.umlsCredentialsConfirmed = true;
+            return;
+        }
+
+        $scope.umlsCredentialsConfirmed = false;
+    };
+
     $scope.validateUmlsCredentials = function () {
         UserService.validateUmlsCredentials($scope.userModel.UmlsUsername, $scope.userModel.UmlsPassword)
             .then(function (results) {

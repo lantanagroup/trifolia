@@ -74,13 +74,13 @@ namespace Trifolia.Web.Controllers.API
 
                             if (string.IsNullOrEmpty(currentUser.UMLSUsername) || string.IsNullOrEmpty(currentUser.UMLSPassword))
                             {
-                                responseModel.Message = "Your profile does not have your UMLS credentials. Please update your profile to import from VSAC.";
+                                responseModel.Message = "Your profile does not have your UMLS credentials. <a href=\"/Account/MyProfile\">Update your profile</a> to import from VSAC.";
                                 break;
                             }
 
                             if (!importer.Authenticate(currentUser.UMLSUsername.DecryptStringAES(), currentUser.UMLSPassword.DecryptStringAES()))
                             {
-                                responseModel.Message = "Invalid username/password";
+                                responseModel.Message = "Invalid UMLS username/password associated with your profile.";
                                 break;
                             }
 

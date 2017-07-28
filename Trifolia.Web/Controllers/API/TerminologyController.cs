@@ -95,6 +95,15 @@ namespace Trifolia.Web.Controllers.API
         public ConceptItems Concepts(int valueSetId, DateTime activeDate)
         {
             var valueSet = this.tdb.ValueSets.Single(y => y.Id == valueSetId);
+
+            if (valueSet.ImportSource == ValueSetImportSources.VSAC)
+            {
+                var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (!currentUser.HasValidUmlsLicense())
+                    throw new AuthorizationException("You do not have a valid/active UMLS license, and cannot view the concepts within this value set. <a href=\"/Account/MyProfile\">Update your profile</a> to view this value set.");
+            }
+
             var activeMembers = valueSet.GetActiveMembers(activeDate);
             ConceptItems ci = new ConceptItems();
             ci.rows = (from am in activeMembers
@@ -117,6 +126,16 @@ namespace Trifolia.Web.Controllers.API
         [HttpGet, Route("api/Terminology/ValueSet/{valueSetId}/Concepts"), SecurableAction(SecurableNames.VALUESET_LIST)]
         public ConceptItems Concepts(int valueSetId, int? page = null, string query = null, int count = 20)
         {
+            ValueSet valueSet = this.tdb.ValueSets.Single(y => y.Id == valueSetId);
+
+            if (valueSet.ImportSource == ValueSetImportSources.VSAC)
+            {
+                var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (!currentUser.HasValidUmlsLicense())
+                    throw new AuthorizationException("You do not have a valid/active UMLS license, and cannot view the concepts within this value set. <a href=\"/Account/MyProfile\">Update your profile</a> to view this value set.");
+            }
+
             ConceptItems concepts = new ConceptItems();
             var rows = (from vsm in this.tdb.ValueSetMembers
                         where vsm.ValueSetId == valueSetId &&
@@ -211,6 +230,7 @@ namespace Trifolia.Web.Controllers.API
                 IsComplete = !valueSet.IsIncomplete,
                 IsIntentional = valueSet.Intensional.HasValue ? valueSet.Intensional.Value : false,
                 SourceUrl = valueSet.Source,
+                ImportSource = valueSet.ImportSource,
                 Identifiers = valueSet.Identifiers.Select(y => new ValueSetIdentifierModel(y)).ToList()
             };
 

@@ -30,7 +30,7 @@ namespace Trifolia.Shared
         public static string EncryptStringAES(this string plainText)
         {
             if (string.IsNullOrEmpty(plainText))
-                throw new ArgumentNullException("plainText");
+                return plainText;
             if (string.IsNullOrEmpty(AppSettings.EncryptionSecret))
                 throw new ArgumentNullException("appSettings/EncryptionSecret");
 

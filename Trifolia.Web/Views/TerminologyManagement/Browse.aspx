@@ -481,7 +481,7 @@
                     <h4 class="modal-title">Import Value Set</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-info" ng-show="message">{{message}}</div>
+                    <div class="alert alert-info" ng-show="message" ng-bind-html="message"></div>
 
                     <div class="form-group">
                         <label>Source</label>
