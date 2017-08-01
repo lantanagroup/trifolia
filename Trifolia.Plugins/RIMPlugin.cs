@@ -5,6 +5,7 @@ using System.Xml;
 using Trifolia.DB;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
+using Trifolia.Shared.Validation;
 using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
 using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
@@ -189,12 +190,16 @@ namespace Trifolia.Plugins
 
             switch (format)
             {
-                case ExportFormats.FHIR:
+                case ExportFormats.FHIR_Bundle:
                     throw new NotImplementedException();
-                case ExportFormats.Proprietary:
+                case ExportFormats.Native_XML:
                     NativeExporter nativeExporter = new NativeExporter(tdb, templates, igSettings, true, categories);
-                    return System.Text.Encoding.UTF8.GetBytes(nativeExporter.GenerateXMLExport());
-                case ExportFormats.TemplatesDSTU:
+
+                    if (returnJson)
+                        return System.Text.Encoding.UTF8.GetBytes(nativeExporter.GenerateJSONExport());
+                    else
+                        return System.Text.Encoding.UTF8.GetBytes(nativeExporter.GenerateXMLExport());
+                case ExportFormats.Templates_DSTU_XML:
                     DecorExporter decorExporter = new DecorExporter(templates, tdb, igSettings.ImplementationGuideId);
                     return System.Text.Encoding.UTF8.GetBytes(decorExporter.GenerateXML());
                 default:
@@ -216,6 +221,11 @@ namespace Trifolia.Plugins
         public string GetFHIRResourceInstanceJson(string content)
         {
             throw new NotImplementedException();
+        }
+
+        public IValidator GetValidator(IObjectRepository tdb)
+        {
+            return new Validation.RIMValidator(tdb);
         }
     }
 }

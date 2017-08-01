@@ -19,7 +19,9 @@ namespace Trifolia.Shared
             CardinalityZero,
             UseConsolidatedConstraintFormat,
             Volume1Html,
-            Categories
+            Categories,
+            [Obsolete("This setting should no longer be used. It should use ExportSettingsModel with MSWordExportSettingsJsonNew.")]
+            MSWordExportSettingsJson
         }
 
         private List<ImplementationGuideSetting> settings = null;
@@ -137,7 +139,7 @@ namespace Trifolia.Shared
                 setting.ImplementationGuideId = this.ImplementationGuideId;
                 this.tdb.ImplementationGuideSettings.Add(setting);
             }
-            else if (predefinedValue == value)
+            else if (predefinedValue == value || value == null)
             {
                 this.tdb.ImplementationGuideSettings.Remove(setting);
                 removed = true;

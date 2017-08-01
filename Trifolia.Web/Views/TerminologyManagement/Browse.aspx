@@ -35,6 +35,11 @@
             border-bottom-right-radius: 4px !important;
             border-top-right-radius: 4px !important;
         }
+
+        .identifier-removed,
+        .identifier-removed input[type=text] {
+            text-decoration: line-through;
+        }
     </style>
 </asp:Content>
 
@@ -46,6 +51,8 @@
             <uib-tab heading="Value Sets" ng-if="showValueSets" select="tabChanged(0)">
                 <div ng-controller="BrowseValueSetsController" ng-init="contextTabChanged()">
                     <form id="ValueSetSearchForm">
+                        <div class="alert alert-info" ng-if="message">{{message}}</div>
+
                         <div class="input-group" style="padding-bottom: 10px;">
                             <input type="text" class="form-control" ng-model="criteria.query" />
                             <span class="input-group-btn">
@@ -63,7 +70,10 @@
                         </div>
                         <div class="col-md-4">
                             <div class="pull-right">
-                                <button type="button" class="btn btn-primary" ng-if="canEdit" ng-click="editValueSet()">Add Value Set</button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" ng-if="canEdit" ng-click="editValueSet()">Add Value Set</button>
+                                    <button type="button" class="btn btn-primary" ng-click="openImportValueSet()">Import Value Set</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -92,6 +102,7 @@
                                         <i ng-show="criteria.order == 'asc'" class="glyphicon glyphicon-chevron-up"></i>
                                     </span>
                                 </th>
+                                <th>Source</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,14 +113,19 @@
                                         <i ng-show="r.IsPublished" class="glyphicon glyphicon-exclamation-sign" title="This value set is used by a published implementation guide!"></i>
                                         <ul class="dropdown-menu">
                                             <li><a href="/TerminologyManagement/ValueSet/View/{{r.Id}}">View</a></li>
-                                            <li ng-disabled="r.disableModify"><a href="#" ng-click="editValueSet(r)">Edit Value Set</a></li>
-                                            <li ng-disabled="r.disableModify"><a href="/TerminologyManagement/ValueSet/Edit/{{r.Id}}/Concept" ng-click="editConcepts(r)">Edit Concepts</a></li>
-                                            <li ng-disabled="r.disableModify"><a href="#" ng-click="removeValueSet(r)">Remove</a></li>
+                                            <li ng-if="r.ImportSource"><a href="#" ng-click="openImportValueSet(r.ImportSource, r.ImportSourceId)">Re-import</a></li>
+                                            <li ng-class="{ disabled: r.disableModify }" ng-if="!r.ImportSource"><a href="#" ng-click="editValueSet(r)" ng-disabled="r.disableModify">Edit Value Set</a></li>
+                                            <li ng-class="{ disabled: r.disableModify }" ng-if="!r.ImportSource"><a href="/TerminologyManagement/ValueSet/Edit/{{r.Id}}/Concept" ng-disabled="r.disableModify">Edit Concepts</a></li>
+                                            <li ng-class="{ disabled: r.disableModify }" ng-if="!r.ImportSource"><a href="#" ng-click="removeValueSet(r)" ng-disabled="r.disableModify">Remove</a></li>
                                         </ul>
                                     </div>
                                 </td>
                                 <td ng-bind-html="r.IdentifiersDisplay"></td>
                                 <td>{{r.IsComplete ? 'Yes' : 'No'}}</td>
+                                <td>
+                                    <span ng-if="r.ImportSource" title="This value set has been imported from an external source. It cannot be edited, it can only be re-imported.">{{getImportSourceDisplay(r.ImportSource)}}</span>
+                                    <span ng-if="!r.ImportSource">Trifolia</span>
+                                </td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -293,47 +309,33 @@
                                     <td>Type</td>
                                     <td>Identifier</td>
                                     <td>Default?</td>
-                                    <td style="width: 50px;">&nbsp;</td>
+                                    <td style="width: 50px;">
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-default btn-sm" ng-click="addIdentifier()" title="Add a new identifier to the value set"><i class="glyphicon glyphicon-plus"></i></button>
+                                        </div>
+                                    </td>
                                 </tr>
                             </thead>
                             <tbody ng-repeat="i in valueSet.Identifiers">
-                                <tr ng-style="{ 'text-decoration': i.ShouldRemove ? 'line-through' : 'inherit' }">
-                                    <td>{{(identifierOptions | filter: { value: i.Type })[0].display}}</td>
-                                    <td>{{i.Identifier}}</td>
-                                    <td>
-                                        <input type="checkbox" ng-show="!i.IsRemoved" ng-model="i.IsDefault" ng-change="defaultIdentifierChanged(i)" />
+                                <tr ng-class="{ 'identifier-removed': i.ShouldRemove }">
+                                    <td ng-class="{ 'has-error': i.$$typeError }">
+                                        <select class="form-control" ng-options="o.value as o.display for o in getAvailableIdentifierTypes(i)" ng-model="i.Type" ng-disabled="i.ShouldRemove" ng-change="identifierChanged(i)"></select>
+                                        <span class="help-block" ng-show="i.$$typeError">{{i.$$typeErrorMessage}}</span>
+                                    </td>
+                                    <td ng-class="{ 'has-error': i.$$valueError }">
+                                        <input type="text" class="form-control" ng-model="i.Identifier" value-set-identifier ng-model-options="{ debounce: 500 }" ng-disabled="i.ShouldRemove" ng-change="identifierChanged(i)" />
+                                        <span class="help-block" ng-show="i.$$valueError">{{i.$$valueErrorMessage}}</span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-default btn-sm" ng-show="!i.IsRemoved" ng-click="removeIdentifier(i)">
+                                        <input type="checkbox" ng-show="!i.IsRemoved" ng-model="i.IsDefault" ng-change="defaultIdentifierChanged(i)" ng-disabled="i.ShouldRemove" />
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-default btn-sm" ng-click="removeIdentifier(i)" ng-show="!i.ShouldRemove">
                                             <i class="glyphicon glyphicon-remove"></i>
                                         </button>
                                     </td>
                                 </tr>
-                            </tbod>
-                            <tfoot>
-                                <tr>
-                                    <td>
-                                        <span><strong>New Identifier</strong></span>
-                                        <select class="form-control" ng-options="o.value as o.display for o in identifierOptions" ng-model="newIdentifier.Type" name="type"></select>
-                                    </td>
-                                    <td>
-                                        <div class="input-group identifier-input-group" ng-class="{ 'has-error': valueSet.Identifiers.length == 0 }">
-                                            <input type="text" class="form-control" ng-model="newIdentifier.Identifier" value-set-identifier name="identifier" ng-model-options="{ debounce: 500 }" ng-change="identifierChanged(newIdentifier)" />
-                                            <span class="help-block" ng-show="!newIdentifier.Identifier">Identifier is required.</span>
-                                            <span class="help-block" ng-show="newIdentifier.Identifier && !isNewIdentifierFormatValid()">{{isNewIdentifierFormatInvalid()}}</span>
-                                            <span class="help-block" ng-show="newIdentifier.Identifier && !newIdentifierIsUnique">The identifier is already used.</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" ng-model="newIdentifier.IsDefault" />
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-default btn-sm" ng-click="addIdentifier()" ng-disabled="isNewIdentifierFormatInvalid() || !newIdentifierIsUnique">
-                                            <i class="glyphicon glyphicon-plus"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tfoot>
+                            </tbody>
                         </table>
                     </div>
                         
@@ -371,7 +373,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="EditValueSetForm.$invalid || valueSet.Identifiers.length == 0">OK</button>
+                    <span ng-if="!hasActiveIdentifier()">At least one valid identifier must be added to the value set.</span>
+                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="EditValueSetForm.$invalid || !isValid()">OK</button>
                     <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
                 </div>
             </form>
@@ -462,6 +465,35 @@
                     <li><a href="#" ng-click="criteria.rows = 100; search();">100</a></li>
                 </ul>
             </div>
+        </script>
+
+        <script type="text/html" id="importValueSetModal.html">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Import Value Set</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info" ng-show="message" ng-bind-html="message"></div>
+
+                    <div class="form-group">
+                        <label>Source</label>
+                        <select ng-model="source" class="form-control" ng-disabled="disableSource">
+                            <option ng-value="1">VSAC</option>
+                            <option ng-value="2">PHIN VADS</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codeSystemName">Identifier</label>
+                        <input type="text" class="form-control" ng-model="id" required maxlength="255" ng-disabled="disableId" />
+                        <span class="help-block" ng-show="!id">Identifier is required.</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="!isValid()">OK</button>
+                    <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+                </div>
+            </form>
         </script>
     </div>
 </asp:Content>

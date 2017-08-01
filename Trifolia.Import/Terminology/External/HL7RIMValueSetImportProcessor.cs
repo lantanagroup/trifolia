@@ -6,6 +6,8 @@ using System.Xml;
 
 using Trifolia.Logging;
 using Trifolia.DB;
+using System.Reflection;
+using System.IO;
 
 namespace Trifolia.Import.Terminology.External
 {
@@ -44,15 +46,29 @@ namespace Trifolia.Import.Terminology.External
 
         #endregion
 
-        public HL7RIMValueSetImportProcessor(XmlDocument sourceDoc)
+        public HL7RIMValueSetImportProcessor()
         {
-            this.sourceDoc = sourceDoc;
-
-            if (this.sourceDoc != null)
+            using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("Trifolia.Import.Terminology.hl7_rim_repo.xml")))
             {
+                this.sourceDoc = new XmlDocument();
+                this.sourceDoc.LoadXml(sr.ReadToEnd());
+
                 this.nsManager = new XmlNamespaceManager(this.sourceDoc.NameTable);
                 this.nsManager.AddNamespace("mif", "urn:hl7-org:v3/mif2");
             }
+        }
+
+        public List<ImportValueSet> FindValueSets(IObjectRepository tdb)
+        {
+            List<ImportValueSet> importValueSets = new List<ImportValueSet>();
+            XmlNodeList foundValueSetNodes = this.sourceDoc.SelectNodes("/mif:vocabularyModel/mif:valueSet", this.nsManager);
+
+            foreach (XmlElement foundValueSetNode in foundValueSetNodes)
+            {
+                importValueSets.Add(this.FindValueSet(tdb, foundValueSetNode.Attributes["id"].Value));
+            }
+
+            return importValueSets;
         }
 
         protected override T BaseFindValueSet(IObjectRepository tdb, string oid)

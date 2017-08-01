@@ -1,0 +1,16 @@
+﻿<div ng-class="{ 'form-group': formGroup }">
+    <label>{{caption}}</label>
+
+    <style type="text/css">
+        .selected-templates .glyphicon-remove {
+            cursor: pointer;
+        }
+    </style>
+
+    <ul class="selected-templates">
+        <li ng-if="selectedTemplates.length == 0">No templates/profiles selected</li>
+        <li ng-repeat="t in selectedTemplates">{{t.Name}} ({{t.Oid}}) <i class="glyphicon glyphicon-remove" ng-click="removeSelectedTemplate(t)"></i></li>
+    </ul>
+
+    <button type="button" class="btn btn-default btn-sm" ng-click="openModal()">Select</button>
+</div>

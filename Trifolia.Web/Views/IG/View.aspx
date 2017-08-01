@@ -33,6 +33,11 @@
         .constraintModified {
             font-weight: bold;
         }
+
+        .panel.value-set > .table-responsive {
+            max-height: 300px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body ng-app="igViewApp">
@@ -398,14 +403,14 @@
         <!-- TODO: Separate field to capture display name -->
         <h2 class="page-header">Welcome to the Web-based Implementation Guide for {{Model.ImplementationGuideDisplayName}}</h2>
 
-        <p ng-bind-html="GetHtml(Model.ImplementationGuideDescription)"></p>
-
         <h3>Table of Contents</h3>
         <h4><span class="glyphicon glyphicon-book"></span> <a href="#overview">Overview</a></h4>
         <h4><span class="glyphicon glyphicon-list-alt"></span> <a href="#volume2">Templates/Profiles</a></h4>
         <h4 ng-if="Model.FHIRResources && Model.FHIRResources.length > 0"><span class="glyphicon glyphicon-registration-mark"></span> <a href="#resources">Resources</a></h4>
         <h4><span class="glyphicon glyphicon-list"></span> <a href="#valuesets">Value sets in this guide</a></h4>
         <h4><span class="glyphicon glyphicon-list"></span> <a href="#codesystems">Code systems in this guide</a></h4>
+
+        <p ng-bind-html="GetHtml(Model.ImplementationGuideDescription)"></p>
     </script>
 
     <script type="text/html" id="overview.html">
@@ -574,7 +579,7 @@
     <script type="text/html" id="template_valuesets.html">
         <div ng-repeat="vs in CurrentValueSets | orderBy: 'Name'">
             <a id="{{GetValueSetAnchor(vs)}}"></a>
-            <div class="panel panel-default">
+            <div class="panel panel-default value-set">
                 <div class="panel-heading" ng-if="!Options.TemplateTabs">
                     <a data-toggle="collapse" href="#{{GetPath()}}#vs_{{GetElementIdentifier(vs.Identifier)}}">
                         {{vs.Name}} {{vs.Identifier}}

@@ -10,6 +10,17 @@ namespace Trifolia.Shared
 {
     public static class ImplementationGuideExtension
     {
+        public static bool HasImportedValueSets(this ImplementationGuide implementationGuide, IObjectRepository tdb, ValueSetImportSources importSource)
+        {
+            var templates = implementationGuide.GetRecursiveTemplates(tdb);
+            var valueSets = (from t in templates
+                             join tc in tdb.TemplateConstraints.AsNoTracking() on t.Id equals tc.TemplateId
+                             join vs in tdb.ValueSets.AsNoTracking() on tc.ValueSetId equals vs.Id
+                             where vs.ImportSource == importSource
+                             select vs.Id);
+            return valueSets.Count() > 0;
+        }
+
         public static string GetDisplayName(this ImplementationGuide implementationGuide, bool? fileNameSafe = false)
         {
             string name = implementationGuide.NameWithVersion;

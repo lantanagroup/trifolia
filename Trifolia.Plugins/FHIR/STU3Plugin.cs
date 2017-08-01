@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using Trifolia.Config;
+using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
+using Trifolia.Shared.Validation;
 using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
 using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
@@ -19,17 +21,21 @@ namespace Trifolia.Plugins.FHIR
 
             switch (format)
             {
-                case ExportFormats.FHIR:
+                case ExportFormats.FHIR_Bundle:
                     ImplementationGuideExporter exporter = new ImplementationGuideExporter(tdb, schema, uri.Scheme, uri.Authority);
                     fhir_stu3.Hl7.Fhir.Model.Bundle bundle = exporter.GetImplementationGuides(include: "ImplementationGuide:resource", implementationGuideId: igSettings.ImplementationGuideId);
                     return ConvertToBytes(fhir_stu3.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToXml(bundle));
-                case ExportFormats.Proprietary:
+                case ExportFormats.Native_XML:
                     NativeExporter proprietaryExporter = new NativeExporter(tdb, templates, igSettings, true, categories);
-                    return ConvertToBytes(proprietaryExporter.GenerateXMLExport());
-                case ExportFormats.TemplatesDSTU:
+
+                    if (returnJson)
+                        return ConvertToBytes(proprietaryExporter.GenerateJSONExport());
+                    else
+                        return ConvertToBytes(proprietaryExporter.GenerateXMLExport());
+                case ExportFormats.Templates_DSTU_XML:
                     DecorExporter decorExporter = new DecorExporter(templates, tdb, igSettings.ImplementationGuideId);
                     return ConvertToBytes(decorExporter.GenerateXML());
-                case ExportFormats.FHIRBuild:
+                case ExportFormats.FHIR_Build_Package:
                     BuildExporter buildExporter = new BuildExporter(tdb, igSettings.ImplementationGuideId, templates, returnJson);
                     var export = buildExporter.Export(includeVocabulary);
                     return export;
@@ -84,6 +90,11 @@ namespace Trifolia.Plugins.FHIR
                 return fhir_stu3.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToXml(resource);
 
             return null;
+        }
+
+        public IValidator GetValidator(IObjectRepository tdb)
+        {
+            return new Validation.RIMValidator(tdb);
         }
     }
 }

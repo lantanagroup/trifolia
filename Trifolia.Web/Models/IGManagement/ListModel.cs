@@ -30,7 +30,9 @@ namespace Trifolia.Web.Models.IGManagement
 
             public int Id { get; set; }
             public string Title { get; set; }
+            public string Identifier { get; set; }
             public string Type { get; set; }
+            public string TypeNamespace { get; set; }
             public string Organization { get; set; }
             public DateTime? PublishDate { get; set; }
             public string Status { get; set; }
@@ -46,6 +48,30 @@ namespace Trifolia.Web.Models.IGManagement
         {
             public int Id { get; set; }
             public string Name { get; set; }
+
+            internal class Comparer : IEqualityComparer<Status>
+            {
+                public bool Equals(Status x, Status y)
+                {
+                    if (Object.ReferenceEquals(x, y)) return true;
+
+                    if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                        return false;
+
+                    if ((x == null && y != null) || (y == null && x != null))
+                        return false;
+                    else if (x == null && y == null)
+                        return true;
+
+                    return x.Id == y.Id;
+                }
+
+                public int GetHashCode(Status obj)
+                {
+                    if (Object.ReferenceEquals(obj, null)) return 0;
+                    return obj.Id.ToString().GetHashCode();
+                }
+            }
         }
     }
 }

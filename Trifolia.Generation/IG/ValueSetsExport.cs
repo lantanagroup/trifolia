@@ -165,7 +165,7 @@ namespace Trifolia.Generation.IG
             int maximumMembers = this.defaultMaxMembers;
 
             if (this.valueSetMaximumMembers != null && this.valueSetMaximumMembers.ContainsKey(valueSetIdentifier))
-                maximumMembers = this.valueSetMaximumMembers[valueSet.GetIdentifier(this.igTypePlugin)];
+                maximumMembers = this.valueSetMaximumMembers[valueSetIdentifier];
 
             int count = 0;
             foreach (ValueSetMember currentMember in members)

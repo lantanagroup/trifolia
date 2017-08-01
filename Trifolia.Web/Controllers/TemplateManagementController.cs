@@ -12,7 +12,6 @@ using Trifolia.Shared;
 using Trifolia.Logging;
 using Trifolia.Web.Models.TemplateManagement;
 using Trifolia.Web.Models;
-using Trifolia.Web.Models.Shared;
 using Trifolia.Web.Extensions;
 using Trifolia.DB;
 

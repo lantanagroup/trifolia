@@ -14,7 +14,6 @@ using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Generation.Versioning;
 using Trifolia.Web.Models.TemplateManagement;
 using Trifolia.Web.Models.IGManagement;
-using Trifolia.Web.Models.Shared;
 using Trifolia.Web.Models;
 using Trifolia.Authorization;
 using Trifolia.DB;
@@ -280,6 +279,18 @@ namespace Trifolia.Web.Controllers
                     Order = cSection.Order
                 };
                 newIg.Sections.Add(newSection);
+            }
+
+            // Copy custom schematron
+            foreach (var cSchematron in ig.SchematronPatterns)
+            {
+                var newSchematron = new ImplementationGuideSchematronPattern()
+                {
+                    PatternId = cSchematron.PatternId,
+                    PatternContent = cSchematron.PatternContent,
+                    Phase = cSchematron.Phase
+                };
+                newIg.SchematronPatterns.Add(newSchematron);
             }
 
             this.tdb.ImplementationGuides.Add(newIg);

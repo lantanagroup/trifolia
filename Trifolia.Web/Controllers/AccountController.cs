@@ -76,68 +76,12 @@ namespace Trifolia.Web.Controllers
         #region Profile
 
         [Securable()]
-        [HttpPost]
-        public ActionResult SaveProfile(UserProfile aProfile)
-        {
-            using (DB.IObjectRepository tdb = DBContext.Create())
-            {
-                DB.User lUser = CheckPoint.Instance.GetUser(tdb);
-
-                lUser.Use(u =>
-                {
-                    u.FirstName = aProfile.firstName;
-                    u.LastName = aProfile.lastName;
-                    u.Phone = aProfile.phone;
-                    u.Email = aProfile.email;
-                    u.OkayToContact = aProfile.okayToContact;
-                    u.ExternalOrganizationName = aProfile.organization;
-                    u.ExternalOrganizationType = aProfile.organizationType;
-                });
-
-                tdb.SaveChanges();
-
-                return ProfileData();
-            }
-        }
-
-        [Securable()]
         public ActionResult MyProfile()
         {
             return View();
         }
 
-        [Securable()]
-        public JsonResult ProfileData()
-        {
-            using (DB.IObjectRepository tdb = DBContext.Create())
-            {
-                DB.User lUser = CheckPoint.Instance.GetUser(tdb);
-
-                UserProfile lProfile = new UserProfile()
-                {
-                    userName = lUser.UserName,
-                    firstName = lUser.FirstName,
-                    lastName = lUser.LastName,
-                    phone = lUser.Phone,
-                    email = lUser.Email,
-                    okayToContact = lUser.OkayToContact.HasValue ? lUser.OkayToContact.Value : false,
-                    organization = lUser.ExternalOrganizationName,
-                    organizationType = lUser.ExternalOrganizationType
-                };
-
-                if (!string.IsNullOrEmpty(AppSettings.OpenIdConfigUrl))
-                    lProfile.openIdConfigUrl = AppSettings.OpenIdConfigUrl;
-
-                var authData = CheckPoint.Instance.GetAuthenticatedData();
-
-                if (authData.ContainsKey(CheckPoint.AUTH_DATA_OAUTH2_TOKEN))
-                    lProfile.authToken = authData[CheckPoint.AUTH_DATA_OAUTH2_TOKEN];
-
-                return Json(lProfile, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [Securable()]           // Must be logged in, but no specific securables
+        [Securable]
         public ActionResult NewProfile(string RedirectUrl, string firstName = null, string lastName = null, string email = null, string phone = null)
         {
             NewProfileModel model = new NewProfileModel()

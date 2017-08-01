@@ -11,7 +11,7 @@ using Trifolia.Import.Terminology.Excel;
 using Trifolia.Import.Terminology.External;
 using Trifolia.Logging;
 using Trifolia.Shared;
-using Trifolia.Terminology;
+using Trifolia.Shared.Plugins;
 using Trifolia.Web.Models.TerminologyManagement;
 
 namespace Trifolia.Web.Controllers.API
@@ -95,6 +95,15 @@ namespace Trifolia.Web.Controllers.API
         public ConceptItems Concepts(int valueSetId, DateTime activeDate)
         {
             var valueSet = this.tdb.ValueSets.Single(y => y.Id == valueSetId);
+
+            if (valueSet.ImportSource == ValueSetImportSources.VSAC)
+            {
+                var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (!currentUser.HasValidUmlsLicense())
+                    throw new AuthorizationException("You do not have a valid/active UMLS license, and cannot view the concepts within this value set. <a href=\"/Account/MyProfile\">Update your profile</a> to view this value set.");
+            }
+
             var activeMembers = valueSet.GetActiveMembers(activeDate);
             ConceptItems ci = new ConceptItems();
             ci.rows = (from am in activeMembers
@@ -117,6 +126,16 @@ namespace Trifolia.Web.Controllers.API
         [HttpGet, Route("api/Terminology/ValueSet/{valueSetId}/Concepts"), SecurableAction(SecurableNames.VALUESET_LIST)]
         public ConceptItems Concepts(int valueSetId, int? page = null, string query = null, int count = 20)
         {
+            ValueSet valueSet = this.tdb.ValueSets.Single(y => y.Id == valueSetId);
+
+            if (valueSet.ImportSource == ValueSetImportSources.VSAC)
+            {
+                var currentUser = CheckPoint.Instance.GetUser(this.tdb);
+
+                if (!currentUser.HasValidUmlsLicense())
+                    throw new AuthorizationException("You do not have a valid/active UMLS license, and cannot view the concepts within this value set. <a href=\"/Account/MyProfile\">Update your profile</a> to view this value set.");
+            }
+
             ConceptItems concepts = new ConceptItems();
             var rows = (from vsm in this.tdb.ValueSetMembers
                         where vsm.ValueSetId == valueSetId &&
@@ -189,7 +208,9 @@ namespace Trifolia.Web.Controllers.API
                                 SourceUrl = r.SourceUrl,
                                 PermitModify = permitModify,
                                 CanModify = !r.HasPublishedIg,
-                                CanOverride = permitOverride && (userIsInternal || r.CanEditPublishedIg)
+                                CanOverride = permitOverride && (userIsInternal || r.CanEditPublishedIg),
+                                ImportSource = r.ImportSource,
+                                ImportSourceId = r.ImportSourceId
                             }).ToList();
 
             return result;
@@ -209,6 +230,7 @@ namespace Trifolia.Web.Controllers.API
                 IsComplete = !valueSet.IsIncomplete,
                 IsIntentional = valueSet.Intensional.HasValue ? valueSet.Intensional.Value : false,
                 SourceUrl = valueSet.Source,
+                ImportSource = valueSet.ImportSource,
                 Identifiers = valueSet.Identifiers.Select(y => new ValueSetIdentifierModel(y)).ToList()
             };
 
@@ -590,24 +612,6 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
-        #region Export
-
-        [HttpGet, Route("api/Terminology/Export/ValueSet/{valueSetOid}"), SecurableAction(SecurableNames.EXPORT_VOCAB)]
-        public string ExportValueSet(string valueSetOid, VocabularyOutputType format = VocabularyOutputType.Default, string encoding = "UTF-8")
-        {
-            VocabularyService service = new VocabularyService(this.tdb);
-            return service.GetValueSet(valueSetOid, (int)format, encoding);
-        }
-
-        [HttpGet, Route("api/Terminology/Export/ImplementationGuide/{implementationGuideId}"), SecurableAction(SecurableNames.EXPORT_VOCAB)]
-        public string ExportImplementationGuide(int implementationGuideId, int maxMembers = 100, VocabularyOutputType format = VocabularyOutputType.Default, string encoding = "UTF-8")
-        {
-            VocabularyService service = new VocabularyService(this.tdb);
-            return service.GetImplementationGuideVocabulary(implementationGuideId, maxMembers, (int)format, encoding);
-        }
-
-        #endregion
-
         #region Import from Excel
 
         [HttpPost, Route("api/Terminology/Import/Excel"), SecurableAction(SecurableNames.ADMIN)]
@@ -625,63 +629,6 @@ namespace Trifolia.Web.Controllers.API
         {
             ExcelImporter importer = new ExcelImporter(this.tdb);
             return importer.GetCheckResponse(request);
-        }
-
-        #endregion
-
-        #region Import External
-
-        [HttpGet, Route("api/Terminology/Import/PhinVads/Search"), SecurableAction(SecurableNames.ADMIN)]
-        public ImportValueSet SearchPhinVads(string oid)
-        {
-            PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember> processor = 
-                new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>();
-
-            ImportValueSet valueSet = processor.FindValueSet(this.tdb, oid);
-            return valueSet;
-        }
-
-        [HttpGet, Route("api/Terminology/Import/RoseTree/Search"), SecurableAction(SecurableNames.ADMIN)]
-        public ImportValueSet SearchRoseTree(string oid)
-        {
-            string roseTreeLocation = AppSettings.HL7RoseTreeLocation;
-            XmlDocument roseTreeDoc = new XmlDocument();
-            roseTreeDoc.Load(roseTreeLocation);
-
-            HL7RIMValueSetImportProcessor<ImportValueSet, ImportValueSetMember> processor =
-                new HL7RIMValueSetImportProcessor<ImportValueSet, ImportValueSetMember>(roseTreeDoc);
-
-            ImportValueSet valueSet = processor.FindValueSet(this.tdb, oid);
-            return valueSet;
-        }
-
-        [HttpPost, Route("api/Terminology/Import/External"), SecurableAction(SecurableNames.ADMIN)]
-        public void SaveExternalValueSet(ImportValueSet valueSet)
-        {
-            BaseValueSetImportProcess<ImportValueSet, ImportValueSetMember> processor;
-
-            if (valueSet.ImportSource == "PHIN VADS")
-            {
-                processor = new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>();
-            }
-            else if (valueSet.ImportSource == "HL7 RIM/RoseTree")
-            {
-                string roseTreeLocation = AppSettings.HL7RoseTreeLocation;
-                XmlDocument roseTreeDoc = new XmlDocument();
-                roseTreeDoc.Load(roseTreeLocation);
-
-                processor = new HL7RIMValueSetImportProcessor<ImportValueSet, ImportValueSetMember>(roseTreeDoc);
-            }
-            else
-                throw new Exception("Cannot identify which external soure the value set came from.");
-
-            using (IObjectRepository auditedTdb = DBContext.CreateAuditable(CheckPoint.Instance.UserName, CheckPoint.Instance.HostAddress))
-            {
-                Log.For(this).Info("Importing external ({0}) value set {1} ({2})", valueSet.ImportSource, valueSet.Name, valueSet.Oid);
-
-                processor.SaveValueSet(auditedTdb, valueSet);
-                auditedTdb.SaveChanges();
-            }
         }
 
         #endregion

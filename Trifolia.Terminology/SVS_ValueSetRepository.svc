@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="Trifolia.Terminology.SVS_ValueSetRepository" CodeBehind="SVS_ValueSetRepository.svc.cs" %>

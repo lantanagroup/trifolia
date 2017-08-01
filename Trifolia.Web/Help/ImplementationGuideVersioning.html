@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -184,8 +184,8 @@
                 
 <p></p>
 <p class="rvps2"><span class="rvts6">You can link a version of an implementation guide to a previous version. This allows you to view changes to the implementation guide and all of its templates.</span></p>
-<p class="rvps2"><span class="rvts19">Note</span><span class="rvts6">: You can create a new version of an implementation guide only if it has been published. Each time you publish a version, you can create a new version and link it to the previous version.</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Create a New Version of an Implementation Guide</span></span></h2>
+<p class="rvps2"><span class="rvts20">Note</span><span class="rvts6">: You can create a new version of an implementation guide only if it has been published. Each time you publish a version, you can create a new version and link it to the previous version.</span></p>
+<h2 class="rvps11"><span class="rvts0"><span class="rvts21">Create a New Version of an Implementation Guide</span></span></h2>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">From the Browse &gt; Implementation Guides page, select New. A blank implementation guide appears in the editor.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">Enter the name of the previous version of the implementation guide.</span></li>
@@ -195,7 +195,7 @@
 <li value="6" class="rvps2"><span class="rvts6">Once you have saved the new version, the Previous Version link appears in the View Implementation Guide page.</span></li>
 <li value="7" class="rvps2"><span class="rvts6">Once you publish the new version, you can reference it as a Previous Version in a new implementation guide.</span></li>
 </ol>
-<p class="rvps2"><span class="rvts19">Note about versions</span><span class="rvts6">: Version history is saved with a template. When a new version of a template/profile is created, use the Changes tab of the Template Viewer to see the changes in the template/profile since the previous version.</span></p>
+<p class="rvps2"><span class="rvts20">Note about versions</span><span class="rvts6">: Version history is saved with a template. When a new version of a template/profile is created, use the Changes tab of the Template Viewer to see the changes in the template/profile since the previous version.</span></p>
 <p></p>
 
             </div>
@@ -204,19 +204,35 @@
         </div>  <!-- /#topic-content -->
     </article>
 
-    <footer>
-        
-    </footer>
+    <footer></footer>
 
   </div>  <!-- /#main -->
 
   <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
   <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
   <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
   
@@ -242,10 +258,16 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Custom JS
+	  
       // Boot the app
       app.Boot();
     });
   </script>
 
-  
+
+
+</body>
+
+</html>
 

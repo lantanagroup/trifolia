@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:sch="http://www.ascc.net/xml/schematron" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-  <xs:import namespace="urn:hl7-org:sdtc" schemaLocation="../../infrastructure/cda/SDTC.xsd" />
+  <xs:import namespace="urn:hl7-org:sdtc" schemaLocation="SDTC.xsd" />
   <xs:annotation>
     <xs:documentation>XML schema for message type POCD_MT000040.</xs:documentation>
     <xs:documentation>

@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 
 using Trifolia.Shared;
-using Trifolia.Web.Models.Shared;
 using Trifolia.Web.Models.TerminologyManagement;
 using Trifolia.Authorization;
 using Trifolia.DB;
@@ -71,16 +70,6 @@ namespace Trifolia.Web.Controllers
         public ActionResult ImportExcel()
         {
             return View("ImportExcel");
-        }
-
-        #endregion
-
-        #region Import from External
-
-        [Securable(SecurableNames.ADMIN)]
-        public ActionResult ImportExternal()
-        {
-            return View("ImportExternal");
         }
 
         #endregion

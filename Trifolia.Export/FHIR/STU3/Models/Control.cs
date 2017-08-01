@@ -21,12 +21,14 @@ namespace Trifolia.Export.FHIR.STU3.Models
 
             this.resources = new Dictionary<string, ResourceReference>();
             this.special_urls = new List<string>();
+            this.dependencyList = new List<Dependency>();
         }
 
         public string tool { get; set; }
         public Path paths { get; set; }
         public Dictionary<string, TemplateReference> defaults { get; set; }
         public string canonicalBase { get; set; }
+        public List<Dependency> dependencyList { get; set; }
         public string source { get; set; }
 
         [JsonProperty(PropertyName = "sct-edition", NullValueHandling = NullValueHandling.Ignore)]
@@ -36,6 +38,13 @@ namespace Trifolia.Export.FHIR.STU3.Models
         public List<string> special_urls { get; set; }
 
         public Dictionary<string, ResourceReference> resources { get; set; }
+
+        public class Dependency
+        {
+            public string name { get; set; }
+            public string location { get; set; }
+            public string source { get; set; }
+        }
 
         public class Path
         {

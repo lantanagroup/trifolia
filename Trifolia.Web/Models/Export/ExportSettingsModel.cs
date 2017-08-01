@@ -1,0 +1,56 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Trifolia.Shared.Plugins;
+
+namespace Trifolia.Web.Models.Export
+{
+    public class ExportSettingsModel
+    {
+        [JsonIgnore]
+        public int ImplementationGuideId { get; set; }
+        [JsonIgnore]
+        public ExportFormats ExportFormat { get; set; }
+
+        // MS Word Export Settings
+        public bool IncludeXmlSample { get; set; }
+        public bool IncludeChangeList { get; set; }
+        public bool IncludeTemplateStatus { get; set; }
+        public bool IncludeNotes { get; set; }
+        public TemplateTableOptions TemplateTables { get; set; }
+        public DocumentTableOptions DocumentTables { get; set; }
+        public TemplateSortOrderOptions TemplateSortOrder { get; set; }
+        public bool ValueSetTables { get; set; }
+        public string[] ValueSetOid { get; set; }
+
+        /// <summary>
+        /// An ordered array indicating the maximum members for each of the value sets
+        /// </summary>
+        /// <remarks>ValueSetMaxMembers[i] is the maximum number of members for ValueSetOid[i]</remarks>
+        public int[] ValueSetMaxMembers { get; set; }
+
+        // SCH Export Settings
+        public string VocabularyFileName { get; set; }
+        public bool IncludeVocabulary { get; set; }
+        public bool IncludeCustomSchematron { get; set; }
+        public string DefaultSchematron { get; set; }
+
+        // Vocabulary Settings
+        public EncodingOptions Encoding { get; set; }
+
+        /// <summary>
+        /// The default maximum members for each value set, if not specified by ValueSetMaxMembers[i]
+        /// </summary>
+        public int MaximumValueSetMembers { get; set; }
+        public bool ValueSetAppendix { get; set; }
+
+        // General Settings
+        public int[] ParentTemplateIds { get; set; }
+        public int[] TemplateIds { get; set; }
+        public bool IncludeInferred { get; set; }
+        public List<string> SelectedCategories { get; set; }
+        public bool ReturnJson { get; set; }
+    }
+}

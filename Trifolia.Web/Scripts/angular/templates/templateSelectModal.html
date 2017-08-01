@@ -2,6 +2,16 @@
     <h3 class="modal-title" id="modal-title">{{caption}}</h3>
 </div>
 <div class="modal-body" id="modal-body">
+    <style type="text/css">
+        .modal-footer > .selected-templates {
+            text-align: left;
+        }
+
+        .modal-footer > .selected-templates p {
+            margin-bottom: 5px;
+        }
+    </style>
+
     <form>
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search Text..." ng-model="searchText" />
@@ -14,16 +24,20 @@
     <table class="table table-striped" ng-if="searchResults">
         <thead>
             <tr>
+                <th ng-if="selectMultiple">&nbsp;</th>
                 <th>Name</th>
                 <th>Identifier</th>
-                <th></th>
+                <th ng-if="!selectMultiple"></th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="r in searchResults.Items">
+                <td ng-if="selectMultiple">
+                    <input type="checkbox" ng-checked="isTemplateSelected(r)" ng-click="selectTemplate(r)" />
+                </td>
                 <td>{{r.Name}}</td>
                 <td>{{r.Oid}}</td>
-                <td>
+                <td ng-if="!selectMultiple">
                     <div class="pull-right">
                         <button type="button" class="btn btn-default btn-sm" ng-click="select(r)">Select</button>
                     </div>
@@ -33,5 +47,11 @@
     </table>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-warning" type="button" ng-click="close()">Close</button>
+    <div class="col-md-9 selected-templates">
+        <p ng-if="selectedTemplates" ng-repeat="t in selectedTemplates">{{getTemplateDisplayName(t)}} ({{t.Oid}})</p>
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-warning" type="button" ng-click="close()">Close</button>
+        <button class="btn btn-primary" type="button" ng-click="select()" ng-if="selectMultiple" ng-disabled="selectedTemplates.length == 0">Select</button>
+    </div>
 </div>
