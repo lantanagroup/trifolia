@@ -529,6 +529,70 @@
     };
 
     /**
+     * Searches the server for value sets matching the query.
+     * Returns a promise, which resolves to a list of objects containing Id and Display.
+     * @param {any} query
+     */
+    function getValueSets(query) {
+        // TODO: Use a factory/service to query the server for matching value sets, as an asynchronous/promise return.
+        // Return no more than 10... They must refine their search if they want a shorter list.
+        // Change the model used by the server to represent ValueSetId as a complex ValueSet object instead. This
+        // will allow angular-bootstrap's typeahead to initialize with the correct display and id to start with.
+
+        return $q.resolve([
+            { Id: 1, Display: 'Test Value Set 1' },
+            { Id: 2, Display: 'Test Value Set 2' },
+            { Id: 3, Display: 'Test Value Set 3' }
+        ]);
+    };
+
+    /**
+     * Searches the server for code systems matching the query.
+     * Returns a promise, which resolves to a list of objects containing Id and Display.
+     * @param {any} query
+     */
+    function getCodeSystems(query) {
+        // TODO: Use a factory/service to query the server for matching code systems, as an asynchronous/promise return.
+        // Return no more than 10... They must refine their search if they want a shorter list.
+        // Change the model used by the server to represent CodeSystemId as a complex CodeSystem object instead. This
+        // will allow angular-bootstrap's typeahead to initialize with the correct display and id to start with.
+        return [
+            { Id: 1, Display: 'Test Code System 1' },
+            { Id: 2, Display: 'Test Code System 2' },
+            { Id: 3, Display: 'Test Code System 3' }
+        ];
+    };
+
+    /**
+     * Gets a list of the data-types that are available for the selected node.
+     * Returns a promise, which resolves to a list of strings each representing a data-type option.
+     * @param {any} selectedNode
+     */
+    function getDataTypes(selectedNode) {
+        if (!selectedNode) {
+            return $q.resolve([]);
+        }
+
+        // TODO
+        // Return a promise that results in a list of strings representing the possible data-types for the node
+        // Add a call in EditorService that calls api/Template/Edit/DerivedType/{implementationGuideId}/{dataType}
+    };
+
+    /**
+     * Event triggered when the data-type for a constraint changes.
+     * When the data-type changes, the node within the tree should be re-initialized/re-expanded
+     * because the elements/attributes within the node may change depending on the data-type selected.
+     * @param {any} selecedNode
+     */
+    function dataTypeChanged(selecedNode) {
+        if (!selectedNode || !selectedNode.Constraint) {
+            return;
+        }
+
+        // TODO
+    };
+
+    /**
      * Initializes the editor with the specified template and optionally
      * the default implementation guide for creating a new template as part
      * of a pre-determined IG.
@@ -565,6 +629,19 @@
                 return EditorService.getConstraints(templateId);
             })
             .then(function (constraints) {
+                // Set extra properties on each constraint, such as $$bindingType
+                _.each(constraints, function (constraint) {
+                    if ((constraint.Value || constraint.ValueDisplayName) && !constraint.ValueSetId) {
+                        constraint.$$bindingType = 'SingleValue';
+                    } else if (!constraint.Value && !constraint.ValueDisplayName && constraint.ValueSetId) {
+                        constraint.$$bindingType = 'ValueSet';
+                    } else if (!constraint.Value && !constraint.ValueDisplayName && !constraint.ValueSetId && constraint.ValueCodeSystemId) {
+                        constraint.$$bindingType = 'CodeSystem';
+                    } else if (constraint.Value || constraint.ValueDisplayName || constraint.ValueSetId || constraint.ValueSetDate || constraint.ValueCodeSystemId) {
+                        constraint.$$bindingType = 'Other';
+                    }
+                });
+
                 $scope.constraints = constraints;
 
                 return EditorService.getNodes($scope.template.OwningImplementationGuideId, $scope.template.PrimaryContextType)
@@ -712,6 +789,8 @@
     $scope.handleHttpError = handleHttpError;
     $scope.reload = reload;
     $scope.templateChanged = templateChanged;
+    $scope.getCodeSystems = getCodeSystems;
+    $scope.getValueSets = getValueSets;
 });
 
 angular.module('Trifolia').controller('EditorTemplateSearchController', function ($scope, TemplateService) {
