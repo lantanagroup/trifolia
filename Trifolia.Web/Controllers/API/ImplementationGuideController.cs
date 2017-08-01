@@ -136,7 +136,6 @@ namespace Trifolia.Web.Controllers.API
                                PublishDate = ig.PublishDate,
                                Title = string.Format("{0} {1}", ig.Name, (ig.Version > 1 ? "V" + ig.Version.ToString() : string.Empty)),
                                DisplayName = ig.DisplayName,
-                               Identifier = ig.Identifier,
                                Type = ig.ImplementationGuideType.Name,
                                TypeNamespace = ig.ImplementationGuideType.SchemaURI,
                                Status = ig.PublishStatus != null ? ig.PublishStatus.Status : string.Empty,
