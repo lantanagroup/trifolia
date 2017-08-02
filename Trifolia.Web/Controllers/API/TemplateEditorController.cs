@@ -432,13 +432,16 @@ namespace Trifolia.Web.Controllers.API
                 // Create/update constraints
                 this.SaveConstraints(tdb, template, model.Constraints);
 
+                var allNumbers = (from t in tdb.Templates
+                                  join tc in tdb.TemplateConstraints on t.Id equals tc.TemplateId
+                                  where t.OwningImplementationGuideId == template.OwningImplementationGuideId
+                                  select new { tc.Id, tc.Number });
                 var duplicateNumbers = (from tcc in template.ChildConstraints
-                                        join tc in tdb.TemplateConstraints on tcc.Number equals tc.Number
-                                        join t in tdb.Templates on tc.TemplateId equals t.Id
-                                        where tcc.Id != tc.Id && t.OwningImplementationGuideId == template.OwningImplementationGuideId
-                                        select tcc.Number).ToList();
+                                        join an in allNumbers on tcc.Number equals an.Number
+                                        where tcc.Id != an.Id
+                                        select tcc.Number);
 
-                if (duplicateNumbers.Count > 0)
+                if (duplicateNumbers.Count() > 0)
                 {
                     response.Error = string.Format("The following constraints have duplicate numbers: {0}", string.Join(", ", duplicateNumbers));
                 }
