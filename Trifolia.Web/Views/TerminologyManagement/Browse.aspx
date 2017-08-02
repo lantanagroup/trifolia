@@ -478,8 +478,8 @@
                     <div class="form-group">
                         <label>Source</label>
                         <select ng-model="source" class="form-control" ng-disabled="disableSource">
-                            <option ng-value="1">VSAC</option>
-                            <option ng-value="2">PHIN VADS</option>
+                            <option ng-value="1" ng-if="canImportVSAC">VSAC</option>
+                            <option ng-value="2" ng-if="canImportPHINVADS">PHIN VADS</option>
                         </select>
                     </div>
 

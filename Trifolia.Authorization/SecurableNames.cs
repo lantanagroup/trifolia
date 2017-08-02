@@ -178,6 +178,16 @@ namespace Trifolia.Authorization
         /// </summary>
         public const string IMPORT = "Import";
 
+        /// <summary>
+        /// ImportVSAC
+        /// </summary>
+        public const string IMPORT_VSAC = "ImportVSAC";
+
+        /// <summary>
+        /// ImportPHINVADS
+        /// </summary>
+        public const string IMPORT_PHINVADS = "ImportPHINVADS";
+
         #endregion
     }
 }

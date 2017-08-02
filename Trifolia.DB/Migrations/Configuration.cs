@@ -51,7 +51,9 @@ namespace Trifolia.DB.Migrations
                 new AppSecurable() { Name = "GreenModel", DisplayName = "Green Modeling", Description = "Allows user to create, edit and delete green models for templates." },
                 new AppSecurable() { Name = "TemplateMove", DisplayName = "Move Templates", Description = "Ability to move a template from one implementation guide to another" },
                 new AppSecurable() { Name = "WebIG", DisplayName = "Web-based IG", Description = "Ability to view an implementation guide's web-based IG" },
-                new AppSecurable() { Name = "Import", DisplayName = "Import", Description = "The ability to import implementation guides and templates into Trifolia" }
+                new AppSecurable() { Name = "Import", DisplayName = "Import", Description = "The ability to import implementation guides and templates into Trifolia" },
+                new AppSecurable() { Name = "ImportVSAC", DisplayName = "Import from VSAC", Description = "The ability to import value sets from VSAC" },
+                new AppSecurable() { Name = "ImportPHINVADS", DisplayName = "Import from PHIN VADS", Description = "The ability to import value sets from PHIN VADS"}
             };
 
             this.roles = new Role[] {
@@ -397,77 +399,85 @@ namespace Trifolia.DB.Migrations
             context.AppSecurables.AddOrUpdate(apps => apps.Name, this.appSecurables);
             context.Roles.AddOrUpdate(r => r.Name, this.roles);
 
-            List<RoleAppSecurable> roleAppSecurables = new List<RoleAppSecurable>();
+            bool shouldPopulateRoleSecurables = context.RoleAppSecurables.Count() == 0;
 
             // Administrators: has all securales
             foreach (var appSecurable in appSecurables)
                 this.AssignSecurableToRole(context, appSecurable.Name, "Administrators");
 
-            // IG Admins
-            this.AssignSecurableToRole(context, "TemplateList", "IG Admins");
-            this.AssignSecurableToRole(context, "IGManagementList", "IG Admins");
-            this.AssignSecurableToRole(context, "ImplementationGuideEdit", "IG Admins");
-            this.AssignSecurableToRole(context, "ImplementationGuideEditBookmarks", "IG Admins");
-            this.AssignSecurableToRole(context, "ImplementationGuideNotes", "IG Admins");
-            this.AssignSecurableToRole(context, "ImplementationGuidePrimitives", "IG Admins");
-            this.AssignSecurableToRole(context, "ImplementationGuideAuditTrail", "IG Admins");
-            this.AssignSecurableToRole(context, "ValueSetList", "IG Admins");
-            this.AssignSecurableToRole(context, "CodeSystemList", "IG Admins");
-            this.AssignSecurableToRole(context, "ExportWordDocuments", "IG Admins");
-            this.AssignSecurableToRole(context, "ExportVocabulary", "IG Admins");
-            this.AssignSecurableToRole(context, "ExportSchematron", "IG Admins");
-            this.AssignSecurableToRole(context, "PublishSettings", "IG Admins");
-            this.AssignSecurableToRole(context, "ExportXML", "IG Admins");
-            this.AssignSecurableToRole(context, "Import", "IG Admins");
-            this.AssignSecurableToRole(context, "TemplateEdit", "IG Admins");
-            this.AssignSecurableToRole(context, "ValueSetEdit", "IG Admins");
-            this.AssignSecurableToRole(context, "CodeSystemEdit", "IG Admins");
-            this.AssignSecurableToRole(context, "TemplateCopy", "IG Admins");
-            this.AssignSecurableToRole(context, "TemplateDelete", "IG Admins");
-            this.AssignSecurableToRole(context, "IGFileManagement", "IG Admins");
-            this.AssignSecurableToRole(context, "IGFileView", "IG Admins");
-            this.AssignSecurableToRole(context, "LandingPage", "IG Admins");
-            this.AssignSecurableToRole(context, "TemplateMove", "IG Admins");
-            this.AssignSecurableToRole(context, "WebIG", "IG Admins");
+            // Should only populate role securables for the first time (if we are creating a new database)
+            if (shouldPopulateRoleSecurables)
+            {
+                // IG Admins
+                this.AssignSecurableToRole(context, "TemplateList", "IG Admins");
+                this.AssignSecurableToRole(context, "IGManagementList", "IG Admins");
+                this.AssignSecurableToRole(context, "ImplementationGuideEdit", "IG Admins");
+                this.AssignSecurableToRole(context, "ImplementationGuideEditBookmarks", "IG Admins");
+                this.AssignSecurableToRole(context, "ImplementationGuideNotes", "IG Admins");
+                this.AssignSecurableToRole(context, "ImplementationGuidePrimitives", "IG Admins");
+                this.AssignSecurableToRole(context, "ImplementationGuideAuditTrail", "IG Admins");
+                this.AssignSecurableToRole(context, "ValueSetList", "IG Admins");
+                this.AssignSecurableToRole(context, "CodeSystemList", "IG Admins");
+                this.AssignSecurableToRole(context, "ExportWordDocuments", "IG Admins");
+                this.AssignSecurableToRole(context, "ExportVocabulary", "IG Admins");
+                this.AssignSecurableToRole(context, "ExportSchematron", "IG Admins");
+                this.AssignSecurableToRole(context, "PublishSettings", "IG Admins");
+                this.AssignSecurableToRole(context, "ExportXML", "IG Admins");
+                this.AssignSecurableToRole(context, "Import", "IG Admins");
+                this.AssignSecurableToRole(context, "TemplateEdit", "IG Admins");
+                this.AssignSecurableToRole(context, "ValueSetEdit", "IG Admins");
+                this.AssignSecurableToRole(context, "CodeSystemEdit", "IG Admins");
+                this.AssignSecurableToRole(context, "TemplateCopy", "IG Admins");
+                this.AssignSecurableToRole(context, "TemplateDelete", "IG Admins");
+                this.AssignSecurableToRole(context, "IGFileManagement", "IG Admins");
+                this.AssignSecurableToRole(context, "IGFileView", "IG Admins");
+                this.AssignSecurableToRole(context, "LandingPage", "IG Admins");
+                this.AssignSecurableToRole(context, "TemplateMove", "IG Admins");
+                this.AssignSecurableToRole(context, "WebIG", "IG Admins");
+                this.AssignSecurableToRole(context, "ImportVSAC", "IG Admins");
+                this.AssignSecurableToRole(context, "ImportPHINVADS", "IG Admins");
 
-            // Template Authors
-            this.AssignSecurableToRole(context, "TemplateList", "Template Authors");
-            this.AssignSecurableToRole(context, "IGManagementList", "Template Authors");
-            this.AssignSecurableToRole(context, "ImplementationGuideNotes", "Template Authors");
-            this.AssignSecurableToRole(context, "ImplementationGuidePrimitives", "Template Authors");
-            this.AssignSecurableToRole(context, "ImplementationGuideAuditTrail", "Template Authors");
-            this.AssignSecurableToRole(context, "ValueSetList", "Template Authors");
-            this.AssignSecurableToRole(context, "ValueSetEdit", "Template Authors");
-            this.AssignSecurableToRole(context, "CodeSystemList", "Template Authors");
-            this.AssignSecurableToRole(context, "CodeSystemEdit", "Template Authors");
-            this.AssignSecurableToRole(context, "ExportWordDocuments", "Template Authors");
-            this.AssignSecurableToRole(context, "ExportVocabulary", "Template Authors");
-            this.AssignSecurableToRole(context, "ExportSchematron", "Template Authors");
-            this.AssignSecurableToRole(context, "TemplateEdit", "Template Authors");
-            this.AssignSecurableToRole(context, "TemplateCopy", "Template Authors");
-            this.AssignSecurableToRole(context, "TemplateDelete", "Template Authors");
-            this.AssignSecurableToRole(context, "ReportTemplateReview", "Template Authors");
-            this.AssignSecurableToRole(context, "ReportTemplateCompliance", "Template Authors");
-            this.AssignSecurableToRole(context, "PublishSettings", "Template Authors");
-            this.AssignSecurableToRole(context, "ExportXML", "Template Authors");
-            this.AssignSecurableToRole(context, "TemplateMove", "Template Authors");
-            this.AssignSecurableToRole(context, "WebIG", "Template Authors");
-            this.AssignSecurableToRole(context, "Import", "Template Authors");
+                // Template Authors
+                this.AssignSecurableToRole(context, "TemplateList", "Template Authors");
+                this.AssignSecurableToRole(context, "IGManagementList", "Template Authors");
+                this.AssignSecurableToRole(context, "ImplementationGuideNotes", "Template Authors");
+                this.AssignSecurableToRole(context, "ImplementationGuidePrimitives", "Template Authors");
+                this.AssignSecurableToRole(context, "ImplementationGuideAuditTrail", "Template Authors");
+                this.AssignSecurableToRole(context, "ValueSetList", "Template Authors");
+                this.AssignSecurableToRole(context, "ValueSetEdit", "Template Authors");
+                this.AssignSecurableToRole(context, "CodeSystemList", "Template Authors");
+                this.AssignSecurableToRole(context, "CodeSystemEdit", "Template Authors");
+                this.AssignSecurableToRole(context, "ExportWordDocuments", "Template Authors");
+                this.AssignSecurableToRole(context, "ExportVocabulary", "Template Authors");
+                this.AssignSecurableToRole(context, "ExportSchematron", "Template Authors");
+                this.AssignSecurableToRole(context, "TemplateEdit", "Template Authors");
+                this.AssignSecurableToRole(context, "TemplateCopy", "Template Authors");
+                this.AssignSecurableToRole(context, "TemplateDelete", "Template Authors");
+                this.AssignSecurableToRole(context, "ReportTemplateReview", "Template Authors");
+                this.AssignSecurableToRole(context, "ReportTemplateCompliance", "Template Authors");
+                this.AssignSecurableToRole(context, "PublishSettings", "Template Authors");
+                this.AssignSecurableToRole(context, "ExportXML", "Template Authors");
+                this.AssignSecurableToRole(context, "TemplateMove", "Template Authors");
+                this.AssignSecurableToRole(context, "WebIG", "Template Authors");
+                this.AssignSecurableToRole(context, "Import", "Template Authors");
+                this.AssignSecurableToRole(context, "ImportVSAC", "Template Authors");
+                this.AssignSecurableToRole(context, "ImportPHINVADS", "Template Authors");
 
-            // Terminology Admins
-            this.AssignSecurableToRole(context, "TerminologyOverride", "Terminology Admins");
-            this.AssignSecurableToRole(context, "ValueSetEdit", "Terminology Admins");
-            this.AssignSecurableToRole(context, "ValueSetList", "Terminology Admins");
-            this.AssignSecurableToRole(context, "CodeSystemEdit", "Terminology Admins");
-            this.AssignSecurableToRole(context, "CodeSystemList", "Terminology Admins");
+                // Terminology Admins
+                this.AssignSecurableToRole(context, "TerminologyOverride", "Terminology Admins");
+                this.AssignSecurableToRole(context, "ValueSetEdit", "Terminology Admins");
+                this.AssignSecurableToRole(context, "ValueSetList", "Terminology Admins");
+                this.AssignSecurableToRole(context, "CodeSystemEdit", "Terminology Admins");
+                this.AssignSecurableToRole(context, "CodeSystemList", "Terminology Admins");
 
-            // Users
-            this.AssignSecurableToRole(context, "TemplateList", "Users");
-            this.AssignSecurableToRole(context, "IGManagementList", "Users");
-            this.AssignSecurableToRole(context, "ValueSetList", "Users");
-            this.AssignSecurableToRole(context, "CodeSystemList", "Users");
-            this.AssignSecurableToRole(context, "ExportWordDocuments", "Users");
-            this.AssignSecurableToRole(context, "ExportXML", "Users");
+                // Users
+                this.AssignSecurableToRole(context, "TemplateList", "Users");
+                this.AssignSecurableToRole(context, "IGManagementList", "Users");
+                this.AssignSecurableToRole(context, "ValueSetList", "Users");
+                this.AssignSecurableToRole(context, "CodeSystemList", "Users");
+                this.AssignSecurableToRole(context, "ExportWordDocuments", "Users");
+                this.AssignSecurableToRole(context, "ExportXML", "Users");
+            }
 
             //  This method will be called after migrating to the latest version.
 
