@@ -1,11 +1,13 @@
 ﻿<div>
+    <p ng-if="selectedNode.Constraint.NarrativeProseHtml" ng-bind-html="selectedNode.Constraint.NarrativeProseHtml"></p>
+
     <sub>General</sub>
 
     <!-- Conf/Card -->
     <div class="form-group">
         <div class="input-group input-group-sm" style="width: 100%;">
             <div class="input-group-addon">Conf/Card:</div>
-            <select class="form-control input-sm" style="width: 50%;" ng-model="selectedNode.Constraint.Conformance" ng-change="templateChanged()">
+            <select class="form-control input-sm" style="width: 50%;" ng-model="selectedNode.Constraint.Conformance" ng-change="templateChanged(selectedNode.Constraint)">
                 <option>SHALL</option>
                 <option>SHOULD</option>
                 <option>MAY</option>
@@ -14,7 +16,7 @@
                 <option>MAY NOT</option>
             </select>
             <div class="input-group input-group-sm cardinality" style="width:50%; padding-top: 0px">
-                <input class="span2 form-control" id="appendedInputButton" size="16" type="text" ng-model="selectedNode.Constraint.Cardinality" ng-change="templateChanged()">
+                <input class="span2 form-control" id="appendedInputButton" size="16" type="text" ng-model="selectedNode.Constraint.Cardinality" ng-change="templateChanged(selectedNode.Constraint)">
                 <div class="input-group-btn">
                     <a class="dropdown-toggle btn btn-primary btn-sm" data-toggle="dropdown" href="#">
                         <span class="caret"></span>
@@ -49,8 +51,8 @@
         <div class="input-group input-group-sm branching">
             <div class="input-group-addon">Branch/Slice:</div>
             <div class="form-control">
-                <input type="checkbox" name="Branching" ng-model="selectedNode.Constraint.IsBranch" ng-change="templateChanged()">&nbsp;<span>Root</span><br>
-                <input type="checkbox" name="Branching" ng-model="selectedNode.Constraint.IsBranchIdentifier" ng-change="templateChanged()">&nbsp;<span>Identifier/Discriminator</span>
+                <input type="checkbox" name="Branching" ng-model="selectedNode.Constraint.IsBranch" ng-change="templateChanged(selectedNode.Constraint)">&nbsp;<span>Root</span><br>
+                <input type="checkbox" name="Branching" ng-model="selectedNode.Constraint.IsBranchIdentifier" ng-change="templateChanged(selectedNode.Constraint)">&nbsp;<span>Identifier/Discriminator</span>
             </div>
         </div>
     </div>
@@ -70,7 +72,7 @@
                 Binding Type:
                 <i class="glyphicon glyphicon-question-sign clickable" uib-tooltip="Each binding type makes use of different fields, based on common use cases. The Other binding type provides all fields, and allows the designer to determine what fields apply to the constraint." tooltip-placement="right" tooltip-trigger="'click'"></i>
             </div>
-            <select class="form-control input-sm" ng-model="selectedNode.Constraint.$$bindingType" ng-change="templateChanged()">
+            <select class="form-control input-sm" ng-model="selectedNode.Constraint.$$bindingType" ng-change="templateChanged(selectedNode.Constraint)">
                 <option value="">None</option>
                 <option value="SingleValue">Single Value</option>
                 <option value="ValueSet">Value Set</option>
@@ -83,22 +85,22 @@
     <div class="form-group" ng-if="['SingleValue', 'Other'].indexOf(selectedNode.Constraint.$$bindingType) >= 0">
         <div class="input-group input-group-sm">
             <div class="input-group-addon">Code/Display</div>
-            <input type="text" class="form-control" placeholder="Code" style="width: 50%;" ng-model="selectedNode.Constraint.Value" ng-change="templateChanged()" />
-            <input type="text" class="form-control" placeholder="Display" style="width: 50%;" ng-model="selectedNode.Constraint.ValueDisplayName" ng-change="templateChanged()" />
+            <input type="text" class="form-control" placeholder="Code" style="width: 50%;" ng-model="selectedNode.Constraint.Value" ng-change="templateChanged(selectedNode.Constraint)" ng-model-options="{ debounce: 1000 }" />
+            <input type="text" class="form-control" placeholder="Display" style="width: 50%;" ng-model="selectedNode.Constraint.ValueDisplayName" ng-change="templateChanged(selectedNode.Constraint)" ng-model-options="{ debounce: 1000 }" />
         </div>
     </div>
 
     <div class="form-group" ng-if="['ValueSet', 'Other'].indexOf(selectedNode.Constraint.$$bindingType) >= 0">
         <div class="input-group input-group-sm">
             <div class="input-group-addon">Value Set</div>
-            <input type="text" class="form-control" placeholder="Type to search..." ng-change="templateChanged()" uib-typeahead="vs as vs.Display for vs in getValueSets($viewValue)" ng-model="selectedNode.Constraint.ValueSetId" />
+            <input type="text" class="form-control" placeholder="Type to search..." ng-change="templateChanged(selectedNode.Constraint)" uib-typeahead="vs as vs.Display for vs in getValueSets($viewValue)" ng-model="selectedNode.Constraint.ValueSetId" />
         </div>
     </div>
 
     <div class="form-group" ng-if="['ValueSet', 'Other'].indexOf(selectedNode.Constraint.$$bindingType) >= 0">
         <div class="input-group input-group-sm">
             <div class="input-group-addon">Binding Date</div>
-            <input type="text" class="form-control" uib-datepicker-popup="MM/dd/yyyy" ng-change="templateChanged()" is-open="selectedNode.Constraint.$$valueSetDateOpen" ng-model="selectedNode.Constraint.ValueSetDate" />
+            <input type="text" class="form-control" uib-datepicker-popup="MM/dd/yyyy" ng-change="templateChanged(selectedNode.Constraint)" is-open="selectedNode.Constraint.$$valueSetDateOpen" ng-model="selectedNode.Constraint.ValueSetDate" ng-model-options="{ debounce: 1000 }" />
             <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="selectedNode.Constraint.$$valueSetDateOpen = !selectedNode.Constraint.$$valueSetDateOpen">
                     <i class="glyphicon glyphicon-calendar"></i>
@@ -110,7 +112,7 @@
     <div class="form-group" ng-if="['SingleValue', 'ValueSet', 'CodeSystem', 'Other'].indexOf(selectedNode.Constraint.$$bindingType) >= 0">
         <div class="input-group input-group-sm">
             <div class="input-group-addon">Code System</div>
-            <input type="text" class="form-control" ng-model="selectedNode.Constraint.CodeSystemId" ng-change="templateChanged()" placeholder="Type to search..." uib-typeahead="cs as cs.Display for cs in getCodeSystems($viewValue)" />
+            <input type="text" class="form-control" ng-model="selectedNode.Constraint.CodeSystemId" ng-change="templateChanged(selectedNode.Constraint)" placeholder="Type to search..." uib-typeahead="cs as cs.Display for cs in getCodeSystems($viewValue)" />
         </div>
     </div>
 
@@ -124,11 +126,11 @@
                 Heading:
                 <i class="glyphicon glyphicon-question-sign clickable" uib-tooltip="Flags the constraint as a heading constraint. This is typically used for constraints that encompass many child and grand-child constraints. An example of this is in CDA with recordTarget, informationRecipient, etc. The heading level determines the font style/size to use for the heading in the MSWord and HTML exports." tooltip-placement="right" tooltip-trigger="'click'"></i>
             </div>
-            <select class="form-control input-sm" ng-model="selectedNode.Constraint.IsHeading" ng-change="templateChanged()">
+            <select class="form-control input-sm" ng-model="selectedNode.Constraint.IsHeading" ng-change="templateChanged(selectedNode.Constraint)">
                 <option ng-value="false">No</option>
                 <option ng-value="true">Yes</option>
             </select>
-            <select class="form-control input-sm" ng-model="selectedNode.Constraint.HeadingLevel" ng-disabled="!selectedNode.Constraint.IsHeading" ng-change="templateChanged()">
+            <select class="form-control input-sm" ng-model="selectedNode.Constraint.HeadingLevel" ng-disabled="!selectedNode.Constraint.IsHeading" ng-change="templateChanged(selectedNode.Constraint)">
                 <option value="">LEVEL</option>
                 <option ng-value="1">Level 1</option>
                 <option ng-value="2">Level 2</option>
@@ -146,7 +148,7 @@
                 <span>Heading<br/>Description:</span>
                 <i class="glyphicon glyphicon-question-sign clickable" uib-tooltip="TODO: Determine where HeadingDescription is used, and describe here." tooltip-placement="right" tooltip-trigger="'click'"></i>
             </div>
-            <textarea class="form-control input-sm" style="height: 50px;" ng-model="selectedNode.Constraint.HeadingDescription" ng-disabled="!selectedNode.Constraint.IsHeading" ng-change="templateChanged()"></textarea>
+            <textarea class="form-control input-sm" style="height: 50px;" ng-model="selectedNode.Constraint.HeadingDescription" ng-disabled="!selectedNode.Constraint.IsHeading" ng-change="templateChanged(selectedNode.Constraint)"></textarea>
         </div>
     </div>
 
@@ -157,7 +159,7 @@
                 <span>Description:</span>
                 <i class="glyphicon glyphicon-question-sign clickable" uib-tooltip="TODO: Determine where Description is used, and describe here." tooltip-placement="right" tooltip-trigger="'click'"></i>
             </div>
-            <textarea class="form-control input-sm" style="height: 50px;" ng-model="selectedNode.Constraint.Description" ng-change="templateChanged()"></textarea>
+            <textarea class="form-control input-sm" style="height: 50px;" ng-model="selectedNode.Constraint.Description" ng-change="templateChanged(selectedNode.Constraint)"></textarea>
         </div>
     </div>
 
@@ -168,7 +170,7 @@
                 <span>Label:</span>
                 <i class="glyphicon glyphicon-question-sign clickable" uib-tooltip="TODO: Determine where Label is used, and describe here." tooltip-placement="right" tooltip-trigger="'click'"></i>
             </div>
-            <input type="text" class="form-control input-sm" ng-model="selectedNode.Constraint.Label" ng-change="templateChanged()" />
+            <input type="text" class="form-control input-sm" ng-model="selectedNode.Constraint.Label" ng-change="templateChanged(selectedNode.Constraint)" ng-model-options="{ debounce: 1000 }" />
         </div>
     </div>
 
@@ -182,7 +184,7 @@
                 <span>Inheritable</span>
                 <i class="glyphicon glyphicon-question-sign clickable" uib-tooltip="Determines if the constraint's schematron should be placed in the abstract rule (so that it is inheritable where the rule is re-used in containing templates) or in the instance-only rule.'" tooltip-placement="right" tooltip-trigger="'click'"></i>
             </div>
-            <select class="form-control" ng-model="selectedNode.Constraint.IsInheritable" ng-change="templateChanged()">
+            <select class="form-control" ng-model="selectedNode.Constraint.IsInheritable" ng-change="templateChanged(selectedNode.Constraint)">
                 <option ng-value="true">Yes</option>
                 <option ng-value="false">No</option>
             </select>
@@ -196,7 +198,7 @@
                 <span>Rooted:</span>
                 <i class="glyphicon glyphicon-question-sign clickable" uib-tooltip="Applies primarily to constraints within branches. When rooted, does not used the context of the branch, uses the root context of the template/profile." tooltip-placement="right" tooltip-trigger="'click'"></i>
             </div>
-            <select class="form-control" ng-model="selectedNode.Constraint.IsSchRooted" ng-change="templateChanged()">
+            <select class="form-control" ng-model="selectedNode.Constraint.IsSchRooted" ng-change="templateChanged(selectedNode.Constraint)">
                 <option ng-value="false">No</option>
                 <option ng-value="true">Yes</option>
             </select>
@@ -210,7 +212,7 @@
                 <span>Schematron:</span>
                 <i class="glyphicon glyphicon-question-sign clickable" uib-tooltip="Schematron is automatically generated for all computable constraints. Optionally, you may override the automatically generated schematron with this field. For primitive constraints, you must specify schematron using this field, or it will be ignored during schematron validation." tooltip-placement="right" tooltip-trigger="'click'"></i>
             </div>
-            <textarea class="form-control input-sm" style="height: 50px" placeholder="Leave empty to auto-generate schematron" ng-model="selectedNode.Constraint.Schematron" ng-change="templateChanged()"></textarea>
+            <textarea class="form-control input-sm" style="height: 50px" placeholder="Leave empty to auto-generate schematron" ng-model="selectedNode.Constraint.Schematron" ng-change="templateChanged(selectedNode.Constraint)"></textarea>
         </div>
     </div>
 </div>

@@ -9,13 +9,19 @@
                 constraints: '=constraints',
                 onNodeSelected: '&nodeSelected',
                 onNodeExpanded: '&nodeExpanded',
+                onSearchConstraint: '&searchConstraint',
                 validateNode: '&validateNode'
             },
             link: function ($scope, $element, $attributes) {
                 $scope.flattenedNodes = [];
                 $scope.selectedNode = null;
+                $scope.numberSearch = null;
 
-                $scope.getCellDisplay = function (node, column) {
+                function numberSearchChanged() {
+                    $scope.onSearchConstraint({ number: $scope.numberSearch });
+                };
+
+                function getCellDisplay(node, column) {
                     if (node.Constraint) {
                         return node.Constraint[column];
                     }
@@ -23,7 +29,7 @@
                     return node[column];
                 };
 
-                $scope.getNodeTabs = function (node) {
+                function getNodeTabs(node) {
                     var tabs = '';
 
                     for (var i = 0; i < node.$level; i++) {
@@ -33,13 +39,13 @@
                     return tabs;
                 };
 
-                $scope.toggleExpand = function (node) {
-                    node.$expanded = !node.$expanded;
+                function toggleExpand(node, expanded) {
+                    node.$expanded = expanded || !node.$expanded;
                     $scope.onNodeExpanded({ selectedNode: node });
                     $scope.flattenedNodes = getFlattenedNodes();
                 };
 
-                $scope.toggleSelect = function (node) {
+                function toggleSelect(node) {
                     if ($scope.selectedNode != node) {
                         $scope.selectedNode = node;
                     } else {
@@ -49,7 +55,7 @@
                     $scope.onNodeSelected({ selectedNode: $scope.selectedNode });
                 };
 
-                $scope.isNodeValid = function (node) {
+                function isNodeValid(node) {
                     var message = $scope.validateNode({ node: node });
 
                     if (message) {
@@ -81,9 +87,25 @@
                     return flattened;
                 };
 
+                $scope.numberSearchChanged = numberSearchChanged;
+                $scope.getCellDisplay = getCellDisplay;
+                $scope.getNodeTabs = getNodeTabs;
+                $scope.toggleExpand = toggleExpand;
+                $scope.toggleSelect = toggleSelect;
+                $scope.isNodeValid = isNodeValid;
+
                 $scope.$watch('nodes', function () {
                     $scope.flattenedNodes = getFlattenedNodes();
                 }, true);
+
+                $scope.$on('selectNode', function (event, node) {
+                    $scope.selectedNode = node;
+                    $scope.onNodeSelected({ selectedNode: node });
+                });
+
+                $scope.$on('expandNode', function (event, node) {
+                    $scope.toggleExpand(node, true);
+                });
             }
         };
     });

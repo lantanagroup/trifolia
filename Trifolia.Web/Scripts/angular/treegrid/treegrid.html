@@ -3,7 +3,9 @@
         <thead>
             <tr>
                 <th>Context</th>
-                <th>Number</th>
+                <th class="number-col-head">
+                    <input type="text" class="form-control" placeholder="Number" title="Enter a constriant number and press <enter> to search." ng-model="numberSearch" ng-change="numberSearchChanged()" ng-model-options="{ debounce: 500 }" />
+                </th>
                 <th>Conf.</th>
                 <th>Card.</th>
                 <th>DataType</th>
@@ -11,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="clickable" ng-repeat="node in flattenedNodes" ng-click="toggleSelect(node)" ng-class="{ 'highlight': node.Constraint, 'danger': selectedNode == node }">
+            <tr class="clickable constraint-row" ng-repeat="node in flattenedNodes" ng-click="toggleSelect(node)" ng-class="{ 'highlight': node.Constraint, 'danger': selectedNode == node }">
                 <td>
                     <span style="white-space: pre">{{getNodeTabs(node)}}</span>
                     <i ng-if="node.HasChildren" class="glyphicon clickable" ng-class="{ 'glyphicon-plus': !node.$expanded, 'glyphicon-minus': node.$expanded }" ng-click="toggleExpand(node)"></i>

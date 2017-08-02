@@ -8,7 +8,7 @@
         body > .container-fluid,
         .main,
         .editor,
-        .editor-tabs > .tab-content > div:nth-child(2),
+        .editor-tabs > .tab-content > .tab-pane,
         .constraint-body,
         .constraint-container {
             height: 100%;
@@ -85,7 +85,6 @@
             margin-left: 33px;
         }
 
-
         /* Title and labels */
         .editor .navbar-header .label {
             float: left;
@@ -96,26 +95,25 @@
             cursor: pointer;
         }
 
-
-        /* Meta Data Tab */
         .editor-tabs > .tab-content > .tab-pane {
             padding: 5px;
         }
-        
+
+        /* Meta Data Tab */        
         .identifier-field select,
         .identifier-field input {
             width: 50% !important;
         }
 
-        .editor-tabs > .tab-content > .tab-pane:first-child textarea {
+        .metadata-fields textarea {
             height: 150px;
         }
 
-        .editor-tabs > .tab-content > .tab-pane:first-child .input-group {
+        .metadata-fields .input-group {
             width: 100%;
         }
 
-        .editor-tabs > .tab-content > .tab-pane:first-child .input-group-addon {
+        .metadata-fields .input-group-addon {
             min-width: 125px;
             text-align: left;
         }
@@ -147,6 +145,7 @@
             width: 35%;
             position: absolute;
             top: 0px;
+            right: 0px;
             bottom: 0px;
         }
         
@@ -235,6 +234,16 @@
             font-weight: bold;
         }
 
+        .tree-grid .number-col-head {
+            max-width: 50px;
+        }
+
+        .tree-grid .number-col-head input {
+            padding: 6px;
+            height: 25px;
+            width: 70px;
+        }
+
         .is-heading select {
             width: 50% !important;
         }
@@ -251,6 +260,14 @@
 
         .constraint-number-popover input {
             width: 240px !important;
+        }
+
+        .constraint-preview > ol {
+            padding-top: 5px;
+        }
+
+        .constraint-preview li {
+            padding: 5px;
         }
     </style>
 </asp:Content>
@@ -294,14 +311,14 @@
         </div>
 
         <!-- MAIN EDITOR TABS -->
-        <uib-tabset class="editor-tabs">
-            <uib-tab heading="Meta Data">
-                <fieldset ng-disabled="isLocked">
+        <uib-tabset class="editor-tabs" active="activeTab">
+            <uib-tab index="'metadata'" classes="metadata-tab" heading="Meta Data">
+                <fieldset class="metadata-fields" ng-disabled="isLocked">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">Name:</div>
-                                <input type="text" class="form-control" ng-model="template.Name" />
+                                <input type="text" class="form-control" ng-model="template.Name" ng-change="nameChanged()" />
                             </div>
                         </div>
                         <div class="long-id form-group">
@@ -310,47 +327,47 @@
                                     <span>Long Id:</span>
                                     <div title="" class="glyphicon glyphicon-question-sign clickable"></div>
                                 </div>
-                                <select class="form-control" ng-model="identifier.base" ng-change="updateIdentifier()">
+                                <select class="form-control" ng-model="identifier.base" ng-change="identifierChanged()">
                                     <option>{{implementationGuide.Identifier + '.'}}</option>
                                     <option ng-if="!isFhir">urn:oid:</option>
                                     <option ng-if="!isFhir">urn:hl7ii:</option>
                                     <option>http://</option>
                                     <option>https://</option>
                                 </select>
-                                <input class="form-control" type="text" ng-model="identifier.ext" ng-change="updateIdentifier()" />
+                                <input class="form-control" type="text" ng-model="identifier.ext" ng-change="identifierChanged()" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">Short Id:</div>
-                                <input type="text" class="form-control" ng-model="template.Bookmark" />
+                                <input type="text" class="form-control" ng-model="template.Bookmark" ng-change="templateChanged()" />
                             </div>
                         </div>
                         <template-select caption="Implied Template/Profile:" template-id="template.ImpliedTemplateId" restrict-type="!isFhir" restricted-type="template.PrimaryContextType" on-changed="templateChanged()" form-group="true"></template-select>
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">Extensibility:</div>
-                                <select class="form-control" ng-model="template.IsOpen" ng-options="i.v as i.d for i in [{ v: true, d: 'Open' }, {v: false, d: 'Closed' }]">
+                                <select class="form-control" ng-model="template.IsOpen" ng-options="i.v as i.d for i in [{ v: true, d: 'Open' }, {v: false, d: 'Closed' }]" ng-change="templateChanged()">
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">Status:</div>
-                                <select class="form-control" ng-model="template.StatusId" ng-options="s.Id as s.Status for s in statuses">
+                                <select class="form-control" ng-model="template.StatusId" ng-options="s.Id as s.Status for s in statuses" ng-change="templateChanged()">
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">Description:</div>
-                                <textarea class="form-control" ng-model="template.Description"></textarea>
+                                <textarea class="form-control" ng-model="template.Description" ng-change="templateChanged()"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">Notes:</div>
-                                <textarea class="form-control" ng-model="template.Notes"></textarea>
+                                <textarea class="form-control" ng-model="template.Notes" ng-change="templateChanged()"></textarea>
                             </div>
                         </div>
                     </div>
@@ -364,26 +381,28 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">Type:</div>
-                                <input type="text" class="form-control" readonly="readonly" />
+                                <input type="text" class="form-control" readonly="readonly" value="TODO" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">Applies To:</div>
-                                <input type="text" class="form-control" readonly="readonly" />
+                                <input type="text" class="form-control" readonly="readonly" value="{{template.PrimaryContext}} {{template.PrimaryContextType}}" />
                             </div>
                             <span class="help-block"><a href="">Move</a> the template/profile to change the Implementation Guide, Type, or Applies To fields.</span>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">Authored By:</div>
-                                <select class="form-control"></select>
+                                <select class="form-control" ng-model="template.AuthorId" ng-change="templateChanged()">
+                                    <option>TODO</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">Organization:</div>
-                                <input type="text" class="form-control" readonly="readonly" />
+                                <input type="text" class="form-control" readonly="readonly" value="{{template.OrganizationName}}" />
                             </div>
                         </div>
                     </div>
@@ -391,7 +410,7 @@
                     <pre ng-if="isDebug">{{template | json}}</pre>
                 </fieldset>
             </uib-tab>
-            <uib-tab heading="Constraints">
+            <uib-tab index="'constraints'" classes="constraints-tab" heading="Constraints">
                 <div class="constraint-container">
                     <div class="constraint-body">
                         <tree-grid 
@@ -400,6 +419,7 @@
                             nodes="nodes" 
                             node-selected="nodeSelected(selectedNode)" 
                             node-expanded="nodeExpanded(selectedNode)"
+                            search-constraint="selectConstraint(number)"
                             validate-node="isNodeValid(node)">
                         </tree-grid>
                     </div>
@@ -449,31 +469,73 @@
                     </div>
                 </div>
             </uib-tab>
-            <uib-tab heading="Validation">
-
+            <uib-tab index="'validation'" classes="validation-tab" heading="Validation {{template.ValidationResults.length > 0 ? '(' + template.ValidationResults.length + ')' : ''}}">
+                <div class="alert alert-info">Validation is not updated in real-time during template/profile editing. Validation is only updated when loading and saving the template/profile.</div>
+                <table class="table table-striped">
+                    <thead>
+                        <th>Level</th>
+                        <th>Number</th>
+                        <th>Message</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="vr in template.ValidationResults">
+                            <td>{{vr.Level}}</td>
+                            <td ng-if="vr.ConstraintNumber"><a href="#" ng-click="selectConstraint(vr.ConstraintNumber)">{{vr.ConstraintNumber}}</a></td>
+                            <td ng-if="!vr.ConstraintNumber">N/A</td>
+                            <td>{{vr.Message}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </uib-tab>
-            <uib-tab heading="Preview">
+            <uib-tab index="'relationships'" classes="relationships-tab" heading="Relationships">
+                <div ng-if="template.ContainedByTemplates.length > 0">
+                    <h3>Contained By</h3>
+                    <ul>
+                        <li ng-repeat="t in template.ContainedByTemplates">
+                            {{t.Name}}<br />{{t.ImplementationGuide}}
+                        </li>
+                    </ul>
+                </div>
 
+                <div ng-if="template.ImpliedByTemplates.length > 0">
+                    <h3>Implied By</h3>
+                    <ul>
+                        <li ng-repeat="t in template.ImpliedByTemplates">
+                            {{t.Name}}<br />{{t.ImplementationGuide}}
+                        </li>
+                    </ul>
+                </div>
+            </uib-tab>
+            <uib-tab index="'preview'" classes="preview-tab" heading="Preview">
+                <div class="constraint-preview">
+                    <ol>
+                        <li ng-repeat="c in constraints" ng-include="'constraintPreview.html'"></li>
+                    </ol>
+                </div>
             </uib-tab>
         </uib-tabset>
+
+        <script type="text/html" id="constraintPreview.html">
+            <span ng-bind-html="c.NarrativeProseHtml"></span>
+            <ol ng-if="c.Children.length > 0">
+                <li ng-repeat="c in c.Children" ng-include="'constraintPreview.html'"></li>
+            </ol>
+        </script>
 
         <script type="text/html" id="constraintNumberPopover.html">
             <div class="constraint-number-popover">
                 <div class="form-group">
                     <label>Unique Number</label>
                     <i class="glyphicon glyphicon-question-sign" tooltip-trigger="'click'" uib-tooltip="A unique number is always required. The unique number is used by default for conformance numbers in exports unless a display number is specified. This number must be unique across all constraints in the implementation guide that the template/profile is associated with."></i>
-                    <input type="number" class="form-control" />
+                    <input type="number" class="form-control" value="TODO" />
                 </div>
                 
                 <div class="form-group">
                     <label>Display Number</label>
                     <i class="glyphicon glyphicon-question-sign" tooltip-trigger="'click'" uib-tooltip="Optional. The display number is used to override the conformance number format used by default in exports (MS Word, Schematron, etc.). The display number can contain any character (including dashes, underlines, semi-colons, etc.)"></i>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" value="TODO" />
                 </div>
             </div>
-        </script>
-
-        <script type="text/html" id="templateSelect.html">
         </script>
     </div>
     

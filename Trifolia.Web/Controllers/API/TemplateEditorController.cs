@@ -223,6 +223,7 @@ namespace Trifolia.Web.Controllers.API
         private ConstraintModel CreateConstraintModel(TemplateConstraint constraint, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin)
         {
             IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, constraint);
+            WIKIParser wikiParser = new WIKIParser(this.tdb);
 
             var newConstraintModel = new ConstraintModel()
             {
@@ -259,7 +260,7 @@ namespace Trifolia.Web.Controllers.API
                 IsChoice = constraint.IsChoice,
                 IsFixed = constraint.IsFixed,
 
-                NarrativeProseHtml = fc.GetPlainText(false, false, false)
+                NarrativeProseHtml = fc.GetHtml(wikiParser, null, 1, false)
             };
 
             if (constraint.IsStatic == true)
@@ -375,13 +376,18 @@ namespace Trifolia.Web.Controllers.API
         }
 
         [HttpPost, Route("api/Template/Edit/Prose")]
-        public string GetNarrative(ConstraintModel constraint)
+        public string GetNarrative([FromBody] ConstraintModel constraint)
         {
+            if (constraint == null)
+                return string.Empty;
+
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb);
             IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, null, constraint);
             fc.HasChildren = true;
 
-            return fc.GetPlainText(false, false, true);
+            WIKIParser wikiParser = new WIKIParser(this.tdb);
+
+            return fc.GetHtml(wikiParser, null, 1, true);
         }
 
         [HttpGet, Route("api/Template/Edit/List")]

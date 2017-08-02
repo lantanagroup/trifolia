@@ -596,6 +596,23 @@ angular.module('Trifolia').filter('contains', function () {
 angular.module('Trifolia').factory('EditorService', function ($http, $q) {
     var service = {};
 
+    service.getNarrative = function (constraint) {
+        var deferred = $q.defer();
+
+        var copy = angular.copy(constraint);
+        delete copy.$$bindingType;
+        delete copy.$$hashKey;
+        delete copy.NarrativeProseHtml;
+
+        $http.post('/api/Template/Edit/Prose', copy)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
     service.getConstraints = function (templateId) {
         if (!templateId) {
             return $q.resolve([]);

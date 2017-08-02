@@ -1,9 +1,10 @@
-﻿angular.module('Trifolia').controller('EditorController', function ($scope, $interval, $location, $window, EditorService, ImplementationGuideService, TemplateService) {
+﻿angular.module('Trifolia').controller('EditorController', function ($scope, $interval, $location, $window, $sce, $q, EditorService, ImplementationGuideService, TemplateService) {
     $scope.implementationGuides = [];
     $scope.template = null;
     $scope.constraints = [];
     $scope.nodes = [];
     $scope.selectedNode = null;
+    $scope.activeTab = 'metadata';
     $scope.statuses = [
         { Id: 1, Status: 'Draft' },
         { Id: 2, Status: 'Ballot' },
@@ -111,7 +112,7 @@
             return false;
         }
 
-        var constraint = selectedNode.Constraint();
+        var constraint = selectedNode.Constraint;
         var siblings = constraint.IsPrimitive ? constraint.Parent.Children : $scope.constraints;
         var index = siblings.indexOf(constraint);
 
@@ -442,7 +443,12 @@
             }
         };
 
+        // TODO: Replace the usage of blockUI with an ng-disabled equivilent that affects the entire editor...
+        // Trying to stick to using angular
         $.blockUI({ message: "Saving..." });
+
+        // TODO: Replace the use of $.ajax with an EditorService.saveTemplate() function (yet to be implemented).
+        // Again, trying to stick to using angular, rather than direct jQuery
         $.ajax({
             method: 'POST',
             url: '/api/Template/Edit/Save',
@@ -451,39 +457,31 @@
             contentType: 'application/json; charset=utf-8',
             success: function (response) {
                 if (response.Error) {
-                    alert(response.Error);
-                } else if (response.TemplateId) {
-                    // Update the template id on the client so that we save against the new template going forward
-                    $scope.TemplateId = response.TemplateId;
-                    $scope.Template.Id = response.TemplateId;
-                    $scope.Template.AuthorId = response.AuthorId;
-                    $scope.isModified = false;
-
-                    if (actionAfter == 'list') {
-                        $scope.Status = "Done saving... Redirecting to Browse Templates.";
-                        location.href = '/TemplateManagement/List';
-                    } else if (actionAfter == 'view') {
-                        $scope.Status = "Done saving... Redirecting to View Template.";
-                        location.href = getTemplateViewUrl($scope.Template.Id, $scope.Template.Oid);
-                    } else if (actionAfter == 'publishSettings') {
-                        $scope.Status("Done saving... Redirecting to Publish Settings.");
-                        location.href = '/TemplateManagement/PublishSettings?id=' + $scope.TemplateId;
-                    } else {
-                        self.Status("Done saving.");
-
-                        // Empty the removed constraints list
-                        self.RemovedConstraints = [];
-
-                        // Update the constraints on the client (possibly new IDs and new Numbers)
-                        updateConstraints($scope.Constraints, response.Constraints);
-                        angular.extend($scope.Template, { ValidationResults: response.ValidationResults });
-
-                        // Clear the status after 10 seconds
-                        setTimeout(function () {
-                            $scope.Status = "";
-                        }, 10000);
-                    }
+                    $scope.message = response.Error;
+                    return;
                 }
+
+                // TODO: Debug each line of this to make sure it works. There were a number of changes I made
+                // by spot-checking variable case-sensitivity, copy-paste issues with knockout logic, etc.
+
+                // Update the template id on the client so that we save against the new template going forward
+                $scope.template.Id = response.TemplateId;
+                $scope.template.AuthorId = response.AuthorId;
+                $scope.isModified = false;
+
+                $scope.message = 'Done saving.';
+
+                // Empty the removed constraints list
+                self.removedConstraints = [];
+
+                // Update the constraints on the client (possibly new IDs and new Numbers)
+                updateConstraints($scope.constraints, response.Constraints);
+                $scope.template.ValidationResults = response.ValidationResults;
+
+                // Clear the "Done saving" message after 10 seconds
+                setTimeout(function () {
+                    $scope.message = '';
+                }, 10000);
             },
             complete: function () {
                 $.unblockUI();
@@ -496,7 +494,9 @@
     };
 
     function unlock() {
-        $scope.isLocked = false;
+        if (confirm('This template/profile is currently published. Are you sure you want to unlock the template/profile for editing?')) {
+            $scope.isLocked = false;
+        }
 
         // TODO: Not necessarily for initial release of new editor... but, should audit when this occurs. 
     };
@@ -516,6 +516,8 @@
 
                     selectedNode.Children = nodes;
                 });
+        } else {
+            return $q.resolve();
         }
     };
 
@@ -593,6 +595,27 @@
     };
 
     /**
+     * Initializes properties on a constraint for use within the editor.
+     * Sets the $$bindingType and sets the NarrativeProseHtml from $sce
+     * @param {any} constraint
+     */
+    function initConstraint(constraint) {
+        constraint.NarrativeProseHtml = $sce.trustAsHtml(constraint.NarrativeProseHtml);
+
+        if ((constraint.Value || constraint.ValueDisplayName) && !constraint.ValueSetId) {
+            constraint.$$bindingType = 'SingleValue';
+        } else if (!constraint.Value && !constraint.ValueDisplayName && constraint.ValueSetId) {
+            constraint.$$bindingType = 'ValueSet';
+        } else if (!constraint.Value && !constraint.ValueDisplayName && !constraint.ValueSetId && constraint.ValueCodeSystemId) {
+            constraint.$$bindingType = 'CodeSystem';
+        } else if (constraint.Value || constraint.ValueDisplayName || constraint.ValueSetId || constraint.ValueSetDate || constraint.ValueCodeSystemId) {
+            constraint.$$bindingType = 'Other';
+        }
+
+        _.each(constraint.Children, initConstraint);
+    };
+
+    /**
      * Initializes the editor with the specified template and optionally
      * the default implementation guide for creating a new template as part
      * of a pre-determined IG.
@@ -630,17 +653,7 @@
             })
             .then(function (constraints) {
                 // Set extra properties on each constraint, such as $$bindingType
-                _.each(constraints, function (constraint) {
-                    if ((constraint.Value || constraint.ValueDisplayName) && !constraint.ValueSetId) {
-                        constraint.$$bindingType = 'SingleValue';
-                    } else if (!constraint.Value && !constraint.ValueDisplayName && constraint.ValueSetId) {
-                        constraint.$$bindingType = 'ValueSet';
-                    } else if (!constraint.Value && !constraint.ValueDisplayName && !constraint.ValueSetId && constraint.ValueCodeSystemId) {
-                        constraint.$$bindingType = 'CodeSystem';
-                    } else if (constraint.Value || constraint.ValueDisplayName || constraint.ValueSetId || constraint.ValueSetDate || constraint.ValueCodeSystemId) {
-                        constraint.$$bindingType = 'Other';
-                    }
-                });
+                _.each(constraints, initConstraint);
 
                 $scope.constraints = constraints;
 
@@ -654,12 +667,25 @@
     };
 
     /**
+     * Triggered when the name of the template has changed.
+     */
+    function nameChanged() {
+        // TODO: Regenerate the bookmark based on the name of the template. Has a max length of 40 characters.
+        // Replace with logic from previous template editor.
+        $scope.template.Bookmark = $scope.template.Name.replace(/\s/g, '_');
+
+        templateChanged();
+    };
+
+    /**
      * Updates the template'd identifier based on the base and extension specified in the UI
      */
-    function updateIdentifier() {
+    function identifierChanged() {
         if ($scope.template) {
             $scope.template.Oid = $scope.identifier.base + $scope.identifier.ext;
         }
+
+        templateChanged();
     };
 
     /**
@@ -735,9 +761,18 @@
      * Called when a value for a field in the UI is changed. Simlpy sets "isModified" scope property to true, for now.
      * Avoided handling this with a $watch because watches are heavy. This functionality allows for injecting
      * additional logic in the future when changes are made.
+     * @param {any} constraint The constraint that has changed within the template, if any.
      */
-    function templateChanged() {
+    function templateChanged(constraint) {
         $scope.isModified = true;
+
+        if (constraint) {
+            EditorService.getNarrative(constraint)
+                .then(function (results) {
+                    constraint.NarrativeProseHtml = $sce.trustAsHtml(results);
+                })
+                .catch(handleHttpError);
+        }
     };
 
     /**
@@ -747,6 +782,71 @@
      */
     function reload() {
         $window.location.reload();
+    };
+
+    /**
+     * Selects a constraint within the tree based on the constraint number specified.
+     * The node is what needs to be selected, not the constraint. First finds the constraint
+     * that needs to be selected and builds an array representing the tree of constraints.
+     * Then goes through each item in the tree array and expands each node, and selects the final node
+     * representing the constraint.
+     * @param {string} constraintNumber
+     */
+    function selectConstraint(constraintNumber) {
+        var findConstraintTree = function (children, tree) {
+            for (var i = 0; i < children.length; i++) {
+                var child = children[i];
+                var childTree = [child].concat(tree || []);
+
+                if (child.Number == constraintNumber) {
+                    return childTree;
+                }
+
+                var foundTree = findConstraintTree(child.Children, childTree);
+
+                if (foundTree) {
+                    return foundTree;
+                }
+            }
+        };
+
+        var foundTree = findConstraintTree($scope.constraints);
+        var currentNode = null;
+
+        var expandNodes = function () {
+            if (foundTree.length == 0) {
+                return;
+            }
+
+            var nodes = currentNode ? currentNode.Children : $scope.nodes;
+            var constraint = foundTree[foundTree.length - 1];
+
+            for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].Constraint == constraint) {
+                    if (foundTree.length == 1) {
+                        // This is the last constraint, need to select instead of expand
+                        $scope.$broadcast('selectNode', nodes[i]);
+                        $scope.activeTab = 'constraints';
+
+                        setTimeout(function () {
+                            $('.tree-grid').scrollTo('.constraint-row.danger');
+                        });
+                    } else {
+                        currentNode = nodes[i];
+                        nodeExpanded(currentNode)
+                            .then(function () {
+                                $scope.$broadcast('expandNode', currentNode);
+                                foundTree.pop();    // Remove the constraint we just expanded
+
+                                // Recursively expand additional nodes
+                                expandNodes();
+                            });
+                    }
+                }
+            }
+        };
+
+        expandNodes();
     };
 
     /**
@@ -785,12 +885,14 @@
     $scope.nodeExpanded = nodeExpanded;
     $scope.nodeSelected = nodeSelected;
     $scope.init = init;
-    $scope.updateIdentifier = updateIdentifier;
+    $scope.identifierChanged = identifierChanged;
+    $scope.nameChanged = nameChanged;
     $scope.handleHttpError = handleHttpError;
     $scope.reload = reload;
     $scope.templateChanged = templateChanged;
     $scope.getCodeSystems = getCodeSystems;
     $scope.getValueSets = getValueSets;
+    $scope.selectConstraint = selectConstraint;
 });
 
 angular.module('Trifolia').controller('EditorTemplateSearchController', function ($scope, TemplateService) {
