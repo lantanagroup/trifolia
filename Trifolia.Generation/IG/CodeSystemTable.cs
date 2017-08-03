@@ -18,12 +18,6 @@ namespace Trifolia.Generation.IG
     /// </summary>
     public class CodeSystemTable
     {
-        private struct CodeSystem
-        {
-            public string Name;
-            public string Identifier;
-        }
-
         private IObjectRepository tdb;
         private Body documentBody;
         private List<Template> templates;

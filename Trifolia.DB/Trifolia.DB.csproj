@@ -97,23 +97,13 @@
     <Compile Include="Migrations\201703292147411_multipleValueSetIdentifiers.Designer.cs">
       <DependentUpon>201703292147411_multipleValueSetIdentifiers.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201704111943303_multipleContainedTemplates.cs" />
-    <Compile Include="Migrations\201704111943303_multipleContainedTemplates.Designer.cs">
-      <DependentUpon>201704111943303_multipleContainedTemplates.cs</DependentUpon>
     <Compile Include="Migrations\201705041941253_vImplementationGuideCodeSystems.cs" />
     <Compile Include="Migrations\201705041941253_vImplementationGuideCodeSystems.Designer.cs">
       <DependentUpon>201705041941253_vImplementationGuideCodeSystems.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201704121627210_vTemplateRelationship.cs" />
-    <Compile Include="Migrations\201704121627210_vTemplateRelationship.Designer.cs">
-      <DependentUpon>201704121627210_vTemplateRelationship.cs</DependentUpon>
     <Compile Include="Migrations\201705121726509_implementationGuideAccessRequests.cs" />
     <Compile Include="Migrations\201705121726509_implementationGuideAccessRequests.Designer.cs">
       <DependentUpon>201705121726509_implementationGuideAccessRequests.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704121915528_vCodeSystemUsage.cs" />
-    <Compile Include="Migrations\201704121915528_vCodeSystemUsage.Designer.cs">
-      <DependentUpon>201704121915528_vCodeSystemUsage.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
@@ -221,19 +211,11 @@
     <EmbeddedResource Include="Migrations\201703292147411_multipleValueSetIdentifiers.resx">
       <DependentUpon>201703292147411_multipleValueSetIdentifiers.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704111943303_multipleContainedTemplates.resx">
-      <DependentUpon>201704111943303_multipleContainedTemplates.cs</DependentUpon>
     <EmbeddedResource Include="Migrations\201705041941253_vImplementationGuideCodeSystems.resx">
       <DependentUpon>201705041941253_vImplementationGuideCodeSystems.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704121627210_vTemplateRelationship.resx">
-      <DependentUpon>201704121627210_vTemplateRelationship.cs</DependentUpon>
     <EmbeddedResource Include="Migrations\201705121726509_implementationGuideAccessRequests.resx">
       <DependentUpon>201705121726509_implementationGuideAccessRequests.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FHIR_Latest_Resources.txt" />
-    <EmbeddedResource Include="Migrations\201704121915528_vCodeSystemUsage.resx">
-      <DependentUpon>201704121915528_vCodeSystemUsage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -241,26 +223,7 @@
     <EmbeddedResource Include="Migrations\201703292147411_searchValueSet_up.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704111943303_getImplementationGuideTemplates_up.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704111943303_getImplementationGuideTemplates_down.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704111943303_vContainedTemplateCount_down.sql" />
-    <EmbeddedResource Include="Migrations\201704111943303_vContainedTemplateCount_up.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704111943303_vTemplateUsage_down.sql" />
-    <EmbeddedResource Include="Migrations\201704111943303_vTemplateUsage_up.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704121627210_vTemplateRelationship_down.sql" />
-    <EmbeddedResource Include="Migrations\201704121627210_vTemplateRelationship_up.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704121915528_vCodeSystemUsage_down.sql" />
-    <EmbeddedResource Include="Migrations\201704121915528_vCodeSystemUsage_up.sql" />
+    <Content Include="Migrations\FHIR_STU3_Resources.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

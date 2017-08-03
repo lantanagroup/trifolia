@@ -68,7 +68,7 @@ namespace Trifolia.Generation.Versioning
                 // Added constraints
                 foreach (var cConstraint in newTemplate.Constraints.Where(b => !previousTemplate.Constraints.Exists(a => a.Number == b.Number)))
                 {
-                    IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint);
+                    IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint, null);
 
                     ComparisonConstraintResult cResult = new ComparisonConstraintResult()
                     {
@@ -87,7 +87,7 @@ namespace Trifolia.Generation.Versioning
                 // Deleted constraints
                 foreach (var cConstraint in previousTemplate.Constraints.Where(a => !newTemplate.Constraints.Exists(b => b.Number == a.Number)))
                 {
-                    IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint);
+                    IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint, null);
 
                     ComparisonConstraintResult cResult = new ComparisonConstraintResult()
                     {
@@ -134,8 +134,8 @@ namespace Trifolia.Generation.Versioning
 
         private ComparisonConstraintResult CompareConstraint(IGSettingsManager igSettings, IConstraint oldConstraint, IConstraint newConstraint)
         {
-            var oldFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, oldConstraint);
-            var newFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, newConstraint);
+            var oldFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, oldConstraint, null);
+            var newFc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, newConstraint, null);
 
             var newNarrative = newFc.GetPlainText();
             var oldNarrative = oldFc.GetPlainText();
@@ -192,13 +192,11 @@ namespace Trifolia.Generation.Versioning
 
         private string GetContainedTemplateDisplay(IConstraint constraint)
         {
-            if (constraint.ContainedTemplateId != null)
-            {
-                Template containedTemplate = this.tdb.Templates.Single(y => y.Id == constraint.ContainedTemplateId);
-                return string.Format("{0} ({1})", containedTemplate.Name, containedTemplate.Oid);
-            }
-
-            return string.Empty;
+            var containedTemplateStrings = (from r in this.tdb.TemplateConstraintReferences
+                                            join t in this.tdb.Templates on r.ReferenceIdentifier equals t.Oid
+                                            where r.ReferenceType == ConstraintReferenceTypes.Template
+                                            select string.Format("{0} ({1})", t.Name, t.Oid));
+            return string.Join(", ", containedTemplateStrings);
         }
 
         private string GetCodeSystemDisplay(IConstraint constraint)

@@ -305,7 +305,14 @@ namespace Trifolia.Export.FHIR.STU3
             // "context" field so that the extension knows where it can be used.
             if (template.PrimaryContextType == "Extension")
             {
-                var containingTemplateTypes = template.ContainingConstraints.Select(y => y.Template.PrimaryContextType);
+                // Get a list of all template's context type that reference this template
+                // TODO: Might need to re-factor this into a view for performance
+                var containingTemplateTypes = (from tcr in this.tdb.TemplateConstraintReferences
+                                               join tc in this.tdb.TemplateConstraints on tcr.TemplateConstraintId equals tc.Id
+                                               join t in this.tdb.Templates on tc.TemplateId equals t.Id
+                                               where tcr.ReferenceType == ConstraintReferenceTypes.Template &&
+                                                 tcr.ReferenceIdentifier == template.Oid
+                                               select t.PrimaryContextType);
                 fhirStructureDef.Context = containingTemplateTypes.ToList();
             }
 
