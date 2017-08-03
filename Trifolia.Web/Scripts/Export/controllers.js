@@ -138,8 +138,8 @@
                 delete settings.ValueSetMaxMembers;
 
                 var shouldReloadTemplates =
-                    $scope.criteria.IncludeInferred != settings.IncludeInferred ||
-                    $scope.criteria.ParentTemplateIds.length != settings.ParentTemplateIds.length;
+                    $scope.criteria.IncludeInferred !== settings.IncludeInferred ||
+                    $scope.criteria.ParentTemplateIds.length !== settings.ParentTemplateIds.length;
 
                 angular.extend($scope.criteria, settings);
 

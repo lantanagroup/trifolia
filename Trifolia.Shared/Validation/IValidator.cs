@@ -11,6 +11,6 @@ namespace Trifolia.Shared.Validation
     {
         ValidationResults ValidateImplementationGuide(int implementationGuideId);
         List<ValidationResult> ValidateTemplate(int templateId);
-        List<ValidationResult> ValidateTemplate(Template template, SimpleSchema igSchema);
+        List<ValidationResult> ValidateTemplate(Template template, SimpleSchema igSchema, IEnumerable<Template> allContainedTemplates = null);
     }
 }

@@ -33,6 +33,15 @@ namespace Trifolia.Plugins.Validation
         {
             ValidationResults results = new ValidationResults();
 
+            var childTemplateIds = implementationGuide.ChildTemplates.Select(y => y.Id);
+            var containedTemplateIds = (from vtr in this.tdb.ViewTemplateRelationships.AsNoTracking()
+                                      join pt in childTemplateIds on vtr.ParentTemplateId equals pt
+                                      join ct in this.tdb.Templates.AsNoTracking() on vtr.ChildTemplateId equals ct.Id
+                                      select ct.Id).Distinct();
+            var containedTemplates = (from cti in containedTemplateIds
+                                      join t in this.tdb.Templates.AsNoTracking() on cti equals t.Id
+                                      select t).ToList();
+
             foreach (var template in implementationGuide.ChildTemplates)
             {
                 var result = new TemplateValidationResult()
@@ -40,7 +49,7 @@ namespace Trifolia.Plugins.Validation
                     Id = template.Id,
                     Name = template.Name,
                     Oid = template.Oid,
-                    Items = this.ValidateTemplate(template, igSchema)
+                    Items = this.ValidateTemplate(template, igSchema, containedTemplates)
                 };
 
                 if (result.Items.Count > 0)
@@ -69,7 +78,7 @@ namespace Trifolia.Plugins.Validation
             return ValidateTemplate(template, igSchema);
         }
 
-        public virtual List<ValidationResult> ValidateTemplate(Template template, SimpleSchema igSchema)
+        public virtual List<ValidationResult> ValidateTemplate(Template template, SimpleSchema igSchema, IEnumerable<Template> allContainedTemplates = null)
         {
             SimpleSchema templateSchema = template.GetSchema(igSchema);
 
@@ -106,7 +115,7 @@ namespace Trifolia.Plugins.Validation
                 rootConstraints.ForEach(y =>
                 {
                     // The first child in the schema is the complex type itself
-                    ValidateTemplateConstraint(this.tdb, template, xpathNavigator, results, templateSchema, templateSchema.Children, y);
+                    ValidateTemplateConstraint(template, xpathNavigator, results, templateSchema, templateSchema.Children, y, allContainedTemplates);
                 });
             }
 
@@ -119,7 +128,14 @@ namespace Trifolia.Plugins.Validation
         /// <param name="results">The list of errors that should be added to when a constraint has an error matching the schema</param>
         /// <param name="schemaObjects">The list of sibling-level schema objects that the constraint should be compared to</param>
         /// <param name="currentConstraint">The current constraint to match against the schema</param>
-        public static void ValidateTemplateConstraint(IObjectRepository tdb, Template template, XPathNavigator xpathNavigator, List<ValidationResult> results, SimpleSchema schema, List<SimpleSchema.SchemaObject> schemaObjects, TemplateConstraint currentConstraint)
+        public void ValidateTemplateConstraint(
+            Template template, 
+            XPathNavigator xpathNavigator, 
+            List<ValidationResult> results, 
+            SimpleSchema schema, 
+            List<SimpleSchema.SchemaObject> schemaObjects, 
+            TemplateConstraint currentConstraint,
+            IEnumerable<Template> allContainedTemplates)
         {
             List<TemplateConstraint> childConstraints = currentConstraint.ChildConstraints.ToList();
 
@@ -154,8 +170,9 @@ namespace Trifolia.Plugins.Validation
                 // Verify that the template (if specified) matches the datatype of the constraints
                 if (foundSchemaObject != null)
                 {
+                    var templates = allContainedTemplates != null ? allContainedTemplates : this.tdb.Templates.AsEnumerable();
                     var containedTemplates = (from tcr in currentConstraint.References
-                                              join t in tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                              join t in templates on tcr.ReferenceIdentifier equals t.Oid
                                               where tcr.ReferenceType == ConstraintReferenceTypes.Template
                                               select t);
                     string constraintDataType = !string.IsNullOrEmpty(currentConstraint.DataType) ? currentConstraint.DataType : foundSchemaObject.DataType;
@@ -226,7 +243,7 @@ namespace Trifolia.Plugins.Validation
                         childSchemaObjects = foundSchemaTypeObject.Children;
                 }
 
-                childConstraints.ForEach(y => ValidateTemplateConstraint(tdb, template, xpathNavigator, results, schema, childSchemaObjects, y));
+                childConstraints.ForEach(y => ValidateTemplateConstraint(template, xpathNavigator, results, schema, childSchemaObjects, y, allContainedTemplates));
             }
         }
     }

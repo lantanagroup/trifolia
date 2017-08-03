@@ -74,9 +74,9 @@ namespace Trifolia.Plugins.Validation.FHIR
             return results;
         }
 
-        public override List<ValidationResult> ValidateTemplate(Template template, SimpleSchema igSchema)
+        public override List<ValidationResult> ValidateTemplate(Template template, SimpleSchema igSchema, IEnumerable<Template> allContainedTemplates = null)
         {
-            List<ValidationResult> results = base.ValidateTemplate(template, igSchema);
+            List<ValidationResult> results = base.ValidateTemplate(template, igSchema, allContainedTemplates);
 
             foreach (var templateExample in template.TemplateSamples)
             {
