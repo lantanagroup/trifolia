@@ -43,8 +43,9 @@
 <script type="text/javascript" src="/Scripts/lib/angular/ui-bootstrap-tpls-2.5.0.min.js"></script>
 
 <!-- Application Scripts -->
-<script type="text/javascript" src="/Scripts/angular/startup.js"></script>
-<script type="text/javascript" src="/Scripts/angular/services.js"></script>
+<script type="text/javascript" src="/Scripts/angular/startup.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+<script type="text/javascript" src="/Scripts/angular/services.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
+<script type="text/javascript" src="/Scripts/angular/directives.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 <script type="text/javascript" src="/Scripts/utils.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 <script type="text/javascript" src="/Scripts/PermissionManagement.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
 <script type="text/javascript" src="/Scripts/SupportRequestHandler.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>

@@ -25,6 +25,21 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string UmlsValidateUrl
+        {
+            get { return ConfigurationManager.AppSettings["UmlsValidateUrl"]; }
+        }
+
+        public static string UmlsLicenseCode
+        {
+            get { return ConfigurationManager.AppSettings["UmlsLicenseCode"]; }
+        }
+
+        public static string EncryptionSecret
+        {
+            get { return ConfigurationManager.AppSettings["EncryptionSecret"]; }
+        }
+
         public static string DebugMailTo
         {
             get { return ConfigurationManager.AppSettings["DebugMailTo"]; }

@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -183,14 +183,14 @@
             <div class="main-content">
                 
 <p></p>
-<p class="rvps2"><span class="rvts6">Trifolia's implementation of the FHIR specification is documented here. This topic includes information on the latest implementation of FHIR in Trifolia; previous versions are kept for backwards compatibility, but are not actively maintained. </span><span class="rvts19">Trifolia currently supports the STU3 version of FHIR.</span></p>
+<p class="rvps2"><span class="rvts6">Trifolia's implementation of the FHIR specification is documented here. This topic includes information on the latest implementation of FHIR in Trifolia; previous versions are kept for backwards compatibility, but are not actively maintained. </span><span class="rvts20">Trifolia currently supports the STU3 version of FHIR.</span></p>
 <p class="rvps2"><span class="rvts6">The following table(s) indicate what properties Trifolia uses of the FHIR specification, and any relevant notes about the property's usage in Trifolia.</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">StructureDefinition</span></span></h2>
+<h2 class="rvps11"><span class="rvts0"><span class="rvts21">StructureDefinition</span></span></h2>
 <div class="rvps2"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
 <tr valign="top">
-<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Property</span></p>
+<td width="270" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts20">Property</span></p>
 </td>
-<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Notes</span></p>
+<td width="1148" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts20">Notes</span></p>
 </td>
 </tr>
 <tr valign="top">
@@ -273,12 +273,12 @@
 </tr>
 </table>
 </div>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts22">ElementDefinition</span></span></h3>
+<h3 class="rvps12"><span class="rvts0"><span class="rvts22">ElementDefinition</span></span></h3>
 <div class="rvps2"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
 <tr valign="top">
-<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Property</span></p>
+<td width="271" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts20">Property</span></p>
 </td>
-<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Notes</span></p>
+<td width="1147" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts20">Notes</span></p>
 </td>
 </tr>
 <tr valign="top">
@@ -421,9 +421,9 @@
 </tr>
 </table>
 </div>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">ImplementationGuide</span></span></h2>
+<h2 class="rvps11"><span class="rvts0"><span class="rvts21">ImplementationGuide</span></span></h2>
 <p class="rvps2"><span class="rvts6">TODO</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">ValueSet</span></span></h2>
+<h2 class="rvps11"><span class="rvts0"><span class="rvts21">ValueSet</span></span></h2>
 <p class="rvps2"><span class="rvts6">TODO</span></p>
 <p></p>
 
@@ -433,19 +433,35 @@
         </div>  <!-- /#topic-content -->
     </article>
 
-    <footer>
-        
-    </footer>
+    <footer></footer>
 
   </div>  <!-- /#main -->
 
   <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
   <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
   <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
   
@@ -471,10 +487,16 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Custom JS
+	  
       // Boot the app
       app.Boot();
     });
   </script>
 
-  
+
+
+</body>
+
+</html>
 

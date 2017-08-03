@@ -115,6 +115,22 @@
                     <!-- /ko -->
 
                     <!-- /ko -->
+
+                    <!-- ko foreach: ImportResults().ValueSets -->
+                    <tr>
+                        <td>Value Set</td>
+                        <td><span data-bind="text: Name"></span> (<span data-bind="text: Identifier"></span>)</td>
+                        <td>Added</td>
+                    </tr>
+                    <!-- /ko -->
+                    
+                    <!-- ko foreach: ImportResults().CodeSystems -->
+                    <tr>
+                        <td>Code System</td>
+                        <td><span data-bind="text: Name"></span> (<span data-bind="text: Identifier"></span>)</td>
+                        <td>Added</td>
+                    </tr>
+                    <!-- /ko -->
                 </tbody>
             </table>
         </div>

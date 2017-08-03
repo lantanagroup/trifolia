@@ -137,14 +137,11 @@ namespace Trifolia.Import.Native
 
                 if (foundIgTemplateType == null)
                 {
-                    foundIgTemplateType = new ImplementationGuideTemplateType()
-                    {
-                        ImplementationGuide = implementationGuide,
-                        TemplateType = foundTemplateType
-                    };
-
+                    foundIgTemplateType = new ImplementationGuideTemplateType();
+                    foundIgTemplateType.TemplateType = foundTemplateType;
+                    foundIgTemplateType.TemplateTypeId = foundTemplateType.Id;
+                    foundIgTemplateType.ImplementationGuide = implementationGuide;
                     implementationGuide.TemplateTypes.Add(foundIgTemplateType);
-                    this.tdb.ImplementationGuideTemplateTypes.Add(foundIgTemplateType);
                 }
 
                 if (foundIgTemplateType.Name != importTemplateType.CustomName)
@@ -324,7 +321,9 @@ namespace Trifolia.Import.Native
                 {
                     var igTemplateType = new ImplementationGuideTemplateType()
                     {
+                        ImplementationGuide = implementationGuide,
                         TemplateType = templateType,
+                        TemplateTypeId = templateType.Id,
                         Name = templateType.Name
                     };
                     implementationGuide.TemplateTypes.Add(igTemplateType);

@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -194,22 +194,22 @@
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <p class="rvps2"><span class="rvts6">In this case, an instance of the template/profile may only contain </span><span class="rvts36">either </span><span class="rvts6">effectiveDateTime or effectivePeriod.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<p class="rvps2"><span class="rvts19">Valid XML Example:</span></p>
-<p class="rvps15"><span class="rvts46">&lt;Observation&gt;</span><br/><span class="rvts46"> &nbsp;&lt;effectiveDateTime value="xxx" /&gt;</span><br/><span class="rvts46">&lt;/Observation&gt;</span></p>
+<p class="rvps2"><span class="rvts20">Valid XML Example:</span></p>
+<p class="rvps19"><span class="rvts46">&lt;Observation&gt;</span><br/><span class="rvts46"> &nbsp;&lt;effectiveDateTime value="xxx" /&gt;</span><br/><span class="rvts46">&lt;/Observation&gt;</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<p class="rvps2"><span class="rvts19">Invalid XML Example:</span></p>
-<p class="rvps15"><span class="rvts46">&lt;Observation&gt;</span><br/><span class="rvts46"> &nbsp;&lt;effectiveDateTime value="xxx" /&gt;</span><br/><span class="rvts46"> &nbsp;&lt;effectivePeriod&gt;</span><br/><span class="rvts46"> &nbsp; &nbsp;&lt;from value="yyy" /&gt;</span><br/><span class="rvts46"> &nbsp; &nbsp;&lt;to value="zzz" /&gt;</span><br/><span class="rvts46"> &nbsp;&lt;/effectivePeriod&gt;</span><br/><span class="rvts46">&lt;/Observation</span></p>
-<p class="rvps16"><span class="rvts6"><br/></span></p>
-<p class="rvps16"><span class="rvts6">The Template/Profile editor </span><span class="rvts36">does </span><span class="rvts6">allow you to choose/constrain more than one option; effectively giving the implementer the choice to choose which option for themselves.</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Template/Profile Editor</span></span></h2>
+<p class="rvps2"><span class="rvts20">Invalid XML Example:</span></p>
+<p class="rvps19"><span class="rvts46">&lt;Observation&gt;</span><br/><span class="rvts46"> &nbsp;&lt;effectiveDateTime value="xxx" /&gt;</span><br/><span class="rvts46"> &nbsp;&lt;effectivePeriod&gt;</span><br/><span class="rvts46"> &nbsp; &nbsp;&lt;from value="yyy" /&gt;</span><br/><span class="rvts46"> &nbsp; &nbsp;&lt;to value="zzz" /&gt;</span><br/><span class="rvts46"> &nbsp;&lt;/effectivePeriod&gt;</span><br/><span class="rvts46">&lt;/Observation</span></p>
+<p class="rvps20"><span class="rvts6"><br/></span></p>
+<p class="rvps20"><span class="rvts6">The Template/Profile editor </span><span class="rvts36">does </span><span class="rvts6">allow you to choose/constrain more than one option; effectively giving the implementer the choice to choose which option for themselves.</span></p>
+<h2 class="rvps11"><span class="rvts0"><span class="rvts21">Template/Profile Editor</span></span></h2>
 <p class="rvps2"><span class="rvts6">The template/profile editor allows you to specify conformance and cardinality for the choice as a whole (ex: "effective[x]") but does not allow you to specify conformance/cardinality for the options within the choice (ex: "effectiveDateTime" and "effectivePeriod").</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Narrative Generation</span></span></h2>
+<h2 class="rvps11"><span class="rvts0"><span class="rvts21">Narrative Generation</span></span></h2>
 <p class="rvps2"><span class="rvts6">Here is an example of narrative generated for choice elements when multiple options are constrained/selected:</span></p>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts19">MAY </span><span class="rvts6">contain zero or one [0..1] </span><span class="rvts19">onset[x]</span><span class="rvts6">, where </span><span class="rvts19">onset[x]</span><span class="rvts6"> is one of (CONF:3272-43)</span></li>
+<li value="1" class="rvps2"><span class="rvts20">MAY </span><span class="rvts6">contain zero or one [0..1] </span><span class="rvts20">onset[x]</span><span class="rvts6">, where </span><span class="rvts20">onset[x]</span><span class="rvts6"> is one of (CONF:3272-43)</span></li>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts19">onsetDateTime </span><span class="rvts6">(CONF:3272-44)</span></li>
-<li value="2" class="rvps2"><span class="rvts6">or </span><span class="rvts19">onsetAge </span><span class="rvts6">(CONF:3272-45)</span></li>
+<li value="1" class="rvps2"><span class="rvts20">onsetDateTime </span><span class="rvts6">(CONF:3272-44)</span></li>
+<li value="2" class="rvps2"><span class="rvts6">or </span><span class="rvts20">onsetAge </span><span class="rvts6">(CONF:3272-45)</span></li>
 </ol></ol>
 <p></p>
 
@@ -219,19 +219,35 @@
         </div>  <!-- /#topic-content -->
     </article>
 
-    <footer>
-        
-    </footer>
+    <footer></footer>
 
   </div>  <!-- /#main -->
 
   <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
   <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
   <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
   
@@ -257,10 +273,16 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Custom JS
+	  
       // Boot the app
       app.Boot();
     });
   </script>
 
-  
+
+
+</body>
+
+</html>
 

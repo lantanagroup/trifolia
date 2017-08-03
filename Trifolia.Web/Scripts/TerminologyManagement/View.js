@@ -1,6 +1,7 @@
 ﻿var ViewValueSetViewModel = function (valueSetId) {
     var self = this;
 
+    self.Message = ko.observable('');
     self.Concepts = ko.observableArray([]);
     self.CodeSystems = [];
     self.Page = ko.observable(1);
@@ -14,6 +15,22 @@
     self.CompleteHint = ko.observable('');
 
     /* METHODS */
+
+    self.ImportSourceDisplay = ko.computed(function () {
+        var importSource = self.ValueSet() ? self.ValueSet().ImportSource() : null;
+
+        switch (importSource)
+        {
+            case 1:
+                return 'VSAC';
+            case 2:
+                return 'PHIN VADS';
+            case 3:
+                return 'ROSE TREE';
+            default:
+                return '';
+        }
+    });
 
     self.GetCodeSystemName = function (codeSystemId) {
         for (var i in self.CodeSystems) {
@@ -116,6 +133,14 @@
 
                 self.LastPage(Math.ceil(results.total / count));
                 self.Loading(false);
+            },
+            error: function (err) {
+                if (err.responseText) {
+                    self.Message(err.responseText);
+                } else {
+                    console.log(err);
+                    self.Message('An error occurred while retrieving the concepts for the value set.');
+                }
             }
         });
     };

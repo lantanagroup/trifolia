@@ -1,18 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
-using System.Xml.Serialization;
 using System.Xml;
-
 using Trifolia.DB;
-using TDBTemplate = Trifolia.DB.Template;
-using TDBTemplateConstraint = Trifolia.DB.TemplateConstraint;
+using Trifolia.Shared;
+using ExportImplementationGuide = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuide;
 using ExportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
 using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
-using ExportImplementationGuide = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuide;
-using Trifolia.Shared;
+using TDBTemplate = Trifolia.DB.Template;
 
 namespace Trifolia.Export.Native
 {
@@ -95,6 +92,81 @@ namespace Trifolia.Export.Native
                 }
             });
 
+            var valueSets = (from t in this.templates
+                             join tc in this.tdb.TemplateConstraints.AsNoTracking() on t.Id equals tc.TemplateId
+                             join vs in this.tdb.ValueSets.AsNoTracking() on tc.ValueSetId equals vs.Id
+                             select vs);
+            var codeSystems = (from vs in valueSets
+                               join vsm in this.tdb.ValueSetMembers.AsNoTracking() on vs.Id equals vsm.ValueSetId
+                               join cs in this.tdb.CodeSystems.AsNoTracking() on vsm.CodeSystemId equals cs.Id
+                               select cs).Distinct();
+
+            foreach (var codeSystem in codeSystems)
+            {
+                var exportCodeSystem = new Shared.ImportExport.Model.TrifoliaCodeSystem()
+                {
+                    name = codeSystem.Name,
+                    Description = codeSystem.Description,
+                    Identifier = new Shared.ImportExport.Model.TrifoliaCodeSystemIdentifier()
+                    {
+                        value = codeSystem.Oid
+                    }
+                };
+
+                export.CodeSystem.Add(exportCodeSystem);
+            }
+
+            foreach (var valueSet in valueSets)
+            {
+                var exportValueSet = new Shared.ImportExport.Model.TrifoliaValueSet()
+                {
+                    name = valueSet.Name,
+                    Description = valueSet.Description,
+                    code = valueSet.Code,
+                    intensional = valueSet.Intensional.HasValue ? valueSet.Intensional.Value : false,
+                    intensionalSpecified = valueSet.Intensional.HasValue,
+                    isIncomplete = valueSet.IsIncomplete,
+                    source = valueSet.Source
+                };
+
+                foreach (var valueSetIdentifier in valueSet.Identifiers)
+                {
+                    var exportValueSetId = new Shared.ImportExport.Model.TrifoliaValueSetIdentifier()
+                    {
+                        type = valueSetIdentifier.Type.ToString(),
+                        value = valueSetIdentifier.Identifier
+                    };
+
+                    if (valueSetIdentifier.IsDefault)
+                        exportValueSet.defaultIdentifier = valueSetIdentifier.Identifier;
+
+                    exportValueSet.Identifier.Add(exportValueSetId);
+                }
+
+                foreach (var valueSetMember in valueSet.Members)
+                {
+                    var exportValueSetMember = new Shared.ImportExport.Model.TrifoliaValueSetMember()
+                    {
+                        code = valueSetMember.Code,
+                        displayName = valueSetMember.DisplayName,
+                        codeSystemIdentifier = valueSetMember.CodeSystem.Oid,
+                        statusDate = valueSetMember.StatusDate.HasValue ? valueSetMember.StatusDate.Value.ToString("s") : null
+                    };
+
+                    if (valueSetMember.Status != null)
+                    {
+                        if (valueSetMember.Status.ToLower().Trim() == "active")
+                            exportValueSetMember.status = Shared.ImportExport.Model.TrifoliaValueSetMemberStatus.active;
+                        else if (valueSetMember.Status.ToLower().Trim() == "inactive")
+                            exportValueSetMember.status = Shared.ImportExport.Model.TrifoliaValueSetMemberStatus.inactive;
+                    }
+
+                    exportValueSet.Member.Add(exportValueSetMember);
+                }
+
+                export.ValueSet.Add(exportValueSet);
+            }
+
             return export;
         }
 
@@ -120,6 +192,12 @@ namespace Trifolia.Export.Native
 
                 return sw.ToString();
             }
+        }
+
+        public string GenerateJSONExport()
+        {
+            var export = GenerateExport();
+            return JsonConvert.SerializeObject(export);
         }
     }
 

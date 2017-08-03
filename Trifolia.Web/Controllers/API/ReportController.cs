@@ -9,6 +9,8 @@ using Trifolia.DB;
 using Trifolia.Authorization;
 using Trifolia.Web.Models.Report;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
+using Trifolia.Shared.Validation;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -98,28 +100,12 @@ namespace Trifolia.Web.Controllers.API
         }
 
         [HttpGet, Route("api/Report/ImplementationGuide/{implementationGuideId}/Validate")]
-        public List<TemplateValidation> ValidateTemplates(int implementationGuideId)
+        public List<TemplateValidationResult> ValidateTemplates(int implementationGuideId)
         {
-            var implementationGuide = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
-            var results = new List<TemplateValidation>();
-            var igSchema = implementationGuide.ImplementationGuideType.GetSimpleSchema();
-
-            foreach (var template in implementationGuide.ChildTemplates)
-            {
-                var result = new TemplateValidation()
-                {
-                    Id = template.Id,
-                    Name = template.Name,
-                    Oid = template.Oid
-                };
-
-                var validationResults = template.ValidateTemplate(this.tdb, null, igSchema);
-                result.Items.AddRange(validationResults);
-
-                results.Add(result);
-            }
-
-            return results;
+            ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            var plugin = ig.ImplementationGuideType.GetPlugin();
+            var validator = plugin.GetValidator(this.tdb);
+            return validator.ValidateImplementationGuide(implementationGuideId).TemplateResults;
         }
 
         [HttpPost, Route("api/Report/Template/Review")]

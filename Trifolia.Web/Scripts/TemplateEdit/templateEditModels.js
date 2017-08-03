@@ -862,7 +862,7 @@ var TemplateModel = function (data, viewModel) {
     var validation = ko.validatedObservable({
         Name: self.Name.extend({ required: { message: 'Name is required.' }, maxLength: 255 }),
         Oid: self.Oid.extend({ required: { message: 'Identifier is required.' }, maxLength: 255, templateOidFormat: true, templateIdentifierUnique: self.Id}),
-        Bookmark: self.Bookmark.extend({ required: { message: 'Bookmark is required.' }, maxLength: 40 }),
+        Bookmark: self.Bookmark.extend({ required: { message: 'Bookmark is required.' }, maxLength: 40, bookmarkUnique: self.Id }),
         IsOpen: self.IsOpen.extend({ required: { message: 'Extensibility is required.' } }),
         TemplateTypeId: self.TemplateTypeId.extend({ required: { message: 'Template/Profile Type is required.' } }),
         PrimaryContext: self.PrimaryContext.extend({ required: { message: 'Primary Context is required.' } }),

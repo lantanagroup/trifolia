@@ -108,17 +108,13 @@ namespace Trifolia.Export.FHIR.STU3
         public void CreateElementDefinition(
             StructureDefinition strucDef,
             TemplateConstraint constraint,
-            SimpleSchema.SchemaObject schemaObject,
-            string sliceName = null)
+            SimpleSchema.SchemaObject schemaObject)
         {
             if (constraint.IsPrimitive)     // Skip primitives (for now, at least)
                 return;
 
-            string newSliceName = null;
-
-            if (constraint.IsBranch)
-                newSliceName = string.Format("{0}_slice_pos{1}", constraint.Context, constraint.Order);
-
+            string sliceName = constraint.GetSliceName();
+            string elementPath = constraint.GetElementPath(strucDef.Type != null ? strucDef.Type.ToString() : null);
             var igSettings = GetIGSettings(constraint);
             var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, this.igTypePlugin, constraint);
             string definition = constraintFormatter.GetPlainText(false, false, false);
@@ -131,9 +127,10 @@ namespace Trifolia.Export.FHIR.STU3
                 Short = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : constraint.Context,
                 Label = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : null,
                 Comment = !string.IsNullOrEmpty(constraint.Notes) ? constraint.Notes : null,
-                Path = constraint.GetElementPath(strucDef.Type != null ? strucDef.Type.ToString() : null),
-                SliceName = constraint.IsBranch ? newSliceName : null,
-                Definition = definition
+                Path = elementPath,
+                SliceName = constraint.IsBranch ? sliceName : null,
+                Definition = definition,
+                ElementId = constraint.GetElementId()
             };
 
             if (constraint.IsChoice)
@@ -242,11 +239,7 @@ namespace Trifolia.Export.FHIR.STU3
                 // If there is a contained template/profile, make sure it supports a "Reference" type, and then output the profile identifier in the type
                 if (containedTemplates.Count() > 0 && newElementDef.Type.Exists(y => y.Code == "Reference" || y.Code == "Extension"))
                 {
-                    var containedTypes = new List<ElementDefinition.TypeRefComponent>();
-
-                    // FHIR requires that referenced profiles be represented by multiple types on a single element
-                    // TODO: There is some potential loss of properties on the second element definition
-                    if (!string.IsNullOrEmpty(sliceName))
+                    if (!string.IsNullOrEmpty(newElementDef.SliceName))
                     {
                         var foundMatchingElement = strucDef.Differential.Element.SingleOrDefault(y => y.Path == newElementDef.Path && y.SliceName == newElementDef.SliceName);
 
@@ -257,6 +250,7 @@ namespace Trifolia.Export.FHIR.STU3
                         }
                     }
 
+                    var containedTypes = new List<ElementDefinition.TypeRefComponent>();
                     foreach (var containedTemplate in containedTemplates)
                     {
                         bool isExtension = containedTemplate.PrimaryContextType == "Extension" && newElementDef.Type.Exists(y => y.Code == "Extension");
@@ -281,7 +275,7 @@ namespace Trifolia.Export.FHIR.STU3
             foreach (var childConstraint in constraint.ChildConstraints.OrderBy(y => y.Order))
             {
                 var childSchemaObject = schemaObject != null ? schemaObject.Children.SingleOrDefault(y => y.Name == childConstraint.Context) : null;
-                CreateElementDefinition(strucDef, childConstraint, childSchemaObject, newSliceName);
+                CreateElementDefinition(strucDef, childConstraint, childSchemaObject);
             }
         }
 
@@ -303,17 +297,12 @@ namespace Trifolia.Export.FHIR.STU3
 
             // If this is an extension, determine what uses the extension and list them in the
             // "context" field so that the extension knows where it can be used.
-            if (template.PrimaryContextType == "Extension")
+            foreach (var extension in template.Extensions)
             {
-                // Get a list of all template's context type that reference this template
-                // TODO: Might need to re-factor this into a view for performance
-                var containingTemplateTypes = (from tcr in this.tdb.TemplateConstraintReferences
-                                               join tc in this.tdb.TemplateConstraints on tcr.TemplateConstraintId equals tc.Id
-                                               join t in this.tdb.Templates on tc.TemplateId equals t.Id
-                                               where tcr.ReferenceType == ConstraintReferenceTypes.Template &&
-                                                 tcr.ReferenceIdentifier == template.Oid
-                                               select t.PrimaryContextType);
-                fhirStructureDef.Context = containingTemplateTypes.ToList();
+                var fhirExtension = Convert(extension);
+
+                if (fhirExtension != null)
+                    fhirStructureDef.Extension.Add(fhirExtension);
             }
 
             // Extensions
@@ -370,11 +359,10 @@ namespace Trifolia.Export.FHIR.STU3
                 fhirStructureDef.Differential = differential;
 
                 // Add base element for resource
-                differential.Element.Add(new ElementDefinition()
-                {
-                    ElementId = string.Format("{0}-00001", template.Id.ToString()),
-                    Path = template.PrimaryContextType
-                });
+                var rootElement = new ElementDefinition();
+                rootElement.Path = template.PrimaryContextType;
+                rootElement.ElementId = template.PrimaryContextType;
+                differential.Element.Add(rootElement);
 
                 foreach (var constraint in template.ChildConstraints.Where(y => y.ParentConstraint == null).OrderBy(y => y.Order))
                 {
@@ -394,7 +382,7 @@ namespace Trifolia.Export.FHIR.STU3
                 foreach (var sliceGroup in sliceGroups)
                 {
                     ElementDefinition newElementDef = new ElementDefinition();
-                    newElementDef.ElementId = string.Format("{0}-{1}", template.Id, currentSliceGroupCount.ToString("00"));
+                    //newElementDef.ElementId = string.Format("{0}-{1}", template.Id, currentSliceGroupCount.ToString("00"));
                     newElementDef.Path = sliceGroup.Key;
 
                     foreach (var branchConstraint in sliceGroup)
@@ -429,18 +417,6 @@ namespace Trifolia.Export.FHIR.STU3
                         else        // If no discriminators are specified, assume the child SHALL constraints are discriminators
                         {
                             var discriminatorConstraints = branchConstraint.ChildConstraints.Where(y => y.Conformance == "SHALL");
-
-                            // If the slice referencing a contained template, use the constraints of the contained template instead of the 
-                            // direct constraints of the branch
-                            if (branchConstraint.References.Any(y => y.ReferenceType == ConstraintReferenceTypes.Template))
-                            {
-                                discriminatorConstraints = (from tcr in branchConstraint.References
-                                                            join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
-                                                            join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
-                                                            where tc.ParentConstraintId == null && tc.Conformance == "SHALL"
-                                                            select tc);
-                            }
-
                             var singleValueDiscriminators = discriminatorConstraints.Where(y => !string.IsNullOrEmpty(y.Value));
 
                             // If there are constraints that have specific single-value bindings, prefer those

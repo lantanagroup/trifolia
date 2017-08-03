@@ -421,7 +421,7 @@ namespace Trifolia.Shared
                 Console.WriteLine("Test");
 
             // Make sure the element doesn't already exist
-            var foundExisting = siblings.SingleOrDefault(y => y.Name == newSimpleObject.Name);
+            var foundExisting = siblings.FirstOrDefault(y => y.Name == newSimpleObject.Name);
 
             if (update && foundExisting != null)
             {

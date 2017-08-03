@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using Trifolia.Config;
+using Trifolia.DB;
 using Trifolia.Export.FHIR.DSTU2;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
+using Trifolia.Shared.Validation;
 using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
 using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
@@ -19,14 +21,18 @@ namespace Trifolia.Plugins.FHIR
 
             switch (format)
             {
-                case ExportFormats.FHIR:
+                case ExportFormats.FHIR_Bundle:
                     ImplementationGuideExporter exporter = new ImplementationGuideExporter(tdb, schema, uri.Scheme, uri.Authority);
                     fhir_dstu2.Hl7.Fhir.Model.Bundle bundle = exporter.GetImplementationGuides(include: "ImplementationGuide:resource", implementationGuideId: igSettings.ImplementationGuideId);
                     return ConvertToBytes(fhir_dstu2.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToXml(bundle));
-                case ExportFormats.Proprietary:
+                case ExportFormats.Native_XML:
                     NativeExporter proprietaryExporter = new NativeExporter(tdb, templates, igSettings, true, categories);
-                    return ConvertToBytes(proprietaryExporter.GenerateXMLExport());
-                case ExportFormats.TemplatesDSTU:
+
+                    if (returnJson)
+                        return ConvertToBytes(proprietaryExporter.GenerateJSONExport());
+                    else
+                        return ConvertToBytes(proprietaryExporter.GenerateXMLExport());
+                case ExportFormats.Templates_DSTU_XML:
                     DecorExporter decorExporter = new DecorExporter(templates, tdb, igSettings.ImplementationGuideId);
                     return ConvertToBytes(decorExporter.GenerateXML());
                 default:
@@ -42,6 +48,11 @@ namespace Trifolia.Plugins.FHIR
         public string GetFHIRResourceInstanceXml(string content)
         {
             throw new NotImplementedException();
+        }
+
+        public IValidator GetValidator(IObjectRepository tdb)
+        {
+            return new Validation.RIMValidator(tdb);
         }
     }
 }

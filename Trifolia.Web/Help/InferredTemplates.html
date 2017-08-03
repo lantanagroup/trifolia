@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -185,9 +185,9 @@
 <p></p>
 <p class="rvps2"><span class="rvts6">Inferred templates are templates not directly owned by a given implementation guide, but are referenced by it.</span></p>
 <p class="rvps2"><span class="rvts34">Example Scenario</span></p>
-<p class="rvps2"><span class="rvts19">Implementation Guide A</span><span class="rvts6"> directly contains</span><span class="rvts19"> Template A, B</span><span class="rvts6"> and</span><span class="rvts19"> C</span></p>
-<p class="rvps2"><span class="rvts19">Implementation Guide B</span><span class="rvts6"> directly contains </span><span class="rvts19">Template D, E </span><span class="rvts6">and </span><span class="rvts19">F</span></p>
-<p class="rvps2"><span class="rvts19">Template D</span><span class="rvts6"> contains </span><span class="rvts19">Template A</span><span class="rvts6"> from </span><span class="rvts19">Implementation Guide A</span></p>
+<p class="rvps2"><span class="rvts20">Implementation Guide A</span><span class="rvts6"> directly contains</span><span class="rvts20"> Template A, B</span><span class="rvts6"> and</span><span class="rvts20"> C</span></p>
+<p class="rvps2"><span class="rvts20">Implementation Guide B</span><span class="rvts6"> directly contains </span><span class="rvts20">Template D, E </span><span class="rvts6">and </span><span class="rvts20">F</span></p>
+<p class="rvps2"><span class="rvts20">Template D</span><span class="rvts6"> contains </span><span class="rvts20">Template A</span><span class="rvts6"> from </span><span class="rvts20">Implementation Guide A</span></p>
 <p class="rvps2"><span class="rvts6">For "Implementation Guide B", "Template A" is an "inferred template" because it is not directly owned by "Implementation Guide B" but it is referenced by a template/profile that is directly owned by "Implementation Guide B".</span></p>
 <p></p>
 
@@ -197,19 +197,35 @@
         </div>  <!-- /#topic-content -->
     </article>
 
-    <footer>
-        
-    </footer>
+    <footer></footer>
 
   </div>  <!-- /#main -->
 
   <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
   <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
   <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
   
@@ -235,10 +251,16 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Custom JS
+	  
       // Boot the app
       app.Boot();
     });
   </script>
 
-  
+
+
+</body>
+
+</html>
 

@@ -1086,6 +1086,43 @@ var templateEditViewModel = function (templateId, defaults) {
                     }
                 }
             }
+
+            // Tell knockout to update the node list observables
+            if (hasBeenNotified) {
+                nodeList.valueHasMutated();
+            }
+        };
+
+        var associateConstraints = function () {
+            if (constraintList) {
+                for (var x in constraintList()) {
+                    var childConstraint = constraintList()[x];
+
+                    // Look for constraints that haven't been matched to a node, and create a node for them
+                    var foundNode = false;
+                    var nodes = nodeList();
+
+                    for (var y = 0; y < nodes.length; y++) {
+                        if (nodes[y].Constraint() == childConstraint) {
+                            foundNode = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundNode) {
+                        var newNode = createNode(null);
+                        newNode.Constraint(childConstraint);
+                        newNode.HasChildren(childConstraint.Children().length > 0);
+                    }
+                }
+            }
+
+            if (node) {
+                node.AreChildrenLoaded(true);
+            }
+
+            // Tell knockout to update the node list observables
+            nodeList.valueHasMutated();
         };
 
         var shouldCallServer = !node || !node.Constraint() || !node.Constraint().IsPrimitive();
@@ -1145,45 +1182,9 @@ var templateEditViewModel = function (templateId, defaults) {
                         };
                     };
 
-                    // Add primitives to the node
-                    var childPrimitives = [];
-                    if (constraintList) {
-                        for (var x in constraintList()) {
-                            var childConstraint = constraintList()[x];
-
-                            if (childConstraint.IsPrimitive()) {
-                                var newNode = createNode(null);
-                                newNode.Constraint(childConstraint);
-                                newNode.HasChildren(childConstraint.Children().length > 0);
-                            } else {
-                                // Look for constraints that haven't been matched to a node, and create a node for them
-                                var foundNode = false;
-                                var nodes = nodeList();
-
-                                for (var y = 0; y < nodes.length; y++) {
-                                    if (nodes[y].Constraint() == childConstraint) {
-                                        foundNode = true;
-                                        break;
-                                    }
-                                }
-
-                                if (!foundNode) {
-                                    var newNode = createNode(null);
-                                    newNode.Constraint(childConstraint);
-                                    newNode.HasChildren(childConstraint.Children().length > 0);
-                                }
-                            }
-                        }
-                    }
-
-                    if (node) {
-                        node.AreChildrenLoaded(true);
-                    }
+                    associateConstraints();
 
                     fixIncorrectOrder();
-
-                    // Tell knockout to update the node list observables
-                    nodeList.valueHasMutated();
 
                     if (node) {
                         node.ChildrenLoadingPromise(null);
@@ -1194,6 +1195,8 @@ var templateEditViewModel = function (templateId, defaults) {
                 }
             });
         } else {
+            associateConstraints();
+
             deferred.resolve();
         }
 

@@ -1,19 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Trifolia.Terminology;
-using VocabService = Trifolia.Terminology.VocabularyService;
-using ImplementationGuide = Trifolia.DB.ImplementationGuide;
-using Trifolia.DB;
-
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Packaging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Xml;
+using Trifolia.DB;
+using Trifolia.Export.Terminology;
+using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 
 namespace Trifolia.Test.Services.Vocabulary
 {
@@ -69,8 +64,8 @@ namespace Trifolia.Test.Services.Vocabulary
             this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             this.tdb.AddConstraintToTemplate(t, null, null, "value", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs2);
 
-            VocabService service = new VocabService(this.tdb);
-            byte[] spreadsheetBytes = service.GetImplementationGuideVocabularySpreadsheet(this.ig.Id, 100);
+            ExcelExporter exporter = new ExcelExporter(this.tdb);
+            byte[] spreadsheetBytes = exporter.GetSpreadsheet(this.ig.Id, 100);
 
             Assert.IsNotNull(spreadsheetBytes);
 
@@ -162,8 +157,9 @@ namespace Trifolia.Test.Services.Vocabulary
             TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = false;
 
-            VocabService service = new VocabService(this.tdb);
-            string vocXml = service.GetImplementationGuideVocabulary(ig.Id, 0, 1, "UTF-8");
+            NativeTerminologyExporter exporter = new NativeTerminologyExporter(this.tdb);
+            byte[] export = exporter.GetExport(ig.Id, 0, Encoding.UTF8, true);
+            string vocXml = Encoding.UTF8.GetString(export);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(vocXml);
 
@@ -178,8 +174,9 @@ namespace Trifolia.Test.Services.Vocabulary
             TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs1);
             tc.IsStatic = true;
 
-            VocabService service = new VocabService(this.tdb);
-            string vocXml = service.GetImplementationGuideVocabulary(ig.Id, 0, 1, "UTF-8");
+            NativeTerminologyExporter exporter = new NativeTerminologyExporter(this.tdb);
+            byte[] export = exporter.GetExport(ig.Id, 0, Encoding.UTF8);
+            string vocXml = Encoding.UTF8.GetString(export);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(vocXml);
 
@@ -204,8 +201,9 @@ namespace Trifolia.Test.Services.Vocabulary
             tc.IsStatic = true;
             tc.ValueSetDate = DateTime.Parse("1/1/2000");
 
-            VocabService service = new VocabService(this.tdb);
-            string vocXml = service.GetImplementationGuideVocabulary(ig.Id, 0, 1, "UTF-8");
+            NativeTerminologyExporter exporter = new NativeTerminologyExporter(this.tdb);
+            byte[] export = exporter.GetExport(ig.Id, 0, Encoding.UTF8);
+            string vocXml = Encoding.UTF8.GetString(export);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(vocXml);
 
@@ -229,8 +227,9 @@ namespace Trifolia.Test.Services.Vocabulary
             tc.IsStatic = true;
             tc.ValueSetDate = DateTime.Parse("1/1/2001");
 
-            VocabService service = new VocabService(this.tdb);
-            string vocXml = service.GetImplementationGuideVocabulary(ig.Id, 0, 1, "UTF-8");
+            NativeTerminologyExporter exporter = new NativeTerminologyExporter(this.tdb);
+            byte[] export = exporter.GetExport(ig.Id, 0, Encoding.UTF8);
+            string vocXml = Encoding.UTF8.GetString(export);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(vocXml);
 
@@ -254,8 +253,9 @@ namespace Trifolia.Test.Services.Vocabulary
             tc.IsStatic = true;
             tc.ValueSetDate = DateTime.Parse("1/1/2002");
 
-            VocabService service = new VocabService(this.tdb);
-            string vocXml = service.GetImplementationGuideVocabulary(ig.Id, 0, 1, "UTF-8");
+            NativeTerminologyExporter exporter = new NativeTerminologyExporter(this.tdb);
+            byte[] export = exporter.GetExport(ig.Id, 0, Encoding.UTF8);
+            string vocXml = Encoding.UTF8.GetString(export);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(vocXml);
 
@@ -279,8 +279,9 @@ namespace Trifolia.Test.Services.Vocabulary
             TemplateConstraint tc = this.tdb.AddConstraintToTemplate(t, null, null, "code", "SHALL", "1..1", valueConformance: "SHALL", valueSet: this.vs3);
             tc.IsStatic = true;
 
-            VocabService service = new VocabService(this.tdb);
-            string vocXml = service.GetImplementationGuideVocabulary(ig.Id, 0, 1, "UTF-8");
+            NativeTerminologyExporter exporter = new NativeTerminologyExporter(this.tdb);
+            byte[] export = exporter.GetExport(ig.Id, 0, Encoding.UTF8);
+            string vocXml = Encoding.UTF8.GetString(export);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(vocXml);
 

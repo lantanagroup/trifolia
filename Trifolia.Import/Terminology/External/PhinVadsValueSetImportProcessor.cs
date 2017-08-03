@@ -52,7 +52,7 @@ namespace Trifolia.Import.Terminology.External
                                                         .Distinct()
                                                         .FirstOrDefault();
 
-                T importValueSet = CreateImportValueSet(currentValueSet, valueSetResult);
+                T importValueSet = CreateImportValueSet(currentValueSet, valueSetResult, valueSetResult.oid);
 
                 ValueSetVersionResultDto versionResults = vocabService.getValueSetVersionsByValueSetOid(oid);
                 DateTime latestVersionDate = versionResults.valueSetVersions.Max(y => y.effectiveDate);
@@ -112,7 +112,7 @@ namespace Trifolia.Import.Terminology.External
 
         #region Private methods for initializing the models
 
-        private T CreateImportValueSet(Trifolia.DB.ValueSet currentValueSet, VadsClient.ValueSet vadsValueSet)
+        private T CreateImportValueSet(Trifolia.DB.ValueSet currentValueSet, VadsClient.ValueSet vadsValueSet, string importSourceId)
         {
             T importValueSet = Activator.CreateInstance<T>();
             
@@ -121,6 +121,7 @@ namespace Trifolia.Import.Terminology.External
             importValueSet.Description = vadsValueSet.definitionText;
             importValueSet.Name = vadsValueSet.name;
             importValueSet.ImportSource = "PHIN VADS";
+            importValueSet.ImportSourceId = importSourceId;
             importValueSet.ImportStatus = DetermineValueSetStatus(importValueSet, currentValueSet);
 
             return importValueSet;

@@ -49,5 +49,67 @@ namespace Trifolia.Shared.FHIR
 
             return elementPath;
         }
+
+        /// <summary>
+        /// Checks the current constraint and all parent constraints to determine if any of them are a branch. If they are,
+        /// constructs a unique "slice name" for the constraint combining the element's context and the order number of the constraint.
+        /// </summary>
+        /// <param name="constraint"></param>
+        /// <returns>A string representing a unique name for the branch of the constraint, or an empty string if branches are found within the constraint</returns>
+        public static string GetSliceName(this TemplateConstraint constraint)
+        {
+            string sliceName = string.Empty;
+            TemplateConstraint current = constraint;
+
+            while (current != null)
+            {
+                if (current.IsBranch)
+                {
+                    if (!string.IsNullOrEmpty(sliceName))
+                        sliceName = "_" + sliceName;
+
+                    string elementName = !string.IsNullOrEmpty(current.Context) ? current.Context : "slice";
+
+                    sliceName = elementName + current.Order.ToString() + sliceName;
+                }
+
+                current = current.ParentConstraint;
+            }
+
+            return sliceName;
+        }
+
+        /// <summary>
+        /// Gets the @id value of the element/constraint.
+        /// </summary>
+        /// <param name="constraint"></param>
+        /// <returns></returns>
+        /// <remarks>Creates the value based on the context of the constraint and each parent, and based on whether the parents are a branch</remarks>
+        public static string GetElementId(this TemplateConstraint constraint)
+        {
+            string elementId = string.Empty;
+            TemplateConstraint current = constraint;
+            bool checkBranch = true;
+
+            while (current != null)
+            {
+                if (!string.IsNullOrEmpty(elementId))
+                    elementId = "." + elementId;
+
+                if (checkBranch && current.IsBranch)
+                {
+                    elementId = current.GetElementPath(constraint.Template.PrimaryContextType) + ":" + current.GetSliceName() + elementId;
+                    checkBranch = false;
+                }
+                else
+                {
+                    elementId = current.Context + elementId;
+                }
+
+                current = current.ParentConstraint;
+            }
+
+            return elementId;
+        }
     }
 }

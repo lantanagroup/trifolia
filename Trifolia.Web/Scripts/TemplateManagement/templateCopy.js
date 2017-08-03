@@ -54,7 +54,8 @@
             templateOidFormat: true
         }),
         Bookmark: self.Bookmark.extend({
-            required: true
+            required: true,
+            bookmarkUnique: false
         }),
         ImplementationGuideId: self.ImplementationGuideId.extend({
             required: true

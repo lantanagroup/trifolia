@@ -122,10 +122,6 @@
       <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>
       <Name>Trifolia.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Terminology\Trifolia.Terminology.csproj">
-      <Project>{fdb22f8f-9677-471a-8929-b8dcb59e4c60}</Project>
-      <Name>Trifolia.Terminology</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="IG\Styles\comments.xml" />

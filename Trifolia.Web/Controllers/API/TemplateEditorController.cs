@@ -14,6 +14,8 @@ using Trifolia.Generation.IG;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Web.Extensions;
 using Trifolia.Shared.Plugins;
+using Trifolia.Shared.Validation;
+using Trifolia.Plugins.Validation;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -104,6 +106,9 @@ namespace Trifolia.Web.Controllers.API
             SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, lTemplate.ImplementationGuideType);
             schema = schema.GetSchemaFromContext(lTemplate.PrimaryContextType);
 
+            var plugin = lTemplate.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
+            var validator = plugin.GetValidator(this.tdb);
+
             TemplateMetaDataModel lViewModel = new TemplateMetaDataModel()
             {
                 Bookmark = lTemplate.Bookmark,
@@ -128,7 +133,7 @@ namespace Trifolia.Web.Controllers.API
             };
 
             // Parse the validation results for the template
-            lViewModel.ValidationResults = (from vr in lTemplate.ValidateTemplate(this.tdb, schema)
+            lViewModel.ValidationResults = (from vr in validator.ValidateTemplate(lTemplate, schema)
                                             select new
                                             {
                                                 ConstraintNumber = vr.ConstraintNumber,
@@ -155,20 +160,19 @@ namespace Trifolia.Web.Controllers.API
             List<TemplateMetaDataModel.TemplateReference> containedByTemplates = new List<TemplateMetaDataModel.TemplateReference>();
             lViewModel.ContainedByTemplates = containedByTemplates;
 
-            var containingTemplates = (from tcr in this.tdb.TemplateConstraintReferences
-                                       join tc in this.tdb.TemplateConstraints on tcr.TemplateConstraintId equals tc.Id
-                                       where tcr.ReferenceIdentifier == lTemplate.Oid && tcr.ReferenceType == ConstraintReferenceTypes.Template
-                                       select tc.Template)
-                                       .Distinct();
+            var containingConstraints = (from tcr in this.tdb.TemplateConstraintReferences
+                                         join tc in this.tdb.TemplateConstraints on tcr.TemplateConstraintId equals tc.Id
+                                         where tcr.ReferenceIdentifier == lTemplate.Oid && tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                         select tc);
 
-            foreach (var containingTemplate in containingTemplates)
+            foreach (var containingConstraint in containingConstraints)
             {
                 TemplateMetaDataModel.TemplateReference newReference = new TemplateMetaDataModel.TemplateReference()
                 {
-                    EditUrl = containingTemplate.GetEditUrl(),
-                    ViewUrl = containingTemplate.GetViewUrl(),
-                    Name = containingTemplate.Name,
-                    ImplementationGuide = containingTemplate.OwningImplementationGuide.GetDisplayName()
+                    EditUrl = containingConstraint.Template.GetEditUrl(),
+                    ViewUrl = containingConstraint.Template.GetViewUrl(),
+                    Name = containingConstraint.Template.Name,
+                    ImplementationGuide = containingConstraint.Template.OwningImplementationGuide.GetDisplayName()
                 };
 
                 containedByTemplates.Add(newReference);
@@ -262,22 +266,20 @@ namespace Trifolia.Web.Controllers.API
                 NarrativeProseHtml = fc.GetPlainText(false, false, false)
             };
 
+            newConstraintModel.References = (from tcr in constraint.References
+                                             select new ConstraintReferenceModel()
+                                             {
+                                                 Id = tcr.Id,
+                                                 ReferenceIdentifier = tcr.ReferenceIdentifier,
+                                                 ReferenceType = tcr.ReferenceType
+                                             }).ToList();
+
             if (constraint.IsStatic == true)
                 newConstraintModel.Binding = "STATIC";
             else if (constraint.IsStatic == false)
                 newConstraintModel.Binding = "DYNAMIC";
             else
                 newConstraintModel.Binding = "DEFAULT";
-
-            foreach (var reference in constraint.References)
-            {
-                newConstraintModel.References.Add(new ConstraintReferenceModel()
-                {
-                    Id = reference.Id,
-                    ReferenceType = reference.ReferenceType,
-                    ReferenceIdentifier = reference.ReferenceIdentifier
-                });
-            }
 
             List<ConstraintModel> children = newConstraintModel.Children as List<ConstraintModel>;
             foreach (TemplateConstraint childConstraint in constraint.ChildConstraints.OrderBy(y => y.Order))
@@ -387,17 +389,8 @@ namespace Trifolia.Web.Controllers.API
         [HttpPost, Route("api/Template/Edit/Prose")]
         public string GetNarrative(ConstraintModel constraint)
         {
-            var constraintReferences = (from tcr in constraint.References
-                                        join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
-                                        where tcr.ReferenceType == ConstraintReferenceTypes.Template
-                                        select new ConstraintReference()
-                                        {
-                                            Bookmark = t.Bookmark,
-                                            Identifier = t.Oid,
-                                            Name = t.Name
-                                        }).ToList();
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb);
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, null, constraint, constraintReferences);
+            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, null, constraint, null);
             fc.HasChildren = true;
 
             return fc.GetPlainText(false, false, true);
@@ -451,13 +444,16 @@ namespace Trifolia.Web.Controllers.API
                 // Create/update constraints
                 this.SaveConstraints(tdb, template, model.Constraints);
 
+                var allNumbers = (from t in tdb.Templates
+                                  join tc in tdb.TemplateConstraints on t.Id equals tc.TemplateId
+                                  where t.OwningImplementationGuideId == template.OwningImplementationGuideId
+                                  select new { tc.Id, tc.Number });
                 var duplicateNumbers = (from tcc in template.ChildConstraints
-                                        join tc in tdb.TemplateConstraints on tcc.Number equals tc.Number
-                                        join t in tdb.Templates on tc.TemplateId equals t.Id
-                                        where tcc.Id != tc.Id && t.OwningImplementationGuideId == template.OwningImplementationGuideId
-                                        select tcc.Number).ToList();
+                                        join an in allNumbers on tcc.Number equals an.Number
+                                        where tcc.Id != an.Id
+                                        select tcc.Number);
 
-                if (duplicateNumbers.Count > 0)
+                if (duplicateNumbers.Count() > 0)
                 {
                     response.Error = string.Format("The following constraints have duplicate numbers: {0}", string.Join(", ", duplicateNumbers));
                 }
@@ -481,7 +477,9 @@ namespace Trifolia.Web.Controllers.API
                     SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, template.ImplementationGuideType);
                     schema = schema.GetSchemaFromContext(template.PrimaryContextType);
 
-                    response.ValidationResults = (from vr in template.ValidateTemplate(this.tdb, schema)
+                    var validator = new RIMValidator(tdb);
+
+                    response.ValidationResults = (from vr in validator.ValidateTemplate(template, schema)
                                                   select new
                                                   {
                                                       ConstraintNumber = vr.ConstraintNumber,
@@ -503,9 +501,6 @@ namespace Trifolia.Web.Controllers.API
         /// </remarks>
         private Template SaveTemplate(IObjectRepository tdb, TemplateMetaDataModel model)
         {
-            if (string.IsNullOrEmpty(model.Oid))
-                throw new ArgumentNullException("model.Oid", "The template/profile must have an identifier");
-
             Template template = null;
 
             // Create the initial template object and add it to the appropriate list (if it is new)
@@ -535,22 +530,13 @@ namespace Trifolia.Web.Controllers.API
             if (template.ImplementationGuideTypeId != ig.ImplementationGuideTypeId)
                 template.ImplementationGuideTypeId = ig.ImplementationGuideTypeId;
 
+            
+
             if (template.Name != model.Name)
                 template.Name = model.Name;
 
             if (template.Oid != model.Oid)
-            {
-                var existingTemplateReferences = (from tcr in this.tdb.TemplateConstraintReferences
-                                                  where tcr.ReferenceType == ConstraintReferenceTypes.Template && tcr.ReferenceIdentifier == template.Oid
-                                                  select tcr);
-
-                foreach (var existingTemplateReference in existingTemplateReferences)
-                {
-                    existingTemplateReference.ReferenceIdentifier = model.Oid;
-                }
-
                 template.Oid = model.Oid;
-            }
 
             if (template.Bookmark != model.Bookmark)
                 template.Bookmark = model.Bookmark;

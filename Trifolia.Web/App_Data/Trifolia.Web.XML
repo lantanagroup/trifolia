@@ -568,6 +568,34 @@
             <param name="searchText">The text to search for.</param>
             <returns></returns>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.GetUsers">
+            <summary>
+            Gets a list of all users in the database. Can only be executed by admins.
+            </summary>
+            <returns>A list of UserModel, populated with user meta-data, groups and roles.</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.GetMyUser">
+            <summary>
+            Gets the profile model for the currently logged-in user.
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.ValidateUmlsCredentials(Trifolia.Web.Models.User.ValidateUmlsCredentialsRequestModel)">
+            <summary>
+            This method is a public route for <see cref="!:ValidateUmlsCredentials(IObjectRepository, ValidateUmlsCredentialsRequestModel)"></see>
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.SaveMyUser(Trifolia.Web.Models.Account.UserProfile)">
+            <summary>
+            Persists/updates the information in the model to the current user's profile.
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.SaveUser(Trifolia.Web.Models.User.UserModel)">
+            <summary>
+            Updates the currently logged-in user's profiles with the data in the specified model
+            </summary>
+            <param name="model">The object model containing the properties of the user to update.</param>
+            <remarks>The Username property is not updated. Username cannot be changed by the user.</remarks>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.GroupController.GetMyGroupDisclaimers">
             <summary>
             Gets disclaimers from groups (that have disclaimers) that the current user is a member of
@@ -925,36 +953,6 @@
             <returns></returns>
             <remarks>Not implemented</remarks>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.ExportController.ExportXML(Trifolia.Web.Models.Export.XMLSettingsModel)">
-            <summary>
-            Exports data from Trifolia using the export format specified in the export model.
-            </summary>
-            <param name="model">Settings/information on what XML format should be generated.</param>
-            <returns>HttpResponseMessage</returns>
-            <remarks>Compression is disabled for this Web API endpoint because there are problems with the FHIRBuild export being zipped/compressed, and then WebAPI tries to re-compress the content and fails.</remarks>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.ExportController.GetExportSettings(System.Int32)">
-            <summary>
-            Gets default settings for the specified implementation guide
-            </summary>
-            <param name="implementationGuideId">The id of the implementation guide being exported</param>
-            <returns>Trifolia.Web.Models.Export.MSWordSettingsModel</returns>
-            <permission cref="F:Trifolia.Authorization.SecurableNames.EXPORT_WORD">User must have access to the EXPORT_WORD securable</permission>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.ExportController.MSWord(System.Int32)">
-            <summary>
-            Gets a model for displaying information about the implementation guide being exported
-            </summary>
-            <param name="implementationGuideId">The id of the implementation guide being exported</param>
-            <returns>Trifolia.Web.Models.Export.MSWordModel</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.ExportController.ExportMSWord(Trifolia.Web.Models.Export.MSWordSettingsModel)">
-            <summary>
-            Exports an MS Word implementation guide with the specified settings.
-            </summary>
-            <param name="exportSettings">The settings for the export</param>
-            <returns>A file-download of the .docx MS Word implementation guide</returns>
-        </member>
         <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.GetEditableImplementationGuides">
             <summary>
             Returns a list of implementation guides that are editable by the current user
@@ -1204,6 +1202,17 @@
             When user is logged in via "remember me", Login does not have to occur.
             </remarks>
         </member>
+        <member name="P:Trifolia.Web.Models.Export.ExportSettingsModel.ValueSetMaxMembers">
+            <summary>
+            An ordered array indicating the maximum members for each of the value sets
+            </summary>
+            <remarks>ValueSetMaxMembers[i] is the maximum number of members for ValueSetOid[i]</remarks>
+        </member>
+        <member name="P:Trifolia.Web.Models.Export.ExportSettingsModel.MaximumValueSetMembers">
+            <summary>
+            The default maximum members for each value set, if not specified by ValueSetMaxMembers[i]
+            </summary>
+        </member>
         <member name="T:Trifolia.Web.Models.Export.MSWordSettingsModel">
             <summary>
             Models used to define settings for exporting to MS Word
@@ -1299,6 +1308,14 @@
             Categories used to filter constraints exported in the ms word ig
             </summary>
         </member>
+        <member name="T:Trifolia.Web.Models.User.UserModel">
+            <summary>
+            Models a user as a view model
+            </summary>
+            <remarks>Although the underlying model allows us to link a user to many organizations, this view model represents 
+            a single organization, and therefore in this context, a user either belongs to the current organization
+            or not.</remarks>
+        </member>
         <member name="T:Trifolia.Web.Models.Group.GroupModel">
             <summary>
             Models a group as a view model
@@ -1364,14 +1381,6 @@
             <summary>
             Gets or sets the organization name
             </summary>
-        </member>
-        <member name="T:Trifolia.Web.Models.User.UserModel">
-            <summary>
-            Models a user as a view model
-            </summary>
-            <remarks>Although the underlying model allows us to link a user to many organizations, this view model represents 
-            a single organization, and therefore in this context, a user either belongs to the current organization
-            or not.</remarks>
         </member>
         <member name="T:Trifolia.Web.Models.TemplateManagement.BigListItem">
             <summary>

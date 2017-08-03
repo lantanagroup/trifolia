@@ -202,6 +202,57 @@
 						<xs:attribute name="identifier"/>
 					</xs:complexType>
 				</xs:element>
+				<xs:element maxOccurs="unbounded" minOccurs="0" name="CodeSystem">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Identifier">
+								<xs:complexType>
+									<xs:attribute name="value"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element default="" minOccurs="0" name="Description" type="xs:string"
+							/>
+						</xs:sequence>
+						<xs:attribute name="name"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element maxOccurs="unbounded" minOccurs="0" name="ValueSet">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element maxOccurs="unbounded" name="Identifier">
+								<xs:complexType>
+									<xs:attribute name="value"/>
+									<xs:attribute name="type"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Description" type="xs:string"/>
+							<xs:element minOccurs="0" name="IntensionalDefinition" type="xs:string"/>
+							<xs:element maxOccurs="unbounded" minOccurs="0" name="Member">
+								<xs:complexType>
+									<xs:attribute name="displayName" use="required"/>
+									<xs:attribute name="code" use="required"/>
+									<xs:attribute name="codeSystemIdentifier" use="required"/>
+									<xs:attribute name="status">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="active"/>
+												<xs:enumeration value="inactive"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="statusDate"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="name"/>
+						<xs:attribute name="defaultIdentifier"/>
+						<xs:attribute name="code"/>
+						<xs:attribute name="intensional" type="xs:boolean"/>
+						<xs:attribute name="source"/>
+						<xs:attribute default="true" name="isIncomplete" type="xs:boolean"
+							use="optional"/>
+					</xs:complexType>
+				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

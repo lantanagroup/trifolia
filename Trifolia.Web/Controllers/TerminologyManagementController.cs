@@ -73,15 +73,5 @@ namespace Trifolia.Web.Controllers
         }
 
         #endregion
-
-        #region Import from External
-
-        [Securable(SecurableNames.ADMIN)]
-        public ActionResult ImportExternal()
-        {
-            return View("ImportExternal");
-        }
-
-        #endregion
     }
 }

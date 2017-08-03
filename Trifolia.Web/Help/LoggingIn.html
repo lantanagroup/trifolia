@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.0.0.182">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -183,12 +183,12 @@
             <div class="main-content">
                 
 <p></p>
-<h3 class="rvps7"><span class="rvts0"><span class="rvts30">Open-Source Authentication</span></span></h3>
+<h3 class="rvps12"><span class="rvts0"><span class="rvts30">Open-Source Authentication</span></span></h3>
 <p class="rvps2"><span class="rvts28">The existing Active Directory and custom HL7 authentication has been replaced with a generic authentication method (OAuth 2.0). </span><span class="rvts29">OAuth</span><span class="rvts28"> is an open standard for authorization, commonly used as a way for Internet users to log in to third party websites using their Google, Facebook, Microsoft, GitHub, etc. accounts without exposing their password.</span></p>
 <p class="rvps2"><span class="rvts28">As part of this migration, all existing Trifolia user accounts have been added/imported to the new OAuth Trifolia directory. Existing Trifolia users will receive a Password Reset link via e-mail that will allow them to use their Trifolia credentials when logging in using the Auth0. Clicking on the link in the email will direct the user to auth0.com and prompt the user to create a new password for your Trifolia account.</span></p>
 <p class="rvps2"><span class="rvts28">Existing users can use their Trifolia credentials to login, and pre-existing permissions to resources (implementation guides, templates, value sets, code systems, etc.), will persist. Each authentication method (Facebook, Microsoft Account, Username/Password, etc.) represents a separate user in Trifolia, with a separate username/password and permissions.</span></p>
 <p class="rvps2"><span class="rvts28">Please refer to the </span><a class="rvts33" href="Security.html">Security</a><span class="rvts28"> section for more information on access and permissions.</span></p>
-<h2 class="rvps5"><span class="rvts0"><span class="rvts21">Log In to Trifolia</span></span></h2>
+<h2 class="rvps11"><span class="rvts0"><span class="rvts21">Log In to Trifolia</span></span></h2>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">In the upper-right corner, select Log In and choose Login from the drop-down menu. </span><span class="rvts32">When users click the "Login" option</span><span class="rvts31">. </span><span class="rvts6">The Auth0 Log In page appears, as shown below</span></li>
 </ol>
@@ -210,19 +210,35 @@
         </div>  <!-- /#topic-content -->
     </article>
 
-    <footer>
-        
-    </footer>
+    <footer></footer>
 
   </div>  <!-- /#main -->
 
   <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
   <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
   <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
   
@@ -248,10 +264,16 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Custom JS
+	  
       // Boot the app
       app.Boot();
     });
   </script>
 
-  
+
+
+</body>
+
+</html>
 

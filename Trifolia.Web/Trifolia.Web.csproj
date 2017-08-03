@@ -357,11 +357,13 @@
     <Compile Include="Formatters\JavaScriptFormatter.cs" />
     <Compile Include="Formatters\TrifoliaXmlFormatter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Models\Account\HL7LoginModel.cs" />
-    <Compile Include="Models\Account\WhoAmIModel.cs" />
-    <Compile Include="Models\Account\LoginModel.cs" />
-    <Compile Include="Models\Account\NewProfileModel.cs" />
-    <Compile Include="Models\Account\UserProfile.cs" />
+    <Compile Include="Models\Export\Enumerations.cs" />
+    <Compile Include="Models\Export\ExportSettingsModel.cs" />
+    <Compile Include="Models\User\ValidateUmlsCredentialsRequestModel.cs" />
+    <Compile Include="Models\User\ValidateUmlsCredentialsResponseModel.cs" />
+    <Compile Include="Models\User\WhoAmIModel.cs" />
+    <Compile Include="Models\User\NewProfileModel.cs" />
+    <Compile Include="Models\User\UserProfile.cs" />
     <Compile Include="Models\Admin\ClientConfigModel.cs" />
     <Compile Include="Models\BulkCopy\CopyConfig.cs" />
     <Compile Include="Models\BulkCopy\CopyModel.cs" />
@@ -374,18 +376,9 @@
     <Compile Include="Models\BulkCopy\ExcelUpload.cs" />
     <Compile Include="Models\BulkCopy\ExistingTemplateModel.cs" />
     <Compile Include="Models\BulkCopy\Fields.cs" />
-    <Compile Include="Models\Export\GreenModel.cs" />
-    <Compile Include="Models\Export\GreenSettingsModel.cs" />
     <Compile Include="Models\ConstraintDataTypeResolver.cs" />
-    <Compile Include="Models\Export\SchematronSettingsModel.cs" />
-    <Compile Include="Models\Export\SchematronModel.cs" />
     <Compile Include="Models\Export\VocabularyItemModel.cs" />
-    <Compile Include="Models\Export\VocabularyModel.cs" />
-    <Compile Include="Models\Export\VocabularySettingsModel.cs" />
-    <Compile Include="Models\Export\XMLSettingsModel.cs" />
-    <Compile Include="Models\Export\MSWordModel.cs" />
     <Compile Include="Models\Export\MSWordSettingsModel.cs" />
-    <Compile Include="Models\Export\XMLModel.cs" />
     <Compile Include="Models\GreenManagement\AllShallConstraintsIncludedRule.cs" />
     <Compile Include="Models\GreenManagement\ConstraintXpathBuilder.cs" />
     <Compile Include="Models\GreenManagement\GreenDataTypeViewModel.cs" />
@@ -410,6 +403,8 @@
     <Compile Include="Models\IGManagement\ListItem.cs" />
     <Compile Include="Models\IGManagement\ViewTemplateType.cs" />
     <Compile Include="Models\IG\ViewDataModel.cs" />
+    <Compile Include="Models\ImportValueSetModel.cs" />
+    <Compile Include="Models\ImportValueSetResponseModel.cs" />
     <Compile Include="Models\LocalizationModel.cs" />
     <Compile Include="Models\OrganizationManagement\OrganizationRole.cs" />
     <Compile Include="Models\PermissionManagement\PermissionsInfoModel.cs" />
@@ -423,7 +418,6 @@
     <Compile Include="Models\Report\TemplateReviewFilter.cs" />
     <Compile Include="Models\Report\TemplateReviewModel.cs" />
     <Compile Include="Models\Report\TemplateReviewResultsModel.cs" />
-    <Compile Include="Models\Report\TemplateValidation.cs" />
     <Compile Include="Models\SchemaModel\NodeItemModel.cs" />
     <Compile Include="Models\SupportRequestModel.cs" />
     <Compile Include="Models\TemplateEditing\ConstraintModel.cs" />
@@ -1671,6 +1665,7 @@
     <None Include="Properties\PublishProfiles\DEV2 %28SHARE%29.pubxml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
+    <Content Include="Scripts\Account\controllers.js" />
     <Content Include="Scripts\Account\MyGroup.js" />
     <Content Include="Scripts\Account\MyGroups.js" />
     <Content Include="Scripts\Account\MyProfile.js" />
@@ -1678,8 +1673,15 @@
     <Content Include="Scripts\Admin\Group.js" />
     <Content Include="Scripts\Admin\Groups.js" />
     <Content Include="Scripts\Admin\Users.js" />
+    <Content Include="Scripts\angular\directives.js" />
     <Content Include="Scripts\angular\services.js" />
     <Content Include="Scripts\angular\startup.js" />
+    <Content Include="Scripts\angular\templates\appliesToModal.html" />
+    <Content Include="Scripts\angular\templates\newTemplateModal.html" />
+    <Content Include="Scripts\angular\templates\multipleTemplateSelect.html" />
+    <Content Include="Scripts\angular\templates\templateSelect.html" />
+    <Content Include="Scripts\angular\templates\templateSelectModal.html" />
+    <Content Include="Scripts\Export\controllers.js" />
     <Content Include="Scripts\lib\angular\angular-cookies.js" />
     <Content Include="Scripts\lib\angular\angular-highlight.min.js" />
     <Content Include="Scripts\lib\angular\angular-route.min.js" />
@@ -1695,11 +1697,6 @@
     <Content Include="Scripts\lib\bootstrap\bootstrap-treenav.min.js" />
     <Content Include="Scripts\lib\bootstrap\bootstrap.js" />
     <Content Include="Scripts\lib\dagre.core.min.js" />
-    <Content Include="Scripts\Export\Green.js" />
-    <Content Include="Scripts\Export\Schematron.js" />
-    <Content Include="Scripts\Export\MSWord.js" />
-    <Content Include="Scripts\Export\Vocabulary.js" />
-    <Content Include="Scripts\Export\XML.js" />
     <Content Include="Scripts\lib\graphlib.core.min.js" />
     <Content Include="Scripts\GreenManagement\GreenManagementViewModel.js" />
     <Content Include="Scripts\GreenManagement\greenModels.js" />
@@ -1815,7 +1812,6 @@
     <Content Include="Scripts\TerminologyManagement\Browse.js" />
     <Content Include="Scripts\TerminologyManagement\EditValueSetConcepts.js" />
     <Content Include="Scripts\TerminologyManagement\ImportExcel.js" />
-    <Content Include="Scripts\TerminologyManagement\ImportExternal.js" />
     <Content Include="Scripts\TerminologyManagement\View.js" />
     <Content Include="Scripts\Type\EditType.js" />
     <Content Include="Scripts\Type\SchemaChoices.js" />
@@ -1845,11 +1841,7 @@
     <Content Include="Views\Admin\Group.aspx" />
     <Content Include="Views\Admin\Groups.aspx" />
     <Content Include="Views\Admin\Users.aspx" />
-    <Content Include="Views\Export\Green.aspx" />
-    <Content Include="Views\Export\Schematron.aspx" />
-    <Content Include="Views\Export\Vocabulary.aspx" />
-    <Content Include="Views\Export\XML.aspx" />
-    <Content Include="Views\Export\MSWord.aspx" />
+    <Content Include="Views\Export\Export.aspx" />
     <Content Include="Views\Home\Error.aspx" />
     <Content Include="Views\IGManagementFiles\Files.aspx" />
     <Content Include="Views\Green\Index.aspx" />
@@ -1887,7 +1879,6 @@
     <Content Include="Views\IGTypeManagement\Types.aspx" />
     <Content Include="Views\TerminologyManagement\EditValueSetConcepts.aspx" />
     <Content Include="Views\TerminologyManagement\ImportExcel.aspx" />
-    <Content Include="Views\TerminologyManagement\ImportExternal.aspx" />
     <Content Include="Views\TerminologyManagement\View.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1991,10 +1982,6 @@
     <ProjectReference Include="..\Trifolia.Shared\Trifolia.Shared.csproj">
       <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>
       <Name>Trifolia.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Terminology\Trifolia.Terminology.csproj">
-      <Project>{fdb22f8f-9677-471a-8929-b8dcb59e4c60}</Project>
-      <Name>Trifolia.Terminology</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

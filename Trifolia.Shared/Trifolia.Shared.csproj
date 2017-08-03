@@ -96,6 +96,7 @@
     <Compile Include="FHIR\TemplateConstraintExtensions.cs" />
     <Compile Include="HttpWebClient.cs" />
     <Compile Include="IdentifierHelper.cs" />
+    <Compile Include="ImportExport\Model\TemplateExport.Designer.cs" />
     <Compile Include="JiraIssue.cs" />
     <Compile Include="JIRAIssueData.cs" />
     <Compile Include="JiraUserSearchResponse.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="Plugins\IIGTypePlugin.cs" />
     <Compile Include="ImplementationGuideExtension.cs" />
     <Compile Include="ImplementationGuideTypeExtension.cs" />
-    <Compile Include="ImportExport\Model\TemplateExport.Designer.cs" />
     <Compile Include="IWebClient.cs" />
     <Compile Include="LookupPublishStatus.cs" />
     <Compile Include="ObjectExtensions.cs" />
@@ -119,7 +119,13 @@
     <Compile Include="SupportTypes.cs" />
     <Compile Include="TemplateConstraintExtensions.cs" />
     <Compile Include="TemplateExtensions.cs" />
-    <Compile Include="TemplateValidationResult.cs" />
+    <Compile Include="UmlsHelper.cs" />
+    <Compile Include="UserExtensions.cs" />
+    <Compile Include="Validation\ValidationResults.cs" />
+    <Compile Include="Validation\IValidator.cs" />
+    <Compile Include="Validation\TemplateValidationResult.cs" />
+    <Compile Include="Validation\ValidationLevels.cs" />
+    <Compile Include="Validation\ValidationResult.cs" />
     <Compile Include="ValueSetExtensions.cs" />
     <Compile Include="VocabularyOutputType.cs" />
     <Compile Include="VocabularyOutputTypeTranslator.cs" />

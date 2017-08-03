@@ -108,7 +108,9 @@ namespace Trifolia.Export.Native
                     name = constraint.ValueSet.Name,
                     isStatic = constraint.IsStatic == true,
                     isStaticSpecified = constraint.IsStatic != null,
-                    identifier = constraint.ValueSet.GetIdentifier(igTypePlugin)
+                    identifier = constraint.ValueSet.GetIdentifier(igTypePlugin),
+                    date = constraint.ValueSetDate.HasValue ? constraint.ValueSetDate.Value : DateTime.MinValue,
+                    dateSpecified = constraint.ValueSetDate.HasValue
                 };
                 exportConstraint.Item = exportValueSet;
             }

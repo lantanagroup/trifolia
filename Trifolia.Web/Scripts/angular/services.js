@@ -163,7 +163,7 @@ angular.module('Trifolia').service('HelperService', function ($httpParamSerializ
                 return parseInt($cookies.get(key));
             }
 
-            if (defaultValue != undefined) {
+            if (defaultValue !== undefined) {
                 return defaultValue;
             }
         },
@@ -171,6 +171,408 @@ angular.module('Trifolia').service('HelperService', function ($httpParamSerializ
         oidRegex: /^urn:oid:([\d+][\.]?)+$/g,
         hl7iiRegex: /^urn:hl7ii:([\d+][\.]?)+:(.+?)$/g,
         urlRegex: /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/,
-        emailRegex: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/
+        emailRegex: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+        getErrorMessage: function (err) {
+            if (err.data && err.data.Message) {
+                return err.data.Message;
+            } else if (typeof err.data === 'string') {
+                return err.data;
+            } else if (err.message) {
+                return err.message;
+            }
+
+            return err;
+        }
+    };
+});
+
+angular.module('Trifolia').service('ImportService', function ($http, $q, HelperService) {
+    return {
+        importValueSet: function (source, id) {
+            var url = '/api/Import/ValueSet';
+            var body = {
+                Source: source,
+                Id: id
+            };
+
+            var deferred = $q.defer();
+
+            $http.post(url, body)
+                .then(function (results) {
+                    deferred.resolve(results.data);
+                })
+                .catch(function (err) {
+                    deferred.reject(HelperService.getErrorMessage(err));
+                });
+
+            return deferred.promise;
+        }
+    };
+});
+
+angular.module('Trifolia').service('ExportService', function ($http, $q, HelperService) {
+    var service = {};
+
+    service.getExportSettings = function (implementationGuideId, format) {
+        var deferred = $q.defer();
+        var url = '/api/Export/Settings?implementationGuideId=' + encodeURIComponent(implementationGuideId) + '&format=' + encodeURIComponent(format);
+
+        $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.saveExportSettings = function (settings) {
+        var deferred = $q.defer();
+        var url = '/api/Export/Settings?implementationGuideId=' + encodeURIComponent(settings.ImplementationGuideId) + '&format=' + encodeURIComponent(settings.ExportFormat);
+        $http.post(url, settings)
+            .then(function () {
+                deferred.resolve();
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    return service;
+});
+
+angular.module('Trifolia').service('UserService', function ($http, $q, HelperService) {
+    var service = {};
+
+    service.getMyUser = function () {
+        var deferred = $q.defer();
+
+        $http.get('/api/User/Me')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.saveMyUser = function (model) {
+        var deferred = $q.defer();
+
+        $http.post('/api/User/Me', model)
+            .then(deferred.resolve)
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.getReleaseAnnouncementSubscription = function () {
+        var deferred = $q.defer();
+
+        $http.get('/api/User/Me/ReleaseAnnouncement')
+            .then(function (results) {
+                deferred.resolve(results);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.subscribeToReleaseAnnouncements = function () {
+        return $http.post('/api/User/Me/ReleaseAnnouncement');
+    };
+
+    service.unsubscribeFromReleaseAnnouncements = function () {
+        return $http.delete('/api/User/Me/ReleaseAnnouncement');
+    };
+
+    service.validateUmlsCredentials = function (username, password) {
+        var deferred = $q.defer();
+        var data = {
+            Username: username,
+            Password: password
+        };
+
+        $http.post('/api/User/ValidateUmlsCredentials', data)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.hasSecurable = function (securableNames) {
+        if (!containerViewModel) {
+            console.log('containerViewModel does not exist');
+            return false;
+        }
+
+        if (typeof securableNames === 'string') {
+            securableNames = [securableNames];
+        }
+
+        if (!(securableNames instanceof Array)) {
+            console.log('UserService.hasSecurable() securableNames is not an array');
+            return false;
+        }
+
+        return containerViewModel.HasSecurable(securableNames);
+    };
+
+    return service;
+});
+
+angular.module('Trifolia').service('ConfigService', function ($http, $q, HelperService) {
+    var service = {};
+
+    service.getEnableReleaseAnnouncements = function () {
+        var deferred = $q.defer();
+
+        $http.get('/api/Config/ReleaseAnnouncement')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    return service;
+});
+
+angular.module('Trifolia').service('ImplementationGuideService', function ($http, $q, HelperService) {
+    var service = {};
+
+    service.validate = function (implementationGuideId) {
+        var deferred = $q.defer();
+
+        $http.get('/api/ImplementationGuide/' + encodeURIComponent(implementationGuideId) + '/Validate')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.getImplementationGuides = function () {
+        var deferred = $q.defer();
+
+        $http.get('/api/ImplementationGuide')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.getImplementationGuideCategories = function (implementationGuideId) {
+        var deferred = $q.defer();
+
+        $http.get('/api/ImplementationGuide/' + encodeURIComponent(implementationGuideId) + '/Category')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.getImplementationGuideValueSets = function (implementationGuideId, onlyStatic) {
+        if (onlyStatic === 'undefined') {
+            onlyStatic = false;
+        }
+
+        var deferred = $q.defer();
+
+        $http.get('/api/ImplementationGuide/' + encodeURIComponent(implementationGuideId) + '/ValueSet?onlyStatic=' + encodeURIComponent(onlyStatic))
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.getImplementationGuideTemplates = function (implementationGuideId, parentTemplateIds, inferred, categories) {
+        var deferred = $q.defer();
+        var url = '/api/ImplementationGuide/' + encodeURIComponent(implementationGuideId) + '/Template?';
+
+        if (parentTemplateIds) {
+            url += 'parentTemplateIds=' + encodeURIComponent(parentTemplateIds.join(',')) + '&';
+        }
+
+        if (typeof(inferred) !== 'undefined') {
+            url += 'inferred=' + encodeURIComponent(inferred) + '&';
+        }
+
+        if (categories) {
+            url += 'categories=' + encodeURIComponent(categories.join(',')) + '&';
+        }
+
+        $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.getTemplateTypes = function (implementationGuideId) {
+        var deferred = $q.defer();
+        $http.get('/api/ImplementationGuide/' + implementationGuideId + '/TemplateType')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    service.getEditable = function (includeImplementationGuideId) {
+        var deferred = $q.defer();
+
+        $http.get('/api/ImplementationGuide/Editable')
+            .then(function (results) {
+                // Filter out non-published IGs, unless they are from the same implementation guide as the IG
+                var filtered = _.filter(results.data, function (implementationGuide) {
+                    return !implementationGuide.IsPublished || implementationGuide.Id === includeImplementationGuideId;
+                });
+
+                deferred.resolve(filtered);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    return service;
+});
+
+angular.module('Trifolia').factory('TemplateService', function ($http, $q) {
+    var service = {};
+
+    service.getTemplate = function (templateId) {
+        var deferred = $q.defer();
+        var url = '/api/Template/' + templateId;
+
+        $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    service.getTemplates = function (options) {
+        var paramOptions = {
+            count: 50,
+            page: 1,
+            sortProperty: 'Name',
+            sortDescending: false,
+            queryText: '',
+            filterName: null,
+            filterOid: null,
+            filterImplementationGuideId: null,
+            filterTemplateTypeId: null,
+            filterOrganizationId: null,
+            filterContextType: null,
+            inferred: true
+        };
+        angular.extend(paramOptions, options);
+        
+        var params = {};
+
+        params['count'] = paramOptions.count;
+        params['page'] = paramOptions.page;
+        params['sortProperty'] = paramOptions.sortProperty;
+        params['sortDescending'] = paramOptions.sortDescending;
+        params['inferred'] = paramOptions.inferred;
+
+        if (paramOptions.queryText) {
+            params['queryText'] = paramOptions.queryText;
+        }
+            
+        if (paramOptions.filterName) {
+            params['filterName'] = paramOptions.filterName;
+        }
+
+        if (paramOptions.filterOid) {
+            params['filterOid'] = paramOptions.filterOid;
+        }
+
+        if (paramOptions.filterImplementationGuideId) {
+            params['filterImplementationGuideId'] = paramOptions.filterImplementationGuideId;
+        }
+
+        if (paramOptions.filterTemplateTypeId) {
+            params['filterTemplateTypeId'] = paramOptions.filterTemplateTypeId;
+        }
+
+        if (paramOptions.filterOrganizationId) {
+            params['filterOrganizationId'] = paramOptions.filterOrganizationId;
+        }
+
+        if (paramOptions.filterContextType) {
+            params['filterContextType'] = paramOptions.filterContextType;
+        }
+
+        var url = '/api/Template?';
+        var queryArray = _.map(Object.keys(params), function (paramKey) {
+            return paramKey + '=' + encodeURIComponent(params[paramKey]);
+        });
+        var queryString = queryArray.join('&');
+
+        var deferred = $q.defer();
+
+        $http.get(url + queryString)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
+    return service;
+});
+
+angular.module('Trifolia').filter('contains', function () {
+    return function (array, needle) {
+        return array.indexOf(needle) >= 0;
     };
 });
