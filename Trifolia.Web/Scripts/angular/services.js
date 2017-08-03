@@ -175,10 +175,12 @@ angular.module('Trifolia').service('HelperService', function ($httpParamSerializ
         getErrorMessage: function (err) {
             if (err.data && err.data.Message) {
                 return err.data.Message;
-            } else if (typeof err.data === 'string') {
+            } else if (typeof err.data === 'string' && err.data) {
                 return err.data;
             } else if (err.message) {
                 return err.message;
+            } else if (err.statusText) {
+                return err.statusText;
             }
 
             return err;
