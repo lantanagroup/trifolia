@@ -7,13 +7,13 @@ namespace Trifolia.DB.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class vTemplateRelationship : IMigrationMetadata
+    public sealed partial class multiple_contained_templates : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(vTemplateRelationship));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(multiple_contained_templates));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704121627210_vTemplateRelationship"; }
+            get { return "201708031727547_multiple_contained_templates"; }
         }
         
         string IMigrationMetadata.Source

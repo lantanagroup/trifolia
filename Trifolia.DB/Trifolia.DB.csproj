@@ -113,6 +113,10 @@
     <Compile Include="Migrations\201707122143217_userUmlsCredentials.Designer.cs">
       <DependentUpon>201707122143217_userUmlsCredentials.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708031727547_multiple_contained_templates.cs" />
+    <Compile Include="Migrations\201708031727547_multiple_contained_templates.Designer.cs">
+      <DependentUpon>201708031727547_multiple_contained_templates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -214,6 +218,9 @@
     <EmbeddedResource Include="Migrations\201703211651073_isFixed.resx">
       <DependentUpon>201703211651073_isFixed.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708031727547_multiple_contained_templates.resx">
+      <DependentUpon>201708031727547_multiple_contained_templates.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703292147411_multipleValueSetIdentifiers.resx">
@@ -237,7 +244,7 @@
     <EmbeddedResource Include="Migrations\201703292147411_searchValueSet_up.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Migrations\FHIR_STU3_Resources.txt" />
+    <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
