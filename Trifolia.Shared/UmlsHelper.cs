@@ -66,13 +66,14 @@ namespace Trifolia.Shared
         {
             string licenseCode = AppSettings.UmlsLicenseCode;
             string[] query = new string[] {
-                "user=" + username,
-                "password=" + password,
-                "licenseCode=" + licenseCode
+                "user=" + Uri.EscapeDataString(username),
+                "password=" + Uri.EscapeDataString(password),
+                "licenseCode=" + Uri.EscapeDataString(licenseCode)
             };
             string url = AppSettings.UmlsValidateUrl + "?" + string.Join("&", query);
             HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(url);
             webRequest.Method = "POST";
+            webRequest.ContentType = "x-www-form-urlencoded";
 
             var response = (HttpWebResponse) webRequest.GetResponse();
 
