@@ -79,6 +79,10 @@
                                 </select>
                             </div>
                             <span data-bind="validationMessage: ConsolidatedFormat"></span>
+
+                            <div class="form-group">
+                                <input type="checkbox" data-bind="checked: TestIg" value="false" /> Check if this is a Test IG (can be upgraded to a Draft)
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">

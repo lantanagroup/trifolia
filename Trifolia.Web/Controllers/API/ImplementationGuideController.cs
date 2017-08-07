@@ -1068,8 +1068,9 @@ namespace Trifolia.Web.Controllers.API
                         ig.AllowAccessRequests = aModel.AllowAccessRequests;
 
                         // Set the "Draft" publish status by default
+                        // If the test flag is checked, set status as "Test"
                         if (ig.PublishStatus == null)
-                            ig.PublishStatus = PublishStatus.GetDraftStatus(auditedTdb);
+                            ig.PublishStatus = aModel.TestIg ? PublishStatus.GetTestStatus(auditedTdb) : PublishStatus.GetDraftStatus(auditedTdb);
 
                         if (aModel.PreviousVersionId.HasValue)
                         {

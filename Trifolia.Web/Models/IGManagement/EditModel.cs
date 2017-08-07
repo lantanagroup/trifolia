@@ -35,6 +35,7 @@ namespace Trifolia.Web.Models.IGManagement
         public string WebReadmeOverview { get; set; }
         public int? TypeId { get; set; }
         public bool ConsolidatedFormat { get; set; }
+        public bool TestIg { get; set; }
         public string PreviousVersionName { get; set; }
         public int? PreviousVersionId { get; set; }
         public int? CurrentVersion { get; set; }

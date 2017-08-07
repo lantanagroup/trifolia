@@ -55,7 +55,7 @@
                             <ul class="dropdown-menu">
                                 <li data-bind="if: Status() == 'Draft'"><a href="#" data-bind="click: $parent.Ballot">Ballot</a></li>
                                 <li data-bind="if: Status() == 'Draft' || Status() == 'Ballot'"><a href="#" data-bind="click: $parent.ShowPublishDialog">Publish</a></li>
-                                <li data-bind="if: Status() == 'Ballot'"><a href="#" data-bind="click: $parent.Draft">Draft</a></li>
+                                <li data-bind="if: Status() == 'Ballot' || Status() == 'Test'"><a href="#" data-bind="click: $parent.Draft">Draft</a></li>
                                 <li data-bind="if: Status() == 'Published'"><a href="#" data-bind="click: $parent.Unpublish">Unpublish</a></li>
                             </ul>
                         </li>
