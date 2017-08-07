@@ -40,15 +40,8 @@
                                 <li data-bind="if: ShowManageFiles()"><a data-bind="attr: { href: '/IGManagement/Files?implementationGuideId=' + Id() }">Files</a></li>
                             </ul>
                         </li>
-                        <li class="dropdown" data-bind="if: ShowExportMSWord() || ShowExportSchematron() || ShowExportXML() || ShowExportVocabulary() || ShowExportGreen()">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Export <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li data-bind="if: ShowExportMSWord()"><a data-bind="attr: { href: '/Export/MSWord?implementationGuideId=' + Id() }">MS Word</a></li>
-                                <li data-bind="if: ShowExportSchematron()"><a data-bind="attr: { href: '/Export/Schematron?implementationGuideId=' + Id() }">Schematron</a></li>
-                                <li data-bind="if: ShowExportXML()"><a data-bind="attr: { href: '/Export/XML?implementationGuideId=' + Id() }">XML/JSON</a></li>
-                                <li data-bind="if: ShowExportVocabulary()"><a data-bind="attr: { href: '/Export/Vocabulary?implementationGuideId=' + Id() }">Vocabulary</a></li>
-                                <li data-bind="if: ShowExportGreen()"><a data-bind="attr: { href: '/Export/Green?implementationGuideId=' + Id() }">Green Artifacts</a></li>
-                            </ul>
+                        <li class="dropdown" data-bind="if: ShowExport()">
+                            <a data-bind="attr: { href: '/Export?implementationGuideId=' + Id() }">Export</a>
                         </li>
                         <li class="dropdown" data-bind="if: ShowPublish() && Status()">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Workflow <b class="caret"></b></a>

@@ -149,6 +149,27 @@
 
 angular.module('Trifolia').service('HelperService', function ($httpParamSerializer, $cookies) {
     return {
+        getQueryParams: function() {
+            if (!location.search) {
+                return {};
+            }
+
+            var search = location.search.substring(1);
+            var paramSplit = search.split('&');
+            var params = {};
+
+            _.each(paramSplit, function (param) {
+                var valueSplit = param.split('=');
+
+                if (valueSplit.length == 1) {
+                    params[valueSplit[0]] = true;
+                } else if (valueSplit.length == 2) {
+                    params[valueSplit[0]] = valueSplit[1];
+                }
+            });
+
+            return params;
+        },
         buildUrl: function (url, params) {
             var serializedParams = $httpParamSerializer(params);
 

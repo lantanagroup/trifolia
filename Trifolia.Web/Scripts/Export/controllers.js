@@ -1,4 +1,4 @@
-﻿angular.module('Trifolia').controller('ExportCtrl', function ($scope, $uibModal, $sce, ImplementationGuideService, UserService, ExportService) {
+﻿angular.module('Trifolia').controller('ExportCtrl', function ($scope, $uibModal, $sce, ImplementationGuideService, UserService, ExportService, HelperService) {
     $scope.selectedImplementationGuide = null;
     $scope.message = '';
     $scope.exportFormats = [
@@ -334,6 +334,38 @@
         }, function () {
             // Do nothing when closed without selecting
         });
+    };
+
+    $scope.init = function () {
+        var params = HelperService.getQueryParams();
+        var implementationGuideId = params['implementationGuideId'];
+
+        if (implementationGuideId) {
+            ImplementationGuideService.getImplementationGuides()
+                .then(function (implementationGuides) {
+                    var foundIg = _.find(implementationGuides.Items, function (implementationGuide) {
+                        return implementationGuide.Id == implementationGuideId;
+                    });
+
+                    if (foundIg) {
+                        $scope.criteria.ImplementationGuideId = foundIg.Id;
+                        $scope.selectedImplementationGuide = foundIg;
+
+                        $scope.loadCategories();
+
+                        $scope.loadValueSets();
+
+                        $scope.loadTemplates();
+
+                        $scope.loadSettings();
+
+                        $scope.loadValidationResults();
+                    }
+                })
+                .catch(function (err) {
+                    console.error(err);
+                });
+        }
     };
 
     $scope.$watch('criteria', function () {
