@@ -184,11 +184,14 @@ namespace Trifolia.Test.Reporting
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "templateId", "SHALL", "1..1");
             tdb.AddConstraintToTemplate(newTemplate, tc1, null, "@root", "SHALL", "1..1");
 
+            var tc2 = tdb.AddConstraintToTemplate(newTemplate, null, null, "templateId", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(newTemplate, tc2, null, "@root", "SHALL", "1..1");
+
             var validator = new RIMValidator(tdb);
             var errors = validator.ValidateTemplate(newTemplate, null);
 
             Assert.IsNotNull(errors, "Errors list should not be null.");
-            Assert.AreEqual(1, errors.Count, "Expected to find only one error.");
+            Assert.AreEqual(2, errors.Count, "Expected to find an error for each templateId constraint because they are not branched.");
             Assert.AreEqual("Schema allows multiple for \"templateId\" but the constraint is not branched. Consider branching this constraint.", errors[0].Message);
             Assert.AreEqual(ValidationLevels.Warning, errors[0].Level);
         }
@@ -241,8 +244,8 @@ namespace Trifolia.Test.Reporting
             var validator = new RIMValidator(tdb);
             var errors = validator.ValidateTemplate(newTemplate, null);
 
-            Assert.IsNotNull(errors, "Errors list should not be null.");
-            Assert.AreEqual(4, errors.Count, "Expected to find three errors.");
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(2, errors.Count);
         }
     }
 }
