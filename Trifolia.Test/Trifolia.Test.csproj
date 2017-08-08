@@ -199,7 +199,6 @@
     <Compile Include="Generation\Schematron\SchematronAssertionGeneratorTest.cs" />
     <Compile Include="Generation\Schematron\TemplateDatabaseCDADocumentTemplateTest.cs" />
     <Compile Include="Extensions\TemplateTest.cs" />
-    <Compile Include="Generation\SQL\TrifoliaExportTest.cs" />
     <Compile Include="Controllers\RoleManagement\RoleManagementControllerTest.cs" />
     <Compile Include="Reporting\TemplateValidationTest.cs" />
     <Compile Include="Services\Vocabulary\VocabularyServiceTest.cs" />

@@ -550,7 +550,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual(parentElement.ElementName, tc10486.ParentConstraint.Context, "Failed to properly parse the constraint to a document element.");
             Assert.AreEqual(attribute.AttributeName, tc10486.Context.Replace("@", ""), "Failed to properly parse the constraint to a document element.");
 
-            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(consolidationIg.ImplementationGuideType);
+            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(tdb, consolidationIg.ImplementationGuideType);
             string path = contextBuilder.CreateFullBranchedParentContext(template, tc8662);
             string expectedPath = "cda:observation[cda:templateId[@root='2.16.840.1.113883.10.20.22.4.48']]/cda:participant[@typeCode='VRF'][cda:templateId[@root='2.16.840.1.113883.10.20.1.58']][cda:participantRole]";
             Assert.AreEqual(expectedPath, path, "Invalid path returned from ConstraintToDocumentElementMapper");
@@ -565,7 +565,7 @@ namespace Trifolia.Test.Generation.Schematron
             var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
             var entryTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_ENTRY_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
-            TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
+            TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType);
 
             Template entryTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entryTemplateType, "Test Branch Template", ig, "entry", "Entry");
             var c1 = tdb.AddConstraintToTemplate(entryTemplate, null, null, "text", "SHALL", "1..1");

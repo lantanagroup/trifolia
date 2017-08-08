@@ -231,7 +231,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                         }
                         else if (this.ParentCardinality.EndsWith("..*"))
                         {
-                            this.parts.Add(new ConstraintPart("Such " + MakePlural(this.ParentContext) + " "));
+                            this.parts.Add(new ConstraintPart("Such " + this.ParentContext.MakePlural() + " "));
                         }
                     }
 
@@ -645,35 +645,6 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             }
 
             return sb.ToString();
-        }
-
-        internal static string MakePlural(string noun)
-        {
-            string[] oNounsES = new string[] { "echo", "hero", "potato", "veto" };
-            string[] oNounS = new string[] { "auto", "memo", "pimento", "pro" };
-
-            if (noun.EndsWith("y"))
-            {
-                return noun.Substring(0, noun.Length - 1) + "ies";
-            }
-            else if (noun.EndsWith("s") || noun.EndsWith("z") || noun.EndsWith("ch") || noun.EndsWith("sh") || noun.EndsWith("x"))
-            {
-                return noun + "es";
-            }
-
-            foreach (string cONounES in oNounsES)
-            {
-                if (noun.EndsWith(cONounES))
-                    return noun + "es";
-            }
-
-            foreach (string cONounS in oNounS)
-            {
-                if (noun.EndsWith(cONounS))
-                    return noun + "s";
-            }
-
-            return noun + "s";
         }
 
         internal static string HtmlFormatDescriptiveText(WIKIParser parser, string text)

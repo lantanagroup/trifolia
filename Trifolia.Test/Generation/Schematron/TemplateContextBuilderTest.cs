@@ -34,7 +34,7 @@ namespace Trifolia.Test.Generation.Schematron
         {
             var docTemplateType = tdb.FindOrCreateTemplateType(this.cdaIgType, MockObjectRepository.DEFAULT_CDA_DOC_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(this.cdaIgType, "Test IG");
-            TemplateContextBuilder tcb = new TemplateContextBuilder(this.cdaIgType);
+            TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, this.cdaIgType);
 
             Template template = tdb.CreateTemplate("urn:oid:1.2.3.4", docTemplateType, "Test Template", ig, "ClinicalDocument", "ClinicalDocument");
             var contextString = tcb.BuildContextString(template);
@@ -51,7 +51,7 @@ namespace Trifolia.Test.Generation.Schematron
         {
             var docTemplateType = tdb.FindOrCreateTemplateType(this.cdaIgType, MockObjectRepository.DEFAULT_CDA_DOC_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(this.cdaIgType, "Test IG");
-            TemplateContextBuilder tcb = new TemplateContextBuilder(this.cdaIgType);
+            TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, this.cdaIgType);
 
             Template template = tdb.CreateTemplate("urn:hl7ii:1.2.3.4:1234", docTemplateType, "Test Template", ig, "ClinicalDocument", "ClinicalDocument");
             var contextString = tcb.BuildContextString(template);
@@ -70,7 +70,7 @@ namespace Trifolia.Test.Generation.Schematron
         {
             var docTemplateType = tdb.FindOrCreateTemplateType(this.cdaIgType, MockObjectRepository.DEFAULT_CDA_DOC_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(this.cdaIgType, "Test IG");
-            TemplateContextBuilder tcb = new TemplateContextBuilder(this.cdaIgType);
+            TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, this.cdaIgType);
 
             Template template = tdb.CreateTemplate("http://test.com/doc/test", docTemplateType, "Test Template", ig, "ClinicalDocument", "ClinicalDocument");
             var contextString = tcb.BuildContextString(template);
@@ -90,7 +90,7 @@ namespace Trifolia.Test.Generation.Schematron
             var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
             var unspecifiedTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_UNSPECIFIED_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
-            TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
+            TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType);
 
             Template template = tdb.CreateTemplate("urn:oid:1.2.3.4", unspecifiedTemplateType, "Test Template", ig, "addr", "AD");
             var contextString = tcb.BuildContextString(template);
@@ -111,7 +111,7 @@ namespace Trifolia.Test.Generation.Schematron
             var unspecifiedTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_UNSPECIFIED_TYPE);
             var docTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
             var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
-            TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
+            TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType);
 
             Template addrTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", unspecifiedTemplateType, "Test Address Template", ig, "addr", "AD");
             Template containingTemplate = tdb.CreateTemplate("urn:oid:4.3.2.1", docTemplateType, "Test Doc Template", ig, "ClinicalDocument", "ClinicalDocument");
@@ -138,7 +138,7 @@ namespace Trifolia.Test.Generation.Schematron
             var docTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
             var entryTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_ENTRY_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
-            TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
+            TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType);
 
             Template addrTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", unspecifiedTemplateType, "Test Address Template", ig, "addr", "AD");
 

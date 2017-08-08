@@ -321,6 +321,19 @@ namespace Trifolia.Test
                 ImplementationGuide ig = s as ImplementationGuide;
                 ValueSet vs = s as ValueSet;
                 ValueSetMember vsm = s as ValueSetMember;
+                TemplateConstraintReference constraintRef = s as TemplateConstraintReference;
+
+                if (constraintRef != null)
+                {
+                    if (constraintRef.Id == 0)
+                        constraintRef.Id = data.Select(y => (y as TemplateConstraintReference).Id).DefaultIfEmpty(0).Max() + 1;
+
+                    if (constraintRef.Constraint != null && !constraintRef.Constraint.References.Contains(constraintRef))
+                        constraintRef.Constraint.References.Add(constraintRef);
+
+                    if (constraintRef.Constraint != null && constraintRef.TemplateConstraintId != constraintRef.Constraint.Id)
+                        constraintRef.TemplateConstraintId = constraintRef.Constraint.Id;
+                }
 
                 if (template != null)
                 {
@@ -353,9 +366,6 @@ namespace Trifolia.Test
 
                     if (constraint.CodeSystem != null && !constraint.CodeSystem.Constraints.Contains(constraint))
                         constraint.CodeSystem.Constraints.Add(constraint);
-
-                    if (constraint.ContainedTemplate != null && !constraint.ContainedTemplate.ContainingConstraints.Contains(constraint))
-                        constraint.ContainedTemplate.ContainingConstraints.Add(constraint);
 
                     if (constraint.ParentConstraint != null && !constraint.ParentConstraint.ChildConstraints.Contains(constraint))
                         constraint.ParentConstraint.ChildConstraints.Add(constraint);
@@ -455,6 +465,18 @@ namespace Trifolia.Test
         DbSet<ImplementationGuideSection> implementationGuideSections = null;
         DbSet<TemplateExtension> templateExtensions = null;
         DbSet<ImplementationGuideAccessRequest> implementationGuideAccessRequests = null;
+        DbSet<TemplateConstraintReference> templateConstraintReferences = null;
+
+        public DbSet<TemplateConstraintReference> TemplateConstraintReferences
+        {
+            get
+            {
+                if (this.templateConstraintReferences == null)
+                    this.templateConstraintReferences = CreateMockDbSet<TemplateConstraintReference>();
+
+                return this.templateConstraintReferences;
+            }
+        }
 
         public DbSet<AuditEntry> AuditEntries
         {
@@ -844,6 +866,22 @@ namespace Trifolia.Test
         #endregion
 
         #region IObjectRepository View Collections
+
+        public DbSet<ViewCodeSystemUsage> ViewCodeSystemUsages
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        public DbSet<ViewTemplateRelationship> ViewTemplateRelationships
+        {
+            get
+            {
+                return null;
+            }
+        }
 
         public DbSet<ViewImplementationGuideCodeSystem> ViewImplementationGuideCodeSystems
         {
@@ -1483,9 +1521,12 @@ namespace Trifolia.Test
 
             if (containedTemplate != null)
             {
-                containedTemplate.ContainingConstraints.Add(constraint);
-                constraint.ContainedTemplate = containedTemplate;
-                constraint.ContainedTemplateId = containedTemplate.Id;
+                TemplateConstraintReference reference = new TemplateConstraintReference();
+                reference.Constraint = constraint;
+                reference.ReferenceIdentifier = containedTemplate.Oid;
+                reference.ReferenceType = ConstraintReferenceTypes.Template;
+                constraint.References.Add(reference);
+                this.TemplateConstraintReferences.Add(reference);
             }
 
             if (!string.IsNullOrEmpty(cardinality))
@@ -1956,17 +1997,19 @@ namespace Trifolia.Test
             // and in case one of the contained or implied template references itself, directly.
             checkedTemplates.Add(template);
 
-            foreach (var constraint in template.ChildConstraints.Where(y => y.ContainedTemplate != null))
+            foreach (var reference in template.ChildConstraints.SelectMany(y => y.References).Where(y => y.ReferenceType == ConstraintReferenceTypes.Template))
             {
-                var templateAlreadyIncluded = templates.Contains(constraint.ContainedTemplate);
-                var externalTemplate = constraint.ContainedTemplate.OwningImplementationGuideId != template.OwningImplementationGuideId;
+                var containedTemplate = this.Templates.Single(y => y.Oid == reference.ReferenceIdentifier);
+
+                var templateAlreadyIncluded = templates.Contains(containedTemplate);
+                var externalTemplate = containedTemplate.OwningImplementationGuideId != template.OwningImplementationGuideId;
 
                 if ((!externalTemplate || includeInferred) && !templateAlreadyIncluded)
                 {
-                    templates.Add(constraint.ContainedTemplate);
+                    templates.Add(containedTemplate);
 
                     templates.AddRange(
-                        GetTemplateReferences(checkedTemplates, constraint.ContainedTemplate, includeInferred));
+                        GetTemplateReferences(checkedTemplates, containedTemplate, includeInferred));
                 }
             }
 
