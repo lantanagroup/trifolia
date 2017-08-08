@@ -337,6 +337,11 @@ namespace Trifolia.DB.Migrations
                 {
                     Id = 5,
                     Status = "Retired"
+                },
+                new PublishStatus()
+                {
+                    Id = 6,
+                    Status = "Test"
                 });
 
             context.ImplementationGuideTypes.AddOrUpdate(igt => igt.Id,

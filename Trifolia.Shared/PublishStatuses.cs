@@ -7,6 +7,7 @@ namespace Trifolia.Shared
 {
     public enum PublishStatuses
     {
+        Test,
         Draft,
         Ballot,
         Published,
