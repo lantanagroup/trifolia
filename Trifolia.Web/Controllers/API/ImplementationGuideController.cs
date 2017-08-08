@@ -267,11 +267,7 @@ namespace Trifolia.Web.Controllers.API
                 ViewPrimitives = CheckPoint.Instance.HasSecurables(SecurableNames.IMPLEMENTATIONGUIDE_PRIMITIVES),
                 ViewFiles = CheckPoint.Instance.HasSecurables(SecurableNames.IMPLEMENTATIONGUIDE_FILE_VIEW, SecurableNames.IMPLEMENTATIONGUIDE_FILE_MANAGEMENT),
                 ViewWebIG = CheckPoint.Instance.HasSecurables(SecurableNames.WEB_IG),
-                ShowExportMSWord = CheckPoint.Instance.HasSecurables(SecurableNames.EXPORT_WORD),
-                ShowExportSchematron = CheckPoint.Instance.HasSecurables(SecurableNames.EXPORT_SCHEMATRON),
-                ShowExportVocabulary = CheckPoint.Instance.HasSecurables(SecurableNames.EXPORT_VOCAB),
-                ShowExportGreen = CheckPoint.Instance.HasSecurables(SecurableNames.EXPORT_GREEN),
-                ShowExportXML = CheckPoint.Instance.HasSecurables(SecurableNames.EXPORT_XML),
+                ShowExport = CheckPoint.Instance.HasSecurables(SecurableNames.EXPORT_GREEN, SecurableNames.EXPORT_SCHEMATRON, SecurableNames.EXPORT_VOCAB, SecurableNames.EXPORT_XML, SecurableNames.EXPORT_GREEN),
                 ShowManageFiles = CheckPoint.Instance.HasSecurables(SecurableNames.IMPLEMENTATIONGUIDE_FILE_MANAGEMENT),
                 ShowEditIG = grantEdit && canEdit,
                 ShowEditTemplate = canEditTemplate,
@@ -1068,8 +1064,9 @@ namespace Trifolia.Web.Controllers.API
                         ig.AllowAccessRequests = aModel.AllowAccessRequests;
 
                         // Set the "Draft" publish status by default
+                        // If the test flag is checked, set status as "Test"
                         if (ig.PublishStatus == null)
-                            ig.PublishStatus = PublishStatus.GetDraftStatus(auditedTdb);
+                            ig.PublishStatus = aModel.TestIg ? PublishStatus.GetTestStatus(auditedTdb) : PublishStatus.GetDraftStatus(auditedTdb);
 
                         if (aModel.PreviousVersionId.HasValue)
                         {

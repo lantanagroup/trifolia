@@ -9,6 +9,7 @@ namespace Trifolia.DB
     {
         public const string PUBLISHED_STATUS = "Published";
         public const string DRAFT_STATUS = "Draft";
+        public const string TEST_STATUS = "Test";
         public const string BALLOT_STATUS = "Ballot";
         public const string DEPRECATED_STATUS = "Deprecated";
         public const string RETIRED_STATUS = "Retired";
@@ -42,7 +43,13 @@ namespace Trifolia.DB
                 return this.Status == DRAFT_STATUS;
             }
         }
-
+        public bool IsTest
+        {
+            get
+            {
+                return this.Status == TEST_STATUS;
+            }
+        }
         public bool IsDeprecated
         {
             get
@@ -59,6 +66,11 @@ namespace Trifolia.DB
         public static PublishStatus GetDraftStatus(IObjectRepository tdb)
         {
             return tdb.PublishStatuses.Single(y => y.Status == DRAFT_STATUS);
+        }
+
+        public static PublishStatus GetTestStatus(IObjectRepository tdb)
+        {
+            return tdb.PublishStatuses.Single(y => y.Status == TEST_STATUS);
         }
 
         public static PublishStatus GetDeprecatedStatus(IObjectRepository tdb)

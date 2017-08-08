@@ -36,7 +36,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Export</h2>
 
-    <div class="ng-cloak" ng-app="Trifolia" ng-controller="ExportCtrl">
+    <div class="ng-cloak" ng-app="Trifolia" ng-controller="ExportCtrl" ng-init="init()">
         <form method="post" action="/api/Export">
             <div class="alert alert-info" ng-show="message">{{message}}</div>
 
