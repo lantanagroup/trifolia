@@ -879,7 +879,27 @@ namespace Trifolia.Test
         {
             get
             {
-                return null;
+                var results = (from tcr in this.TemplateConstraintReferences
+                               join tc in this.TemplateConstraints on tcr.TemplateConstraintId equals tc.Id
+                               join pt in this.Templates on tc.TemplateId equals pt.Id
+                               join ct in this.Templates on tcr.ReferenceIdentifier equals ct.Oid
+                               where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                               select new ViewTemplateRelationship()
+                               {
+                                   ParentTemplateBookmark = pt.Bookmark,
+                                   ParentTemplateId = pt.Id,
+                                   ParentTemplateIdentifier = pt.Oid,
+                                   ParentTemplateName = pt.Name,
+                                   ChildTemplateBookmark = ct.Bookmark,
+                                   ChildTemplateId = ct.Id,
+                                   ChildTemplateIdentifier = ct.Oid,
+                                   ChildTemplateName = ct.Name,
+                                   Conformance = tc.Conformance
+                               });
+
+                var mockDbSet = CreateMockDbSet<ViewTemplateRelationship>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
             }
         }
 

@@ -19,6 +19,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         public FormattedConstraint20161128()
         {
             this.parts = new List<ConstraintPart>();
+            this.ConstraintReferences = new List<ConstraintReference>();
         }
 
         private List<ConstraintPart> parts;
@@ -179,7 +180,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             // Make sure we don't process contained template constraints as 
             // primitives simply because a context is not specified
-            if (this.ConstraintReferences.Count > 0)
+            if (this.ConstraintReferences != null && this.ConstraintReferences.Count > 0)
                 this.IsPrimitive = false;
 
             // Build the constraint text
@@ -216,7 +217,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                 {
 
                     // If we have defined a contained template, then ignore the context.
-                    if (this.ConstraintReferences.Count > 0)
+                    if (this.ConstraintReferences != null && this.ConstraintReferences.Count > 0)
                         this.Context = null;
 
                     if (!this.ParentIsBranch && !string.IsNullOrEmpty(this.ParentContext) && !string.IsNullOrEmpty(this.ParentCardinality))
@@ -410,26 +411,31 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                 }
 
                 // Add the contained template(s) if specified
-                for (var i = 0; i < this.ConstraintReferences.Count; i++)
+                if (this.ConstraintReferences != null && this.ConstraintReferences.Count > 0)
                 {
-                    var constraintReference = this.ConstraintReferences[i];
+                    this.parts.Add(new ConstraintPart(" which includes "));
 
-                    if (i > 0)
-                        this.parts.Add(new ConstraintPart(" or "));
-
-                    if (this.LinkContainedTemplate)
+                    for (var i = 0; i < this.ConstraintReferences.Count; i++)
                     {
-                        this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Link, constraintReference.Name)
+                        var constraintReference = this.ConstraintReferences[i];
+
+                        if (i > 0)
+                            this.parts.Add(new ConstraintPart(" or "));
+
+                        if (this.LinkContainedTemplate)
                         {
-                            LinkDestination = constraintReference.GetLink(this.LinkIsBookmark, this.TemplateLinkBase)
-                        });
-                    }
-                    else
-                    {
-                        this.parts.Add(new ConstraintPart(constraintReference.Name));
-                    }
+                            this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Link, constraintReference.Name)
+                            {
+                                LinkDestination = constraintReference.GetLink(this.LinkIsBookmark, this.TemplateLinkBase)
+                            });
+                        }
+                        else
+                        {
+                            this.parts.Add(new ConstraintPart(constraintReference.Name));
+                        }
 
-                    this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Template, " (identifier: " + constraintReference.Identifier + ")"));
+                        this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Template, " (identifier: " + constraintReference.Identifier + ")"));
+                    }
                 }
 
                 this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Constraint, string.Format(" (CONF:{0})", this.Number))

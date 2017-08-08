@@ -31,17 +31,17 @@ namespace Trifolia.Test.Generation.Schematron
     [DeploymentItem("Schemas\\", "Schemas\\")]
     public class SchematronGeneratorTest
     {
-        private static MockObjectRepository tdb = new MockObjectRepository();
-        private static ValueSet vs1;
-        private static ImplementationGuide ig1;
-        private static ImplementationGuide ig2;
-        private static TemplateType docType;
-        private static TemplateType secType;
-        private static TemplateType entType;
-        private static XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
-        private static XDocument schDoc;
-        private static string schContent;
-        private static ImplementationGuideType cdaType;
+        private MockObjectRepository tdb = new MockObjectRepository();
+        private ValueSet vs1;
+        private ImplementationGuide ig1;
+        private ImplementationGuide ig2;
+        private TemplateType docType;
+        private TemplateType secType;
+        private TemplateType entType;
+        private XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
+        private XDocument schDoc;
+        private string schContent;
+        private ImplementationGuideType cdaType;
 
         #region Test Context
 
@@ -67,9 +67,8 @@ namespace Trifolia.Test.Generation.Schematron
 
         #region Setup and Tear Down
 
-        //Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
+        [TestInitialize]
+        public void Setup()
         {
             #region Initial Data
 

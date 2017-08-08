@@ -305,15 +305,6 @@ namespace Trifolia.Export.FHIR.STU3
                     fhirStructureDef.Extension.Add(fhirExtension);
             }
 
-            // Extensions
-            foreach (var extension in template.Extensions)
-            {
-                var fhirExtension = Convert(extension);
-
-                if (fhirExtension != null)
-                    fhirStructureDef.Extension.Add(fhirExtension);
-            }
-
             // Status
             if (template.Status == null || template.Status.IsDraft || template.Status.IsBallot)
                 fhirStructureDef.Status = PublicationStatus.Draft;
