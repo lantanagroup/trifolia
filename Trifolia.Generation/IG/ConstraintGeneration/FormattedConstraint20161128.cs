@@ -413,7 +413,8 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                 // Add the contained template(s) if specified
                 if (this.ConstraintReferences != null && this.ConstraintReferences.Count > 0)
                 {
-                    this.parts.Add(new ConstraintPart(" which includes "));
+                    if (!string.IsNullOrEmpty(this.Context))
+                        this.parts.Add(new ConstraintPart(" which includes "));
 
                     for (var i = 0; i < this.ConstraintReferences.Count; i++)
                     {

@@ -87,9 +87,10 @@ namespace Trifolia.Export.Schematron
         /// <returns></returns>
         private string BuildContextWithoutIdentifierElement(Template template)
         {
-            var containingConstraints = (from tc in template.ChildConstraints
-                                         join tcr in this.tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
-                                         where tcr.ReferenceType == ConstraintReferenceTypes.Template
+            var containingConstraints = (from tcr in this.tdb.TemplateConstraintReferences
+                                         join tc in this.tdb.TemplateConstraints on tcr.TemplateConstraintId equals tc.Id
+                                         where tcr.ReferenceType == ConstraintReferenceTypes.Template &&
+                                           tcr.ReferenceIdentifier == template.Oid
                                          select tc);
 
             if (containingConstraints.Count() == 0)
