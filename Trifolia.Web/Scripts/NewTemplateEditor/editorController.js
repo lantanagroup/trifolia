@@ -458,9 +458,6 @@
         var constraintBlockUI = blockUI.instances.get('constraintBlock');
         constraintBlockUI.start("Saving...");
 
-        // TODO: Replace the use of $.ajax with an EditorService.saveTemplate() function (yet to be implemented).
-        // Again, trying to stick to using angular, rather than direct jQuery
-
         // TODO: Handle errors from the save operation on the server, and let the user know that an error occurred
 
         EditorService.save(JSON.stringify(data))
@@ -469,9 +466,6 @@
                     $scope.message = response.Error;
                     return;
                 }
-
-                // TODO: Debug each line of this to make sure it works. There were a number of changes I made
-                // by spot-checking variable case-sensitivity, copy-paste issues with knockout logic, etc.
 
                 // Update the template id on the client so that we save against the new template going forward
                 $scope.template.Id = response.data.TemplateId;
@@ -487,46 +481,6 @@
 
                 constraintBlockUI.stop();
             });
-        
-        /*$.ajax({
-            method: 'POST',
-            url: '/api/Template/Edit/Save',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            success: function (response) {
-                if (response.Error) {
-                    $scope.message = response.Error;
-                    return;
-                }
-
-                // TODO: Debug each line of this to make sure it works. There were a number of changes I made
-                // by spot-checking variable case-sensitivity, copy-paste issues with knockout logic, etc.
-
-                // Update the template id on the client so that we save against the new template going forward
-                $scope.template.Id = response.TemplateId;
-                $scope.template.AuthorId = response.AuthorId;
-                $scope.isModified = false;
-
-                $scope.message = 'Done saving.';
-
-                // Empty the removed constraints list
-                self.removedConstraints = [];
-
-                // Update the constraints on the client (possibly new IDs and new Numbers)
-                updateConstraints($scope.constraints, response.Constraints);
-                $scope.template.ValidationResults = response.ValidationResults;
-
-                // Clear the "Done saving" message after 10 seconds
-                setTimeout(function () {
-                    $scope.message = '';
-                }, 10000);
-            },
-            complete: function () {
-                $.unblockUI();
-            }
-        });
-        */
     };
 
     function discard() {
