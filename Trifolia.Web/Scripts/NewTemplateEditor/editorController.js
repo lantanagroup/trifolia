@@ -1,4 +1,4 @@
-﻿angular.module('Trifolia').controller('EditorController', function ($scope, $interval, $location, $window, $sce, $q, EditorService, ImplementationGuideService, TemplateService) {
+﻿angular.module('Trifolia').controller('EditorController', function ($scope, $interval, $location, $window, $sce, $q, EditorService, ImplementationGuideService, TemplateService, blockUI) {
     $scope.implementationGuides = [];
     $scope.template = null;
     $scope.constraints = [];
@@ -22,6 +22,8 @@
     $scope.isModified = false;
     $scope.authTimeout = false;
     $scope.message = '';
+    $scope.removedConstraints = [];
+    $scope.saving = false;
 
     /**
      * Check to see if a constraint is a duplicate node within the same level of the tree
@@ -239,6 +241,8 @@
 
         // create a copy of the constraint
         var newConstraint = angular.copy(selectedNode.Constraint);
+        newConstraint.Id = null;
+        newConstraint.Number = "AUTO";
         newConstraint.isNew = true;
         var constraint = selectedNode.Constraint;
         var sibConstraints = constraint.Parent ? constraint.Parent.Children : $scope.constraints;
@@ -248,7 +252,7 @@
         constraintIndex < sibConstraints.length - 1 ? sibConstraints.splice(constraintIndex, 0, newConstraint) : sibConstraints.push(newConstraint);
 
         // update the copy of the constraint to not have the same number. the number should be automatically generated. any customized number should be removed, as well.
-        //TODO
+        newNode.Constraint = newConstraint;
 
         // set the selectedNode to the duplicate node
         selectedNode = newNode;
@@ -300,7 +304,6 @@
         // if the constraint has not already been saved (doesn't have an Id value), just remove the constraint
         // if the constraint HAS been saved (has an Id value), then flag it as deleted and remove (TODO: How??)
         if (selectedNode.Constraint.Id) {
-            if (!$scope.removedConstraints) $scope.removedConstraints = [];
             $scope.removedConstraints.push(constraint);
         }
 
@@ -402,21 +405,29 @@
      * Updates the template's ID and constraint's IDs and Numbers when complete.
      */
     function save() {
+        
         if (!isValid()) {
             return;
         }
 
         var data = {
-            Template: $scope.template,
-            RemovedConstraints: $scope.removedConstraints,
-            Constraints: $scope.constraints
+            Template: angular.copy($scope.template),
+            RemovedConstraints: angular.copy($scope.removedConstraints),
+            Constraints: angular.copy($scope.constraints)
         };
+
+        delete data.Template.ValidationResults;
 
         var removeIdFromNewConstraints = function (list) {
             _.forEach(list, function (constraint) {
                 if (constraint.IsNew) {
                     constraint.Id = null;
                 }
+
+                // Must remove NarrativeProseHtml because it represents an object as a result of 
+                // $sce.trustAsHtml, so that NarrativeProseHtml can be bound with ng-bind-html in the view.
+                // Newtonsoft's JsonConvert has problems converting an object to a string.
+                delete constraint.NarrativeProseHtml;
 
                 removeIdFromNewConstraints(constraint.Children);
             });
@@ -443,13 +454,41 @@
             }
         };
 
-        // TODO: Replace the usage of blockUI with an ng-disabled equivilent that affects the entire editor...
-        // Trying to stick to using angular
-        $.blockUI({ message: "Saving..." });
+        //This specifies which portion of the UI is to be blocked based on the constraint panel view
+        var constraintBlockUI = blockUI.instances.get('constraintBlock');
+        constraintBlockUI.start("Saving...");
 
         // TODO: Replace the use of $.ajax with an EditorService.saveTemplate() function (yet to be implemented).
         // Again, trying to stick to using angular, rather than direct jQuery
-        $.ajax({
+
+        // TODO: Handle errors from the save operation on the server, and let the user know that an error occurred
+
+        EditorService.save(JSON.stringify(data))
+            .then(function (response) {
+                if (response.Error) {
+                    $scope.message = response.Error;
+                    return;
+                }
+
+                // TODO: Debug each line of this to make sure it works. There were a number of changes I made
+                // by spot-checking variable case-sensitivity, copy-paste issues with knockout logic, etc.
+
+                // Update the template id on the client so that we save against the new template going forward
+                $scope.template.Id = response.data.TemplateId;
+                $scope.template.AuthorId = response.data.AuthorId;
+                $scope.isModified = false;
+
+                // Empty the removed constraints list
+                $scope.removedConstraints = [];
+
+                // Update the constraints on the client (possibly new IDs and new Numbers)
+                updateConstraints($scope.constraints, response.data.Constraints);
+                $scope.template.ValidationResults = response.data.ValidationResults;
+
+                constraintBlockUI.stop();
+            });
+        
+        /*$.ajax({
             method: 'POST',
             url: '/api/Template/Edit/Save',
             data: JSON.stringify(data),
@@ -487,6 +526,7 @@
                 $.unblockUI();
             }
         });
+        */
     };
 
     function discard() {

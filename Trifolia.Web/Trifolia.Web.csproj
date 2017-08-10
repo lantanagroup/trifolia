@@ -1683,6 +1683,8 @@
     <Content Include="Scripts\angular\treegrid\treegrid.html" />
     <Content Include="Scripts\angular\treegrid\treegrid.js" />
     <Content Include="Scripts\Export\controllers.js" />
+    <Content Include="Scripts\lib\angular\angular-block-ui.js" />
+    <Content Include="Scripts\lib\angular\angular-block-ui.min.js" />
     <Content Include="Scripts\lib\angular\angular-cookies.js" />
     <Content Include="Scripts\lib\angular\angular-highlight.min.js" />
     <Content Include="Scripts\lib\angular\angular-route.min.js" />
@@ -1823,6 +1825,8 @@
     <Content Include="Scripts\utils.js" />
     <Content Include="Scripts\lib\vkbeautify.0.99.00.beta.js" />
     <Content Include="Scripts\WebApiTestClient.js" />
+    <Content Include="Styles\angular-block-ui.css" />
+    <Content Include="Styles\angular-block-ui.min.css" />
     <Content Include="Styles\bootstrap-select.min.css" />
     <Content Include="Styles\bootstrap-spinedit.css" />
     <Content Include="Styles\bootstrap-treenav.min.css" />
@@ -1930,6 +1934,9 @@
     <Content Include="specification.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\lib\angular\angular-block-ui.js.map" />
+    <Content Include="Scripts\lib\angular\angular-block-ui.min.js.map" />
+    <Content Include="Styles\angular-block-ui.css.map" />
     <None Include="Web.Install Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

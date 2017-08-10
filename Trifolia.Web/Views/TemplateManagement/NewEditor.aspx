@@ -276,7 +276,7 @@
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="editor ng-cloak" ng-app="Trifolia" ng-controller="EditorController" ng-init="init(<%= Model.TemplateIdString %>, <%= Model.DefaultImplementationGuideIdString %>)">
+    <div class="editor ng-cloak" ng-app="Trifolia" ng-controller="EditorController" ng-init="init(<%= Model.TemplateIdString %>, <%= Model.DefaultImplementationGuideIdString %>)" block-ui="constraintBlock">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -303,7 +303,7 @@
         </nav>
 
         <div class="alert alert-warning" ng-show="authTimeout">Your session has timed out. You will need to <a href="#" ng-click="reload()">reload the page</a> to re-authenticate and edit this template.</div>
-        <div class="alert alert-info" ng-show="message">{{message}}</div>
+        <!-- <div class="alert alert-info" ng-show="message">{{message}}</div> -->
 
         <!-- LEFT NAV (template search) -->
         <div class="left-nav">
@@ -527,7 +527,7 @@
                 <div class="form-group">
                     <label>Unique Number</label>
                     <i class="glyphicon glyphicon-question-sign" tooltip-trigger="'click'" uib-tooltip="A unique number is always required. The unique number is used by default for conformance numbers in exports unless a display number is specified. This number must be unique across all constraints in the implementation guide that the template/profile is associated with."></i>
-                    <input type="number" class="form-control" value="TODO" />
+                    <input type="number" class="form-control" ng-model="selectedNode.Constraint.Number" />
                 </div>
                 
                 <div class="form-group">

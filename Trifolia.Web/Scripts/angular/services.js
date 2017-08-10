@@ -679,6 +679,19 @@ angular.module('Trifolia').factory('EditorService', function ($http, $q) {
         return deferred.promise;
     };
 
+    service.save = function (data) {
+        var deferred = $q.defer();
+        $http.post('/api/Template/Edit/Save', data)
+            .then(function (response) {
+                deferred.resolve(response);
+            }, function (error) {
+                console.log("Error occurred during save: ");
+                console.log(error);
+                deferred.reject(error);
+            });
+        return deferred.promise;
+    };
+
     return service;
 });
 

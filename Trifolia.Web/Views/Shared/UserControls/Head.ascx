@@ -4,6 +4,7 @@
 <link href="/Styles/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="/Styles/bootstrap-spinedit.css" rel="stylesheet" type="text/css" />
 <link href="/Styles/datepicker.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/Styles/angular-block-ui.min.css" type="text/css" />
 <link rel="stylesheet" type="text/css" href="/Styles/Site.css" />
 
 <!-- API Scripts -->
@@ -45,9 +46,11 @@
 <script type="text/javascript" src="/Scripts/lib/Sha1.js"></script>
 <script type="text/javascript" src="/Scripts/lib/q/q.js"></script>
 
+<!-- Angular Scripts -->
 <script type="text/javascript" src="/Scripts/lib/angular/angular.min.js"></script>
 <script type="text/javascript" src="/Scripts/lib/angular/angular-cookies.js"></script>
 <script type="text/javascript" src="/Scripts/lib/angular/ui-bootstrap-tpls-2.5.0.min.js"></script>
+<script src="/Scripts/lib/angular/angular-block-ui.min.js"></script>
 
 <!-- Application Scripts -->
 <script type="text/javascript" src="/Scripts/angular/startup.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
