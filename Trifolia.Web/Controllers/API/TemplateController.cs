@@ -100,6 +100,25 @@ namespace Trifolia.Web.Controllers.API
             return template.Id;
         }
 
+        /// <summary>
+        /// Gets the template by the template's identifier
+        /// </summary>
+        /// <param name="identifier">The OID, HL7II, or HTTP identifier of the template to get</param>
+        [HttpGet, Route("api/Template/Identifier"), SecurableAction(SecurableNames.TEMPLATE_LIST)]
+        public ViewModel GetTemplate(string identifier)
+        {
+            int templateId = this.tdb.Templates.Where(y => y.Oid == identifier).Select(y => y.Id).FirstOrDefault();
+
+            if (templateId <= 0)
+                throw new ArgumentException("Could not find template with id/reference of " + identifier);
+
+            return GetTemplate(templateId);
+        }
+
+        /// <summary>
+        /// Gets the template by the template's internal id within Trifolia
+        /// </summary>
+        /// <param name="templateId">The internal id of the template to get</param>
         [HttpGet, Route("api/Template/{templateId}"), SecurableAction(SecurableNames.TEMPLATE_LIST)]
         public ViewModel GetTemplate(int templateId)
         {

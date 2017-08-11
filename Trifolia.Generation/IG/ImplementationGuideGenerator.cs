@@ -18,7 +18,7 @@ using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG
 {
-    public class ImplementationGuideGenerator
+    public class ImplementationGuideGenerator : IDisposable
     {
         #region Private Fields
 
@@ -889,6 +889,15 @@ namespace Trifolia.Generation.IG
             }
 
             return part;
+        }
+
+        public void Dispose()
+        {
+            if (this.docStream != null)
+            {
+                this.docStream.Close();
+                this.docStream.Dispose();
+            }
         }
 
         #endregion

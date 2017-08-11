@@ -181,3 +181,7 @@ span.spinner {
 .input-group.branching .form-control {
     height: 53px;
 }
+
+table.contained-templates td {
+    padding: 2px !important;
+}

@@ -13,5 +13,6 @@ namespace Trifolia.Web.Models.TemplateEditing
         public string ReferenceIdentifier { get; set; }
 
         public ConstraintReferenceTypes ReferenceType { get; set; }
+        public string ReferenceDisplay { get; set; }
     }
 }

@@ -217,15 +217,20 @@ var ConstraintModel = function (data, parent, viewModel) {
     var self = this;
     var mapping = {
         include: ['Id', 'Number', 'Context', 'Conformance', 'Cardinality', 'DataType', 'Children', 'IsBranch', 'IsBranchIdentifier', 'PrimitiveText',
-            'ContainedTemplateId', 'ValueConformance', 'Binding', 'Value', 'ValueConformance', 'ValueDisplayName', 'ValueSetId', 'ValueSetDate',
+            'References', 'ValueConformance', 'Binding', 'Value', 'ValueConformance', 'ValueDisplayName', 'ValueSetId', 'ValueSetDate',
             'ValueCodeSystemId', 'Description', 'Notes', 'Label', 'IsPrimitive', 'IsHeading', 'HeadingDescription', 'IsSchRooted', 'IsInheritable',
             'Schematron', 'IsNew', 'Category', 'DisplayNumber', 'MustSupport', 'IsModifier', 'IsChoice', 'IsFixed'],
-        ignore: ['Parent', 'BindingType', 'IsValueSetStatic', 'Order', 'IsAutomaticSchematron', 'IsStatic'],
+        ignore: ['Parent', 'BindingType', 'IsValueSetStatic', 'Order', 'IsAutomaticSchematron', 'IsStatic', 'ReferenceSelection'],
         Children: {
             create: function (options) {
                 var newChildConstraint = new ConstraintModel(options.data, self, viewModel);
                 newChildConstraint.SubscribeForUpdates();
                 return newChildConstraint;
+            }
+        },
+        References: {
+            create: function (options) {
+                return new ConstraintReferenceModel(options.data, self);
             }
         }
     };
@@ -245,7 +250,7 @@ var ConstraintModel = function (data, parent, viewModel) {
     self.IsBranch = ko.observable();
     self.IsBranchIdentifier = ko.observable();
     self.PrimitiveText = ko.observable();
-    self.ContainedTemplateId = ko.observable();
+    self.References = ko.observableArray([]);
     self.Binding = ko.observable();
     self.Value = ko.observable();
     self.ValueConformance = ko.observable();
@@ -454,7 +459,7 @@ var ConstraintModel = function (data, parent, viewModel) {
         }
     };
 
-    var conformanceSub, cardinalitySub, dataTypeSub, containedTemplateIdSub,
+    var conformanceSub, cardinalitySub, dataTypeSub, referencesSub,
         valueSub, valueDisplayNameSub, valueConformanceSub, valueSetIdSub,
         valueCodeSystemIdSub, valueSetDateSub, primitiveTextSub, isBranchSub,
         isBranchIdentifierSub, primitiveTextSub, bindingSub, isHeadingSub,
@@ -479,8 +484,8 @@ var ConstraintModel = function (data, parent, viewModel) {
             console.log("Data Type (and prose) changed");
             self.ConstraintAndProseChanged(newVal);
         });
-        containedTemplateIdSub = self.ContainedTemplateId.subscribe(function (newVal) {
-            console.log("Contained Template (and prose) changed");
+        referencesSub = self.References.subscribe(function (newVal) {
+            console.log("Contained Templates (and prose) changed");
             self.ConstraintAndProseChanged(newVal);
         });
         valueSub = self.Value.subscribe(function (newVal) {
@@ -655,6 +660,99 @@ var ConstraintModel = function (data, parent, viewModel) {
 
         return messages.join('<br/>\n');
     });
+
+    self.AddContainedTemplate = function (dataType) {
+        // Open pop-up
+        self.ReferenceSelection.SearchQuery('');
+        self.ReferenceSelection.Items([]);
+        self.ReferenceSelection.FilterContextType(dataType);
+        self.ReferenceSelection.TotalItems(0);
+
+        $("#constraintReferenceSelectionModal").modal({ show: true, backdrop: false });
+        $('#constraintReferenceSelectionModal').on('hidden.bs.modal', function() {
+            if (self.ReferenceSelection.SelectedTemplate) {
+                var selectedTemplate = self.ReferenceSelection.SelectedTemplate;
+
+                var foundReference = _.find(self.References(), function(reference) {
+                    return reference.ReferenceIdentifier() == selectedTemplate.Oid;
+                });
+
+                if (!foundReference) {
+                    var constraintReference = new ConstraintReferenceModel({
+                        Id: 0,      // New reference, no id yet
+                        ReferenceIdentifier: selectedTemplate.Oid,
+                        ReferenceType: 0,
+                        ReferenceDisplay: selectedTemplate.Name
+                    }, self);
+                    self.References.push(constraintReference);
+                }
+            }
+        });
+    };
+
+    self.RemoveContainedTemplate = function(constraintReference) {
+        var index = self.References.indexOf(constraintReference);
+        self.References.splice(index, 1);
+    };
+
+    self.ReferenceSelection = {
+        SearchQuery: ko.observable(),
+        Items: ko.observableArray([]),
+        IsSearching: ko.observable(false),
+        TotalItems: ko.observable(0),
+        FilterContextType: ko.observable(null),
+        SearchPage: 1,
+        SelectedTemplate: null,
+
+        Select: function(template) {
+            self.ReferenceSelection.SelectedTemplate = ko.mapping.toJS(template);
+            $('#constraintReferenceSelectionModal').modal('hide');
+        },
+        Search: function(resetPage) {
+            if (resetPage) {
+                self.ReferenceSelection.SearchPage = 1;
+            }
+
+            var url = '/api/Template?count=10&page=' + self.ReferenceSelection.SearchPage;
+
+            if (self.ReferenceSelection.SearchQuery()) {
+                url += '&queryText=' + encodeURIComponent(self.ReferenceSelection.SearchQuery());
+            }
+
+            if (self.ReferenceSelection.FilterContextType()) {
+                url += '&filterContextType=' + encodeURIComponent(self.ReferenceSelection.FilterContextType());
+            }
+
+            self.ReferenceSelection.IsSearching(true);
+
+            $.ajax({
+                url: url,
+                cache: false,
+                success: function(results) {
+                    var templates = ko.mapping.fromJS(results);
+                    self.ReferenceSelection.TotalItems(results.TotalItems);
+
+                    if (resetPage) {
+                        self.ReferenceSelection.Items(templates.Items());
+                    } else {
+                        var moreTemplates = self.ReferenceSelection.Items();
+                        moreTemplates = moreTemplates.concat(templates.Items());
+                        self.ReferenceSelection.Items(moreTemplates);
+                    }
+
+                    self.ReferenceSelection.IsSearching(false);
+                }
+            });
+        },
+        MoreResults: function() {
+            self.ReferenceSelection.SearchPage++;
+            self.ReferenceSelection.Search();
+        },
+        Cancel: function() {
+            self.ReferenceSelection.SelectedTemplate = null;
+            $('#constraintReferenceSelectionModal').modal('hide');
+        }
+    };
 };
 
 var TemplateExtensionModel = function (data, parent) {
@@ -1021,6 +1119,17 @@ var CodeSystemModel = function (data) {
     self.Display = ko.computed(function () {
         return self.Name() + ' (' + self.Oid() + ')';
     });
+
+    ko.mapping.fromJS(data, {}, self);
+};
+
+var ConstraintReferenceModel = function (data, parentConstraint) {
+    var self = this;
+
+    self.Id = ko.observable();
+    self.ReferenceIdentifier = ko.observable();
+    self.ReferenceType = 0;
+    self.ReferenceDisplay = ko.observable();
 
     ko.mapping.fromJS(data, {}, self);
 };

@@ -1,4 +1,4 @@
-﻿var TemplateSelectViewModel = function (idAccessor) {
+﻿var TemplateSelectViewModel = function (idAccessor, isReference) {
 	var self = this;
 
 	self.DisplayDiv = ko.observable();
@@ -36,14 +36,23 @@
 	    if (!idAccessor()) {
 	        updateDisplay('', false);
 	        return;
-	    }
+        }
+
+        var url = '/api/Template/' + encodeURIComponent(idAccessor());
+
+        if (isReference) {
+            url = '/api/Template/Identifier?identifier=' + encodeURIComponent(idAccessor());
+        }
 
 	    $.ajax({
-	        url: '/api/Template/' + idAccessor(),
+	        url: url,
 	        success: function (template) {
 	            var display = template.Name + ' (' + template.Oid + ')';
 	            updateDisplay(display, false);
-	        }
+            },
+            error: function (err, data, other) {
+                console.log(err);
+            }
 	    });
 	};
 	idAccessorSubscription = idAccessor.subscribe(self.IdChanged);
@@ -281,9 +290,15 @@
 ko.bindingHandlers.templateSelect = {
 	init: function (element, valueAccessor, allBindings) {
 		var value = valueAccessor();
-		var allBindingsUnwrapped = allBindings();
+        var allBindingsUnwrapped = allBindings();
+        var isReference = false;
 
-		var templateSelectViewModel = new TemplateSelectViewModel(value);
+        if (typeof allBindingsUnwrapped.isReference === 'function')
+            isReference = allBindingsUnwrapped.isReference();
+        else
+            isReference = allBindingsUnwrapped.isReference;
+
+		var templateSelectViewModel = new TemplateSelectViewModel(value, isReference);
 
 		if (typeof allBindingsUnwrapped.oid === 'function' && allBindingsUnwrapped.oid)
 		    templateSelectViewModel.ignoreSelfOid(allBindingsUnwrapped.oid());

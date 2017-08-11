@@ -1054,6 +1054,18 @@
             <param name="identifier">The identifier of the template/profile to search for</param>
             <returns>System.Nullable&lt;System.Int32&gt;: Returns null/nothing if no template/profile is found. Otherwise, returns the internal Trifolia id (integer) of the template/profile.</returns>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.TemplateController.GetTemplate(System.String)">
+            <summary>
+            Gets the template by the template's identifier
+            </summary>
+            <param name="identifier">The OID, HL7II, or HTTP identifier of the template to get</param>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TemplateController.GetTemplate(System.Int32)">
+            <summary>
+            Gets the template by the template's internal id within Trifolia
+            </summary>
+            <param name="templateId">The internal id of the template to get</param>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.TemplateController.GetTemplates(System.Nullable{System.Int32},System.Int32,System.String,System.Boolean,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
             <summary>
             Searches for templates and returns basic meta-data about the templates

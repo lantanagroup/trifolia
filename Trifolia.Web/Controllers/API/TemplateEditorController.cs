@@ -267,11 +267,14 @@ namespace Trifolia.Web.Controllers.API
             };
 
             newConstraintModel.References = (from tcr in constraint.References
+                                             join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                             where tcr.ReferenceType == ConstraintReferenceTypes.Template
                                              select new ConstraintReferenceModel()
                                              {
                                                  Id = tcr.Id,
                                                  ReferenceIdentifier = tcr.ReferenceIdentifier,
-                                                 ReferenceType = tcr.ReferenceType
+                                                 ReferenceType = tcr.ReferenceType,
+                                                 ReferenceDisplay = t.Name
                                              }).ToList();
 
             if (constraint.IsStatic == true)
