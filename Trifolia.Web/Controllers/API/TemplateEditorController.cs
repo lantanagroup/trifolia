@@ -623,7 +623,29 @@ namespace Trifolia.Web.Controllers.API
 
         private void SaveConstraintReferences(IObjectRepository tdb, TemplateConstraint constraint, List<ConstraintReferenceModel> references)
         {
-            // TODO
+            List<TemplateConstraintReference> existing = constraint.References.ToList();
+
+            foreach (var referenceModel in references)
+            {
+                if (existing.Any(y => y.ReferenceType == ConstraintReferenceTypes.Template && y.ReferenceIdentifier == referenceModel.ReferenceIdentifier))
+                    continue;
+
+                TemplateConstraintReference newConstraintReference = new TemplateConstraintReference()
+                {
+                    Constraint = constraint,
+                    ReferenceIdentifier = referenceModel.ReferenceIdentifier,
+                    ReferenceType = ConstraintReferenceTypes.Template
+                };
+
+                constraint.References.Add(newConstraintReference);
+            }
+
+            List<TemplateConstraintReference> removeReferences = existing.Where(y => !references.Any(x => x.ReferenceIdentifier == y.ReferenceIdentifier && x.ReferenceType == y.ReferenceType)).ToList();
+
+            foreach (var removeReference in removeReferences)
+            {
+                this.tdb.TemplateConstraintReferences.Remove(removeReference);
+            }
         }
 
         /// <summary>
