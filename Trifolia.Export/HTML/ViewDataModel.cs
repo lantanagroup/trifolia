@@ -4,9 +4,8 @@ using System.Linq;
 using System.Web;
 
 using Trifolia.Shared;
-using Trifolia.Web.Models.TemplateManagement;
 
-namespace Trifolia.Web.Models.IG
+namespace Trifolia.Export.HTML
 {
     public class ViewDataModel
     {

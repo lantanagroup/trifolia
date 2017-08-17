@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.Http;
 using Trifolia.Authorization;
 using Trifolia.DB;
+using Trifolia.Export.HTML;
 using Trifolia.Export.Schematron;
 using Trifolia.Export.Terminology;
 using Trifolia.Generation.Green;
@@ -295,7 +296,19 @@ namespace Trifolia.Web.Controllers.API
                     export = nativeExporter.GetExport(ig.Id, model.MaximumValueSetMembers, this.GetExportEncoding(model));
 
                     break;
+                case ExportFormats.Web_HTML:
+                    // Get the data from the API controller
+                    HtmlExporter exporter = new HtmlExporter(this.tdb);
+                    var templateIds = templates.Select(y => y.Id).ToArray();
+                    var htmlDataModel = exporter.GetExportData(ig.Id, null, templateIds, model.IncludeInferred);
 
+                    IGController igController = new IGController(this.tdb);
+                    var downloadPackage = igController.GetDownloadPackage(ig, JsonConvert.SerializeObject(htmlDataModel));
+
+                    export = downloadPackage.Content;
+                    fileName = downloadPackage.FileName;
+                    contentType = ZIP_MIME_TYPE;
+                    break;
                 default:
                     throw new NotSupportedException();
             }
