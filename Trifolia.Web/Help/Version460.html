@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
-  <title>What's New</title>
+  <title>Version 4.6.0</title>
   <meta name="description" content="" /> 
   <meta name="keywords" content="">
 
@@ -19,11 +19,11 @@
 
   <!-- Twitter Card data -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="What's New">
+  <meta name="twitter:title" content="Version 4.6.0">
   <meta name="twitter:description" content="">
 
   <!-- Open Graph data -->
-  <meta property="og:title" content="What's New" />
+  <meta property="og:title" content="Version 4.6.0" />
   <meta property="og:type" content="article" />
   <meta property="og:description" content="" />
   <meta property="og:site_name" content="Trifolia Workbench" /> 
@@ -161,45 +161,39 @@
 
     <article>
         <div id="topic-content" class="container-fluid" 
-		  data-hnd-id="WhatsNew"
-		  data-hnd-context="2"
-		  data-hnd-title="What's New"
+		  data-hnd-id="Version460"
+		  data-hnd-context="34"
+		  data-hnd-title="Version 4.6.0"
 		>
             
                 <div class="navigation">
                     <ol class="breadcrumb">
-                        <li><a href="Introduction.html">Introduction</a></li>
+                        <li>Previous Versions</li>
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="Introduction.html" title="Introduction" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="Introduction.html" title="Introduction" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="SystemRequirements.html" title="System Requirements" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="PreviousVersions.html" title="Previous Versions" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="PreviousVersions.html" title="Previous Versions" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Version450.html" title="Version 4.5.0" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
 
             <a id="main-content"></a>
 
-            <h2>What's New</h2>
+            <h2>Version 4.6.0</h2>
 
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts15">Version 5.0.0</span></span></h2>
-<p class="rvps8"><span class="rvts14">Released on XXX, 2017</span></p>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts19">VSAC Integration</span></span></h2>
-<p class="rvps4"><span class="rvts14">Trifolia has integrated with VSAC to allow importing value sets from the VSAC. A new button is available to users in Browse &gt; Terminology which allows the user to specify an OID to import from Trifolia.</span></p>
-<p class="rvps4"><span class="rvts14">The ability to import from VSAC and view implementation guides containing VSAC-imported value sets requires a license to the UMLS, issued by the NLM.</span></p>
-<p class="rvps4"><span class="rvts14">See the help documentation's Getting Started &gt; User Profiles, and Importing &gt; Terminology sections for more information.</span></p>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts19">Export UI re-design</span></span></h2>
-<p class="rvps4"><span class="rvts14">As a result of the VSAC integration, the Export screen(s) have been re-designed, and consolidated into a single Export screen.</span></p>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts15">Version 4.6.0</span></span></h2>
+<p class="rvps8"><span class="rvts14">Released on Thursday, July 20, 2017</span></p>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts19">FHIR Export Improvements</span></span></h2>
+<p class="rvps4"><span class="rvts14">Additional improvements (continuing from 4.5.0 release) have been made to the FHIR Build exports to work with the latest changes in the FHIR IG Publisher.</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps4"><span class="rvts14">A more consistent UI across the various export formats</span></li>
-<li class="rvps4"><span class="rvts14">Allows saving default settings (if permitted by implementation guide permissions)</span></li>
-<li class="rvps4"><span class="rvts14">Always performs validation of the design and structure of the implementation guide, which includes ensuring the user has a license to UMLS if the implementation guide contains VSAC content</span></li>
+<li class="rvps4"><span class="rvts14">XML exports are formatted and indented, instead of being exported as a file with a single - extremely long - line.</span></li>
+<li class="rvps4"><span class="rvts14">The IG Publisher .JSON control file includes a "dependencyList" property, if the IG being exported has references to other implementation guides within Trifolia.</span></li>
 </ul>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts19">Implementation guide test status</span></span></h2>
-<p class="rvps4"><span class="rvts14">In the free-to-use installation of Trifolia (https://trifolia.lantanagroup.com) there are approximately 40 implementation guides with "test" in their name. As a result, we felt it was appropriate to create a separate workflow status for implementation guides to be labeled as "test". When creating an implementation guide, users have the opportunity to indicate that the implementation guide is a "test" implementation guide, and not intended for use outside of the designer's discretion. If at a later point in time the designer of the implementation guide decides the implementation guide should be shared with others, it can be transitioned to other statuses (such as "draft") via the "View Implementation Guide" screen's "Workflow" drop-down.</span></p>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts19">Multiple contained templates/profiles</span></span></h2>
-<p class="rvps4"><span class="rvts14">A constraint can now reference multiple templates/profiles. This is inspired by FHIR's native structure for supporting multiple "types" of resources referenced in an element/constraint. The template editor's constraint panel now has a list of contained templates/profiles, that can be added to or removed from.</span></p>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts19">Schematron exports include vocabulary</span></span></h2>
+<p class="rvps4"><span class="rvts14">The Schematron export screen has an option to "include" vocabulary. When selected, the export produces a ZIP file that contains both the Schematron and the vocabulary XML file used by the Schematron.</span></p>
+<p class="rvps4"><span class="rvts14"><br/></span></p>
 <h3 class="rvps9"><span class="rvts0"><span class="rvts16">Development Log</span></span></h3>
 <div class="rvps10"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
 <tr valign="top">
@@ -209,9 +203,105 @@
 </td>
 </tr>
 <tr valign="top">
-<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">TODO</span></p>
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
 </td>
-<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">TODO</span></p>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Export Schematron: Zip file</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Export to MS. Word - "Save As Default" intermittently not working</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">IG Versioning issue after IG is edited</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Implementation Guide Web View - Table of Contents appears below Description</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Unable to expand constraint tree to display primitives in QRDA Category III Report - CMS (V2)</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Versioning IG: Doesn't copy custom Schematron for the whole IG</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Word Export: Change Log - Retired templates have links to nothing</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Help file does not show how to export Web-Based IG</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Template/Profile editor tooltips gone</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Primitive constraint with child primitive don't expand/open to show children</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Do not allow duplicate bookmarks/short-ids</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Copy screen allows template with non-unique identifier</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Improvement</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">FHIR Export Improvements</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Improvement</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Import terminology from native XML format</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Improvement</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Include "dependencyList" property in FHIR Export's control file</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Improvement</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Include terminology in native export format</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="100" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">New Feature</span></p>
+</td>
+<td width="640" height="19" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Pretty print XML exports</span></p>
 </td>
 </tr>
 </table>
