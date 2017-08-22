@@ -539,12 +539,14 @@
             $uibModalInstance.dismiss('cancel');
         };
     })
-    .controller('ImportValueSetModalController', function ($scope, $uibModalInstance, $sce, ImportService, source, id) {
+    .controller('ImportValueSetModalController', function ($scope, $uibModalInstance, $sce, ImportService, UserService, source, id) {
         $scope.source = source;
         $scope.id = id;
         $scope.disableSource = source ? true : false;
         $scope.disableId = id ? true : false;
         $scope.message = '';
+        $scope.canImportVSAC = UserService.hasSecurable(['ImportVSAC']);
+        $scope.canImportPHINVADS = UserService.hasSecurable(['ImportPHINVADS']);
 
         $scope.isValid = function () {
             return $scope.source && $scope.id;

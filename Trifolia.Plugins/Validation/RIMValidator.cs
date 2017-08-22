@@ -13,9 +13,9 @@ namespace Trifolia.Plugins.Validation
 
         }
 
-        public override List<ValidationResult> ValidateTemplate(Template template, SimpleSchema igSchema)
+        public override List<ValidationResult> ValidateTemplate(Template template, SimpleSchema igSchema, IEnumerable<Template> allContainedTemplates = null)
         {
-            return base.ValidateTemplate(template, igSchema);
+            return base.ValidateTemplate(template, igSchema, allContainedTemplates);
         }
     }
 }

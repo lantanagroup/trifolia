@@ -220,7 +220,7 @@ namespace Trifolia.Test.Generation.IG
         {
             string noun = "entry";
             string expected = "entries";
-            string actual = FormattedConstraint.MakePlural(noun);
+            string actual = noun.MakePlural();
             Assert.AreEqual(expected, actual);
         }
 
@@ -233,7 +233,7 @@ namespace Trifolia.Test.Generation.IG
         {
             string noun = "beach";
             string expected = "beaches";
-            string actual = FormattedConstraint.MakePlural(noun);
+            string actual = noun.MakePlural();
             Assert.AreEqual(expected, actual);
         }
 
@@ -246,7 +246,7 @@ namespace Trifolia.Test.Generation.IG
         {
             string noun = "wish";
             string expected = "wishes";
-            string actual = FormattedConstraint.MakePlural(noun);
+            string actual = noun.MakePlural();
             Assert.AreEqual(expected, actual);
         }
 
@@ -259,7 +259,7 @@ namespace Trifolia.Test.Generation.IG
         {
             string noun = "templateId";
             string expected = "templateIds";
-            string actual = FormattedConstraint.MakePlural(noun);
+            string actual = noun.MakePlural();
             Assert.AreEqual(expected, actual);
         }
 
@@ -272,7 +272,7 @@ namespace Trifolia.Test.Generation.IG
         {
             string noun = "potato";
             string expected = "potatoes";
-            string actual = FormattedConstraint.MakePlural(noun);
+            string actual = noun.MakePlural();
             Assert.AreEqual(expected, actual);
         }
 
@@ -285,7 +285,7 @@ namespace Trifolia.Test.Generation.IG
         {
             string noun = "auto";
             string expected = "autos";
-            string actual = FormattedConstraint.MakePlural(noun);
+            string actual = noun.MakePlural();
             Assert.AreEqual(expected, actual);
         }
 
@@ -298,7 +298,7 @@ namespace Trifolia.Test.Generation.IG
         {
             string noun = "prefix";
             string expected = "prefixes";
-            string actual = FormattedConstraint.MakePlural(noun);
+            string actual = noun.MakePlural();
             Assert.AreEqual(expected, actual);
         }
 

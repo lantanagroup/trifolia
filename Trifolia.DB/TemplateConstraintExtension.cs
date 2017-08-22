@@ -33,6 +33,14 @@ namespace Trifolia.DB
             }
         }
 
+        IEnumerable<IConstraintReference> IConstraint.References
+        {
+            get
+            {
+                return this.References;
+            }
+        }
+
         bool IConstraint.IsBranch
         {
             get
@@ -130,7 +138,6 @@ namespace Trifolia.DB
             clone.Cardinality = this.Cardinality;
             clone.CodeSystemId = this.CodeSystemId;
             clone.Conformance = this.Conformance;
-            clone.ContainedTemplateId = this.ContainedTemplateId;
             clone.Context = this.Context;
             clone.DataType = this.DataType;
             clone.Description = this.Description;
@@ -156,7 +163,6 @@ namespace Trifolia.DB
             clone.Template = this.Template;
             clone.ParentConstraint = this.ParentConstraint;
             clone.CodeSystem = this.CodeSystem;
-            clone.ContainedTemplate = this.ContainedTemplate;
             clone.ValueSet = this.ValueSet;
             clone.Number = this.Number;
             return clone;

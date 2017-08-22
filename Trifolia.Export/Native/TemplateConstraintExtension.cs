@@ -52,8 +52,6 @@ namespace Trifolia.Export.Native
                 conformance = GetExportConformance(constraint.Conformance),
                 cardinality = !string.IsNullOrEmpty(constraint.Cardinality) ? constraint.Cardinality : null,
                 dataType = !string.IsNullOrEmpty(constraint.DataType) ? constraint.DataType : null,
-                containedTemplateOid = constraint.ContainedTemplate != null ? constraint.ContainedTemplate.Oid : null,
-                containedTemplateType = constraint.ContainedTemplate != null ? constraint.ContainedTemplate.PrimaryContextType : null,
                 isBranch = constraint.IsBranch,
                 isBranchIdentifier = constraint.IsBranchIdentifier,
                 isSchRooted = constraint.IsSchRooted,
@@ -70,6 +68,20 @@ namespace Trifolia.Export.Native
                 Notes = constraint.Notes,
                 Label = constraint.Label
             };
+
+            var containedTemplates = (from tcr in constraint.References
+                                      join t in tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                      where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                      select t);
+
+            foreach (var containedTemplate in containedTemplates)
+            {
+                exportConstraint.ContainedTemplate.Add(new Shared.ImportExport.Model.ConstraintTypeContainedTemplate()
+                {
+                    identifier = containedTemplate.Oid,
+                    type = containedTemplate.PrimaryContextType
+                });
+            }
 
             if (!string.IsNullOrEmpty(constraint.Category))
             {

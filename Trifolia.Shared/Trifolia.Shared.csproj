@@ -96,6 +96,7 @@
     <Compile Include="FHIR\TemplateConstraintExtensions.cs" />
     <Compile Include="HttpWebClient.cs" />
     <Compile Include="IdentifierHelper.cs" />
+    <Compile Include="ImportExport\Model\TemplateExport.Designer.cs" />
     <Compile Include="JiraIssue.cs" />
     <Compile Include="JIRAIssueData.cs" />
     <Compile Include="JiraUserSearchResponse.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="Plugins\IIGTypePlugin.cs" />
     <Compile Include="ImplementationGuideExtension.cs" />
     <Compile Include="ImplementationGuideTypeExtension.cs" />
-    <Compile Include="ImportExport\Model\TemplateExport.Designer.cs" />
     <Compile Include="IWebClient.cs" />
     <Compile Include="LookupPublishStatus.cs" />
     <Compile Include="ObjectExtensions.cs" />
@@ -112,7 +112,6 @@
     <Compile Include="StringExtensions.cs" />
     <Compile Include="StringWriterWithEncoding.cs" />
     <Compile Include="CustomXmlResolver.cs" />
-    <Compile Include="ImportExport\TrifoliaExport.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="IGSettingsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

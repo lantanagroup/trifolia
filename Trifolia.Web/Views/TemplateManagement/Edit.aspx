@@ -720,7 +720,86 @@ disable: $parents[1].Template().Locked">
             </div>
             <!-- /ko -->
 
-            <div data-bind="templateSelect: ContainedTemplateId, filterContextType: $parent.DisplayDataType, disable: $parents[1].Template().Locked, label: 'Template/Profile:', small: true, canTypeAhead: true"></div>
+            <u>Contained Template(s)</u>
+
+            <table class="table table-striped contained-templates" style="margin-bottom: 0px;">
+                <tbody data-bind="foreach: References">
+                    <tr>
+                        <td>
+                            <span data-bind="text: ReferenceDisplay"></span> (<span data-bind="text: ReferenceIdentifier"></span>)
+                        </td>
+                        <td style="width: 20px;">
+                            <i class="glyphicon glyphicon-remove" style="cursor: pointer;" title="Remove this contained template/profile" data-bind="click: function () { $parent.RemoveContainedTemplate($data) }"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a href="#" data-bind="click: function () { AddContainedTemplate($parents[$parents.length - 1].IsFhir() ? null : $parent.DisplayDataType()); }">Add contained template/profile</a>
+            
+            <div class="modal fade" id="constraintReferenceSelectionModal" style="margin-top: 80px;" data-bind="with: ReferenceSelection">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Select template/profile...</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Enter search text..." data-bind="value: SearchQuery, valueUpdate: 'keyup'" />
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default" data-bind="click: function () { Search(true); }">Search</button>
+                                </div>
+                            </div>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Identifier</th>
+                                        <th>Implementation Guide</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="highlight: $parent.SearchQuery">
+                                    <!-- ko foreach: Items -->
+                                    <tr>
+                                        <td>
+                                            <span data-bind="text: Name"></span>
+                                            <!-- ko if: Description() -->
+                                            <i class="glyphicon glyphicon-comment" data-bind="tooltip: Description"></i>
+                                            <!-- /ko -->
+                                        </td>
+                                        <td data-bind="text: Oid"></td>
+                                        <td data-bind="text: ImplementationGuide"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-default btn-sm" data-bind="click: function () { $parent.Select($data); }">Select</button>
+                                        </td>
+                                    </tr>
+                                    <!-- /ko -->
+                                    <!-- ko if: IsSearching() -->
+                                    <tr>
+                                        <td colspan="4">Searching...</td>
+                                    </tr>
+                                    <!-- /ko -->
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">Showing <span data-bind="text: Items().length"></span> templates/profiles of <span data-bind="text: TotalItems()"></span>. <a href="#" data-bind="if: TotalItems() > Items().length, click: MoreResults">Show more...</a></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <!-- ko if: FilterContextType() -->
+                            <div class="pull-left">
+                                <div class="label label-info">Only showing templates/profiles with a context type of <span data-bind="text: FilterContextType"></span></div>
+                            </div>
+                            <!-- /ko -->
+                            <button type="button" class="btn btn-default" data-bind="click: Cancel">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="input-group input-group-sm">
                 <div class="input-group-addon">

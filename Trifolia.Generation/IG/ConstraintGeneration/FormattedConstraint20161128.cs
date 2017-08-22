@@ -18,10 +18,11 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
     {
         public FormattedConstraint20161128()
         {
-            this.ContainedTemplateId = -1;
+            this.parts = new List<ConstraintPart>();
+            this.ConstraintReferences = new List<ConstraintReference>();
         }
 
-        private List<ConstraintPart> parts = new List<ConstraintPart>();
+        private List<ConstraintPart> parts;
         private IGSettingsManager igSettings;
         private IObjectRepository tdb;
         private int indexInSiblings;
@@ -71,10 +72,6 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         public string Conformance { get; set; }
         public string Cardinality { get; set; }
         public string DataType { get; set; }
-        public int ContainedTemplateId { get; set; }
-        public string ContainedTemplateTitle { get; set; }
-        public string ContainedTemplateLink { get; set; }
-        public string ContainedTemplateOid { get; set; }
         public string ValueConformance { get; set; }
         public string StaticDynamic { get; set; }
         public string ValueSetName { get; set; }
@@ -92,10 +89,11 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         public string ValueSetLinkBase { get; set; }
         public bool IsChoice { get; set; }
         public bool ParentIsChoice { get; set; }
+        public List<ConstraintReference> ConstraintReferences { get; set; }
 
         #endregion
 
-        public void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, Template containedTemplate = null, ValueSet valueSet = null, CodeSystem codeSystem = null)
+        public void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, ValueSet valueSet = null, CodeSystem codeSystem = null)
         {
             this.childCount = constraint.Children != null ? constraint.Children.Count() : 0;
 
@@ -136,22 +134,6 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                 this.ParentIsChoice = parent.IsChoice;
 
                 this.indexInSiblings = parent.Children.OrderBy(y => y.Order).ToList().IndexOf(constraint);
-            }
-
-            if (constraint.ContainedTemplateId != null)
-            {
-                // If the caller didn't pass along the contained template, retrieve it from the DB
-                if (containedTemplate == null || containedTemplate.Id != constraint.ContainedTemplateId)
-                    containedTemplate = this.tdb.Templates.Single(y => y.Id == constraint.ContainedTemplateId);
-
-                this.ContainedTemplateId = containedTemplate.Id;
-                this.ContainedTemplateTitle = containedTemplate.Name;
-                this.ContainedTemplateOid = containedTemplate.Oid;
-
-                if (this.LinkIsBookmark)
-                    this.ContainedTemplateLink = string.Format("{0}{1}", this.TemplateLinkBase, containedTemplate.Bookmark);
-                else
-                    this.ContainedTemplateLink = containedTemplate.GetViewUrl(this.TemplateLinkBase);
             }
 
             this.ValueConformance = constraint.ValueConformance;
@@ -198,7 +180,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             // Make sure we don't process contained template constraints as 
             // primitives simply because a context is not specified
-            if (this.ContainedTemplateId != -1)
+            if (this.ConstraintReferences != null && this.ConstraintReferences.Count > 0)
                 this.IsPrimitive = false;
 
             // Build the constraint text
@@ -235,7 +217,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                 {
 
                     // If we have defined a contained template, then ignore the context.
-                    if (this.ContainedTemplateId != -1)
+                    if (this.ConstraintReferences != null && this.ConstraintReferences.Count > 0)
                         this.Context = null;
 
                     if (!this.ParentIsBranch && !string.IsNullOrEmpty(this.ParentContext) && !string.IsNullOrEmpty(this.ParentCardinality))
@@ -250,7 +232,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                         }
                         else if (this.ParentCardinality.EndsWith("..*"))
                         {
-                            this.parts.Add(new ConstraintPart("Such " + MakePlural(this.ParentContext) + " "));
+                            this.parts.Add(new ConstraintPart("Such " + this.ParentContext.MakePlural() + " "));
                         }
                     }
 
@@ -428,27 +410,33 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                     }
                 }
 
-                // Add the contained template if specified
-                if (this.ContainedTemplateId >= 0)
+                // Add the contained template(s) if specified
+                if (this.ConstraintReferences != null && this.ConstraintReferences.Count > 0)
                 {
                     if (!string.IsNullOrEmpty(this.Context))
-                    {
                         this.parts.Add(new ConstraintPart(" which includes "));
-                    }
 
-                    if (this.LinkContainedTemplate)
+                    for (var i = 0; i < this.ConstraintReferences.Count; i++)
                     {
-                        this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Link, this.ContainedTemplateTitle)
+                        var constraintReference = this.ConstraintReferences[i];
+
+                        if (i > 0)
+                            this.parts.Add(new ConstraintPart(" or "));
+
+                        if (this.LinkContainedTemplate)
                         {
-                            LinkDestination = this.ContainedTemplateLink
-                        });
-                    }
-                    else
-                    {
-                        this.parts.Add(new ConstraintPart(this.ContainedTemplateTitle));
-                    }
+                            this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Link, constraintReference.Name)
+                            {
+                                LinkDestination = constraintReference.GetLink(this.LinkIsBookmark, this.TemplateLinkBase)
+                            });
+                        }
+                        else
+                        {
+                            this.parts.Add(new ConstraintPart(constraintReference.Name));
+                        }
 
-                    this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Template, " (identifier: " + this.ContainedTemplateOid + ")"));
+                        this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Template, " (identifier: " + constraintReference.Identifier + ")"));
+                    }
                 }
 
                 this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Constraint, string.Format(" (CONF:{0})", this.Number))
@@ -664,35 +652,6 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             }
 
             return sb.ToString();
-        }
-
-        internal static string MakePlural(string noun)
-        {
-            string[] oNounsES = new string[] { "echo", "hero", "potato", "veto" };
-            string[] oNounS = new string[] { "auto", "memo", "pimento", "pro" };
-
-            if (noun.EndsWith("y"))
-            {
-                return noun.Substring(0, noun.Length - 1) + "ies";
-            }
-            else if (noun.EndsWith("s") || noun.EndsWith("z") || noun.EndsWith("ch") || noun.EndsWith("sh") || noun.EndsWith("x"))
-            {
-                return noun + "es";
-            }
-
-            foreach (string cONounES in oNounsES)
-            {
-                if (noun.EndsWith(cONounES))
-                    return noun + "es";
-            }
-
-            foreach (string cONounS in oNounS)
-            {
-                if (noun.EndsWith(cONounS))
-                    return noun + "s";
-            }
-
-            return noun + "s";
         }
 
         internal static string HtmlFormatDescriptiveText(WIKIParser parser, string text)

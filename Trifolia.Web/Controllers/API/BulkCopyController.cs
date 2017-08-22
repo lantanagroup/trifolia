@@ -263,7 +263,6 @@ namespace Trifolia.Web.Controllers.API
                     Cardinality = baseConstraint.Cardinality,
                     CodeSystemId = baseConstraint.CodeSystemId,
                     Conformance = baseConstraint.Conformance,
-                    ContainedTemplateId = baseConstraint.ContainedTemplateId,
                     Context = baseConstraint.Context,
                     DataType = baseConstraint.DataType,
                     Description = baseConstraint.Description,
@@ -301,7 +300,8 @@ namespace Trifolia.Web.Controllers.API
                     string valueSet = GetRowField(constraintsSheet, constraintChange, Fields.ConstraintValueSet);
                     string valueSetDate = GetRowField(constraintsSheet, constraintChange, Fields.ConstraintValueSetDate);
                     string codeSystem = GetRowField(constraintsSheet, constraintChange, Fields.ConstraintCodeSystem);
-                    string containedTemplate = GetRowField(constraintsSheet, constraintChange, Fields.ConstraintContainedTemplate);
+                    string containedTemplateField = GetRowField(constraintsSheet, constraintChange, Fields.ConstraintContainedTemplate);
+                    string[] containedTemplatesFields = containedTemplateField != null ? containedTemplateField.Split(',') : null;
                     string description = GetRowField(constraintsSheet, constraintChange, Fields.ConstraintDescription);
                     string label = GetRowField(constraintsSheet, constraintChange, Fields.ConstraintLabel);
                     string binding = GetRowField(constraintsSheet, constraintChange, Fields.ConstraintBinding);
@@ -387,20 +387,15 @@ namespace Trifolia.Web.Controllers.API
                     }
 
                     // Contained Template
-                    if (!string.IsNullOrEmpty(containedTemplate))
+                    if (containedTemplatesFields != null && containedTemplateField != "<remove>")
                     {
-                        if (containedTemplate.ToLower() == "<remove>")
+                        foreach (var containedTemplateIdentifier in containedTemplatesFields)
                         {
-                            newConstraint.ContainedTemplateId = null;
-                        }
-                        else
-                        {
-                            Template foundContainedTemplate = this.tdb.Templates.SingleOrDefault(y => y.Oid == containedTemplate);
-
-                            if (foundContainedTemplate == null)
-                                results.Errors.Add("Constraint change #" + constraintChange.RowNumber.ToString() + " defines a contained template \"" + containedTemplate + "\" which could not be found.");
-                            else
-                                newConstraint.ContainedTemplateId = foundContainedTemplate.Id;
+                            newConstraint.References.Add(new TemplateConstraintReference()
+                            {
+                                ReferenceIdentifier = containedTemplateIdentifier,
+                                ReferenceType = ConstraintReferenceTypes.Template
+                            });
                         }
                     }
 
@@ -419,6 +414,7 @@ namespace Trifolia.Web.Controllers.API
                 // Add the constraint to the template and to the correct parent (if one is specified)
                 if (destinationParentConstraint != null)
                     destinationParentConstraint.ChildConstraints.Add(newConstraint);
+
                 destinationTemplate.ChildConstraints.Add(newConstraint);
 
                 // Recursively copy additional constraints

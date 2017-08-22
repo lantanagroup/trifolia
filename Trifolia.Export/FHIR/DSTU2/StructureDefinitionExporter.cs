@@ -137,7 +137,7 @@ namespace Trifolia.Export.FHIR.DSTU2
 
             // Binding
             string valueConformance = string.IsNullOrEmpty(constraint.ValueConformance) ? constraint.Conformance : constraint.ValueConformance;
-            bool hasBinding = constraint.ContainedTemplate != null;
+            bool hasBinding = constraint.References.Any(y => y.ReferenceType == ConstraintReferenceTypes.Template);
 
             if (constraint.ValueSet != null && valueConformance.IndexOf("NOT") < 0)
             {
@@ -214,17 +214,25 @@ namespace Trifolia.Export.FHIR.DSTU2
                 StructureDefinition profile = GetBaseProfile(constraint.Template);
                 newElementDef.Type = GetProfileDataTypes(profile, constraint);
 
-                // If there is a contained template/profile, make sure it supports a "Reference" type, and then output the profile identifier in the type
-                if (constraint.ContainedTemplate != null && newElementDef.Type.Exists(y => y.Code == "Reference" || y.Code == "Extension"))
-                {
-                    bool isExtension = constraint.ContainedTemplate.PrimaryContextType == "Extension" && newElementDef.Type.Exists(y => y.Code == "Extension");
+                var containedTemplates = (from tcr in constraint.References
+                                          join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                          select new { Identifier = t.Oid, t.PrimaryContextType });
 
+                // If there is a contained template/profile, make sure it supports a "Reference" type, and then output the profile identifier in the type
+                if (containedTemplates.Count() > 0 && newElementDef.Type.Exists(y => y.Code == "Reference" || y.Code == "Extension"))
+                {
                     var containedTypes = new List<ElementDefinition.TypeRefComponent>();
-                    containedTypes.Add(new ElementDefinition.TypeRefComponent()
+                    foreach (var containedTemplate in containedTemplates)
                     {
-                        Code = isExtension ? "Extension" : "Reference",
-                        Profile = new List<string>(new string[] { constraint.ContainedTemplate.Oid })
-                    });
+                        bool isExtension = containedTemplate.PrimaryContextType == "Extension" && newElementDef.Type.Exists(y => y.Code == "Extension");
+
+                        containedTypes.Add(new ElementDefinition.TypeRefComponent()
+                        {
+                            Code = isExtension ? "Extension" : "Reference",
+                            Profile = new List<string>(new string[] { containedTemplate.Identifier })
+                        });
+                    }
 
                     newElementDef.Type = containedTypes;
                 }

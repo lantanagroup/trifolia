@@ -69,6 +69,9 @@ namespace Trifolia.Web.Controllers.API
                     switch (model.Source)
                     {
                         case ValueSetImportSources.VSAC:
+                            if (!CheckPoint.Instance.HasSecurables(SecurableNames.IMPORT_VSAC))
+                                throw new AuthorizationException("You do not have the securable required to import from VSAC");
+
                             User currentUser = CheckPoint.Instance.GetUser(auditedTdb);
                             VSACImporter importer = new VSACImporter(auditedTdb);
 
@@ -89,6 +92,9 @@ namespace Trifolia.Web.Controllers.API
 
                             break;
                         case ValueSetImportSources.PHINVADS:
+                            if (!CheckPoint.Instance.HasSecurables(SecurableNames.IMPORT_PHINVADS))
+                                throw new AuthorizationException("You do not have the securable required to import from PHIN VADS");
+
                             PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember> processor =
                                 new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>();
 

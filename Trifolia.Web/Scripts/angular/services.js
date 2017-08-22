@@ -165,6 +165,27 @@
 
 angular.module('Trifolia').service('HelperService', function ($httpParamSerializer, $cookies) {
     return {
+        getQueryParams: function() {
+            if (!location.search) {
+                return {};
+            }
+
+            var search = location.search.substring(1);
+            var paramSplit = search.split('&');
+            var params = {};
+
+            _.each(paramSplit, function (param) {
+                var valueSplit = param.split('=');
+
+                if (valueSplit.length == 1) {
+                    params[valueSplit[0]] = true;
+                } else if (valueSplit.length == 2) {
+                    params[valueSplit[0]] = valueSplit[1];
+                }
+            });
+
+            return params;
+        },
         buildUrl: function (url, params) {
             var serializedParams = $httpParamSerializer(params);
 
@@ -191,10 +212,12 @@ angular.module('Trifolia').service('HelperService', function ($httpParamSerializ
         getErrorMessage: function (err) {
             if (err.data && err.data.Message) {
                 return err.data.Message;
-            } else if (typeof err.data === 'string') {
+            } else if (typeof err.data === 'string' && err.data) {
                 return err.data;
             } else if (err.message) {
                 return err.message;
+            } else if (err.statusText) {
+                return err.statusText;
             }
 
             return err;

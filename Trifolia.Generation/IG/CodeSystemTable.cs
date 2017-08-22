@@ -71,7 +71,7 @@ namespace Trifolia.Generation.IG
         private void AddCodeSystemTable()
         {
             string[] headers = new string[] { "Name", "OID" };
-            Table t = this.tables.AddTable("Code Systems", headers);
+            Table table = this.tables.AddTable("Code Systems", headers);
 
             foreach (var cCodeSystem in codeSystems)
             {
@@ -83,7 +83,7 @@ namespace Trifolia.Generation.IG
                         new Paragraph(
                             DocHelper.CreateRun(cCodeSystem.Identifier))));
 
-                t.Append(newRow);
+                table.Append(newRow);
             }
         }
 

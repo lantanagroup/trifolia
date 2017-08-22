@@ -22,12 +22,13 @@ namespace Trifolia.Generation.IG
         private Body documentBody = null;
         private List<Template> exportedTemplates = null;
         private IEnumerable<TemplateConstraint> allConstraints = null;
+        private List<ViewTemplateRelationship> relationships = null;
 
         #region Public Static Methods
 
-        public static void AddTable(IObjectRepository tdb, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates)
+        public static void AddTable(IObjectRepository tdb, List<ViewTemplateRelationship> relationships, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates)
         {
-            TemplateContextTable cot = new TemplateContextTable(tdb, tables, documentBody, template, exportedTemplates);
+            TemplateContextTable cot = new TemplateContextTable(tdb, relationships, tables, documentBody, template, exportedTemplates);
             cot.AddTemplateContextTable();
         }
 
@@ -35,9 +36,10 @@ namespace Trifolia.Generation.IG
 
         #region Ctor
 
-        private TemplateContextTable(IObjectRepository tdb, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates)
+        private TemplateContextTable(IObjectRepository tdb, List<ViewTemplateRelationship> relationships, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates)
         {
             this.tdb = tdb;
+            this.relationships = relationships;
             this.tables = tables;
             this.template = template;
             this.documentBody = documentBody;
@@ -63,23 +65,29 @@ namespace Trifolia.Generation.IG
             TableCell usedByCell = new TableCell();
             TableCell containedCell = new TableCell();
 
-            var usedByTemplates = (from tc in this.tdb.TemplateConstraints
-                                              join te in this.tdb.Templates on tc.TemplateId equals te.Id
-                                              where tc.ContainedTemplateId == template.Id && tc.TemplateId != template.Id
-                                              orderby tc.Conformance, te.Name
-                                              select te)
-                                              .Distinct().ToList();
-            var containedTemplates = (from ac in allConstraints
-                                                 join ct in this.tdb.Templates on ac.ContainedTemplateId equals ct.Id
-                                                 where this.exportedTemplates.Exists(y => y.Id == ct.Id) && ac.ContainedTemplateId != null
-                                                 orderby ct.Name
-                                                 select ct)
-                                                 .Distinct().ToList();
+            List<int> exportedTemplateIds = this.exportedTemplates.Select(y => y.Id).ToList();
 
-            var usedByTemplatesSelectedForExport = usedByTemplates.Where(e => this.exportedTemplates.Exists(y => y.Id == e.Id)).ToList();
-            var containedTemplatesSelectedForExport = containedTemplates.Where(e => this.exportedTemplates.Exists(y => y.Id == e.Id)).ToList();
+            string templateIdentifier = template.Oid;
+            int templateId = template.Id;
+            
+            var usedByTemplates = (from tr in this.relationships
+                                   where tr.ChildTemplateId == template.Id
+                                   select new
+                                   {
+                                       Name = tr.ParentTemplateName,
+                                       Bookmark = tr.ParentTemplateBookmark,
+                                       Required = tr.Conformance == "SHALL" || tr.Conformance == "SHALL NOT"
+                                   }).Distinct().ToList();
+            var containedTemplates = (from tr in this.relationships
+                                      where tr.ParentTemplateId == template.Id
+                                      select new
+                                      {
+                                          Name = tr.ChildTemplateName,
+                                          Bookmark = tr.ChildTemplateBookmark,
+                                          Required = tr.Conformance == "SHALL" || tr.Conformance == "SHALL NOT"
+                                      }).Distinct().ToList();
 
-            int maxRows = containedTemplatesSelectedForExport.Count > usedByTemplatesSelectedForExport.Count ? containedTemplatesSelectedForExport.Count : usedByTemplatesSelectedForExport.Count;
+            int maxRows = containedTemplates.Count > usedByTemplates.Count ? containedTemplates.Count : usedByTemplates.Count;
 
             for (int i = 0; i < maxRows; i++)
             {
@@ -96,40 +104,25 @@ namespace Trifolia.Generation.IG
                                     Val = Properties.Settings.Default.TableContentStyle
                                 }));
                 
-                Template usedByTemplate = i < usedByTemplatesSelectedForExport.Count ? usedByTemplatesSelectedForExport[i] : null;
-                Template containedTemplate = i < containedTemplatesSelectedForExport.Count ? containedTemplatesSelectedForExport[i] : null;
+                var usedByTemplateReference = i < usedByTemplates.Count ? usedByTemplates[i] : null;
+                var containedTemplateReference = i < containedTemplates.Count ? containedTemplates[i] : null;
 
                 // Output the used by template
-                if (usedByTemplate != null)
+                if (usedByTemplateReference != null)
                 {
-                    List<TemplateConstraint> usedByConstraints = this.tdb.TemplateConstraints.Where(y =>
-                        y.TemplateId == usedByTemplate.Id &&
-                        y.ContainedTemplateId == template.Id).ToList();
-                    bool isRequired = AreConstraintsRequiredByParents(usedByConstraints);
-
-                    // Output a hyperlink if it is included in this doc, otherwise plain text
-                    if (this.exportedTemplates.Exists(y => y.Id == usedByTemplate.Id))
-                        usedByPara.Append(
-                            DocHelper.CreateAnchorHyperlink(usedByTemplate.Name, usedByTemplate.Bookmark, Properties.Settings.Default.TableLinkStyle),
-                            DocHelper.CreateRun(isRequired ? " (required)" : " (optional)"));
-                    else
-                        usedByPara.Append(
-                            DocHelper.CreateRun(usedByTemplate.Name),
-                            DocHelper.CreateRun(isRequired ? " (required)" : " (optional)"));
+                    usedByPara.Append(
+                        DocHelper.CreateAnchorHyperlink(usedByTemplateReference.Name, usedByTemplateReference.Bookmark, Properties.Settings.Default.TableLinkStyle),
+                        DocHelper.CreateRun(usedByTemplateReference.Required ? " (required)" : " (optional)"));
 
                     usedByCell.Append(usedByPara); 
                 }
 
                 // Output the contained template
-                if (containedTemplate != null)
+                if (containedTemplateReference != null)
                 {
-                    // Output a hyperlink if it is included in this doc, otherwise plain text
-                    if (this.exportedTemplates.Exists(y => y.Id == containedTemplate.Id))
-                        containedPara.Append(
-                            DocHelper.CreateAnchorHyperlink(containedTemplate.Name, containedTemplate.Bookmark, Properties.Settings.Default.TableLinkStyle));
-                    else
-                        containedPara.Append(
-                            DocHelper.CreateRun(containedTemplate.Name));
+                    usedByPara.Append(
+                        DocHelper.CreateAnchorHyperlink(containedTemplateReference.Name, containedTemplateReference.Bookmark, Properties.Settings.Default.TableLinkStyle),
+                        DocHelper.CreateRun(containedTemplateReference.Required ? " (required)" : " (optional)"));
 
                     containedCell.Append(containedPara);
                 }

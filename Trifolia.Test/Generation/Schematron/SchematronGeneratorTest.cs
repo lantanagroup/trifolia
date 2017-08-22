@@ -31,17 +31,17 @@ namespace Trifolia.Test.Generation.Schematron
     [DeploymentItem("Schemas\\", "Schemas\\")]
     public class SchematronGeneratorTest
     {
-        private static MockObjectRepository tdb = new MockObjectRepository();
-        private static ValueSet vs1;
-        private static ImplementationGuide ig1;
-        private static ImplementationGuide ig2;
-        private static TemplateType docType;
-        private static TemplateType secType;
-        private static TemplateType entType;
-        private static XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
-        private static XDocument schDoc;
-        private static string schContent;
-        private static ImplementationGuideType cdaType;
+        private MockObjectRepository tdb = new MockObjectRepository();
+        private ValueSet vs1;
+        private ImplementationGuide ig1;
+        private ImplementationGuide ig2;
+        private TemplateType docType;
+        private TemplateType secType;
+        private TemplateType entType;
+        private XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
+        private XDocument schDoc;
+        private string schContent;
+        private ImplementationGuideType cdaType;
 
         #region Test Context
 
@@ -67,9 +67,8 @@ namespace Trifolia.Test.Generation.Schematron
 
         #region Setup and Tear Down
 
-        //Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
+        [TestInitialize]
+        public void Setup()
         {
             #region Initial Data
 
@@ -550,7 +549,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual(parentElement.ElementName, tc10486.ParentConstraint.Context, "Failed to properly parse the constraint to a document element.");
             Assert.AreEqual(attribute.AttributeName, tc10486.Context.Replace("@", ""), "Failed to properly parse the constraint to a document element.");
 
-            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(consolidationIg.ImplementationGuideType);
+            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(tdb, consolidationIg.ImplementationGuideType);
             string path = contextBuilder.CreateFullBranchedParentContext(template, tc8662);
             string expectedPath = "cda:observation[cda:templateId[@root='2.16.840.1.113883.10.20.22.4.48']]/cda:participant[@typeCode='VRF'][cda:templateId[@root='2.16.840.1.113883.10.20.1.58']][cda:participantRole]";
             Assert.AreEqual(expectedPath, path, "Invalid path returned from ConstraintToDocumentElementMapper");
@@ -565,7 +564,7 @@ namespace Trifolia.Test.Generation.Schematron
             var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
             var entryTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_ENTRY_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
-            TemplateContextBuilder tcb = new TemplateContextBuilder(igType);
+            TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType);
 
             Template entryTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entryTemplateType, "Test Branch Template", ig, "entry", "Entry");
             var c1 = tdb.AddConstraintToTemplate(entryTemplate, null, null, "text", "SHALL", "1..1");

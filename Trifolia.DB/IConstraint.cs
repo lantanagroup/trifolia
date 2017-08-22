@@ -10,6 +10,7 @@ namespace Trifolia.DB
         ITemplate Template { get; }
         IConstraint Parent { get; }
         IEnumerable<IConstraint> Children { get; }
+        IEnumerable<IConstraintReference> References { get; }
         int? Number { get; }
         string Context { get; }
         string Conformance { get; }
@@ -30,8 +31,6 @@ namespace Trifolia.DB
         int Order { get; }
         string Category { get; }
         string DisplayNumber { get; set; }
-
-        int? ContainedTemplateId { get; }
 
         int? ValueSetId { get; }
         DateTime? ValueSetDate { get; }

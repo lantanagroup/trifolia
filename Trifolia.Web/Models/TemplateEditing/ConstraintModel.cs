@@ -12,6 +12,7 @@ namespace Trifolia.Web.Models.TemplateEditing
         public ConstraintModel()
         {
             this.Children = new List<ConstraintModel>();
+            this.References = new List<ConstraintReferenceModel>();
         }
 
         // Core constraint fields
@@ -36,7 +37,6 @@ namespace Trifolia.Web.Models.TemplateEditing
         public int? ValueSetId { get; set; }
         public DateTime? ValueSetDate { get; set; }
         public int? ValueCodeSystemId { get; set; }
-        public int? ContainedTemplateId { get; set; }
         public string NarrativeProseHtml { get; set; }
         public string Schematron { get; set; }
         public string Category { get; set; }
@@ -58,6 +58,7 @@ namespace Trifolia.Web.Models.TemplateEditing
         public bool IsFixed { get; set; }
 
         public List<ConstraintModel> Children { get; set; }
+        public List<ConstraintReferenceModel> References { get; set; }
 
         IEnumerable<IConstraint> IConstraint.Children
         {
@@ -67,6 +68,14 @@ namespace Trifolia.Web.Models.TemplateEditing
                     return null;
 
                 return this.Children.Cast<IConstraint>();
+            }
+        }
+
+        IEnumerable<IConstraintReference> IConstraint.References
+        {
+            get
+            {
+                return this.References;
             }
         }
 

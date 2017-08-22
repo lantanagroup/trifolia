@@ -94,7 +94,9 @@
                 }
             })
             .then(function (results) {
-                $scope.openIdConfig = results.data;
+                if (results && results.data) {
+                    $scope.openIdConfig = results.data;
+                }
             })
             .catch(function (err) {
                 $scope.message = err;

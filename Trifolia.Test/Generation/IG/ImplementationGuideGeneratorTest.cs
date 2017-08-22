@@ -138,7 +138,7 @@ namespace Trifolia.Test.Generation.IG
         [TestMethod, TestCategory("MSWord")]
         public void TestFormattedConstraint_ContainedTemplate1()
         {
-            TemplateConstraint ctConstraint = this.mockRepo.TemplateConstraints.First(y => y.ContainedTemplateId != null);
+            TemplateConstraint ctConstraint = this.mockRepo.TemplateConstraints.First(y => y.References.Any(x => x.ReferenceType == ConstraintReferenceTypes.Template));
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, ctConstraint.Template.OwningImplementationGuideId);
             IIGTypePlugin igTypePlugin = ctConstraint.Template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
 
@@ -155,7 +155,7 @@ namespace Trifolia.Test.Generation.IG
         [TestMethod, TestCategory("MSWord")]
         public void TestFormattedConstraint_ContainedTemplate2()
         {
-            TemplateConstraint ctConstraint = this.mockRepo.TemplateConstraints.Last(y => y.ContainedTemplateId != null);
+            TemplateConstraint ctConstraint = this.mockRepo.TemplateConstraints.Last(y => y.References.Any(x => x.ReferenceType == ConstraintReferenceTypes.Template));
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, ctConstraint.Template.OwningImplementationGuideId);
             IIGTypePlugin igTypePlugin = ctConstraint.Template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
 

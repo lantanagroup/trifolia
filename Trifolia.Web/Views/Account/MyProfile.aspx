@@ -93,6 +93,7 @@
 
                             <p>
                                 <button type="button" class="btn btn-default" ng-click="validateUmlsCredentials()" ng-disabled="!userModel.UmlsUsername || !userModel.UmlsPassword || userModel.UmlsUsername == '******' || userModel.UmlsPassword == '******'">Test</button>
+                                <span>This test will confirm if the credentials you entered are valid. You should test your credentials prior to saving your profile changes.</span>
                             </p>
                         </div>
                     </div>

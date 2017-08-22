@@ -9,6 +9,15 @@ namespace Trifolia.Web.Models.Export
 {
     public class ExportSettingsModel
     {
+        public ExportSettingsModel()
+        {
+            this.ValueSetOid = new List<string>();
+            this.ValueSetMaxMembers = new List<int>();
+            this.ParentTemplateIds = new List<int>();
+            this.TemplateIds = new List<int>();
+            this.SelectedCategories = new List<string>();
+        }
+
         [JsonIgnore]
         public int ImplementationGuideId { get; set; }
         [JsonIgnore]
@@ -23,13 +32,13 @@ namespace Trifolia.Web.Models.Export
         public DocumentTableOptions DocumentTables { get; set; }
         public TemplateSortOrderOptions TemplateSortOrder { get; set; }
         public bool ValueSetTables { get; set; }
-        public string[] ValueSetOid { get; set; }
+        public List<string> ValueSetOid { get; set; }
 
         /// <summary>
         /// An ordered array indicating the maximum members for each of the value sets
         /// </summary>
         /// <remarks>ValueSetMaxMembers[i] is the maximum number of members for ValueSetOid[i]</remarks>
-        public int[] ValueSetMaxMembers { get; set; }
+        public List<int> ValueSetMaxMembers { get; set; }
 
         // SCH Export Settings
         public string VocabularyFileName { get; set; }
@@ -47,8 +56,8 @@ namespace Trifolia.Web.Models.Export
         public bool ValueSetAppendix { get; set; }
 
         // General Settings
-        public int[] ParentTemplateIds { get; set; }
-        public int[] TemplateIds { get; set; }
+        public List<int> ParentTemplateIds { get; set; }
+        public List<int> TemplateIds { get; set; }
         public bool IncludeInferred { get; set; }
         public List<string> SelectedCategories { get; set; }
         public bool ReturnJson { get; set; }

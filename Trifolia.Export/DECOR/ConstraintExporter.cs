@@ -31,7 +31,7 @@ namespace Trifolia.Export.DECOR
 
         private attribute ExportAttribute(TemplateConstraint constraint)
         {
-            IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, null, null, false, false, false, false);
+            IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, null, null, null, false, false, false, false);
             attribute constraintAttribute = new attribute();
             constraintAttribute.name = constraint.Context.Substring(1);
             constraintAttribute.isOptional = constraint.Conformance != "SHALL";
@@ -43,7 +43,7 @@ namespace Trifolia.Export.DECOR
 
         private RuleDefinition ExportElement(TemplateConstraint constraint)
         {
-            IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, null, null, false, false, false, false);
+            IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, null, null, null, false, false, false, false);
             RuleDefinition constraintRule = new RuleDefinition();
             constraintRule.name = constraint.Context;
             constraintRule.minimumMultiplicity = constraint.CardinalityType.Left.ToString();
@@ -146,7 +146,7 @@ namespace Trifolia.Export.DECOR
                 }
                 else
                 {
-                    IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, null, null, false, false, false, false);
+                    IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, null, null, null, false, false, false, false);
 
                     XmlNode[] anyField = new XmlNode[] { this.dom.CreateTextNode(formattedConstraint.GetPlainText(false, false, false)) };
                     constraintRules.Add(new FreeFormMarkupWithLanguage()

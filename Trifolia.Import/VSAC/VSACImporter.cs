@@ -120,6 +120,7 @@ namespace Trifolia.Import.VSAC
                 if (foundValueSet == null)
                 {
                     foundValueSet = new ValueSet();
+                    foundValueSet.LastUpdate = DateTime.Now;
                     this.tdb.ValueSets.Add(foundValueSet);
 
                     foundValueSet.Identifiers.Add(new ValueSetIdentifier()

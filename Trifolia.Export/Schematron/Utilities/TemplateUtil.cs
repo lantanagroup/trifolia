@@ -14,7 +14,7 @@ namespace Trifolia.Export.Schematron.Utilities
         /// <param name="parentTemplate"></param>
         /// <param name="aChildOids"></param>
         /// <returns>string list of all unique oids</returns>
-        public static IList<string> GetAllChildTemplateOids(Template parentTemplate, List<string> aChildOids = null)
+        public static IList<string> GetAllChildTemplateOids(IObjectRepository tdb, Template parentTemplate, List<string> aChildOids = null)
         {
             var childOids = aChildOids == null ? new List<string>() : aChildOids;
 
@@ -29,11 +29,18 @@ namespace Trifolia.Export.Schematron.Utilities
 
             foreach (var childConstraint in parentTemplate.ChildConstraints)
             {
-                if (childConstraint.ContainedTemplateId != null && !childOids.Contains(childConstraint.ContainedTemplate.Oid))
+                var containedTemplates = (from tcr in childConstraint.References
+                                          join t in tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                          select t);
+
+                foreach (var containedTemplate in containedTemplates)
                 {
-                    string oid = childConstraint.ContainedTemplate.Oid;
-                    childOids.Add(oid);
-                    GetAllChildTemplateOids(childConstraint.ContainedTemplate, childOids);                    
+                    if (!childOids.Contains(containedTemplate.Oid))
+                    {
+                        childOids.Add(containedTemplate.Oid);
+                        GetAllChildTemplateOids(tdb, containedTemplate, childOids);
+                    }
                 }
             }
 

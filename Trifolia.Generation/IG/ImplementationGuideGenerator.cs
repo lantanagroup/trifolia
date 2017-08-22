@@ -18,7 +18,7 @@ using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Generation.IG
 {
-    public class ImplementationGuideGenerator
+    public class ImplementationGuideGenerator : IDisposable
     {
         #region Private Fields
 
@@ -38,8 +38,10 @@ namespace Trifolia.Generation.IG
         private CodeSystemTable codeSystemTable = null;
         private TemplateConstraintTable constraintTableGenerator;
         private PublishStatus retiredStatus = null;
-
-        private ExportSettings _exportSettings = null;
+        private ExportSettings exportSettings = null;
+        private List<ViewTemplateRelationship> templateRelationships = null;
+        private List<ConstraintReference> constraintReferences = null;
+        private SimpleSchema schema = null;
 
         #endregion
 
@@ -49,12 +51,32 @@ namespace Trifolia.Generation.IG
         {
             this._tdb = tdb;
             this.implementationGuide = tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
+            this.schema = this.implementationGuide.ImplementationGuideType.GetSimpleSchema();
 
             this.igSettings = new IGSettingsManager(this._tdb, implementationGuideId);
 
             this.templates = (from tid in templateIds
                                join t in tdb.Templates on tid equals t.Id
                                select t).Distinct().ToList();
+            this.templateRelationships = (from tr in this._tdb.ViewTemplateRelationships
+                                          join tid in templateIds on tr.ParentTemplateId equals tid
+                                          select tr)
+                                          .Union(from tr in this._tdb.ViewTemplateRelationships
+                                                 join tid in templateIds on tr.ChildTemplateId equals tid
+                                                 select tr)
+                                                 .ToList();
+            this.constraintReferences = (from t in this.templates
+                                         join tc in this._tdb.TemplateConstraints on t.Id equals tc.TemplateId
+                                         join tcr in this._tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
+                                         join rt in this._tdb.Templates on tcr.ReferenceIdentifier equals rt.Oid
+                                         select new ConstraintReference()
+                                         {
+                                             TemplateConstraintId = tc.Id,
+                                             Name = rt.Name,
+                                             Identifier = rt.Oid,
+                                             Bookmark = rt.Bookmark,
+                                             IncludedInIG = this.templates.Contains(rt)
+                                         }).ToList();
 
             this.retiredStatus = PublishStatus.GetRetiredStatus(this._tdb);
         }
@@ -65,7 +87,7 @@ namespace Trifolia.Generation.IG
 
         public void BuildImplementationGuide(ExportSettings aModel, IIGTypePlugin igTypePlugin)
         {
-            this._exportSettings = aModel;
+            this.exportSettings = aModel;
             this.igTypePlugin = igTypePlugin;
             
             this.docStream = new MemoryStream();
@@ -79,16 +101,16 @@ namespace Trifolia.Generation.IG
                     new Body());
 
             this.tables = new TableCollection(this.document.MainDocumentPart.Document.Body);
-            this.constraintTableGenerator = new TemplateConstraintTable(this.igSettings, igTypePlugin, this.templates, this.tables, _exportSettings.SelectedCategories);
+            this.constraintTableGenerator = new TemplateConstraintTable(this._tdb, this.constraintReferences, this.igSettings, igTypePlugin, this.templates, this.tables, exportSettings.SelectedCategories);
             this.figures = new FigureCollection(this.document.MainDocumentPart.Document.Body);
             this.valueSetsExport 
                 = new ValueSetsExport(
                     igTypePlugin,
                     this.document.MainDocumentPart, 
                     this.tables, 
-                    _exportSettings.GenerateValueSetAppendix, 
-                    _exportSettings.DefaultValueSetMaxMembers,
-                    _exportSettings.ValueSetMaxMembers);
+                    exportSettings.GenerateValueSetAppendix, 
+                    exportSettings.DefaultValueSetMaxMembers,
+                    exportSettings.ValueSetMaxMembers);
             this.wikiParser = new WIKIParser(this._tdb, this.document.MainDocumentPart);
             this.codeSystemTable = new CodeSystemTable(this._tdb, this.document.MainDocumentPart.Document.Body, this.templates, this.tables);
 
@@ -98,7 +120,7 @@ namespace Trifolia.Generation.IG
 
             this.AddTemplates();
 
-            if (_exportSettings.GenerateDocTemplateListTable || _exportSettings.GenerateDocContainmentTable)
+            if (exportSettings.GenerateDocTemplateListTable || exportSettings.GenerateDocContainmentTable)
             {
                 Paragraph entryLevelHeading = new Paragraph(
                     new ParagraphProperties(
@@ -107,15 +129,15 @@ namespace Trifolia.Generation.IG
                         new Text("Template Ids in This Guide")));
                 this.document.MainDocumentPart.Document.Body.AppendChild(entryLevelHeading);
 
-                if (_exportSettings.GenerateDocTemplateListTable)
+                if (exportSettings.GenerateDocTemplateListTable)
                 {
                     // Add used template table
                     this.AddDocumentTemplateListTable();
                 }
 
-                if (_exportSettings.GenerateDocContainmentTable)
+                if (exportSettings.GenerateDocContainmentTable)
                 {
-                    TemplateContainmentGenerator.AddTable(this._tdb, this.document, this.templates, this.tables);
+                    TemplateContainmentGenerator.AddTable(this._tdb, this.document, this.templateRelationships, this.templates, this.tables);
                 }
             }
 
@@ -125,7 +147,7 @@ namespace Trifolia.Generation.IG
 
             this.AddRetiredTemplatesAppendix();
 
-            if (_exportSettings.IncludeChangeList)
+            if (exportSettings.IncludeChangeList)
                 this.LoadChangesAppendix();
         }
 
@@ -482,7 +504,7 @@ namespace Trifolia.Generation.IG
 
         private List<Template> GetTemplatesForTemplateType(long templateTypeId)
         {
-            if (!_exportSettings.AlphaHierarchicalOrder)
+            if (!exportSettings.AlphaHierarchicalOrder)
             {
                 return templates
                     .Where(y => y.TemplateTypeId == templateTypeId)
@@ -545,7 +567,7 @@ namespace Trifolia.Generation.IG
 
             string headingLevel = Properties.Settings.Default.TemplateHeaderStyle;
 
-            if (_exportSettings.AlphaHierarchicalOrder && template.ImpliedTemplateId != null && this.templates.Exists(y => y.Id == template.ImpliedTemplateId))
+            if (exportSettings.AlphaHierarchicalOrder && template.ImpliedTemplateId != null && this.templates.Exists(y => y.Id == template.ImpliedTemplateId))
                 headingLevel = Properties.Settings.Default.TemplateHeaderSecondLevelStyle;
 
             StringBuilder lTitleBuilder = new StringBuilder(string.Format("{0}", template.Name.Substring(1)));
@@ -554,7 +576,7 @@ namespace Trifolia.Generation.IG
             bool lStatusMatches = template.StatusId == template.OwningImplementationGuide.PublishStatusId;
             string status = "Draft";
 
-            if (_exportSettings.IncludeTemplateStatus || !lDirectlyOwnedTemplate || !lStatusMatches || template.Status == PublishStatus.GetDeprecatedStatus(this._tdb))
+            if (exportSettings.IncludeTemplateStatus || !lDirectlyOwnedTemplate || !lStatusMatches || template.Status == PublishStatus.GetDeprecatedStatus(this._tdb))
             {
                 status = template.Status != null ? template.Status.Status : status;
             }
@@ -573,7 +595,7 @@ namespace Trifolia.Generation.IG
                         new BookmarkEnd() { Id = bookmarkId }),
                     new Text(lTemplateTitle)));
 
-            if (!string.IsNullOrEmpty(template.Notes) && this._exportSettings.IncludeNotes)
+            if (!string.IsNullOrEmpty(template.Notes) && this.exportSettings.IncludeNotes)
                 this.commentManager.AddCommentRange(pHeading, template.Notes);
 
             this.document.MainDocumentPart.Document.Body.AppendChild(pHeading);
@@ -609,16 +631,16 @@ namespace Trifolia.Generation.IG
             this.document.MainDocumentPart.Document.Body.AppendChild(igDetails);
 
             // If we were told to generate context tables for the template...
-            if (_exportSettings.GenerateTemplateContextTable)
-                TemplateContextTable.AddTable(this._tdb, this.tables, this.document.MainDocumentPart.Document.Body, template, this.templates);
+            if (exportSettings.GenerateTemplateContextTable)
+                TemplateContextTable.AddTable(this._tdb, this.templateRelationships, this.tables, this.document.MainDocumentPart.Document.Body, template, this.templates);
 
-            // Output the template's description
+            // Output the template's descriptionz
             if (!string.IsNullOrEmpty(template.Description))
                 this.wikiParser.ParseAndAppend(template.Description, this.document.MainDocumentPart.Document.Body);
 
             // If we were told to generate tables for the template...
-            if (_exportSettings.GenerateTemplateConstraintTable)
-                this.constraintTableGenerator.AddTemplateConstraintTable(template, this.document.MainDocumentPart.Document.Body, templateIdentifier);
+            if (exportSettings.GenerateTemplateConstraintTable)
+                this.constraintTableGenerator.AddTemplateConstraintTable(this.schema, template, this.document.MainDocumentPart.Document.Body, templateIdentifier);
 
             if (templateConstraints.Count(y => y.IsHeading) > 0)
             {
@@ -649,7 +671,7 @@ namespace Trifolia.Generation.IG
                 this.document.MainDocumentPart.Document.Body.Append(impliedConstraint);
             }
 
-            bool lCreateValueSetTables = _exportSettings.DefaultValueSetMaxMembers > 0;
+            bool lCreateValueSetTables = exportSettings.DefaultValueSetMaxMembers > 0;
 
             IConstraintGenerator constraintGenerator = ConstraintGenerationFactory.NewConstraintGenerator(
                 this.igSettings,
@@ -657,15 +679,15 @@ namespace Trifolia.Generation.IG
                 this.commentManager,
                 this.figures,
                 this.wikiParser,
-                _exportSettings.IncludeXmlSamples,
+                exportSettings.IncludeXmlSamples,
                 _tdb,
                 rootConstraints,
                 templateConstraints,
                 template,
                 this.templates,
                 Properties.Settings.Default.ConstraintHeadingStyle,
-                _exportSettings.SelectedCategories);
-            constraintGenerator.GenerateConstraints(lCreateValueSetTables, this._exportSettings.IncludeNotes);
+                exportSettings.SelectedCategories);
+            constraintGenerator.GenerateConstraints(lCreateValueSetTables, this.exportSettings.IncludeNotes);
 
             // Add value-set tables
             if (lCreateValueSetTables)
@@ -686,7 +708,7 @@ namespace Trifolia.Generation.IG
                 }
             }
 
-            if (_exportSettings.IncludeXmlSamples)
+            if (exportSettings.IncludeXmlSamples)
             {
                 foreach (var lSample in template.TemplateSamples.OrderBy(y => y.Id))
                 {
@@ -867,6 +889,15 @@ namespace Trifolia.Generation.IG
             }
 
             return part;
+        }
+
+        public void Dispose()
+        {
+            if (this.docStream != null)
+            {
+                this.docStream.Close();
+                this.docStream.Dispose();
+            }
         }
 
         #endregion

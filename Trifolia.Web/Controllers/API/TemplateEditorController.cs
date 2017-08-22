@@ -160,7 +160,12 @@ namespace Trifolia.Web.Controllers.API
             List<TemplateMetaDataModel.TemplateReference> containedByTemplates = new List<TemplateMetaDataModel.TemplateReference>();
             lViewModel.ContainedByTemplates = containedByTemplates;
 
-            foreach (var containingConstraint in lTemplate.ContainingConstraints)
+            var containingConstraints = (from tcr in this.tdb.TemplateConstraintReferences
+                                         join tc in this.tdb.TemplateConstraints on tcr.TemplateConstraintId equals tc.Id
+                                         where tcr.ReferenceIdentifier == lTemplate.Oid && tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                         select tc);
+
+            foreach (var containingConstraint in containingConstraints)
             {
                 TemplateMetaDataModel.TemplateReference newReference = new TemplateMetaDataModel.TemplateReference()
                 {
@@ -247,7 +252,6 @@ namespace Trifolia.Web.Controllers.API
                 ValueSetDate = constraint.ValueSetDate,
                 ValueCodeSystemId = constraint.CodeSystemId,
                 IsPrimitive = constraint.IsPrimitive,
-                ContainedTemplateId = constraint.ContainedTemplateId,
                 IsHeading = constraint.IsHeading,
                 HeadingDescription = constraint.HeadingDescription,
                 IsInheritable = constraint.IsInheritable,
@@ -262,6 +266,17 @@ namespace Trifolia.Web.Controllers.API
 
                 NarrativeProseHtml = fc.GetHtml(wikiParser, null, 1, false)
             };
+
+            newConstraintModel.References = (from tcr in constraint.References
+                                             join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                             where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                             select new ConstraintReferenceModel()
+                                             {
+                                                 Id = tcr.Id,
+                                                 ReferenceIdentifier = tcr.ReferenceIdentifier,
+                                                 ReferenceType = tcr.ReferenceType,
+                                                 ReferenceDisplay = t.Name
+                                             }).ToList();
 
             if (constraint.IsStatic == true)
                 newConstraintModel.Binding = "STATIC";
@@ -382,7 +397,7 @@ namespace Trifolia.Web.Controllers.API
                 return string.Empty;
 
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb);
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, null, constraint);
+            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, null, constraint, null);
             fc.HasChildren = true;
 
             WIKIParser wikiParser = new WIKIParser(this.tdb);
@@ -438,13 +453,16 @@ namespace Trifolia.Web.Controllers.API
                 // Create/update constraints
                 this.SaveConstraints(tdb, template, model.Constraints);
 
+                var allNumbers = (from t in tdb.Templates
+                                  join tc in tdb.TemplateConstraints on t.Id equals tc.TemplateId
+                                  where t.OwningImplementationGuideId == template.OwningImplementationGuideId
+                                  select new { tc.Id, tc.Number });
                 var duplicateNumbers = (from tcc in template.ChildConstraints
-                                        join tc in tdb.TemplateConstraints on tcc.Number equals tc.Number
-                                        join t in tdb.Templates on tc.TemplateId equals t.Id
-                                        where tcc.Id != tc.Id && t.OwningImplementationGuideId == template.OwningImplementationGuideId
-                                        select tcc.Number).ToList();
+                                        join an in allNumbers on tcc.Number equals an.Number
+                                        where tcc.Id != an.Id
+                                        select tcc.Number);
 
-                if (duplicateNumbers.Count > 0)
+                if (duplicateNumbers.Count() > 0)
                 {
                     response.Error = string.Format("The following constraints have duplicate numbers: {0}", string.Join(", ", duplicateNumbers));
                 }
@@ -609,6 +627,33 @@ namespace Trifolia.Web.Controllers.API
             }
         }
 
+        private void SaveConstraintReferences(IObjectRepository tdb, TemplateConstraint constraint, List<ConstraintReferenceModel> references)
+        {
+            List<TemplateConstraintReference> existing = constraint.References.ToList();
+
+            foreach (var referenceModel in references)
+            {
+                if (existing.Any(y => y.ReferenceType == ConstraintReferenceTypes.Template && y.ReferenceIdentifier == referenceModel.ReferenceIdentifier))
+                    continue;
+
+                TemplateConstraintReference newConstraintReference = new TemplateConstraintReference()
+                {
+                    Constraint = constraint,
+                    ReferenceIdentifier = referenceModel.ReferenceIdentifier,
+                    ReferenceType = ConstraintReferenceTypes.Template
+                };
+
+                constraint.References.Add(newConstraintReference);
+            }
+
+            List<TemplateConstraintReference> removeReferences = existing.Where(y => !references.Any(x => x.ReferenceIdentifier == y.ReferenceIdentifier && x.ReferenceType == y.ReferenceType)).ToList();
+
+            foreach (var removeReference in removeReferences)
+            {
+                this.tdb.TemplateConstraintReferences.Remove(removeReference);
+            }
+        }
+
         /// <summary>
         /// Converts ConstraintModel into TemplateConstraint (EF) models.
         /// </summary>
@@ -670,9 +715,6 @@ namespace Trifolia.Web.Controllers.API
 
                 if (constraint.PrimitiveText != constraintModel.PrimitiveText)
                     constraint.PrimitiveText = constraintModel.PrimitiveText;
-
-                if (constraint.ContainedTemplateId != constraintModel.ContainedTemplateId)
-                    constraint.ContainedTemplateId = constraintModel.ContainedTemplateId;
 
                 if (constraint.ValueConformance != constraintModel.ValueConformance)
                     constraint.ValueConformance = constraintModel.ValueConformance;
@@ -749,8 +791,10 @@ namespace Trifolia.Web.Controllers.API
                 if (constraint.IsFixed != constraintModel.IsFixed)
                     constraint.IsFixed = constraintModel.IsFixed;
 
+                this.SaveConstraintReferences(tdb, constraint, constraintModel.References);
+
                 // Recurse through child constraints
-                SaveConstraints(tdb, template, constraintModel.Children, constraint);
+                this.SaveConstraints(tdb, template, constraintModel.Children, constraint);
             }
         }
     }

@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.Http;
 using Trifolia.Authorization;
 using Trifolia.DB;
+using Trifolia.Export.HTML;
 using Trifolia.Export.Schematron;
 using Trifolia.Export.Terminology;
 using Trifolia.Generation.Green;
@@ -81,14 +82,14 @@ namespace Trifolia.Web.Controllers.API
                 exportSettings.IncludeXmlSample = oldExportSettings.IncludeXmlSample;
                 exportSettings.IncludeInferred = oldExportSettings.Inferred;
                 exportSettings.MaximumValueSetMembers = oldExportSettings.MaximumValuesetMembers;
-                exportSettings.ParentTemplateIds = oldExportSettings.ParentTemplateIds != null ? oldExportSettings.ParentTemplateIds.ToArray() : new int[] { };
+                exportSettings.ParentTemplateIds = oldExportSettings.ParentTemplateIds != null ? oldExportSettings.ParentTemplateIds : new List<int>();
                 exportSettings.SelectedCategories = oldExportSettings.SelectedCategories;
-                exportSettings.TemplateIds = oldExportSettings.TemplateIds != null ? oldExportSettings.TemplateIds.ToArray() : new int[] { };
+                exportSettings.TemplateIds = oldExportSettings.TemplateIds != null ? oldExportSettings.TemplateIds : new List<int>();
                 exportSettings.TemplateSortOrder = oldExportSettings.TemplateSortOrder;
                 exportSettings.TemplateTables = oldExportSettings.TemplateTables;
                 exportSettings.ValueSetAppendix = oldExportSettings.ValuesetAppendix;
-                exportSettings.ValueSetMaxMembers = oldExportSettings.ValueSetMaxMembers != null ? oldExportSettings.ValueSetMaxMembers.ToArray() : new int[] { };
-                exportSettings.ValueSetOid = oldExportSettings.ValueSetOid.ToArray();
+                exportSettings.ValueSetMaxMembers = oldExportSettings.ValueSetMaxMembers != null ? oldExportSettings.ValueSetMaxMembers : new List<int>();
+                exportSettings.ValueSetOid = oldExportSettings.ValueSetOid;
 
                 // Save the converted/new settings format
                 igSettings.SaveSetting(newSettingsProperty, JsonConvert.SerializeObject(exportSettings));
@@ -152,7 +153,7 @@ namespace Trifolia.Web.Controllers.API
             ImplementationGuide ig = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == model.ImplementationGuideId);
 
             if (model.TemplateIds == null)
-                model.TemplateIds = ig.GetRecursiveTemplates(this.tdb, categories: model.SelectedCategories.ToArray()).Select(y => y.Id).ToArray();
+                model.TemplateIds = ig.GetRecursiveTemplates(this.tdb, categories: model.SelectedCategories.ToArray()).Select(y => y.Id).ToList();
 
             List<Template> templates = this.tdb.Templates.Where(y => model.TemplateIds.Contains(y.Id)).ToList();
             SimpleSchema schema = SimplifiedSchemaContext.GetSimplifiedSchema(HttpContext.Current.Application, ig.ImplementationGuideType);
@@ -209,11 +210,11 @@ namespace Trifolia.Web.Controllers.API
                         c.SelectedCategories = model.SelectedCategories;
                     });
 
-                    if (model.ValueSetOid != null && model.ValueSetOid.Length > 0)
+                    if (model.ValueSetOid != null && model.ValueSetOid.Count > 0)
                     {
                         Dictionary<string, int> valueSetMemberMaximums = new Dictionary<string, int>();
 
-                        for (int i = 0; i < model.ValueSetOid.Length; i++)
+                        for (int i = 0; i < model.ValueSetOid.Count; i++)
                         {
                             if (valueSetMemberMaximums.ContainsKey(model.ValueSetOid[i]))
                                 continue;
@@ -295,7 +296,19 @@ namespace Trifolia.Web.Controllers.API
                     export = nativeExporter.GetExport(ig.Id, model.MaximumValueSetMembers, this.GetExportEncoding(model));
 
                     break;
+                case ExportFormats.Web_HTML:
+                    // Get the data from the API controller
+                    HtmlExporter exporter = new HtmlExporter(this.tdb);
+                    var templateIds = templates.Select(y => y.Id).ToArray();
+                    var htmlDataModel = exporter.GetExportData(ig.Id, null, templateIds, model.IncludeInferred);
 
+                    IGController igController = new IGController(this.tdb);
+                    var downloadPackage = igController.GetDownloadPackage(ig, JsonConvert.SerializeObject(htmlDataModel));
+
+                    export = downloadPackage.Content;
+                    fileName = downloadPackage.FileName;
+                    contentType = ZIP_MIME_TYPE;
+                    break;
                 default:
                     throw new NotSupportedException();
             }

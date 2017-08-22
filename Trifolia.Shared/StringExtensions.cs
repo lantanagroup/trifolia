@@ -14,6 +14,35 @@ namespace Trifolia.Shared
     {
         private static Regex invalidUtf8Characters = new Regex("[^\x00-\x7F]+");
 
+        public static string MakePlural(this string theString)
+        {
+            string[] oNounsES = new string[] { "echo", "hero", "potato", "veto" };
+            string[] oNounS = new string[] { "auto", "memo", "pimento", "pro" };
+
+            if (theString.EndsWith("y"))
+            {
+                return theString.Substring(0, theString.Length - 1) + "ies";
+            }
+            else if (theString.EndsWith("s") || theString.EndsWith("z") || theString.EndsWith("ch") || theString.EndsWith("sh") || theString.EndsWith("x"))
+            {
+                return theString + "es";
+            }
+
+            foreach (string cONounES in oNounsES)
+            {
+                if (theString.EndsWith(cONounES))
+                    return theString + "es";
+            }
+
+            foreach (string cONounS in oNounS)
+            {
+                if (theString.EndsWith(cONounS))
+                    return theString + "s";
+            }
+
+            return theString + "s";
+        }
+
         public static string RemoveInvalidUtf8Characters(this string theString, string replacement = "")
         {
             return invalidUtf8Characters.Replace(theString, replacement);

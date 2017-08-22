@@ -48,6 +48,7 @@ namespace Trifolia.DB
         public virtual DbSet<Template> Templates { get; set; }
         public virtual DbSet<TemplateConstraint> TemplateConstraints { get; set; }
         public virtual DbSet<TemplateConstraintSample> TemplateConstraintSamples { get; set; }
+        public virtual DbSet<TemplateConstraintReference> TemplateConstraintReferences { get; set; }
         public virtual DbSet<TemplateExtension> TemplateExtensions { get; set; }
         public virtual DbSet<TemplateSample> TemplateSamples { get; set; }
         public virtual DbSet<TemplateType> TemplateTypes { get; set; }
@@ -57,7 +58,9 @@ namespace Trifolia.DB
         public virtual DbSet<ValueSet> ValueSets { get; set; }
         public virtual DbSet<ValueSetMember> ValueSetMembers { get; set; }
         public virtual DbSet<ValueSetIdentifier> ValueSetIdentifiers { get; set; }
+        public virtual DbSet<ViewCodeSystemUsage> ViewCodeSystemUsages { get; set; }
         public virtual DbSet<ViewImplementationGuideCodeSystem> ViewImplementationGuideCodeSystems { get; set; }
+        public virtual DbSet<ViewTemplateRelationship> ViewTemplateRelationships { get; set; }
         public virtual DbSet<ViewConstraintCount> ViewConstraintCounts { get; set; }
         public virtual DbSet<ViewIGAuditTrail> ViewIGAuditTrails { get; set; }
         public virtual DbSet<ViewImplementationGuideFile> ViewImplementationGuideFiles { get; set; }
@@ -216,11 +219,6 @@ namespace Trifolia.DB
                 .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Template>()
-                .HasMany(e => e.ContainingConstraints)
-                .WithOptional(e => e.ContainedTemplate)
-                .HasForeignKey(e => e.ContainedTemplateId);
-
-            modelBuilder.Entity<Template>()
                 .HasMany(e => e.Extensions)
                 .WithRequired(e => e.Template)
                 .WillCascadeOnDelete(true);
@@ -247,6 +245,12 @@ namespace Trifolia.DB
 
             modelBuilder.Entity<TemplateConstraint>()
                 .HasMany(e => e.Samples)
+                .WithRequired(e => e.Constraint)
+                .HasForeignKey(e => e.TemplateConstraintId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<TemplateConstraint>()
+                .HasMany(e => e.References)
                 .WithRequired(e => e.Constraint)
                 .HasForeignKey(e => e.TemplateConstraintId)
                 .WillCascadeOnDelete(true);

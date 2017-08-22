@@ -79,6 +79,10 @@
                                 </select>
                             </div>
                             <span data-bind="validationMessage: ConsolidatedFormat"></span>
+
+                            <div class="form-group" data-bind="if: $parent.EditType() === 'Add'">
+                                <input type="checkbox" data-bind="checked: TestIg" value="false" /> Check this to create a Test IG (can be upgraded to a Draft)
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">

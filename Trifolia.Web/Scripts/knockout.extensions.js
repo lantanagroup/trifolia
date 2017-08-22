@@ -399,7 +399,7 @@ ko.bindingHandlers.highlight = {
     init: function (element, valueAccessor) {
         var highlightText = valueAccessor();
 
-        if (highlightText()) {
+        if (highlightText && highlightText()) {
             setTimeout(function () {
                 $(element).highlight(highlightText());
             });

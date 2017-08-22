@@ -239,49 +239,25 @@ namespace Trifolia.Generation.Green
             GetConstraintBounds(greenConstraint, out lowerBound, out upperBound);
 
             // Check if there is a contained template on this constraint
-            if (greenConstraint.TemplateConstraint.ContainedTemplate != null)
+            if (greenConstraint.TemplateConstraint.References.Count(y => y.ReferenceType == ConstraintReferenceTypes.Template) > 0)
             {
-                var containedTemplate = greenConstraint.TemplateConstraint.ContainedTemplate;
-                var implyingGreenTemplates = containedTemplate.ImplyingTemplates
-                    .Where(y => y.GreenTemplates.Count > 0)
-                    .Select(y => y.GreenTemplates.First());
+                var containedTemplates = (from tcr in greenConstraint.TemplateConstraint.References
+                                          join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                          select t);
 
-                // If the contained template has a green template
-                if (containedTemplate.GreenTemplates.Count > 0)
+                foreach (var containedTemplate in containedTemplates)
                 {
-                    XmlSchemaElement newConstraintElement = new XmlSchemaElement()
+                    var implyingGreenTemplates = containedTemplate.ImplyingTemplates
+                        .Where(y => y.GreenTemplates.Count > 0)
+                        .Select(y => y.GreenTemplates.First());
+
+                    // If the contained template has a green template
+                    if (containedTemplate.GreenTemplates.Count > 0)
                     {
-                        Name = greenConstraint.Name,
-                        MinOccursString = lowerBound,
-                        MaxOccursString = upperBound
-                    };
-
-                    if (!string.IsNullOrEmpty(greenConstraint.RootXpath))
-                        newConstraintElement.Annotation = this.CreateAnnotation("XPATH = " + greenConstraint.RootXpath);
-
-                    var containedGreenTemplate = containedTemplate.GreenTemplates.FirstOrDefault();
-
-                    if (containedGreenTemplate != null)
-                    {
-                        BuildTemplate(containedGreenTemplate);
-                        newConstraintElement.SchemaTypeName = new XmlQualifiedName(containedGreenTemplate.Name);
-                    }
-
-                    return newConstraintElement;
-                }
-                // Or if the contained template has derived templates which have green templates
-                else if (implyingGreenTemplates.Count() > 0)
-                {
-                    XmlSchemaChoice newChoice = new XmlSchemaChoice();
-
-                    foreach (var currentGreenTemplate in implyingGreenTemplates)
-                    {
-                        BuildTemplate(currentGreenTemplate);
-
                         XmlSchemaElement newConstraintElement = new XmlSchemaElement()
                         {
-                            Name = currentGreenTemplate.Name,
-                            SchemaTypeName = new XmlQualifiedName(currentGreenTemplate.Name),
+                            Name = greenConstraint.Name,
                             MinOccursString = lowerBound,
                             MaxOccursString = upperBound
                         };
@@ -289,10 +265,41 @@ namespace Trifolia.Generation.Green
                         if (!string.IsNullOrEmpty(greenConstraint.RootXpath))
                             newConstraintElement.Annotation = this.CreateAnnotation("XPATH = " + greenConstraint.RootXpath);
 
-                        newChoice.Items.Add(newConstraintElement);
-                    }
+                        var containedGreenTemplate = containedTemplate.GreenTemplates.FirstOrDefault();
 
-                    return newChoice;
+                        if (containedGreenTemplate != null)
+                        {
+                            BuildTemplate(containedGreenTemplate);
+                            newConstraintElement.SchemaTypeName = new XmlQualifiedName(containedGreenTemplate.Name);
+                        }
+
+                        return newConstraintElement;
+                    }
+                    // Or if the contained template has derived templates which have green templates
+                    else if (implyingGreenTemplates.Count() > 0)
+                    {
+                        XmlSchemaChoice newChoice = new XmlSchemaChoice();
+
+                        foreach (var currentGreenTemplate in implyingGreenTemplates)
+                        {
+                            BuildTemplate(currentGreenTemplate);
+
+                            XmlSchemaElement newConstraintElement = new XmlSchemaElement()
+                            {
+                                Name = currentGreenTemplate.Name,
+                                SchemaTypeName = new XmlQualifiedName(currentGreenTemplate.Name),
+                                MinOccursString = lowerBound,
+                                MaxOccursString = upperBound
+                            };
+
+                            if (!string.IsNullOrEmpty(greenConstraint.RootXpath))
+                                newConstraintElement.Annotation = this.CreateAnnotation("XPATH = " + greenConstraint.RootXpath);
+
+                            newChoice.Items.Add(newConstraintElement);
+                        }
+
+                        return newChoice;
+                    }
                 }
             }
             else
