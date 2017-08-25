@@ -522,6 +522,19 @@ angular.module('Trifolia').service('ImplementationGuideService', function ($http
 angular.module('Trifolia').factory('TemplateService', function ($http, $q) {
     var service = {};
 
+    service.getTemplatePermissions = function (templateId) {
+        var deferred = $q.defer();
+        var url = '/api/Template/' + templateId + '/Permissions';
+
+        $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
     service.getTemplate = function (templateId) {
         var deferred = $q.defer();
         var url = '/api/Template/' + templateId;
@@ -551,7 +564,7 @@ angular.module('Trifolia').factory('TemplateService', function ($http, $q) {
             inferred: true
         };
         angular.extend(paramOptions, options);
-        
+
         var params = {};
 
         params['count'] = paramOptions.count;
@@ -563,7 +576,7 @@ angular.module('Trifolia').factory('TemplateService', function ($http, $q) {
         if (paramOptions.queryText) {
             params['queryText'] = paramOptions.queryText;
         }
-            
+
         if (paramOptions.filterName) {
             params['filterName'] = paramOptions.filterName;
         }
@@ -601,7 +614,9 @@ angular.module('Trifolia').factory('TemplateService', function ($http, $q) {
                 deferred.resolve(results.data);
             })
             .catch(function (err) {
-                deferred.reject(HelperService.getErrorMessage(err));
+                console.log('Error searching templates');
+                console.log(err);
+                deferred.reject(err);
             });
 
         return deferred.promise;
@@ -712,99 +727,6 @@ angular.module('Trifolia').factory('EditorService', function ($http, $q) {
                 console.log(error);
                 deferred.reject(error);
             });
-        return deferred.promise;
-    };
-
-    return service;
-});
-
-angular.module('Trifolia').factory('TemplateService', function ($http, $q) {
-    var service = {};
-
-    service.getTemplate = function (templateId) {
-        var deferred = $q.defer();
-        var url = '/api/Template/' + templateId;
-
-        $http.get(url)
-            .then(function (results) {
-                deferred.resolve(results.data);
-            })
-            .catch(deferred.reject);
-
-        return deferred.promise;
-    };
-
-    service.getTemplates = function (options) {
-        var paramOptions = {
-            count: 50,
-            page: 1,
-            sortProperty: 'Name',
-            sortDescending: false,
-            queryText: '',
-            filterName: null,
-            filterOid: null,
-            filterImplementationGuideId: null,
-            filterTemplateTypeId: null,
-            filterOrganizationId: null,
-            filterContextType: null,
-            inferred: true
-        };
-        angular.extend(paramOptions, options);
-        
-        var params = {};
-
-        params['count'] = paramOptions.count;
-        params['page'] = paramOptions.page;
-        params['sortProperty'] = paramOptions.sortProperty;
-        params['sortDescending'] = paramOptions.sortDescending;
-        params['inferred'] = paramOptions.inferred;
-
-        if (paramOptions.queryText) {
-            params['queryText'] = paramOptions.queryText;
-        }
-            
-        if (paramOptions.filterName) {
-            params['filterName'] = paramOptions.filterName;
-        }
-
-        if (paramOptions.filterOid) {
-            params['filterOid'] = paramOptions.filterOid;
-        }
-
-        if (paramOptions.filterImplementationGuideId) {
-            params['filterImplementationGuideId'] = paramOptions.filterImplementationGuideId;
-        }
-
-        if (paramOptions.filterTemplateTypeId) {
-            params['filterTemplateTypeId'] = paramOptions.filterTemplateTypeId;
-        }
-
-        if (paramOptions.filterOrganizationId) {
-            params['filterOrganizationId'] = paramOptions.filterOrganizationId;
-        }
-
-        if (paramOptions.filterContextType) {
-            params['filterContextType'] = paramOptions.filterContextType;
-        }
-
-        var url = '/api/Template?';
-        var queryArray = _.map(Object.keys(params), function (paramKey) {
-            return paramKey + '=' + encodeURIComponent(params[paramKey]);
-        });
-        var queryString = queryArray.join('&');
-
-        var deferred = $q.defer();
-
-        $http.get(url + queryString)
-            .then(function (results) {
-                deferred.resolve(results.data);
-            })
-            .catch(function (err) {
-                console.log('Error searching templates');
-                console.log(err);
-                deferred.reject(err);
-            });
-
         return deferred.promise;
     };
 

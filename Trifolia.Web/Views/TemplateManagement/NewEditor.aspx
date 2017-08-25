@@ -389,12 +389,12 @@
                                 <div class="input-group-addon">Applies To:</div>
                                 <input type="text" class="form-control" readonly="readonly" value="{{template.PrimaryContext}} {{template.PrimaryContextType}}" />
                             </div>
-                            <span class="help-block"><a href="">Move</a> the template/profile to change the Implementation Guide, Type, or Applies To fields.</span>
+                            <span class="help-block"><a href="/TemplateManagement/Move/Id/{{template.Id}}">Move</a> the template/profile to change the Implementation Guide, Type, or Applies To fields.</span>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">Authored By:</div>
-                                <select class="form-control" ng-model="template.AuthorId" ng-change="templateChanged()">
+                                <select class="form-control" ng-model="template.AuthorId" ng-options="p.Id as p.Name for p in permissions" ng-change="templateChanged()">
                                     <option>TODO</option>
                                 </select>
                             </div>

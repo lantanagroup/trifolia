@@ -24,6 +24,7 @@
     $scope.message = '';
     $scope.removedConstraints = [];
     $scope.saving = false;
+    $scope.permissions = [];
 
     /**
      * Check to see if a constraint is a duplicate node within the same level of the tree
@@ -622,6 +623,12 @@
         $scope.nodes = [];
         $scope.constraints = [];
         $scope.isLocked = false;
+
+        TemplateService.getTemplatePermissions(templateId)
+            .then(function (permissions) {
+                $scope.permissions = permissions;
+            })
+            .catch($scope.handleHttpError);
 
         ImplementationGuideService.getEditable()
             .then(function (implementationGuides) {
