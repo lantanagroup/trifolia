@@ -1,5 +1,12 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.MVC.Master" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        .description {
+            margin-top: 10px;
+            white-space: pre;
+            word-wrap: break-word;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div id="ViewValueSet">
@@ -27,7 +34,7 @@
             </div>
             <!-- /ko -->
             <!-- ko if: ValueSet().Description() -->
-            <p style="margin-top: 10px;" data-bind="text: ValueSet().Description"></p>
+            <p class="description" data-bind="text: ValueSet().Description"></p>
             <!-- /ko -->
         </div>
 
