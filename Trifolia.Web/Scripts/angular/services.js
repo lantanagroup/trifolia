@@ -188,11 +188,11 @@ angular.module('Trifolia').service('HelperService', function ($httpParamSerializ
                 return defaultValue;
             }
         },
-        identifierRegex: /^(http\:\/\/(.+?)\.(.+))|(https:\/\/(.+?)\.(.+))|(urn:oid:([\d+][\.]?)+)|(urn:hl7ii:([\d+][\.]?)+:(.+?))$/g,
-        oidRegex: /^urn:oid:([\d+][\.]?)+$/g,
-        hl7iiRegex: /^urn:hl7ii:([\d+][\.]?)+:(.+?)$/g,
-        urlRegex: /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/,
-        emailRegex: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+        identifierRegex: '(^http[s]?\:\/\/(.+?)\.(.+)\/?(.*)$)|(^urn:oid:([0-9]+[\\.]?)+$)|(^urn:hl7ii:([0-9]+[\\.]?)+:(.+?)$)',
+        oidRegex: '^urn:oid:([0-9]+[\\.]?)+$',
+        hl7iiRegex: '^urn:hl7ii:([0-9]+[\\.]?)+:(.+?)$',
+        urlRegex: '^http[s]?\:\/\/(.+?)\.(.+)\/?(.*)$',
+        emailRegex: '^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$',
         getErrorMessage: function (err) {
             if (err.data && err.data.Message) {
                 return err.data.Message;

@@ -396,15 +396,19 @@
                 return;
             }
 
-            if (identifier.Type == 0 && !HelperService.oidRegex.test(identifier.Identifier)) {
+            var oidRegex = new RegExp(HelperService.oidRegex, 'gi');
+            var hl7iiRegex = new RegExp(HelperService.hl7iiRegex, 'gi');
+            var urlRegex = new RegExp(HelperService.urlRegex, 'gi');
+
+            if (identifier.Type == 0 && !oidRegex.test(identifier.Identifier)) {
                 identifier.$$valueError = true;
                 identifier.$$valueErrorMessage = 'The format of the identifier is incorrect. Please specify the identifier in the format urn:oid:XX.YY.ZZ';
                 return;
-            } else if (identifier.Type == 1 && !HelperService.hl7iiRegex.test(identifier.Identifier)) {
+            } else if (identifier.Type == 1 && !hl7iiRegex.test(identifier.Identifier)) {
                 identifier.$$valueError = true;
                 identifier.$$valueErrorMessage = 'The format of the identifier is incorrect. Please specify the identifier in the format urn:hl7ii:XX.YY.ZZ:aa';
                 return;
-            } else if (identifier.Type == 2 && !HelperService.urlRegex.test(identifier.Identifier)) {
+            } else if (identifier.Type == 2 && urlRegex.test(identifier.Identifier)) {
                 identifier.$$valueError = true;
                 identifier.$$valueErrorMessage = 'The format of the identifier is incorrect. Please specify the identifier in the format http(s)://xxx.yyy/zzz';
                 return;
