@@ -144,27 +144,25 @@
                             <input type="checkbox" id="IncludeNotes" name="IncludeNotes" ng-model="criteria.IncludeNotes"/> Include
                         </div>
                     </div>
+                    
+                    <div class="form-group" ng-show="criteria.ExportFormat == 7">
+                        <label>Value Set File Name</label>
+                        <input type="text" class="form-control" name="VocabularyFileName" ng-model="criteria.VocabularyFileName">
+                    </div>
 
-                    <div ng-show="criteria.ExportFormat == 7">        <!-- SCH -->
-                        <div class="form-group">
-                            <label>Value Set File Name</label>
-                            <input type="text" class="form-control" name="VocabularyFileName" ng-model="criteria.VocabularyFileName">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Include Vocabulary</label>
-                            <input type="radio" name="IncludeVocabulary" ng-value="true" ng-model="criteria.IncludeVocabulary"> Yes <input type="radio" name="IncludeVocabulary" ng-value="false" ng-model="criteria.IncludeVocabulary"> No
-                        </div>
-
-                        <div class="form-group">
-                            <label>Include Custom Schematron</label>
-                            <input type="radio" name="IncludeCustomSchematron" ng-value="true" ng-model="criteria.IncludeCustomSchematron"> Yes <input type="radio" name="IncludeCustomSchematron" ng-value="false" ng-model="criteria.IncludeCustomSchematron"> No
-                        </div>
-
-                        <div class="form-group">
-                            <label>Default Schematron</label>
-                            <input type="text" name="DefaultSchematron" ng-model="criteria.DefaultSchematron" class="form-control">
-                        </div>
+                    <div class="form-group" ng-show="criteria.ExportFormat == 7 || criteria.ExportFormat == 5">
+                        <label>Include Vocabulary</label>
+                        <input type="radio" name="IncludeVocabulary" ng-value="true" ng-model="criteria.IncludeVocabulary"> Yes <input type="radio" name="IncludeVocabulary" ng-value="false" ng-model="criteria.IncludeVocabulary"> No
+                    </div>
+                    
+                    <div class="form-group" ng-show="criteria.ExportFormat == 7">
+                        <label>Include Custom Schematron</label>
+                        <input type="radio" name="IncludeCustomSchematron" ng-value="true" ng-model="criteria.IncludeCustomSchematron"> Yes <input type="radio" name="IncludeCustomSchematron" ng-value="false" ng-model="criteria.IncludeCustomSchematron"> No
+                    </div>
+                    
+                    <div class="form-group" ng-show="criteria.ExportFormat == 7">
+                        <label>Default Schematron</label>
+                        <input type="text" name="DefaultSchematron" ng-model="criteria.DefaultSchematron" class="form-control">
                     </div>
 
                     <div ng-show="vocFormats.indexOf(criteria.ExportFormat) >= 0">

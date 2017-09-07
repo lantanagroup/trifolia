@@ -168,6 +168,11 @@ namespace Trifolia.Web.Controllers.API
             switch (model.ExportFormat)
             {
                 case ExportFormats.FHIR_Build_Package:
+                    BuildExporter buildExporter = new BuildExporter(this.tdb, ig.Id, templates, model.ReturnJson);
+                    export = buildExporter.Export(model.IncludeVocabulary);
+                    fileName = string.Format("{0}_buildPackage.zip", ig.GetDisplayName(true));
+                    contentType = ZIP_MIME_TYPE;
+                    break;
                 case ExportFormats.FHIR_Bundle:
                 case ExportFormats.Native_XML:
                 case ExportFormats.Templates_DSTU_XML:
