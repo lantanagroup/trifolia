@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.3.0.351">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -87,21 +87,21 @@
       
 	  
         <li role="presentation" class="tab active">
-            <a href="#contents" aria-controls="contents" role="tab" data-toggle="tab">
+            <a href="#contents" id="tab-contents" aria-controls="contents" role="tab" data-toggle="tab">
                 <i class="glyphicon glyphicon-list"></i>
                 Contents
             </a>
         </li>
       
         <li role="presentation" class="tab">
-            <a href="#index" aria-controls="index" role="tab" data-toggle="tab">
+            <a href="#index" id="tab-index" aria-controls="index" role="tab" data-toggle="tab">
                 <i class="glyphicon glyphicon-asterisk"></i>
                 Index
             </a>
         </li>
       
         <li role="presentation" class="tab">
-            <a href="#search" aria-controls="search" role="tab" data-toggle="tab">
+            <a href="#search" id="tab-search" aria-controls="search" role="tab" data-toggle="tab">
                 <i class="glyphicon glyphicon-search"></i>
                 Search
             </a>
@@ -184,37 +184,37 @@
                 
 <p></p>
 <p class="rvps2"><span class="rvts6">Released on Thursday, July 24, 2014</span></p>
-<h2 class="rvps31"><span class="rvts0"><span class="rvts21">Template Identifier Changes</span></span></h2>
-<p class="rvps32"><span class="rvts65">Templates do not require identifiers to be OIDs any longer. They can be one of four formats:</span></p>
+<h2 class="rvps32"><span class="rvts0"><span class="rvts21">Template Identifier Changes</span></span></h2>
+<p class="rvps33"><span class="rvts65">Templates do not require identifiers to be OIDs any longer. They can be one of four formats:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: disc;">
-<li style="margin-left: 0px" class="rvps35"><span class="rvts65">OID: “oid:2.17.840.113883…”</span></li>
-<li style="margin-left: 0px" class="rvps35"><span class="rvts65">II: “urn:hl7ii:ROOT:EXTENSION”</span></li>
-<li style="margin-left: 0px" class="rvps35"><span class="rvts65">HTTP/HTTPS: “http://myidentifier.com” or “https://myidentifier.com”</span></li>
+<li style="margin-left: 0px" class="rvps36"><span class="rvts65">OID: “oid:2.17.840.113883…”</span></li>
+<li style="margin-left: 0px" class="rvps36"><span class="rvts65">II: “urn:hl7ii:ROOT:EXTENSION”</span></li>
+<li style="margin-left: 0px" class="rvps36"><span class="rvts65">HTTP/HTTPS: “http://myidentifier.com” or “https://myidentifier.com”</span></li>
 </ul>
-<p class="rvps32"><span class="rvts65">MS Word exports use the label “identifier” instead of “templateId” when outputting the template identifier.</span></p>
-<p class="rvps32"><span class="rvts65">Schematron is updated to detect if the identifier as in II format and look for @root=XXX and @extension=YYY</span></p>
-<p class="rvps32"><span class="rvts65">Creating a copy of a template automatically converts OID identifiers to II type and creates an extension for the identifier based on the date that the template is copied.</span></p>
-<p class="rvps32"><span class="rvts65">Note: Only “oid:XXX” and “urn:hl7ii:XX:YY” are valid formats for CDA documents.</span></p>
-<p class="rvps32"><span class="rvts67">Known Bug: Trifolia 2.15 supports a URI:XXXX format for identifiers. We have identified that this is invalid and support for this format of identifier will be removed in the 2.16 release of Trifolia.</span></p>
-<h2 class="rvps31"><span class="rvts0"><span class="rvts21">Export Notes</span></span></h2>
-<p class="rvps32"><span class="rvts65">Template and constraint notes can now be exported as part of the MS Word document. Trifolia notes will be exported as MS Word “Review Comments” so that readers can easily navigate through the notes.</span></p>
-<p class="rvps32"><span class="rvts65">Remember: Notes are not intended to be included in balloted artifacts. They are only intended to help manage the lifecycle of template design.</span></p>
-<p class="rvps32"><span class="rvts65">The “Export Settings” for MS Word has a checkbox for “Notes” which is un-checked by default.</span></p>
-<p class="rvps33"><img width="569" height="129" alt="" style="padding : 1px;" src="lib/V_2_15_ExportMSWordNotes.png"></p>
-<p class="rvps32"><span class="rvts65"><br/></span></p>
-<p class="rvps33"><img width="569" height="120" alt="" style="padding : 1px;" src="lib/V2_15_ExportMSWordNotes2.png"></p>
-<h2 class="rvps31"><span class="rvts0"><span class="rvts21">Implementation Guide Changes</span></span></h2>
-<p class="rvps32"><span class="rvts65">Implementation guides now contain a “Display Name” which are used by exports. The display name is not required. When display name is not specified, exports will use the name of the implementation guide. </span></p>
-<p class="rvps32"><span class="rvts65">MS Exports now include a footer and a header. The footer contains page numbers and the name of the implementation guide. The header contains the date of the export and the calculated name of the implementation guide.</span></p>
-<h2 class="rvps31"><span class="rvts0"><span class="rvts21">Navigation</span></span></h2>
-<p class="rvps32"><span class="rvts65">The “View Template” and “View Implementation Guide” pages have a more user-friendly navigation bar for selecting actions.</span></p>
-<p class="rvps32"><span class="rvts65">The “View Implementation Guide” page allows users to search for templates within the implementation guide.</span></p>
-<p class="rvps30"><span class="rvts64">View Implementation Guide Navigation</span></p>
-<p class="rvps33"><img width="570" height="247" alt="" style="padding : 1px;" src="lib/V2_15_NavigationExport.png"></p>
-<p class="rvps30"><span class="rvts64">View Template Navigation</span></p>
-<p class="rvps33"><img width="575" height="114" alt="" style="padding : 1px;" src="lib/V2_15_TemplateNavigation.png"></p>
-<p class="rvps30"><span class="rvts64">View Implementation Guide Template Search</span></p>
-<p class="rvps33"><img width="575" height="166" alt="" style="padding : 1px;" src="lib/V2_15_IGTemplateSearch.png"></p>
+<p class="rvps33"><span class="rvts65">MS Word exports use the label “identifier” instead of “templateId” when outputting the template identifier.</span></p>
+<p class="rvps33"><span class="rvts65">Schematron is updated to detect if the identifier as in II format and look for @root=XXX and @extension=YYY</span></p>
+<p class="rvps33"><span class="rvts65">Creating a copy of a template automatically converts OID identifiers to II type and creates an extension for the identifier based on the date that the template is copied.</span></p>
+<p class="rvps33"><span class="rvts65">Note: Only “oid:XXX” and “urn:hl7ii:XX:YY” are valid formats for CDA documents.</span></p>
+<p class="rvps33"><span class="rvts67">Known Bug: Trifolia 2.15 supports a URI:XXXX format for identifiers. We have identified that this is invalid and support for this format of identifier will be removed in the 2.16 release of Trifolia.</span></p>
+<h2 class="rvps32"><span class="rvts0"><span class="rvts21">Export Notes</span></span></h2>
+<p class="rvps33"><span class="rvts65">Template and constraint notes can now be exported as part of the MS Word document. Trifolia notes will be exported as MS Word “Review Comments” so that readers can easily navigate through the notes.</span></p>
+<p class="rvps33"><span class="rvts65">Remember: Notes are not intended to be included in balloted artifacts. They are only intended to help manage the lifecycle of template design.</span></p>
+<p class="rvps33"><span class="rvts65">The “Export Settings” for MS Word has a checkbox for “Notes” which is un-checked by default.</span></p>
+<p class="rvps34"><img width="569" height="129" alt="" style="padding : 1px;" src="lib/V_2_15_ExportMSWordNotes.png"></p>
+<p class="rvps33"><span class="rvts65"><br/></span></p>
+<p class="rvps34"><img width="569" height="120" alt="" style="padding : 1px;" src="lib/V2_15_ExportMSWordNotes2.png"></p>
+<h2 class="rvps32"><span class="rvts0"><span class="rvts21">Implementation Guide Changes</span></span></h2>
+<p class="rvps33"><span class="rvts65">Implementation guides now contain a “Display Name” which are used by exports. The display name is not required. When display name is not specified, exports will use the name of the implementation guide. </span></p>
+<p class="rvps33"><span class="rvts65">MS Exports now include a footer and a header. The footer contains page numbers and the name of the implementation guide. The header contains the date of the export and the calculated name of the implementation guide.</span></p>
+<h2 class="rvps32"><span class="rvts0"><span class="rvts21">Navigation</span></span></h2>
+<p class="rvps33"><span class="rvts65">The “View Template” and “View Implementation Guide” pages have a more user-friendly navigation bar for selecting actions.</span></p>
+<p class="rvps33"><span class="rvts65">The “View Implementation Guide” page allows users to search for templates within the implementation guide.</span></p>
+<p class="rvps31"><span class="rvts64">View Implementation Guide Navigation</span></p>
+<p class="rvps34"><img width="570" height="247" alt="" style="padding : 1px;" src="lib/V2_15_NavigationExport.png"></p>
+<p class="rvps31"><span class="rvts64">View Template Navigation</span></p>
+<p class="rvps34"><img width="575" height="114" alt="" style="padding : 1px;" src="lib/V2_15_TemplateNavigation.png"></p>
+<p class="rvps31"><span class="rvts64">View Implementation Guide Template Search</span></p>
+<p class="rvps34"><img width="575" height="166" alt="" style="padding : 1px;" src="lib/V2_15_IGTemplateSearch.png"></p>
 <h2 class="rvps11"><span class="rvts0"><span class="rvts21">Development Log</span></span></h2>
 <div class="rvps2"><table width="566" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse;">
 <tr valign="top">
