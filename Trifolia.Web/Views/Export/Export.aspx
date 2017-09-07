@@ -98,29 +98,29 @@
                     <div ng-show="criteria.ExportFormat == 0">
                         <div class="form-group">
                             <label>Sort Order</label>
-                            <select name="TemplateSortOrder" ng-model="criteria.TemplateSortOrder" class="form-control">
-                                <option ng-value="1">Alpha-Hierarchical</option>
-                                <option ng-value="0">Alphabetically</option>
+                            <select name="TemplateSortOrder" ng-model="criteriaTemplateSortOrder" ng-model-options="{ getterSetter: true }" class="form-control">
+                                <option value="1">Alpha-Hierarchical</option>
+                                <option value="0">Alphabetically</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label>Document Tables</label>
-                            <select name="DocumentTables" ng-model="criteria.DocumentTables" class="form-control">
-                                <option ng-value="0">None</option>
-                                <option ng-value="1">Both</option>
-                                <option ng-value="2">List</option>
-                                <option ng-value="3">Containment</option>
+                            <label>Document Tables {{criteria.DocumentTables}}</label>
+                            <select name="DocumentTables" ng-model="criteriaDocumentTables" ng-model-options="{ getterSetter: true }" class="form-control">
+                                <option value="0">None</option>
+                                <option value="1">Both</option>
+                                <option value="2">List</option>
+                                <option value="3">Containment</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label>Template/Profile Tables</label>
-                            <select name="TemplateTables" ng-model="criteria.TemplateTables" class="form-control">
-                                <option ng-value="0">None</option>
-                                <option ng-value="1">Both</option>
-                                <option ng-value="2">Context</option>
-                                <option ng-value="3">Constraint Overview</option>
+                            <select name="TemplateTables" ng-model="criteriaTemplateTables" ng-model-options="{ getterSetter: true }" class="form-control">
+                                <option value="0">None</option>
+                                <option value="1">Both</option>
+                                <option value="2">Context</option>
+                                <option value="3">Constraint Overview</option>
                             </select>
                         </div>
 

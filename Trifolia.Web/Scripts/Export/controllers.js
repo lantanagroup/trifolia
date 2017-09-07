@@ -57,6 +57,30 @@
         ValueSetMaxMembers: []
     };
 
+    $scope.criteriaTemplateSortOrder = function (newValue) {
+        if (arguments.length == 1) {
+            $scope.criteria.TemplateSortOrder = parseInt(newValue);
+        } else {
+            return $scope.criteria.TemplateSortOrder.toString();
+        }
+    };
+
+    $scope.criteriaDocumentTables = function (newValue) {
+        if (arguments.length == 1) {
+            $scope.criteria.DocumentTables = parseInt(newValue);
+        } else {
+            return $scope.criteria.DocumentTables.toString();
+        }
+    };
+
+    $scope.criteriaTemplateTables = function (newValue) {
+        if (arguments.length == 1) {
+            $scope.criteria.TemplateTables = parseInt(newValue);
+        } else {
+            return $scope.criteria.TemplateTables.toString();
+        }
+    };
+
     $scope.isExportFormatSpecified = function () {
         return $scope.criteria.ExportFormat >= 0 &&
             $scope.criteria.ExportFormat !== null &&
