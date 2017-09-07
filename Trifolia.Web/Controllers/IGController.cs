@@ -11,6 +11,9 @@ using Trifolia.Authorization;
 using Trifolia.Web.Controllers.API;
 using Trifolia.Shared;
 using System.Text;
+using System.Net.Mime;
+using Trifolia.Export.HTML;
+using System.Web.Hosting;
 
 namespace Trifolia.Web.Controllers
 {
@@ -63,7 +66,7 @@ namespace Trifolia.Web.Controllers
             return View(snapshotFile.ImplementationGuideId, snapshotFile.Id);
         }
 
-        private FileResult PrepareDownload(ImplementationGuide ig, string jsonData)
+        public DownloadPackageModel GetDownloadPackage(ImplementationGuide ig, string jsonData)
         {
             var resourceMappings = new Dictionary<string, string>
             {
@@ -97,18 +100,27 @@ namespace Trifolia.Web.Controllers
 
             string viewContent;
 
-            using (var writer = new StringWriter())
+            if (this.ControllerContext != null)
             {
-                // Get the rendered view
-                var view = new WebFormView(this.ControllerContext, "~/Views/IG/View.aspx");
-                var viewCxt = new ViewContext(ControllerContext, view, ViewData, TempData, writer);
-                viewCxt.View.Render(viewCxt, writer);
-                viewContent = writer.ToString();
-
-                foreach (string resourceMappingKey in resourceMappings.Keys)
+                using (var writer = new StringWriter())
                 {
-                    viewContent = viewContent.Replace(resourceMappingKey, resourceMappings[resourceMappingKey].Replace("\\", "/"));
+                    // Get the rendered view
+                    var view = new WebFormView(this.ControllerContext, "~/Views/IG/View.aspx");
+                    var viewCxt = new ViewContext(ControllerContext, view, ViewData, TempData, writer);
+                    viewCxt.View.Render(viewCxt, writer);
+                    viewContent = writer.ToString();
                 }
+            }
+            else
+            {
+                string viewLocation = HostingEnvironment.MapPath("~/Views/IG/View.aspx");
+                viewContent = System.IO.File.ReadAllText(viewLocation);
+                viewContent = System.Text.RegularExpressions.Regex.Replace(viewContent, "<%[@=](.*?)%>", "", System.Text.RegularExpressions.RegexOptions.Multiline);
+            }
+
+            foreach (string resourceMappingKey in resourceMappings.Keys)
+            {
+                viewContent = viewContent.Replace(resourceMappingKey, resourceMappings[resourceMappingKey].Replace("\\", "/"));
             }
 
             viewContent = viewContent.Replace("\"%DATA%\"", jsonData);
@@ -152,8 +164,11 @@ namespace Trifolia.Web.Controllers
                     string packageFileName = string.Format("{0}_web.zip", ig.GetDisplayName(true));
                     byte[] data = ms.ToArray();
 
-                    return File(
-                        data, System.Net.Mime.MediaTypeNames.Application.Zip, packageFileName);
+                    return new DownloadPackageModel()
+                    {
+                        Content = data,
+                        FileName = packageFileName
+                    };
                 }
             }
         }
@@ -164,15 +179,16 @@ namespace Trifolia.Web.Controllers
             var ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
 
             // Get the data from the API controller
-            ImplementationGuideController ctrl = new ImplementationGuideController(this.tdb);
-            var dataModel = ctrl.GetViewData(implementationGuideId, null, templateIds, inferred);
+            HtmlExporter exporter = new HtmlExporter(this.tdb);
+            var dataModel = exporter.GetExportData(implementationGuideId, null, templateIds, inferred);
 
             // Serialize the data to JSON
             var jsonSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             jsonSerializer.MaxJsonLength = Int32.MaxValue;
             var dataContent = jsonSerializer.Serialize(dataModel);
 
-            return PrepareDownload(ig, dataContent);
+            var downloadPackage = GetDownloadPackage(ig, dataContent);
+            return File(downloadPackage.Content, MediaTypeNames.Application.Zip, downloadPackage.FileName);
         }
 
         [Securable(SecurableNames.WEB_IG)]
@@ -181,26 +197,28 @@ namespace Trifolia.Web.Controllers
             var ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
 
             // Get the data from the API controller
-            ImplementationGuideController ctrl = new ImplementationGuideController(this.tdb);
-            var dataModel = ctrl.GetViewData(implementationGuideId, fileId, null, true);
+            // Get the data from the API controller
+            HtmlExporter exporter = new HtmlExporter(this.tdb);
+            var dataModel = exporter.GetExportData(implementationGuideId, fileId, null, true);
 
             // Serialize the data to JSON
             var jsonSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             jsonSerializer.MaxJsonLength = Int32.MaxValue;
             var dataContent = jsonSerializer.Serialize(dataModel);
 
-            return PrepareDownload(ig, dataContent);
+            var downloadPackage = GetDownloadPackage(ig, dataContent);
+            return File(downloadPackage.Content, MediaTypeNames.Application.Zip, downloadPackage.FileName);
         }
 
         private byte[] ReadFontContents(string virtualPath)
         {
-            string absPath = Server.MapPath(virtualPath);
+            string absPath = HostingEnvironment.MapPath(virtualPath);
             return System.IO.File.ReadAllBytes(absPath);
         }
 
         private string ReadFileContent(string virtualPath)
         {
-            string absPath = Server.MapPath(virtualPath);
+            string absPath = HostingEnvironment.MapPath(virtualPath);
             return System.IO.File.ReadAllText(absPath);
         }
 

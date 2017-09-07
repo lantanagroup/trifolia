@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Trifolia.DB;
 using Trifolia.Shared;
+using Trifolia.Plugins.Validation;
+using Trifolia.Shared.Validation;
 
 namespace Trifolia.Test.Reporting
 {
@@ -41,7 +43,8 @@ namespace Trifolia.Test.Reporting
             
             tdb.AddConstraintToTemplate(newTemplate, tc2, null, "observation", "SHALL", "1..1");
 
-            List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();
+            RIMValidator validator = new RIMValidator(tdb);
+            var errors = validator.ValidateTemplate(newTemplate, null);
 
             Assert.IsNotNull(errors, "Errors list should not be null.");
             Assert.AreEqual(0, errors.Count, "Shouldn't have found any errors.");
@@ -67,7 +70,8 @@ namespace Trifolia.Test.Reporting
             tc1
                 .AddChildConstraintToTemplate(tdb, newTemplate, null, "high", "SHALL", "1..1");      // effectiveTime.high
 
-            List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();
+            var validator = new RIMValidator(tdb);
+            var errors = validator.ValidateTemplate(newTemplate, null);
 
             Assert.IsNotNull(errors, "Errors list should not be null.");
             Assert.AreEqual(0, errors.Count, "Shouldn't have found any errors.");
@@ -80,7 +84,8 @@ namespace Trifolia.Test.Reporting
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "entryRelationship", "SHALL", "1..1");
             tc1.Schematron = "not(thisisbad";
 
-            List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();
+            var validator = new RIMValidator(tdb);
+            var errors = validator.ValidateTemplate(newTemplate, null);
 
             Assert.IsNotNull(errors, "Errors list should not be null.");
             Assert.AreEqual(1, errors.Count, "Expected to find only one error.");
@@ -94,7 +99,8 @@ namespace Trifolia.Test.Reporting
             Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType("CDA", "Document"), "Test 1", this.ig, "observation", "Observation");
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "badelement", "SHALL", "1..1");
 
-            List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();
+            var validator = new RIMValidator(tdb);
+            var errors = validator.ValidateTemplate(newTemplate, null);
 
             Assert.IsNotNull(errors, "Errors list should not be null.");
             Assert.AreEqual(1, errors.Count, "Expected to find only one error.");
@@ -108,7 +114,8 @@ namespace Trifolia.Test.Reporting
             Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType("CDA", "Document"), "Test 1", this.ig, "observation", "Observation");
             var tc1 = tdb.AddPrimitiveToTemplate(newTemplate, null, "SHALL", string.Empty);
 
-            List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();
+            var validator = new RIMValidator(tdb);
+            var errors = validator.ValidateTemplate(newTemplate, null);
 
             Assert.IsNotNull(errors, "Errors list should not be null.");
             Assert.AreEqual(1, errors.Count, "Expected to find only one error.");
@@ -135,7 +142,8 @@ namespace Trifolia.Test.Reporting
                 .AddConstraintToTemplate(containingTemplate, context: "entryRelationship", conformance: "SHALL", cardinality: "1..1")   // entryRelationship
                 .AddChildConstraintToTemplate(tdb, containingTemplate, containedTemplate, "observation", "SHALL", "1..1");                   // entryRelationship.observation
 
-            List<TemplateValidationResult> errors = containingTemplate.ValidateTemplate();
+            var validator = new RIMValidator(tdb);
+            var errors = validator.ValidateTemplate(containingTemplate, null);
 
             Assert.IsNotNull(errors, "Errors list should not be null.");
             Assert.AreEqual(0, errors.Count, "Shouldn't have found any errors.");
@@ -158,7 +166,8 @@ namespace Trifolia.Test.Reporting
             var tc1 = tdb.AddConstraintToTemplate(containingTemplate, null, null, "entryRelationship", "SHALL", "1..1");
             tdb.AddConstraintToTemplate(containingTemplate, tc1, containedTemplate, "substanceAdministration", "SHALL", "1..1");
 
-            List<TemplateValidationResult> errors = containingTemplate.ValidateTemplate();
+            var validator = new RIMValidator(tdb);
+            var errors = validator.ValidateTemplate(containingTemplate, null);
 
             Assert.IsNotNull(errors, "Errors list should not be null.");
             Assert.AreEqual(1, errors.Count, "Expected to find one error.");
@@ -175,10 +184,14 @@ namespace Trifolia.Test.Reporting
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "templateId", "SHALL", "1..1");
             tdb.AddConstraintToTemplate(newTemplate, tc1, null, "@root", "SHALL", "1..1");
 
-            List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();
+            var tc2 = tdb.AddConstraintToTemplate(newTemplate, null, null, "templateId", "SHALL", "1..1");
+            tdb.AddConstraintToTemplate(newTemplate, tc2, null, "@root", "SHALL", "1..1");
+
+            var validator = new RIMValidator(tdb);
+            var errors = validator.ValidateTemplate(newTemplate, null);
 
             Assert.IsNotNull(errors, "Errors list should not be null.");
-            Assert.AreEqual(1, errors.Count, "Expected to find only one error.");
+            Assert.AreEqual(2, errors.Count, "Expected to find an error for each templateId constraint because they are not branched.");
             Assert.AreEqual("Schema allows multiple for \"templateId\" but the constraint is not branched. Consider branching this constraint.", errors[0].Message);
             Assert.AreEqual(ValidationLevels.Warning, errors[0].Level);
         }
@@ -192,7 +205,8 @@ namespace Trifolia.Test.Reporting
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "templateId", "SHALL", "1..1", isBranch: true);
             tdb.AddConstraintToTemplate(newTemplate, tc1, null, "@root", "SHALL", "1..1");
 
-            List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();
+            var validator = new RIMValidator(tdb);
+            var errors = validator.ValidateTemplate(newTemplate, null);
 
             Assert.IsNotNull(errors, "Errors list should not be null.");
             Assert.AreEqual(1, errors.Count, "Expected to find only one error.");
@@ -227,10 +241,11 @@ namespace Trifolia.Test.Reporting
             var tc4 = tdb.AddConstraintToTemplate(newTemplate, tc3, null, "observation", "SHALL", "1..1");
             tdb.AddConstraintToTemplate(newTemplate, tc4, null, "value", "SHALL", "1..1");
 
-            List<TemplateValidationResult> errors = newTemplate.ValidateTemplate();
+            var validator = new RIMValidator(tdb);
+            var errors = validator.ValidateTemplate(newTemplate, null);
 
-            Assert.IsNotNull(errors, "Errors list should not be null.");
-            Assert.AreEqual(4, errors.Count, "Expected to find three errors.");
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(2, errors.Count);
         }
     }
 }

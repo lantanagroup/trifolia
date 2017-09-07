@@ -77,6 +77,7 @@
     <Compile Include="Exceptions\TrifoliaModelException.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="IConstraint.cs" />
+    <Compile Include="IConstraintReference.cs" />
     <Compile Include="IFilterOrganization.cs" />
     <Compile Include="ImplementationGuideExtensions.cs" />
     <Compile Include="ImplementationGuideFileExtension.cs" />
@@ -104,11 +105,24 @@
     <Compile Include="Migrations\201705121726509_implementationGuideAccessRequests.Designer.cs">
       <DependentUpon>201705121726509_implementationGuideAccessRequests.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706062133119_valueSetImportMetadata.cs" />
+    <Compile Include="Migrations\201706062133119_valueSetImportMetadata.Designer.cs">
+      <DependentUpon>201706062133119_valueSetImportMetadata.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707122143217_userUmlsCredentials.cs" />
+    <Compile Include="Migrations\201707122143217_userUmlsCredentials.Designer.cs">
+      <DependentUpon>201707122143217_userUmlsCredentials.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708031727547_multiple_contained_templates.cs" />
+    <Compile Include="Migrations\201708031727547_multiple_contained_templates.Designer.cs">
+      <DependentUpon>201708031727547_multiple_contained_templates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
     <Compile Include="Model\audit.cs" />
     <Compile Include="Model\codesystem.cs" />
+    <Compile Include="Model\template_constraint_reference.cs" />
     <Compile Include="Model\implementationguide_accessreq.cs" />
     <Compile Include="Model\TrifoliaDatabase.cs" />
     <Compile Include="Model\green_constraint.cs" />
@@ -142,6 +156,8 @@
     <Compile Include="Model\valueset.cs" />
     <Compile Include="Model\valueset_identifier.cs" />
     <Compile Include="Model\valueset_member.cs" />
+    <Compile Include="Model\v_codeSystemUsage.cs" />
+    <Compile Include="Model\v_templateRelationship.cs" />
     <Compile Include="Model\v_constraintcount.cs" />
     <Compile Include="Model\v_igaudittrail.cs" />
     <Compile Include="Model\v_implementationguidefile.cs" />
@@ -202,6 +218,9 @@
     <EmbeddedResource Include="Migrations\201703211651073_isFixed.resx">
       <DependentUpon>201703211651073_isFixed.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708031727547_multiple_contained_templates.resx">
+      <DependentUpon>201708031727547_multiple_contained_templates.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703292147411_multipleValueSetIdentifiers.resx">
@@ -213,11 +232,19 @@
     <EmbeddedResource Include="Migrations\201705121726509_implementationGuideAccessRequests.resx">
       <DependentUpon>201705121726509_implementationGuideAccessRequests.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
+    <EmbeddedResource Include="Migrations\201706062133119_valueSetImportMetadata.resx">
+      <DependentUpon>201706062133119_valueSetImportMetadata.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707122143217_userUmlsCredentials.resx">
+      <DependentUpon>201707122143217_userUmlsCredentials.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703292147411_searchValueSet_down.sql" />
     <EmbeddedResource Include="Migrations\201703292147411_searchValueSet_up.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

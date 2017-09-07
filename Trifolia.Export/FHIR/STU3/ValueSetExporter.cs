@@ -21,6 +21,19 @@ namespace Trifolia.Export.FHIR.STU3
             this.tdb = tdb;
         }
 
+        public Bundle GetImplementationGuideValueSets(Trifolia.DB.ImplementationGuide ig)
+        {
+            var igValueSets = ig.GetValueSets(this.tdb, readOnly: true);
+            Bundle bundle = new Bundle();
+            
+            foreach (var igValueSet in igValueSets)
+            {
+                bundle.AddResourceEntry(this.Convert(igValueSet.ValueSet), igValueSet.ValueSet.GetIdentifier(ValueSetIdentifierTypes.HTTP));
+            }
+
+            return bundle;
+        }
+
         /// <summary>
         /// Converts a Trifolia ValueSet model to a FHIR ValueSet model.
         /// </summary>

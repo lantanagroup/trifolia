@@ -15,9 +15,11 @@ namespace Trifolia.Export.Schematron
         private IIGTypePlugin plugin;
         private ImplementationGuideType igType;
         private string prefix;
+        private IObjectRepository tdb;
 
-        public TemplateContextBuilder(ImplementationGuideType igType, string prefix = null)
+        public TemplateContextBuilder(IObjectRepository tdb, ImplementationGuideType igType, string prefix = null)
         {
+            this.tdb = tdb;
             this.igType = igType;
             this.plugin = this.igType.GetPlugin();
             this.prefix = !string.IsNullOrEmpty(prefix) ? prefix : igType.SchemaPrefix;
@@ -85,7 +87,13 @@ namespace Trifolia.Export.Schematron
         /// <returns></returns>
         private string BuildContextWithoutIdentifierElement(Template template)
         {
-            if (template.ContainingConstraints.Count == 0)
+            var containingConstraints = (from tcr in this.tdb.TemplateConstraintReferences
+                                         join tc in this.tdb.TemplateConstraints on tcr.TemplateConstraintId equals tc.Id
+                                         where tcr.ReferenceType == ConstraintReferenceTypes.Template &&
+                                           tcr.ReferenceIdentifier == template.Oid
+                                         select tc);
+
+            if (containingConstraints.Count() == 0)
             {
                 if (!template.PrimaryContext.Contains(":"))
                     return string.Format("{0}:{1}", this.prefix, template.PrimaryContext);
@@ -95,7 +103,7 @@ namespace Trifolia.Export.Schematron
 
             List<string> containmentContexts = new List<string>();
 
-            foreach (var containingConstraint in template.ContainingConstraints)
+            foreach (var containingConstraint in containingConstraints)
             {
                 if (string.IsNullOrEmpty(containingConstraint.Context))
                     continue;
@@ -118,7 +126,7 @@ namespace Trifolia.Export.Schematron
                 }
 
                 // TODO: Enhance performance
-                TemplateContextBuilder tcb = new TemplateContextBuilder(containingConstraint.Template.ImplementationGuideType);
+                TemplateContextBuilder tcb = new TemplateContextBuilder(this.tdb, containingConstraint.Template.ImplementationGuideType);
                 string templateContext = tcb.BuildContextString(containingConstraint.Template);
 
                 if (!string.IsNullOrEmpty(templateContext))

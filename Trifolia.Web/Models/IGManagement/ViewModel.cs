@@ -33,11 +33,7 @@ namespace Trifolia.Web.Models.IGManagement
         public string UserPrompt { get; set; }
 
         // Button enabling
-        public bool ShowExportSchematron { get; set; }
-        public bool ShowExportVocabulary { get; set; }
-        public bool ShowExportMSWord { get; set; }
-        public bool ShowExportGreen { get; set; }
-        public bool ShowExportXML { get; set; }
+        public bool ShowExport { get; set; }
         public bool ShowEditIG { get; set; }
         public bool ShowEditTemplate { get; set; }
         public bool ShowEditBookmarks { get; set; }

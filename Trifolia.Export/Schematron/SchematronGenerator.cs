@@ -52,7 +52,6 @@ namespace Trifolia.Export.Schematron
                               join st in templateIds on t.Id equals st
                               select t)
                               .Include(y => y.ImpliedTemplate)
-                              .Include(y => y.ContainingConstraints)
                               .Include("ChildConstraints.ValueSet")
                               .Include("ChildConstraints.CodeSystem")
                               .AsEnumerable();
@@ -63,7 +62,7 @@ namespace Trifolia.Export.Schematron
             this.defaultSchematron = defaultSchematron;
 
             this.igTypePlugin = this.ig.ImplementationGuideType.GetPlugin();
-            this.templateContextBuilder = new TemplateContextBuilder(ig.ImplementationGuideType);
+            this.templateContextBuilder = new TemplateContextBuilder(this.rep, ig.ImplementationGuideType);
 
             var allConstraint = (from t in templates
                                  from tc in t.ChildConstraints
@@ -103,7 +102,7 @@ namespace Trifolia.Export.Schematron
             if (aClosedTemplate.ImpliedTemplate != null)
                 xpaths.Add(GenerateClosedTemplateIdentifierXpath(aClosedTemplate.ImpliedTemplate.Oid));
 
-            var childOids = TemplateUtil.GetAllChildTemplateOids(aClosedTemplate);
+            var childOids = TemplateUtil.GetAllChildTemplateOids(this.rep, aClosedTemplate);
 
             foreach (var oid in childOids)
             {
@@ -154,7 +153,7 @@ namespace Trifolia.Export.Schematron
             documentLevelTemplates.ToList().RemoveAll(t => t.Status != null && t.Status.Status == lDeprecatedStatus);
 
             List<string> requiredTemplates = new List<string>();
-            TemplateContextBuilder tcb = new TemplateContextBuilder(aImplementationGuide.ImplementationGuideType);
+            TemplateContextBuilder tcb = new TemplateContextBuilder(this.rep, aImplementationGuide.ImplementationGuideType);
 
             foreach (var template in documentLevelTemplates)
             {
@@ -797,32 +796,31 @@ namespace Trifolia.Export.Schematron
         internal string BuildErrorMessageComment(TemplateConstraint tc)
         {
             var sbComment = new StringBuilder();
+
             //build up error msg so that user can possibly locate the problem in tdb
             sbComment.AppendFormat("Empty test generated! Replaced with \".\". Invalid schematron generated for constraint {0} on template {1}. ", tc.Id, tc.TemplateId);
+
             if (!string.IsNullOrEmpty(tc.Cardinality))
-            {
                 sbComment.AppendFormat("Cardinality='{0}'. ", tc.Cardinality);
-            }
+
             if (!string.IsNullOrEmpty(tc.Conformance))
-            {
                 sbComment.AppendFormat("Conformance='{0}'. ", tc.Conformance);
-            }
+
             if (!string.IsNullOrEmpty(tc.Value))
-            {
                 sbComment.AppendFormat("Value='{0}'. ", tc.Conformance);
-            }
+
             if (tc.ValueSet != null && !string.IsNullOrEmpty(tc.ValueSet.Code))
-            {
                 sbComment.AppendFormat("Valueset Code='{0}'. ", tc.ValueSet.Code);
-            }
+
             if (!string.IsNullOrEmpty(tc.DataType))
-            {
                 sbComment.AppendFormat("Data Type='{0}'. ", tc.DataType);
-            }
-            if (tc.ContainedTemplate != null)
-            {
-                sbComment.AppendFormat("Template='{0}'. ", tc.ContainedTemplate.Oid);
-            }
+
+            var containedTemplateReferences = tc.References
+                .Where(y => y.ReferenceType == ConstraintReferenceTypes.Template)
+                .Select(y => y.ReferenceIdentifier);
+
+            if (containedTemplateReferences.Count() > 0)
+                sbComment.AppendFormat("Templates='{0}'. ", string.Join("', '", containedTemplateReferences));
 
             return sbComment.ToString();
         }

@@ -22,6 +22,7 @@ namespace Trifolia.Web.Models.TerminologyManagement
         public string Description { get; set; }
         public string SourceUrl { get; set; }
         public bool IsComplete { get; set; }
+        public ValueSetImportSources? ImportSource { get; set; }
 
         public List<ValueSetIdentifierModel> Identifiers { get; set; }
     }

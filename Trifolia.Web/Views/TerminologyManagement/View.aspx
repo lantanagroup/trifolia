@@ -1,8 +1,18 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.MVC.Master" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        .description {
+            margin-top: 10px;
+            white-space: pre;
+            word-wrap: break-word;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div id="ViewValueSet">
+        <!-- ko if: Message() -->
+        <div class="alert alert-warning" data-bind="html: Message"></div>
+        <!-- /ko -->
         <div data-bind="if: ValueSet()">
             <div class="page-header">
                 <h1><span data-bind="text: ValueSet().Name"></span> <small data-bind="text: ValueSet().Oid"></small></h1>
@@ -10,6 +20,9 @@
             <p class="label label-default" data-bind="text: CompleteText, tooltip: CompleteHint"></p>
             <!-- ko if: ValueSet().Code() -->
             <p class="label label-default" data-bind="text: ValueSet().Code"></p>
+            <!-- /ko -->
+            <!-- ko if: ValueSet().ImportSource() -->
+            <p class="label label-default" data-bind="text: ImportSourceDisplay"></p>
             <!-- /ko -->
             <!-- ko if: ValueSet().SourceUrl() -->
             <p>Source URL: <a target="_new" data-bind="attr: { href: ValueSet().SourceUrl }, text: ValueSet().SourceUrl"></a></p>
@@ -21,7 +34,7 @@
             </div>
             <!-- /ko -->
             <!-- ko if: ValueSet().Description() -->
-            <p style="margin-top: 10px;" data-bind="text: ValueSet().Description"></p>
+            <p class="description" data-bind="text: ValueSet().Description"></p>
             <!-- /ko -->
         </div>
 

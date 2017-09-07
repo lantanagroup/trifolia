@@ -190,5 +190,15 @@
             Import
             </summary>
         </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.IMPORT_VSAC">
+            <summary>
+            ImportVSAC
+            </summary>
+        </member>
+        <member name="F:Trifolia.Authorization.SecurableNames.IMPORT_PHINVADS">
+            <summary>
+            ImportPHINVADS
+            </summary>
+        </member>
     </members>
 </doc>

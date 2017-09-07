@@ -199,7 +199,6 @@
     <Compile Include="Generation\Schematron\SchematronAssertionGeneratorTest.cs" />
     <Compile Include="Generation\Schematron\TemplateDatabaseCDADocumentTemplateTest.cs" />
     <Compile Include="Extensions\TemplateTest.cs" />
-    <Compile Include="Generation\SQL\TrifoliaExportTest.cs" />
     <Compile Include="Controllers\RoleManagement\RoleManagementControllerTest.cs" />
     <Compile Include="Reporting\TemplateValidationTest.cs" />
     <Compile Include="Services\Vocabulary\VocabularyServiceTest.cs" />
@@ -213,6 +212,7 @@
     <Compile Include="Import\ImportTest.cs" />
     <Compile Include="Generation\Sample\TemplateSampleGeneratorTest.cs" />
     <Compile Include="Shared\HelperTests.cs" />
+    <Compile Include="Shared\StringTests.cs" />
     <Compile Include="TemplateExtensions.cs" />
     <Compile Include="TestDataGenerator.cs" />
     <Compile Include="XmlTestHelper.cs" />
@@ -261,10 +261,6 @@
     <ProjectReference Include="..\Trifolia.Web\Trifolia.Web.csproj">
       <Project>{6017497a-7603-4c00-9b39-d88ad6bf73c8}</Project>
       <Name>Trifolia.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Terminology\Trifolia.Terminology.csproj">
-      <Project>{fdb22f8f-9677-471a-8929-b8dcb59e4c60}</Project>
-      <Name>Trifolia.Terminology</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

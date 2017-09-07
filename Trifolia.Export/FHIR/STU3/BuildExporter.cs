@@ -84,9 +84,10 @@ namespace Trifolia.Export.FHIR.STU3
 
             var igDependencies = (from t in templates
                                   join tc in this.tdb.TemplateConstraints.AsNoTracking() on t.Id equals tc.TemplateId
-                                  join dt in this.tdb.Templates.AsNoTracking() on tc.ContainedTemplateId equals dt.Id
+                                  join tcr in this.tdb.TemplateConstraintReferences.AsNoTracking() on tc.Id equals tcr.TemplateConstraintId
+                                  join dt in this.tdb.Templates.AsNoTracking() on tcr.ReferenceIdentifier equals dt.Oid
                                   join ig in this.tdb.ImplementationGuides on dt.OwningImplementationGuideId equals ig.Id
-                                  where ig.Id != this.ig.Id && ig.Identifier != "http://hl7.org/fhir/"
+                                  where ig.Id != this.ig.Id && ig.Identifier != "http://hl7.org/fhir/" && tcr.ReferenceType == ConstraintReferenceTypes.Template
                                   select ig).Distinct();
 
             this.control.dependencyList = (from ig in igDependencies

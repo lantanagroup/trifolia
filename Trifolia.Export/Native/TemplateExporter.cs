@@ -1,18 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
-using System.Xml.Serialization;
 using System.Xml;
-
 using Trifolia.DB;
-using TDBTemplate = Trifolia.DB.Template;
-using TDBTemplateConstraint = Trifolia.DB.TemplateConstraint;
+using Trifolia.Shared;
+using ExportImplementationGuide = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuide;
 using ExportModel = Trifolia.Shared.ImportExport.Model.Trifolia;
 using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
-using ExportImplementationGuide = Trifolia.Shared.ImportExport.Model.TrifoliaImplementationGuide;
-using Trifolia.Shared;
+using TDBTemplate = Trifolia.DB.Template;
 
 namespace Trifolia.Export.Native
 {
@@ -195,6 +192,12 @@ namespace Trifolia.Export.Native
 
                 return sw.ToString();
             }
+        }
+
+        public string GenerateJSONExport()
+        {
+            var export = GenerateExport();
+            return JsonConvert.SerializeObject(export);
         }
     }
 

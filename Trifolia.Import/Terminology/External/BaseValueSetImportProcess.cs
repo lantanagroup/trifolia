@@ -44,7 +44,8 @@ namespace Trifolia.Import.Terminology.External
                 bool valueSetIsChanged =
                     importValueSet.Code != currentValueSet.Code ||
                     importValueSet.Description != currentValueSet.Description ||
-                    importValueSet.Name != currentValueSet.Name;
+                    importValueSet.Name != currentValueSet.Name ||
+                    importValueSet.ImportSourceId != currentValueSet.ImportSourceId;
 
                 if (valueSetIsChanged)
                     return "Update";
@@ -84,6 +85,8 @@ namespace Trifolia.Import.Terminology.External
 
             if (identifier.StartsWith("http://") || identifier.StartsWith("https://"))
                 type = ValueSetIdentifierTypes.HTTP;
+            else if (identifier.StartsWith("urn:hl7ii:"))
+                type = ValueSetIdentifierTypes.HL7II;
 
             ValueSetIdentifier vsIdentifier = valueSet.Identifiers.FirstOrDefault(y => y.Type == type);
 
@@ -91,7 +94,7 @@ namespace Trifolia.Import.Terminology.External
             {
                 vsIdentifier = new ValueSetIdentifier()
                 {
-                    Type = ValueSetIdentifierTypes.HTTP,
+                    Type = type,
                     Identifier = identifier
                 };
 
@@ -150,6 +153,35 @@ namespace Trifolia.Import.Terminology.External
             if (foundValueSet.Name != name)
             {
                 foundValueSet.Name = name;
+                changed = true;
+            }
+
+            if (valueSet.ImportSource == "PHIN VADS")
+            {
+                if (foundValueSet.ImportSource.HasValue && foundValueSet.ImportSource != ValueSetImportSources.PHINVADS)
+                    throw new Exception("Cannot re-import this value set as it was imported from a different source.");
+
+                if (!foundValueSet.ImportSource.HasValue)
+                {
+                    foundValueSet.ImportSource = ValueSetImportSources.PHINVADS;
+                    changed = true;
+                }
+            }
+            else if (valueSet.ImportSource == "HL7 RIM/RoseTree")
+            {
+                if (foundValueSet.ImportSource.HasValue && foundValueSet.ImportSource != ValueSetImportSources.ROSETREE)
+                    throw new Exception("Cannot re-import this value set as it was imported from a different source.");
+
+                if (!foundValueSet.ImportSource.HasValue)
+                {
+                    foundValueSet.ImportSource = ValueSetImportSources.ROSETREE;
+                    changed = true;
+                }
+            }
+
+            if (foundValueSet.ImportSourceId != valueSet.ImportSourceId)
+            {
+                foundValueSet.ImportSourceId = valueSet.ImportSourceId;
                 changed = true;
             }
 

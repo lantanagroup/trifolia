@@ -18,13 +18,12 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
     {
         public FormattedConstraint20140415()
         {
-            this.ContainedTemplateId = -1;
+            this.parts = new List<ConstraintPart>();
         }
 
-        private List<ConstraintPart> parts = new List<ConstraintPart>();
+        private List<ConstraintPart> parts;
         private IGSettingsManager igSettings;
         private IObjectRepository tdb;
-        private Template containedTemplate;
 
         #region Properties
 
@@ -70,10 +69,6 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         public string Conformance { get; set; }
         public string Cardinality { get; set; }
         public string DataType { get; set; }
-        public int ContainedTemplateId { get; set; }
-        public string ContainedTemplateTitle { get; set; }
-        public string ContainedTemplateLink { get; set; }
-        public string ContainedTemplateOid { get; set; }
         public string ValueConformance { get; set; }
         public string StaticDynamic { get; set; }
         public string ValueSetName { get; set; }
@@ -89,10 +84,11 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         public string HeadingDescription { get; set; }
         public string TemplateLinkBase { get; set; }
         public string ValueSetLinkBase { get; set; }
+        public List<ConstraintReference> ConstraintReferences { get; set; }
 
         #endregion
 
-        public void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, Template containedTemplate = null, ValueSet valueSet = null, CodeSystem codeSystem = null)
+        public void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, ValueSet valueSet = null, CodeSystem codeSystem = null)
         {
             this.Number = string.Format("{0}-{1}",
                 constraint.Template != null ? constraint.Template.OwningImplementationGuideId.ToString() : "X",
@@ -117,15 +113,6 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             this.Conformance = constraint.Conformance;
             this.Cardinality = constraint.Cardinality;
             this.DataType = constraint.DataType;
-
-            if (constraint.ContainedTemplateId != null)
-            {
-                this.containedTemplate = this.tdb.Templates.Single(y => y.Id == constraint.ContainedTemplateId);
-
-                this.ContainedTemplateId = this.containedTemplate.Id;
-                this.ContainedTemplateTitle = this.containedTemplate.Name;
-                this.ContainedTemplateOid = this.containedTemplate.Oid;
-            }
 
             this.ValueConformance = constraint.ValueConformance;
 
@@ -165,7 +152,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             // Make sure we don't process contained template constraints as 
             // primitives simply because a context is not specified
-            if (this.ContainedTemplateId != -1)
+            if (this.ConstraintReferences.Count > 0)
                 this.IsPrimitive = false;
 
             // Build the constraint text
@@ -186,17 +173,6 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             }
             else
             {
-                // If we have defined a contained template, then ignore the context.
-                if (this.ContainedTemplateId != -1)
-                {
-                    this.Context = null;
-
-                    if (this.LinkIsBookmark)
-                        this.ContainedTemplateLink = string.Format("{0}{1}", this.TemplateLinkBase, this.containedTemplate.Bookmark);
-                    else
-                        this.ContainedTemplateLink = this.containedTemplate.GetViewUrl(this.TemplateLinkBase);
-                }
-
                 if (!this.ParentIsBranch && !string.IsNullOrEmpty(this.ParentContext) && !string.IsNullOrEmpty(this.ParentCardinality))
                 {
                     if (this.ParentCardinality == "1..1")
@@ -209,7 +185,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                     }
                     else if (this.ParentCardinality.EndsWith("..*"))
                     {
-                        this.parts.Add(new ConstraintPart("Such " + MakePlural(this.ParentContext) + " "));
+                        this.parts.Add(new ConstraintPart("Such " + this.ParentContext.MakePlural() + " "));
                     }
                 }
 
@@ -381,27 +357,27 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                     }
                 }
 
-                // Add the contained template if specified
-                if (this.ContainedTemplateId >= 0)
+                // Add the contained template(s) if specified
+                for (var i = 0; i < this.ConstraintReferences.Count; i++)
                 {
-                    if (!string.IsNullOrEmpty(this.Context))
-                    {
-                        this.parts.Add(new ConstraintPart(" which includes "));
-                    }
+                    var constraintReference = this.ConstraintReferences[i];
+
+                    if (i > 0)
+                        this.parts.Add(new ConstraintPart(" or "));
 
                     if (this.LinkContainedTemplate)
                     {
-                        this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Link, this.ContainedTemplateTitle)
+                        this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Link, constraintReference.Name)
                         {
-                            LinkDestination = this.ContainedTemplateLink
+                            LinkDestination = constraintReference.GetLink(this.LinkIsBookmark, this.TemplateLinkBase)
                         });
                     }
                     else
                     {
-                        this.parts.Add(new ConstraintPart(this.ContainedTemplateTitle));
+                        this.parts.Add(new ConstraintPart(constraintReference.Name));
                     }
 
-                    this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Template, " (identifier: " + this.ContainedTemplateOid + ")"));
+                    this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Template, " (identifier: " + constraintReference.Identifier + ")"));
                 }
 
                 this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Constraint, string.Format(" (CONF:{0})", this.Number))
@@ -612,35 +588,6 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             }
 
             return sb.ToString();
-        }
-
-        internal static string MakePlural(string noun)
-        {
-            string[] oNounsES = new string[] { "echo", "hero", "potato", "veto" };
-            string[] oNounS = new string[] { "auto", "memo", "pimento", "pro" };
-
-            if (noun.EndsWith("y"))
-            {
-                return noun.Substring(0, noun.Length - 1) + "ies";
-            }
-            else if (noun.EndsWith("s") || noun.EndsWith("z") || noun.EndsWith("ch") || noun.EndsWith("sh") || noun.EndsWith("x"))
-            {
-                return noun + "es";
-            }
-
-            foreach (string cONounES in oNounsES)
-            {
-                if (noun.EndsWith(cONounES))
-                    return noun + "es";
-            }
-
-            foreach (string cONounS in oNounS)
-            {
-                if (noun.EndsWith(cONounS))
-                    return noun + "s";
-            }
-
-            return noun + "s";
         }
 
         internal static string HtmlFormatDescriptiveText(WIKIParser parser, string text)

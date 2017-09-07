@@ -7,13 +7,13 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.2.0.265">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.3.0.351">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
   <title>Cardinality and Conformance</title>
   <meta name="description" content="" /> 
-  <meta name="keywords" content=", , profiletemplateconstraint">
+  <meta name="keywords" content="profile,template,constraint">
 
 
 
@@ -87,21 +87,21 @@
       
 	  
         <li role="presentation" class="tab active">
-            <a href="#contents" aria-controls="contents" role="tab" data-toggle="tab">
+            <a href="#contents" id="tab-contents" aria-controls="contents" role="tab" data-toggle="tab">
                 <i class="glyphicon glyphicon-list"></i>
                 Contents
             </a>
         </li>
       
         <li role="presentation" class="tab">
-            <a href="#index" aria-controls="index" role="tab" data-toggle="tab">
+            <a href="#index" id="tab-index" aria-controls="index" role="tab" data-toggle="tab">
                 <i class="glyphicon glyphicon-asterisk"></i>
                 Index
             </a>
         </li>
       
         <li role="presentation" class="tab">
-            <a href="#search" aria-controls="search" role="tab" data-toggle="tab">
+            <a href="#search" id="tab-search" aria-controls="search" role="tab" data-toggle="tab">
                 <i class="glyphicon glyphicon-search"></i>
                 Search
             </a>
@@ -279,7 +279,7 @@
 <p class="rvps2"><span class="rvts6">A "SHOULD effectiveTime" has the constraint "SHALL 1..1 high"</span></p>
 <p class="rvps2"><span class="rvts20">Result</span></p>
 <p class="rvps2"><span class="rvts6">When the context node is present (the effectiveTime), and high is not present within the context node, validation ought to produce an error message.</span></p>
-<p class="rvps2"><span class="rvts36">Note: isBranch constraints cannot be evaluated line by line as above. At least for SHALL constraints they must be evaluated as a whole.</span></p>
+<p class="rvps2"><span class="rvts35">Note: isBranch constraints cannot be evaluated line by line as above. At least for SHALL constraints they must be evaluated as a whole.</span></p>
 <hr style="height: 1px; color : #000000;  background-color : #000000; border-width : 0px;">
 <p class="rvps2"><span class="rvts20">Scenario</span></p>
 <p class="rvps2"><span class="rvts6">isBranch SHALL in the form "SHOULD 0..1 effectiveTime such that it SHALL 1..1 high"</span></p>

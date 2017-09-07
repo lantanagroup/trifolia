@@ -468,7 +468,7 @@ var EditImplementationGuideViewModel = function (implementationGuideId) {
 var ImplementationGuideModel = function (data) {
     var self = this;
     var mapping = {
-        include: ['Id', 'Name', 'DisplayName', 'WebDisplayName', 'WebDescription', 'WebReadmeOverview', 'TypeId', 'ConsolidatedFormat', 'PreviousVersionName', 'PreviousVersionId', 'CurrentVersion', 'DisableVersionFields', 'OrganizationId', 'CardinalityZeroOrOne', 'CardinalityExactlyOne', 'CardinalityAtLeastOne', 'CardinalityZeroOrMore', 'CardinalityZero', 'TemplateTypes', 'CustomSchematrons', 'DeletedCustomSchematrons', 'PreviousIgs', 'Statuses', 'ViewPermissions', 'EditPermissions', 'DefaultViewPermissions', 'DefaultEditPermissions', 'Html', 'Sections'],
+        include: ['Id', 'Name', 'DisplayName', 'WebDisplayName', 'WebDescription', 'WebReadmeOverview', 'TypeId', 'ConsolidatedFormat', 'TestIg', 'PreviousVersionName', 'PreviousVersionId', 'CurrentVersion', 'DisableVersionFields', 'OrganizationId', 'CardinalityZeroOrOne', 'CardinalityExactlyOne', 'CardinalityAtLeastOne', 'CardinalityZeroOrMore', 'CardinalityZero', 'TemplateTypes', 'CustomSchematrons', 'DeletedCustomSchematrons', 'PreviousIgs', 'Statuses', 'ViewPermissions', 'EditPermissions', 'DefaultViewPermissions', 'DefaultEditPermissions', 'Html', 'Sections'],
         'CustomSchematrons': {
             create: function (options) {
                 return new CustomSchematronModel(options.data);
@@ -505,6 +505,7 @@ var ImplementationGuideModel = function (data) {
     self.WebReadmeOverview = ko.observable();
     self.TypeId = ko.observable();
     self.ConsolidatedFormat = ko.observable();
+    self.TestIg = ko.observable();
     self.PreviousVersionName = ko.observable();
     self.PreviousVersionId = ko.observable();
     self.CurrentVersion = ko.observable();

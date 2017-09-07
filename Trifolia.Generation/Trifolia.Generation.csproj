@@ -73,13 +73,14 @@
     <Compile Include="IG\ConstraintGenerationFactory.cs" />
     <Compile Include="IG\ConstraintGeneration\ConsolidatedGeneration.cs" />
     <Compile Include="IG\ConstraintGeneration\ConstraintPart.cs" />
+    <Compile Include="IG\ConstraintGeneration\ContainedTemplate.cs" />
     <Compile Include="IG\ConstraintGeneration\FormattedConstraint20161128.cs" />
     <Compile Include="IG\ConstraintGeneration\FormattedConstraint20150421.cs" />
-    <Compile Include="IG\ConstraintGeneration\FormattedConstraint.cs" />
     <Compile Include="IG\ConstraintGeneration\FormattedConstraint20140415.cs" />
     <Compile Include="IG\ConstraintGeneration\FormattedConstraintFactory.cs" />
     <Compile Include="IG\ConstraintGeneration\IFormattedConstraint.cs" />
     <Compile Include="IG\ConstraintGeneration\LegacyGeneration.cs" />
+    <Compile Include="IG\ConstraintReference.cs" />
     <Compile Include="IG\ExportSettings.cs" />
     <Compile Include="IG\FigureCollection.cs" />
     <Compile Include="IG\Models\HeaderDescriptor.cs" />
@@ -120,10 +121,6 @@
     <ProjectReference Include="..\Trifolia.Shared\Trifolia.Shared.csproj">
       <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>
       <Name>Trifolia.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Terminology\Trifolia.Terminology.csproj">
-      <Project>{fdb22f8f-9677-471a-8929-b8dcb59e4c60}</Project>
-      <Name>Trifolia.Terminology</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

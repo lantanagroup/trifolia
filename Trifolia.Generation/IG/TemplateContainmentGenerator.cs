@@ -20,17 +20,19 @@ namespace Trifolia.Generation.IG
         private List<Template> parentTemplates = new List<Template>();
         private IObjectRepository tdb = null;
         private TableCollection tables = null;
+        private List<ViewTemplateRelationship> relationships = null;
 
-        public static void AddTable(IObjectRepository tdb, WordprocessingDocument document, List<Template> allTemplates, TableCollection tables)
+        public static void AddTable(IObjectRepository tdb, WordprocessingDocument document, List<ViewTemplateRelationship> relationships, List<Template> allTemplates, TableCollection tables)
         {
-            TemplateContainmentGenerator tcg = new TemplateContainmentGenerator(tdb, document, allTemplates, tables);
+            TemplateContainmentGenerator tcg = new TemplateContainmentGenerator(tdb, document, relationships, allTemplates, tables);
             tcg.GenerateTable();
         }
 
-        private TemplateContainmentGenerator(IObjectRepository tdb, WordprocessingDocument document, List<Template> allTemplates, TableCollection tables)
+        private TemplateContainmentGenerator(IObjectRepository tdb, WordprocessingDocument document, List<ViewTemplateRelationship> relationships, List<Template> allTemplates, TableCollection tables)
         {
             this.tdb = tdb;
             this.document = document;
+            this.relationships = relationships;
             this.allTemplates = allTemplates;
             this.tables = tables;
         }
@@ -38,19 +40,20 @@ namespace Trifolia.Generation.IG
         private void GenerateTable()
         {
             string[] headers = new string[] { GenerationConstants.USED_TEMPLATE_TABLE_TITLE, GenerationConstants.USED_TEMPLATE_TABLE_TYPE, GenerationConstants.USED_TEMPLATE_TABLE_ID };
-            Table t = this.tables.AddTable("Template Containments", headers);
+            Table table = this.tables.AddTable("Template Containments", headers);
 
-            List<Template> rootTemplates = this.allTemplates
-                .Where(y => y.ContainingConstraints.Count == 0)
-                .OrderBy(y => y.TemplateTypeId)
-                .ThenBy(y => y.Name)
-                .ToList();
+            var referencedTemplates = (from t in this.allTemplates
+                                       join r in this.relationships on t.Id equals r.ChildTemplateId
+                                       select t);
+
+            // Root templates are not referenced elsewhere
+            var rootTemplates = this.allTemplates.Where(y => !referencedTemplates.Contains(y));
 
             foreach (Template cTemplate in rootTemplates)
             {
                 parentTemplates.Add(cTemplate);
 
-                AddTemplateContainmentTableEntry(this.tdb, t, cTemplate, 1);
+                AddTemplateContainmentTableEntry(this.tdb, table, cTemplate, 1);
 
                 parentTemplates.Remove(cTemplate);
             }
@@ -58,13 +61,7 @@ namespace Trifolia.Generation.IG
 
         private void AddTemplateContainmentTableEntry(IObjectRepository tdb, Table table, Template template, int level)
         {
-            int spacing = 0;
-
-            if (level > 1)
-            {
-                for (int i = 1; i < level; i++)
-                    spacing += 144;
-            }
+            int spacing = level > 1 ? ((level - 1) * 144) : 0;
 
             TableRow newRow = new TableRow(
                 new TableCell(
@@ -98,13 +95,10 @@ namespace Trifolia.Generation.IG
 
             table.Append(newRow);
 
-            List<Template> childTemplates = (from tc in template.ChildConstraints
-                                             join t in this.allTemplates on tc.ContainedTemplateId equals t.Id
-                                             where t.Id != template.Id
-                                             orderby t.Name
-                                             select t)
-                                                .Distinct()
-                                                .ToList();
+            var childTemplates = (from r in this.relationships
+                                  join t in this.allTemplates on r.ChildTemplateId equals t.Id
+                                  where r.ParentTemplateId == template.Id
+                                  select t).ToList();
 
             if (childTemplates != null)
             {

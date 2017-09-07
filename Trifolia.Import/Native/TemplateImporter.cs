@@ -559,33 +559,34 @@ namespace Trifolia.Import.Native
                 this.tdb.TemplateConstraintSamples.Remove(deleteSample);
         }
 
-        private void UpdateConstraintContainedTemplate(TemplateConstraint constraint, string containedTemplateOid)
+        private void UpdateConstraintContainedTemplate(
+            TemplateConstraint constraint, 
+            List<Shared.ImportExport.Model.ConstraintTypeContainedTemplate> containedTemplates)
         {
-            // Find the contained template if one is specified
-            if (!string.IsNullOrEmpty(containedTemplateOid))
+            var currentContainedTemplates = constraint.References
+                .Where(y => y.ReferenceType == ConstraintReferenceTypes.Template)
+                .ToList();
+
+            // Add references that don't yet exist in constraint
+            foreach (var containedTemplate in containedTemplates)
             {
-                if (containedTemplateOid.ToLower() == constraint.Template.Oid.ToLower())
+                if (!currentContainedTemplates.Any(y => y.ReferenceIdentifier.Trim().ToLower() == containedTemplate.identifier.Trim().ToLower()))
                 {
-                    this.errors.Add(string.Format(
-                        "Template with oid \"{0}\" has a constraint which contains the same template. Constraint cannot be imported.",
-                        constraint.Template.Oid));
-                    throw new Exception("Constraint has an error.");
+                    constraint.References.Add(new TemplateConstraintReference()
+                    {
+                        ReferenceIdentifier = containedTemplate.identifier.Trim(),
+                        ReferenceType = ConstraintReferenceTypes.Template
+                    });
                 }
+            }
 
-                TDBTemplate containedTemplate = FindOrBuildTemplate(containedTemplateOid);
-
-                if (containedTemplate == null)
+            // Remove reference from constriant that don't exist in import
+            foreach (var currentContainedTemplate in currentContainedTemplates)
+            {
+                if (!containedTemplates.Any(y => y.identifier.Trim().ToLower() == currentContainedTemplate.ReferenceIdentifier.Trim().ToLower()))
                 {
-                    this.errors.Add(string.Format(
-                        "Could not find contained template \"{0}\" for constraint with number \"{1}\" in template with oid \"{2}\"",
-                        containedTemplateOid,
-                        constraint.Number,
-                        constraint.Template.Oid));
-                    // TODO: Eventually add add a relationship that is not bound to a template stored in the database
+                    this.tdb.TemplateConstraintReferences.Remove(currentContainedTemplate);
                 }
-
-                if (constraint.ContainedTemplate != containedTemplate)
-                    constraint.ContainedTemplate = containedTemplate;
             }
         }
 
@@ -741,7 +742,7 @@ namespace Trifolia.Import.Native
 
             this.UpdateConstraintProperties(constraint, importConstraint);
 
-            this.UpdateConstraintContainedTemplate(constraint, importConstraint.containedTemplateOid);
+            this.UpdateConstraintContainedTemplate(constraint, importConstraint.ContainedTemplate);
 
             this.UpdateConstraintBinding(constraint, importConstraint);
 

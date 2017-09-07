@@ -14,7 +14,6 @@ using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Generation.Versioning;
 using Trifolia.Web.Models.TemplateManagement;
 using Trifolia.Web.Models.IGManagement;
-using Trifolia.Web.Models.Shared;
 using Trifolia.Web.Models;
 using Trifolia.Authorization;
 using Trifolia.DB;

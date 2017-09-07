@@ -36,8 +36,7 @@ namespace Trifolia.Export.Schematron
         ContextWrapper _contextWrapper = ContextWrapper.Bracket;
         string _valueSetOid;
         string _valueSetFileName;
-        string _containedTemplateOid;
-        string _containedTemplatePrimaryContext;
+        Dictionary<string, string> containedTemplates = new Dictionary<string, string>();       // Identifier, PrimaryContextType
         string _prefix;
         string _parentContext;
         ImplementationGuideType _igType;
@@ -47,17 +46,20 @@ namespace Trifolia.Export.Schematron
         bool _hasOptionalParentContext;
         VocabularyOutputType _vocabularyOutputType;
         bool _includeValueSetNullFlavor = false;
+        IObjectRepository _tdb = null;
+
         #endregion
 
         #region ctor
-        protected AssertionLineBuilder(ImplementationGuideType igType, string prefix)
+        protected AssertionLineBuilder(IObjectRepository tdb, ImplementationGuideType igType, string prefix)
         {
+            this._tdb = tdb;
             this._prefix = prefix;
             this._igType = igType;
         }
 
-        public AssertionLineBuilder(DocumentTemplateElement aElement, ImplementationGuideType igType, string prefix = null)
-            : this(igType, igType.SchemaPrefix)
+        public AssertionLineBuilder(IObjectRepository tdb, DocumentTemplateElement aElement, ImplementationGuideType igType, string prefix = null)
+            : this(tdb, igType, igType.SchemaPrefix)
         {
             _element = aElement;
 
@@ -65,8 +67,8 @@ namespace Trifolia.Export.Schematron
                 this._prefix = prefix;
         }
 
-        public AssertionLineBuilder(DocumentTemplateElementAttribute aAttribute, ImplementationGuideType igType, string prefix = null)
-            : this(igType, igType.SchemaPrefix)
+        public AssertionLineBuilder(IObjectRepository tdb, DocumentTemplateElementAttribute aAttribute, ImplementationGuideType igType, string prefix = null)
+            : this(tdb, igType, igType.SchemaPrefix)
         {
             _attribute = aAttribute;
             _element = _attribute.Element;
@@ -141,10 +143,9 @@ namespace Trifolia.Export.Schematron
             return this;
         }
 
-        public AssertionLineBuilder ContainsTemplate(string aContainedTemplateOid, string aContainedTemplatePrimaryContext = null)
+        public AssertionLineBuilder ContainsTemplate(string identifier, string primaryContextType = null)
         {
-            _containedTemplateOid = aContainedTemplateOid;
-            _containedTemplatePrimaryContext = aContainedTemplatePrimaryContext;
+            this.containedTemplates.Add(identifier, primaryContextType);
             return this;
         }
 
@@ -455,16 +456,22 @@ namespace Trifolia.Export.Schematron
 
             if (!string.IsNullOrEmpty(elementAssert))
                 elementAssert = this.GetFormattedPrefix() + elementAssert;
-            else if (string.IsNullOrEmpty(elementAssert) && !string.IsNullOrEmpty(this._containedTemplateOid))
+            else if (string.IsNullOrEmpty(elementAssert) && this.containedTemplates.Count > 0)
                 elementAssert = "*";
 
-            //do we have a template id?
-            if (!string.IsNullOrEmpty(_containedTemplateOid))
+            List<string> containedTemplateContexts = new List<string>();
+
+            foreach (var containedTemplate in this.containedTemplates)
             {
-                TemplateContextBuilder tcb = new TemplateContextBuilder(this._igType, this._prefix);
-                string containedTemplateContext = tcb.BuildContextString(this._containedTemplateOid);
-                elementAssert += "[" + containedTemplateContext + "]";
+                TemplateContextBuilder tcb = new TemplateContextBuilder(this._tdb, this._igType, this._prefix);
+                string containedTemplateContext = tcb.BuildContextString(containedTemplate.Key);
+                containedTemplateContexts.Add(containedTemplateContext);
             }
+
+            if (containedTemplateContexts.Count == 1)
+                elementAssert += "[" + containedTemplateContexts[0] + "]";
+            else if (containedTemplateContexts.Count > 1)
+                elementAssert += "[(" + string.Join(") or (", containedTemplateContexts) + ")]";
 
             sb.Replace(Sentinels.ELEMENT_TOKEN, elementAssert);
         }

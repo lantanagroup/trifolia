@@ -7,58 +7,18 @@ namespace Trifolia.Import.Terminology.External
 {
     public class ImportValueSet
     {
-        #region Properties
-
-        private string importStatus;
-
-        public string ImportStatus
+        public ImportValueSet()
         {
-            get { return importStatus; }
-            set { importStatus = value; }
-        }
-        private string importSource;
-
-        public string ImportSource
-        {
-            get { return importSource; }
-            set { importSource = value; }
-        }
-        private string oid;
-
-        public string Oid
-        {
-            get { return oid; }
-            set { oid = value; }
-        }
-        private string name;
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-        private string description;
-
-        public string Description
-        {
-            get { return description; }
-            set { description = value; }
-        }
-        private string code;
-
-        public string Code
-        {
-            get { return code; }
-            set { code = value; }
-        }
-        private List<ImportValueSetMember> members = new List<ImportValueSetMember>();
-
-        public List<ImportValueSetMember> Members
-        {
-            get { return members; }
-            set { members = value; }
+            this.Members = new List<ImportValueSetMember>();
         }
 
-        #endregion
+        public string ImportStatus { get; set; }
+        public string ImportSource { get; set; }
+        public string ImportSourceId { get; set; }
+        public string Oid { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Code { get; set; }
+        public List<ImportValueSetMember> Members { get; set; }
     }
 }

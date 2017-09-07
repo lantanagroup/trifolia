@@ -153,11 +153,14 @@
     <Compile Include="Terminology\External\ImportValueSetMember.cs" />
     <Compile Include="Terminology\External\IValueSetImportProcessor.cs" />
     <Compile Include="Terminology\External\PhinVadsValueSetImportProcessor.cs" />
+    <Compile Include="VSAC\VSACImporter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FHIR\DSTU1\FHIRProfile2Trifolia.xslt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Terminology\hl7_rim_repo.xml" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trifolia.Authorization\Trifolia.Authorization.csproj">
       <Project>{d90e0eee-7ac3-4726-9a56-5b77632e9b3b}</Project>
@@ -182,10 +185,6 @@
     <ProjectReference Include="..\Trifolia.Shared\Trifolia.Shared.csproj">
       <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>
       <Name>Trifolia.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Terminology\Trifolia.Terminology.csproj">
-      <Project>{fdb22f8f-9677-471a-8929-b8dcb59e4c60}</Project>
-      <Name>Trifolia.Terminology</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

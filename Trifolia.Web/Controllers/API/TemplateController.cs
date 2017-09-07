@@ -100,6 +100,25 @@ namespace Trifolia.Web.Controllers.API
             return template.Id;
         }
 
+        /// <summary>
+        /// Gets the template by the template's identifier
+        /// </summary>
+        /// <param name="identifier">The OID, HL7II, or HTTP identifier of the template to get</param>
+        [HttpGet, Route("api/Template/Identifier"), SecurableAction(SecurableNames.TEMPLATE_LIST)]
+        public ViewModel GetTemplate(string identifier)
+        {
+            int templateId = this.tdb.Templates.Where(y => y.Oid == identifier).Select(y => y.Id).FirstOrDefault();
+
+            if (templateId <= 0)
+                throw new ArgumentException("Could not find template with id/reference of " + identifier);
+
+            return GetTemplate(templateId);
+        }
+
+        /// <summary>
+        /// Gets the template by the template's internal id within Trifolia
+        /// </summary>
+        /// <param name="templateId">The internal id of the template to get</param>
         [HttpGet, Route("api/Template/{templateId}"), SecurableAction(SecurableNames.TEMPLATE_LIST)]
         public ViewModel GetTemplate(int templateId)
         {
@@ -196,12 +215,15 @@ namespace Trifolia.Web.Controllers.API
 
             // Build referenced templates
             var containedByTemplates = (from tc in this.tdb.TemplateConstraints
+                                        join tcr in this.tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
                                         join te in this.tdb.Templates on tc.TemplateId equals te.Id
-                                        where tc.ContainedTemplateId == template.Id && tc.TemplateId != template.Id
+                                        where tcr.ReferenceIdentifier == template.Oid && tc.TemplateId != template.Id && tcr.ReferenceType == ConstraintReferenceTypes.Template
                                         orderby tc.Conformance, te.Name
                                         select te).Distinct().ToList();
             var containedTemplates = (from ac in template.ChildConstraints
-                                      join ct in this.tdb.Templates on ac.ContainedTemplateId equals ct.Id
+                                      join tcr in this.tdb.TemplateConstraintReferences on ac.Id equals tcr.TemplateConstraintId
+                                      join ct in this.tdb.Templates on tcr.ReferenceIdentifier equals ct.Oid
+                                      where tcr.ReferenceType == ConstraintReferenceTypes.Template
                                       orderby ct.Name
                                       select ct).Distinct().ToList();
             var implyingTemplates = (from t in this.tdb.Templates
@@ -539,7 +561,9 @@ namespace Trifolia.Web.Controllers.API
                                       }
                                   })
                                   .Union(from tc in this.tdb.TemplateConstraints
-                                         where tc.ContainedTemplateId == templateId
+                                         join tcr in this.tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
+                                         join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                         where t.Id == templateId && tcr.ReferenceType == ConstraintReferenceTypes.Template
                                          select new
                                          {
                                              ImplementationGuideId = tc.Template.OwningImplementationGuideId,
@@ -682,10 +706,21 @@ namespace Trifolia.Web.Controllers.API
             
             List<int> duplicateConformanceNumbers = destinationIgConfNumbers
                 .Where(y => template.ChildConstraints.Count(x => x.Number.Value == y) > 0).ToList();
+            var constraintReferences = (from c in template.ChildConstraints
+                                        join tcr in this.tdb.TemplateConstraintReferences on c.Id equals tcr.TemplateConstraintId
+                                        join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                        where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                        select new ConstraintReference()
+                                        {
+                                            Bookmark = t.Bookmark,
+                                            Identifier = t.Oid,
+                                            Name = t.Name,
+                                            TemplateConstraintId = tcr.TemplateConstraintId
+                                        }).ToList();
 
             template.Constraints.ForEach(c =>
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, c);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, c, constraintReferences);
 
                 model.Constraints.Add(new CopyModel.Constraint()
                 {

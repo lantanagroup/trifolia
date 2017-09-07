@@ -37,14 +37,14 @@ namespace Trifolia.DB
         /// <param name="tdb"></param>
         /// <param name="isStatic"></param>
         /// <returns></returns>
-        public List<ImplementationGuideValueSet> GetValueSets(IObjectRepository tdb, bool? isStatic = null)
+        public List<ImplementationGuideValueSet> GetValueSets(IObjectRepository tdb, bool? isStatic = null, bool readOnly = true)
         {
             var templateIds = tdb.GetImplementationGuideTemplates(this.Id, true, null, null);
             List<ImplementationGuideValueSet> retValueSets = new List<ImplementationGuideValueSet>();
-
+            
             var valueSetConstraints = (from tid in templateIds
-                                       join tc in tdb.TemplateConstraints on tid equals tc.TemplateId
-                                       join vs in tdb.ValueSets on tc.ValueSetId equals vs.Id
+                                       join tc in (readOnly ? tdb.TemplateConstraints.AsNoTracking() : tdb.TemplateConstraints) on tid equals tc.TemplateId
+                                       join vs in (readOnly ? tdb.ValueSets.AsNoTracking() : tdb.ValueSets) on tc.ValueSetId equals vs.Id
                                        where 
                                          (isStatic == null) || 
                                          (isStatic == true && (tc.IsStatic == null || tc.IsStatic == true)) || 

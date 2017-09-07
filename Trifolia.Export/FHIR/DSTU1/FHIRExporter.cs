@@ -1,16 +1,10 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
-using System.Text;
-
-using Trifolia.DB;
-using Trifolia.Shared;
-using Trifolia.Export.Native;
 using LantanaGroup.ValidationUtility;
-using Trifolia.Terminology;
-using System.Xml;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using Trifolia.DB;
+using Trifolia.Export.Native;
+using Trifolia.Shared;
 
 namespace Trifolia.Export.FHIR.DSTU1
 {
@@ -52,6 +46,8 @@ namespace Trifolia.Export.FHIR.DSTU1
 
             var export = TransformFactory.Transform(templateExport, stylesheetContent, StylesheetUri, resolver);
 
+            // No longer supporting DSTU1. If needed in future, replace with Svs2FhirValueSet.xslt execution against MultipleSvsExporter.GetExport()
+            /*
             if (includeVocabulary)
             {
                 // Export the vocabulary for the implementation guide in SVS format
@@ -98,6 +94,7 @@ namespace Trifolia.Export.FHIR.DSTU1
                     export = sw.ToString();
                 }
             }
+            */
 
             return export;
         }
