@@ -1061,7 +1061,19 @@ igViewApp.controller('ViewCtrl', function ($rootScope, $scope, $http, $sce, $uib
                 $scope.TemplateHierarchy = templateHierarchy;
             })
             .catch(function (err) {
-                alert(err);
+                if (err.status == -1) {
+                    return;
+                }
+
+                if (typeof err === 'string') {
+                    alert(err);
+                } else if (err.message) {
+                    alert(err.message);
+                } else if (err.statusText) {
+                    alert(err.statusText);
+                } else if (typeof err.data === 'string') {
+                    alert(err.data);
+                }
             })
             .finally(function () {
                 $scope.IsLoading = false;
