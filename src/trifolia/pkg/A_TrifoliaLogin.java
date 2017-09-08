@@ -103,6 +103,38 @@ public class A_TrifoliaLogin {
 		  	wait.until(ExpectedConditions.jsReturnsValue("return !!ko.dataFor(document.getElementById('"+waitForBinding+"'))"));  
 	  }
 	
+	 public void completeNewProfile(String firstName, String lastName, String Phone, String Organization)
+	 {
+			 WebDriverWait wait = new WebDriverWait(driver, 60);
+			 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h2"),"New Profile"));
+			 assertTrue("Could not find \"New Profile\" on Account page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*New Profile[\\s\\S]*$"));
+
+			// Enter Trifolia User account Firstname
+			WebDriverWait wait1 = new WebDriverWait(driver, 60);
+			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div/div[1]/input")));
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[1]/input")).sendKeys(firstName);
+
+			// Enter Trifolia User account Lastname
+			WebDriverWait wait2 = new WebDriverWait(driver, 60);
+			WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div/div[2]/input")));
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[2]/input")).sendKeys(lastName);
+			
+			// Enter Trifolia User Account Phone 
+			WebDriverWait wait3 = new WebDriverWait(driver, 60);
+			WebElement element3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div/div[3]/input")));
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[3]/input")).sendKeys(Phone);
+			
+			// Enter Trifolia User Account Organization
+			WebDriverWait wait4 = new WebDriverWait(driver, 60);
+			WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div/div[5]/input")));
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[5]/input")).sendKeys(Organization);
+			
+			//Click Save
+			WebDriverWait wait5 = new WebDriverWait(driver, 60);
+			WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div/div[8]/button")));
+			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[8]/button")).click();
+
+	 }
 	   public void LCGAdminLogin(String permissionUserName, String baseURL)
 			throws Exception {
 		// Login to Trifolia Workbench as Lantana Administrator
@@ -122,25 +154,52 @@ public class A_TrifoliaLogin {
 			for (String winHandle : driver.getWindowHandles()) {
 				// switch focus of WebDriver to Auth0 login page
 				driver.switchTo().window(winHandle);
-
-				WebDriverWait wait = new WebDriverWait(driver, 240);
-				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div/div/div/div/div/div/div/div[1]/div[2]/h1"),"Trifolia"));
+				
+//				Thread.sleep(5000);
+				
+				if (baseURL == "https://trifolia-staging.lantanagroup.com")
+				{
+					WebDriverWait wait = new WebDriverWait(driver, 240);                    
+					wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div/div/div[2]/form/div/div/div[1]/div[2]/div"),"Trifolia"));
+					assertTrue("Could not find \"Trifolia\" on Auth0 page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Trifolia[\\s\\S]*$"));
+				
+					// Enter Trifolia Admin account e-mail and password
+					WebDriverWait wait1 = new WebDriverWait(driver, 60);                              
+					WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[1]/div/input")));
+					driver.findElement(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[1]/div/input")).sendKeys(this.adminUserUsername);
+					Thread.sleep(1000);
+					
+					WebDriverWait wait2 = new WebDriverWait(driver, 60);
+					WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[2]/div[1]/input")));
+					driver.findElement(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[2]/div[1]/input")).sendKeys(this.adminUserPassword);
+									
+					//Click Login
+					WebDriverWait wait5 = new WebDriverWait(driver, 60);
+					WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/form/div/div/button")));
+					driver.findElement(By.xpath("/html/body/div/div/div[2]/form/div/div/button")).click();
+			}
+				if (baseURL == "http://dev.trifolia.lantanagroup.com/")
+				{
+				WebDriverWait wait = new WebDriverWait(driver, 240);                    
+				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div/div/div[2]/form/div/div/div[1]/div[2]/div"),"Trifolia"));
 				assertTrue("Could not find \"Trifolia\" on Auth0 page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Trifolia[\\s\\S]*$"));
-
+				
 				// Enter Trifolia Admin account e-mail and password
-				WebDriverWait wait1 = new WebDriverWait(driver, 60);
-				WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[2]/div[4]/div/div[1]/div/input")));
-				driver.findElement(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[2]/div[4]/div/div[1]/div/input")).sendKeys(this.adminUserUsername);
+				WebDriverWait wait1 = new WebDriverWait(driver, 60);                              
+				WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[1]/div/input")));
+				driver.findElement(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[1]/div/input")).sendKeys(this.adminUserUsername);
 				Thread.sleep(1000);
 				
-				WebDriverWait wait2 = new WebDriverWait(driver, 60);
-				WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[2]/div[4]/div/div[1]/div/input")));
-				driver.findElement(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[2]/div[4]/div/div[2]/div/input")).sendKeys(this.adminUserPassword);
+				WebDriverWait wait2 = new WebDriverWait(driver, 60);                               
+				WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[2]/div/input")));
+				driver.findElement(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[2]/div/input")).sendKeys(this.adminUserPassword);
 								
 				//Click Login
-				WebDriverWait wait5 = new WebDriverWait(driver, 60);
-				WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[3]/div/button")));
-				driver.findElement(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[3]/div/button")).click();
+				WebDriverWait wait5 = new WebDriverWait(driver, 60);                               
+				WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/form/div/div/button")));
+				driver.findElement(By.xpath("/html/body/div/div/div[2]/form/div/div/button")).click();
+
+				}
 			}
 
 			// Wait for page to fully load
@@ -149,6 +208,11 @@ public class A_TrifoliaLogin {
 			 // Wait for the bindings to complete
 		        waitForBindings("appnav");
 		    
+		    	if(driver.findElements(By.xpath("/html/body/div[2]/div/div/h2")).size() != 0)
+				{
+					completeNewProfile("Lantana", "Admin", "111-222-3333", "Lantana Consulting Group");
+				}		
+		    	
 		    // Switch focus to Trifolia Home Page
 			driver.switchTo().window(parentHandle);
 			WebDriverWait wait = new WebDriverWait(driver, 120);
@@ -161,9 +225,9 @@ public class A_TrifoliaLogin {
 		wait1.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/h2"),"Welcome to Trifolia Workbench!"));
 		assertTrue("Unable to confirm Login",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S][\\s\\S]*$"));
 
-		// Confirm Welcome Page Text appears
-		WebDriverWait wait2 = new WebDriverWait(driver, 60);
-		wait1.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/p/strong"), "Did you know?"));
+//		// Confirm Welcome Page Text appears
+//		WebDriverWait wait2 = new WebDriverWait(driver, 60);
+//		wait1.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/p/strong"), "Did you know?"));
 }
 
 	@Test
@@ -181,24 +245,24 @@ public class A_TrifoliaLogin {
 				// switch focus of WebDriver to Auth0 login page
 				driver.switchTo().window(winHandle);
 
-				WebDriverWait wait = new WebDriverWait(driver, 240);
-				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div/div/div/div/div/div/div/div[1]/div[2]/h1"),"Trifolia"));
+				WebDriverWait wait = new WebDriverWait(driver, 240);                   
+				wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div/div/div[2]/form/div/div/div[1]/div[2]/div"),"Trifolia"));
 				assertTrue("Could not find \"Trifolia\" on Auth0 page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Trifolia[\\s\\S]*$"));
 
 				// Enter Trifolia User account e-mail and password
 				WebDriverWait wait1 = new WebDriverWait(driver, 60);
-				WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[2]/div[4]/div/div[1]/div/input")));
-				driver.findElement(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[2]/div[4]/div/div[1]/div/input")).sendKeys(this.basicUserUsername);
+				WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[1]/div/input")));
+				driver.findElement(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[1]/div/input")).sendKeys(this.basicUserUsername);
 				Thread.sleep(1000);
 				
 				WebDriverWait wait2 = new WebDriverWait(driver, 60);
-				WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[2]/div[4]/div/div[1]/div/input")));
-				driver.findElement(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[2]/div[4]/div/div[2]/div/input")).sendKeys(this.basicUserPassword);
+				WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[2]/div/input")));
+				driver.findElement(By.xpath("/html/body/div/div/div[2]/form/div/div/div[2]/span/div/div/div/div/div/div/div/div/div[4]/div[2]/div/input")).sendKeys(this.basicUserPassword);
 								
 				//Click Login
 				WebDriverWait wait5 = new WebDriverWait(driver, 60);
-				WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[3]/div/button")));
-				driver.findElement(By.xpath("/html/body/div/div/div/div/div/div/div/div[2]/div/form/div[3]/div/button")).click();
+				WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/form/div/div/button")));
+				driver.findElement(By.xpath("/html/body/div/div/div[2]/form/div/div/button")).click();
 			}
 
 					// Wait for page to fully load
@@ -206,7 +270,14 @@ public class A_TrifoliaLogin {
 					   
 					 // Wait for the bindings to complete
 				        waitForBindings("appnav");
-				    
+				
+		// If Trifolia New Profile page appears, complete the Profile Page.
+			
+			if(driver.findElements(By.xpath("/html/body/div[2]/div/div/h2")).size() != 0)
+			{
+				completeNewProfile("Lantana", "User", "111-222-3333", "Lantana Consulting Group");
+			}			        
+				        
 				    // Switch focus to Trifolia Home Page
 					driver.switchTo().window(parentHandle);
 					WebDriverWait wait = new WebDriverWait(driver, 120);
@@ -214,27 +285,27 @@ public class A_TrifoliaLogin {
 					assertTrue("Could not find \"Welcome to Trifolia\" on page.",driver.findElement(By.cssSelector("BODY"))
 									.getText().matches("^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S]*$"));
 		
-		// Complete User Profile if the page appears appears
-	    
-		// if (driver.findElement(By.cssSelector("Body")).getText().matches("^[\\s\\S]*New Profile[\\s\\S]*$"))
-		   if (driver.getPageSource().contains("New Profile"))   
-			   {
-			// Wait for page header to appear
-			WebDriverWait wait1 = new WebDriverWait(driver, 60);
-			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h2"), "New Profile"));
-			
-			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[1]/input")).sendKeys("Lantana");
-			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[2]/input")).sendKeys("User");
-			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[3]/input")).sendKeys("111-222-3333");
-			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[4]/input")).sendKeys("lantana.user@lcg.org");
-			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[5]/input")).sendKeys("Lantana Consulting Group");
-			
-			// Click Save
-			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[7]/button")).click();
-		} 
-		else 
-		{
-			// Wait for page to re-load
+//		// Complete User Profile if the page appears appears
+//	    
+//		// if (driver.findElement(By.cssSelector("Body")).getText().matches("^[\\s\\S]*New Profile[\\s\\S]*$"))
+//		   if (driver.getPageSource().contains("New Profile"))   
+//			   {
+//			// Wait for page header to appear
+//			WebDriverWait wait1 = new WebDriverWait(driver, 60);
+//			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h2"), "New Profile"));
+//			
+//			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[1]/input")).sendKeys("Lantana");
+//			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[2]/input")).sendKeys("User");
+//			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[3]/input")).sendKeys("111-222-3333");
+//			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[4]/input")).sendKeys("lantana.user@lcg.org");
+//			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[5]/input")).sendKeys("Lantana Consulting Group");
+//			
+//			// Click Save
+//			driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[7]/button")).click();
+//		} 
+//		else 
+//		{
+  		// Wait for page to re-load
 			   waitForPageLoad();
 			
 			// Confirm Login is Successful
@@ -242,11 +313,10 @@ public class A_TrifoliaLogin {
 			wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/h2"), "Welcome to Trifolia Workbench!"));
 			assertTrue("Login was not Successful",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S][\\s\\S]*$"));
 
-			// Confirm Welcome Page Text appears
-			WebDriverWait wait2 = new WebDriverWait(driver, 60);
-			wait1.until(ExpectedConditions.textToBePresentInElementLocated(
-					By.xpath("/html/body/div[2]/div/p/strong"), "Did you know?"));
-		}
+//			// Confirm Welcome Page Text appears
+//			WebDriverWait wait2 = new WebDriverWait(driver, 60);
+//			wait1.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/p/strong"), "Did you know?"));
+		
 	}
 
 	@Test
@@ -416,9 +486,23 @@ public class A_TrifoliaLogin {
 								"^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S]*$"));
 
 		// Logout the Lantana admin or user account
-		if (permissionUserName == "lcg.admin")
+		
+		if (permissionUserName == "lcg.admin" && driver.findElements(By.xpath("/html/body/div[2]/div/div/h2")).size() == 0)
 		{
-			WebDriverWait wait = new WebDriverWait(driver, 60);
+			WebDriverWait wait = new WebDriverWait(driver, 60);                                
+			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[8]/a/b")));
+			driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[8]/a/b")).click();
+			WebDriverWait wait1 = new WebDriverWait(driver, 60);
+			WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[8]/ul/li[4]/a")));
+			driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[8]/ul/li[4]/a")).click();
+			
+			// Wait for the page to fully load
+			  waitForPageLoad();
+		}  
+		
+		if (permissionUserName == "lcg.admin" && driver.findElements(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]")).size() == 0)
+		{
+			WebDriverWait wait = new WebDriverWait(driver, 60);                                
 			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[8]/a/span")));
 			driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[8]/a/span")).click();
 			WebDriverWait wait1 = new WebDriverWait(driver, 60);
@@ -428,14 +512,6 @@ public class A_TrifoliaLogin {
 			// Wait for the page to fully load
 			  waitForPageLoad();
 
-			// Confirm Logout is Successful
-			WebDriverWait wait2 = new WebDriverWait(driver, 60);
-			WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/a/span")));
-			assertTrue("Logout was not Successful",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S]*$"));
-
-			// Confirm Welcome Page text appears.
-			WebDriverWait wait3 = new WebDriverWait(driver, 60);
-			wait1.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]"),"Did you know?"));
 		} 
 		else if (permissionUserName == "lcg.user") 
 		{
@@ -449,16 +525,17 @@ public class A_TrifoliaLogin {
 			// Wait for page to re-load
 			waitForPageLoad();
 			  	
-			// Confirm Logout is Successful
-			WebDriverWait wait2 = new WebDriverWait(driver, 60);
-			WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"appnav\"]/div/div[2]/ul/li[3]/a/span")));
-			assertTrue("Logout was not Successful",driver.findElement(By.cssSelector("BODY")).getText().matches(
-									"^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S]*$"));
-
-			// Confirm Welcome Page text appears.
-			WebDriverWait wait3 = new WebDriverWait(driver, 60);
-			wait1.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]"),"Did you know?"));
 		}
+		
+		// Confirm Logout is Successful
+		WebDriverWait wait = new WebDriverWait(driver, 60);
+		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"appnav\"]/div/div[2]/ul/li[3]/a/span")));
+		assertTrue("Logout was not Successful",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Welcome to Trifolia Workbench![\\s\\S]*$"));
+
+		// Confirm Welcome Page text appears.
+		WebDriverWait wait1 = new WebDriverWait(driver, 60);
+		wait1.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[1]/div/div[2]/ul/li[3]/a/span"),"Log In"));
+
 	}
 
 	// HL7 Member and HL7 User Logout of Trifolia Workbench

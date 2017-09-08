@@ -2,9 +2,10 @@
 <section name="Workbench">
 	<section name="ExternalProjectImportWizard">
 		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
-		<item value="true" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="E:\Selenium\Selenium Webdriver Scripts\src\trifolia\Regression"/>
 			<item value="E:\Selenium\Selenium Webdriver Scripts\Regression"/>
 			<item value="E:\Selenium\Selenium Webdriver Scripts"/>
 			<item value="C:\Users\Meenaxi\Documents\_Lantana\Trifolia Project\Automated Test Scripts\Selenium Webdriver Projects\Trifolia Workbench\Trifolia"/>

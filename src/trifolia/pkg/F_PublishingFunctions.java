@@ -52,7 +52,7 @@ public class F_PublishingFunctions {
   public void waitForPageLoad() 
   {
 	WebDriverWait wait = new WebDriverWait(driver, 60);
-	wait.until(ExpectedConditions.jsReturnsValue("return document.readyState ==\"complete\";"));		
+	     wait.until(ExpectedConditions.jsReturnsValue("return document.readyState ==\"complete\";"));		
   }
 	
   public void waitForBindings(String waitForBinding) 
@@ -70,7 +70,6 @@ public class F_PublishingFunctions {
 		   WebDriverWait wait = new WebDriverWait(driver, 60);                               
 	       WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a"))); 
 		   driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/a")).click();
-
 		   WebDriverWait wait2 = new WebDriverWait(driver, 60);
 		   WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[2]/a"))); 
 		   driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/ul/li[2]/ul/li[2]/a")).click();
@@ -93,7 +92,7 @@ public class F_PublishingFunctions {
 public void ClearExistingSearch() throws Exception
 	  {
 		  // Wait for the page to fully load
-		     waitForPageLoad();
+		  waitForPageLoad();
 		  
 		  // Wait for Bindings to complete
 		     waitForBindings("BrowseTemplates");
@@ -103,7 +102,7 @@ public void ClearExistingSearch() throws Exception
 		  wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/thead/tr[1]/th[2]"), "Identifier"));
 		
 	 	  // Clear existing Search Criteria 
-	  	   driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+	  	   //driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 	  	   driver.findElement(By.xpath("/html/body/div[2]/div/div/form/div/span/button[1]")).click();
 	  	   driver.findElement(By.xpath("/html/body/div[2]/div/div/form/div/span/button[1]")).click();
 		 
@@ -116,7 +115,7 @@ public void ClearExistingSearch() throws Exception
 		 
 			// Wait for page to fully load
 		      waitForPageLoad();  
-
+		  
 		   // Confirm search criteria is cleared
 		  WebDriverWait wait1 = new WebDriverWait(driver, 60);                    
 		  wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr[2]/td[5]")));        
@@ -161,7 +160,7 @@ public void ClearExistingSearch() throws Exception
 	   wait2.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]"),"Page 1 of 1, 1 templates/profiles"));
 	   
 	   // Confirm the correct Template is returned
-	    driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+	    
 	    WebDriverWait wait3 = new WebDriverWait(driver, 60);
 	  	wait3.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[2]"), templateOID));
 	    assertTrue("Could not find \"Template OID\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateOID) >= 0);
@@ -171,7 +170,7 @@ public void ClearExistingSearch() throws Exception
 	{	
 	 
 			 // Wait for page to fully load
-	         waitForPageLoad();  
+	            waitForPageLoad();  
 	         
 	      // Wait for Bindings to complete
 		     waitForBindings("ViewTemplate");
@@ -202,7 +201,7 @@ public void ClearExistingSearch() throws Exception
 		   waitForBindings("TemplateEditor");
 		  
 	   // Confirm the Template Editor opens
-	       driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+	       //driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		   WebDriverWait wait = new WebDriverWait(driver, 60);
 		   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[1]/a"), "Template/Profile"));
 	       assertTrue("Could not find \"Template/Profile\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Template/Profile[\\s\\S]*$"));
@@ -212,13 +211,13 @@ public void ClearExistingSearch() throws Exception
 		   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[5]"))); 
 	    
 		   // Confirm the the correct Template Name appears in the Editor
-		   driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		   //driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		   WebDriverWait wait2 = new WebDriverWait(driver, 60);
 		   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h3/span[2]"), templateName));
 		   assertTrue("Could not find \"Template Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateName) >= 0);
 		   
 		   // Confirm the the correct Template OID appears in the Editor
-		   driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		   //driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		   WebDriverWait wait3 = new WebDriverWait(driver, 60);                                  
 		   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h4/span"), templateOID));
 		   assertTrue("Could not find \"Template OID\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateOID) >= 0);	
@@ -238,7 +237,7 @@ public void ClearExistingSearch() throws Exception
     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[5]/div/div/div[3]/button[1]")).click();
   
   // Confirm the user is returned to the Edit Publish Settings page
-     driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+     
      WebDriverWait wait1 = new WebDriverWait(driver, 60);
      WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[2]/a"))); 	
      assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Edit Publish Settings[\\s\\S]*$"));
@@ -247,7 +246,7 @@ public void ClearExistingSearch() throws Exception
   	  waitForPageLoad(); 
   	  
   //Confirm the template sample appears in the Edit Publish Settings page
-     driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+     
      WebDriverWait wait2 = new WebDriverWait(driver, 60);
 	 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div[2]/div[1]/div[2]/div[1]"), templateName));
 	 assertTrue("Could not find \"Template Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateName) >= 0);             
@@ -282,7 +281,7 @@ public void ClearExistingSearch() throws Exception
 		  waitForPageLoad();  
 		  
 	   // Confirm the Page is re-loaded
-	    driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+	    
 	    WebDriverWait wait1 = new WebDriverWait(driver, 60);
 	    WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[2]/button[1]"))); 
    }	
@@ -319,7 +318,7 @@ public void ClearExistingSearch() throws Exception
 	   // Find the Template
 	 	if (permissionUserName == "lcg.admin")
 	 		{
-	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
+	 		FindTemplate("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 	 		}
 	 	else if (permissionUserName == "hl7.member")
 		 	{
@@ -337,10 +336,13 @@ public void ClearExistingSearch() throws Exception
 	 	    	driver.findElement(By.xpath("/html/body/div[2]/div/div/table/tbody/tr/td[5]/div/a[1]")).click();
 	 	    }
 	 	  	  
+	 	// Wait for page to fully load
+		   waitForPageLoad();  
+		  
 	 	 // Confirm the Template Viewer opens and the correct template appears
 		 	 if (permissionUserName == "lcg.admin")
 		 		{
-		 		ConfirmTemplateViewer("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
+		 		ConfirmTemplateViewer("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
 		 		}
 		 	 if (permissionUserName == "hl7.member")
 			 	{
@@ -389,7 +391,7 @@ public void ClearExistingSearch() throws Exception
 		// Save the Template Sample form
 		   if (permissionUserName == "lcg.admin")
 	 		{
-	 		SaveTemplateSample("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
+	 		SaveTemplateSample("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
 	 		}
 	 	   if (permissionUserName == "hl7.member")
 		 	{
@@ -399,7 +401,7 @@ public void ClearExistingSearch() throws Exception
 	 	// Save the Publish Settings Form
 		   if (permissionUserName == "lcg.admin")
 	 		{
-	 		SavePublishSettings("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
+	 		SavePublishSettings("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
 	 		}
 	 	   if (permissionUserName == "hl7.member")
 		 	{
@@ -412,7 +414,7 @@ public void ClearExistingSearch() throws Exception
 		   // Find the Template
 		 	if (permissionUserName == "lcg.admin")
 		 		{
-		 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
+		 		FindTemplate("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 		 		}
 		 	else if (permissionUserName == "hl7.member")
 			 	{
@@ -434,7 +436,7 @@ public void ClearExistingSearch() throws Exception
 		 	 
 	 	 if (permissionUserName == "lcg.admin")
 	 		{
-	 		ConfirmTemplateViewer("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
+	 		ConfirmTemplateViewer("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
 	 		}
 	 	 if (permissionUserName == "hl7.member")
 		 	{
@@ -468,7 +470,7 @@ public void ClearExistingSearch() throws Exception
 	    // Find the Template
 	 	if (permissionUserName == "lcg.admin")
 	 		{
-	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
+	 		FindTemplate("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 	 		}
 	 	
 	 	else if (permissionUserName == "hl7.member")
@@ -491,7 +493,7 @@ public void ClearExistingSearch() throws Exception
 	 	 // Confirm the Template Viewer opens and the correct template appears
 		 	 if (permissionUserName == "lcg.admin")
 		 		{
-		 		ConfirmTemplateViewer("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
+		 		ConfirmTemplateViewer("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
 		 		}
 		 	 if (permissionUserName == "hl7.member")
 			 	{
@@ -534,7 +536,7 @@ public void ClearExistingSearch() throws Exception
     // Save the Template Sample form
 	   if (permissionUserName == "lcg.admin")
  		{
- 		SaveTemplateSample("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
+ 		SaveTemplateSample("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
  		}
  	   if (permissionUserName == "hl7.member")
 	 	{
@@ -544,7 +546,7 @@ public void ClearExistingSearch() throws Exception
  	// Save the Publish Settings Form
 	   if (permissionUserName == "lcg.admin")
  		{
- 		SavePublishSettings("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
+ 		SavePublishSettings("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
  		}
  	   if (permissionUserName == "hl7.member")
 	 	{
@@ -557,7 +559,7 @@ public void ClearExistingSearch() throws Exception
 	       // Find the Template
 		 	if (permissionUserName == "lcg.admin")
 		 		{
-		 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
+		 		FindTemplate("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 		 		}
 		 	else if (permissionUserName == "hl7.member")
 			 	{
@@ -578,7 +580,7 @@ public void ClearExistingSearch() throws Exception
 	       // Confirm the Template Viewer opens and the correct template appears
 		 	 if (permissionUserName == "lcg.admin")
 		 		{
-		 		ConfirmTemplateViewer("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
+		 		ConfirmTemplateViewer("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
 		 		}
 		 	 if (permissionUserName == "hl7.member")
 			 	{
@@ -605,7 +607,7 @@ public void ClearExistingSearch() throws Exception
 	       ReturnHome("Welcome to Trifolia Workbench!");
  }
        
-//TEST 3: Delete the Template Sample for the "Automation Test Template"
+//TEST 3: Delete the Template Sample for the "Automation Document Template"
  @Test
        public void DeleteTemplateXMLSample(String templateName, String templateOID, String permissionUserName) throws Exception {
 	 
@@ -615,7 +617,7 @@ public void ClearExistingSearch() throws Exception
 	 // Find the Template
 	 	if (permissionUserName == "lcg.admin")
 	 		{
-	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
+	 		FindTemplate("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 	 		}
 	 	else if (permissionUserName == "hl7.member")
 		 	{
@@ -636,7 +638,7 @@ public void ClearExistingSearch() throws Exception
 	 	 // Confirm the Template Viewer opens and the correct template appears
 		 	 if (permissionUserName == "lcg.admin")
 		 		{
-		 		ConfirmTemplateViewer("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
+		 		ConfirmTemplateViewer("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
 		 		}
 		 	 if (permissionUserName == "hl7.member")
 			 	{
@@ -682,7 +684,7 @@ public void ClearExistingSearch() throws Exception
 	 	// Save the Publish Settings Form
 		   if (permissionUserName == "lcg.admin")
 	 		{
-	 		SavePublishSettings("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
+	 		SavePublishSettings("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
 	 		}
 	 	   if (permissionUserName == "hl7.member")
 		 	{
@@ -808,44 +810,55 @@ public void ClearExistingSearch() throws Exception
          //Confirm the IG Viewer opens with correct IG 
 	       ConfirmIGViewer("1Automation Test IG");
 	       
-	     //Select the "Workflow" option and "Ballot" the IG
-	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/a")).click();
-	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/ul/li[1]/a")).click();
+	     //Select the "Workflow" option 
+	       WebDriverWait wait = new WebDriverWait(driver, 60); 
+	       WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/a")));
+	       driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/a")).click();
+	       
+	       // Click "Ballot" the IG
+	       WebDriverWait wait1 = new WebDriverWait(driver, 60); 
+	       WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/ul/li[1]/a")));
+	       driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/ul/li[1]/a")).click();
           
 	     // Wait for page to fully load
 	       waitForPageLoad(); 
 	       
 	     // Wait for screen to refresh
-        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        WebDriverWait wait = new WebDriverWait(driver, 60);                    
         
+        WebDriverWait wait2 = new WebDriverWait(driver, 60);                    
 	    wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[1]/a"), implementationGuideName));
 	    assertTrue("Could not find \"Implementation Guide Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
      
 	     // Confirm the status is set to "Ballot"
-	     WebDriverWait wait4 = new WebDriverWait(driver, 60);                    
+	     WebDriverWait wait3 = new WebDriverWait(driver, 60);                    
 		 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[2]/div/span[3]/span"), igStatus1));
 	     assertTrue("Could not find \"Implementation Guide Status\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Ballot[\\s\\S]*$"));
 	     
-	     //Select the "Workflow" option and "Publish" the IG
-	     driver.findElement(By.xpath("//*[@id=\"bs-example-navbar-collapse-1\"]/ul/li[4]/a")).click();
-	     driver.findElement(By.xpath("//*[@id=\"bs-example-navbar-collapse-1\"]/ul/li[4]/ul/li[2]/a")).click();
+	     //Select the "Workflow" option 
+	       WebDriverWait wait4 = new WebDriverWait(driver, 60); 
+	       WebElement element4 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/a")));   
+	       driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/a")).click();
+	     
+	       // Click "Publish" the IG
+	       WebDriverWait wait5 = new WebDriverWait(driver, 60); 
+	       WebElement element5 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/ul/li[2]/a")));   
+	        driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[4]/ul/li[2]/a")).click();
 	     
      // Wait for page to fully load
      	waitForPageLoad(); 
      	
        // Confirm the Publish Date Selector form opens    
      	
-     	 WebDriverWait wait5 = new WebDriverWait(driver, 60);                    
+     	 WebDriverWait wait6 = new WebDriverWait(driver, 60);                    
  	     wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[1]/h4"), "Select publish date"));
  	 
-	     WebDriverWait wait6 = new WebDriverWait(driver, 60);
-	     WebElement element6 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("publishDateSelector")));
+	     WebDriverWait wait7 = new WebDriverWait(driver, 60);
+	     WebElement element7 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("publishDateSelector")));
 	     assertTrue("Could not find \"Select publish date\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Select publish date[\\s\\S]*$"));
 	     
        //Select the Publish Date
 	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[2]/div/div[2]/button[2]")).click();
-	     driver.findElement(By.xpath("/html/body/div[8]/div[1]/table/tfoot/tr[1]/th")).click();
+	     driver.findElement(By.xpath("/html/body/div[9]/div[1]/table/tfoot/tr[1]")).click();
 	     
 	     //Save the Date
 	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[4]/div/div/div[3]/button[1]")).click();
@@ -857,19 +870,19 @@ public void ClearExistingSearch() throws Exception
 	       waitForBindings("ViewImplementationGuide");
 
      // Confirm the IG is Published
-	     WebDriverWait wait7 = new WebDriverWait(driver, 60);                    
+	     WebDriverWait wait8 = new WebDriverWait(driver, 60);                    
 		 wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[2]/div/span[3]/span[1]"), "Published"));
 		      
      //Confirm the user is Returned to the IG Viewer
-     WebDriverWait wait8 = new WebDriverWait(driver, 60);
-     WebElement element8 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"ViewImplementationGuide\"]/ul/li[1]/a")));
+     WebDriverWait wait9 = new WebDriverWait(driver, 60);
+     WebElement element9 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"ViewImplementationGuide\"]/ul/li[1]/a")));
      assertTrue("Could not find \"Implementation Guide Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(implementationGuideName) >= 0);
        
      //Confirm the IG Status has been updated
      // Wait for screen to refresh
-     driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-     WebDriverWait wait9 = new WebDriverWait(driver, 60); 
-     WebElement element9 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[3]/div[1]/div[1]/div[2]/button")));
+     
+     WebDriverWait wait10 = new WebDriverWait(driver, 60); 
+     WebElement element10 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[3]/div[1]/div[1]/div[2]/button")));
      assertTrue("Could not find \"Implementation Guide Status\" on page.", driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Published :[\\s\\S]*$")); 
     
      // Return to the Trifolia Home Page
@@ -900,10 +913,10 @@ public void ClearExistingSearch() throws Exception
      waitForPageLoad(); 
      
      //Confirm the IG Viewer opens with correct IG 
-     ConfirmIGViewer("1Automation Test IG");
+       ConfirmIGViewer("1Automation Test IG");
      
      //Version the Implementation Guide and accept the confirmation
-     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[5]/a")).click();
+       driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div/div[2]/ul/li[5]/a")).click();
 
      //Confirm the Alert appears
 	   WebDriverWait wait10 = new WebDriverWait(driver, 60);
@@ -953,7 +966,7 @@ public void ClearExistingSearch() throws Exception
 	 
 	 	if (permissionUserName == "lcg.admin")
 	 		{
-	 		FindTemplate("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
+	 		FindTemplate("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10", "1Automation Test IG", "lcg.admin");
 	 		}
 	 	else if (permissionUserName == "hl7.member")
 		 	{
@@ -986,7 +999,7 @@ public void ClearExistingSearch() throws Exception
 	    // Wait for page to fully load
 	       waitForPageLoad(); 
 	       
-	       ConfirmTemplateViewer("Automation Test Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
+	       ConfirmTemplateViewer("Automation Document Template", "urn:oid:1.2.3.4.5.6.7.8.9.10");
 	       
            //Open the Template Version Form
 		     if (permissionUserName == "lcg.admin") 
@@ -1005,14 +1018,27 @@ public void ClearExistingSearch() throws Exception
 			     waitForBindings("CopyTemplate");
 		     
        //Confirm the Version Step 1 form appears
-		 driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		 //driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 	     WebDriverWait wait = new WebDriverWait(driver, 60);
 	     WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("Step1")));
 	     assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Version Step 1:[\\s\\S]*$"));
-	    
+	     
+	     // Confirm the correct template appears in the Versioning Form
+	     WebDriverWait wait1 = new WebDriverWait(driver, 60);
+	     wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/h2/span[2]"), templateName));
+         assertTrue("Could not find \"Versioned Implementation Guide Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateName) >= 0);
+	     
+         // Wait for Bindings to complete
+		   waitForBindings("CopyTemplate");
+		   
 	     //Add Version and click Next
          driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/input")).click();
 	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/input")).sendKeys(" V2");
+	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/input")).sendKeys(Keys.TAB);
+	     
+	     // Click Next   
+	     WebDriverWait wait2 = new WebDriverWait(driver, 60);
+		 WebElement elemen2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[1]/div[6]/button[1]")));
 	     driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[6]/button[1]")).click();
 	    
 	     // Wait for page to fully load
@@ -1029,7 +1055,6 @@ public void ClearExistingSearch() throws Exception
 	     assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Version Step 2:[\\s\\S]*$"));
 	     
 	  // Confirm the form is loaded
-	     driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 	     WebDriverWait wait7 = new WebDriverWait(driver, 60);
 	     WebElement element7 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/div/div[2]/div[2]/button[1]")));
 	   
@@ -1038,11 +1063,11 @@ public void ClearExistingSearch() throws Exception
 	      
 	      // Wait for page to fully load
 	       waitForPageLoad();
-		   WebDriverWait wait1 = new WebDriverWait(driver, 5);		           
+		   WebDriverWait wait3 = new WebDriverWait(driver, 5);		           
 		   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[5]"))); 
 	    
 	      // Confirm the user is returned to the Template Editor
-		       driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		       //driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 			   WebDriverWait wait11 = new WebDriverWait(driver, 60);
 			   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/div[1]/ul/li[1]/a"), "Template/Profile"));
 		       assertTrue("Could not find \"Template/Profile\" on page.",driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Template/Profile[\\s\\S]*$"));
@@ -1052,7 +1077,7 @@ public void ClearExistingSearch() throws Exception
 			   wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[5]"))); 
 		    
 			   // Confirm the the correct Template Name appears in the Editor
-			   driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+			   //driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 			   WebDriverWait wait13 = new WebDriverWait(driver, 60);
 			   wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("/html/body/div[2]/div/div/h3/span[2]"), templateName));
 			   assertTrue("Could not find \"Template Name\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(templateName) >= 0);
@@ -1077,8 +1102,8 @@ public void ClearExistingSearch() throws Exception
 	       waitForPageLoad(); 
 	       
 	     // Confirm template was created 
-	     WebDriverWait wait2 = new WebDriverWait(driver, 60);
-	     WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ViewTemplate")));
+	     WebDriverWait wait4 = new WebDriverWait(driver, 60);
+	     WebElement element4 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ViewTemplate")));
 	     assertTrue("Could not find \"Versioned Template\" on page.", driver.findElement(By.cssSelector("BODY")).getText().indexOf(versionedTemplate) >= 0);
 	  
 	     // Return to the Trifolia Home Page
