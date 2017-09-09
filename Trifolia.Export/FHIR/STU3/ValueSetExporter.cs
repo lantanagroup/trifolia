@@ -41,7 +41,7 @@ namespace Trifolia.Export.FHIR.STU3
         /// <param name="summaryType">Does not populate certain fields when a summaryType is specified.</param>
         /// <param name="publishedValueSets">Optional list of ValueSets that are used by a published implementation guide. If not specified, queries the database for implementation guides that this value set may be published under.</param>
         /// <returns>A FHIR ValueSet model</returns>
-        public FhirValueSet Convert(ValueSet valueSet, SummaryType? summaryType = null, IEnumerable<ValueSet> publishedValueSets = null, string baseUrl = null)
+        public FhirValueSet Convert(ValueSet valueSet, SummaryType? summaryType = null, IEnumerable<ValueSet> publishedValueSets = null, string baseUrl = null, bool expand = false)
         {
             bool usedByPublishedIgs = false;
 
@@ -59,6 +59,10 @@ namespace Trifolia.Export.FHIR.STU3
 
             FhirValueSet fhirValueSet = new FhirValueSet()
             {
+                Meta = new Meta()
+                {
+                    ElementId = valueSet.Id.ToString()
+                },
                 Id = valueSet.GetFhirId(),
                 Name = valueSet.Name,
                 Status = usedByPublishedIgs ? PublicationStatus.Active : PublicationStatus.Draft,
@@ -68,55 +72,37 @@ namespace Trifolia.Export.FHIR.STU3
 
             // Handle urn:oid: and urn:hl7ii: identifiers differently if a base url is provided
             // baseUrl is most likely provided when within the context of an implementation guide
-            if (fhirValueSet.Url.StartsWith("urn:oid:") && !string.IsNullOrEmpty(baseUrl))
-                fhirValueSet.Url = baseUrl.TrimEnd('/') + "/ValueSet/" + fhirValueSet.Url.Substring(8);
-            else if (fhirValueSet.Url.StartsWith("urn:hl7ii:") && !string.IsNullOrEmpty(baseUrl))
-                fhirValueSet.Url = baseUrl.TrimEnd('/') + "/ValueSet/" + fhirValueSet.Url.Substring(10);
+            if (fhirValueSet.Url != null)
+            {
+                if (fhirValueSet.Url.StartsWith("urn:oid:") && !string.IsNullOrEmpty(baseUrl))
+                    fhirValueSet.Url = baseUrl.TrimEnd('/') + "/ValueSet/" + fhirValueSet.Url.Substring(8);
+                else if (fhirValueSet.Url.StartsWith("urn:hl7ii:") && !string.IsNullOrEmpty(baseUrl))
+                    fhirValueSet.Url = baseUrl.TrimEnd('/') + "/ValueSet/" + fhirValueSet.Url.Substring(10);
+            }
 
-            if (summaryType == null || summaryType == SummaryType.Data)
+            if (expand)
             {
                 var activeMembers = valueSet.GetActiveMembers(DateTime.Now);
 
                 if (activeMembers.Count > 0)
                 {
-                    // Compose
-                    var compose = new FhirValueSet.ComposeComponent();
-                    fhirValueSet.Compose = compose;
-
-                    foreach (var groupedMember in activeMembers.GroupBy(y => y.CodeSystem, y => y))
-                    {
-                        var include = new FhirValueSet.ConceptSetComponent();
-                        compose.Include.Add(include);
-
-                        include.System = groupedMember.Key.Oid;
-
-                        foreach (var member in groupedMember)
-                        {
-                            include.Concept.Add(new FhirValueSet.ConceptReferenceComponent()
-                            {
-                                Code = member.Code,
-                                Display = member.DisplayName
-                            });
-                        }
-                    }
-
-                    // Expansion
                     var expansion = new FhirValueSet.ExpansionComponent();
-                    expansion.Identifier = string.Format("urn:uuid:{0}", Guid.NewGuid());
-                    expansion.Timestamp = FhirDateTime.Now().ToString();
                     fhirValueSet.Expansion = expansion;
+                    expansion.Identifier = fhirValueSet.Url;
+                    expansion.Total = activeMembers.Count;
 
-                    foreach (ValueSetMember vsMember in activeMembers)
-                    {
-                        var fhirMember = new FhirValueSet.ContainsComponent()
-                        {
-                            System = STU3Helper.FormatIdentifier(vsMember.CodeSystem.Oid),
-                            Code = vsMember.Code,
-                            Display = vsMember.DisplayName
-                        };
+                    if (valueSet.LastUpdate != null)
+                        expansion.TimestampElement = new FhirDateTime(valueSet.LastUpdate.Value);
+                    else
+                        expansion.TimestampElement = new FhirDateTime(DateTime.Now);
 
-                        expansion.Contains.Add(fhirMember);
-                    }
+                    expansion.Contains = (from m in activeMembers
+                                          select new FhirValueSet.ContainsComponent()
+                                          {
+                                              System = m.CodeSystem.Oid,
+                                              Code = m.Code,
+                                              Display = m.DisplayName
+                                          }).ToList();
                 }
             }
 

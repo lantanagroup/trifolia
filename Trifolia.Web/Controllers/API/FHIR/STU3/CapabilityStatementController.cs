@@ -84,6 +84,8 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             var interactions = new List<CapabilityStatement.ResourceInteractionComponent>();
             interactions.Add(this.searchInteraction);
             interactions.Add(this.readInteraction);
+            interactions.Add(this.createInteraction);
+            interactions.Add(this.updateInteraction);
 
             var restStructureDefinition = new CapabilityStatement.ResourceComponent()
             {
