@@ -41,6 +41,7 @@
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#concepts" aria-controls="concepts" role="tab" data-toggle="tab">Concepts</a></li>
             <li role="presentation"><a href="#relationships" aria-controls="relationships" role="tab" data-toggle="tab">Relationships</a></li>
+            <li role="presentation"><a href="#fhir" aria-controls="fhir" role="tab" data-toggle="tab">FHIR</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -154,6 +155,27 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        
+            <div role="tabpanel" class="tab-pane" id="fhir">
+                <div class="row">
+                    <div class="col-md-3">
+                        <select class="form-control" data-bind="value: fhirVersion" readonly="readonly">
+                            <option value="3">FHIR STU3</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" data-bind="value: fhirFormat">
+                            <option value="">FHIR Format</option>
+                            <option value="XML">XML</option>
+                            <option value="JSON">JSON</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- ko if: fhirContent() -->
+                <pre data-bind="text: fhirContent()"></pre>
+                <!-- /ko -->
             </div>
         </div>
     </div>
