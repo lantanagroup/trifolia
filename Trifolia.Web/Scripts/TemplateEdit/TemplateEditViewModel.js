@@ -208,8 +208,15 @@ var templateEditViewModel = function (templateId, defaults) {
             return;
         }
 
+        var replacement = self.IsFhir() ? '-' : '_';
         var templateTypeAbbreviation = self.Template().TemplateTypeAbbreviation();
-        var newBookmark = templateName.replace(/ /gi, "_").replace(/[^\w\s]/gi, '');
+        var newBookmark = templateName.replace(/ /gi, replacement);
+        var cleanupRegexExp = !self.IsFhir() ? '[^\w\s]' : '[^\w\s-]';
+
+        // If not FHIR, then make sure the bookmark does not have special characters in it like -
+        if (!self.IsFhir()) {
+            newBookmark = newBookmark.replace(/[^\w\s]/gi, '');
+        }
 
         if (templateTypeAbbreviation != null) {
             newBookmark = templateTypeAbbreviation + "_" + newBookmark;

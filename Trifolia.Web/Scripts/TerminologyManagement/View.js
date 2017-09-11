@@ -10,9 +10,50 @@
     self.SearchQuery = ko.observable('');
     self.ValueSet = ko.observable('');
     self.Relationships = ko.observableArray([]);
+    self.fhirFormat = ko.observable();
+    self.fhirVersion = ko.observable();
+    self.fhirContent = ko.observable();
 
     self.CompleteText = ko.observable('');
     self.CompleteHint = ko.observable('');
+
+    self.getFhirUrl = function () {
+        if (!self.fhirFormat() || !self.fhirVersion()) {
+            return;
+        }
+
+        var url = '/api/FHIR' + self.fhirVersion() + '/ValueSet/' + valueSetId + '/$expand';
+
+        if (self.fhirFormat() == 'XML') {
+            url += '?_format=application%2Fxml';
+        } else if (self.fhirFormat() == 'JSON') {
+            url += '?_format=application%2Fjson';
+        }
+
+        return url;
+    };
+
+    var formatChanged = function () {
+        self.fhirContent('');
+
+        if (!self.fhirFormat() || !self.fhirVersion()) {
+            return;
+        }
+
+        var url = self.getFhirUrl();
+        $.ajax({
+            url: url,
+            success: function (jqXHR, textStatus, results) {
+                self.fhirContent(results.responseText);
+            },
+            error: function (jqXHR, textStatus, err) {
+                console.error(err);
+            }
+        });
+    };
+
+    self.fhirFormat.subscribe(formatChanged);
+    self.fhirVersion.subscribe(formatChanged);
 
     /* METHODS */
 

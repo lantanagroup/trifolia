@@ -221,14 +221,14 @@ namespace Trifolia.Export.FHIR.STU3
                     // Convert the resource to the desired format for output
                     resourceContent = this.Serialize(resource);
                     fileExtension = this.JsonFormat ? "json" : "xml";
-                    string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString(), resource.Id, fileExtension);
+                    string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString().ToLower(), resource.Id, fileExtension);
 
                     // Add the resource to the zip file
                     this.zip.AddEntry(fileName, resourceContent);
                 }
                 catch
                 {
-                    string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString(), resource.Id, fileExtension);
+                    string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString().ToLower(), resource.Id, fileExtension);
                     this.zip.AddEntry(fileName, fileData.Data);
                 }
             }
@@ -289,7 +289,7 @@ namespace Trifolia.Export.FHIR.STU3
                 if (resource == null || string.IsNullOrEmpty(resource.Id))
                     continue;
 
-                string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString(), resource.Id, fileExtension);
+                string fileName = string.Format("resources/{0}/{1}.{2}", resource.ResourceType.ToString().ToLower(), resource.Id, fileExtension);
                 this.zip.AddEntry(fileName, templateExample.Sample.XmlSample);
 
                 // Add the sample to the control file
