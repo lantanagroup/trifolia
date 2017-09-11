@@ -505,6 +505,7 @@ namespace Trifolia.Web.Controllers.API
         private Template SaveTemplate(IObjectRepository tdb, TemplateMetaDataModel model)
         {
             Template template = null;
+            bool isNew = false;
 
             // Create the initial template object and add it to the appropriate list (if it is new)
             if (model.Id != null)
@@ -515,6 +516,7 @@ namespace Trifolia.Web.Controllers.API
             {
                 template = new Template();
                 tdb.Templates.Add(template);
+                isNew = true;
             }
 
             // Set the properties
@@ -539,7 +541,22 @@ namespace Trifolia.Web.Controllers.API
                 template.Name = model.Name;
 
             if (template.Oid != model.Oid)
+            {
+                // If it is not a new template, there may be refernces to the template
+                // in the TemplateConstraintReferences table representing the plain-string 
+                // identifier of this template. Update those references.
+                if (!isNew)
+                {
+                    var references = tdb.TemplateConstraintReferences.Where(y => y.ReferenceIdentifier == template.Oid && y.ReferenceType == ConstraintReferenceTypes.Template);
+
+                    foreach (var reference in references)
+                    {
+                        reference.ReferenceIdentifier = model.Oid;
+                    }
+                }
+
                 template.Oid = model.Oid;
+            }
 
             if (template.Bookmark != model.Bookmark)
                 template.Bookmark = model.Bookmark;
