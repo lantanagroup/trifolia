@@ -41,7 +41,7 @@ namespace Trifolia.Export.FHIR.STU3
         /// <param name="summaryType">Does not populate certain fields when a summaryType is specified.</param>
         /// <param name="publishedValueSets">Optional list of ValueSets that are used by a published implementation guide. If not specified, queries the database for implementation guides that this value set may be published under.</param>
         /// <returns>A FHIR ValueSet model</returns>
-        public FhirValueSet Convert(ValueSet valueSet, SummaryType? summaryType = null, IEnumerable<ValueSet> publishedValueSets = null, string baseUrl = null, bool expand = false)
+        public FhirValueSet Convert(ValueSet valueSet, SummaryType? summaryType = null, IEnumerable<ValueSet> publishedValueSets = null, string baseUrl = null)
         {
             bool usedByPublishedIgs = false;
 
@@ -80,12 +80,39 @@ namespace Trifolia.Export.FHIR.STU3
                     fhirValueSet.Url = baseUrl.TrimEnd('/') + "/ValueSet/" + fhirValueSet.Url.Substring(10);
             }
 
-            if (expand)
-            {
-                var activeMembers = valueSet.GetActiveMembers(DateTime.Now);
+            List<ValueSetMember> activeMembers = valueSet.GetActiveMembers(DateTime.Now);
 
-                if (activeMembers.Count > 0)
+            if (activeMembers.Count > 0)
+            {
+                // If the value set was created in Trifolia, then Trifolia contains the definition
+                // and it should be represented by <compose>
+                if (valueSet.ImportSource == null)
                 {
+                    // Compose
+                    var compose = new FhirValueSet.ComposeComponent();
+                    fhirValueSet.Compose = compose;
+
+                    foreach (var groupedMember in activeMembers.GroupBy(y => y.CodeSystem, y => y))
+                    {
+                        var include = new FhirValueSet.ConceptSetComponent();
+                        compose.Include.Add(include);
+
+                        include.System = groupedMember.Key.Oid;
+
+                        foreach (var member in groupedMember)
+                        {
+                            include.Concept.Add(new FhirValueSet.ConceptReferenceComponent()
+                            {
+                                Code = member.Code,
+                                Display = member.DisplayName
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    // If the value set was imported, then we have the expansion,
+                    // but we don't have the defintion (the <compose>).
                     var expansion = new FhirValueSet.ExpansionComponent();
                     fhirValueSet.Expansion = expansion;
                     expansion.Identifier = fhirValueSet.Url;
@@ -97,12 +124,12 @@ namespace Trifolia.Export.FHIR.STU3
                         expansion.TimestampElement = new FhirDateTime(DateTime.Now);
 
                     expansion.Contains = (from m in activeMembers
-                                          select new FhirValueSet.ContainsComponent()
-                                          {
-                                              System = m.CodeSystem.Oid,
-                                              Code = m.Code,
-                                              Display = m.DisplayName
-                                          }).ToList();
+                                            select new FhirValueSet.ContainsComponent()
+                                            {
+                                                System = m.CodeSystem.Oid,
+                                                Code = m.Code,
+                                                Display = m.DisplayName
+                                            }).ToList();
                 }
             }
 

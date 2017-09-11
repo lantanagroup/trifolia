@@ -77,7 +77,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
         {
             ValueSet valueSet = this.tdb.ValueSets.Single(y => y.Id == valueSetId);
             ValueSetExporter exporter = new ValueSetExporter(this.tdb);
-            FhirValueSet fhirValueSet = exporter.Convert(valueSet, summary, expand: true);
+            FhirValueSet fhirValueSet = exporter.Convert(valueSet, summary);
 
             return Shared.GetResponseMessage(this.Request, format, fhirValueSet);
         }
