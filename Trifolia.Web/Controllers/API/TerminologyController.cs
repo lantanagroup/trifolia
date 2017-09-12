@@ -389,8 +389,12 @@ namespace Trifolia.Web.Controllers.API
                 if (vsIdentifier.Type != vsIdentifierModel.Type)
                     vsIdentifier.Type = vsIdentifierModel.Type;
 
-                if (vsIdentifier.IsDefault != vsIdentifierModel.IsDefault)
-                    vsIdentifier.IsDefault = vsIdentifierModel.IsDefault;
+                // Only allow changing the default identifier if the value set is NOT imported
+                if (valueSet.ImportSource == null)
+                {
+                    if (vsIdentifier.IsDefault != vsIdentifierModel.IsDefault)
+                        vsIdentifier.IsDefault = vsIdentifierModel.IsDefault;
+                }
             }
         }
 
@@ -407,28 +411,32 @@ namespace Trifolia.Web.Controllers.API
                     auditedTdb.ValueSets.Add(valueSet);
                 }
 
-                // Set properties for the value set
-                if (valueSetModel.Code != valueSet.Code)
-                    valueSet.Code = valueSetModel.Code;
+                // Don't modify main meta-data properties of the value set if it is imported.
+                if (valueSet.ImportSource == null)
+                {
+                    // Set properties for the value set
+                    if (valueSetModel.Code != valueSet.Code)
+                        valueSet.Code = valueSetModel.Code;
 
-                if (valueSetModel.Description != valueSet.Description)
-                    valueSet.Description = valueSetModel.Description;
+                    if (valueSetModel.Description != valueSet.Description)
+                        valueSet.Description = valueSetModel.Description;
 
-                if (valueSetModel.IntentionalDefinition != valueSet.IntensionalDefinition)
-                    valueSet.IntensionalDefinition = valueSetModel.IntentionalDefinition;
+                    if (valueSetModel.IntentionalDefinition != valueSet.IntensionalDefinition)
+                        valueSet.IntensionalDefinition = valueSetModel.IntentionalDefinition;
 
-                var isIncomplete = !valueSetModel.IsComplete;
-                if (isIncomplete != valueSet.IsIncomplete)
-                    valueSet.IsIncomplete = isIncomplete;
+                    var isIncomplete = !valueSetModel.IsComplete;
+                    if (isIncomplete != valueSet.IsIncomplete)
+                        valueSet.IsIncomplete = isIncomplete;
 
-                if (valueSetModel.IsIntentional != valueSet.Intensional)
-                    valueSet.Intensional = valueSetModel.IsIntentional;
+                    if (valueSetModel.IsIntentional != valueSet.Intensional)
+                        valueSet.Intensional = valueSetModel.IsIntentional;
 
-                if (valueSetModel.Name != valueSet.Name)
-                    valueSet.Name = valueSetModel.Name;
+                    if (valueSetModel.Name != valueSet.Name)
+                        valueSet.Name = valueSetModel.Name;
 
-                if (valueSetModel.SourceUrl != valueSet.Source)
-                    valueSet.Source = valueSetModel.SourceUrl;
+                    if (valueSetModel.SourceUrl != valueSet.Source)
+                        valueSet.Source = valueSetModel.SourceUrl;
+                }
 
                 this.SaveValueSetIdentifiers(auditedTdb, valueSet, valueSetModel.Identifiers);
 
