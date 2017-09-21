@@ -8,18 +8,24 @@
     [Parameter(Mandatory=$True, Position=4)]
     [string] $programDataDir = 'C:\ProgramData\Trifolia',
     [Parameter(Mandatory=$True, Position=5)]
-    [string] $outDir = '.\'
+    [string] $outDir = '.\',
+    [Parameter(Mandatory=$True, HelpMessage='Do backup prior to install?')]
+    $backup=$false
 )
+
+if ($backup) {
+    & .\Backup.ps1
+}
 
 Import-Module Sqlps -DisableNameChecking
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 Add-Type -AssemblyName System.IO.Compression
 
-$sqlServerName = "PRODUCTION3"
-$databaseName = "templatedb"
-$installDir = "E:\Websites\TdbManagement"
-$programDataDir = "C:\ProgramData\Trifolia"
-$outDir = "c:\users\sean.mcilvenna"
+# $sqlServerName = "PRODUCTION3"
+# $databaseName = "templatedb"
+# $installDir = "E:\Websites\TdbManagement"
+# $programDataDir = "C:\ProgramData\Trifolia"
+# $outDir = "c:\users\sean.mcilvenna"
 
 $absOutDir = (Resolve-Path $outDir -ErrorAction Stop).Path
 $absProgramDataDir = (Resolve-Path $programDataDir -ErrorAction Stop).Path

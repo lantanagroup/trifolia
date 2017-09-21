@@ -120,7 +120,7 @@ namespace Trifolia.Generation.IG
                 // Output the contained template
                 if (containedTemplateReference != null)
                 {
-                    usedByPara.Append(
+                    containedPara.Append(
                         DocHelper.CreateAnchorHyperlink(containedTemplateReference.Name, containedTemplateReference.Bookmark, Properties.Settings.Default.TableLinkStyle),
                         DocHelper.CreateRun(containedTemplateReference.Required ? " (required)" : " (optional)"));
 

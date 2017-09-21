@@ -94,7 +94,7 @@ namespace Trifolia.Plugins.FHIR
 
         public IValidator GetValidator(IObjectRepository tdb)
         {
-            return new Validation.RIMValidator(tdb);
+            return new Validation.FHIR.STU3Validator(tdb);
         }
     }
 }

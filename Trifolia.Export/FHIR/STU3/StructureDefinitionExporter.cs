@@ -162,7 +162,7 @@ namespace Trifolia.Export.FHIR.STU3
                 {
                     ValueSet = new ResourceReference()
                     {
-                        Reference = constraint.ValueSet.GetReference(),
+                        Reference = constraint.ValueSet.GetIdentifier(ValueSetIdentifierTypes.HTTP),
                         Display = constraint.ValueSet.Name
                     }
                 };
