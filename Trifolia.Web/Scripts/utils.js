@@ -62,10 +62,12 @@ function getTemplateViewUrl(id, oid) {
             var uri = uriMatch[1];
 
             if (uri.indexOf(':') >= 0 || uri.indexOf('/') >= 0 || uri.lastIndexOf('.') == oid.length - 1) {
-                return '/TemplateManagement/View/Id/' + id;
+                if (id) {
+                    return '/TemplateManagement/View/Id/' + id;
+                }
             }
 
-            return '/TemplateManagement/View/URI/' + uri;
+            return '/TemplateManagement/View/URI?uri=' + encodeURIComponent(uri);
         }
 
         if (oid.indexOf(':') >= 0 || oid.indexOf('/') >= 0 || oid.lastIndexOf('.') == oid.length - 1) {
