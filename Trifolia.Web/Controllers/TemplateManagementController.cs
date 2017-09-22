@@ -136,16 +136,15 @@ namespace Trifolia.Web.Controllers
 
             return View(foundTemplate.Id);
         }
-
+        
         [Securable(SecurableNames.TEMPLATE_LIST)]
         public ActionResult ViewUri(string uri)
         {
-            string identifier = string.Format("uri:{0}", uri);
-            Template foundTemplate = this.tdb.Templates.SingleOrDefault(y => y.Oid == identifier);
+            Template foundTemplate = this.tdb.Templates.SingleOrDefault(y => y.Oid == uri);
 
             if (foundTemplate == null)
             {
-                var message = string.Format(App_GlobalResources.TrifoliaLang.TemplateNotFoundMessageFormat, identifier);
+                var message = string.Format(App_GlobalResources.TrifoliaLang.TemplateNotFoundMessageFormat, uri);
                 throw new ArgumentException(message);
             }
 

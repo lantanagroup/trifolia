@@ -14,7 +14,7 @@ namespace Trifolia.Plugins.Validation
 {
     public abstract class BaseValidator : IValidator
     {
-        private IObjectRepository tdb;
+        protected IObjectRepository tdb;
 
         public BaseValidator(IObjectRepository tdb)
         {

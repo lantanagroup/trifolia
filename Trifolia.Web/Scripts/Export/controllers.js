@@ -16,7 +16,7 @@
         { id: 11, name: 'Vocabulary (Multiple SVS XML)', securable: 'ExportVocabulary' },
         { id: 12, name: 'Vocbulary Bundle (FHIR XML)', securable: 'ExportVocabulary' }
     ];
-    $scope.templateSelectionFormats = [0, 2, 3, 6, 7];
+    $scope.templateSelectionFormats = [0, 2, 3, 6, 5, 7];
     $scope.xmlFormats = [3, 4, 5, 6];
     $scope.categorySelectionFormats = $scope.xmlFormats.concat([0, 7, 2]);
     $scope.vocFormats = [9, 10, 11, 12];
@@ -55,6 +55,30 @@
         ReturnJSON: false,
         ValueSetOid: [],
         ValueSetMaxMembers: []
+    };
+
+    $scope.criteriaTemplateSortOrder = function (newValue) {
+        if (arguments.length == 1) {
+            $scope.criteria.TemplateSortOrder = parseInt(newValue);
+        } else {
+            return $scope.criteria.TemplateSortOrder.toString();
+        }
+    };
+
+    $scope.criteriaDocumentTables = function (newValue) {
+        if (arguments.length == 1) {
+            $scope.criteria.DocumentTables = parseInt(newValue);
+        } else {
+            return $scope.criteria.DocumentTables.toString();
+        }
+    };
+
+    $scope.criteriaTemplateTables = function (newValue) {
+        if (arguments.length == 1) {
+            $scope.criteria.TemplateTables = parseInt(newValue);
+        } else {
+            return $scope.criteria.TemplateTables.toString();
+        }
     };
 
     $scope.isExportFormatSpecified = function () {

@@ -78,6 +78,25 @@ namespace Trifolia.Plugins.Validation.FHIR
         {
             List<ValidationResult> results = base.ValidateTemplate(template, igSchema, allContainedTemplates);
 
+            var noHttpValueSets = (from tc in template.ChildConstraints
+                                   join vs in this.tdb.ValueSets on tc.ValueSetId equals vs.Id
+                                   where vs.Identifiers.Count(y => y.Type == ValueSetIdentifierTypes.HTTP) == 0
+                                   select new { ConstraintNumber = tc.Number, ValueSet = vs });
+
+            foreach (var noHttpValueSet in noHttpValueSets)
+            {
+                string vsIdentifier = noHttpValueSet.ValueSet.GetIdentifier(ValueSetIdentifierTypes.HTTP);
+
+                results.Add(new ValidationResult()
+                {
+                    ConstraintNumber = noHttpValueSet.ConstraintNumber,
+                    Level = ValidationLevels.Error,
+                    Message = string.Format("The constraint references a value set ({0}) that does not have an HTTP identifier", vsIdentifier),
+                    TemplateId = template.Id,
+                    TemplateName = template.Name
+                });
+            }
+
             foreach (var templateExample in template.TemplateSamples)
             {
                 fhir_stu3.Hl7.Fhir.Model.Resource resource = null;

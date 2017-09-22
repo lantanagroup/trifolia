@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.Http;
 using Trifolia.Authorization;
 using Trifolia.DB;
+using Trifolia.Export.FHIR.STU3;
 using Trifolia.Export.HTML;
 using Trifolia.Export.Schematron;
 using Trifolia.Export.Terminology;
@@ -167,6 +168,11 @@ namespace Trifolia.Web.Controllers.API
             switch (model.ExportFormat)
             {
                 case ExportFormats.FHIR_Build_Package:
+                    BuildExporter buildExporter = new BuildExporter(this.tdb, ig.Id, templates, model.ReturnJson);
+                    export = buildExporter.Export(model.IncludeVocabulary);
+                    fileName = string.Format("{0}_buildPackage.zip", ig.GetDisplayName(true));
+                    contentType = ZIP_MIME_TYPE;
+                    break;
                 case ExportFormats.FHIR_Bundle:
                 case ExportFormats.Native_XML:
                 case ExportFormats.Templates_DSTU_XML:
@@ -308,6 +314,24 @@ namespace Trifolia.Web.Controllers.API
                     export = downloadPackage.Content;
                     fileName = downloadPackage.FileName;
                     contentType = ZIP_MIME_TYPE;
+                    break;
+                case ExportFormats.Vocbulary_Bundle_FHIR_XML:
+                    ValueSetExporter vsExporter = new ValueSetExporter(this.tdb);
+                    var bundle = vsExporter.GetImplementationGuideValueSets(ig);
+
+                    if (model.ReturnJson)
+                    {
+                        export = fhir_stu3.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToJsonBytes(bundle);
+                        fileName = string.Format("{0}_fhir_voc.json", ig.GetDisplayName(true));
+                        contentType = JSON_MIME_TYPE;
+                    }
+                    else
+                    {
+                        export = fhir_stu3.Hl7.Fhir.Serialization.FhirSerializer.SerializeResourceToXmlBytes(bundle);
+                        fileName = string.Format("{0}_fhir_voc.xml", ig.GetDisplayName(true));
+                        contentType = XML_MIME_TYPE;
+                    }
+
                     break;
                 default:
                     throw new NotSupportedException();

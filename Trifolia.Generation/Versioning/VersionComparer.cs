@@ -192,10 +192,11 @@ namespace Trifolia.Generation.Versioning
 
         private string GetContainedTemplateDisplay(IConstraint constraint)
         {
-            var containedTemplateStrings = (from r in this.tdb.TemplateConstraintReferences
-                                            join t in this.tdb.Templates on r.ReferenceIdentifier equals t.Oid
-                                            where r.ReferenceType == ConstraintReferenceTypes.Template
-                                            select string.Format("{0} ({1})", t.Name, t.Oid));
+            var containedTemplates = (from r in this.tdb.TemplateConstraintReferences
+                                      join t in this.tdb.Templates on r.ReferenceIdentifier equals t.Oid
+                                      where r.ReferenceType == ConstraintReferenceTypes.Template
+                                      select new { t.Name, t.Oid }).ToList();
+            var containedTemplateStrings = containedTemplates.Select(t => string.Format("{0} ({1})", t.Name, t.Oid));
             return string.Join(", ", containedTemplateStrings);
         }
 

@@ -103,6 +103,12 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                         break;
                     }
                 }
+
+                if (selectedType == null)
+                {
+                    var latestVersion = versions.Keys.OrderByDescending(y => y).Last();
+                    selectedType = versions[latestVersion];
+                }
             }
 
             IFormattedConstraint formattedConstraint = (IFormattedConstraint)Activator.CreateInstance(selectedType);

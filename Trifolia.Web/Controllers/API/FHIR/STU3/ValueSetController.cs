@@ -66,6 +66,21 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
 
             return Shared.GetResponseMessage(this.Request, format, fhirValueSet);
         }
+        
+        [HttpGet]
+        [Route("ValueSet/{valueSetId}/$expand")]
+        [SecurableAction(SecurableNames.VALUESET_LIST)]
+        public HttpResponseMessage GetValueSetExpansion(
+            [FromUri] int valueSetId,
+            [FromUri(Name = "_format")] string format = null,
+            [FromUri(Name = "_summary")] SummaryType? summary = null)
+        {
+            ValueSet valueSet = this.tdb.ValueSets.Single(y => y.Id == valueSetId);
+            ValueSetExporter exporter = new ValueSetExporter(this.tdb);
+            FhirValueSet fhirValueSet = exporter.Convert(valueSet, summary);
+
+            return Shared.GetResponseMessage(this.Request, format, fhirValueSet);
+        }
 
         /// <summary>
         /// Searches value sets within Trifolia and returns them as ValueSet resources within a Bundle.
@@ -110,10 +125,10 @@ namespace Trifolia.Web.Controllers.API.FHIR.STU3
             foreach (var valueSet in valueSets)
             {
                 var fhirValueSet = exporter.Convert(valueSet, summary, publishedValueSets);
-                var fullUrl = string.Format("{0}://{1}/api/FHIR3/{2}",
+                var fullUrl = string.Format("{0}://{1}/api/FHIR3/ValueSet/{2}",
                     this.Request.RequestUri.Scheme,
                     this.Request.RequestUri.Authority,
-                    fhirValueSet.Url);
+                    valueSet.Id);
 
                 bundle.AddResourceEntry(fhirValueSet, fullUrl);
             }

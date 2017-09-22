@@ -125,11 +125,11 @@ namespace Trifolia.Export.HTML
                 // Create the template models
                 var templates = ig.GetRecursiveTemplates(this.tdb, templateIds != null ? templateIds.ToList() : null, inferred);
                 var constraints = (from t in templates
-                                   join tc in this.tdb.TemplateConstraints on t.Id equals tc.TemplateId
+                                   join tc in this.tdb.TemplateConstraints.AsNoTracking() on t.Id equals tc.TemplateId
                                    select tc).AsEnumerable();
                 var constraintReferences = (from c in constraints
-                                            join tcr in this.tdb.TemplateConstraintReferences on c.Id equals tcr.TemplateConstraintId
-                                            join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                            join tcr in this.tdb.TemplateConstraintReferences.AsNoTracking() on c.Id equals tcr.TemplateConstraintId
+                                            join t in this.tdb.Templates.AsNoTracking() on tcr.ReferenceIdentifier equals t.Oid
                                             where tcr.ReferenceType == ConstraintReferenceTypes.Template
                                             select new ConstraintReference()
                                             {
@@ -194,8 +194,8 @@ namespace Trifolia.Export.HTML
                                                 }).ToList();
 
                     // Contained templates
-                    var containedTemplates = (from tcr in this.tdb.ViewTemplateRelationships
-                                              join t in this.tdb.Templates on tcr.ChildTemplateId equals t.Id
+                    var containedTemplates = (from tcr in this.tdb.ViewTemplateRelationships.AsNoTracking()
+                                              join t in this.tdb.Templates.AsNoTracking() on tcr.ChildTemplateId equals t.Id
                                               where tcr.ParentTemplateId == templateId
                                               select t).Distinct().ToList();
                     newTemplateModel.ContainedTemplates = containedTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
@@ -207,8 +207,8 @@ namespace Trifolia.Export.HTML
                     newTemplateModel.ImplyingTemplates = implyingTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
 
                     // Contained by templates
-                    var containedByTemplates = (from tcr in this.tdb.ViewTemplateRelationships
-                                                join t in this.tdb.Templates on tcr.ParentTemplateId equals t.Id
+                    var containedByTemplates = (from tcr in this.tdb.ViewTemplateRelationships.AsNoTracking()
+                                                join t in this.tdb.Templates.AsNoTracking() on tcr.ParentTemplateId equals t.Id
                                                 where tcr.ChildTemplateId == templateId
                                                 select t).Distinct().ToList();
                     newTemplateModel.ContainedByTemplates = containedByTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
@@ -224,7 +224,7 @@ namespace Trifolia.Export.HTML
 
                 // Create models for template types in the IG
                 model.TemplateTypes = (from igt in igSettings.TemplateTypes
-                                       join tt in this.tdb.TemplateTypes on igt.TemplateTypeId equals tt.Id
+                                       join tt in this.tdb.TemplateTypes.AsNoTracking() on igt.TemplateTypeId equals tt.Id
                                        where model.Templates.Exists(y => y.TemplateTypeId == tt.Id)
                                        select new ViewDataModel.TemplateType()
                                        {
@@ -267,7 +267,7 @@ namespace Trifolia.Export.HTML
                 };
 
                 newConstraintModel.ContainedTemplates = (from tcr in theConstraint.References
-                                                         join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                                         join t in this.tdb.Templates.AsNoTracking() on tcr.ReferenceIdentifier equals t.Oid
                                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template
                                                          select new ViewDataModel.TemplateReference()
                                                          {

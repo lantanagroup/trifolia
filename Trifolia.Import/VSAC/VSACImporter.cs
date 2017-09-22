@@ -15,6 +15,7 @@ namespace Trifolia.Import.VSAC
     {
         private const string ST_URL_FORMAT = "https://vsac.nlm.nih.gov/vsac/ws/Ticket/{0}";
         private const string SVS_RETRIEVE_VALUE_SET_URL_FORMAT = "https://vsac.nlm.nih.gov/vsac/svs/RetrieveMultipleValueSets?id={0}&ticket={1}";
+        private const string VSAC_SOURCE_URL_FORMAT = "https://vsac.nlm.nih.gov/valueset/{0}/expansion";
         private const string SVS_NS = "urn:ihe:iti:svs:2008";
 
         private IObjectRepository tdb;
@@ -100,10 +101,16 @@ namespace Trifolia.Import.VSAC
             {
                 string svsValueSetId = svsValueSetNode.Attributes["ID"].Value;
                 string svsValueSetVersion = svsValueSetNode.Attributes["version"].Value;
-                string identifier = string.Format("urn:hl7ii:{0}:{1}", svsValueSetId, svsValueSetVersion);
+                string identifier = string.Format("urn:oid:{0}", svsValueSetId);
                 string name = svsValueSetNode.Attributes["displayName"].Value;
                 var purposeNode = svsValueSetNode.SelectSingleNode("svs:Purpose", nsManager);
-                string description = purposeNode != null ? purposeNode.InnerText : null;
+                string description = purposeNode != null ? purposeNode.InnerText : string.Empty;
+                string source = string.Format(VSAC_SOURCE_URL_FORMAT, svsValueSetId);
+
+                description += string.Format("{0}This value set was imported on {1} with a version of {2}.", 
+                    description.Length > 0 ? "\n\n" : string.Empty,
+                    DateTime.Now.ToShortDateString(), 
+                    svsValueSetVersion);
 
                 if (!string.IsNullOrEmpty(description))
                 {
@@ -113,7 +120,7 @@ namespace Trifolia.Import.VSAC
 
                 ValueSet foundValueSet = (from vs in this.tdb.ValueSets
                                           join vsi in this.tdb.ValueSetIdentifiers on vs.Id equals vsi.ValueSetId
-                                          where vsi.Type == ValueSetIdentifierTypes.HL7II && vsi.Identifier.Trim().ToLower() == identifier.Trim().ToLower()
+                                          where vsi.Type == ValueSetIdentifierTypes.Oid && vsi.Identifier.Trim().ToLower() == identifier.Trim().ToLower()
                                           select vs)
                                           .FirstOrDefault();
 
@@ -147,12 +154,26 @@ namespace Trifolia.Import.VSAC
                 if (foundValueSet.Description != description)
                     foundValueSet.Description = description;
 
+                if (foundValueSet.Source != source)
+                    foundValueSet.Source = source;
+
+                foundValueSet.Intensional = false;
+                foundValueSet.IntensionalDefinition = string.Empty;
+                foundValueSet.Code = null;
+                foundValueSet.IsIncomplete = false;
+                foundValueSet.LastUpdate = DateTime.Now;
+
+                // Remove all existing codes in the value set so they can be re-added
+                List<ValueSetMember> currentCodes = foundValueSet.Members.ToList();
+                currentCodes.ForEach(m => this.tdb.ValueSetMembers.Remove(m));
+
+                // Add all codes to value set
                 var svsConceptNodes = svsValueSetNode.SelectNodes("svs:ConceptList/svs:Concept", nsManager);
 
                 foreach (XmlElement svsConceptNode in svsConceptNodes)
                 {
                     string svsCodeSystemOid = "urn:oid:" + svsConceptNode.Attributes["codeSystem"].Value;
-                    CodeSystem foundCodeSystem = codeSystems.SingleOrDefault(y => y.Oid.Trim().ToLower() == svsCodeSystemOid.Trim().ToLower());
+                    CodeSystem foundCodeSystem = codeSystems.FirstOrDefault(y => y.Oid.Trim().ToLower() == svsCodeSystemOid.Trim().ToLower());
 
                     if (foundCodeSystem == null)
                     {
@@ -172,14 +193,6 @@ namespace Trifolia.Import.VSAC
                         CodeSystem = foundCodeSystem,
                         Status = "active"
                     };
-
-                    bool foundMember = foundValueSet.Members.Any(y =>
-                        y.Code.Trim().ToLower() == svsMember.Code.Trim().ToLower() &&
-                        y.CodeSystem == svsMember.CodeSystem &&
-                        y.Status == svsMember.Status);
-
-                    if (foundMember)
-                        continue;
 
                     foundValueSet.Members.Add(svsMember);
                 }

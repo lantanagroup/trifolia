@@ -114,9 +114,9 @@
                                         <ul class="dropdown-menu">
                                             <li><a href="/TerminologyManagement/ValueSet/View/{{r.Id}}">View</a></li>
                                             <li ng-if="r.ImportSource"><a href="#" ng-click="openImportValueSet(r.ImportSource, r.ImportSourceId)">Re-import</a></li>
-                                            <li ng-class="{ disabled: r.disableModify }" ng-if="!r.ImportSource"><a href="#" ng-click="editValueSet(r)" ng-disabled="r.disableModify">Edit Value Set</a></li>
+                                            <li ng-class="{ disabled: r.disableModify }"><a href="#" ng-click="editValueSet(r)" ng-disabled="r.disableModify">Edit Value Set</a></li>
                                             <li ng-class="{ disabled: r.disableModify }" ng-if="!r.ImportSource"><a href="/TerminologyManagement/ValueSet/Edit/{{r.Id}}/Concept" ng-disabled="r.disableModify">Edit Concepts</a></li>
-                                            <li ng-class="{ disabled: r.disableModify }" ng-if="!r.ImportSource"><a href="#" ng-click="removeValueSet(r)" ng-disabled="r.disableModify">Remove</a></li>
+                                            <li ng-class="{ disabled: r.disableModify }"><a href="#" ng-click="removeValueSet(r)" ng-disabled="r.disableModify">Remove</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -297,7 +297,7 @@
                 <div class="modal-body" style="max-height: 350px; overflow-y: scroll;" ng-init="init()">
                     <div class="form-group" ng-class="{ 'has-error': EditValueSetForm.name.$invalid }">
                         <label>Name</label>
-                        <input type="text" class="form-control" name="name" ng-model="valueSet.Name" required maxlength="255" />
+                        <input type="text" class="form-control" name="name" ng-disabled="valueSet.ImportSource" ng-model="valueSet.Name" required maxlength="255" />
                         <span class="help-block" ng-show="EditValueSetForm.name.$error.required">Name is required</span>
                     </div>
 
@@ -319,18 +319,18 @@
                             <tbody ng-repeat="i in valueSet.Identifiers">
                                 <tr ng-class="{ 'identifier-removed': i.ShouldRemove }">
                                     <td ng-class="{ 'has-error': i.$$typeError }">
-                                        <select class="form-control" ng-options="o.value as o.display for o in getAvailableIdentifierTypes(i)" ng-model="i.Type" ng-disabled="i.ShouldRemove" ng-change="identifierChanged(i)"></select>
+                                        <select class="form-control" ng-disabled="valueSet.ImportSource && i.IsDefault" ng-options="o.value as o.display for o in getAvailableIdentifierTypes(i)" ng-model="i.Type" ng-disabled="i.ShouldRemove" ng-change="identifierChanged(i)"></select>
                                         <span class="help-block" ng-show="i.$$typeError">{{i.$$typeErrorMessage}}</span>
                                     </td>
                                     <td ng-class="{ 'has-error': i.$$valueError }">
-                                        <input type="text" class="form-control" ng-model="i.Identifier" value-set-identifier ng-model-options="{ debounce: 500 }" ng-disabled="i.ShouldRemove" ng-change="identifierChanged(i)" />
+                                        <input type="text" class="form-control" ng-disabled="valueSet.ImportSource && i.IsDefault" ng-model="i.Identifier" value-set-identifier ng-model-options="{ debounce: 500 }" ng-disabled="i.ShouldRemove" ng-change="identifierChanged(i)" />
                                         <span class="help-block" ng-show="i.$$valueError">{{i.$$valueErrorMessage}}</span>
                                     </td>
                                     <td>
-                                        <input type="checkbox" ng-show="!i.IsRemoved" ng-model="i.IsDefault" ng-change="defaultIdentifierChanged(i)" ng-disabled="i.ShouldRemove" />
+                                        <input type="checkbox" ng-show="!i.IsRemoved" ng-disabled="valueSet.ImportSource" ng-model="i.IsDefault" ng-change="defaultIdentifierChanged(i)" ng-disabled="i.ShouldRemove" />
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-default btn-sm" ng-click="removeIdentifier(i)" ng-show="!i.ShouldRemove">
+                                        <button type="button" class="btn btn-default btn-sm" ng-disabled="valueSet.ImportSource && i.IsDefault" ng-click="removeIdentifier(i)" ng-show="!i.ShouldRemove">
                                             <i class="glyphicon glyphicon-remove"></i>
                                         </button>
                                     </td>
@@ -341,33 +341,33 @@
                         
                     <div class="form-group">
                         <label>Code</label>
-                        <input type="text" class="form-control" ng-model="valueSet.Code" maxlength="255" />
+                        <input type="text" class="form-control" ng-disabled="valueSet.ImportSource" ng-model="valueSet.Code" maxlength="255" />
                     </div>
                         
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea class="form-control" ng-model="valueSet.Description" style="height: 50px;"></textarea>
+                        <textarea class="form-control" ng-disabled="valueSet.ImportSource" ng-model="valueSet.Description" style="height: 50px;"></textarea>
                     </div>
                         
                     <div class="form-group">
-                        <input type="checkbox" ng-model="valueSet.IsIntentional" />
+                        <input type="checkbox" ng-disabled="valueSet.ImportSource" ng-model="valueSet.IsIntentional" />
                         <label>Intentional</label>
                     </div>
                         
                     <div class="form-group" ng-show="valueSet.IsIntentional">
                         <label for="valueSetIntentionalDefinition">Intentional Definition</label>
-                        <textarea class="form-control" id="valueSetIntentionalDefinition" ng-model="valueSet.IntentionalDefinition"></textarea>
+                        <textarea class="form-control" id="valueSetIntentionalDefinition" ng-disabled="valueSet.ImportSource" ng-model="valueSet.IntentionalDefinition"></textarea>
                     </div>
                         
                     <div class="form-group">
-                        <input type="checkbox" ng-model="valueSet.IsComplete" />
+                        <input type="checkbox" ng-disabled="valueSet.ImportSource" ng-model="valueSet.IsComplete" />
                         <label>Complete?</label>
                         <span class="help-block">Indicates that the value set is defined completely in Trifolia, including all concepts.</span>
                     </div>
                         
                     <div class="form-group" ng-class="{ 'has-error': EditValueSetForm.sourceUrl.$invalid }">
                         <label>Source URL</label>
-                        <input type="text" class="form-control" name="sourceUrl" ng-model="valueSet.SourceUrl" maxlength="255" ng-required="!valueSet.IsComplete" ng-pattern="urlRegex" />
+                        <input type="text" class="form-control" name="sourceUrl" ng-disabled="valueSet.ImportSource" ng-model="valueSet.SourceUrl" maxlength="255" ng-required="!valueSet.IsComplete" ng-pattern="urlRegex" />
                         <span class="help-block" ng-show="EditValueSetForm.sourceUrl.$error.required">Source URL is required when the value set is not complete.</span>
                         <span class="help-block" ng-show="EditValueSetForm.sourceUrl.$error.pattern">Source URL must be in the format of a URL (ex: http://www.google.com)</span>
                     </div>
