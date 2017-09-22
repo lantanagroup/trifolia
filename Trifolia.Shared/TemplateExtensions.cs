@@ -87,8 +87,7 @@ namespace Trifolia.DB
             }
             else if (template.GetIdentifierURL(out uri))
             {
-                if (uri.IndexOf(':') < 0 && uri.IndexOf('/') < 0 && uri.IndexOf('.') != uri.Length - 1)
-                    return string.Format("{0}/TemplateManagement/View/URI/{1}", linkBase, uri);
+                return string.Format("{0}/TemplateManagement/View/URI?uri={1}", linkBase, System.Web.HttpUtility.UrlEncode(uri));
             }
 
             return string.Format("{0}/TemplateManagement/View/Id/{1}", linkBase, template.Id);

@@ -165,7 +165,7 @@ namespace Trifolia.Web
 
             routes.MapRoute(
                 name: "View Template by URI",
-                url: "TemplateManagement/View/URI/{uri}",
+                url: "TemplateManagement/View/URI",
                 defaults: new { controller = "TemplateManagement", action = "ViewUri" }
             );
 
