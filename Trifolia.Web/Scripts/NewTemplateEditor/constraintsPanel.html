@@ -59,7 +59,13 @@
 
     <!-- Contained Template/Profile -->
     <div class="form-group">
-        <template-select caption="Template/Profile:" size="sm" template-id="selectedNode.Constraint.ContainedTemplateId" allow-new="true" implementation-guide-id="template.OwningImplementationGuideId" restrict-type="!isFhir" restricted-type="selectedNode.Constraint.DataType || selectedNode.DataType"></template-select>
+        <u>Contained Templates/Profiles</u> <i class="glyphicon glyphicon-plus" ng-if="!isLocked" ng-click="addContainedTemplate(selectedNode.Constraint, selectedNode.Constraint.DataType || selectedNode.DataType)"></i>
+        <ul>
+            <li ng-repeat="(i, r) in selectedNode.Constraint.References">
+                {{r.ReferenceDisplay}}<br/><small>{{r.ReferenceIdentifier}}</small> <i class="glyphicon glyphicon-remove" ng-if="!isLocked" ng-click="selectedNode.Constraint.References.splice(i, 1); templateChanged(selectedNode.Constraint)"></i>
+            </li>
+            <li ng-if="!selectedNode.Constraint.References || selectedNode.Constraint.References.length == 0">None</li>
+        </ul>
     </div>
 
     <hr />

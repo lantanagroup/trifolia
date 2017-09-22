@@ -91,6 +91,8 @@
             margin-top: 16px;
         }
 
+        .glyphicon-plus,
+        .glyphicon-remove,
         .editor .navbar-header .label > .glyphicon {
             cursor: pointer;
         }
@@ -535,6 +537,52 @@
                     <i class="glyphicon glyphicon-question-sign" tooltip-trigger="'click'" uib-tooltip="Optional. The display number is used to override the conformance number format used by default in exports (MS Word, Schematron, etc.). The display number can contain any character (including dashes, underlines, semi-colons, etc.)"></i>
                     <input type="text" class="form-control" value="TODO" />
                 </div>
+            </div>
+        </script>
+
+        <script type="text/html" id="addContainedTemplate.html">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Add Contained Template/Profile</h3>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="query" placeholder="Search" />
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="search()">Search</button>
+                    </div>
+                </div>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Identifier</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-if="results">
+                        <tr ng-repeat="t in results.Items">
+                            <td>
+                                {{t.Name}}
+                                <sub ng-show="t.Description">{{t.Description.substring(1, 100)}}</sub>
+                            </td>
+                            <td>{{t.Oid}}</td>
+                            <td>
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="select(t)">Select</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">No results</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
             </div>
         </script>
     </div>

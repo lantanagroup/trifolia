@@ -1,4 +1,4 @@
-﻿angular.module('Trifolia').controller('EditorController', function ($scope, $interval, $location, $window, $sce, $q, EditorService, ImplementationGuideService, TemplateService, blockUI) {
+﻿angular.module('Trifolia').controller('EditorController', function ($scope, $interval, $location, $window, $sce, $q, $uibModal, EditorService, ImplementationGuideService, TemplateService, blockUI) {
     $scope.implementationGuides = [];
     $scope.template = null;
     $scope.constraints = [];
@@ -850,6 +850,35 @@
         expandNodes();
     };
 
+    function addContainedTemplate(constraint, dataType) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'addContainedTemplate.html',
+            controller: 'AddContainedTemplateController',
+            controllerAs: '$ctrl',
+            size: 'lg',
+            resolve: {
+                filterContextType: function () {
+                    if (!$scope.isFhir) {
+                        return dataType;
+                    } else {
+                        // TODO: Pass the allowed types for the element in the FHIR spec, ex: [Organization, Patient, Device]
+                    }
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            constraint.References.push({
+                ReferenceIdentifier: selectedItem.Oid,
+                ReferenceDisplay: selectedItem.Name,
+                ReferenceType: 0
+            });
+            templateChanged(constraint);
+        }, function () {
+            // Modal dismissed
+        });
+    };
+
     /**
      * Handles an HTTP error by parsing it and determining if there is a message to be displayed.
      * TODO: This should be re-factored into the HelpService.
@@ -894,6 +923,7 @@
     $scope.getCodeSystems = getCodeSystems;
     $scope.getValueSets = getValueSets;
     $scope.selectConstraint = selectConstraint;
+    $scope.addContainedTemplate = addContainedTemplate;
 });
 
 angular.module('Trifolia').controller('EditorTemplateSearchController', function ($scope, TemplateService) {
@@ -945,4 +975,33 @@ angular.module('Trifolia').controller('EditorTemplateSearchController', function
     $scope.$watch('template.OwningImplementationGuideId', function () {
         $scope.searchTemplates();
     });
+});
+
+angular.module('Trifolia').controller('AddContainedTemplateController', function ($scope, $uibModalInstance, TemplateService, filterContextType) {
+    $scope.message = '';
+    $scope.query = '';
+    $scope.results = [];
+
+    function search() {
+        var searchOptions = {
+            count: 150,
+            queryText: $scope.query,
+            filterContextType: filterContextType
+        };
+
+        TemplateService.getTemplates(searchOptions)
+            .then(function (results) {
+                $scope.results = results;
+            })
+            .catch(function (err) {
+                $scope.message = err;
+            });
+    };
+
+    function select(template) {
+        $uibModalInstance.close(template);
+    };
+
+    $scope.search = search;
+    $scope.select = select;
 });
