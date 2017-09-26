@@ -10,8 +10,14 @@ Param(
     [Parameter(HelpMessage='The decryption key is used with sessions to decrypt the token used by forms authentication. This should be changed for production environments')]
 	$DecryptionKey='E001A307CCC8B1ADEA2C55B1246CDCFE8579576997FF92E7',
     [Parameter(HelpMessage='Indicates that DB migrations should not be performed')]
-    $NoMigrate=$false
+    $NoMigrate=$false,
+    [Parameter(Mandatory=$True, HelpMessage='Do backup prior to install?')]
+    $backup=$false
 )
+
+if ($backup) {
+    & .\Backup.ps1
+}
 
 $currentLocation = Get-Location
 $sourcePath = Join-Path $currentLocation "Trifolia.Web\"
