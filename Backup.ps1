@@ -8,14 +8,8 @@
     [Parameter(Mandatory=$True, Position=4)]
     [string] $programDataDir = 'C:\ProgramData\Trifolia',
     [Parameter(Mandatory=$True, Position=5)]
-    [string] $outDir = '.\',
-    [Parameter(Mandatory=$True, HelpMessage='Do backup prior to install?')]
-    $backup=$false
+    [string] $outDir = '.\'
 )
-
-if ($backup) {
-    & .\Backup.ps1
-}
 
 Import-Module Sqlps -DisableNameChecking
 Add-Type -AssemblyName System.IO.Compression.FileSystem
