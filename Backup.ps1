@@ -19,7 +19,7 @@ Add-Type -AssemblyName System.IO.Compression
 # $outDir = "c:\users\sean.mcilvenna"
 
 $absOutDir = (Resolve-Path $outDir -ErrorAction Stop).Path
-$absInstallDir = (Resolve-Path $installDir -ErrorAction Stop).Path
+$absInstallDir = (Resolve-Path "FileSystem::$($installDir)" -ErrorAction Stop).ProviderPath
 $dt = get-date -format yyyyMMddHHmmss
 $sqlBackupFileName = $databaseName + "-" + $dt + ".bak"
 $backupZipFileName = "Trifolia-" + $dt + ".zip"
