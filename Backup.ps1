@@ -53,7 +53,7 @@ $archiveMode = [System.IO.Compression.ZipArchiveMode]::Create
 $zip = [System.IO.Compression.ZipFile]::Open($backupZipPath, $archiveMode)
 
 ## Get list of all core files in installation directory, excluding IIS logs
-$coreFiles = Get-ChildItem $absInstallDir -Recurse -File | ?{ $_.fullname -notmatch 'W3SVC' }
+$coreFiles = Get-ChildItem "FileSystem::$($absInstallDir)" -Recurse -File | ?{ $_.fullname -notmatch 'W3SVC' }
 
 ## Add each core file to the backup ZIP
 foreach ($file in $coreFiles) {
