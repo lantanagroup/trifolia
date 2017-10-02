@@ -60,9 +60,11 @@ namespace Trifolia.Generation.IG
                                select t).Distinct().ToList();
             this.templateRelationships = (from tr in this._tdb.ViewTemplateRelationships
                                           join tid in templateIds on tr.ParentTemplateId equals tid
+                                          where templateIds.Contains(tr.ChildTemplateId)
                                           select tr)
                                           .Union(from tr in this._tdb.ViewTemplateRelationships
                                                  join tid in templateIds on tr.ChildTemplateId equals tid
+                                                 where templateIds.Contains(tr.ParentTemplateId)
                                                  select tr)
                                                  .ToList();
             this.constraintReferences = (from t in this.templates
