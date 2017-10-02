@@ -22,9 +22,20 @@ namespace Trifolia.Web.Views.Shared
 {
     public partial class SiteMVCMaster : System.Web.Mvc.ViewMasterPage
     {
+        private const string GoogleAnalyticsScriptFormat = @"
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src=""https://www.googletagmanager.com/gtag/js?id={0}""></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {{ dataLayer.push(arguments) }};
+  gtag('js', new Date());
+  gtag('config', '{0}');
+</script>
+";
         public List<string> Securables { get; set; }
         public string DatabaseLabel { get; set; }
         public string VersionLabel { get; set; }
+        public string GoogleAnalyticsScript { get; set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -44,9 +55,7 @@ namespace Trifolia.Web.Views.Shared
             }
 
             this.VersionLabel = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
-            // Only make the HL7 logo visible to users who are authenticated by the HL7
-            //this.HL7LogoImage.Visible = CheckPoint.Instance.OrganizationName == "HL7";
+            this.GoogleAnalyticsScript = !string.IsNullOrEmpty(AppSettings.GoogleAnalyticsGtag) ? string.Format(GoogleAnalyticsScriptFormat, AppSettings.GoogleAnalyticsGtag) : string.Empty;
         }
 
         private bool HasSecurables(string[] securables)
