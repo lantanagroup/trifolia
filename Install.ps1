@@ -11,12 +11,14 @@ Param(
 	$DecryptionKey='E001A307CCC8B1ADEA2C55B1246CDCFE8579576997FF92E7',
     [Parameter(HelpMessage='Indicates that DB migrations should not be performed')]
     $NoMigrate=$false,
-    [Parameter(Mandatory=$True, HelpMessage='Do backup prior to install?')]
-    $backup=$false
+    [Parameter(HelpMessage='Do backup prior to install?')]
+    $NoBackup=$false,
+	[Parameter(HelpMessage='Specify Zip file location')]
+    $BackupOutDir='.\'
 )
 
-if ($backup) {
-    & .\Backup.ps1
+if (!$NoBackup) {
+    & .\Backup.ps1 -sqlServerName $DBHost -databaseName $DBName -installDir $appServicePath -outDir $BackupOutDir
 }
 
 $currentLocation = Get-Location
