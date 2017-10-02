@@ -10,8 +10,16 @@ Param(
     [Parameter(HelpMessage='The decryption key is used with sessions to decrypt the token used by forms authentication. This should be changed for production environments')]
 	$DecryptionKey='E001A307CCC8B1ADEA2C55B1246CDCFE8579576997FF92E7',
     [Parameter(HelpMessage='Indicates that DB migrations should not be performed')]
-    $NoMigrate=$false
+    $NoMigrate=$false,
+    [Parameter(HelpMessage='Do backup prior to install?')]
+    $NoBackup=$false,
+	[Parameter(HelpMessage='Specify Zip file location')]
+    $BackupOutDir='.\'
 )
+
+if (!$NoBackup) {
+    & .\Backup.ps1 -sqlServerName $DBHost -databaseName $DBName -installDir $appServicePath -outDir $BackupOutDir
+}
 
 $currentLocation = Get-Location
 $sourcePath = Join-Path $currentLocation "Trifolia.Web\"

@@ -25,6 +25,11 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string GoogleAnalyticsGtag
+        {
+            get { return ConfigurationManager.AppSettings["GoogleAnalyticsGtag"]; }
+        }
+
         public static string UmlsValidateUrl
         {
             get { return ConfigurationManager.AppSettings["UmlsValidateUrl"]; }
