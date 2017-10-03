@@ -620,9 +620,6 @@ namespace Trifolia.Generation.IG
                 string status = template.Status != null ? template.Status.Status : "Draft";
                 string igText = string.Format("{0} as part of {1}", status, template.OwningImplementationGuide.GetDisplayName());
 
-                if (template.OwningImplementationGuide.PublishDate != null)
-                    igText += " on " + template.OwningImplementationGuide.PublishDate.Value.ToString("MMMM d, yyyy");
-
                 Paragraph igDetails = new Paragraph(
                     new ParagraphProperties(
                         new ParagraphStyleId()
