@@ -126,7 +126,7 @@
 
                         <div class="form-group">
                             <label>XML Samples</label>
-                            <input type="checkbox" name="IncludeXmlSample" ng-model="criteria.IncludeXmlSample" /> Include
+                            <input type="checkbox" name="IncludeXmlSample" value="true" ng-model="criteria.IncludeXmlSample" /> Include
                         </div>
 
                         <div class="form-group">
@@ -135,8 +135,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Publish Settings</label>
-                            <input type="checkbox" name="IncludeTemplateStatus" ng-model="criteria.IncludeTemplateStatus" /> Include
+                            <label>Template/Profile Status</label>
+                            <input type="checkbox" name="IncludeTemplateStatus" value="true" ng-model="criteria.IncludeTemplateStatus" /> Include
                         </div>
 
                         <div class="form-group" ng-if="selectedImplementationGuide.CanEdit">

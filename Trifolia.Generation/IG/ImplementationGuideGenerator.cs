@@ -576,12 +576,6 @@ namespace Trifolia.Generation.IG
 
             bool lDirectlyOwnedTemplate = template.OwningImplementationGuideId == this.implementationGuide.Id;
             bool lStatusMatches = template.StatusId == template.OwningImplementationGuide.PublishStatusId;
-            string status = "Draft";
-
-            if (exportSettings.IncludeTemplateStatus || !lDirectlyOwnedTemplate || !lStatusMatches || template.Status == PublishStatus.GetDeprecatedStatus(this._tdb))
-            {
-                status = template.Status != null ? template.Status.Status : status;
-            }
 
             string lTemplateTitle = lTitleBuilder.ToString();
 
@@ -621,16 +615,23 @@ namespace Trifolia.Generation.IG
             this.document.MainDocumentPart.Document.Body.AppendChild(pDetails);
 
             //Output IG publish/draft info with "bracket data" format
-            string igText = string.Format("{0} as part of {1}", status, template.OwningImplementationGuide.GetDisplayName());
+            if (exportSettings.IncludeTemplateStatus)
+            {
+                string status = template.Status != null ? template.Status.Status : "Draft";
+                string igText = string.Format("{0} as part of {1}", status, template.OwningImplementationGuide.GetDisplayName());
 
-            Paragraph igDetails = new Paragraph(
-                new ParagraphProperties(
-                    new ParagraphStyleId()
-                    {
-                        Val = Properties.Settings.Default.TemplateLocationStyle
-                    }),
-                DocHelper.CreateRun(igText));
-            this.document.MainDocumentPart.Document.Body.AppendChild(igDetails);
+                if (template.OwningImplementationGuide.PublishDate != null)
+                    igText += " on " + template.OwningImplementationGuide.PublishDate.Value.ToString("MMMM d, yyyy");
+
+                Paragraph igDetails = new Paragraph(
+                    new ParagraphProperties(
+                        new ParagraphStyleId()
+                        {
+                            Val = Properties.Settings.Default.TemplateLocationStyle
+                        }),
+                    DocHelper.CreateRun(igText));
+                this.document.MainDocumentPart.Document.Body.AppendChild(igDetails);
+            }
 
             // If we were told to generate context tables for the template...
             if (exportSettings.GenerateTemplateContextTable)
