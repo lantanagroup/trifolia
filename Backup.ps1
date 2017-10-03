@@ -17,8 +17,10 @@ Add-Type -AssemblyName System.IO.Compression
 # $databaseName = "templatedb"
 # $installDir = "E:\Websites\TdbManagement"
 # $outDir = "c:\users\sean.mcilvenna"
+$PSVersionTable.PSVersion
+#write-host (resolve-path "FileSystem::$($installDir)").ProviderPath
 
-$absOutDir = (Resolve-Path $outDir -ErrorAction Stop).Path
+$absOutDir = (Resolve-Path "FileSystem::$($outDir)" -ErrorAction Stop).ProviderPath
 $absInstallDir = (Resolve-Path "FileSystem::$($installDir)" -ErrorAction Stop).ProviderPath
 $dt = get-date -format yyyyMMddHHmmss
 $sqlBackupFileName = $databaseName + "-" + $dt + ".bak"
@@ -53,7 +55,7 @@ $archiveMode = [System.IO.Compression.ZipArchiveMode]::Create
 $zip = [System.IO.Compression.ZipFile]::Open($backupZipPath, $archiveMode)
 
 ## Get list of all core files in installation directory, excluding IIS logs
-$coreFiles = Get-ChildItem "FileSystem::$($absInstallDir)" -Recurse -File | ?{ $_.fullname -notmatch 'W3SVC' }
+$coreFiles = Get-ChildItem "FileSystem::$($absInstallDir)" -File -Recurse | ?{ $_.fullname -notmatch '\\W3SVC\\?' }
 
 ## Add each core file to the backup ZIP
 foreach ($file in $coreFiles) {
