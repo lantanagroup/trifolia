@@ -6,14 +6,14 @@ Param(
     [Parameter(HelpMessage='The SQL server database name that Trifolia should connect to on the db server')]
     $DBName='newtdb',
     [Parameter(HelpMessage='The validation key is used with sessions to encrypt the token used by forms authentication. This should be changed for production environments.')]
-	$ValidationKey='87AC8F432C8DB844A4EFD024301AC1AB5808BEE9D1870689B63794D33EE3B55CDB315BB480721A107187561F388C6BEF5B623BF31E2E725FC3F3F71A32BA5DFC',
+    $ValidationKey='87AC8F432C8DB844A4EFD024301AC1AB5808BEE9D1870689B63794D33EE3B55CDB315BB480721A107187561F388C6BEF5B623BF31E2E725FC3F3F71A32BA5DFC',
     [Parameter(HelpMessage='The decryption key is used with sessions to decrypt the token used by forms authentication. This should be changed for production environments')]
-	$DecryptionKey='E001A307CCC8B1ADEA2C55B1246CDCFE8579576997FF92E7',
-    [Parameter(HelpMessage='Indicates that DB migrations should not be performed')]
-    $NoMigrate=$false,
-    [Parameter(HelpMessage='Do backup prior to install?')]
-    $NoBackup=$false,
-	[Parameter(HelpMessage='Specify Zip file location')]
+    $DecryptionKey='E001A307CCC8B1ADEA2C55B1246CDCFE8579576997FF92E7',
+    [switch][Parameter(HelpMessage='Indicates that DB migrations should not be performed')]
+    $NoMigrate,
+    [switch][Parameter(HelpMessage='Do backup prior to install?')]
+    $NoBackup,
+    [Parameter(HelpMessage='Specify Zip file location')]
     $BackupOutDir='.\'
 )
 
