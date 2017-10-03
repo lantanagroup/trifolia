@@ -9,7 +9,7 @@
             if (implementationGuides == null) {
                 if (!isLoading) {
                     isLoading = true;
-                    ImplementationGuideService.getAll()
+                    ImplementationGuideService.getImplementationGuides()
                         .then(function (results) {
                             implementationGuides = results.Items;
                             isLoading = false;

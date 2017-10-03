@@ -733,61 +733,6 @@ angular.module('Trifolia').factory('EditorService', function ($http, $q) {
     return service;
 });
 
-angular.module('Trifolia').factory('ImplementationGuideService', function ($http, $q) {
-    var service = {};
-
-    service.getAll = function () {
-        var deferred = $q.defer();
-
-        $http.get('/api/ImplementationGuide')
-            .then(function (results) {
-                deferred.resolve(results.data);
-            }, function (err) {
-                console.log('Errror retrieving list of implementation guides');
-                console.log(err);
-                deferred.reject(err);
-            });
-
-        return deferred.promise;
-    };
-
-    service.getEditable = function (includeImplementationGuideId) {
-        var deferred = $q.defer();
-
-        $http.get('/api/ImplementationGuide/Editable')
-            .then(function (results) {
-                // Filter out non-published IGs, unless they are from the same implementation guide as the IG
-                var filtered = _.filter(results.data, function (implementationGuide) {
-                    return !implementationGuide.IsPublished || implementationGuide.Id == includeImplementationGuideId;
-                });
-
-                deferred.resolve(filtered);
-            }, function (err) {
-                console.log('Errror retrieving list of editable implementation guides');
-                console.log(err);
-                deferred.reject(err);
-            });
-
-        return deferred.promise;
-    };
-
-    service.getTemplateTypes = function (implementationGuideId) {
-        var deferred = $q.defer();
-        $http.get('/api/ImplementationGuide/' + implementationGuideId + '/TemplateType')
-            .then(function (results) {
-                deferred.resolve(results.data);
-            }, function (err) {
-                console.log('Error retriving template types for implementation guide');
-                console.log(err);
-                deferred.reject(err);
-            });
-
-        return deferred.promise;
-    };
-
-    return service;
-});
-
 var EditorNodeModel = function (data) {
     var self = this;
 
