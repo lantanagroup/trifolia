@@ -164,7 +164,7 @@ namespace Trifolia.Export.FHIR.STU3
             {
                 string entryContentFormat = "<tr><td><a href=\"StructureDefinition-{0}.html\">{1}</a></td><td>{2}</td></tr>";
                 string description = !string.IsNullOrEmpty(template.Description) ? template.Description.RemoveInvalidUtf8Characters() : string.Empty;
-                pageContent += string.Format(entryContentFormat, template.FhirId(), template.Name, description);
+                pageContent += string.Format(entryContentFormat, template.FhirId(), template.Name.XmlEncode(), template.Description.XmlEncode());
             }
 
             pageContent += "</table>";
@@ -331,11 +331,12 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var valueSet in valueSets)
             {
-                string definition = !string.IsNullOrEmpty(valueSet.Description) ? 
-                    string.Format("<u>{0}</u><br/>\n{1}", valueSet.GetIdentifier(this.igTypePlugin), valueSet.Description) : 
-                    valueSet.GetIdentifier(this.igTypePlugin);
-                valueSetsContent += string.Format("<tr><td><a href=\"ValueSet-{0}.html\">{1}</a></td><td>{2}</td></tr>", 
-                    valueSet.GetFhirId(), valueSet.Name, definition);
+                string valueSetIdentifier = valueSet.GetIdentifier(this.igTypePlugin);
+                string definition = !string.IsNullOrEmpty(valueSet.Description)
+                    ? string.Format("<u>{0}</u><br/>\n{1}", valueSetIdentifier.XmlEncode(), valueSet.Description.XmlEncode())
+                    : valueSetIdentifier.XmlEncode();
+
+                valueSetsContent += string.Format("<tr><td><a href=\"ValueSet-{0}.html\">{1}</a></td><td>{2}</td></tr>", valueSet.GetFhirId(), valueSet.Name.XmlEncode(), definition);
             }
 
             if (valueSets.Any())
@@ -361,8 +362,10 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var codeSystem in codeSystems)
             {
-                string definition = !string.IsNullOrEmpty(codeSystem.Description) ? string.Format("<u>{0}</u><br/>\n{1}", codeSystem.CodeSystemId, codeSystem.Description) : codeSystem.Identifier;
-                codeSystemsContent += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", codeSystem.Name, definition);
+                string definition = !string.IsNullOrEmpty(codeSystem.Description) 
+                    ? string.Format("<u>{0}</u><br/>\n{1}", codeSystem.CodeSystemId, codeSystem.Description.XmlEncode()) 
+                    : codeSystem.Identifier.XmlEncode();
+                codeSystemsContent += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", codeSystem.Name.XmlEncode(), definition);
             }
 
             if (codeSystems.Any())
@@ -390,7 +393,10 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var extensionTemplate in extensionTemplates)
             {
-                extensionsContent += string.Format("<tr><td><a href=\"StructureDefinition-{2}.html\">{0}</a></td><td>{1}</td></tr>", extensionTemplate.Name, extensionTemplate.Oid, extensionTemplate.Bookmark);
+                extensionsContent += string.Format("<tr><td><a href=\"StructureDefinition-{2}.html\">{0}</a></td><td>{1}</td></tr>", 
+                    extensionTemplate.Name.XmlEncode(), 
+                    extensionTemplate.Oid.XmlEncode(), 
+                    extensionTemplate.Bookmark.XmlEncode());
             }
 
             if (extensionTemplates.Any())
@@ -418,7 +424,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var author in authors)
             {
-                authorsContent += string.Format("<tr><td>{0} {1}</td><td>{2}</td></tr>", author.FirstName, author.LastName, author.Email);
+                authorsContent += string.Format("<tr><td>{0} {1}</td><td>{2}</td></tr>", author.FirstName.XmlEncode(), author.LastName.XmlEncode(), author.Email.XmlEncode());
             }
 
             if (!string.IsNullOrEmpty(authorsContent))
@@ -470,7 +476,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var section in this.ig.Sections)
             {
-                volume1Content += string.Format("<div><h{0}>{1}</h{0}>{2}</div>\n", section.Level + 2, section.Heading, section.Content);
+                volume1Content += string.Format("<div><h{0}>{1}</h{0}>{2}</div>\n", section.Level + 2, section.Heading.XmlEncode(), section.Content.XmlEncode());
             }
 
             this.zip.AddEntry("pages/_includes/overview.html", RemoveSpecialCharacters(volume1Content));
