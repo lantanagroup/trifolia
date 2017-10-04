@@ -495,7 +495,7 @@ namespace Trifolia.Export.FHIR.STU3
             {
                 var fhirValueSet = exporter.Convert(valueSet, null, null, this.ig.Identifier);
                 var fhirValueSetContent = this.Serialize(fhirValueSet);
-                var fhirValueSetFileName = string.Format("resources/ValueSet/{0}.{1}", fhirValueSet.Id, fileExtension);
+                var fhirValueSetFileName = string.Format("resources/valueset/{0}.{1}", fhirValueSet.Id, fileExtension);
 
                 // Ignore value sets from the base spec
                 if (string.IsNullOrEmpty(fhirValueSet.Url) || fhirValueSet.Url.StartsWith("http://hl7.org/fhir/ValueSet/"))
@@ -510,7 +510,7 @@ namespace Trifolia.Export.FHIR.STU3
                 this.zip.AddEntry(fhirValueSetFileName, fhirValueSetContent);
 
                 // Add the value set to the control file so it knows what to do with it
-                string resourceKey = "ValueSet/" + fhirValueSet.Id;
+                string resourceKey = string.Format("ValueSet/{0}", fhirValueSet.Id);
 
                 this.control.resources.Add(resourceKey, new Models.Control.ResourceReference()
                 {
@@ -526,9 +526,9 @@ namespace Trifolia.Export.FHIR.STU3
             var fhirIg = igExporter.Convert(this.ig, includeVocabulary: includeVocabulary);
             var fhirIgContent = this.Serialize(fhirIg);
             string fileExtension = this.JsonFormat ? "json" : "xml";
-            string fhirIgFileName = string.Format("resources/ImplementationGuide/ImplementationGuide_{0}.{1}", ig.Id, fileExtension);
+            string fhirIgFileName = string.Format("resources/implementationguide/{0}.{1}", fhirIg.Id, fileExtension);
 
-            this.control.source = "ImplementationGuide/ImplementationGuide_" + ig.Id.ToString() + ".xml";
+            this.control.source = string.Format("implementationguide/{0}.{1}", fhirIg.Id, fileExtension);
 
             this.zip.AddEntry(fhirIgFileName, fhirIgContent);
         }
@@ -546,17 +546,17 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var template in this.templates)
             {
-                string location = string.Format("StructureDefinition/{0}", template.FhirId());
                 var templateSchema = this.schema.GetSchemaFromContext(template.PrimaryContextType);
 
                 StructureDefinitionExporter sdExporter = new StructureDefinitionExporter(this.tdb, "http", "test.com");
                 var strucDef = sdExporter.Convert(template, templateSchema);
+                string location = string.Format("StructureDefinition/{0}", strucDef.Id);
                 var strucDefContent = this.Serialize(strucDef);
                 string fileExtension = this.JsonFormat ? "json" : "xml";
-                string strucDefFileName = "resources/StructureDefinition/" + template.FhirId() + "." + fileExtension;
+                string strucDefFileName = string.Format("resources/structuredefinition/{0}.{1}", strucDef.Id, fileExtension);
                 this.zip.AddEntry(strucDefFileName, strucDefContent);
 
-                this.control.resources.Add(location, new Models.Control.ResourceReference("StructureDefinition-" + template.FhirId() + ".html"));
+                this.control.resources.Add(location, new Models.Control.ResourceReference("StructureDefinition-" + strucDef.Id + ".html"));
             }
         }
 
