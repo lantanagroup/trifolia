@@ -16,6 +16,9 @@ namespace Trifolia.Shared
 
         public static string XmlEncode(this string theString)
         {
+            if (string.IsNullOrEmpty(theString))
+                return theString;
+
             return new System.Xml.Linq.XText(theString).ToString();
         }
 
