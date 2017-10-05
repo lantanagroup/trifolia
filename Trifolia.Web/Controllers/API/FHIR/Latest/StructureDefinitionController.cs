@@ -37,7 +37,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.Latest
             if (request != null)
                 this.Request = request;
 
-            this.implementationGuideType = STU3Helper.GetImplementationGuideType(this.tdb, true);
+            this.implementationGuideType = LatestHelper.GetImplementationGuideType(this.tdb, true);
 
             Log.For(this).Trace("Done instantiating controller");
         }
