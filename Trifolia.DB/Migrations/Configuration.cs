@@ -278,6 +278,7 @@ namespace Trifolia.DB.Migrations
                 List<string> resourceTypeLines = (from c in content.Split('\n')
                                                   orderby c
                                                   select c.Replace("\r", "").Trim())
+                                                  .OrderBy(y => y)
                                                   .ToList();
                 resourceTypes.AddRange(resourceTypeLines);
             }
@@ -299,7 +300,7 @@ namespace Trifolia.DB.Migrations
             }
 
             var removeTemplateTypes = (from tt in context.TemplateTypes
-                                       where tt.ImplementationGuideTypeId == 6 && !resourceTypes.Contains(tt.Name)
+                                       where tt.ImplementationGuideTypeId == implementationGuideTypeId && !resourceTypes.Contains(tt.Name)
                                        select tt).ToList();
 
             foreach (var removeTemplateType in removeTemplateTypes)
@@ -309,6 +310,8 @@ namespace Trifolia.DB.Migrations
                     Console.WriteLine("Can't remove " + removeTemplateType.Name + " from FHIR implementation guide type " + implementationGuideTypeId + " because it is associated with templates");
                     continue;
                 }
+
+                Console.WriteLine("Removing template type " + removeTemplateType.Name);
 
                 context.TemplateTypes.Remove(removeTemplateType);
             }
