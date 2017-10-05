@@ -66,6 +66,14 @@
       <Private>True</Private>
       <Aliases>fhir_dstu2</Aliases>
     </Reference>
+    <Reference Include="Hl7.Fhir.Latest.Core">
+      <HintPath>..\libraries\FHIRLatest\Hl7.Fhir.Latest.Core.dll</HintPath>
+      <Aliases>fhir_latest</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.Latest.Specification">
+      <HintPath>..\libraries\FHIRLatest\Hl7.Fhir.Latest.Specification.dll</HintPath>
+      <Aliases>fhir_latest</Aliases>
+    </Reference>
     <Reference Include="Hl7.Fhir.Specification, Version=0.11.5.28861, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
       <HintPath>..\packages\Hl7.Fhir.Specification.0.11.5\lib\net45\Hl7.Fhir.Specification.dll</HintPath>
       <Private>True</Private>
@@ -131,6 +139,14 @@
       <DependentUpon>DECOR.xsd</DependentUpon>
     </Compile>
     <Compile Include="DECOR\TemplateExporter.cs" />
+    <Compile Include="FHIR\Latest\BuildExporter.cs" />
+    <Compile Include="FHIR\Latest\ImplementationGuideExporter.cs" />
+    <Compile Include="FHIR\Latest\Models\Control.cs" />
+    <Compile Include="FHIR\Latest\Models\DataExamples.cs" />
+    <Compile Include="FHIR\Latest\StructureDefinitionExporter.cs" />
+    <Compile Include="FHIR\Latest\TemplateExtensions.cs" />
+    <Compile Include="FHIR\Latest\ValueSetExporter.cs" />
+    <Compile Include="FHIR\Latest\ValueSetExtensions.cs" />
     <Compile Include="FHIR\STU3\BuildExporter.cs" />
     <Compile Include="FHIR\STU3\ImplementationGuideExporter.cs" />
     <Compile Include="FHIR\STU3\Models\Control.cs" />
@@ -197,6 +213,7 @@
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="FHIR\STU3\package.zip" />
+    <EmbeddedResource Include="FHIR\Latest\package.zip" />
     <None Include="packages.config" />
     <None Include="specification.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -71,6 +71,14 @@
       <Private>True</Private>
       <Aliases>fhir_dstu2</Aliases>
     </Reference>
+    <Reference Include="Hl7.Fhir.Latest.Core">
+      <HintPath>..\libraries\FHIRLatest\Hl7.Fhir.Latest.Core.dll</HintPath>
+      <Aliases>fhir_latest</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.Latest.Specification">
+      <HintPath>..\libraries\FHIRLatest\Hl7.Fhir.Latest.Specification.dll</HintPath>
+      <Aliases>fhir_latest</Aliases>
+    </Reference>
     <Reference Include="Hl7.Fhir.Specification, Version=0.11.5.28861, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
       <HintPath>..\packages\Hl7.Fhir.Specification.0.11.5\lib\net45\Hl7.Fhir.Specification.dll</HintPath>
       <Private>True</Private>
@@ -133,6 +141,9 @@
     <Compile Include="FHIR\DSTU2\ImplementationGuideImporter.cs" />
     <Compile Include="FHIR\DSTU2\StructureDefinitionImporter.cs" />
     <Compile Include="FHIR\DSTU2\ValueSetImporter.cs" />
+    <Compile Include="FHIR\Latest\ImplementationGuideImporter.cs" />
+    <Compile Include="FHIR\Latest\StructureDefinitionImporter.cs" />
+    <Compile Include="FHIR\Latest\ValueSetImporter.cs" />
     <Compile Include="FHIR\STU3\ImplementationGuideImporter.cs" />
     <Compile Include="FHIR\STU3\StructureDefinitionImporter.cs" />
     <Compile Include="FHIR\STU3\ValueSetImporter.cs" />

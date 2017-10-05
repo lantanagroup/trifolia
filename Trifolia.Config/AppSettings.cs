@@ -80,6 +80,11 @@ namespace Trifolia.Config
             get { return ConfigurationManager.AppSettings["FhirSTU3Package"]; }
         }
 
+        public static string FhirLatestPackage
+        {
+            get { return ConfigurationManager.AppSettings["FhirLatestPackage"]; }
+        }
+
         public static string OpenIdConfigUrl
         {
             get { return ConfigurationManager.AppSettings["OpenIdConfigUrl"]; }
