@@ -2330,7 +2330,6 @@
     <Content Include="Scripts\TerminologyManagement\EditValueSetConcepts.js" />
     <Content Include="Scripts\TerminologyManagement\ImportExcel.js" />
     <Content Include="Scripts\TerminologyManagement\View.js" />
-    <Content Include="Scripts\Type\EditType.js" />
     <Content Include="Scripts\Type\SchemaChoices.js" />
     <Content Include="Scripts\Type\Types.js" />
     <Content Include="Scripts\utils.js" />
@@ -2370,7 +2369,6 @@
     <Content Include="Views\IGManagement\List.aspx" />
     <Content Include="Views\IGManagement\Edit.aspx" />
     <Content Include="Views\IGManagement\View.aspx" />
-    <Content Include="Views\IGTypeManagement\EditType.aspx" />
     <Content Include="Views\IGTypeManagement\SchemaChoices.aspx" />
     <Content Include="Views\IG\View.aspx" />
     <Content Include="Views\Import\Index.aspx" />

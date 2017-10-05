@@ -40,12 +40,6 @@ namespace Trifolia.Web.Controllers
         }
 
         [HttpGet, Securable(SecurableNames.ADMIN)]
-        public ActionResult Edit(int? implementationGuideTypeId)
-        {
-            return View("EditType", implementationGuideTypeId);
-        }
-
-        [HttpGet, Securable(SecurableNames.ADMIN)]
         public ActionResult EditSchemaChoices(int implementationGuideTypeId)
         {
             return View("SchemaChoices", implementationGuideTypeId);
