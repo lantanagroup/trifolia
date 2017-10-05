@@ -265,12 +265,12 @@ namespace Trifolia.DB.Migrations
             );
         }
 
-        private void SeedFHIRSTU3(Trifolia.DB.TrifoliaDatabase context)
+        private void SeedFHIR(Trifolia.DB.TrifoliaDatabase context, int implementationGuideTypeId, string resourceListResource)
         {
             List<string> resourceTypes = new List<string>() { "Extension" };
             List<TemplateType> templateTypes = new List<TemplateType>();
 
-            using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("Trifolia.DB.Migrations.FHIR_STU3_Resources.txt")))
+            using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceListResource)))
             {
                 string content = sr.ReadToEnd();
                 List<string> resourceTypeLines = (from c in content.Split('\n')
@@ -284,7 +284,7 @@ namespace Trifolia.DB.Migrations
             {
                 var templateType = new TemplateType()
                 {
-                    ImplementationGuideTypeId = 6,
+                    ImplementationGuideTypeId = implementationGuideTypeId,
                     Name = resourceTypes[i],
                     OutputOrder = i + 1,
                     RootContext = resourceTypes[i],
@@ -302,7 +302,7 @@ namespace Trifolia.DB.Migrations
             {
                 if (removeTemplateType.Templates.Count > 0)
                 {
-                    Console.WriteLine("Can't remove " + removeTemplateType.Name + " from FHIR STU3 because it is associated with templates");
+                    Console.WriteLine("Can't remove " + removeTemplateType.Name + " from FHIR implementation guide type " + implementationGuideTypeId + " because it is associated with templates");
                     continue;
                 }
 
@@ -392,6 +392,14 @@ namespace Trifolia.DB.Migrations
                     SchemaLocation = "fhir-all.xsd",
                     SchemaPrefix = "fhir",
                     SchemaURI = "http://hl7.org/fhir"
+                },
+                new ImplementationGuideType()
+                {
+                    Id = 7,
+                    Name = "FHIR Latest",
+                    SchemaLocation = "fhir-all.xsd",
+                    SchemaPrefix = "fhir",
+                    SchemaURI = "http://hl7.org/fhir"
                 }
             );
 
@@ -399,7 +407,8 @@ namespace Trifolia.DB.Migrations
             this.SeedEMeasure(context);
             this.SeedFHIRDSTU1(context);
             this.SeedFHIRDSTU2(context);
-            this.SeedFHIRSTU3(context);
+            this.SeedFHIR(context, 6, "Trifolia.DB.Migrations.FHIR_STU3_Resources.txt");
+            this.SeedFHIR(context, 7, "Trifolia.DB.Migrations.FHIR_Latest_Resources.txt");
 
             context.AppSecurables.AddOrUpdate(apps => apps.Name, this.appSecurables);
             context.Roles.AddOrUpdate(r => r.Name, this.roles);
