@@ -131,7 +131,7 @@
 
                         <div class="form-group">
                             <label>Change List</label>
-                            <input type="checkbox" name="IncludeChangeList" ng-model="criteria.IncludeChangeList" /> Include
+                            <input type="checkbox" name="IncludeChangeList" value="true" ng-model="criteria.IncludeChangeList" /> Include
                         </div>
 
                         <div class="form-group">
@@ -141,7 +141,7 @@
 
                         <div class="form-group" ng-if="selectedImplementationGuide.CanEdit">
                             <label>Notes</label>
-                            <input type="checkbox" id="IncludeNotes" name="IncludeNotes" ng-model="criteria.IncludeNotes"/> Include
+                            <input type="checkbox" id="IncludeNotes" name="IncludeNotes" value="true" ng-model="criteria.IncludeNotes"/> Include
                         </div>
                     </div>
                     
