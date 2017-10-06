@@ -604,25 +604,27 @@ namespace Trifolia.Web.Controllers.API
                     tdb.TemplateExtensions.Remove(extension);
             }
 
-            // Add/Update Extensions
-            foreach (var extensionModel in model.Extensions)
+            if (model.Extensions != null)
             {
-                var extension = template.Extensions.SingleOrDefault(y => y.Identifier == extensionModel.Identifier);
-
-                if (extension == null)
+                // Add/Update Extensions
+                foreach (var extensionModel in model.Extensions)
                 {
-                    extension = new TemplateExtension();
-                    extension.Identifier = extensionModel.Identifier;
-                    template.Extensions.Add(extension);
+                    var extension = template.Extensions.SingleOrDefault(y => y.Identifier == extensionModel.Identifier);
+
+                    if (extension == null)
+                    {
+                        extension = new TemplateExtension();
+                        extension.Identifier = extensionModel.Identifier;
+                        template.Extensions.Add(extension);
+                    }
+
+                    if (extension.Type != extensionModel.Type)
+                        extension.Type = extensionModel.Type;
+
+                    if (extension.Value != extensionModel.Value)
+                        extension.Value = extensionModel.Value;
                 }
-
-                if (extension.Type != extensionModel.Type)
-                    extension.Type = extensionModel.Type;
-
-                if (extension.Value != extensionModel.Value)
-                    extension.Value = extensionModel.Value;
             }
-
             return template;
         }
 
@@ -631,16 +633,19 @@ namespace Trifolia.Web.Controllers.API
         /// </summary>
         private void RemoveConstraints(IObjectRepository tdb, List<ConstraintModel> constraintModels)
         {
-            foreach (var constraintModel in constraintModels)
+            if (constraintModels != null)
             {
-                if (constraintModel.IsNew)
-                    continue;
+                foreach (var constraintModel in constraintModels)
+                {
+                    if (constraintModel.IsNew)
+                        continue;
 
-                TemplateConstraint constraint = tdb.TemplateConstraints.Single(y => y.Id == constraintModel.Id);
-                tdb.TemplateConstraints.Remove(constraint);
+                    TemplateConstraint constraint = tdb.TemplateConstraints.Single(y => y.Id == constraintModel.Id);
+                    tdb.TemplateConstraints.Remove(constraint);
 
-                // Recursively remove child constraints
-                this.RemoveConstraints(tdb, constraintModel.Children);
+                    // Recursively remove child constraints
+                    this.RemoveConstraints(tdb, constraintModel.Children);
+                }
             }
         }
 
@@ -684,137 +689,139 @@ namespace Trifolia.Web.Controllers.API
         private void SaveConstraints(IObjectRepository tdb, Template template, List<ConstraintModel> constraintModels, TemplateConstraint parentConstraint = null)
         {
             TemplateConstraint constraint = null;
-
-            foreach (ConstraintModel constraintModel in constraintModels)
+            if (constraintModels != null)
             {
-                // Create the constraint object and add it to the appropriate lists (if it is new)
-                if (constraintModel.IsNew)
+                foreach (ConstraintModel constraintModel in constraintModels)
                 {
-                    constraint = new TemplateConstraint();
-                    constraint.Template = template;
-                    tdb.TemplateConstraints.Add(constraint);
+                    // Create the constraint object and add it to the appropriate lists (if it is new)
+                    if (constraintModel.IsNew)
+                    {
+                        constraint = new TemplateConstraint();
+                        constraint.Template = template;
+                        tdb.TemplateConstraints.Add(constraint);
 
-                    if (parentConstraint != null)
-                        constraint.ParentConstraint = parentConstraint;
+                        if (parentConstraint != null)
+                            constraint.ParentConstraint = parentConstraint;
+                    }
+                    else
+                    {
+                        constraint = template.ChildConstraints.Single(y => y.Id == constraintModel.Id);
+                    }
+
+                    // Set the properties
+                    int order = constraintModels.IndexOf(constraintModel) + 1;
+                    var dataType = string.IsNullOrEmpty(constraintModel.DataType) || constraintModel.DataType == "DEFAULT" ? null : constraintModel.DataType;
+
+                    if (constraint.Order != order)
+                        constraint.Order = order;
+
+                    if (constraint.Number != constraintModel.Number)
+                        constraint.Number = constraintModel.Number;
+
+                    if (constraint.DisplayNumber != constraintModel.DisplayNumber)
+                        constraint.DisplayNumber = constraintModel.DisplayNumber;
+
+                    if (constraint.Context != constraintModel.Context)
+                        constraint.Context = constraintModel.Context;
+
+                    if (constraint.Conformance != constraintModel.Conformance)
+                        constraint.Conformance = constraintModel.Conformance;
+
+                    if (constraint.Cardinality != constraintModel.Cardinality)
+                        constraint.Cardinality = constraintModel.Cardinality;
+
+                    if (constraint.DataType != dataType)
+                        constraint.DataType = dataType;
+
+                    if (constraint.IsBranch != constraintModel.IsBranch)
+                        constraint.IsBranch = constraintModel.IsBranch;
+
+                    if (constraint.IsBranchIdentifier != constraintModel.IsBranchIdentifier)
+                        constraint.IsBranchIdentifier = constraintModel.IsBranchIdentifier;
+
+                    if (constraint.PrimitiveText != constraintModel.PrimitiveText)
+                        constraint.PrimitiveText = constraintModel.PrimitiveText;
+
+                    if (constraint.ValueConformance != constraintModel.ValueConformance)
+                        constraint.ValueConformance = constraintModel.ValueConformance;
+
+                    if (constraint.Value != constraintModel.Value)
+                        constraint.Value = constraintModel.Value;
+
+                    if (constraint.ValueConformance != constraintModel.ValueConformance)
+                        constraint.ValueConformance = constraintModel.ValueConformance;
+
+                    if (constraint.DisplayName != constraintModel.ValueDisplayName)
+                        constraint.DisplayName = constraintModel.ValueDisplayName;
+
+                    if (constraint.ValueSetId != constraintModel.ValueSetId)
+                        constraint.ValueSetId = constraintModel.ValueSetId;
+
+                    if (constraint.ValueSetDate != constraintModel.ValueSetDate)
+                        constraint.ValueSetDate = constraintModel.ValueSetDate;
+
+                    if (constraint.CodeSystemId != constraintModel.ValueCodeSystemId)
+                        constraint.CodeSystemId = constraintModel.ValueCodeSystemId;
+
+                    if (constraint.Description != constraintModel.Description)
+                        constraint.Description = constraintModel.Description;
+
+                    if (constraint.Notes != constraintModel.Notes)
+                        constraint.Notes = constraintModel.Notes;
+
+                    if (constraint.Label != constraintModel.Label)
+                        constraint.Label = constraintModel.Label;
+
+                    if (constraint.IsPrimitive != constraintModel.IsPrimitive)
+                        constraint.IsPrimitive = constraintModel.IsPrimitive;
+
+                    if (constraint.IsHeading != constraintModel.IsHeading)
+                        constraint.IsHeading = constraintModel.IsHeading;
+
+                    if (constraint.HeadingDescription != constraintModel.HeadingDescription)
+                        constraint.HeadingDescription = constraintModel.HeadingDescription;
+
+                    if (constraint.IsSchRooted != constraintModel.IsSchRooted)
+                        constraint.IsSchRooted = constraintModel.IsSchRooted;
+
+                    if (constraint.IsInheritable != constraintModel.IsInheritable)
+                        constraint.IsInheritable = constraintModel.IsInheritable;
+
+                    if (constraint.Schematron != constraintModel.Schematron)
+                        constraint.Schematron = constraintModel.Schematron;
+
+                    bool? isStatic = null;
+
+                    if (string.IsNullOrEmpty(constraintModel.Binding))
+                        isStatic = null;
+                    else if (constraintModel.Binding == "STATIC")
+                        isStatic = true;
+                    else if (constraintModel.Binding == "DYNAMIC")
+                        isStatic = false;
+
+                    if (constraint.IsStatic != isStatic)
+                        constraint.IsStatic = isStatic;
+
+                    if (constraint.Category != constraintModel.Category)
+                        constraint.Category = constraintModel.Category;
+
+                    if (constraint.IsModifier != constraintModel.IsModifier)
+                        constraint.IsModifier = constraintModel.IsModifier;
+
+                    if (constraint.MustSupport != constraintModel.MustSupport)
+                        constraint.MustSupport = constraintModel.MustSupport;
+
+                    if (constraint.IsChoice != constraintModel.IsChoice)
+                        constraint.IsChoice = constraintModel.IsChoice;
+
+                    if (constraint.IsFixed != constraintModel.IsFixed)
+                        constraint.IsFixed = constraintModel.IsFixed;
+
+                    this.SaveConstraintReferences(tdb, constraint, constraintModel.References);
+
+                    // Recurse through child constraints
+                    this.SaveConstraints(tdb, template, constraintModel.Children, constraint);
                 }
-                else
-                {
-                    constraint = template.ChildConstraints.Single(y => y.Id == constraintModel.Id);
-                }
-
-                // Set the properties
-                int order = constraintModels.IndexOf(constraintModel) + 1;
-                var dataType = string.IsNullOrEmpty(constraintModel.DataType) || constraintModel.DataType == "DEFAULT" ? null : constraintModel.DataType;
-
-                if (constraint.Order != order)
-                    constraint.Order = order;
-
-                if (constraint.Number != constraintModel.Number)
-                    constraint.Number = constraintModel.Number;
-
-                if (constraint.DisplayNumber != constraintModel.DisplayNumber)
-                    constraint.DisplayNumber = constraintModel.DisplayNumber;
-
-                if (constraint.Context != constraintModel.Context)
-                    constraint.Context = constraintModel.Context;
-
-                if (constraint.Conformance != constraintModel.Conformance)
-                    constraint.Conformance = constraintModel.Conformance;
-
-                if (constraint.Cardinality != constraintModel.Cardinality)
-                    constraint.Cardinality = constraintModel.Cardinality;
-
-                if (constraint.DataType != dataType)
-                    constraint.DataType = dataType;
-
-                if (constraint.IsBranch != constraintModel.IsBranch)
-                    constraint.IsBranch = constraintModel.IsBranch;
-
-                if (constraint.IsBranchIdentifier != constraintModel.IsBranchIdentifier)
-                    constraint.IsBranchIdentifier = constraintModel.IsBranchIdentifier;
-
-                if (constraint.PrimitiveText != constraintModel.PrimitiveText)
-                    constraint.PrimitiveText = constraintModel.PrimitiveText;
-
-                if (constraint.ValueConformance != constraintModel.ValueConformance)
-                    constraint.ValueConformance = constraintModel.ValueConformance;
-
-                if (constraint.Value != constraintModel.Value)
-                    constraint.Value = constraintModel.Value;
-
-                if (constraint.ValueConformance != constraintModel.ValueConformance)
-                    constraint.ValueConformance = constraintModel.ValueConformance;
-
-                if (constraint.DisplayName != constraintModel.ValueDisplayName)
-                    constraint.DisplayName = constraintModel.ValueDisplayName;
-
-                if (constraint.ValueSetId != constraintModel.ValueSetId)
-                    constraint.ValueSetId = constraintModel.ValueSetId;
-
-                if (constraint.ValueSetDate != constraintModel.ValueSetDate)
-                    constraint.ValueSetDate = constraintModel.ValueSetDate;
-
-                if (constraint.CodeSystemId != constraintModel.ValueCodeSystemId)
-                    constraint.CodeSystemId = constraintModel.ValueCodeSystemId;
-
-                if (constraint.Description != constraintModel.Description)
-                    constraint.Description = constraintModel.Description;
-
-                if (constraint.Notes != constraintModel.Notes)
-                    constraint.Notes = constraintModel.Notes;
-
-                if (constraint.Label != constraintModel.Label)
-                    constraint.Label = constraintModel.Label;
-
-                if (constraint.IsPrimitive != constraintModel.IsPrimitive)
-                    constraint.IsPrimitive = constraintModel.IsPrimitive;
-
-                if (constraint.IsHeading != constraintModel.IsHeading)
-                    constraint.IsHeading = constraintModel.IsHeading;
-
-                if (constraint.HeadingDescription != constraintModel.HeadingDescription)
-                    constraint.HeadingDescription = constraintModel.HeadingDescription;
-
-                if (constraint.IsSchRooted != constraintModel.IsSchRooted)
-                    constraint.IsSchRooted = constraintModel.IsSchRooted;
-
-                if (constraint.IsInheritable != constraintModel.IsInheritable)
-                    constraint.IsInheritable = constraintModel.IsInheritable;
-
-                if (constraint.Schematron != constraintModel.Schematron)
-                    constraint.Schematron = constraintModel.Schematron;
-
-                bool? isStatic = null;
-
-                if (string.IsNullOrEmpty(constraintModel.Binding))
-                    isStatic = null;
-                else if (constraintModel.Binding == "STATIC")
-                    isStatic = true;
-                else if (constraintModel.Binding == "DYNAMIC")
-                    isStatic = false;
-
-                if (constraint.IsStatic != isStatic)
-                    constraint.IsStatic = isStatic;
-
-                if (constraint.Category != constraintModel.Category)
-                    constraint.Category = constraintModel.Category;
-
-                if (constraint.IsModifier != constraintModel.IsModifier)
-                    constraint.IsModifier = constraintModel.IsModifier;
-
-                if (constraint.MustSupport != constraintModel.MustSupport)
-                    constraint.MustSupport = constraintModel.MustSupport;
-
-                if (constraint.IsChoice != constraintModel.IsChoice)
-                    constraint.IsChoice = constraintModel.IsChoice;
-
-                if (constraint.IsFixed != constraintModel.IsFixed)
-                    constraint.IsFixed = constraintModel.IsFixed;
-
-                this.SaveConstraintReferences(tdb, constraint, constraintModel.References);
-
-                // Recurse through child constraints
-                this.SaveConstraints(tdb, template, constraintModel.Children, constraint);
             }
         }
     }

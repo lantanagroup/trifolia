@@ -73,7 +73,7 @@ namespace Trifolia.Web.Controllers
         public ActionResult AddNewTemplate()
         {
             Log.For(this).Trace("Add New Template Clicked");
-            return Redirect("/TemplateManagement/Edit");
+            return Redirect("/TemplateManagement/NewEditor");
         }
 
         #endregion
@@ -334,7 +334,8 @@ namespace Trifolia.Web.Controllers
         [Securable(SecurableNames.TEMPLATE_EDIT)]
         public ActionResult EditNew(int? defaultImplementationGuide = null, bool newEditor = false)
         {
-            return Edit(null, defaultImplementationGuide, newEditor);
+            return View("NewTemplate");
+                //Edit(null, defaultImplementationGuide, newEditor);
         }
 
         private ActionResult Edit(Template template, int? defaultImplementationGuideId = null, bool newEditor = false)
