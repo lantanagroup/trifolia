@@ -252,7 +252,7 @@ namespace Trifolia.Web.Controllers.API
                             zip.AddEntry(fileName, export);
 
                             NativeTerminologyExporter nativeTermExporter = new NativeTerminologyExporter(this.tdb);
-                            byte[] vocData = nativeTermExporter.GetExport(ig.Id, this.GetExportEncoding(model));
+                            byte[] vocData = nativeTermExporter.GetExport(ig.Id, model.MaximumValueSetMembers, this.GetExportEncoding(model));
                             string vocFileName = string.Format("{0}", model.VocabularyFileName);
 
                             //Ensuring the extension is present in case input doesn't have it
