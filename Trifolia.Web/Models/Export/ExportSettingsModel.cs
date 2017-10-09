@@ -9,6 +9,8 @@ namespace Trifolia.Web.Models.Export
 {
     public class ExportSettingsModel
     {
+        private string vocabularyFileName = string.Empty;
+
         public ExportSettingsModel()
         {
             this.ValueSetOid = new List<string>();
@@ -41,7 +43,22 @@ namespace Trifolia.Web.Models.Export
         public List<int> ValueSetMaxMembers { get; set; }
 
         // SCH Export Settings
-        public string VocabularyFileName { get; set; }
+        public string VocabularyFileName
+        {
+            get
+            {
+                // Always return something for the vocabulary file name
+                if (string.IsNullOrEmpty(this.vocabularyFileName))
+                    return "voc.xml";
+
+                return this.vocabularyFileName;
+            }
+            set
+            {
+                this.vocabularyFileName = value;
+            }
+        }
+
         public bool IncludeVocabulary { get; set; }
         public bool IncludeCustomSchematron { get; set; }
         public string DefaultSchematron { get; set; }

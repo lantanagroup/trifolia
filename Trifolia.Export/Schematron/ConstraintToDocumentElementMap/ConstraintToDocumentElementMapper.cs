@@ -35,11 +35,11 @@ namespace Trifolia.Export.Schematron.ConstraintToDocumentElementMap
                 //parse the context to determine whether this is element or attribute
                 var contextParser = new ContextParser(currentConstraint.Context);
                 contextParser.Parse(out newElement, out newAttribute);
-                newElement.Attributes.Clear();
                 if (currentConstraint.IsBranch) //if we hit a branch then we stop b/c we are in the branch's context
                     break;
                 if (newElement == null)
                     break;  //there is a broken chain, we have null parent
+                newElement.Attributes.Clear();
                 //add value and data type (if present)
                 ConstraintToDocumentElementHelper.AddElementValueAndDataType(aPrefix, newElement, currentConstraint);
                 //chain the previous element to the child collection of this new one
