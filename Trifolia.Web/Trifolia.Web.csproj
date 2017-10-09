@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1882,6 +1883,7 @@
     <Content Include="Views\TemplateManagement\List.aspx" />
     <Content Include="Views\TemplateManagement\Move.aspx" />
     <Content Include="Views\TemplateManagement\NewEditor.aspx" />
+    <Content Include="Views\TemplateManagement\NewTemplate.aspx" />
     <Content Include="Views\TemplateManagement\PublishSettings.aspx" />
     <Content Include="Views\TemplateManagement\View.aspx" />
     <Content Include="Views\TerminologyManagement\Browse.aspx" />
