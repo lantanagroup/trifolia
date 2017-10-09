@@ -2076,6 +2076,7 @@
     <Content Include="Scripts\lib\q\spec\q-spec.js" />
     <Content Include="Scripts\lib\q\spec\queue-spec.js" />
     <Content Include="Scripts\NewTemplateEditor\constraintsPanel.html" />
+    <Content Include="Scripts\NewTemplateEditor\newTemplateController.js" />
     <Content Include="Scripts\NewTemplateEditor\templateSearch.html" />
     <Content Include="Scripts\Report\Organizations.js" />
     <Content Include="Scripts\Report\TemplateReview.js" />

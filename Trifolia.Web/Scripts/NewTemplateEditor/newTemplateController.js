@@ -1,4 +1,4 @@
-﻿angular.module('Trifolia').controller('NewTemplateController', function ($scope, ImplementationGuideService, EditorService, blockUI) {
+﻿angular.module('Trifolia').controller('NewTemplateController', function ($scope, ImplementationGuideService, EditorService, TemplateService, blockUI) {
     
     function init() {
         initVars();
@@ -24,34 +24,34 @@
     }
 
     function createBookmark() {
-        $scope.template.Bookmark = $scope.template.Bookmark.replace(/\s/g, '_');
+        var foundImplementationGuide = _.find($scope.implementationGuides, function (implementationGuide) {
+            return implementationGuide.Id == $scope.template.OwningImplementationGuideId;
+        });
+        
+        $scope.template.Bookmark = TemplateService.generateBookmark($scope.template.Name, foundImplementationGuide && foundImplementationGuide.Namespace === 'http://hl7.org/fhir');
     };
 
     function updateIdentifier() {
         if ($scope.identifier.base) {
             $scope.template.Oid = $scope.identifier.base + $scope.identifier.ext;
         }
-        $scope.isIdentifierUnique = isIdentifierUnique();
+
+        $scope.isIdentifierUnique = false;
         $scope.isIdentifierValid = isIdentifierValid();
         $scope.isIdentifierRightSize = isIdentifierRightSize();
-        if (!$scope.isIdentifierUnique || !$scope.isIdentifierValid || !$scope.isIdentifierRightSize) $scope.invalid = true;
-        else $scope.invalid = false;
+
+        TemplateService.validateIdentifier($scope.template.Oid)
+            .then(function (isUnique) {
+                $scope.isIdentifierUnique = isUnique;
+
+                if (!$scope.isIdentifierUnique || !$scope.isIdentifierValid || !$scope.isIdentifierRightSize) {
+                    $scope.invalid = true;
+                }
+                else {
+                    $scope.invalid = false;
+                }
+            });
     };
-
-    function isIdentifierUnique() {
-        var isValid = false;
-        var url = '/api/Template/Validate/Oid?identifier=' + encodeURIComponent($scope.template.Oid);
-
-        $.ajax({
-            url: url,
-            async: false,
-            cache: false,
-            success: function (data) {
-                isValid = data;
-            }
-        });
-        return isValid;
-    }
 
     function isIdentifierValid() {
         var foundMatch = false;
@@ -59,18 +59,14 @@
         var oidLoc = oid.substring(oid.indexOf(":", oid.indexOf(":") + 1) + 1);
         oidLoc = oidLoc.indexOf(":") != -1 ? oidLoc.replace(":", "/") : oidLoc;
         if (oid.match(/^urn:oid:[0-2](\.(0|[1-9][0-9]*))*$/g)) {
-
-            $scope.location = "OID/" + oidLoc;
             foundMatch = true;
         }
 
         if (oid.match(/^urn:hl7ii:[0-2](\.(0|[1-9][0-9]*))*\:(.+)$/g)) {
-            $scope.location = "II/" + oidLoc;
             foundMatch = true;
         }
 
         if (oid.match(/^http[s]?:\/\/(.+)/g)) {
-            $scope.location = "Id/" + oidLoc;
             foundMatch = true;
         }
 
@@ -85,21 +81,23 @@
         //If this runs while the Id is empty, do nothing so we don't generate errors
         if (!implementationGuideId) return;
 
-        var startTime = new Date().getTime();
-        //Change to http format
-        $.ajax({
-            method: 'GET',
-            url: '/api/ImplementationGuide/' + implementationGuideId + '/TemplateType',
-            async: false,
-            success: function (templateTypes) {
-                $scope.templateTypes = templateTypes;
-                console.log('Done loading template/profile types (count: ' + $scope.templateTypes.length + '): ' + (new Date().getTime() - startTime) + ' milliseconds');
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
+        ImplementationGuideService.getTemplateTypes(implementationGuideId)
+            .then(function (results) {
+                $scope.templateTypes = results;
 
+                if ($scope.template.TemplateTypeId) {
+                    var foundTemplateType = _.find($scope.templateTypes, function (templateType) {
+                        return templateType.Id == $scope.template.TemplateTypeId;
+                    });
+
+                    if (!foundTemplateType) {
+                        $scope.template.TemplateTypeId = null;
+                    }
+                }
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
     };
 
     function setPrimaryContext() {

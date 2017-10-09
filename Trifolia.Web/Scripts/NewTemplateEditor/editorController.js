@@ -673,7 +673,7 @@
     function nameChanged() {
         // TODO: Regenerate the bookmark based on the name of the template. Has a max length of 40 characters.
         // Replace with logic from previous template editor.
-        $scope.template.Bookmark = $scope.template.Name.replace(/\s/g, '_');
+        $scope.template.Bookmark = TemplateService.generateBookmark($scope.template.Name, $scope.isFhir);
 
         templateChanged();
     };

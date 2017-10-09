@@ -522,6 +522,22 @@ angular.module('Trifolia').service('ImplementationGuideService', function ($http
 angular.module('Trifolia').factory('TemplateService', function ($http, $q) {
     var service = {};
 
+    service.generateBookmark = function (templateName, isFhir) {
+        if (!templateName) {
+            return '';
+        }
+
+        var replacement = isFhir ? '-' : '_';
+        var newBookmark = templateName.replace(/ /gi, replacement);
+        var cleanupRegexExp = isFhir ? '[^\w\s]' : '[^\w\s-]';
+
+        if (!isFhir) {
+            newBookmark = newBookmark.replace(/[^\w\s]/gi, '');
+        }
+
+        return newBookmark.substring(0, 39);
+    };
+
     service.getTemplatePermissions = function (templateId) {
         var deferred = $q.defer();
         var url = '/api/Template/' + templateId + '/Permissions';
@@ -615,6 +631,26 @@ angular.module('Trifolia').factory('TemplateService', function ($http, $q) {
             })
             .catch(function (err) {
                 console.log('Error searching templates');
+                console.log(err);
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
+    service.validateIdentifier = function (identifier, ignoreTemplateId) {
+        var deferred = $q.defer();
+        var url = '/api/Template/Validate/Oid?identifier=' + encodeURIComponent(identifier);
+
+        if (ignoreTemplateId) {
+            url += '&ignoreTemplateId=' + encodeURIComponent(ignoreTemplateId);
+        }
+
+        $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
                 console.log(err);
                 deferred.reject(err);
             });
