@@ -43,9 +43,20 @@ namespace Trifolia.Export.DECOR
 
         private RuleDefinition ExportElement(TemplateConstraint constraint)
         {
+            string context = constraint.Context;
+
+            if (string.IsNullOrEmpty(context) && constraint.References.Count(y => y.ReferenceType == ConstraintReferenceTypes.Template) > 0)
+            {
+                string firstReferenceIdentifier = constraint.References.First(y => y.ReferenceType == ConstraintReferenceTypes.Template).ReferenceIdentifier;
+                var firstReferenceTemplate = this.tdb.Templates.Single(y => y.Oid == firstReferenceIdentifier);
+
+                if (firstReferenceTemplate != null)
+                    context = firstReferenceTemplate.PrimaryContext;
+            }
+
             IFormattedConstraint formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, constraint, null, null, null, false, false, false, false);
             RuleDefinition constraintRule = new RuleDefinition();
-            constraintRule.name = constraint.Context;
+            constraintRule.name = context;
             constraintRule.minimumMultiplicity = constraint.CardinalityType.Left.ToString();
             constraintRule.maximumMultiplicity = constraint.CardinalityType.Right == Int32.MaxValue ? "*" : constraint.CardinalityType.Right.ToString();
             constraintRule.isMandatory = constraint.Conformance == "SHALL";
@@ -139,7 +150,7 @@ namespace Trifolia.Export.DECOR
                     if (isAttribute)
                         continue;       // Can't export child elements/attributes of an attribute constraint
 
-                    if (constraint.Context.StartsWith("@"))
+                    if (!string.IsNullOrEmpty(constraint.Context) && constraint.Context.StartsWith("@"))
                         constraintRules.Add(this.ExportAttribute(constraint));
                     else
                         constraintRules.Add(this.ExportElement(constraint));
