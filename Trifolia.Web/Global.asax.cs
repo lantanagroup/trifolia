@@ -64,12 +64,6 @@ namespace Trifolia.Web
             );
 
             routes.MapRoute(
-                name: "Edit IG Type",
-                url: "IGTypeManagement/Edit/{implementationGuideTypeId}",
-                defaults: new { controller = "IGTypeManagement", action = "Edit", implementationGuideTypeId = UrlParameter.Optional }
-            );
-
-            routes.MapRoute(
                 name: "IG Authorization Request Approved",
                 url: "IGManagement/AuthorizationRequest/{accessRequestId}/$approve",
                 defaults: new { controller = "IGManagement", action = "ApproveAuthorizationRequest" });

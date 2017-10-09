@@ -63,6 +63,14 @@
       <Private>True</Private>
       <Aliases>fhir_dstu2</Aliases>
     </Reference>
+    <Reference Include="Hl7.Fhir.Latest.Core">
+      <HintPath>..\libraries\FHIRLatest\Hl7.Fhir.Latest.Core.dll</HintPath>
+      <Aliases>fhir_latest</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.Latest.Specification">
+      <HintPath>..\libraries\FHIRLatest\Hl7.Fhir.Latest.Specification.dll</HintPath>
+      <Aliases>fhir_latest</Aliases>
+    </Reference>
     <Reference Include="Hl7.Fhir.Specification, Version=0.11.5.28861, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
       <HintPath>..\packages\Hl7.Fhir.Specification.0.11.5\lib\net45\Hl7.Fhir.Specification.dll</HintPath>
       <Private>True</Private>
@@ -117,6 +125,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FHIR\LatestPlugin.cs" />
     <Compile Include="FHIR\STU3Plugin.cs" />
     <Compile Include="FHIR\DSTU2Plugin.cs" />
     <Compile Include="FHIR\DefaultPlugin.cs" />
@@ -127,6 +136,7 @@
     <Compile Include="DefaultSampleGenerator.cs" />
     <Compile Include="SampleGenerationException.cs" />
     <Compile Include="Validation\BaseValidator.cs" />
+    <Compile Include="Validation\FHIR\LatestValidator.cs" />
     <Compile Include="Validation\FHIR\STU3Validator.cs" />
     <Compile Include="Validation\RIMValidator.cs" />
   </ItemGroup>

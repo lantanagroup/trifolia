@@ -167,6 +167,10 @@
 
                 angular.extend($scope.criteria, settings);
 
+                if (!$scope.criteria.VocabularyFileName) {
+                    $scope.criteria.VocabularyFileName = 'voc.xml';
+                }
+
                 if (shouldReloadTemplates) {
                     $scope.loadTemplates();
                 }

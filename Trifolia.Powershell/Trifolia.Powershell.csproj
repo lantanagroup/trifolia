@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="AppConfig.cs" />
     <Compile Include="BaseCommand.cs" />
+    <Compile Include="SetSplitFHIRProfilesCommand.cs" />
     <Compile Include="SetImportValueSet.cs" />
     <Compile Include="GetRoseTreeValueSet.cs" />
     <Compile Include="GetVSACValueSetCommand.cs" />

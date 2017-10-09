@@ -13,11 +13,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Schema</th>
-                    <th>
-                        <div class="pull-right">
-                            <a class="btn btn-primary" href="/IGTypeManagement/Edit">Add</a>
-                        </div>
-                    </th>
+                    <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody data-bind="foreach: Types">
@@ -25,10 +21,8 @@
                     <td data-bind="text: Name"></td>
                     <td data-bind="text: Schema"></td>
                     <td>
-                        <div class="btn-group pull-right">
-                            <a class="btn btn-primary" data-bind="attr: { href: '/IGTypeManagement/Edit/' + Id() }">Edit</a>
+                        <div class="pull-right">
                             <a class="btn btn-primary" data-bind="attr: { href: '/IGTypeManagement/SchemaChoice/' + Id() }">Schema Choices</a>
-                            <button type="button" class="btn btn-default" data-bind="click: function () { $parent.Delete($data); }">Delete</button>
                         </div>
                     </td>
                 </tr>

@@ -14,6 +14,14 @@ namespace Trifolia.Shared
     {
         private static Regex invalidUtf8Characters = new Regex("[^\x00-\x7F]+");
 
+        public static string XmlEncode(this string theString)
+        {
+            if (string.IsNullOrEmpty(theString))
+                return theString;
+
+            return new System.Xml.Linq.XText(theString).ToString();
+        }
+
         public static string MakePlural(this string theString)
         {
             string[] oNounsES = new string[] { "echo", "hero", "potato", "veto" };

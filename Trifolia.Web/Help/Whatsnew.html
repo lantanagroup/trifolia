@@ -183,10 +183,10 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts15">Version 5.0.0</span></span></h2>
-<p class="rvps8"><span class="rvts14">Released on Thursday, September 7, 2017</span></p>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts15">Version 5.0.5</span></span></h2>
+<p class="rvps8"><span class="rvts14">Released on Monday, October 2, 2017</span></p>
 <h2 class="rvps7"><span class="rvts0"><span class="rvts19">VSAC Integration</span></span></h2>
-<p class="rvps4"><span class="rvts14">Trifolia has integrated with VSAC to allow importing value sets from the VSAC. A new button is available to users in Browse &gt; Terminology which allows the user to specify an OID to import from Trifolia.</span></p>
+<p class="rvps4"><span class="rvts14">We integrated Trifolia within VSAC to allow users to import value sets from VSAC. A new button is available in Browse &gt; Terminology that allows users to specify an OID to import from Trifolia.</span></p>
 <p class="rvps4"><span class="rvts14">The ability to import from VSAC and view implementation guides containing VSAC-imported value sets requires a license to the UMLS, issued by the NLM.</span></p>
 <p class="rvps4"><span class="rvts14">See the help documentation's Getting Started &gt; User Profiles, and Importing &gt; Terminology sections for more information.</span></p>
 <h2 class="rvps7"><span class="rvts0"><span class="rvts19">Export UI re-design</span></span></h2>
@@ -200,12 +200,29 @@
 <p class="rvps4"><span class="rvts14">In the free-to-use installation of Trifolia (https://trifolia.lantanagroup.com) there are approximately 40 implementation guides with "test" in their name. As a result, we felt it was appropriate to create a separate workflow status for implementation guides to be labeled as "test". When creating an implementation guide, users have the opportunity to indicate that the implementation guide is a "test" implementation guide, and not intended for use outside of the designer's discretion. If at a later point in time the designer of the implementation guide decides the implementation guide should be shared with others, it can be transitioned to other statuses (such as "draft") via the "View Implementation Guide" screen's "Workflow" drop-down.</span></p>
 <h2 class="rvps7"><span class="rvts0"><span class="rvts19">Multiple contained templates/profiles</span></span></h2>
 <p class="rvps4"><span class="rvts14">A constraint can now reference multiple templates/profiles. This is inspired by FHIR's native structure for supporting multiple "types" of resources referenced in an element/constraint. The template editor's constraint panel now has a list of contained templates/profiles, that can be added to or removed from.</span></p>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts19">Patch Notes</span></span></h2>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps4"><span class="rvts14">MS Word export incorrectly references templates/profiles in the context table which are not included in the export</span></li>
+<li class="rvps4"><span class="rvts14">Bug in saving templates where "existing" references in constraints aren't being found.</span></li>
+<li class="rvps4"><span class="rvts14">Bug where changing identifier of template does not update references to it</span></li>
+<li class="rvps4"><span class="rvts14">Modifying template editor so that it uses a dash (-) for the bookmark white-space replacement when working with a FHIR profile due to a warning message suggests that dash (-) be used instead of underscore (_).</span></li>
+<li class="rvps4"><span class="rvts14">Hiding link to "Add contained template" if the constraint properties fields are disabled</span></li>
+<li class="rvps4"><span class="rvts14">Cleaning up ValueSet FHIR export so that it properly shows compose vs. expansion. Exports &lt;compose&gt; when Trifolia is the tool that authored the value set. Exports &lt;expansion&gt; when the value set is imported</span></li>
+<li class="rvps4"><span class="rvts14">Creating FHIR Build package with lower-case resource type directory names under "resources" directory</span></li>
+<li class="rvps4"><span class="rvts14">Bug in MS Word generation where the contains column of the context table is never filled in</span></li>
+</ul>
 <h3 class="rvps9"><span class="rvts0"><span class="rvts16">Development Log</span></span></h3>
 <div class="rvps10"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
 <tr valign="top">
 <td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts17">Type</span></p>
 </td>
 <td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts17">Summary</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Defect</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Bugs in Release 5.0.1-5.0.4 required patches</span></p>
 </td>
 </tr>
 <tr valign="top">

@@ -486,232 +486,96 @@
             Gets configuration information used by the client-side application
             </summary>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.RoleController.GetRoles">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestConformanceController.GetConformance(System.String)">
             <summary>
-            Gets all roles in Trifolia
+            Gets conformance information about the FHIR DSTU2 server.
             </summary>
-            <returns>Trifolia.Web.Models.RoleManagement.RolesModel</returns>
-            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+            <param name="format">The format that the response should be returned in</param>
+            <returns>Resource&lt;Conformance&gt;</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.RoleController.AssignRoleSecurableAction(System.Int32,System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestImplementationGuideController.GetImplementationGuide(System.Int32,System.String,System.Nullable{Hl7.Fhir.Rest.SummaryType})">
             <summary>
-            Assgns the specified securable to the role
-            Both role and securable must exist.
+            Get the specified implementation guide in FHIR DSTU2 format
             </summary>
-            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+            <param name="implementationGuideId">The id of the implementation guide</param>
+            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <returns>Hl7.Fhir.Model.ImplementationGuide</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.RoleController.UnassignRoleSecurableAction(System.Int32,System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestImplementationGuideController.GetImplementationGuides(System.String,System.Nullable{Hl7.Fhir.Rest.SummaryType},System.String,System.Nullable{System.Int32},System.String)">
             <summary>
-            Removes a securable from the specified role.
-            Both role and securable must exist.
+            Gets implementation guides in FHIR DSTU2 format. Can specify search information, such as the name of the implementation guide and the id of the implementation guide.
             </summary>
-            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <param name="include">Indicate what additional information should be included with the implementation guide (such as "ImplementationGuide:resource")</param>
+            <param name="implementationGuideId">Specify the id of the implementation guide to search for.</param>
+            <param name="name">Specifies the name of the implementation guide to search for. Implementation guides whose name *contains* this value will be returned.</param>
+            <returns>Hl7.Fhir.Model.Bundle</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.RoleController.AddRole(System.String)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestStructureDefinitionController.GetTemplate(System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
-            Adds a new role with the specified name.
+            Gets a specific profile and converts it to a StructureDefinition resource.
             </summary>
-            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+            <param name="bookmark">The id of the profile to retrieve</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <returns>Hl7.Fhir.Model.StructureDefinition</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.RoleController.RemoveRole(System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestStructureDefinitionController.GetTemplates(System.Nullable{System.Int32},System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
-            Removes the specified role
-            Expects that a valid role is specified.
+            Searches for profiles within Trifolia and returns them as StructureDefinition resources within a Bundle.
             </summary>
-            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+            <param name="templateId">The id of a template/profile to search for and return in the bundle</param>
+            <param name="name">The name of a template/profile to search for. Only templates/profiles that contain this specified name will be returned.</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <returns>Hl7.Fhir.Model.Bundle</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.RoleController.RestrictOrganizations(System.Int32,System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestStructureDefinitionController.CreateStructureDefinition(Hl7.Fhir.Model.StructureDefinition)">
             <summary>
-            Updates the organization restrictions for a given role.
-            Role must be specified.
-            Any organization passed in via the model is checked to determine if it should be added or removed as a restriction.
+            Creates a template/profile from the specified StructureDefinition
             </summary>
-            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+            <returns>Hl7.Fhir.Model.StructureDefinition</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.RoleController.UnrestrictOrganization(System.Int32,System.Int32)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestStructureDefinitionController.UpdateStructureDefinition(Hl7.Fhir.Model.StructureDefinition,System.String)">
             <summary>
-            Removes the restriction on the specified organization from the specified role
+            Updates an existing template/profile based on the specified StructureDefinition
             </summary>
-            <param name="roleId">The id of the role to remove the organization restriction from</param>
-            <param name="organizationId">The id of the organization</param>
-            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+            <param name="bookmark"></param>
+            <param name="strucDef"></param>
+            <returns>Hl7.Fhir.Model.StructureDefinition</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.RoleController.UpdateDefaultRole(System.Nullable{System.Int32})">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestStructureDefinitionController.DeleteStructureDefinition(System.String)">
             <summary>
-            Set the default role to the role specified in the roleId parameter.
-            First removes the default flag from all roles, then sets the flag for the one specified (or none, if null is provided).
+            Deletes the specified profile/template. This is a permanent deletion, and cannot be restored via _history.
             </summary>
-            <param name="roleId">If specified, the role to set as the new default.</param>
-            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+            <param name="bookmark">The id of the profile/template to delete</param>
+            <returns>Hl7.Fhir.Model.OperationOutcome</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_DELETE">Only users with the ability to delete templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.UserController.IsSubscribedReleaseAnnouncements">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestValueSetController.GetValueSet(System.Int32,System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
-            Checks the status of the currently logged-in user on the configured mail chimp release announcements list
+            Gets the specified value set from Trifolia, converts it to, and returns a ValueSet resource.
             </summary>
-            <returns>true if the user is susbcribed, false if they WERE subscribed, but are now unsubscribed, null if they have not subscribed before</returns>
+            <param name="valueSetId">The id of the value set to search for. If specified and found, only a single ValueSet resource is returned in the Bundle.</param>
+            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <returns>Hl7.Fhir.Model.ValueSet</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.UserController.UnsubscribeReleaseAnnouncement">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestValueSetController.GetValueSets(System.Nullable{System.Int32},System.String,System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
-            Unsubscribes the current user from the configured release announcement list
+            Searches value sets within Trifolia and returns them as ValueSet resources within a Bundle.
             </summary>
-            <remarks>Only unsubscribes the user if they are already subscribed</remarks>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.UserController.SubscribeToReleaseAnnouncements">
-            <summary>
-            Subscribes the current user to the configured release announcements list
-            </summary>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.UserController.SearchUsers(System.String)">
-            <summary>
-            Searches for users
-            </summary>
-            <param name="searchText">The text to search for.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.UserController.GetUsers">
-            <summary>
-            Gets a list of all users in the database. Can only be executed by admins.
-            </summary>
-            <returns>A list of UserModel, populated with user meta-data, groups and roles.</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.UserController.GetMyUser">
-            <summary>
-            Gets the profile model for the currently logged-in user.
-            </summary>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.UserController.ValidateUmlsCredentials(Trifolia.Web.Models.User.ValidateUmlsCredentialsRequestModel)">
-            <summary>
-            This method is a public route for <see cref="!:ValidateUmlsCredentials(IObjectRepository, ValidateUmlsCredentialsRequestModel)"></see>
-            </summary>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.UserController.SaveMyUser(Trifolia.Web.Models.Account.UserProfile)">
-            <summary>
-            Persists/updates the information in the model to the current user's profile.
-            </summary>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.UserController.SaveUser(Trifolia.Web.Models.User.UserModel)">
-            <summary>
-            Updates the currently logged-in user's profiles with the data in the specified model
-            </summary>
-            <param name="model">The object model containing the properties of the user to update.</param>
-            <remarks>The Username property is not updated. Username cannot be changed by the user.</remarks>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetMyGroupDisclaimers">
-            <summary>
-            Gets disclaimers from groups (that have disclaimers) that the current user is a member of
-            </summary>
-            <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupDisclaimer&gt;</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetMyGroup(System.Int32)">
-            <summary>
-            Gets the specified group, including managers and members
-            </summary>
-            <param name="groupId">The id of the group to return</param>
-            <returns>Triflia.Web.Models.Group.GroupModel</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetMyGroups">
-            <summary>
-            Gets all of the groups that the user manages or is a member of
-            </summary>
-            <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupModel&gt;</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.AddMyGroup(Trifolia.Web.Models.Group.GroupModel)">
-            <summary>
-            Creates a new group. The current user is automatically added as a manager of the group.
-            Members and managers of the model are not created as part of this operation.
-            </summary>
-            <param name="model">Information about the group to create</param>
-            <returns>Trifolia.Web.Models.Group.GroupModel</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.UpdateMyGroup(System.Int32,Trifolia.Web.Models.Group.GroupModel)">
-            <summary>
-            Updates the specified group based on the information passed in the body/model.
-            </summary>
-            <param name="groupId">The id of the group to update</param>
-            <param name="model">Information about the group to update</param>
-            <returns>Trifolia.Web.Models.Group.GroupModel</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.LeaveGroup(System.Int32)">
-            <summary>
-            Removes the current user from the specified group
-            </summary>
-            <param name="groupId">The id of the group to be removed from</param>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.JoinGroup(System.Int32)">
-            <summary>
-            Attempts to join the current user to the specified group.
-            If the user is already a member of the group, nothing is done.
-            If the group is also a manager of the group, the user is added as a member.
-            If the group requires approval to join, an email is sent to the managers of the group.
-            If the group is open for anyone to join, the user is added as a member of the group.
-            </summary>
-            <param name="groupId">The id of the group for the current user to join</param>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.AddManagerToGroup(System.Int32,System.Int32)">
-            <summary>
-            Adds a user to the specified group as a manager
-            </summary>
-            <param name="groupId">The id of the group</param>
-            <param name="userId">The id of the user</param>
-            <returns>Trifolia.Web.Models.User.SearchUserModel</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.AddMemberToGroup(System.Int32,System.Int32)">
-            <summary>
-            Adds a user to the specified group as a member
-            </summary>
-            <param name="groupId">The id of the group</param>
-            <param name="userId">The id of the user</param>
-            <returns>Trifolia.Web.Models.User.SearchUserModel</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.RemoveManagerFromGroup(System.Int32,System.Int32)">
-            <summary>
-            Removes a manager (user) from the specified group
-            </summary>
-            <param name="groupId">The id of the group</param>
-            <param name="userId">The id of the user</param>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.RemoveMemberFromGroup(System.Int32,System.Int32)">
-            <summary>
-            Removes a member (user) from the specified group
-            </summary>
-            <param name="groupId">The id of the group</param>
-            <param name="userId">The id of the user</param>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetGroupManagers(System.Int32)">
-            <summary>
-            Gets all managers of the specified group
-            </summary>
-            <param name="groupId">The id of the group</param>
-            <returns>IEnumerable&lt;Trifolia.Web.Models.User.SearchUserModel&gt;</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetGroupMembers(System.Int32)">
-            <summary>
-            Gets all members of the specified group
-            </summary>
-            <param name="groupId">The id of the group</param>
-            <returns>IEnumerable&lt;Trifolia.Web.Models.User.SearchUserModel&gt;</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetGroups(System.Boolean)">
-            <summary>
-            Gets all groups
-            </summary>
-            <param name="onlyNotMember">Indicates that only groups the current user is not a member of should be returned</param>
-            <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupModel&gt;</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.SaveGroup(Trifolia.Web.Models.Group.GroupModel)">
-            <summary>
-            Creates or updates a group based on the body/model specified
-            Updates require an Id to be specified in the model
-            Responds with the id of the group that was created/updated
-            </summary>
-            <param name="model">Information about the group to create/update</param>
-            <returns>int</returns>
-        </member>
-        <member name="M:Trifolia.Web.Controllers.API.GroupController.DeleteGroup(System.Int32)">
-            <summary>
-            Deletes the specified group
-            </summary>
-            <param name="groupId">The id of the group to delete</param>
+            <param name="name">The name of the value set to search for</param>
+            <param name="valueSetId">The id of the value set to search for. If specified and found, only a single ValueSet resource is returned in the Bundle.</param>
+            <param name="format">Optional. The format to respond with (ex: "application/fhir+xml" or "application/fhir+json")</param>
+            <param name="summary">Optional. The type of summary to respond with.</param>
+            <returns>Hl7.Fhir.Model.Bundle&lt;Hl7.Fhir.Model.ValueSet&gt;</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.FHIR.STU3.FHIR3ConformanceController.GetConformance(System.String)">
             <summary>
@@ -952,6 +816,233 @@
             <param name="implementationGuideId">The id of the implementation guide</param>
             <returns></returns>
             <remarks>Not implemented</remarks>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.GetRoles">
+            <summary>
+            Gets all roles in Trifolia
+            </summary>
+            <returns>Trifolia.Web.Models.RoleManagement.RolesModel</returns>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.AssignRoleSecurableAction(System.Int32,System.Int32)">
+            <summary>
+            Assgns the specified securable to the role
+            Both role and securable must exist.
+            </summary>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.UnassignRoleSecurableAction(System.Int32,System.Int32)">
+            <summary>
+            Removes a securable from the specified role.
+            Both role and securable must exist.
+            </summary>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.AddRole(System.String)">
+            <summary>
+            Adds a new role with the specified name.
+            </summary>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.RemoveRole(System.Int32)">
+            <summary>
+            Removes the specified role
+            Expects that a valid role is specified.
+            </summary>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.RestrictOrganizations(System.Int32,System.Int32)">
+            <summary>
+            Updates the organization restrictions for a given role.
+            Role must be specified.
+            Any organization passed in via the model is checked to determine if it should be added or removed as a restriction.
+            </summary>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.UnrestrictOrganization(System.Int32,System.Int32)">
+            <summary>
+            Removes the restriction on the specified organization from the specified role
+            </summary>
+            <param name="roleId">The id of the role to remove the organization restriction from</param>
+            <param name="organizationId">The id of the organization</param>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.RoleController.UpdateDefaultRole(System.Nullable{System.Int32})">
+            <summary>
+            Set the default role to the role specified in the roleId parameter.
+            First removes the default flag from all roles, then sets the flag for the one specified (or none, if null is provided).
+            </summary>
+            <param name="roleId">If specified, the role to set as the new default.</param>
+            <permission cref="F:Trifolia.Authorization.SecurableNames.ADMIN">Only administrators are permitted</permission>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.IsSubscribedReleaseAnnouncements">
+            <summary>
+            Checks the status of the currently logged-in user on the configured mail chimp release announcements list
+            </summary>
+            <returns>true if the user is susbcribed, false if they WERE subscribed, but are now unsubscribed, null if they have not subscribed before</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.UnsubscribeReleaseAnnouncement">
+            <summary>
+            Unsubscribes the current user from the configured release announcement list
+            </summary>
+            <remarks>Only unsubscribes the user if they are already subscribed</remarks>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.SubscribeToReleaseAnnouncements">
+            <summary>
+            Subscribes the current user to the configured release announcements list
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.SearchUsers(System.String)">
+            <summary>
+            Searches for users
+            </summary>
+            <param name="searchText">The text to search for.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.GetUsers">
+            <summary>
+            Gets a list of all users in the database. Can only be executed by admins.
+            </summary>
+            <returns>A list of UserModel, populated with user meta-data, groups and roles.</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.GetMyUser">
+            <summary>
+            Gets the profile model for the currently logged-in user.
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.ValidateUmlsCredentials(Trifolia.Web.Models.User.ValidateUmlsCredentialsRequestModel)">
+            <summary>
+            This method is a public route for <see cref="!:ValidateUmlsCredentials(IObjectRepository, ValidateUmlsCredentialsRequestModel)"></see>
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.SaveMyUser(Trifolia.Web.Models.Account.UserProfile)">
+            <summary>
+            Persists/updates the information in the model to the current user's profile.
+            </summary>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.UserController.SaveUser(Trifolia.Web.Models.User.UserModel)">
+            <summary>
+            Updates the currently logged-in user's profiles with the data in the specified model
+            </summary>
+            <param name="model">The object model containing the properties of the user to update.</param>
+            <remarks>The Username property is not updated. Username cannot be changed by the user.</remarks>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetMyGroupDisclaimers">
+            <summary>
+            Gets disclaimers from groups (that have disclaimers) that the current user is a member of
+            </summary>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupDisclaimer&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetMyGroup(System.Int32)">
+            <summary>
+            Gets the specified group, including managers and members
+            </summary>
+            <param name="groupId">The id of the group to return</param>
+            <returns>Triflia.Web.Models.Group.GroupModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetMyGroups">
+            <summary>
+            Gets all of the groups that the user manages or is a member of
+            </summary>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupModel&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.AddMyGroup(Trifolia.Web.Models.Group.GroupModel)">
+            <summary>
+            Creates a new group. The current user is automatically added as a manager of the group.
+            Members and managers of the model are not created as part of this operation.
+            </summary>
+            <param name="model">Information about the group to create</param>
+            <returns>Trifolia.Web.Models.Group.GroupModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.UpdateMyGroup(System.Int32,Trifolia.Web.Models.Group.GroupModel)">
+            <summary>
+            Updates the specified group based on the information passed in the body/model.
+            </summary>
+            <param name="groupId">The id of the group to update</param>
+            <param name="model">Information about the group to update</param>
+            <returns>Trifolia.Web.Models.Group.GroupModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.LeaveGroup(System.Int32)">
+            <summary>
+            Removes the current user from the specified group
+            </summary>
+            <param name="groupId">The id of the group to be removed from</param>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.JoinGroup(System.Int32)">
+            <summary>
+            Attempts to join the current user to the specified group.
+            If the user is already a member of the group, nothing is done.
+            If the group is also a manager of the group, the user is added as a member.
+            If the group requires approval to join, an email is sent to the managers of the group.
+            If the group is open for anyone to join, the user is added as a member of the group.
+            </summary>
+            <param name="groupId">The id of the group for the current user to join</param>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.AddManagerToGroup(System.Int32,System.Int32)">
+            <summary>
+            Adds a user to the specified group as a manager
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <param name="userId">The id of the user</param>
+            <returns>Trifolia.Web.Models.User.SearchUserModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.AddMemberToGroup(System.Int32,System.Int32)">
+            <summary>
+            Adds a user to the specified group as a member
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <param name="userId">The id of the user</param>
+            <returns>Trifolia.Web.Models.User.SearchUserModel</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.RemoveManagerFromGroup(System.Int32,System.Int32)">
+            <summary>
+            Removes a manager (user) from the specified group
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <param name="userId">The id of the user</param>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.RemoveMemberFromGroup(System.Int32,System.Int32)">
+            <summary>
+            Removes a member (user) from the specified group
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <param name="userId">The id of the user</param>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetGroupManagers(System.Int32)">
+            <summary>
+            Gets all managers of the specified group
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.User.SearchUserModel&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetGroupMembers(System.Int32)">
+            <summary>
+            Gets all members of the specified group
+            </summary>
+            <param name="groupId">The id of the group</param>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.User.SearchUserModel&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.GetGroups(System.Boolean)">
+            <summary>
+            Gets all groups
+            </summary>
+            <param name="onlyNotMember">Indicates that only groups the current user is not a member of should be returned</param>
+            <returns>IEnumerable&lt;Trifolia.Web.Models.Group.GroupModel&gt;</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.SaveGroup(Trifolia.Web.Models.Group.GroupModel)">
+            <summary>
+            Creates or updates a group based on the body/model specified
+            Updates require an Id to be specified in the model
+            Responds with the id of the group that was created/updated
+            </summary>
+            <param name="model">Information about the group to create/update</param>
+            <returns>int</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.GroupController.DeleteGroup(System.Int32)">
+            <summary>
+            Deletes the specified group
+            </summary>
+            <param name="groupId">The id of the group to delete</param>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.ImplementationGuideController.GetEditableImplementationGuides">
             <summary>

@@ -25,6 +25,11 @@ namespace Trifolia.Config
             return intValue;
         }
 
+        public static string GoogleAnalyticsGtag
+        {
+            get { return ConfigurationManager.AppSettings["GoogleAnalyticsGtag"]; }
+        }
+
         public static string UmlsValidateUrl
         {
             get { return ConfigurationManager.AppSettings["UmlsValidateUrl"]; }
@@ -73,6 +78,11 @@ namespace Trifolia.Config
         public static string FhirSTU3Package
         {
             get { return ConfigurationManager.AppSettings["FhirSTU3Package"]; }
+        }
+
+        public static string FhirLatestPackage
+        {
+            get { return ConfigurationManager.AppSettings["FhirLatestPackage"]; }
         }
 
         public static string OpenIdConfigUrl
