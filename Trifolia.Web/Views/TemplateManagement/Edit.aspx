@@ -294,6 +294,9 @@
                     <span class="label label-primary" ng-show="isLocked" ng-click="unlock()">Locked <i class="glyphicon glyphicon-question-sign"uib-tooltip="This template is locked for editing. The Implementation Guide it is associated with is published. Click this button to unlock it" tooltip-trigger="'click'" tooltip-placement="bottom"></i></span>            
                 </div>
 
+                <p class="nav navbar-text" ng-show="authTimeout">Your session has timed out. You will need to <a href="#" ng-click="reload()">reload the page</a> to re-authenticate and edit this template.</p>
+                <p class="nav navbar-text" ng-show="message">{{message}}</p>
+
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
@@ -303,9 +306,6 @@
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-
-        <div class="alert alert-warning" ng-show="authTimeout">Your session has timed out. You will need to <a href="#" ng-click="reload()">reload the page</a> to re-authenticate and edit this template.</div>
-        <!-- <div class="alert alert-info" ng-show="message">{{message}}</div> -->
 
         <!-- LEFT NAV (template search) -->
         <div class="left-nav">
@@ -410,6 +410,8 @@
                     </div>
 
                     <pre ng-if="isDebug">{{template | json}}</pre>
+                        
+                    <pre ng-if="isDebug">{{constraints | json}}</pre>
                 </fieldset>
             </uib-tab>
             <uib-tab index="'constraints'" classes="constraints-tab" heading="Constraints">
@@ -448,7 +450,7 @@
                                             </button>
                                         </div>
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-default btn-sm" title="Create a computable constraint for this node" ng-show="selectedNode" ng-click="createComputableConstraint(selectedNode)">
+                                            <button type="button" class="btn btn-default btn-sm" title="Create a computable constraint for this node" ng-show="selectedNode" ng-click="createComputableConstraint(selectedNode, $parent)">
                                                 <i class="glyphicon glyphicon-plus"></i>
                                             </button>
                                             <button type="button" class="btn btn-default btn-sm" title="Add primitive/narrative constraint {{selectedNode.Constraint ? 'within the current constraint' : 'at the top level' }}" ng-click="createPrimitiveConstraint(selectedNode)">
@@ -535,7 +537,7 @@
                 <div class="form-group">
                     <label>Display Number</label>
                     <i class="glyphicon glyphicon-question-sign" tooltip-trigger="'click'" uib-tooltip="Optional. The display number is used to override the conformance number format used by default in exports (MS Word, Schematron, etc.). The display number can contain any character (including dashes, underlines, semi-colons, etc.)"></i>
-                    <input type="text" class="form-control" value="TODO" />
+                    <input type="text" class="form-control" ng-model="selectedNode.Constraint.DisplayNumber" />
                 </div>
             </div>
         </script>
@@ -582,7 +584,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
             </div>
         </script>
     </div>

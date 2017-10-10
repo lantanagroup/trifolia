@@ -20,7 +20,7 @@
                     {{node.Context}}
                     <i ng-if="!isNodeValid(node)" class="glyphicon glyphicon-exclamation-sign" title="{{node.$$message}}"></i>
                 </td>
-                <td>{{getCellDisplay(node, 'Number')}}</td>
+                <td>{{getCellDisplay(node, 'DisplayNumber', 'Number')}}</td>
                 <td>{{getCellDisplay(node, 'Conformance')}}</td>
                 <td>{{getCellDisplay(node, 'Cardinality')}}</td>
                 <td>{{getCellDisplay(node, 'DataType')}}</td>

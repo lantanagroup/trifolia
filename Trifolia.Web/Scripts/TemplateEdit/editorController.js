@@ -133,6 +133,18 @@
         }
     };
 
+    function getSiblingNodes(node) {
+        if (!node.Parent) {
+            return _.filter($scope.nodes, function (next) {
+                return !next.Parent;
+            });
+        } else {
+            return _.filter($scope.nodes, function (next) {
+                return next.Parent == node.Parent;
+            })
+        }
+    }
+
     /**
      * Creates a constraint based on the base element/attribute (node) selected on the schema.
      * This function should not be called unless the user has selected a node within the schema.
@@ -143,10 +155,10 @@
         // create a new constraint based on the node selected. initially, data-type should be left empty (representing "Default"), copy the context, cardinality and conformance from the node
         var createDefaultComputable = function (node) {
             var parentConstraint = node.Parent ? node.Parent.Constraint : null;
-            var siblingNodes = node.Parent ? node.Parent.Children : $scope.nodes;
+            var siblingNodes = getSiblingNodes(selectedNode);
             var siblingConstraints = node.Parent && node.Parent.Constraint ? node.Parent.Constraint.Children : $scope.constraints;
             var nodeIndex = siblingNodes.indexOf(node);
-            var constraintIndex = 0;
+            var constraintIndex = -1;
 
             // Determine where to place the constraint in the list. This is important so that when saving,
             // the list is sent back to the server in the correct order.
@@ -158,15 +170,20 @@
                     break;
                 }
             }
-            //var constraint = new ConstraintModel(null, parentConstraint, $scope);
-            var constraint = {};
 
+            if (nodeIndex == 0) {
+                constraintIndex = 0;
+            }
+
+            var constraint = {};
+            
             constraint.Context = node.Context;
             constraint.Conformance = node.Conformance;
             constraint.Cardinality = node.Cardinality;
             constraint.isNew = true;
             //constraint.IsChoice = node.IsChoice;
             constraint.IsPrimitive = false;
+            constraint.Children = [];
 
             // Set as branch identifier if parent is a branch root, default conformance is SHALL
             if (parentConstraint && parentConstraint.IsBranch && constraint.Conformance == "SHALL") {
@@ -175,12 +192,14 @@
                 constraint.IsBranchIdentifier = false
             }
 
-            constraintIndex <= siblingConstraints.length - 1 ? siblingConstraints.splice(constraintIndex, 0, constraint) : siblingConstraints.push(constraint);
+            if (constraintIndex >= 0) {
+                siblingConstraints.splice(constraintIndex, 0, constraint);
+            } else {
+                siblingConstraints.push(constraint);
+            }
 
             node.Constraint = constraint;
-            constraint.ConstraintAndProseChanged = true;
             templateChanged();
-            //constraint.SubscribeForUpdates();
         };
 
         // recursively create computable constraints for parent nodes that don't have constraints, first.
@@ -300,17 +319,27 @@
             return;
         }
 
-        var constraintIndex = $scope.constraints.indexOf(selectedNode.Constraint);
+        function removeConstraintFromParents(parentConstraint) {
+            var foundIndex = parentConstraint.Children.indexOf(selectedNode.Constraint);
+
+            if (foundIndex >= 0) {
+                parentConstraint.Children.splice(foundIndex, 1);
+            }
+
+            _.each(parentConstraint.Children, removeConstraintFromParents);
+        }
+
+        // Recursively remove the constraint from parent constraints, starting with the root level constraints
+        _.each($scope.constraints, removeConstraintFromParents);
 
         // if the constraint has not already been saved (doesn't have an Id value), just remove the constraint
         // if the constraint HAS been saved (has an Id value), then flag it as deleted and remove (TODO: How??)
         if (selectedNode.Constraint.Id) {
-            $scope.removedConstraints.push(constraint);
+            $scope.removedConstraints.push(selectedNode.Constraint);
         }
 
-        if (constraintIndex !== -1) $scope.constraints.splice(constraintIndex, 1);
-
         delete selectedNode.Constraint;
+
         templateChanged();
     };
 
@@ -419,7 +448,7 @@
 
         delete data.Template.ValidationResults;
 
-        var removeIdFromNewConstraints = function (list) {
+        var cleanConstraintProperties = function (list) {
             _.forEach(list, function (constraint) {
                 if (constraint.IsNew) {
                     constraint.Id = null;
@@ -430,11 +459,12 @@
                 // Newtonsoft's JsonConvert has problems converting an object to a string.
                 delete constraint.NarrativeProseHtml;
 
-                removeIdFromNewConstraints(constraint.Children);
+                cleanConstraintProperties(constraint.Children);
             });
         };
 
-        removeIdFromNewConstraints(data.Constraints);
+        cleanConstraintProperties(data.Constraints);
+        cleanConstraintProperties(data.RemovedConstraints);
 
         // Recursively updates the constraints in currentList (and its children)
         // based on the newList. newList is plain JS objects, not KO'd objects.
@@ -463,8 +493,9 @@
 
         EditorService.save(JSON.stringify(data))
             .then(function (response) {
-                if (response.Error) {
-                    $scope.message = response.Error;
+                if (response.data.Error) {
+                    $scope.message = response.data.Error;
+                    constraintBlockUI.stop();
                     return;
                 }
 
@@ -472,6 +503,9 @@
                 $scope.template.Id = response.data.TemplateId;
                 $scope.template.AuthorId = response.data.AuthorId;
                 $scope.isModified = false;
+                $scope.message = 'Successfully saved template/profile';
+
+                setTimeout(function () { $scope.message = ''; }, 5000);
 
                 // Empty the removed constraints list
                 $scope.removedConstraints = [];
@@ -502,14 +536,19 @@
      * @param {any} selectedNode
      */
     function nodeExpanded(selectedNode) {
-        if (selectedNode.Children.length === 0) {
+        if (!selectedNode.$loaded) {
             return EditorService.getNodes($scope.template.OwningImplementationGuideId, selectedNode.DataType)
                 .then(function (nodes) {
                     if (selectedNode.Constraint) {
                         associateNodes(nodes, selectedNode.Constraint.Children);
                     }
 
-                    selectedNode.Children = nodes;
+                    _.each(nodes, function (node) {
+                        node.Parent = selectedNode;
+                        $scope.nodes.push(node);
+                    });
+
+                    selectedNode.$loaded = true;
                 });
         } else {
             return $q.resolve();
@@ -1002,6 +1041,11 @@ angular.module('Trifolia').controller('AddContainedTemplateController', function
         $uibModalInstance.close(template);
     };
 
+    function cancel() {
+        $uibModalInstance.dismiss();
+    }
+
     $scope.search = search;
     $scope.select = select;
+    $scope.cancel = cancel;
 });

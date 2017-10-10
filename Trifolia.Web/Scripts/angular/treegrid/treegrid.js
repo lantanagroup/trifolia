@@ -21,12 +21,12 @@
                     $scope.onSearchConstraint({ number: $scope.numberSearch });
                 };
 
-                function getCellDisplay(node, column) {
+                function getCellDisplay(node, preferredColumn, column) {
                     if (node.Constraint) {
-                        return node.Constraint[column];
+                        return node.Constraint[preferredColumn] || node.Constraint[column];
                     }
 
-                    return node[column];
+                    return node[preferredColumn] || node[column];
                 };
 
                 function getNodeTabs(node) {
@@ -70,8 +70,16 @@
 
                 var getFlattenedNodes = function () {
                     var flattenNodes = function (flattened, parent, level) {
-                        for (var i = 0; i < parent.Children.length; i++) {
-                            var node = parent.Children[i];
+                        var nodes = _.filter($scope.nodes, function (node) {
+                            if (!parent) {
+                                return !node.Parent;
+                            } else {
+                                return node.Parent == parent;
+                            }
+                        });
+
+                        for (var i = 0; i < nodes.length; i++) {
+                            var node = nodes[i];
 
                             node.$level = level;
                             flattened.push(node);
@@ -83,7 +91,7 @@
                     };
 
                     var flattened = [];
-                    flattenNodes(flattened, { Children: $scope.nodes }, 0);
+                    flattenNodes(flattened, null, 0);
                     return flattened;
                 };
 
