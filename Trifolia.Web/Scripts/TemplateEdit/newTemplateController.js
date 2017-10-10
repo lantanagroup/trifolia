@@ -1,14 +1,12 @@
-﻿angular.module('Trifolia').controller('NewTemplateController', function ($scope, ImplementationGuideService, EditorService, TemplateService, blockUI) {
+﻿angular.module('Trifolia').controller('NewTemplateController', ['$scope', '$uibModal', 'ImplementationGuideService', 'EditorService', 'TemplateService', 'blockUI', function ($scope, $uibModal, ImplementationGuideService, EditorService, TemplateService, blockUI) {
     
     function init() {
         initVars();
 
         //Initialize selectable implementation guides
-        var startTime = new Date().getTime();
         ImplementationGuideService.getEditable()
             .then(function (implementationGuides) {
                 $scope.implementationGuides = implementationGuides;
-                console.log('Done loading implementation guides: ' + (new Date().getTime() - startTime) + ' milliseconds');
             });
     }
 
@@ -108,7 +106,32 @@
                 break;
             }
         }
-    }
+    };
+
+    function selectContext() {
+        var templateType = _.find($scope.templateTypes, function (templateType) {
+            return templateType.Id == $scope.template.TemplateTypeId;
+        });
+
+        if (!templateType) {
+            return;
+        }
+
+        var modalInstance = $uibModal.open({
+            templateUrl: '/Scripts/angular/templates/appliesToModal.html',
+            controller: 'AppliesToModalCtrl',
+            size: 'lg',
+            resolve: {
+                implementationGuideId: function () { return $scope.template.OwningImplementationGuideId; },
+                baseType: function () { return templateType.RootContextType; }
+            }
+        });
+
+        modalInstance.result.then(function (contextInfo) {
+            $scope.template.PrimaryContext = contextInfo.primaryContext;
+            $scope.template.PrimaryContextType = contextInfo.primaryContextType;
+        });
+    };
 
     function save() {
 
@@ -163,7 +186,7 @@
 
                 templateBlockUI.stop();
 
-                location.href = "/TemplateManagement/Edit/" + $scope.location;
+                location.href = "/TemplateManagement/Edit/Id/" + response.data.TemplateId;
             });
 
     }
@@ -181,5 +204,6 @@
     $scope.setPrimaryContext = setPrimaryContext;
     $scope.save = save;
     $scope.cancel = cancel;
+    $scope.selectContext = selectContext;
     
-});
+}]);

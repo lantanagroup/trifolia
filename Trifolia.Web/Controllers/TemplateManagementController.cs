@@ -273,7 +273,7 @@ namespace Trifolia.Web.Controllers
         #region Edit Template
 
         [Securable(SecurableNames.TEMPLATE_EDIT)]
-        public ActionResult EditId(int templateId, int? defaultImplementationGuideId = null, bool newEditor = false)
+        public ActionResult EditId(int templateId, int? defaultImplementationGuideId = null)
         {
             Template template = this.tdb.Templates.Single(y => y.Id == templateId);
 
@@ -283,11 +283,11 @@ namespace Trifolia.Web.Controllers
                 throw new ArgumentException(message);
             }
 
-            return Edit(template, defaultImplementationGuideId, newEditor);
+            return Edit(template, defaultImplementationGuideId);
         }
 
         [Securable(SecurableNames.TEMPLATE_EDIT)]
-        public ActionResult EditOid(string oid, int? defaultImplementationGuideId = null, bool newEditor = false)
+        public ActionResult EditOid(string oid, int? defaultImplementationGuideId = null)
         {
             string identifier = string.Format("urn:oid:{0}", oid);
             Template template = this.tdb.Templates.SingleOrDefault(y => y.Oid == identifier);
@@ -298,11 +298,11 @@ namespace Trifolia.Web.Controllers
                 throw new ArgumentException(message);
             }
 
-            return Edit(template, defaultImplementationGuideId, newEditor);
+            return Edit(template, defaultImplementationGuideId);
         }
 
         [Securable(SecurableNames.TEMPLATE_EDIT)]
-        public ActionResult EditInstanceIdentifier(string root, string extension, int? defaultImplementationGuideId = null, bool newEditor = false)
+        public ActionResult EditInstanceIdentifier(string root, string extension, int? defaultImplementationGuideId = null)
         {
             string identifier = string.Format("urn:hl7ii:{0}:{1}", root, extension);
             Template template = this.tdb.Templates.SingleOrDefault(y => y.Oid == identifier);
@@ -313,11 +313,11 @@ namespace Trifolia.Web.Controllers
                 throw new ArgumentException(message);
             }
 
-            return Edit(template, defaultImplementationGuideId, newEditor);
+            return Edit(template, defaultImplementationGuideId);
         }
 
         [Securable(SecurableNames.TEMPLATE_EDIT)]
-        public ActionResult EditUri(string uri, int? defaultImplementationGuideId = null, bool newEditor = false)
+        public ActionResult EditUri(string uri, int? defaultImplementationGuideId = null)
         {
             string identifier = string.Format("uri:{0}", uri);
             Template template = this.tdb.Templates.SingleOrDefault(y => y.Oid == identifier);
@@ -328,17 +328,16 @@ namespace Trifolia.Web.Controllers
                 throw new ArgumentException(message);
             }
 
-            return Edit(template, defaultImplementationGuideId, newEditor);
+            return Edit(template, defaultImplementationGuideId);
         }
 
         [Securable(SecurableNames.TEMPLATE_EDIT)]
-        public ActionResult EditNew(int? defaultImplementationGuide = null, bool newEditor = false)
+        public ActionResult EditNew(int? defaultImplementationGuide = null)
         {
             return View("NewTemplate");
-                //Edit(null, defaultImplementationGuide, newEditor);
         }
 
-        private ActionResult Edit(Template template, int? defaultImplementationGuideId = null, bool newEditor = false)
+        private ActionResult Edit(Template template, int? defaultImplementationGuideId = null)
         {
             EditModel model = new EditModel()
             {
@@ -353,7 +352,7 @@ namespace Trifolia.Web.Controllers
                 model.TemplateId = template.Id;
             }
 
-            return View(newEditor ? "NewEditor" : "Edit", model);
+            return View("Edit", model);
         }
 
         #endregion

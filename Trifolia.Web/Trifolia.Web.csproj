@@ -1981,6 +1981,7 @@
     <Content Include="Scripts\angular\filters.js" />
     <Content Include="Scripts\angular\services.js" />
     <Content Include="Scripts\angular\startup.js" />
+    <Content Include="Scripts\angular\templates\multipleTemplateSelect.html" />
     <Content Include="Scripts\angular\templates\newTemplateModal.html" />
     <Content Include="Scripts\angular\templates\appliesToModal.html" />
     <Content Include="Scripts\angular\templates\templateSelect.html" />
@@ -2075,9 +2076,9 @@
     <Content Include="Scripts\lib\q\spec\q-spec.html" />
     <Content Include="Scripts\lib\q\spec\q-spec.js" />
     <Content Include="Scripts\lib\q\spec\queue-spec.js" />
-    <Content Include="Scripts\NewTemplateEditor\constraintsPanel.html" />
-    <Content Include="Scripts\NewTemplateEditor\newTemplateController.js" />
-    <Content Include="Scripts\NewTemplateEditor\templateSearch.html" />
+    <Content Include="Scripts\TemplateEdit\constraintsPanel.html" />
+    <Content Include="Scripts\TemplateEdit\newTemplateController.js" />
+    <Content Include="Scripts\TemplateEdit\templateSearch.html" />
     <Content Include="Scripts\Report\Organizations.js" />
     <Content Include="Scripts\Report\TemplateReview.js" />
     <Content Include="Scripts\Report\TemplateUsage.js" />
@@ -2092,10 +2093,7 @@
     <Content Include="Scripts\lib\sceditor\sceditor.custom.js" />
     <Content Include="Scripts\Schema\DataTypesViewModel.js" />
     <Content Include="Scripts\lib\Sha1.js" />
-    <Content Include="Scripts\NewTemplateEditor\editorController.js" />
-    <Content Include="Scripts\TemplateEdit\templateEditGlobals.js" />
-    <Content Include="Scripts\TemplateEdit\templateEditModels.js" />
-    <Content Include="Scripts\TemplateEdit\TemplateEditViewModel.js" />
+    <Content Include="Scripts\TemplateEdit\editorController.js" />
     <Content Include="Scripts\TemplateManagement\BulkCopy.js" />
     <Content Include="Scripts\TemplateManagement\constraintViewModel.js" />
     <Content Include="Scripts\TemplateManagement\Delete.js" />
@@ -2180,12 +2178,11 @@
     <Content Include="Views\Shared\UserControls\Head.ascx" />
     <Content Include="Views\Support\Index.aspx" />
     <Content Include="Views\TemplateManagement\Delete.aspx" />
-    <Content Include="Views\TemplateManagement\Edit.aspx" />
     <Content Include="Views\TemplateManagement\BulkCopy.aspx" />
     <Content Include="Views\TemplateManagement\Copy.aspx" />
     <Content Include="Views\TemplateManagement\List.aspx" />
     <Content Include="Views\TemplateManagement\Move.aspx" />
-    <Content Include="Views\TemplateManagement\NewEditor.aspx" />
+    <Content Include="Views\TemplateManagement\Edit.aspx" />
     <Content Include="Views\TemplateManagement\NewTemplate.aspx" />
     <Content Include="Views\TemplateManagement\PublishSettings.aspx" />
     <Content Include="Views\TemplateManagement\View.aspx" />

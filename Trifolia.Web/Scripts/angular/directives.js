@@ -456,20 +456,74 @@ angular.module('Trifolia').controller('NewTemplateModalCtrl', function ($scope, 
     };
 });
 
-angular.module('Trifolia').controller('AppliesToModalCtrl', function ($scope, $uibModalInstance, baseType) {
-    $scope.isValid = function () {
-        return false;
+angular.module('Trifolia').controller('AppliesToModalCtrl', ['$scope', '$uibModalInstance', 'EditorService', 'implementationGuideId', 'baseType', function ($scope, $uibModalInstance, EditorService, implementationGuideId, baseType) {
+    $scope.message = '';
+    $scope.nodes = [];
+    $scope.flattenedNodes = [];
+
+    function select(node) {
+        $uibModalInstance.close({
+            primaryContext: node.Context,
+            primaryContextType: node.DataType
+        });
     };
 
-    $scope.ok = function () {
-
-    };
-
-    $scope.cancel = function () {
+    function cancel() {
         $uibModalInstance.dismiss('close');
     };
 
-    $scope.init = function () {
+    function flattenNodes(parent, level) {
+        var list = !parent ? $scope.nodes : parent.Children;
 
+        _.each(list, function (node) {
+            node.$whitespace = '';
+            for (var i = 0; i < level; i++) {
+                node.$whitespace += '    ';
+            }
+
+            $scope.flattenedNodes.push(node);
+
+            if (node.$expanded) {
+                flattenNodes(node, level + 1);
+            }
+        });
     };
-});
+
+    function toggleNode(node) {
+        if (!node.$loaded) {
+            EditorService.getNodes(implementationGuideId, node.DataType)
+                .then(function (nodes) {
+                    node.Children = nodes;
+                    node.$loaded = true;
+
+                    node.$expanded = !node.$expanded;
+                    $scope.flattenedNodes = [];
+                    flattenNodes(null, 0);
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+        } else {
+            node.$expanded = !node.$expanded;
+            $scope.flattenedNodes = [];
+            flattenNodes(null, 0);
+        }
+    };
+
+    function init() {
+        EditorService.getNodes(implementationGuideId, baseType)
+            .then(function (nodes) {
+                $scope.nodes = nodes;
+                $scope.flattenedNodes = [];
+                flattenNodes(null, 0);
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+    };
+
+    $scope.select = select;
+    $scope.cancel = cancel;
+    $scope.init = init;
+    $scope.toggleNode = toggleNode;
+}]);

@@ -23,7 +23,7 @@
                     <input type="text" class="form-control" ng-model="template.PrimaryContextType" style="width: 50%" readonly="readonly" /> 
                     <!-- TODO: Make the user able to change the primary context type based on owning IG -->
                     <div class="input-group-btn">
-                        <button type="button" class="btn btn-primary" data-bind="disable: DisableAppliesToButton, click: function () { $('#appliesToDialog').modal('show'); }">...</button>
+                        <button type="button" class="btn btn-primary" ng-click="selectContext()">...</button>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" ng-click="save()" ng-disabled="invalid || !template.Description">Save and Continue</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" ng-click="save()" ng-disabled="invalid">Save and Continue</button>
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" ng-click="cancel()">Cancel</button>
@@ -80,5 +80,5 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="/Scripts/NewTemplateEditor/newTemplateController.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>""></script>
+    <script type="text/javascript" src="/Scripts/TemplateEdit/newTemplateController.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>""></script>
 </asp:Content>

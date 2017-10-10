@@ -3,10 +3,35 @@
         <h3 class="modal-title" id="modal-title">Applies To...</h3>
     </div>
     <div class="modal-body" id="modal-body" ng-init="init()">
-        ...
+        <div class="alert alert-info" ng-if="message">{{message}}</div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Element/Attribute</th>
+                    <th>Type</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="n in flattenedNodes">
+                    <td>
+                        <i class="glyphicon glyphicon-expand clickable" ng-if="n.HasChildren" ng-show="!n.$expanded" ng-click="toggleNode(n)"></i>
+                        <i class="glyphicon glyphicon-collapse-down clickable" ng-if="n.HasChildren" ng-show="n.$expanded" ng-click="toggleNode(n)"></i>
+                        <span style="white-space: pre;">{{n.$whitespace}}</span>
+                        <span ng-style="{ 'margin-left': !n.HasChildren ? '15px' : '0px' }">{{n.Context}}</span>
+                    </td>
+                    <td>{{n.DataType}}</td>
+                    <td>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="select(n)">Select</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="submit" ng-click="ok()" ng-disabled="!isValid()">OK</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </form>
