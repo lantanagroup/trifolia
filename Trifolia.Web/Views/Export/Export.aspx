@@ -92,7 +92,7 @@
 
             <uib-tabset ng-if="criteria.ExportFormat >= 0 && selectedImplementationGuide && !validationResults.RestrictDownload">
                 <uib-tab heading="General">
-                    <p ng-show="criteria.ExportFormat == 10 || criteria.ExportFormat == 11 || criteria.ExportFormat == 8 || criteria.ExportFormat == 1">No general export settings are available for this format.</p>
+                    <p ng-show="criteria.ExportFormat == 9 || criteria.ExportFormat == 10 || criteria.ExportFormat == 11 || criteria.ExportFormat == 8 || criteria.ExportFormat == 1">No general export settings are available for this format.</p>
 
                     <div ng-show="categorySelectionFormats.indexOf(criteria.ExportFormat) >= 0" ng-include="'categorySelect.html'"></div>
 
@@ -167,7 +167,7 @@
                         <input type="text" name="DefaultSchematron" ng-model="criteria.DefaultSchematron" class="form-control">
                     </div>
 
-                    <div ng-show="vocFormats.indexOf(criteria.ExportFormat) >= 0 && criteria.ExportFormat != 10 && criteria.ExportFormat != 11">
+                    <div ng-show="vocFormats.indexOf(criteria.ExportFormat) >= 0 && criteria.ExportFormat != 9 && criteria.ExportFormat != 10 && criteria.ExportFormat != 11">
                         <div class="form-group">
                             <label>Maximum Members (0 = export all members)</label>
                             <div class="input-group">
