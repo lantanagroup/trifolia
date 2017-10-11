@@ -12,9 +12,9 @@
         { id: 7, name: 'Schematron (SCH)', securable: 'ExportSchematron' },
         { id: 8, name: 'Vocabulary (XLSX)', securable: 'ExportVocabulary' },
         { id: 9, name: 'Vocabulary (Native XML)', securable: 'ExportVocabulary' },
-        { id: 10, name: 'Vocbulary (Single SVS XML)', securable: 'ExportVocabulary' },
+        { id: 10, name: 'Vocabulary (Single SVS XML)', securable: 'ExportVocabulary' },
         { id: 11, name: 'Vocabulary (Multiple SVS XML)', securable: 'ExportVocabulary' },
-        { id: 12, name: 'Vocbulary Bundle (FHIR XML)', securable: 'ExportVocabulary' }
+        { id: 12, name: 'Vocabulary Bundle (FHIR XML)', securable: 'ExportVocabulary' }
     ];
     $scope.templateSelectionFormats = [0, 2, 3, 6, 5, 7];
     $scope.xmlFormats = [3, 4, 5, 6];
