@@ -144,6 +144,9 @@
 
         // Don't get the default export settings before the templates and value sets are done loading.
         if ($scope.isGettingTemplates || $scope.isGettingValuesets) {
+            setTimeout(function () {
+                $scope.loadSettings();
+            }, 1000);
             return;
         }
 
