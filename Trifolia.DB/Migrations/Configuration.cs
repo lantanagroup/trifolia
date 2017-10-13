@@ -10,6 +10,8 @@ namespace Trifolia.DB.Migrations
 
     internal sealed class Configuration : DbMigrationsConfiguration<Trifolia.DB.TrifoliaDatabase>
     {
+        private string[] fhirStu3ResourceTypes = new string[] { "Account", "ActivityDefinition", "AllergyIntolerance", "AdverseEvent", "Appointment", "AppointmentResponse", "AuditEvent", "Basic", "Binary", "BodySite", "Bundle", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "Claim", "ClaimResponse", "ClinicalImpression", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition", "Consent", "Contract", "Coverage", "DataElement", "DetectedIssue", "Device", "DeviceComponent", "DeviceMetric", "DeviceRequest", "DeviceUseStatement", "DiagnosticReport", "DocumentManifest", "DocumentReference", "EligibilityRequest", "EligibilityResponse", "Encounter", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "ExpansionProfile", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingManifest", "ImagingStudy", "Immunization", "ImmunizationRecommendation", "ImplementationGuide", "Library", "Linkage", "List", "Location", "Measure", "MeasureReport", "Media", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "MessageDefinition", "MessageHeader", "NamingSystem", "NutritionOrder", "Observation", "OperationDefinition", "OperationOutcome", "Organization", "Parameters", "Patient", "PaymentNotice", "PaymentReconciliation", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "ProcedureRequest", "ProcessRequest", "ProcessResponse", "Provenance", "Questionnaire", "QuestionnaireResponse", "ReferralRequest", "RelatedPerson", "RequestGroup", "ResearchStudy", "ResearchSubject", "RiskAssessment", "Schedule", "SearchParameter", "Sequence", "ServiceDefinition", "Slot", "Specimen", "StructureDefinition", "StructureMap", "Subscription", "Substance", "SupplyDelivery", "SupplyRequest", "Task", "TestScript", "TestReport", "ValueSet", "VisionPrescription" };
+        private string[] fhirCurrentBuildResourceTypes = new string[] { "Account", "ActivityDefinition", "AllergyIntolerance", "AdverseEvent", "Appointment", "AppointmentResponse", "AuditEvent", "Basic", "Binary", "BodyStructure", "Bundle", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "Claim", "ClaimResponse", "ClinicalImpression", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition (aka Problem)", "Consent", "Contract", "Coverage", "DetectedIssue", "Device", "DeviceComponent", "DeviceMetric", "DeviceRequest", "DeviceUseStatement", "DiagnosticReport", "DocumentManifest", "DocumentReference", "EligibilityRequest", "EligibilityResponse", "Encounter", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "EventDefinition", "ExpansionProfile", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingManifest", "ImagingStudy", "Immunization", "ImmunizationRecommendation", "ImplementationGuide", "Library", "Linkage", "List", "Location", "Measure", "MeasureReport", "Media", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "MessageDefinition", "MessageHeader", "NamingSystem", "NutritionOrder", "Observation", "OperationDefinition", "OperationOutcome", "Organization", "Parameters", "Patient", "PaymentNotice", "PaymentReconciliation", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "ProcedureRequest", "ProcessRequest", "ProcessResponse", "Provenance", "Questionnaire", "QuestionnaireResponse", "RelatedPerson", "RequestGroup", "ResearchStudy", "ResearchSubject", "RiskAssessment", "Schedule", "SearchParameter", "Sequence", "ServiceDefinition", "Slot", "Specimen", "StructureDefinition", "StructureMap", "Subscription", "Substance", "SupplyDelivery", "SupplyRequest", "Task", "TestScript", "TestReport", "ValueSet", "VisionPrescription" };
         private AppSecurable[] appSecurables;
         private Role[] roles;
 
@@ -108,62 +110,6 @@ namespace Trifolia.DB.Migrations
                 new TemplateType() { ImplementationGuideTypeId = 3, Name = "Document", OutputOrder = 1, RootContext = "QualityMeasureDocument", RootContextType = "QualityMeasureDocument" },
                 new TemplateType() { ImplementationGuideTypeId = 3, Name = "Section", OutputOrder = 2, RootContext = "component", RootContextType = "Component2" },
                 new TemplateType() { ImplementationGuideTypeId = 3, Name = "Entry", OutputOrder = 3, RootContext = "entry", RootContextType = "SourceOf" }
-            );
-        }
-
-        private void SeedFHIRDSTU1(Trifolia.DB.TrifoliaDatabase context)
-        {
-            context.TemplateTypes.AddOrUpdate(tt => new { tt.ImplementationGuideTypeId, tt.Name },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "AdverseReaction", OutputOrder = 1, RootContext = "AdverseReaction", RootContextType = "AdverseReaction" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Alert", OutputOrder = 2, RootContext = "Alert", RootContextType = "Alert" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "AllergyIntolerance", OutputOrder = 3, RootContext = "AllergyIntolerance", RootContextType = "AllergyIntolerance" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Binary", OutputOrder = 4, RootContext = "Binary", RootContextType = "Binary" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "CarePlan", OutputOrder = 5, RootContext = "CarePlan", RootContextType = "CarePlan" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Composition", OutputOrder = 6, RootContext = "Composition", RootContextType = "Composition" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "ConceptMap", OutputOrder = 7, RootContext = "ConceptMap", RootContextType = "ConceptMap" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Condition", OutputOrder = 8, RootContext = "Condition", RootContextType = "Condition" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Conformance", OutputOrder = 9, RootContext = "Conformance", RootContextType = "Conformance" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Device", OutputOrder = 10, RootContext = "Device", RootContextType = "Device" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "DeviceObservationReport", OutputOrder = 11, RootContext = "DeviceObservationReport", RootContextType = "DeviceObservationReport" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "DiagnosticOrder", OutputOrder = 12, RootContext = "DiagnosticOrder", RootContextType = "DiagnosticOrder" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "DiagnosticReport", OutputOrder = 13, RootContext = "DiagnosticReport", RootContextType = "DiagnosticReport" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "DocumentReference", OutputOrder = 14, RootContext = "DocumentReference", RootContextType = "DocumentReference" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "DocumentManifest", OutputOrder = 15, RootContext = "DocumentManifest", RootContextType = "DocumentManifest" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Encounter", OutputOrder = 16, RootContext = "Encounter", RootContextType = "Encounter" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "FamilyHistory", OutputOrder = 17, RootContext = "FamilyHistory", RootContextType = "FamilyHistory" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Group", OutputOrder = 18, RootContext = "Group", RootContextType = "Group" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "ImagingStudy", OutputOrder = 19, RootContext = "ImagingStudy", RootContextType = "ImagingStudy" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Immunization", OutputOrder = 20, RootContext = "Immunization", RootContextType = "Immunization" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "ImmunizationRecommendation", OutputOrder = 21, RootContext = "ImmunizationRecommendation", RootContextType = "ImmunizationRecommendation" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "List", OutputOrder = 22, RootContext = "List", RootContextType = "List" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Location", OutputOrder = 23, RootContext = "Location", RootContextType = "Location" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Media", OutputOrder = 24, RootContext = "Media", RootContextType = "Media" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Medication", OutputOrder = 25, RootContext = "Medication", RootContextType = "Medication" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "MedicationAdministration", OutputOrder = 26, RootContext = "MedicationAdministration", RootContextType = "MedicationAdministration" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "MedicationDispense", OutputOrder = 27, RootContext = "MedicationDispense", RootContextType = "MedicationDispense" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "MedicationPrescription", OutputOrder = 28, RootContext = "MedicationPrescription", RootContextType = "MedicationPrescription" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "MedicationStatement", OutputOrder = 29, RootContext = "MedicationStatement", RootContextType = "MedicationStatement" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "MessageHeader", OutputOrder = 30, RootContext = "MessageHeader", RootContextType = "MessageHeader" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Observation", OutputOrder = 31, RootContext = "Observation", RootContextType = "Observation" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "OperationOutcome", OutputOrder = 32, RootContext = "OperationOutcome", RootContextType = "OperationOutcome" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Order", OutputOrder = 33, RootContext = "Order", RootContextType = "Order" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "OrderResponse", OutputOrder = 34, RootContext = "OrderResponse", RootContextType = "OrderResponse" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Organization", OutputOrder = 35, RootContext = "Organization", RootContextType = "Organization" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Other", OutputOrder = 36, RootContext = "Other", RootContextType = "Other" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Patient", OutputOrder = 37, RootContext = "Patient", RootContextType = "Patient" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Practitioner", OutputOrder = 38, RootContext = "Practitioner", RootContextType = "Practitioner" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Procedure", OutputOrder = 39, RootContext = "Procedure", RootContextType = "Procedure" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Profile", OutputOrder = 40, RootContext = "Profile", RootContextType = "Profile" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Provenance", OutputOrder = 41, RootContext = "Provenance", RootContextType = "Provenance" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Query", OutputOrder = 42, RootContext = "Query", RootContextType = "Query" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Questionnaire", OutputOrder = 43, RootContext = "Questionnaire", RootContextType = "Questionnaire" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "RelatedPerson", OutputOrder = 44, RootContext = "RelatedPerson", RootContextType = "RelatedPerson" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "SecurityEvent", OutputOrder = 45, RootContext = "SecurityEvent", RootContextType = "SecurityEvent" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Specimen", OutputOrder = 46, RootContext = "Specimen", RootContextType = "Specimen" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Substance", OutputOrder = 47, RootContext = "Substance", RootContextType = "Substance" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Supply", OutputOrder = 48, RootContext = "Supply", RootContextType = "Supply" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "ValueSet", OutputOrder = 49, RootContext = "ValueSet", RootContextType = "ValueSet" },
-                new TemplateType() { ImplementationGuideTypeId = 4, Name = "Extension", OutputOrder = 50, RootContext = "Extension", RootContextType = "Extension" }
             );
         }
 
@@ -267,22 +213,13 @@ namespace Trifolia.DB.Migrations
             );
         }
 
-        private void SeedFHIR(Trifolia.DB.TrifoliaDatabase context, int implementationGuideTypeId, string resourceListResource)
+        private void SeedFHIR(Trifolia.DB.TrifoliaDatabase context, int implementationGuideTypeId, string[] resourceTypesArray)
         {
-            List<string> resourceTypes = new List<string>() { "Extension" };
             List<TemplateType> templateTypes = new List<TemplateType>();
-
-            using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceListResource)))
-            {
-                string content = sr.ReadToEnd();
-                List<string> resourceTypeLines = (from c in content.Split('\n')
-                                                  orderby c
-                                                  select c.Replace("\r", "").Trim())
-                                                  .OrderBy(y => y)
-                                                  .ToList();
-                resourceTypes.AddRange(resourceTypeLines);
-            }
-
+            List<string> resourceTypes = new List<string>(resourceTypesArray);
+            resourceTypes.Add("Extension");
+            resourceTypes = resourceTypes.OrderBy(y => y).ToList();
+            
             for (int i = 0; i < resourceTypes.Count; i++)
             {
                 var templateType = new TemplateType()
@@ -315,6 +252,30 @@ namespace Trifolia.DB.Migrations
 
                 context.TemplateTypes.Remove(removeTemplateType);
             }
+        }
+
+        private void RemoveImplementationGuideType(Trifolia.DB.TrifoliaDatabase context, int implementationGuideTypeId)
+        {
+            ImplementationGuideType igType = context.ImplementationGuideTypes.SingleOrDefault(y => y.Id == implementationGuideTypeId);
+
+            if (igType == null)
+                return;
+
+            List<ImplementationGuide> igs = igType.ImplementationGuides.ToList();
+
+            foreach (var ig in igs)
+            {
+                ig.Delete(context, null);
+            }
+
+            List<TemplateType> templateTypes = igType.TemplateTypes.ToList();
+
+            foreach (var templateType in templateTypes)
+            {
+                context.TemplateTypes.Remove(templateType);
+            }
+
+            context.ImplementationGuideTypes.Remove(igType);
         }
 
         protected override void Seed(Trifolia.DB.TrifoliaDatabase context)
@@ -351,6 +312,8 @@ namespace Trifolia.DB.Migrations
                     Status = "Test"
                 });
 
+            this.RemoveImplementationGuideType(context, 4);     // FHIR DSTU1 no longer supported
+
             context.ImplementationGuideTypes.AddOrUpdate(igt => igt.Id,
                 new ImplementationGuideType()
                 {
@@ -375,14 +338,6 @@ namespace Trifolia.DB.Migrations
                     SchemaLocation = "schemas\\EMeasure.xsd",
                     SchemaPrefix = "hqmf",
                     SchemaURI = "urn:hl7-org:v3"
-                },
-                new ImplementationGuideType()
-                {
-                    Id = 4,
-                    Name = "FHIR DSTU1",
-                    SchemaLocation = "fhir-all.xsd",
-                    SchemaPrefix = "fhir",
-                    SchemaURI = "http://hl7.org/fhir"
                 },
                 new ImplementationGuideType()
                 {
@@ -416,17 +371,14 @@ namespace Trifolia.DB.Migrations
             Console.WriteLine("Seeding EMeasure implementation guide type with template types");
             this.SeedEMeasure(context);
 
-            Console.WriteLine("Seeding FHIR DSTU1 implementation guide type with template types");
-            this.SeedFHIRDSTU1(context);
-
             Console.WriteLine("Seeding FHIR DSTU2 implementation guide type with template types");
             this.SeedFHIRDSTU2(context);
 
             Console.WriteLine("Seeding FHIR STU3 implementation guide type with template types");
-            this.SeedFHIR(context, 6, "Trifolia.DB.Migrations.FHIR_STU3_Resources.txt");
+            this.SeedFHIR(context, 6, fhirStu3ResourceTypes);
 
             Console.WriteLine("Seeding FHIR Latest implementation guide type with template types");
-            this.SeedFHIR(context, 7, "Trifolia.DB.Migrations.FHIR_Latest_Resources.txt");
+            this.SeedFHIR(context, 7, fhirCurrentBuildResourceTypes);
 
             context.AppSecurables.AddOrUpdate(apps => apps.Name, this.appSecurables);
             context.Roles.AddOrUpdate(r => r.Name, this.roles);

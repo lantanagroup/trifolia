@@ -251,10 +251,6 @@
     <EmbeddedResource Include="Migrations\201710131619179_vTemplateRelationshipRequired.resx">
       <DependentUpon>201710131619179_vTemplateRelationshipRequired.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\FHIR_Latest_Resources.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
