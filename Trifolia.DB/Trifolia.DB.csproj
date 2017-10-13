@@ -117,6 +117,10 @@
     <Compile Include="Migrations\201708031727547_multiple_contained_templates.Designer.cs">
       <DependentUpon>201708031727547_multiple_contained_templates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710131619179_vTemplateRelationshipRequired.cs" />
+    <Compile Include="Migrations\201710131619179_vTemplateRelationshipRequired.Designer.cs">
+      <DependentUpon>201710131619179_vTemplateRelationshipRequired.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -244,6 +248,9 @@
     <EmbeddedResource Include="Migrations\201703292147411_searchValueSet_up.sql" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201710131619179_vTemplateRelationshipRequired.resx">
+      <DependentUpon>201710131619179_vTemplateRelationshipRequired.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
   </ItemGroup>
   <ItemGroup>
