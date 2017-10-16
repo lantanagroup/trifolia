@@ -107,7 +107,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Document Tables {{criteria.DocumentTables}}</label>
+                            <label>Document Tables</label>
                             <select name="DocumentTables" ng-model="criteriaDocumentTables" ng-model-options="{ getterSetter: true }" class="form-control">
                                 <option value="0">None</option>
                                 <option value="1">Both</option>
