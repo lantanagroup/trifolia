@@ -121,6 +121,10 @@
     <Compile Include="Migrations\201710131619179_vTemplateRelationshipRequired.Designer.cs">
       <DependentUpon>201710131619179_vTemplateRelationshipRequired.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710181431268_getImplementationGuideTemplates.cs" />
+    <Compile Include="Migrations\201710181431268_getImplementationGuideTemplates.Designer.cs">
+      <DependentUpon>201710181431268_getImplementationGuideTemplates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -250,6 +254,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201710131619179_vTemplateRelationshipRequired.resx">
       <DependentUpon>201710131619179_vTemplateRelationshipRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710181431268_getImplementationGuideTemplates.resx">
+      <DependentUpon>201710181431268_getImplementationGuideTemplates.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
   </ItemGroup>

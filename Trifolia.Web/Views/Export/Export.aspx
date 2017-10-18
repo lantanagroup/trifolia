@@ -245,7 +245,7 @@
 
                     <div class="form-group">
                         <label>Include Inferred?</label>
-                        <input type="radio" name="Inferred" ng-value="true" ng-model="criteria.IncludeInferred" ng-change="loadTemplates()"> Yes <input type="radio" name="Inferred" ng-value="false" ng-model="criteria.IncludeInferred" ng-change="loadTemplates()"> No
+                        <input type="radio" name="Inferred" ng-value="true" ng-model="criteria.IncludeInferred" ng-change="loadTemplates(true)"> Yes <input type="radio" name="Inferred" ng-value="false" ng-model="criteria.IncludeInferred" ng-change="loadTemplates(true)"> No
                     </div>
 
                     <table class="table">

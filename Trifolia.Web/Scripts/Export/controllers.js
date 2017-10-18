@@ -219,7 +219,7 @@
             });
     };
 
-    $scope.loadTemplates = function () {
+    $scope.loadTemplates = function (ignoreSettings) {
         $scope.criteria.TemplateIds = [];
 
         if (!$scope.selectedImplementationGuide || !$scope.selectedImplementationGuide.Id) {
@@ -241,7 +241,10 @@
             })
             .finally(function () {
                 $scope.isGettingTemplates = false;
-                $scope.loadSettings();
+
+                if (!ignoreSettings) {
+                    $scope.loadSettings();
+                }
             });
     };
 
