@@ -13,8 +13,6 @@ namespace Trifolia.Logging
     {
         #region Methods
 
-        void LogSql(object query);
-
         void Debug(string message);
 
         void Debug(string message, params object[] messageArguments);

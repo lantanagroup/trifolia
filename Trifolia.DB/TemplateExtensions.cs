@@ -103,7 +103,6 @@ namespace Trifolia.DB
         public static List<Template> GetTemplates(IObjectRepository tdb)
         {
             var templateQuery = tdb.Templates;
-            Log.For(typeof(Template)).LogSql(templateQuery);
             
             return templateQuery.ToList();
         }

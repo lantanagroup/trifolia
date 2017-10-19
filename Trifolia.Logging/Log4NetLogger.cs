@@ -28,15 +28,6 @@ namespace Trifolia.Logging
 
         #endregion
 
-        public void LogSql(object query)
-        {
-            if (!(query is System.Data.Objects.ObjectQuery))
-                return;
-
-            var sql = ((System.Data.Objects.ObjectQuery)query).ToTraceString();
-            Trace(sql);
-        }
-
         public void Error(string message, Exception exception)
         {
             WriteToLog(Level.Error, message, exception);
