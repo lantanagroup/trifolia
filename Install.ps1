@@ -46,6 +46,7 @@ if ($shouldBackup -and $appServicePathExists) {
 	}
 	
 	## Backup the database
+	Push-Location
 	Import-Module Sqlps -DisableNameChecking
 
 	$sqlBackupFileName = $DBName + "-" + $dt + ".bak"
@@ -80,6 +81,7 @@ if ($shouldBackup -and $appServicePathExists) {
 	
 	## DONE
 	$zip.Dispose()
+	Pop-Location
 	Write-Host "Backup saved to " $backupZipPath
 }
 
