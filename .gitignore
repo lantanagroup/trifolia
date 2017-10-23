@@ -58,7 +58,6 @@ _ReSharper*/
 *.dbmdl
 
 #Test files
-*.testsettings
 .vs/
 packages/
 Trifolia.Web/appSettings.user.config
