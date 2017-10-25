@@ -168,7 +168,7 @@
             
                 <div class="navigation">
                     <ol class="breadcrumb">
-                        <li><a href="Exporting.html">Exporting</a></li>
+                        <li>Exporting</li>
                     </ol>
                     <div class="nav-arrows">
                         <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="Exporting.html" title="Exporting" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="ExportTerminology.html" title="Terminology" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Importing.html" title="Importing" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
@@ -183,7 +183,7 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts22">Export Templates to XML/JSON</span></span></h2>
+<h2 class="rvps14"><span class="rvts0"><span class="rvts20">Export Templates to XML/JSON</span></span></h2>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps4"><span class="rvts6">Click "Export" in the top navigation menu</span></li>
 <li value="2" class="rvps4"><span class="rvts6">Select the implementation guide to export</span></li>
@@ -192,72 +192,13 @@
 <li value="5" class="rvps4"><span class="rvts6">Select Export after the implementation guide has validated and finished loading</span></li>
 <li value="6" class="rvps4"><span class="rvts6">You will be prompted to download the .xml or .json export of your implementation guide</span></li>
 </ol>
-<h3 class="rvps9"><span class="rvts0"><span class="rvts31">XML Type</span></span></h3>
+<h3 class="rvps15"><span class="rvts0"><span class="rvts29">XML Type</span></span></h3>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps4"><span class="rvts21">Trifolia XML</span><span class="rvts6">: This is an XML format for templates proprietary to Trifolia. The schema for this format can be downloaded here.</span></li>
-<li class="rvps4"><span class="rvts21">FHIR XML</span><span class="rvts6">: This option is only available for FHIR implementation guides. This converts the templates in the implementation guide into the XML format defined by FHIR DSTU 1. This XML export includes both FHIR Profile &nbsp;and ValueSet resources. See http://www.hl7.org/fhir for more details on FHIR DSTU 1.</span></li>
-<li class="rvps4"><span class="rvts21">FHIR Build Package</span><span class="rvts6">: This option is only available for FHIR implementation guides. This create a zip package that can be used by the FHIR IG publisher to produce HTML files following the same styles and practices as the core FHIR standard.</span></li>
-<li class="rvps4"><span class="rvts21">Data Snapshot</span><span class="rvts6">: This is a JSON-based export of the implementation guide (including all templates/profiles, value sets, code systems, volume 1 content, etc). It can be uploaded to the "Files" section of an implementation guide and used as a point-in-time snapshot with the web-based IG.</span></li>
+<li class="rvps4"><span class="rvts19">Trifolia XML</span><span class="rvts6">: This is an XML format for templates proprietary to Trifolia. The schema for this format can be downloaded here.</span></li>
+<li class="rvps4"><span class="rvts19">FHIR XML</span><span class="rvts6">: This option is only available for FHIR implementation guides. This converts the templates in the implementation guide into the XML format defined by FHIR DSTU 1. This XML export includes both FHIR Profile &nbsp;and ValueSet resources. See http://www.hl7.org/fhir for more details on FHIR DSTU 1.</span></li>
+<li class="rvps4"><span class="rvts19">FHIR Build</span><span class="rvts6">: This option is only available for FHIR implementation guides. This create a zip package that can be used by the FHIR IG publisher to produce HTML files following the same styles and practices as the core FHIR standard.</span></li>
+<li class="rvps4"><span class="rvts19">Data Snapshot</span><span class="rvts6">: This is a JSON-based export of the implementation guide (including all templates/profiles, value sets, code systems, volume 1 content, etc). It can be uploaded to the "Files" section of an implementation guide and used as a point-in-time snapshot with the web-based IG.</span></li>
 </ul>
-<h3 class="rvps9"><span class="rvts0"><span class="rvts31">FHIR Build Package</span></span></h3>
-<p class="rvps4"><span class="rvts6">The FHIR Build package combines all artifacts in the implementation guide into a single ZIP file that is formatted to be used with the </span><a class="rvts11" href="http://wiki.hl7.org/index.php?title=IG_Publisher_Documentation" target="_blank">FHIR IG Publisher</a><span class="rvts6">.</span></p>
-<div class="rvps4"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">pages/_includes/overview.html</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">This file contains all of the "Volume 1" sections. This file does not support a volume 1 based on HTML, it only supports the individually defined sections from "Volume 1". These sections/fields are in the edit implementation guide screen, under the "Volume 1" tab, after specifying "Defined Sections" in the "Type" drop-down.</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">pages/_includes/description.html</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">This file contains the web description field for the implementation guide. This field is in the edit implementation guide screen, under the "General" tab. The field is labeled "Web Implementation Guide Description".</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">pages/_includes/valuesets.html</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">This file lists each of the value sets used by the implementation guide.</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">pages/_includes/extensions.html</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">This file lists each of the extensions defined in the implementation guide. Extensions are any profile that is based on the "Extension" template/profile type.</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">pages/_includes/codesystems.html</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">The file lists each of the code systems used by the implementation guide (including the code systems referenced by value sets in the implementation guide).</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">pages/_includes/authors.html</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">This file lists each of the authors of profiles included in the implementation guide.</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">pages/_includes/resources.html</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">This file lists each of the resources included in the implementation guide. These resources are either individually attached resources (such as example Composition or Patient resources), as well as the StructureDefinition resources that are built using Trifolia.</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">pages/_data/examples.json</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">This file is used by the Jekyll templates embedded in the ZIP package to indicate which resources are examples.</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">resources/*</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Each of the resources are output in this folder in the format specified by the export (either JSON or XML).</span></p>
-</td>
-</tr>
-</table>
-</div>
 <p></p>
 
             </div>
