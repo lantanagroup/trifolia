@@ -73,6 +73,8 @@ namespace Trifolia.DB.Migrations
             if (context.RoleAppSecurables.FirstOrDefault(y => y.Role.Name == roleName && y.AppSecurable.Name == securableName) != null)
                 return;
 
+            Console.WriteLine("Assigning securable " + appSecurable.Name + " to role " + role.Name);
+
             context.RoleAppSecurables.Add(new RoleAppSecurable()
             {
                 Role = role,
@@ -265,17 +267,18 @@ namespace Trifolia.DB.Migrations
             );
         }
 
-        private void SeedFHIRSTU3(Trifolia.DB.TrifoliaDatabase context)
+        private void SeedFHIR(Trifolia.DB.TrifoliaDatabase context, int implementationGuideTypeId, string resourceListResource)
         {
             List<string> resourceTypes = new List<string>() { "Extension" };
             List<TemplateType> templateTypes = new List<TemplateType>();
 
-            using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("Trifolia.DB.Migrations.FHIR_STU3_Resources.txt")))
+            using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceListResource)))
             {
                 string content = sr.ReadToEnd();
                 List<string> resourceTypeLines = (from c in content.Split('\n')
                                                   orderby c
                                                   select c.Replace("\r", "").Trim())
+                                                  .OrderBy(y => y)
                                                   .ToList();
                 resourceTypes.AddRange(resourceTypeLines);
             }
@@ -284,27 +287,31 @@ namespace Trifolia.DB.Migrations
             {
                 var templateType = new TemplateType()
                 {
-                    ImplementationGuideTypeId = 6,
+                    ImplementationGuideTypeId = implementationGuideTypeId,
                     Name = resourceTypes[i],
                     OutputOrder = i + 1,
                     RootContext = resourceTypes[i],
                     RootContextType = resourceTypes[i]
                 };
 
+                Console.WriteLine("Adding/updating template type " + templateType.Name);
+
                 context.TemplateTypes.AddOrUpdate(tt => new { tt.ImplementationGuideTypeId, tt.Name }, templateType);
             }
 
             var removeTemplateTypes = (from tt in context.TemplateTypes
-                                       where tt.ImplementationGuideTypeId == 6 && !resourceTypes.Contains(tt.Name)
+                                       where tt.ImplementationGuideTypeId == implementationGuideTypeId && !resourceTypes.Contains(tt.Name)
                                        select tt).ToList();
 
             foreach (var removeTemplateType in removeTemplateTypes)
             {
                 if (removeTemplateType.Templates.Count > 0)
                 {
-                    Console.WriteLine("Can't remove " + removeTemplateType.Name + " from FHIR STU3 because it is associated with templates");
+                    Console.WriteLine("Can't remove " + removeTemplateType.Name + " from FHIR implementation guide type " + implementationGuideTypeId + " because it is associated with templates");
                     continue;
                 }
+
+                Console.WriteLine("Removing template type " + removeTemplateType.Name);
 
                 context.TemplateTypes.Remove(removeTemplateType);
             }
@@ -392,14 +399,34 @@ namespace Trifolia.DB.Migrations
                     SchemaLocation = "fhir-all.xsd",
                     SchemaPrefix = "fhir",
                     SchemaURI = "http://hl7.org/fhir"
+                },
+                new ImplementationGuideType()
+                {
+                    Id = 7,
+                    Name = "FHIR Current Build",
+                    SchemaLocation = "fhir-all.xsd",
+                    SchemaPrefix = "fhir",
+                    SchemaURI = "http://hl7.org/fhir"
                 }
             );
 
+            Console.WriteLine("Seeding CDA implementation guide type with template types");
             this.SeedCDA(context);
+
+            Console.WriteLine("Seeding EMeasure implementation guide type with template types");
             this.SeedEMeasure(context);
+
+            Console.WriteLine("Seeding FHIR DSTU1 implementation guide type with template types");
             this.SeedFHIRDSTU1(context);
+
+            Console.WriteLine("Seeding FHIR DSTU2 implementation guide type with template types");
             this.SeedFHIRDSTU2(context);
-            this.SeedFHIRSTU3(context);
+
+            Console.WriteLine("Seeding FHIR STU3 implementation guide type with template types");
+            this.SeedFHIR(context, 6, "Trifolia.DB.Migrations.FHIR_STU3_Resources.txt");
+
+            Console.WriteLine("Seeding FHIR Latest implementation guide type with template types");
+            this.SeedFHIR(context, 7, "Trifolia.DB.Migrations.FHIR_Latest_Resources.txt");
 
             context.AppSecurables.AddOrUpdate(apps => apps.Name, this.appSecurables);
             context.Roles.AddOrUpdate(r => r.Name, this.roles);

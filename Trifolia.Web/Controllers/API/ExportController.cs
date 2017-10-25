@@ -168,17 +168,20 @@ namespace Trifolia.Web.Controllers.API
             switch (model.ExportFormat)
             {
                 case ExportFormats.FHIR_Build_Package:
-                    BuildExporter buildExporter = new BuildExporter(this.tdb, ig.Id, templates, model.ReturnJson);
-                    export = buildExporter.Export(model.IncludeVocabulary);
-                    fileName = string.Format("{0}_buildPackage.zip", ig.GetDisplayName(true));
-                    contentType = ZIP_MIME_TYPE;
-                    break;
                 case ExportFormats.FHIR_Bundle:
                 case ExportFormats.Native_XML:
                 case ExportFormats.Templates_DSTU_XML:
-                    fileName = string.Format("{0}.{1}", ig.GetDisplayName(true), model.ReturnJson ? "json" : "xml");
-                    export = igTypePlugin.Export(this.tdb, schema, model.ExportFormat, igSettings, model.SelectedCategories, templates, model.IncludeVocabulary, model.ReturnJson);
+                    string fileExtension = model.ReturnJson ? "json" : "xml";
                     contentType = model.ReturnJson ? JSON_MIME_TYPE : XML_MIME_TYPE;
+
+                    if (model.ExportFormat == ExportFormats.FHIR_Build_Package)
+                    {
+                        fileExtension = "zip";
+                        contentType = ZIP_MIME_TYPE;
+                    }
+
+                    fileName = string.Format("{0}.{1}", ig.GetDisplayName(true), fileExtension);
+                    export = igTypePlugin.Export(this.tdb, schema, model.ExportFormat, igSettings, model.SelectedCategories, templates, model.IncludeVocabulary, model.ReturnJson);
                     break;
 
                 case ExportFormats.Snapshot_JSON:
@@ -249,7 +252,7 @@ namespace Trifolia.Web.Controllers.API
                             zip.AddEntry(fileName, export);
 
                             NativeTerminologyExporter nativeTermExporter = new NativeTerminologyExporter(this.tdb);
-                            byte[] vocData = nativeTermExporter.GetExport(ig.Id, this.GetExportEncoding(model));
+                            byte[] vocData = nativeTermExporter.GetExport(ig.Id, model.MaximumValueSetMembers, this.GetExportEncoding(model));
                             string vocFileName = string.Format("{0}", model.VocabularyFileName);
 
                             //Ensuring the extension is present in case input doesn't have it

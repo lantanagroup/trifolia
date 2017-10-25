@@ -34,6 +34,6 @@ namespace Trifolia.DB
         public string ChildTemplateBookmark { get; set; }
 
         [Key, Column(Order = 8)]
-        public string Conformance { get; set; }
+        public bool Required { get; set; }
     }
 }

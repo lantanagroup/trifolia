@@ -92,6 +92,8 @@
 
             <uib-tabset ng-if="criteria.ExportFormat >= 0 && selectedImplementationGuide && !validationResults.RestrictDownload">
                 <uib-tab heading="General">
+                    <p ng-show="criteria.ExportFormat == 9 || criteria.ExportFormat == 10 || criteria.ExportFormat == 11 || criteria.ExportFormat == 8 || criteria.ExportFormat == 1">No general export settings are available for this format.</p>
+
                     <div ng-show="categorySelectionFormats.indexOf(criteria.ExportFormat) >= 0" ng-include="'categorySelect.html'"></div>
 
                     <!-- MS Word Export Options -->
@@ -105,7 +107,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Document Tables {{criteria.DocumentTables}}</label>
+                            <label>Document Tables</label>
                             <select name="DocumentTables" ng-model="criteriaDocumentTables" ng-model-options="{ getterSetter: true }" class="form-control">
                                 <option value="0">None</option>
                                 <option value="1">Both</option>
@@ -126,22 +128,22 @@
 
                         <div class="form-group">
                             <label>XML Samples</label>
-                            <input type="checkbox" name="IncludeXmlSample" ng-model="criteria.IncludeXmlSample" /> Include
+                            <input type="checkbox" name="IncludeXmlSample" value="true" ng-model="criteria.IncludeXmlSample" /> Include
                         </div>
 
                         <div class="form-group">
                             <label>Change List</label>
-                            <input type="checkbox" name="IncludeChangeList" ng-model="criteria.IncludeChangeList" /> Include
+                            <input type="checkbox" name="IncludeChangeList" value="true" ng-model="criteria.IncludeChangeList" /> Include
                         </div>
 
                         <div class="form-group">
-                            <label>Publish Settings</label>
-                            <input type="checkbox" name="IncludeTemplateStatus" ng-model="criteria.IncludeTemplateStatus" /> Include
+                            <label>Template/Profile Status</label>
+                            <input type="checkbox" name="IncludeTemplateStatus" value="true" ng-model="criteria.IncludeTemplateStatus" /> Include
                         </div>
 
                         <div class="form-group" ng-if="selectedImplementationGuide.CanEdit">
                             <label>Notes</label>
-                            <input type="checkbox" id="IncludeNotes" name="IncludeNotes" ng-model="criteria.IncludeNotes"/> Include
+                            <input type="checkbox" id="IncludeNotes" name="IncludeNotes" value="true" ng-model="criteria.IncludeNotes"/> Include
                         </div>
                     </div>
                     
@@ -165,7 +167,7 @@
                         <input type="text" name="DefaultSchematron" ng-model="criteria.DefaultSchematron" class="form-control">
                     </div>
 
-                    <div ng-show="vocFormats.indexOf(criteria.ExportFormat) >= 0">
+                    <div ng-show="vocFormats.indexOf(criteria.ExportFormat) >= 0 && criteria.ExportFormat != 9 && criteria.ExportFormat != 10 && criteria.ExportFormat != 11">
                         <div class="form-group">
                             <label>Maximum Members (0 = export all members)</label>
                             <div class="input-group">
@@ -243,7 +245,7 @@
 
                     <div class="form-group">
                         <label>Include Inferred?</label>
-                        <input type="radio" name="Inferred" ng-value="true" ng-model="criteria.IncludeInferred" ng-change="loadTemplates()"> Yes <input type="radio" name="Inferred" ng-value="false" ng-model="criteria.IncludeInferred" ng-change="loadTemplates()"> No
+                        <input type="radio" name="Inferred" ng-value="true" ng-model="criteria.IncludeInferred" ng-change="loadTemplates(true)"> Yes <input type="radio" name="Inferred" ng-value="false" ng-model="criteria.IncludeInferred" ng-change="loadTemplates(true)"> No
                     </div>
 
                     <table class="table">

@@ -17,8 +17,72 @@ Param(
     $BackupOutDir='.\'
 )
 
-if (!$NoBackup) {
-    & .\Backup.ps1 -sqlServerName $DBHost -databaseName $DBName -installDir $appServicePath -outDir $BackupOutDir
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+Add-Type -AssemblyName System.IO.Compression
+$appServicePathExists = Test-Path $appServicePath
+$shouldBackup = !$NoBackup
+
+if ($shouldBackup -and $appServicePathExists) {
+	$absInstallDir = [IO.Path]::GetFullPath($appServicePath)
+	$dt = get-date -format yyyyMMddHHmmss
+	$backupZipFileName = "Trifolia-" + $dt + ".zip"
+	$backupZipRelativePath = Join-Path $BackupOutDir $backupZipFileName
+	$backupZipPath = [IO.Path]::GetFullPath($backupZipRelativePath)
+	
+	## Create the zip file
+	Write-Host "Creating backup zip file $backupZipPath"
+	$archiveMode = [System.IO.Compression.ZipArchiveMode]::Create
+	$zip = [System.IO.Compression.ZipFile]::Open($backupZipPath, $archiveMode)
+	Write-Host "Backup ZIP will be saved to $backupZipPath"
+
+	## Get list of all core files in installation directory, excluding IIS logs
+	$coreFiles = Get-ChildItem $absInstallDir -File -Recurse | ?{ $_.fullname -notmatch '\\W3SVC\\?' }
+
+	## Add each core file to the backup ZIP
+	foreach ($file in $coreFiles) {
+		$relativeFileName = $file.FullName.Replace($absInstallDir, 'Website')
+		Write-Host "Saving " $file.FullName " to ZIP at $relativeFileName"
+		[System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $file.FullName, $relativeFileName) | Out-Null
+	}
+	
+	## Backup the database
+	Push-Location
+	Import-Module Sqlps -DisableNameChecking
+
+	$sqlBackupFileName = $DBName + "-" + $dt + ".bak"
+	$sqlServer = New-Object 'Microsoft.SqlServer.Management.SMO.Server' $DBHost
+	$serverBackupDir = $sqlServer.Settings.BackupDirectory
+
+	if ($sqlServer.Databases[$DBName]) {
+		Write-Host "SQL Server's backup directory is: $serverBackupDir"
+	
+		$networkShare = "\\$DBHost\" + $serverBackupDir.Substring(0, 1) + "$\"
+		$networkBackupPath = Join-Path $networkShare $serverBackupDir.Substring(3)
+		$networkBackupFilePath = Join-Path $networkBackupPath $sqlBackupFileName
+		
+		Write-Host "SQL Network backup directory is: $networkBackupPath"
+		Write-Host "SQL Network backup file is: $networkBackupFilePath"
+
+		## Backup the database
+		$dbbk = new-object ('Microsoft.SqlServer.Management.Smo.Backup')
+		$dbbk.Action = 'Database'
+		$dbbk.BackupSetDescription = "Full backup of " + $DBName
+		$dbbk.BackupSetName = $DBName + " Backup"
+		$dbbk.Database = $DBName
+		$dbbk.MediaDescription = "Disk"
+		$dbbk.Devices.AddDevice($serverBackupDir + "\" + $sqlBackupFileName, 'File')
+		$dbbk.SqlBackup($sqlServer)
+		
+		Write-Host "Done creating backup of database, adding to backup zip"
+
+		## Add the $networkBackupFilePath to the ZIP
+		[System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $networkBackupFilePath, $sqlBackupFileName) | Out-Null
+	}
+	
+	## DONE
+	$zip.Dispose()
+	Pop-Location
+	Write-Host "Backup saved to " $backupZipPath
 }
 
 $currentLocation = Get-Location

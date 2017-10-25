@@ -42,7 +42,7 @@ namespace Trifolia.Export.FHIR.STU3
 
         private string GetFullUrl(ImplementationGuide implementationGuide)
         {
-            var url = string.Format("{0}://{1}/api/FHIR2/ImplementationGuide/{2}",
+            var url = string.Format("{0}://{1}/api/FHIR3/ImplementationGuide/{2}",
                 this.scheme,
                 this.authority,
                 implementationGuide.Id);
@@ -51,7 +51,7 @@ namespace Trifolia.Export.FHIR.STU3
 
         public string GetFullUrl(Template template)
         {
-            var url = string.Format("{0}://{1}/api/FHIR2/StructureDefinition/{2}",
+            var url = string.Format("{0}://{1}/api/FHIR3/StructureDefinition/{2}",
                 this.scheme,
                 this.authority,
                 template.Id);

@@ -894,13 +894,32 @@ namespace Trifolia.Test
                                    ChildTemplateId = ct.Id,
                                    ChildTemplateIdentifier = ct.Oid,
                                    ChildTemplateName = ct.Name,
-                                   Conformance = tc.Conformance
+                                   Required = this.IsConstraintRequired(tc.Id)
                                });
 
                 var mockDbSet = CreateMockDbSet<ViewTemplateRelationship>();
                 mockDbSet.AddRange(results);
                 return mockDbSet;
             }
+        }
+
+        private bool IsConstraintRequired(int templateConstraintId)
+        {
+            int? currentTemplateConstraintId = templateConstraintId;
+            bool isRequired = false;
+
+            while (currentTemplateConstraintId != null)
+            {
+                TemplateConstraint currentTemplateConstraint = this.TemplateConstraints.Single(y => y.Id == currentTemplateConstraintId);
+                isRequired = currentTemplateConstraint.Conformance == "SHALL" || currentTemplateConstraint.Conformance == "SHALL NOT";
+
+                if (!isRequired)
+                    break;
+                else
+                    currentTemplateConstraintId = currentTemplateConstraint.ParentConstraintId;
+            }
+
+            return isRequired;
         }
 
         public DbSet<ViewImplementationGuideCodeSystem> ViewImplementationGuideCodeSystems

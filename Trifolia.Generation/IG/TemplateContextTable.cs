@@ -76,7 +76,7 @@ namespace Trifolia.Generation.IG
                                    {
                                        Name = tr.ParentTemplateName,
                                        Bookmark = tr.ParentTemplateBookmark,
-                                       Required = tr.Conformance == "SHALL" || tr.Conformance == "SHALL NOT"
+                                       Required = tr.Required
                                    }).Distinct().ToList();
             var containedTemplates = (from tr in this.relationships
                                       where tr.ParentTemplateId == template.Id
@@ -84,7 +84,7 @@ namespace Trifolia.Generation.IG
                                       {
                                           Name = tr.ChildTemplateName,
                                           Bookmark = tr.ChildTemplateBookmark,
-                                          Required = tr.Conformance == "SHALL" || tr.Conformance == "SHALL NOT"
+                                          Required = tr.Required
                                       }).Distinct().ToList();
 
             int maxRows = containedTemplates.Count > usedByTemplates.Count ? containedTemplates.Count : usedByTemplates.Count;

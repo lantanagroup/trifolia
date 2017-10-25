@@ -40,15 +40,8 @@
     <add route="/TerminologyManagement/ValueSet/Edit/*/Concept" helpLocation="AuthorTerminology.html#edit_concepts" windowType="NewWindow" />
 
     <!-- Export Menu -->
-    <add route="/IGManagement/List/ExportMSWord" helpLocation="ExportMSWord.html" windowType="NewWindow" />
-    <add route="/Export/MSWord/*" helpLocation="ExportMSWord.html" windowType="NewWindow" />
-    <add route="/IGManagement/List/ExportXML" helpLocation="ExportXMLJSON.html" windowType="NewWindow" />
-    <add route="/Export/Xml/*" helpLocation="ExportXMLJSON.html" windowType="NewWindow" />
-    <add route="/IGManagement/List/ExportSchematron" helpLocation="ExportSchematron.html" windowType="NewWindow" />
-    <add route="/Export/Schematron/*" helpLocation="ExportSchematron.html" windowType="NewWindow" />
-    <add route="/IGManagement/List/ExportVocab" helpLocation="ExportTerminology.html" windowType="NewWindow" />
-    <add route="/Export/Vocabulary/*" helpLocation="ExportTerminology.html" windowType="NewWindow" />
-    <!-- <add route="/IGManagement/List/ExportGreen" helpLocation="" /> -->
+	<add route="/Export" helpLocation="Exporting.html" windowType="NewWindow" />
+	<add route="/Export/*" helpLocation="Exporting.html" windowType="NewWindow" />
 
     <!-- Reports -->
     <add route="/Report/TemplateReview" helpLocation="Reports.html" windowType="NewWindow" />
