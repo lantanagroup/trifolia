@@ -147,7 +147,7 @@ namespace Trifolia.Plugins.Validation.FHIR
                 results.RestrictDownload = true;
                 foreach (var duplicate in duplicateCheck)
                 {
-                    results.Messages.Add("Export Restricted: Entry with type and id " + duplicate.ToString() + " appears more than once within this implementation guide as an IG sample file or as a sample associated with a profile");
+                    results.Messages.Add("Export Restricted: Entry with type and id " + duplicate.ToString() + " appears more than once within this implementation guide as an IG sample file, as a sample associated with a profile within the IG, or a profile");
                 }
             }
 
