@@ -290,23 +290,34 @@ namespace Trifolia.Web.Controllers.API
                 if (!valueSet.CanModify(auditedTdb) && !valueSet.CanOverride(auditedTdb))
                     throw new AuthorizationException("You do not have the permission to delete this valueset");
 
-                List<TemplateConstraint> constraints = valueSet.Constraints.ToList();
-
-                foreach (var constraint in constraints)
+                //If stuff exists, delete it
+                if (valueSet != null)
                 {
-                    // If no replacement value set is specified, then it will be null, as expected
-                    constraint.ValueSetId = replaceValueSetId;
+                    List<TemplateConstraint> constraints = valueSet.Constraints.ToList();
+
+                    if (constraints.Count != 0)
+                    {
+                        foreach (var constraint in constraints)
+                        {
+                            // If no replacement value set is specified, then it will be null, as expected
+                            constraint.ValueSetId = replaceValueSetId;
+                        }
+                    }
+
+                    // Remove members from the valueset
+                    if (valueSet.Members.ToList().Count != 0)
+                    {
+                        valueSet.Members.ToList().ForEach(y =>
+                        {
+                            auditedTdb.ValueSetMembers.Remove(y);
+                        });
+                    }
+
+                    // Delete the actual valueset
+                    auditedTdb.ValueSets.Remove(valueSet);
+
+                    auditedTdb.SaveChanges();
                 }
-
-                // Remove members from the valueset
-                valueSet.Members.ToList().ForEach(y => {
-                    auditedTdb.ValueSetMembers.Remove(y);
-                });
-
-                // Delete the actual valueset
-                auditedTdb.ValueSets.Remove(valueSet);
-
-                auditedTdb.SaveChanges();
             }
         }
 
