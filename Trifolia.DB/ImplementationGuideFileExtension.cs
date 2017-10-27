@@ -16,6 +16,7 @@ namespace Trifolia.DB
         public const string ContentTypeGreenSchema = "GreenSchema";
         public const string ContentTypeGreenTransform = "GreenTransform";
         public const string ContentTypeNormativeTransform = "NormativeTransform";
+        public const string ContentTypeFHIRResourceInstance = "FHIRResourceInstance";
 
         #region IG Retrieval Static Methods
 
