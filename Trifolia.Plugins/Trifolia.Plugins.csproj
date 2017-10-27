@@ -129,7 +129,6 @@
     <Compile Include="FHIR\STU3Plugin.cs" />
     <Compile Include="FHIR\DSTU2Plugin.cs" />
     <Compile Include="FHIR\DefaultPlugin.cs" />
-    <Compile Include="FHIR\DSTU1Plugin.cs" />
     <Compile Include="HQMFPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RIMPlugin.cs" />

@@ -21,7 +21,6 @@ namespace Trifolia.Test.Schema
     {
         private SimpleSchema eMeasureSchema = null;
         private SimpleSchema cdaSchema = null;
-        private SimpleSchema fhirSchema = null;
 
         #region Context
 
@@ -79,16 +78,8 @@ namespace Trifolia.Test.Schema
                         SchemaLocation = "schemas/EMeasure.xsd"
                     }));
 
-            this.fhirSchema = SimpleSchema.CreateSimpleSchema(Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
-                new ImplementationGuideType()
-                {
-                    Name = MockObjectRepository.DEFAULT_FHIR_DSTU1_IG_TYPE_NAME,
-                    SchemaLocation = "fhir-all.xsd"
-                }));
-
             Assert.IsNotNull(this.eMeasureSchema);
             Assert.IsNotNull(this.cdaSchema);
-            Assert.IsNotNull(this.fhirSchema);
         }
         
         // Use TestCleanup to run code after each test has run
@@ -145,49 +136,7 @@ namespace Trifolia.Test.Schema
             Assert.AreEqual("choice", entry.Children[6].Name);
         }
 
-        /// <summary>
-        /// Test that "deceased[x]" and "multiple[x]" are used as the choice element's names
-        /// </summary>
-        [TestMethod, TestCategory("Schema")]
-        public void TestSchemaChoice_FHIR_Patient()
-        {
-            var patient = this.fhirSchema.FindFromType("Patient");
-            Assert.IsNotNull(patient);
-            Assert.IsNotNull(patient.Children);
-            Assert.AreEqual(23, patient.Children.Count);
-            Assert.AreEqual("deceased[x]", patient.Children[11].Name);
-            Assert.IsNotNull(patient.Children[11].Children);
-            Assert.AreEqual(2, patient.Children[11].Children.Count);
-            Assert.AreEqual("multiple[x]", patient.Children[14].Name);
-            Assert.IsNotNull(patient.Children[14].Children);
-            Assert.AreEqual(2, patient.Children[14].Children.Count);
-        }
-
         #endregion
-
-        [TestMethod, TestCategory("Schema")]
-        public void TestFhirPatient()
-        {
-            var patient = this.fhirSchema.FindFromType("Patient");
-            var contact = this.fhirSchema.FindFromType("Patient.Contact");
-            Assert.IsNotNull(patient);
-            Assert.IsNotNull(contact);
-
-            // Test patient model
-            Assert.AreEqual(23, patient.Children.Count, "Patient should have 23 children (some being choices)");
-
-            Assert.AreEqual("telecom", patient.Children[8].Name, "Patient's 9th child should be \"telecom\"");
-            Assert.AreEqual("Contact", patient.Children[8].DataType, "Patient's 9th child (telecom) should have a data type of \"Contact\"");
-            Assert.AreEqual(6, patient.Children[8].Children.Count, "Patient's 9th child (telecom) should have 6 children");
-            Assert.AreEqual("value", patient.Children[8].Children[3].Name, "Patient's 9th child (telecom), should have a 4th child named \"value\"");
-
-            Assert.AreEqual("communication", patient.Children[18].Name, "Patient's 19th child should be \"contact\"");
-            Assert.AreEqual("CodeableConcept", patient.Children[18].DataType, "Patient's 19th (contact) child should have a data type of \"Patient.Contact\"");
-
-            // Test patient contact model
-            Assert.AreEqual(9, contact.Children.Count, "Patient.Contact should have 9 children");
-            Assert.AreEqual("relationship", contact.Children[3].Name, "Patient.Contact should have a 4rd child named \"relationship\"");
-        }
 
         /// <summary>
         /// Tests that the IVL_TS is properly populated with @nullFlavor, @value, low/@nullFlavor and low/@value

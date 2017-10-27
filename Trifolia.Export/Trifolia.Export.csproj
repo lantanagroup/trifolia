@@ -154,7 +154,6 @@
     <Compile Include="FHIR\STU3\StructureDefinitionExporter.cs" />
     <Compile Include="FHIR\STU3\TemplateExtensions.cs" />
     <Compile Include="FHIR\STU3\ValueSetExporter.cs" />
-    <Compile Include="FHIR\DSTU1\FHIRExporter.cs" />
     <Compile Include="FHIR\DSTU2\ImplementationGuideExporter.cs" />
     <Compile Include="FHIR\DSTU2\StructureDefinitionExporter.cs" />
     <Compile Include="FHIR\DSTU2\ValueSetExporter.cs" />
@@ -198,11 +197,6 @@
     <Compile Include="Terminology\voc.cs">
       <DependentUpon>voc.xsd</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="FHIR\DSTU1\TemplateExportToFHIRProfile.xslt">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -258,10 +258,6 @@
     <EmbeddedResource Include="Migrations\201710181431268_getImplementationGuideTemplates.resx">
       <DependentUpon>201710181431268_getImplementationGuideTemplates.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\FHIR_Latest_Resources.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
