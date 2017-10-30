@@ -19,6 +19,7 @@ namespace Trifolia.Test.Generation.IG
     ///This is a test class for ImplementationGuideGeneratorTest and is intended
     ///to contain all ImplementationGuideGeneratorTest Unit Tests
     ///</summary>
+    [DeploymentItem("Schemas\\", "Schemas\\")]
     [TestClass()]
     public class ImplementationGuideGeneratorTest
     {
@@ -107,9 +108,42 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// Tests that constraint tables are generated in the document, that the header row is properly formatted, and that the first row matches the template's context
         /// </summary>
+        [TestMethod, TestCategory("MSWord")]
         public void TestConstraintTable()
         {
-            // TODO
+            // Test the constraint table's caption
+            XmlElement constraintTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[contains(text(), ': Test Constraint Description Template Constraints Overview')]]", nsMgr) as XmlElement;
+            Assert.IsNotNull(constraintTitle);
+            Assert.IsNotNull(constraintTitle.SelectSingleNode("w:pPr/w:pStyle[@w:val='Caption']", nsMgr), "Expected to find a style on the constraint table's caption");
+
+            // Test the constraint table's existance
+            XmlElement constraintTable = constraintTitle.NextSibling as XmlElement;
+            XmlElement xPathHeader = constraintTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'XPath']", nsMgr) as XmlElement;
+            XmlElement cardHeader = constraintTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'Card.']", nsMgr) as XmlElement;
+            XmlElement verbHeader = constraintTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'Verb']", nsMgr) as XmlElement;
+            XmlElement dataTypeHeader = constraintTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'Data Type']", nsMgr) as XmlElement;
+            XmlElement confHeader = constraintTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'CONF#']", nsMgr) as XmlElement;
+            XmlElement valueHeader = constraintTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'Value']", nsMgr) as XmlElement;
+            Assert.AreEqual("tbl", actual: constraintTable.LocalName, message: "The node following the caption of the constraint table is not a table!");
+
+            // Test the constraint table's header
+            Assert.IsNotNull(constraintTable.SelectSingleNode("w:tblGrid", nsMgr), "The table does not contain the grid property");
+            Assert.IsNotNull(xPathHeader, "Expected to find a 'xPath' column.");
+            Assert.IsNotNull(cardHeader, "Expected to find a 'Cardinality' column.");
+            Assert.IsNotNull(verbHeader, "Expected to find a 'Verb' column.");
+            Assert.IsNotNull(dataTypeHeader, "Expected to find a 'Data Type' column.");
+            Assert.IsNotNull(confHeader, "Expected to find a 'Conformance Number' column.");
+            Assert.IsNotNull(valueHeader, "Expected to find a 'Value' column.");
+
+            // Test the constraint table's contents
+            XmlNode constraintContent = doc.SelectSingleNode("/w:document/w:body/w:tbl[1]", nsMgr);
+            Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[2]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='identifier: 8.2234.19.234.11']", nsMgr), "Missing Template ID");
+            Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[3]/w:tc[1][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='	code']", nsMgr), "Missing Xpath");
+            Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[3]/w:tc[2][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='1..1']", nsMgr), "Missing Cardinality");
+            Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[3]/w:tc[3][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='SHALL']", nsMgr), "Missing Verb");
+            Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[3]/w:tc[4][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='CD']", nsMgr), "Missing Data Type");
+            Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[3]/w:tc[5][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:hyperlink/w:r/w:t='1-10']", nsMgr), "Missing Conformance Number");
+            Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[3]/w:tc[6][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='']", nsMgr), "Missing Value");
         }
 
         /// <summary>
