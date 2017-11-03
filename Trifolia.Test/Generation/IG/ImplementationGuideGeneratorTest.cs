@@ -124,10 +124,10 @@ namespace Trifolia.Test.Generation.IG
             XmlElement dataTypeHeader = constraintTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'Data Type']", nsMgr) as XmlElement;
             XmlElement confHeader = constraintTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'CONF#']", nsMgr) as XmlElement;
             XmlElement valueHeader = constraintTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'Value']", nsMgr) as XmlElement;
-            Assert.AreEqual("tbl", actual: constraintTable.LocalName, message: "The node following the caption of the constraint table is not a table!");
+            Assert.AreEqual("tbl", actual: constraintTable.LocalName, message: "The node following the caption of the template list table!");
 
             // Test the constraint table's header
-            Assert.IsNotNull(constraintTable.SelectSingleNode("w:tblGrid", nsMgr), "The table does not contain the grid property");
+            Assert.IsNotNull(constraintTable.SelectSingleNode("/w:document/w:body/w:tbl[1]/w:tblGrid", nsMgr), "The table does not contain the grid property");
             Assert.IsNotNull(xPathHeader, "Expected to find a 'xPath' column.");
             Assert.IsNotNull(cardHeader, "Expected to find a 'Cardinality' column.");
             Assert.IsNotNull(verbHeader, "Expected to find a 'Verb' column.");
@@ -149,17 +149,64 @@ namespace Trifolia.Test.Generation.IG
         /// <summary>
         /// Tests the document template list table
         /// </summary>
+        [TestMethod, TestCategory("MSWord")]
         public void TestDocTemplateListTable()
         {
-            // TODO
+            // Test the template list table's caption
+            XmlElement templateListTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[contains(text(), ': Template List')]]", nsMgr) as XmlElement;
+            Assert.IsNotNull(templateListTitle);
+            Assert.IsNotNull(templateListTitle.SelectSingleNode("w:pPr/w:pStyle[@w:val='Caption']", nsMgr), "Expected to find a style on the template list table's caption");
+
+            // Test the template list table's existance
+            XmlElement templateListTable = templateListTitle.NextSibling as XmlElement;
+            XmlElement templateTitleHeader = templateListTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'Template Title']", nsMgr) as XmlElement;
+            XmlElement templateTypeHeader = templateListTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'Template Type']", nsMgr) as XmlElement;
+            XmlElement templateIdHeader = templateListTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'templateId']", nsMgr) as XmlElement;
+            Assert.AreEqual("tbl", actual: templateListTable.LocalName, message: "The node following the caption of the constraint table is not a table!");
+
+            // Test the template list table's header
+            Assert.IsNotNull(templateListTable.SelectSingleNode("w:tr[1]/w:trPr/w:tblHeader", nsMgr), "The table does not contain the header property");
+            Assert.IsNotNull(templateTitleHeader, "Expected to find a 'Template Title' column.");
+            Assert.IsNotNull(templateTypeHeader, "Expected to find a 'Template Type' column.");
+            Assert.IsNotNull(templateIdHeader, "Expected to find a 'templateId' column.");
+
+            // Test the template list table's contents
+            XmlNode templateListContent = doc.SelectSingleNode("/w:document/w:body/w:tbl[7]", nsMgr);
+            Assert.IsNotNull(templateListContent.SelectSingleNode("w:tr[2]/w:tc[1][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:hyperlink/w:r/w:t='Test Constraint Description Template']", nsMgr), "Missing Template Title");
+            Assert.IsNotNull(templateListContent.SelectSingleNode("w:tr[2]/w:tc[2][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='Document']", nsMgr), "Missing Template Type");
+            Assert.IsNotNull(templateListContent.SelectSingleNode("w:tr[2]/w:tc[3][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='8.2234.19.234.11']", nsMgr), "Missing Template ID");
         }
 
         /// <summary>
         /// Tests that the document's containment table is correct
         /// </summary>
+        [TestMethod, TestCategory("MSWord")]
         public void TestDocContainmentTable()
         {
-            // TODO
+            // Test the template containment table's caption
+            XmlElement templateContainmentTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[contains(text(), ': Template Containments')]]", nsMgr) as XmlElement;
+            Assert.IsNotNull(templateContainmentTitle);
+            Assert.IsNotNull(templateContainmentTitle.SelectSingleNode("w:pPr/w:pStyle[@w:val='Caption']", nsMgr), "Expected to find a style on the template list table's caption");
+
+            // Test the template containment table's existance
+            XmlElement templateContainmentTable = templateContainmentTitle.NextSibling as XmlElement;
+            XmlElement templateTitleHeader = templateContainmentTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'Template Title']", nsMgr) as XmlElement;
+            XmlElement templateTypeHeader = templateContainmentTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'Template Type']", nsMgr) as XmlElement;
+            XmlElement templateIdHeader = templateContainmentTable.SelectSingleNode("w:tr[1]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableHead'][w:p/w:r/w:t/text() = 'templateId']", nsMgr) as XmlElement;
+            Assert.AreEqual("tbl", actual: templateContainmentTable.LocalName, message: "The node following the caption of the template containment table!");
+
+            // Test the template containment table's header
+            Assert.IsNotNull(templateContainmentTable.SelectSingleNode("w:tr[1]/w:trPr/w:tblHeader", nsMgr), "The table does not contain the header property");
+            Assert.IsNotNull(templateTitleHeader, "Expected to find a 'Template Title' column.");
+            Assert.IsNotNull(templateTypeHeader, "Expected to find a 'Template Type' column.");
+            Assert.IsNotNull(templateIdHeader, "Expected to find a 'templateId' column.");
+
+            // Test the template containment table's contents
+            XmlNode containmentContent = doc.SelectSingleNode("/w:document/w:body/w:tbl[8]", nsMgr);
+            Assert.IsNotNull(containmentContent.SelectSingleNode("w:tr[2]/w:tc[1][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:hyperlink/w:r/w:t='Test Template 1']", nsMgr), "Missing Template Title");
+            Assert.IsNotNull(containmentContent.SelectSingleNode("w:tr[2]/w:tc[2][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='Document']", nsMgr), "Missing Template Type");
+            Assert.IsNotNull(containmentContent.SelectSingleNode("w:tr[2]/w:tc[3][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='1.2.3.4.5']", nsMgr), "Missing Template ID");
+
         }
 
         #endregion
