@@ -1,4 +1,6 @@
-﻿using System;
+﻿extern alias fhir_stu3;
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,18 +10,24 @@ using System.Threading.Tasks;
 using System.Xml;
 using Trifolia.DB;
 using Trifolia.Shared;
+using FhirValueSet = fhir_stu3.Hl7.Fhir.Model.ValueSet;
+using fhir_stu3.Hl7.Fhir.Serialization;
 
 namespace Trifolia.Import.VSAC
 {
     public class VSACImporter
     {
+        /*
         private const string ST_URL_FORMAT = "https://vsac.nlm.nih.gov/vsac/ws/Ticket/{0}";
         private const string SVS_RETRIEVE_VALUE_SET_URL_FORMAT = "https://vsac.nlm.nih.gov/vsac/svs/RetrieveMultipleValueSets?id={0}&ticket={1}";
         private const string VSAC_SOURCE_URL_FORMAT = "https://vsac.nlm.nih.gov/valueset/{0}/expansion";
         private const string SVS_NS = "urn:ihe:iti:svs:2008";
+        */
+        private const string FHIR_EXPAND_URL_FORMAT = "https://cts.nlm.nih.gov/fhir/ValueSet/{0}/$expand";
 
         private IObjectRepository tdb;
-        private string ticketGrantingTicket = string.Empty;
+        private string basicCredentials;
+        private List<CodeSystem> addedCodeSystems = new List<CodeSystem>();
 
         public VSACImporter(IObjectRepository tdb)
         {
@@ -28,9 +36,8 @@ namespace Trifolia.Import.VSAC
 
         public bool Authenticate(string username, string password)
         {
-            string tgt = UmlsHelper.Authenticate(username, password);
-            this.ticketGrantingTicket = tgt;
-            return !string.IsNullOrEmpty(this.ticketGrantingTicket);
+            this.basicCredentials = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + password));
+            return true;
         }
 
         /// <summary>
@@ -41,9 +48,17 @@ namespace Trifolia.Import.VSAC
         /// <param name="oid">The oid of the value set to retrieve. Should not include any prefix (i.e. "urn:oid:")</param>
         public bool ImportValueSet(string oid)
         {
-            string serviceTicket = this.GetServiceTicket();
-            string url = string.Format(SVS_RETRIEVE_VALUE_SET_URL_FORMAT, oid, serviceTicket);
+            this.addedCodeSystems = new List<CodeSystem>();
+
+            //string serviceTicket = this.GetServiceTicket();
+            string url = string.Format(FHIR_EXPAND_URL_FORMAT, oid);
             HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(url);
+
+            webRequest.Accept = "application/xml";
+
+            if (!string.IsNullOrEmpty(this.basicCredentials))
+                webRequest.Headers.Add("Authorization", "Basic " + this.basicCredentials);
+
             HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
 
             if (response.StatusCode == HttpStatusCode.OK)
@@ -51,12 +66,129 @@ namespace Trifolia.Import.VSAC
                 using (StreamReader sr = new StreamReader(response.GetResponseStream()))
                 {
                     string responseBody = sr.ReadToEnd();
-                    return this.ImportRetrieveValueSet(responseBody);
+                    return this.ImportFHIRExpandValueSet(responseBody, url);
                 }
             }
 
             return false;
         }
+
+        private DateTime GetFhirValueSetDate(FhirValueSet valueSet)
+        {
+            if (valueSet.Meta != null && valueSet.Meta.LastUpdated != null)
+                return valueSet.Meta.LastUpdated.Value.DateTime;
+
+            if (!string.IsNullOrEmpty(valueSet.Date))
+                return DateTime.Parse(valueSet.Date);
+
+            throw new Exception("Expected FHIR ValueSet to have either ValueSet.meta.lastUpdated or ValueSet.date");
+        }
+
+        private bool ImportFHIRExpandValueSet(string valueSetXml, string url)
+        {
+            FhirXmlParser parser = new FhirXmlParser();
+            FhirValueSet fhirValueSet = parser.Parse<FhirValueSet>(valueSetXml);
+
+            ValueSetIdentifier foundIdentifier = null;
+            ValueSetIdentifier newIdentifier = new ValueSetIdentifier();
+
+            if (fhirValueSet.Id.StartsWith("2.16"))             // This is an OID
+            {
+                DateTime valueSetDate = this.GetFhirValueSetDate(fhirValueSet);
+                string localIdentifier = string.Format("urn:hl7ii:{0}:{1}", fhirValueSet.Id, valueSetDate.ToString("yyyyMMdd"));
+
+                foundIdentifier = this.tdb.ValueSetIdentifiers.SingleOrDefault(y => y.Type == ValueSetIdentifierTypes.HL7II && y.Identifier == localIdentifier);
+                newIdentifier.Type = ValueSetIdentifierTypes.HL7II;
+                newIdentifier.Identifier = localIdentifier;
+            }
+            else
+            {
+                foundIdentifier = this.tdb.ValueSetIdentifiers.SingleOrDefault(y => y.Type == ValueSetIdentifierTypes.HTTP && y.Identifier == fhirValueSet.Url);
+                newIdentifier.Type = ValueSetIdentifierTypes.HTTP;
+                newIdentifier.Identifier = fhirValueSet.Url;
+            }
+
+            ValueSet foundValueSet = foundIdentifier != null ? foundIdentifier.ValueSet : null;
+
+            if (foundValueSet == null)
+            {
+                foundValueSet = new ValueSet();
+                foundValueSet.Identifiers.Add(newIdentifier);
+                this.tdb.ValueSets.Add(foundValueSet);
+            }
+
+            foundValueSet.Description = fhirValueSet.Description != null ? fhirValueSet.Description.Value : null;
+            foundValueSet.Name = fhirValueSet.Name;
+            foundValueSet.ImportSource = ValueSetImportSources.VSAC;
+            foundValueSet.ImportSourceId = fhirValueSet.Id;
+            foundValueSet.LastUpdate = fhirValueSet.Meta != null && fhirValueSet.Meta.LastUpdated != null ? fhirValueSet.Meta.LastUpdated.Value.DateTime : DateTime.Now;
+            foundValueSet.IsIncomplete = false;
+
+            // Set the source to a url that can be loaded in a browser, if dealing with VSAC value sets
+            string source = fhirValueSet.Url;
+            if (url.StartsWith("https://cts.nlm.nih.gov/fhir/"))
+                source = "https://vsac.nlm.nih.gov/valueset/" + fhirValueSet.Id + "/expansion";
+
+            foundValueSet.Source = source;
+
+            // Remove all existing codes in the value set so they can be re-added
+            List<ValueSetMember> currentCodes = foundValueSet.Members.ToList();
+            currentCodes.ForEach(m => this.tdb.ValueSetMembers.Remove(m));
+
+            List<CodeSystem> localCodeSystems = this.tdb.CodeSystems.ToList();
+
+            this.AddContains(foundValueSet, fhirValueSet.Expansion.Contains);
+
+            return true;
+        }
+
+        private CodeSystem FindOrAddCodeSystem(string fhirSystem)
+        {
+            string identifier = fhirSystem;
+
+            if (identifier.StartsWith("2.16"))
+                identifier = "urn:oid:" + identifier;
+
+            CodeSystem foundCodeSystem = this.addedCodeSystems.SingleOrDefault(y => y.Oid == identifier);
+
+            if (foundCodeSystem == null)
+                foundCodeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid == identifier);
+
+            if (foundCodeSystem == null)
+            {
+                foundCodeSystem = new CodeSystem();
+                foundCodeSystem.Oid = identifier;
+                foundCodeSystem.Name = identifier;
+                foundCodeSystem.Description = "Created as a result of importing from VSAC on " + DateTime.Now.ToShortDateString();
+                this.tdb.CodeSystems.Add(foundCodeSystem);
+                this.addedCodeSystems.Add(foundCodeSystem);
+            }
+
+            return foundCodeSystem;
+        }
+
+        private void AddContains(ValueSet valueSet, List<FhirValueSet.ContainsComponent> contains)
+        {
+            foreach (var fhirMember in contains)
+            {
+                if (string.IsNullOrEmpty(fhirMember.System) || string.IsNullOrEmpty(fhirMember.Code))
+                    continue;
+
+                CodeSystem codeSystem = this.FindOrAddCodeSystem(fhirMember.System);
+
+                ValueSetMember newMember = new ValueSetMember();
+                newMember.CodeSystem = codeSystem;
+                newMember.DisplayName = string.IsNullOrEmpty(fhirMember.Display) ? fhirMember.Code : fhirMember.Display;
+                newMember.Code = fhirMember.Code;
+                newMember.Status = "active";
+
+                valueSet.Members.Add(newMember);
+
+                this.AddContains(valueSet, fhirMember.Contains);
+            }
+        }
+
+        /*
 
         private string GetServiceTicket()
         {
@@ -84,7 +216,6 @@ namespace Trifolia.Import.VSAC
 
             return null;
         }
-
         private bool ImportRetrieveValueSet(string retrieveValueSetResponse)
         {
             List<CodeSystem> codeSystems = this.tdb.CodeSystems.ToList();
@@ -202,5 +333,6 @@ namespace Trifolia.Import.VSAC
 
             return importCount > 0;
         }
+        */
     }
 }
