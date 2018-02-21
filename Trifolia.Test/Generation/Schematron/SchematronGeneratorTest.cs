@@ -1913,6 +1913,74 @@ namespace Trifolia.Test.Generation.Schematron
 
         #endregion
 
+        #region Value Conformance
+
+        /// <summary>
+        /// Tests that a constraint with an element/attribute conformance of SHALL with a value conformance of SHOULD
+        /// creates an error assertion for the code element, and a separate warning assertion that tests the value set
+        /// </summary>
+        [TestMethod, TestCategory("Schematron")]
+        public void CodeSHALLValueSetShould()
+        {
+            ValueSet vs = tdb.FindOrCreateValueSet("test", "urn:oid:2.16.1.2.4.1.2.3");
+            ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "CodeSHALLValueSetShould");
+            Template template = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "observation", "Observation");
+            TemplateConstraint constraint = tdb.AddConstraintToTemplate(template, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", valueSet: vs);
+
+            Phase errorPhase = new Phase();
+            Phase warningPhase = new Phase();
+            SchematronGenerator generator = new SchematronGenerator(tdb, myIg, myIg.GetRecursiveTemplates(tdb), true);
+            generator.AddTemplate(template, errorPhase, warningPhase);
+
+            Assert.IsNotNull(errorPhase);
+            Assert.AreEqual(1, errorPhase.ActivePatterns.Count);
+            Assert.AreEqual(1, errorPhase.ActivePatterns[0].Rules.Count);
+            Assert.AreEqual(1, errorPhase.ActivePatterns[0].Rules[0].Assertions.Count);
+            Assert.AreEqual("count(cda:code)=1", errorPhase.ActivePatterns[0].Rules[0].Assertions[0].Test);
+
+            Assert.IsNotNull(warningPhase);
+            Assert.AreEqual(1, warningPhase.ActivePatterns.Count);
+            Assert.AreEqual(1, warningPhase.ActivePatterns[0].Rules.Count);
+            Assert.AreEqual(1, warningPhase.ActivePatterns[0].Rules[0].Assertions.Count);
+            Assert.AreEqual(
+                "count(cda:code[@code=document('voc.xml')/voc:systems/voc:system[@valueSetOid='2.16.1.2.4.1.2.3']/voc:code/@value or @nullFlavor])=1",
+                warningPhase.ActivePatterns[0].Rules[0].Assertions[0].Test);
+        }
+
+        /// <summary>
+        /// Tests that a constraint with an element/attribute conformance of SHALL with a value conformance of SHOULD
+        /// creates an error assertion for the code element, and a separate warning assertion that tests the code system
+        /// </summary>
+        [TestMethod, TestCategory("Schematron")]
+        public void CodeSHALLCodeSystemShould()
+        {
+            CodeSystem codeSystem = tdb.FindOrCreateCodeSystem("Test CS", "urn:oid:2.16.2341.2344333");
+            ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "CodeSHALLValueSetShould");
+            Template template = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "observation", "Observation");
+            TemplateConstraint constraint = tdb.AddConstraintToTemplate(template, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", codeSystem: codeSystem);
+
+            Phase errorPhase = new Phase();
+            Phase warningPhase = new Phase();
+            SchematronGenerator generator = new SchematronGenerator(tdb, myIg, myIg.GetRecursiveTemplates(tdb), true);
+            generator.AddTemplate(template, errorPhase, warningPhase);
+
+            Assert.IsNotNull(errorPhase);
+            Assert.AreEqual(1, errorPhase.ActivePatterns.Count);
+            Assert.AreEqual(1, errorPhase.ActivePatterns[0].Rules.Count);
+            Assert.AreEqual(1, errorPhase.ActivePatterns[0].Rules[0].Assertions.Count);
+            Assert.AreEqual("count(cda:code)=1", errorPhase.ActivePatterns[0].Rules[0].Assertions[0].Test);
+
+            Assert.IsNotNull(warningPhase);
+            Assert.AreEqual(1, warningPhase.ActivePatterns.Count);
+            Assert.AreEqual(1, warningPhase.ActivePatterns[0].Rules.Count);
+            Assert.AreEqual(1, warningPhase.ActivePatterns[0].Rules[0].Assertions.Count);
+            Assert.AreEqual(
+                "count(cda:code[@codeSystem='2.16.2341.2344333' or @nullFlavor])=1",
+                warningPhase.ActivePatterns[0].Rules[0].Assertions[0].Test);
+        }
+
+        #endregion
+
         private static Template ImportTemplate(IObjectRepository tdb, string location)
         {
             string xml = Helper.GetSampleContents(location);

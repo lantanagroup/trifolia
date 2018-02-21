@@ -820,6 +820,14 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint p145_parent = ruleRepo.AddConstraintToTemplate(cdaTemplate1, null, null, "sdtc:actReference", "SHALL", "1..1");
             TemplateConstraint p145 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p145_parent, null, "@classCode", "SHALL", "1..*");
             AddConstraintForRule(145, p145);
+
+            // Rule #146
+            TemplateConstraint p146 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", valueSet: vs1);
+            AddConstraintForRule(146, p146);
+
+            // Rule #147
+            TemplateConstraint p147 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", codeSystem: cs1);
+            AddConstraintForRule(147, p147);
         }
 
 
@@ -2149,6 +2157,24 @@ namespace Trifolia.Test.Generation.Schematron
         {
             string actual = GenerateAssertionForRule(145);
             string expected = "sdtc:actReference[count(@classCode) > 0]";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod, TestCategory("Schematron")]
+        public void TestAssertionLineBuilderRule146()
+        {
+            string actual = GenerateAssertionForRule(146);
+            string expected = "count(cda:code)=1";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod, TestCategory("Schematron")]
+        public void TestAssertionLineBuilderRule147()
+        {
+            string actual = GenerateAssertionForRule(147);
+            string expected = "count(cda:code)=1";
 
             Assert.AreEqual(expected, actual);
         }

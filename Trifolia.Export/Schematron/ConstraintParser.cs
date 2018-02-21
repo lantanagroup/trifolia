@@ -326,7 +326,11 @@ namespace Trifolia.Export.Schematron
             }
             else //this is an element
             {
-                ConstraintToDocumentElementHelper.AddCodeSystemToElement(this.tdb, this.igTypePlugin, element, currentConstraint);
+                // Only add the code system constraints if there is no value conformance or the value conformance matches the element/attribute conformance
+                // This is because in the SchematronGenerator class, a duplicate constraint is created when the value conformance is different from
+                // the element/attribute conformance, where the duplicate constraint's conformance matches the value conformance.
+                if (string.IsNullOrEmpty(currentConstraint.ValueConformance) || ConformanceParser.Parse(currentConstraint.Conformance) == ConformanceParser.Parse(currentConstraint.ValueConformance))
+                    ConstraintToDocumentElementHelper.AddCodeSystemToElement(this.tdb, this.igTypePlugin, element, currentConstraint);
 
                 if (currentConstraint.IsBranch)
                 {
