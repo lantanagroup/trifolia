@@ -75,7 +75,7 @@ namespace Trifolia.Test.Generation.Schematron
             //generate string
             string assertion = builder.ToString();
             //did we generate the correct string?
-            Assert.IsTrue(assertion == @"count(cda:code[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test'])=1", "The generated assertion was not correct. Expected 'count(cda:code[text()='Test'])=1', Actual '{0}'.", assertion);
+            Assert.IsTrue(assertion == @"count(cda:code[text()='Test'])=1", "The generated assertion was not correct. Expected 'count(cda:code[text()='Test'])=1', Actual '{0}'.", assertion);
         }
 
         /// <summary>

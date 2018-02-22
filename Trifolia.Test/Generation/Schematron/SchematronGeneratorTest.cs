@@ -1514,7 +1514,7 @@ namespace Trifolia.Test.Generation.Schematron
                 .Assertions
                 .Single(y => y.Id == "0-7");
 
-            string expected = "count(cda:td[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='xxx identifier'])=1";
+            string expected = "count(cda:td[text()='XXX Identifier'])=1";
             Assert.AreEqual(expected, foundAssert.Test);
         }
 
