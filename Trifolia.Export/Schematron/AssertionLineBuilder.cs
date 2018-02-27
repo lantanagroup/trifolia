@@ -260,13 +260,8 @@ namespace Trifolia.Export.Schematron
                             }
                             else
                             {
-                                List<int> allowedCardinalities = new List<int>();
-                                for (int i = _cardinality.Left; i <= _cardinality.Right; i++)
-                                    allowedCardinalities.Add(i);
-                                string cardinalities = string.Join(" or ", allowedCardinalities);
-
-                                sb.AppendFormat("count({0}{1}{2}{3}{4}) = ({5})", Sentinels.CONTEXT_TOKEN, Sentinels.ELEMENT_TOKEN, Sentinels.ATTRIBUTE_TOKEN, 
-                                    Sentinels.CHILDELEMENT_TOKEN, Sentinels.VALUESET_TOKEN, cardinalities);
+                                sb.AppendFormat("count({0}{1}{2}{3}{4})[. >= {5}] <= {6}", Sentinels.CONTEXT_TOKEN, Sentinels.ELEMENT_TOKEN, Sentinels.ATTRIBUTE_TOKEN, 
+                                    Sentinels.CHILDELEMENT_TOKEN, Sentinels.VALUESET_TOKEN, _cardinality.Left, _cardinality.Right);
                             }
                         }
                     }
