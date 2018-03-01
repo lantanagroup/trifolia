@@ -563,7 +563,7 @@
                 <div class="col-md-2">
                     <!-- ko with: Template -->
                     <div class="btn-group dropup">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-bind="css: { 'disabled': !IsValid() }">Save <b class="caret"></b></button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-bind="css: { 'disabled': !IsValid() || Locked() }">Save <b class="caret"></b></button>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#" data-bind="click: function () { $parent.Save(); }">and Continue</a></li>
                             <li><a href="#" data-bind="click: function () { $parent.Save('publishSettings'); }">and Publish Settings</a></li>
