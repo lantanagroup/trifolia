@@ -13,6 +13,7 @@
     self.fhirFormat = ko.observable();
     self.fhirVersion = ko.observable();
     self.fhirContent = ko.observable();
+    self.disableEdit = ko.observable(true);
 
     self.CompleteText = ko.observable('');
     self.CompleteHint = ko.observable('');
@@ -123,6 +124,10 @@
         return 'Dynamic';
     };
 
+    self.editConcepts = function () {
+        location.href = '/TerminologyManagement/ValueSet/Edit/' + self.ValueSet().Id() + '/Concept';
+    };
+
     self.Refresh = function (init) {
         self.Loading(true);
 
@@ -147,6 +152,9 @@
                         self.CompleteText('Incomplete');
                         self.CompleteHint('This value set includes a subset of the concepts according to its definition.');
                     }
+                    
+                    var disableEdit = !valueSet.PermitModify || !(valueSet.CanModify || valueSet.CanOverride); 
+                    self.disableEdit(disableEdit);
                 }
             });
 
