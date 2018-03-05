@@ -72,6 +72,7 @@ namespace Trifolia.DB
         public virtual DbSet<ViewTemplatePermission> ViewTemplatePermissions { get; set; }
         public virtual DbSet<ViewTemplateUsage> ViewTemplateUsages { get; set; }
         public virtual DbSet<ViewUserSecurable> ViewUserSecurables { get; set; }
+        public virtual DbSet<ViewValueSetMemberWhiteSpace> ViewValueSetMemberWhiteSpaces { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

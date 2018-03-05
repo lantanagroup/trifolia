@@ -8,6 +8,7 @@ using System.Xml.XPath;
 using Trifolia.Authorization;
 using Trifolia.DB;
 using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
 using Trifolia.Shared.Validation;
 
 namespace Trifolia.Plugins.Validation
@@ -33,6 +34,7 @@ namespace Trifolia.Plugins.Validation
         {
             ValidationResults results = new ValidationResults();
 
+            var plugin = implementationGuide.ImplementationGuideType.GetPlugin();
             var childTemplateIds = implementationGuide.ChildTemplates.Select(y => y.Id);
             var containedTemplateIds = (from vtr in this.tdb.ViewTemplateRelationships.AsNoTracking()
                                       join pt in childTemplateIds on vtr.ParentTemplateId equals pt
@@ -41,6 +43,18 @@ namespace Trifolia.Plugins.Validation
             var containedTemplates = (from cti in containedTemplateIds
                                       join t in this.tdb.Templates.AsNoTracking() on cti equals t.Id
                                       select t).ToList();
+            var valueSets = (from tc in this.tdb.TemplateConstraints
+                             join t in this.tdb.Templates on tc.TemplateId equals t.Id
+                             join vs in this.tdb.ValueSets on tc.ValueSetId equals vs.Id
+                             join cti in childTemplateIds on t.Id equals cti
+                             select vs);
+            var valueSetCodesWithWhitespace = (from vsm in this.tdb.ViewValueSetMemberWhiteSpaces
+                                               join vs in valueSets on vsm.ValueSetId equals vs.Id
+                                               select new
+                                               {
+                                                   ValueSet = vs,
+                                                   ValueSetMember = vsm
+                                               });
 
             foreach (var template in implementationGuide.ChildTemplates)
             {
@@ -54,6 +68,17 @@ namespace Trifolia.Plugins.Validation
 
                 if (result.Items.Count > 0)
                     results.TemplateResults.Add(result);
+            }
+
+            foreach (var vscww in valueSetCodesWithWhitespace)
+            {
+                var identifier = vscww.ValueSet.GetIdentifier(plugin);
+
+                if (vscww.ValueSetMember.Code.Trim() != vscww.ValueSetMember.Code)
+                    results.Messages.Add("Value set \"" + vscww.ValueSet.Name + "\" (" + identifier + ") has a code \"" + vscww.ValueSetMember.Code + "\" with white spaces.");
+
+                if (vscww.ValueSetMember.DisplayName.Trim() != vscww.ValueSetMember.DisplayName)
+                    results.Messages.Add("Value set \"" + vscww.ValueSet.Name + "\" (" + identifier + ") has a code \"" + vscww.ValueSetMember.Code + "\" whose display name \"" + vscww.ValueSetMember.DisplayName + "\" has white spaces.");
             }
 
             if (implementationGuide.HasImportedValueSets(this.tdb, ValueSetImportSources.VSAC))

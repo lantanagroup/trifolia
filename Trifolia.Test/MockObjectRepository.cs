@@ -1107,6 +1107,27 @@ namespace Trifolia.Test
             }
         }
 
+        public DbSet<ViewValueSetMemberWhiteSpace> ViewValueSetMemberWhiteSpaces
+        {
+            get
+            {
+                var results = (from vs in this.ValueSets
+                               join vsm in this.ValueSetMembers on vs.Id equals vsm.ValueSetId
+                               where vsm.Code.Trim() != vsm.Code || vsm.DisplayName.Trim() != vsm.DisplayName
+                               select new ViewValueSetMemberWhiteSpace()
+                               {
+                                   ValueSetId = vs.Id,
+                                   ValueSetName = vs.Name,
+                                   Code = vsm.Code,
+                                   DisplayName = vsm.DisplayName
+                               });
+
+                var mockDbSet = CreateMockDbSet<ViewValueSetMemberWhiteSpace>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
+            }
+        }
+
         #endregion
 
         #region Generic Test Data Generation
