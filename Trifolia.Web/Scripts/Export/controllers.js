@@ -174,6 +174,14 @@
                 if (shouldReloadTemplates) {
                     $scope.loadTemplates();
                 }
+
+                if ($scope.criteria.TemplateIds.length == 0) {
+                    $scope.toggleSelectAllTemplates();
+                }
+
+                if (!$scope.criteria.DefaultSchematron) {
+                    $scope.criteria.DefaultSchematron = 'not(.)';
+                }
             })
             .catch(function (err) {
                 console.error('Error loading default export settings: ' + err);
