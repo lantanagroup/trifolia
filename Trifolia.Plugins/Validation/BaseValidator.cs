@@ -75,10 +75,10 @@ namespace Trifolia.Plugins.Validation
                 var identifier = vscww.ValueSet.GetIdentifier(plugin);
 
                 if (vscww.ValueSetMember.Code.Trim() != vscww.ValueSetMember.Code)
-                    results.Messages.Add("Value set \"" + vscww.ValueSet.Name + "\" (" + identifier + ") has a code \"" + vscww.ValueSetMember.Code + "\" with white spaces.");
+                    results.Messages.Add("Value set \"" + vscww.ValueSet.Name + "\" (" + identifier + ") has a code \"" + vscww.ValueSetMember.Code + "\" with leading or trailing white spaces.");
 
                 if (vscww.ValueSetMember.DisplayName.Trim() != vscww.ValueSetMember.DisplayName)
-                    results.Messages.Add("Value set \"" + vscww.ValueSet.Name + "\" (" + identifier + ") has a code \"" + vscww.ValueSetMember.Code + "\" whose display name \"" + vscww.ValueSetMember.DisplayName + "\" has white spaces.");
+                    results.Messages.Add("Value set \"" + vscww.ValueSet.Name + "\" (" + identifier + ") has a code \"" + vscww.ValueSetMember.Code + "\" whose display name \"" + vscww.ValueSetMember.DisplayName + "\" has leading or trailing white spaces.");
             }
 
             if (implementationGuide.HasImportedValueSets(this.tdb, ValueSetImportSources.VSAC))
