@@ -10,6 +10,7 @@ using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
 using System.Data.Entity;
+using Trifolia.Generation.IG;
 
 namespace Trifolia.Export.Schematron
 {
@@ -25,9 +26,12 @@ namespace Trifolia.Export.Schematron
         private Dictionary<int, string> constraintNumbers = null;
         private string schemaPrefix;
         private IIGTypePlugin igTypePlugin;
+        private SimpleSchema igTypeSchema;
         private List<string> categories;
         private string defaultSchematron;
         private TemplateContextBuilder templateContextBuilder;
+        private IGSettingsManager igSettings;
+        private List<ConstraintReference> constraintReferences = null;
 
         /// <summary>
         /// Creates a new instance of SchematronGenerator.
@@ -48,13 +52,24 @@ namespace Trifolia.Export.Schematron
 
             this.rep = rep;
             this.ig = ig;
-            this.templates = (from t in rep.Templates
-                              join st in templateIds on t.Id equals st
-                              select t)
+            this.igSettings = new IGSettingsManager(rep, ig.Id);
+            this.templates = rep.Templates.Where(y => templateIds.Contains(y.Id))
                               .Include(y => y.ImpliedTemplate)
-                              .Include("ChildConstraints.ValueSet")
-                              .Include("ChildConstraints.CodeSystem")
-                              .AsEnumerable();
+                              .Include(y => y.ChildConstraints.Select(x => x.ValueSet))
+                              .Include(y => y.ChildConstraints.Select(x => x.CodeSystem))
+                              .Include(y => y.ChildConstraints.Select(x => x.References))
+                              .ToList();
+            this.constraintReferences = (from tcr in this.rep.TemplateConstraintReferences                                      // all constraint references
+                                         join t in this.rep.Templates on tcr.ReferenceIdentifier equals t.Oid                   // get the template the reference is point to
+                                         join stc in this.rep.TemplateConstraints on tcr.TemplateConstraintId equals stc.Id     // get the constraint that the reference is on
+                                         join stid in templateIds on stc.TemplateId equals stid                                 // limit constraints to only templates being included in the ig/export
+                                         select new ConstraintReference()
+                                         {
+                                             Bookmark = t.Bookmark,
+                                             Identifier = t.Oid,
+                                             Name = t.Name,
+                                             TemplateConstraintId = tcr.TemplateConstraintId
+                                         }).ToList();
             this.vocabularyOutputType = vocabularyOutputType;
             this.includeCustom = includeCustom;
             this.vocFileName = vocFileName;
@@ -62,7 +77,8 @@ namespace Trifolia.Export.Schematron
             this.defaultSchematron = defaultSchematron;
 
             this.igTypePlugin = this.ig.ImplementationGuideType.GetPlugin();
-            this.templateContextBuilder = new TemplateContextBuilder(this.rep, ig.ImplementationGuideType);
+            this.igTypeSchema = ig.ImplementationGuideType.GetSimpleSchema();
+            this.templateContextBuilder = new TemplateContextBuilder(this.rep, ig.ImplementationGuideType, this.igTypeSchema);
 
             var allConstraint = (from t in templates
                                  from tc in t.ChildConstraints
@@ -153,7 +169,7 @@ namespace Trifolia.Export.Schematron
             documentLevelTemplates.ToList().RemoveAll(t => t.Status != null && t.Status.Status == lDeprecatedStatus);
 
             List<string> requiredTemplates = new List<string>();
-            TemplateContextBuilder tcb = new TemplateContextBuilder(this.rep, aImplementationGuide.ImplementationGuideType);
+            TemplateContextBuilder tcb = new TemplateContextBuilder(this.rep, aImplementationGuide.ImplementationGuideType, this.igTypeSchema);
 
             foreach (var template in documentLevelTemplates)
             {
@@ -834,9 +850,8 @@ namespace Trifolia.Export.Schematron
         internal string GetAssertionTestMessage(TemplateConstraint tc, string conformance = null)
         {
             List<string> messages = new List<string>();
-
-            IGSettingsManager igSettings = new IGSettingsManager(rep, ig.Id);
-            IFormattedConstraint currentFc = FormattedConstraintFactory.NewFormattedConstraint(this.rep, igSettings, this.igTypePlugin, tc);
+            
+            IFormattedConstraint currentFc = FormattedConstraintFactory.NewFormattedConstraint(this.rep, this.igSettings, this.igTypePlugin, tc, this.constraintReferences);
 
             if (!string.IsNullOrEmpty(conformance))
                 currentFc.Conformance = conformance;
@@ -867,7 +882,7 @@ namespace Trifolia.Export.Schematron
         /// <returns></returns>
         internal string GenerateAssertion(TemplateConstraint tc)
         {
-            ConstraintParser cParser = new ConstraintParser(this.rep, tc, tc.Template.ImplementationGuideType, this.vocFileName, this.vocabularyOutputType);
+            ConstraintParser cParser = new ConstraintParser(this.rep, tc, tc.Template.ImplementationGuideType, this.igTypeSchema, this.templates, this.vocFileName, this.vocabularyOutputType);
 
             if (tc.ValueSet != null)
                 cParser.ValueSet = tc.ValueSet;

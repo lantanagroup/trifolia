@@ -854,7 +854,7 @@ namespace Trifolia.Test.Generation.Schematron
         {
             var tc = ruleConstraints[number];
             var vocabularyOutputType = vocabularyOutputMap.ContainsKey(number) ? vocabularyOutputMap[number] : VocabularyOutputType.Default;
-            var cParser = new ConstraintParser(ruleRepo, tc, tc.Template.ImplementationGuideType, vocabularyOutputType: vocabularyOutputType);
+            var cParser = new ConstraintParser(ruleRepo, tc, tc.Template.ImplementationGuideType, tc.Template.ImplementationGuideType.GetSimpleSchema(), ruleRepo.Templates, vocabularyOutputType: vocabularyOutputType);
             var builder = cParser.CreateAssertionLineBuilder();
 
             return builder.ToString();
@@ -2138,6 +2138,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual(expected, actual);
         }
 
+        /* HQMF schema is not in the test project anymore
         [TestMethod, TestCategory("Schematron")]
         public void TestAssertionLineBuilderRule143()
         {
@@ -2146,6 +2147,7 @@ namespace Trifolia.Test.Generation.Schematron
 
             Assert.AreEqual(expected, actual);
         }
+        */
 
         [TestMethod, TestCategory("Schematron")]
         public void TestAssertionLineBuilderRule144()
@@ -2209,7 +2211,7 @@ namespace Trifolia.Test.Generation.Schematron
             var root = ruleRepo.AddConstraintToTemplate(template, id, null, "@root", "SHALL", "1..1", isBranchIdentifier: true, value: "2.16.840.1.113883.3.2074.1", displayName: "CMS EHR Certification Number");
             var extension = ruleRepo.AddConstraintToTemplate(template, id, null, "@extension", "SHALL", "1..1");
 
-            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(ruleRepo, ig.ImplementationGuideType);
+            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(ruleRepo, ig.ImplementationGuideType, ig.ImplementationGuideType.GetSimpleSchema());
             string actual = contextBuilder.CreateFullBranchedParentContext(template, id);
             string expected = "cda:ClinicalDocument[cda:templateId[@root='2.16.92.3.1.5.2.34']]/cda:participant/cda:associatedEntity/cda:id[@root='2.16.840.1.113883.3.2074.1']";
 
