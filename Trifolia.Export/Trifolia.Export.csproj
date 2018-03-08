@@ -186,7 +186,6 @@
     <Compile Include="Schematron\SchematronDocumentSerializer.cs" />
     <Compile Include="Schematron\SchematronGenerator.cs" />
     <Compile Include="Schematron\TemplateContextBuilder.cs" />
-    <Compile Include="Schematron\Utilities\TemplateUtil.cs" />
     <Compile Include="Terminology\BaseExporter.cs" />
     <Compile Include="Terminology\ExcelExporter.cs" />
     <Compile Include="Terminology\MultipleSVSExporter.cs" />

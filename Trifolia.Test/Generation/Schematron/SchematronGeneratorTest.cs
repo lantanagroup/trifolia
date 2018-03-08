@@ -19,7 +19,6 @@ using Template = Trifolia.DB.Template;
 using ValueSet = Trifolia.DB.ValueSet;
 using CodeSystem = Trifolia.DB.CodeSystem;
 using Trifolia.DB;
-using Trifolia.Export.Schematron.Utilities;
 using Trifolia.Import.Native;
 using System.IO;
 using System.Xml.Serialization;

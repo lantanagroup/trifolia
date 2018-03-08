@@ -5,7 +5,6 @@ using System.Text;
 using Trifolia.DB;
 using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Export.Schematron.Model;
-using Trifolia.Export.Schematron.Utilities;
 using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
@@ -55,9 +54,30 @@ namespace Trifolia.Export.Schematron
             this.igSettings = new IGSettingsManager(rep, ig.Id);
             this.templates = rep.Templates.Where(y => templateIds.Contains(y.Id))
                               .Include(y => y.ImpliedTemplate)
-                              .Include(y => y.ChildConstraints.Select(x => x.ValueSet))
-                              .Include(y => y.ChildConstraints.Select(x => x.CodeSystem))
-                              .Include(y => y.ChildConstraints.Select(x => x.References))
+                              .Include("ChildConstraints")
+                              .Include("ChildConstraints.ValueSet")
+                              .Include("ChildConstraints.CodeSystem")
+                              .Include("ChildConstraints.References")
+                              .Include("ChildConstraints.ChildConstraints")
+                              .Include("ChildConstraints.ChildConstraints.ValueSet")
+                              .Include("ChildConstraints.ChildConstraints.CodeSystem")
+                              .Include("ChildConstraints.ChildConstraints.References")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ValueSet")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.CodeSystem")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.References")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ValueSet")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.CodeSystem")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.References")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ValueSet")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.CodeSystem")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.References")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ValueSet")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.CodeSystem")
+                              .Include("ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.ChildConstraints.References")
                               .ToList();
             this.constraintReferences = (from tcr in this.rep.TemplateConstraintReferences                                      // all constraint references
                                          join t in this.rep.Templates on tcr.ReferenceIdentifier equals t.Oid                   // get the template the reference is point to
@@ -118,7 +138,7 @@ namespace Trifolia.Export.Schematron
             if (aClosedTemplate.ImpliedTemplate != null)
                 xpaths.Add(GenerateClosedTemplateIdentifierXpath(aClosedTemplate.ImpliedTemplate.Oid));
 
-            var childOids = TemplateUtil.GetAllChildTemplateOids(this.rep, aClosedTemplate);
+            var childOids = this.GetAllChildTemplateOids(this.rep, aClosedTemplate);
 
             foreach (var oid in childOids)
             {
@@ -129,6 +149,46 @@ namespace Trifolia.Export.Schematron
                 return string.Format(this.igTypePlugin.ClosedTemplateXpath, this.schemaPrefix, string.Join(" and ", xpaths));
 
             return null;
+        }
+
+        /// <summary>
+        /// Given a template, returns all child template oid's by recursively walking the child collection
+        /// </summary>
+        /// <param name="parentTemplate"></param>
+        /// <param name="aChildOids"></param>
+        /// <returns>string list of all unique oids</returns>
+        public IList<string> GetAllChildTemplateOids(IObjectRepository tdb, Template parentTemplate, List<string> aChildOids = null)
+        {
+            var childOids = aChildOids == null ? new List<string>() : aChildOids;
+            var impliedTemplate = this.templates.SingleOrDefault(y => y.Id == parentTemplate.ImpliedTemplateId);
+
+            if (impliedTemplate != null)
+            {
+                if (!childOids.Contains(parentTemplate.ImpliedTemplate.Oid))
+                {
+                    string oid = impliedTemplate.Oid;
+                    childOids.Add(oid);
+                }
+            }
+
+            foreach (var childConstraint in parentTemplate.ChildConstraints)
+            {
+                var containedTemplates = (from tcr in childConstraint.References
+                                          join t in this.templates on tcr.ReferenceIdentifier equals t.Oid
+                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                          select t);
+
+                foreach (var containedTemplate in containedTemplates)
+                {
+                    if (!childOids.Contains(containedTemplate.Oid))
+                    {
+                        childOids.Add(containedTemplate.Oid);
+                        GetAllChildTemplateOids(tdb, containedTemplate, childOids);
+                    }
+                }
+            }
+
+            return childOids;
         }
 
         private string GenerateClosedTemplateIdentifierXpath(string templateIdentifier)
