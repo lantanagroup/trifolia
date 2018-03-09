@@ -125,6 +125,10 @@
     <Compile Include="Migrations\201710181431268_getImplementationGuideTemplates.Designer.cs">
       <DependentUpon>201710181431268_getImplementationGuideTemplates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803052328345_vValueSetMemberWhiteSpace.cs" />
+    <Compile Include="Migrations\201803052328345_vValueSetMemberWhiteSpace.Designer.cs">
+      <DependentUpon>201803052328345_vValueSetMemberWhiteSpace.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -194,6 +198,7 @@
     <Compile Include="ValueSetMemberExtension.cs" />
     <Compile Include="ViewIGAuditTrailExtension.cs" />
     <Compile Include="ViewTemplateExtension.cs" />
+    <Compile Include="ViewValueSetMemberWhiteSpace.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -229,6 +234,9 @@
     <EmbeddedResource Include="Migrations\201708031727547_multiple_contained_templates.resx">
       <DependentUpon>201708031727547_multiple_contained_templates.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803052328345_vValueSetMemberWhiteSpace.resx">
+      <DependentUpon>201803052328345_vValueSetMemberWhiteSpace.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703292147411_multipleValueSetIdentifiers.resx">
@@ -258,10 +266,6 @@
     <EmbeddedResource Include="Migrations\201710181431268_getImplementationGuideTemplates.resx">
       <DependentUpon>201710181431268_getImplementationGuideTemplates.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FHIR_STU3_Resources.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\FHIR_Latest_Resources.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

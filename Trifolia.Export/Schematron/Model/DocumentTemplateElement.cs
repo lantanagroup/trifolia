@@ -101,7 +101,10 @@ namespace Trifolia.Export.Schematron.Model
                 }
                 else
                 {
+                    /* TRIF-1248
                     sb.AppendFormat("[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='{0}']", this.Value.ToLower()); //translate does case-insensitive compare in xpath 1.0
+                    */
+                    sb.AppendFormat("[text()='{0}']", this.Value);
                 }
             }
 

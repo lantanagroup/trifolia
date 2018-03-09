@@ -8,6 +8,7 @@ using Trifolia.Shared.Plugins;
 using Trifolia.Export.Schematron.Model;
 using Trifolia.Export.Schematron.ConstraintToDocumentElementMap;
 using Trifolia.DB;
+using Trifolia.Generation.IG;
 
 namespace Trifolia.Export.Schematron
 {
@@ -28,6 +29,8 @@ namespace Trifolia.Export.Schematron
         private VocabularyOutputType vocabularyOutputType = VocabularyOutputType.Default;
         private IIGTypePlugin igTypePlugin = null;
         private ImplementationGuideType igType = null;
+        private SimpleSchema igTypeSchema;
+        private IEnumerable<Template> allTemplates = null;
 
         public ValueSet ValueSet
         {
@@ -44,14 +47,17 @@ namespace Trifolia.Export.Schematron
         public ConstraintParser(IObjectRepository tdb, 
             IConstraint constraint, 
             ImplementationGuideType igType, 
+            SimpleSchema igTypeSchema,
+            IEnumerable<Template> allTemplates,
             string valueSetFile = "voc.xml", 
-            VocabularyOutputType vocabularyOutputType = 
-            VocabularyOutputType.Default)
+            VocabularyOutputType vocabularyOutputType = VocabularyOutputType.Default)
         {
             this.tdb = tdb;
             this.constraint = constraint;
             this.valueSetFile = valueSetFile;
             this.igType = igType;
+            this.igTypeSchema = igTypeSchema;
+            this.allTemplates = allTemplates;
             this.igTypePlugin = igType.GetPlugin();
 
             if (!string.IsNullOrEmpty(this.constraint.Cardinality))
@@ -81,7 +87,7 @@ namespace Trifolia.Export.Schematron
             ConstraintToDocumentElementHelper.AddElementValueAndDataType(this.prefix, aElement, aTemplateConstraint);
 
             //create builders
-            var builder = new AssertionLineBuilder(this.tdb, aElement, this.igType);
+            var builder = new AssertionLineBuilder(this.tdb, aElement, this.igType, this.igTypeSchema);
 
             if (aGenerateContext)
             {
@@ -95,7 +101,7 @@ namespace Trifolia.Export.Schematron
             }
 
             var containedTemplates = (from tcr in aTemplateConstraint.References
-                                      join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                      join t in this.allTemplates on tcr.ReferenceIdentifier equals t.Oid
                                       where tcr.ReferenceType == ConstraintReferenceTypes.Template
                                       select new { Identifier = t.Oid, t.PrimaryContextType });
 
@@ -143,12 +149,12 @@ namespace Trifolia.Export.Schematron
                 if (!string.IsNullOrEmpty(aConstraint.Value))
                     element.Value = aConstraint.Value;
 
-                asb = new AssertionLineBuilder(this.tdb, element, this.igType);
+                asb = new AssertionLineBuilder(this.tdb, element, this.igType, this.igTypeSchema);
 
                 var containedTemplates = (from tcr in aConstraint.References
-                                          join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                          join t in this.allTemplates on tcr.ReferenceIdentifier equals t.Oid
                                           where tcr.ReferenceType == ConstraintReferenceTypes.Template
-                                          select new { Identifier = t.Oid, t.PrimaryContextType });
+                                          select new { Identifier = t.Oid, t.PrimaryContextType }).ToList();
 
                 foreach (var containedTemplate in containedTemplates)
                 {
@@ -160,7 +166,7 @@ namespace Trifolia.Export.Schematron
                 if (!string.IsNullOrEmpty(aConstraint.Value))
                     attribute.SingleValue = aConstraint.Value;
 
-                asb = new AssertionLineBuilder(this.tdb, attribute, this.igType);
+                asb = new AssertionLineBuilder(this.tdb, attribute, this.igType, this.igTypeSchema);
             }
             else
             {
@@ -243,7 +249,7 @@ namespace Trifolia.Export.Schematron
             }
             else
             {
-                asb = new AssertionLineBuilder(this.tdb, aAttribute, this.igType);
+                asb = new AssertionLineBuilder(this.tdb, aAttribute, this.igType, this.igTypeSchema);
 
                 if (aConstraint.Parent != null)
                 {
@@ -326,7 +332,11 @@ namespace Trifolia.Export.Schematron
             }
             else //this is an element
             {
-                ConstraintToDocumentElementHelper.AddCodeSystemToElement(this.tdb, this.igTypePlugin, element, currentConstraint);
+                // Only add the code system constraints if there is no value conformance or the value conformance matches the element/attribute conformance
+                // This is because in the SchematronGenerator class, a duplicate constraint is created when the value conformance is different from
+                // the element/attribute conformance, where the duplicate constraint's conformance matches the value conformance.
+                if (string.IsNullOrEmpty(currentConstraint.ValueConformance) || ConformanceParser.Parse(currentConstraint.Conformance) == ConformanceParser.Parse(currentConstraint.ValueConformance))
+                    ConstraintToDocumentElementHelper.AddCodeSystemToElement(this.tdb, this.igTypePlugin, element, currentConstraint);
 
                 if (currentConstraint.IsBranch)
                 {

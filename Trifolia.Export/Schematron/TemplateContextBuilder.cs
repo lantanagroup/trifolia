@@ -16,12 +16,14 @@ namespace Trifolia.Export.Schematron
         private ImplementationGuideType igType;
         private string prefix;
         private IObjectRepository tdb;
+        private SimpleSchema igTypeSchema;
 
-        public TemplateContextBuilder(IObjectRepository tdb, ImplementationGuideType igType, string prefix = null)
+        public TemplateContextBuilder(IObjectRepository tdb, ImplementationGuideType igType, SimpleSchema igTypeSchema, string prefix = null)
         {
             this.tdb = tdb;
             this.igType = igType;
             this.plugin = this.igType.GetPlugin();
+            this.igTypeSchema = igTypeSchema;
             this.prefix = !string.IsNullOrEmpty(prefix) ? prefix : igType.SchemaPrefix;
 
             if (!string.IsNullOrEmpty(this.prefix) && this.prefix.EndsWith(":"))
@@ -46,14 +48,13 @@ namespace Trifolia.Export.Schematron
             // Assume identifier exists if we aren't given a context type
             if (string.IsNullOrEmpty(primaryContextType))
                 return true;
+            
+            var schema = this.igTypeSchema.GetSchemaFromContext(primaryContextType);
 
-            SimpleSchema igSchema = this.igType.GetSimpleSchema();
-            igSchema = igSchema.GetSchemaFromContext(primaryContextType);
-
-            if (igSchema != null)
+            if (schema != null)
             {
                 string[] identifierElementNameSplit = this.plugin.TemplateIdentifierElementName.Split('/');
-                var currentChildren = igSchema.Children;
+                var currentChildren = schema.Children;
                 bool identifierExists = true;
 
                 foreach (var identifierElementNamePart in identifierElementNameSplit)
@@ -126,7 +127,7 @@ namespace Trifolia.Export.Schematron
                 }
 
                 // TODO: Enhance performance
-                TemplateContextBuilder tcb = new TemplateContextBuilder(this.tdb, containingConstraint.Template.ImplementationGuideType);
+                TemplateContextBuilder tcb = new TemplateContextBuilder(this.tdb, containingConstraint.Template.ImplementationGuideType, this.igTypeSchema);
                 string templateContext = tcb.BuildContextString(containingConstraint.Template);
 
                 if (!string.IsNullOrEmpty(templateContext))

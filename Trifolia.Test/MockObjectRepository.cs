@@ -21,7 +21,6 @@ namespace Trifolia.Test
     public class MockObjectRepository : IObjectRepository
     {
         public const string DEFAULT_ORGANIZATION = "LCG";
-        public const string DEFAULT_FHIR_DSTU1_IG_TYPE_NAME = "FHIR DSTU1";
         public const string DEFAULT_FHIR_DSTU2_IG_TYPE_NAME = "FHIR DSTU2";
         public const string DEFAULT_FHIR_STU3_IG_TYPE_NAME = "FHIR STU3";
         public const string DEFAULT_CDA_IG_TYPE_NAME = "CDA";
@@ -90,62 +89,6 @@ namespace Trifolia.Test
             this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_ENTRY_TYPE, "entry", "Entry", 3);
             this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_SUBENTRY_TYPE, "entry", "Entry", 4);
             this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_UNSPECIFIED_TYPE, "", "", 4);
-        }
-
-        public void InitializeFHIRRepository()
-        {
-            ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(DEFAULT_FHIR_DSTU1_IG_TYPE_NAME, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
-
-            this.FindOrCreateTemplateType(fhirType, "AdverseReaction", "AdverseReaction", "AdverseReaction", 1);
-            this.FindOrCreateTemplateType(fhirType, "Alert", "Alert", "Alert", 2);
-            this.FindOrCreateTemplateType(fhirType, "AllergyIntolerance", "AllergyIntolerance", "AllergyIntolerance", 3);
-            this.FindOrCreateTemplateType(fhirType, "Binary", "Binary", "Binary", 4);
-            this.FindOrCreateTemplateType(fhirType, "CarePlan", "CarePlan", "CarePlan", 5);
-            this.FindOrCreateTemplateType(fhirType, "Composition", "Composition", "Composition", 6);
-            this.FindOrCreateTemplateType(fhirType, "ConceptMap", "ConceptMap", "ConceptMap", 7);
-            this.FindOrCreateTemplateType(fhirType, "Condition", "Condition", "Condition", 8);
-            this.FindOrCreateTemplateType(fhirType, "Conformance", "Conformance", "Conformance", 9);
-            this.FindOrCreateTemplateType(fhirType, "Device", "Device", "Device", 10);
-            this.FindOrCreateTemplateType(fhirType, "DeviceObservationReport", "DeviceObservationReport", "DeviceObservationReport", 11);
-            this.FindOrCreateTemplateType(fhirType, "DiagnosticOrder", "DiagnosticOrder", "DiagnosticOrder", 12);
-            this.FindOrCreateTemplateType(fhirType, "DiagnosticReport", "DiagnosticReport", "DiagnosticReport", 13);
-            this.FindOrCreateTemplateType(fhirType, "DocumentReference", "DocumentReference", "DocumentReference", 14);
-            this.FindOrCreateTemplateType(fhirType, "DocumentManifest", "DocumentManifest", "DocumentManifest", 15);
-            this.FindOrCreateTemplateType(fhirType, "Encounter", "Encounter", "Encounter", 16);
-            this.FindOrCreateTemplateType(fhirType, "FamilyHistory", "FamilyHistory", "FamilyHistory", 17);
-            this.FindOrCreateTemplateType(fhirType, "Group", "Group", "Group", 18);
-            this.FindOrCreateTemplateType(fhirType, "ImagingStudy", "ImagingStudy", "ImagingStudy", 19);
-            this.FindOrCreateTemplateType(fhirType, "Immunization", "Immunization", "Immunization", 20);
-            this.FindOrCreateTemplateType(fhirType, "ImmunizationRecommendation", "ImmunizationRecommendation", "ImmunizationRecommendation", 21);
-            this.FindOrCreateTemplateType(fhirType, "List", "List", "List", 22);
-            this.FindOrCreateTemplateType(fhirType, "Location", "Location", "Location", 23);
-            this.FindOrCreateTemplateType(fhirType, "Media", "Media", "Media", 24);
-            this.FindOrCreateTemplateType(fhirType, "Medication", "Medication", "Medication", 25);
-            this.FindOrCreateTemplateType(fhirType, "MedicationAdministration", "MedicationAdministration", "MedicationAdministration", 26);
-            this.FindOrCreateTemplateType(fhirType, "MedicationDispense", "MedicationDispense", "MedicationDispense", 27);
-            this.FindOrCreateTemplateType(fhirType, "MedicationPrescription", "MedicationPrescription", "MedicationPrescription", 28);
-            this.FindOrCreateTemplateType(fhirType, "MedicationStatement", "MedicationStatement", "MedicationStatement", 29);
-            this.FindOrCreateTemplateType(fhirType, "MessageHeader", "MessageHeader", "MessageHeader", 30);
-            this.FindOrCreateTemplateType(fhirType, "Observation", "Observation", "Observation", 31);
-            this.FindOrCreateTemplateType(fhirType, "OperationOutcome", "OperationOutcome", "OperationOutcome", 32);
-            this.FindOrCreateTemplateType(fhirType, "Order", "Order", "Order", 33);
-            this.FindOrCreateTemplateType(fhirType, "OrderResponse", "OrderResponse", "OrderResponse", 34);
-            this.FindOrCreateTemplateType(fhirType, "Organization", "Organization", "Organization", 35);
-            this.FindOrCreateTemplateType(fhirType, "Other", "Other", "Other", 36);
-            this.FindOrCreateTemplateType(fhirType, "Patient", "Patient", "Patient", 37);
-            this.FindOrCreateTemplateType(fhirType, "Practitioner", "Practitioner", "Practitioner", 38);
-            this.FindOrCreateTemplateType(fhirType, "Procedure", "Procedure", "Procedure", 39);
-            this.FindOrCreateTemplateType(fhirType, "Profile", "Profile", "Profile", 40);
-            this.FindOrCreateTemplateType(fhirType, "Provenance", "Provenance", "Provenance", 41);
-            this.FindOrCreateTemplateType(fhirType, "Query", "Query", "Query", 42);
-            this.FindOrCreateTemplateType(fhirType, "Questionnaire", "Questionnaire", "Questionnaire", 43);
-            this.FindOrCreateTemplateType(fhirType, "RelatedPerson", "RelatedPerson", "RelatedPerson", 44);
-            this.FindOrCreateTemplateType(fhirType, "SecurityEvent", "SecurityEvent", "SecurityEvent", 45);
-            this.FindOrCreateTemplateType(fhirType, "Specimen", "Specimen", "Specimen", 46);
-            this.FindOrCreateTemplateType(fhirType, "Substance", "Substance", "Substance", 47);
-            this.FindOrCreateTemplateType(fhirType, "Supply", "Supply", "Supply", 48);
-            this.FindOrCreateTemplateType(fhirType, "ValueSet", "ValueSet", "ValueSet", 49);
-            this.FindOrCreateTemplateType(fhirType, "Extension", "Extension", "Extension", 50);
         }
 
         public void InitializeFHIR2Repository()
@@ -1159,6 +1102,27 @@ namespace Trifolia.Test
                                }).Distinct();
 
                 var mockDbSet = CreateMockDbSet<ViewTemplateList>();
+                mockDbSet.AddRange(results);
+                return mockDbSet;
+            }
+        }
+
+        public DbSet<ViewValueSetMemberWhiteSpace> ViewValueSetMemberWhiteSpaces
+        {
+            get
+            {
+                var results = (from vs in this.ValueSets
+                               join vsm in this.ValueSetMembers on vs.Id equals vsm.ValueSetId
+                               where vsm.Code.Trim() != vsm.Code || vsm.DisplayName.Trim() != vsm.DisplayName
+                               select new ViewValueSetMemberWhiteSpace()
+                               {
+                                   ValueSetId = vs.Id,
+                                   ValueSetName = vs.Name,
+                                   Code = vsm.Code,
+                                   DisplayName = vsm.DisplayName
+                               });
+
+                var mockDbSet = CreateMockDbSet<ViewValueSetMemberWhiteSpace>();
                 mockDbSet.AddRange(results);
                 return mockDbSet;
             }

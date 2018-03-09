@@ -71,6 +71,86 @@ namespace Trifolia.Plugins.Validation.FHIR
                 }
             }
 
+            List<string> resourceIds = new List<string>();
+
+            // Go through each of the FHIR Resource Instance files associated with the implementation guide and get the resource type and id for each one
+            foreach (var file in implementationGuide.Files.Where(y => y.ContentType == ImplementationGuideFile.ContentTypeFHIRResourceInstance))
+            {
+                fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
+                string fileContent = Encoding.UTF8.GetString(file.GetLatestData().Data);
+
+                try
+                {
+                    if (file.MimeType.Contains("json"))
+                    {
+                        fhir_stu3.Hl7.Fhir.Serialization.FhirJsonParser parser = new FhirJsonParser();
+                        resource = parser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
+                    }
+                    else if (file.MimeType.Contains("xml"))
+                    {
+                        fhir_stu3.Hl7.Fhir.Serialization.FhirXmlParser parser = new FhirXmlParser();
+                        resource = parser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Do nothing? Skip?
+
+                }
+
+                if (resource != null)
+                {
+                    // Ex: Questionnaire/ssi-questionnaire
+                    resourceIds.Add(resource.ResourceType + "/" + resource.Id);
+                }
+            }
+
+            // Go through each of the profile samples, and do the same thing. Loop through each template in the IG, and Template.TemplateSamples
+            var allTemplateSamples = implementationGuide.ChildTemplates.SelectMany(y => y.TemplateSamples);
+
+            foreach (var templateSample in allTemplateSamples)
+            {
+                fhir_stu3.Hl7.Fhir.Model.Resource resource = null;
+                string fileContent = templateSample.XmlSample;
+
+                try
+                {
+                    fhir_stu3.Hl7.Fhir.Serialization.FhirXmlParser parser = new FhirXmlParser();
+                    resource = parser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
+                }
+                catch (Exception ex)
+                {
+                    // Do nothing
+
+                }
+                if (resource != null)
+                {
+                    resourceIds.Add(resource.ResourceType + "/" + resource.Id);
+                }
+            }
+
+            // Go through each of the profiles and determine their StructureDefinition/<id> as well, add to list
+            foreach (var template in implementationGuide.ChildTemplates)
+            {
+                String resourceId = template.Oid.Substring(template.Oid.IndexOf("StructureDefinition/") + 20);
+                resourceIds.Add(template.PrimaryContextType + "/" + resourceId);
+            }
+
+            // Check the list of resourceIds for duplicates (suggest using some form of linq query - search online)
+            var duplicateCheck = resourceIds.GroupBy(x => x)
+                                            .Where(g => g.Count() > 1)
+                                            .Select(d => d.Key).ToList();
+
+            // For each duplicate, create a resources.Messages error. Flag results.RestrictDownload if any duplicates, cause the exports will error out.
+            if (duplicateCheck.Count != 0)
+            {
+                results.RestrictDownload = true;
+                foreach (var duplicate in duplicateCheck)
+                {
+                    results.Messages.Add("Export Restricted: Entry with type and id " + duplicate.ToString() + " appears more than once within this implementation guide as an IG sample file, as a sample associated with a profile within the IG, or a profile");
+                }
+            }
+
             return results;
         }
 

@@ -47,19 +47,21 @@ namespace Trifolia.Export.Schematron
         VocabularyOutputType _vocabularyOutputType;
         bool _includeValueSetNullFlavor = false;
         IObjectRepository _tdb = null;
+        private SimpleSchema _igTypeSchema;
 
         #endregion
 
         #region ctor
-        protected AssertionLineBuilder(IObjectRepository tdb, ImplementationGuideType igType, string prefix)
+        protected AssertionLineBuilder(IObjectRepository tdb, ImplementationGuideType igType, SimpleSchema igTypeSchema, string prefix)
         {
+            this._igTypeSchema = igTypeSchema;
             this._tdb = tdb;
             this._prefix = prefix;
             this._igType = igType;
         }
 
-        public AssertionLineBuilder(IObjectRepository tdb, DocumentTemplateElement aElement, ImplementationGuideType igType, string prefix = null)
-            : this(tdb, igType, igType.SchemaPrefix)
+        public AssertionLineBuilder(IObjectRepository tdb, DocumentTemplateElement aElement, ImplementationGuideType igType, SimpleSchema igTypeSchema, string prefix = null)
+            : this(tdb, igType, igTypeSchema, igType.SchemaPrefix)
         {
             _element = aElement;
 
@@ -67,8 +69,8 @@ namespace Trifolia.Export.Schematron
                 this._prefix = prefix;
         }
 
-        public AssertionLineBuilder(IObjectRepository tdb, DocumentTemplateElementAttribute aAttribute, ImplementationGuideType igType, string prefix = null)
-            : this(tdb, igType, igType.SchemaPrefix)
+        public AssertionLineBuilder(IObjectRepository tdb, DocumentTemplateElementAttribute aAttribute, ImplementationGuideType igType, SimpleSchema igTypeSchema, string prefix = null)
+            : this(tdb, igType, igTypeSchema, igType.SchemaPrefix)
         {
             _attribute = aAttribute;
             _element = _attribute.Element;
@@ -260,13 +262,8 @@ namespace Trifolia.Export.Schematron
                             }
                             else
                             {
-                                List<int> allowedCardinalities = new List<int>();
-                                for (int i = _cardinality.Left; i <= _cardinality.Right; i++)
-                                    allowedCardinalities.Add(i);
-                                string cardinalities = string.Join(" or ", allowedCardinalities);
-
-                                sb.AppendFormat("count({0}{1}{2}{3}{4}) = ({5})", Sentinels.CONTEXT_TOKEN, Sentinels.ELEMENT_TOKEN, Sentinels.ATTRIBUTE_TOKEN, 
-                                    Sentinels.CHILDELEMENT_TOKEN, Sentinels.VALUESET_TOKEN, cardinalities);
+                                sb.AppendFormat("count({0}{1}{2}{3}{4})[. >= {5}] <= {6}", Sentinels.CONTEXT_TOKEN, Sentinels.ELEMENT_TOKEN, Sentinels.ATTRIBUTE_TOKEN, 
+                                    Sentinels.CHILDELEMENT_TOKEN, Sentinels.VALUESET_TOKEN, _cardinality.Left, _cardinality.Right);
                             }
                         }
                     }
@@ -463,7 +460,7 @@ namespace Trifolia.Export.Schematron
 
             foreach (var containedTemplate in this.containedTemplates)
             {
-                TemplateContextBuilder tcb = new TemplateContextBuilder(this._tdb, this._igType, this._prefix);
+                TemplateContextBuilder tcb = new TemplateContextBuilder(this._tdb, this._igType, this._igTypeSchema, this._prefix);
                 string containedTemplateContext = tcb.BuildContextString(containedTemplate.Key);
                 containedTemplateContexts.Add(containedTemplateContext);
             }

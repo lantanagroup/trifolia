@@ -137,7 +137,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FHIR\DSTU1\FHIRImporter.cs" />
     <Compile Include="FHIR\DSTU2\ImplementationGuideImporter.cs" />
     <Compile Include="FHIR\DSTU2\StructureDefinitionImporter.cs" />
     <Compile Include="FHIR\DSTU2\ValueSetImporter.cs" />
@@ -165,9 +164,6 @@
     <Compile Include="Terminology\External\IValueSetImportProcessor.cs" />
     <Compile Include="Terminology\External\PhinVadsValueSetImportProcessor.cs" />
     <Compile Include="VSAC\VSACImporter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="FHIR\DSTU1\FHIRProfile2Trifolia.xslt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Terminology\hl7_rim_repo.xml" />

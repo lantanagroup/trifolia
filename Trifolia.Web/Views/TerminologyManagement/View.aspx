@@ -6,6 +6,16 @@
             white-space: pre;
             word-wrap: break-word;
         }
+
+        .valueset-nav {
+            margin-top: 10px;
+        }
+
+        h3.identifier {
+            padding: 5px;
+            line-height: 0.1;
+            color: gray;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -15,7 +25,13 @@
         <!-- /ko -->
         <div data-bind="if: ValueSet()">
             <div class="page-header">
-                <h1><span data-bind="text: ValueSet().Name"></span> <small data-bind="text: ValueSet().Oid"></small></h1>
+                <h1>
+                    <span data-bind="text: ValueSet().Name"></span>
+                    <button type="button" class="btn btn-primary" data-inline="true" data-bind="click: editConcepts, disable: disableEdit">Edit Concepts</button>
+                </h1>
+                <div data-bind="foreach: ValueSet().Identifiers">
+                    <h3 class="identifier"><span data-bind="text: Identifier"></span></h3>
+                </div>
             </div>
             <p class="label label-default" data-bind="text: CompleteText, tooltip: CompleteHint"></p>
             <!-- ko if: ValueSet().Code() -->
@@ -38,7 +54,7 @@
             <!-- /ko -->
         </div>
 
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs valueset-nav" role="tablist">
             <li role="presentation" class="active"><a href="#concepts" aria-controls="concepts" role="tab" data-toggle="tab">Concepts</a></li>
             <li role="presentation"><a href="#relationships" aria-controls="relationships" role="tab" data-toggle="tab">Relationships</a></li>
             <li role="presentation"><a href="#fhir" aria-controls="fhir" role="tab" data-toggle="tab">FHIR</a></li>

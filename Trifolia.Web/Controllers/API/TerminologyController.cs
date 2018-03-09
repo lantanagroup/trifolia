@@ -220,6 +220,15 @@ namespace Trifolia.Web.Controllers.API
         public ValueSetModel ValueSet(int valueSetId)
         {
             ValueSet valueSet = this.tdb.ValueSets.Single(y => y.Id == valueSetId);
+            int userId = CheckPoint.Instance.GetUser(this.tdb).Id;
+            var searchResults = this.tdb.SearchValueSet(userId, valueSet.Identifiers.First().Identifier, 1, 1, "Name", true).ToList();
+            var permitModify = CheckPoint.Instance.HasSecurables(SecurableNames.VALUESET_EDIT);
+            bool permitOverride = CheckPoint.Instance.HasSecurables(SecurableNames.TERMINOLOGY_OVERRIDE);
+            bool userIsInternal = CheckPoint.Instance.IsDataAdmin;
+
+            if (searchResults.Count != 1)
+                throw new Exception("Could not find the value set using search");
+
             ValueSetModel model = new ValueSetModel()
             {
                 Id = valueSet.Id,
@@ -231,7 +240,10 @@ namespace Trifolia.Web.Controllers.API
                 IsIntentional = valueSet.Intensional.HasValue ? valueSet.Intensional.Value : false,
                 SourceUrl = valueSet.Source,
                 ImportSource = valueSet.ImportSource,
-                Identifiers = valueSet.Identifiers.Select(y => new ValueSetIdentifierModel(y)).ToList()
+                Identifiers = valueSet.Identifiers.Select(y => new ValueSetIdentifierModel(y)).ToList(),
+                PermitModify = permitModify,
+                CanModify = !searchResults[0].HasPublishedIg,
+                CanOverride = permitOverride && (userIsInternal || searchResults[0].CanEditPublishedIg),
             };
 
             return model;
@@ -290,23 +302,34 @@ namespace Trifolia.Web.Controllers.API
                 if (!valueSet.CanModify(auditedTdb) && !valueSet.CanOverride(auditedTdb))
                     throw new AuthorizationException("You do not have the permission to delete this valueset");
 
-                List<TemplateConstraint> constraints = valueSet.Constraints.ToList();
-
-                foreach (var constraint in constraints)
+                //If stuff exists, delete it
+                if (valueSet != null)
                 {
-                    // If no replacement value set is specified, then it will be null, as expected
-                    constraint.ValueSetId = replaceValueSetId;
+                    List<TemplateConstraint> constraints = valueSet.Constraints.ToList();
+
+                    if (constraints.Count != 0)
+                    {
+                        foreach (var constraint in constraints)
+                        {
+                            // If no replacement value set is specified, then it will be null, as expected
+                            constraint.ValueSetId = replaceValueSetId;
+                        }
+                    }
+
+                    // Remove members from the valueset
+                    if (valueSet.Members.ToList().Count != 0)
+                    {
+                        valueSet.Members.ToList().ForEach(y =>
+                        {
+                            auditedTdb.ValueSetMembers.Remove(y);
+                        });
+                    }
+
+                    // Delete the actual valueset
+                    auditedTdb.ValueSets.Remove(valueSet);
+
+                    auditedTdb.SaveChanges();
                 }
-
-                // Remove members from the valueset
-                valueSet.Members.ToList().ForEach(y => {
-                    auditedTdb.ValueSetMembers.Remove(y);
-                });
-
-                // Delete the actual valueset
-                auditedTdb.ValueSets.Remove(valueSet);
-
-                auditedTdb.SaveChanges();
             }
         }
 

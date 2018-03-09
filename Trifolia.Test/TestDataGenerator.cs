@@ -37,12 +37,18 @@ namespace Trifolia.Test
             mockRepo.FindOrCreateImplementationGuide(igType, "Test IG 2", testOrg);
             mockRepo.FindOrCreateImplementationGuide(igType, "Test IG 3", internalOrg);
 
-            Template template1 = mockRepo.CreateTemplate("1.2.3.4.5", docType, "Test Template 1", ig, null, null, "Test Description 2", "Test Note 1");
-            template1.Notes = "This is a test note";
+            Template template1 = mockRepo.CreateTemplate("1.2.3.4.5", docType, "Test Template 1", ig, null, null, "Test Description 2", "Template Level Note for Test Template 1");
+            template1.Notes = "Template 1 Note";
+
+            template1.TemplateSamples.Add(new TemplateSample()
+            {
+                XmlSample = @"<observation/>",
+                Name = "Test_Template_1_Example"
+            });
 
             // Basic constraint, nothing special
             TemplateConstraint t1tc1 = mockRepo.AddConstraintToTemplate(template1, null, null, "templateId", "SHALL", "1..1");
-            t1tc1.Notes = "This is a test constraint comment";
+            t1tc1.Notes = "Constraint TemplateId comment for Test Template 1";
 
             // Constraint with a child
             TemplateConstraint t1tc2 = mockRepo.AddConstraintToTemplate(template1, null, null, "code", "SHALL", "1..1");
@@ -54,13 +60,13 @@ namespace Trifolia.Test
             TemplateConstraint t1tc3_1 = mockRepo.AddConstraintToTemplate(template1, t1tc3, null, "@code", "SHALL", "1..1", "CE", "SHALL", null, null, t1tc3_vs);
             t1tc3_1.IsStatic = true;
 
-            Template template2 = mockRepo.CreateTemplate("1.2.3.4.5.6", docType, "Test Template 2", ig, null, null, "Test Description 1", "Test Note 2");
+            Template template2 = mockRepo.CreateTemplate("1.2.3.4.5.6", docType, "Test Template 2", ig, null, null, "Test Description 1", "Template Level Note for Test Template 2");
             template2.ImpliedTemplate = template1;
 
             // Constraint with a child
             TemplateConstraint t2tc1 = mockRepo.AddConstraintToTemplate(template2, null, null, "code", "SHALL", "1..1");
 
-            Template template3 = mockRepo.CreateTemplate("1.2.3.4.5.6.7", docType, "Test Template 3", ig, null, null, "Test Description 3", "Test Note 3");
+            Template template3 = mockRepo.CreateTemplate("1.2.3.4.5.6.7", docType, "Test Template 3", ig, null, null, "Test Description 3", "Template Level Note for Test Template 3");
 
             TemplateConstraint t3tc1 = mockRepo.AddConstraintToTemplate(template3, null, template2, null, "SHALL", "1..1");
             TemplateConstraint t3tc2 = mockRepo.AddConstraintToTemplate(template3, null, null, "entry", "SHALL", "1..1");
@@ -175,5 +181,112 @@ namespace Trifolia.Test
         }
 
         #endregion
+
+        #region Data Set 4 - IG Generation and Trifolia Export Content and Settings Testing 
+
+        public static MockObjectRepository GenerateMockDataset4()
+        {
+            MockObjectRepository mockRepo = new MockObjectRepository();
+
+            Organization internalOrg = mockRepo.FindOrCreateOrganization("Lantana");
+            Organization testOrg = mockRepo.FindOrCreateOrganization("Test Organization");
+
+            ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType("CDA", "CDA.xsd", "cda", "urn:hl7-org:v3");
+
+            TemplateType docType = mockRepo.FindOrCreateTemplateType(igType, "Document", "ClinicalDocument", "ClinicalDocument", 1);
+            TemplateType sectionType = mockRepo.FindOrCreateTemplateType(igType, "Section", "Section", "Section", 2);
+            TemplateType entryType = mockRepo.FindOrCreateTemplateType(igType, "Entry", "entry", "Entry", 3);
+            TemplateType subEntryType = mockRepo.FindOrCreateTemplateType(igType, "Sub-Entry", "entry", "Entry", 4);
+            TemplateType otherType = mockRepo.FindOrCreateTemplateType(igType, "Other", string.Empty, string.Empty, 5);
+
+            
+
+            mockRepo.FindOrCreateCodeSystem("SNOMED CT", "urn:oid:2.16.840.1.113883.6.96");
+            mockRepo.FindOrCreateCodeSystem("LOINC", "urn:oid:2.16.840.1.113883.6.1");
+            mockRepo.FindOrCreateCodeSystem("HL7ParticipationType", "urn:oid:2.16.840.1.113883.5.90");
+            mockRepo.FindOrCreateCodeSystem("HL7ActStatus", "urn:oid:113883.5.14");
+            CodeSystem hl7CodeSystem = mockRepo.FindOrCreateCodeSystem("SNOMED CT", "urn:oid:2.16.840.1.113883.6.96");
+
+            var valueSet = mockRepo.FindOrCreateValueSet("Treatment status", "urn:oid:2.16.840.1.114222.4.11.3203");
+            mockRepo.FindOrCreateValueSetMember(valueSet, hl7CodeSystem, "5561003", "Active");
+            mockRepo.FindOrCreateValueSetMember(valueSet, hl7CodeSystem, "73425007", "Inactive");
+            mockRepo.FindOrCreateValueSetMember(valueSet, hl7CodeSystem, "14321245", "On hold");
+            mockRepo.FindOrCreateValueSetMember(valueSet, hl7CodeSystem, "5382145", "Requested");
+            mockRepo.FindOrCreateValueSetMember(valueSet, hl7CodeSystem, "7789215", "Cancelled");
+
+            ImplementationGuide ig = mockRepo.FindOrCreateImplementationGuide(igType, DS1_IG_NAME, internalOrg);
+            mockRepo.FindOrCreateImplementationGuide(igType, "Test IG 2", testOrg);
+            mockRepo.FindOrCreateImplementationGuide(igType, "Test IG 3", internalOrg);
+
+            Template template1 = mockRepo.CreateTemplate("1.2.3.4.5", docType, "Test Template 1", ig, null, null, "Test Description 2", "Template Level Note for Test Template 1");
+            template1.Notes = "Template Level Note for Test Template 1";
+
+
+            mockRepo.AddConstraintToTemplate(template1, null, null, "code", "SHALL", "1..1", "CD", "SHALL", "51897-7", "Test Disp", null, mockRepo.CodeSystems.Single(y => y.Id == 2));
+
+            TemplateConstraint t1 = mockRepo.AddConstraintToTemplate(template1, null, null, "participant", "SHALL", "1..1", "CD", "SHALL", null, null, null, null, null, true, true);
+            
+            mockRepo.AddConstraintToTemplate(template1, t1, null, "@typeCode", "SHALL", "1..1", null, "SHALL", "LOC", "Location", null, mockRepo.CodeSystems.Single(y => y.Id == 3));
+
+            // Primitive constraint
+            mockRepo.AddPrimitiveToTemplate(template1, null, "SHALL", "A templateId element SHALL be present representing conformance to this release of the Implementation Guide");
+
+
+            template1.TemplateSamples.Add(new TemplateSample()
+            {
+                XmlSample = @"<observation/>",
+                Name = "Test_Template_1_Example"
+            });
+
+            // Basic constraint
+            TemplateConstraint t1tc1 = mockRepo.AddConstraintToTemplate(template1, null, null, "templateId", "SHALL", "1..1", "CD", null, null, null, null, null, null, null, null);
+            t1tc1.Notes = "Constraint *TemplateId* Note for Test Template 1";
+
+            // Basic Constraint with a child
+            TemplateConstraint t1tc2 = mockRepo.AddConstraintToTemplate(template1, null, null, "code", "SHALL", "1..1");
+            TemplateConstraint t1tc2_2 = mockRepo.AddConstraintToTemplate(template1, t1tc2, null, "@value", "SHALL", "1..1", null, null, "236435004", "Test Static Value", null, mockRepo.CodeSystems.Single(y => y.Id == 1));
+
+            // Constraint with a child (child has valueset)
+            ValueSet t1tc3_vs = mockRepo.FindOrCreateValueSet("Test Valueset", "9.8.7.6.5.4.3.2.1");
+            TemplateConstraint t1tc3 = mockRepo.AddConstraintToTemplate(template1, null, null, "code", "SHALL", "1..1");
+            //TemplateConstraint t1tc3_1 = mockRepo.AddConstraintToTemplate(template1, t1tc3, null, "@code", "SHALL", "1..1", "CE", "SHALL", null, null, t1tc3_vs);
+            TemplateConstraint t1tc3_1 = mockRepo.AddConstraintToTemplate(template1, t1tc3, null, "@code", "SHALL", "1..1", "CE", "SHALL", "55561003", "Active", mockRepo.ValueSets.Single(y => y.Id == 1));
+            t1tc3.Notes = "Child *code* constraint with Value Set Notes";
+            t1tc3_1.IsStatic = true;
+
+            Template template2 = mockRepo.CreateTemplate("1.2.3.4.5.6", docType, "Test Template 2", ig, null, null, "Test Description 1", "Template Level Note for Test Template 2");
+            template2.ImpliedTemplate = template1;
+
+            // Constraint with a child
+            TemplateConstraint t2tc1 = mockRepo.AddConstraintToTemplate(template2, null, null, "code", "SHALL", "1..1");
+
+            Template template3 = mockRepo.CreateTemplate("1.2.3.4.5.6.7", docType, "Test Template 3", ig, null, null, "Test Description 3", "Template Level Note for Test Template 3");
+
+            TemplateConstraint t3tc1 = mockRepo.AddConstraintToTemplate(template3, null, template2, null, "SHALL", "1..1");
+            TemplateConstraint t3tc2 = mockRepo.AddConstraintToTemplate(template3, null, null, "entry", "SHALL", "1..1");
+            TemplateConstraint t3tc2_1 = mockRepo.AddConstraintToTemplate(template3, t3tc2, template2, "observation", "SHALL", "1..1");
+
+            Template template4 = mockRepo.CreateTemplate("8.2234.19.234.11", docType, "Test Constraint Description Template", ig, null, null, null, null);
+            mockRepo.AddConstraintToTemplate(template4, null, null, "code", "SHALL", "1..1", "CD", null, null, null, null, null, "Test constraint description");
+
+            // Create a new version of the implementation guide
+            ImplementationGuide igVersion = mockRepo.FindOrCreateImplementationGuide(igType, DS1_IG_NAME + " Version 2");
+            igVersion.SetPreviousVersion(ig);
+            igVersion.Version = 2;
+
+            // Create a new version of template 3 within the new version of the IG
+            Template template3Version = mockRepo.CreateTemplate("urn:hl7ii:1.2.3.4.5.6.7:20180117", docType, "Test Template 3", igVersion, null, null, "Test Description 3 with changes", "Test Note 3 with changes");
+            template3Version.SetPreviousVersion(template3);
+
+            // Create an entirely new template for the new version of the IG
+            Template template4Version = mockRepo.CreateTemplate("urn:oid:1.2.3.4.1.2.3.4", sectionType, "Test Template 4", igVersion);
+            var t4tc1 = mockRepo.AddConstraintToTemplate(template4Version, null, null, "component", "SHALL", "1..1");
+            mockRepo.AddConstraintToTemplate(template4Version, t4tc1, null, "section", "SHALL", "1..1");
+
+            return mockRepo;
+        }
+
+        #endregion
+
     }
 }

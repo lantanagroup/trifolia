@@ -820,6 +820,18 @@ namespace Trifolia.Test.Generation.Schematron
             TemplateConstraint p145_parent = ruleRepo.AddConstraintToTemplate(cdaTemplate1, null, null, "sdtc:actReference", "SHALL", "1..1");
             TemplateConstraint p145 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, p145_parent, null, "@classCode", "SHALL", "1..*");
             AddConstraintForRule(145, p145);
+
+            // Rule #146
+            TemplateConstraint p146 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", valueSet: vs1);
+            AddConstraintForRule(146, p146);
+
+            // Rule #147
+            TemplateConstraint p147 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", codeSystem: cs1);
+            AddConstraintForRule(147, p147);
+
+            // Rule #148
+            TemplateConstraint p148 = ruleRepo.AddConstraintToTemplate(cdaTemplate1, null, null, "code", "SHALL", "1..4");
+            AddConstraintForRule(148, p148);
         }
 
 
@@ -842,7 +854,7 @@ namespace Trifolia.Test.Generation.Schematron
         {
             var tc = ruleConstraints[number];
             var vocabularyOutputType = vocabularyOutputMap.ContainsKey(number) ? vocabularyOutputMap[number] : VocabularyOutputType.Default;
-            var cParser = new ConstraintParser(ruleRepo, tc, tc.Template.ImplementationGuideType, vocabularyOutputType: vocabularyOutputType);
+            var cParser = new ConstraintParser(ruleRepo, tc, tc.Template.ImplementationGuideType, tc.Template.ImplementationGuideType.GetSimpleSchema(), ruleRepo.Templates, vocabularyOutputType: vocabularyOutputType);
             var builder = cParser.CreateAssertionLineBuilder();
 
             return builder.ToString();
@@ -879,7 +891,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule4()
         {
             string actual = GenerateAssertionForRule(4);
-            string expected = "count(cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test document'])=1";
+            string expected = "count(cda:title[text()='Test Document'])=1";
 
             Assert.AreEqual(expected, actual);
         }
@@ -951,7 +963,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule12()
         {
             string actual = GenerateAssertionForRule(12);
-            string expected = "count(cda:componentOf[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='1234'])=0";
+            string expected = "count(cda:componentOf[text()='1234'])=0";
 
             Assert.AreEqual(expected, actual);
         }
@@ -969,7 +981,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule14()
         {
             string actual = GenerateAssertionForRule(14);
-            string expected = "count(cda:code) = (1 or 2 or 3)";
+            string expected = "count(cda:code)[. >= 1] <= 3";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1005,7 +1017,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule18()
         {
             string actual = GenerateAssertionForRule(18);
-            string expected = "not(count(cda:code) = (1 or 2 or 3))";
+            string expected = "not(count(cda:code)[. >= 1] <= 3)";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1113,7 +1125,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule30()
         {
             string actual = GenerateAssertionForRule(30);
-            string expected = "count(cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='1234']) < 2";
+            string expected = "count(cda:title[text()='1234']) < 2";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1194,7 +1206,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule39()
         {
             string actual = GenerateAssertionForRule(39);
-            string expected = "count(cda:observation[cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test title']]) < 2";
+            string expected = "count(cda:observation[cda:title[text()='Test Title']]) < 2";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1230,7 +1242,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule43()
         {
             string actual = GenerateAssertionForRule(43);
-            string expected = "count(cda:observation[cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test title']])=1";
+            string expected = "count(cda:observation[cda:title[text()='Test Title']])=1";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1257,7 +1269,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule46()
         {
             string actual = GenerateAssertionForRule(46);
-            string expected = "count(cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test title']) > 0";
+            string expected = "count(cda:title[text()='Test Title']) > 0";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1275,7 +1287,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule48()
         {
             string actual = GenerateAssertionForRule(48);
-            string expected = "count(cda:observation[cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test title']]) > 0";
+            string expected = "count(cda:observation[cda:title[text()='Test Title']]) > 0";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1357,7 +1369,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule57()
         {
             string actual = GenerateAssertionForRule(57);
-            string expected = "count(cda:code) = (1 or 2 or 3)";
+            string expected = "count(cda:code)[. >= 1] <= 3";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1366,7 +1378,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule58()
         {
             string actual = GenerateAssertionForRule(58);
-            string expected = "count(cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test title']) = (1 or 2 or 3)";
+            string expected = "count(cda:title[text()='Test Title'])[. >= 1] <= 3";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1375,7 +1387,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule59()
         {
             string actual = GenerateAssertionForRule(59);
-            string expected = "count(cda:observation[cda:title]) = (1 or 2 or 3)";
+            string expected = "count(cda:observation[cda:title])[. >= 1] <= 3";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1384,7 +1396,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule60()
         {
             string actual = GenerateAssertionForRule(60);
-            string expected = "count(cda:observation[cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test title']]) = (1 or 2 or 3)";
+            string expected = "count(cda:observation[cda:title[text()='Test Title']])[. >= 1] <= 3";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1393,7 +1405,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule61()
         {
             string actual = GenerateAssertionForRule(61);
-            string expected = "count(cda:observation[cda:value[@xsi:type='CD']]) = (1 or 2 or 3)";
+            string expected = "count(cda:observation[cda:value[@xsi:type='CD']])[. >= 1] <= 3";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1402,7 +1414,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule62()
         {
             string actual = GenerateAssertionForRule(62);
-            string expected = "count(cda:entry/cda:observation[cda:title]) = (1 or 2 or 3)";
+            string expected = "count(cda:entry/cda:observation[cda:title])[. >= 1] <= 3";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1447,7 +1459,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule67()
         {
             string actual = GenerateAssertionForRule(67);
-            string expected = "cda:observation[not(cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test title']) or cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test title']]";
+            string expected = "cda:observation[not(cda:title[text()='Test Title']) or cda:title[text()='Test Title']]";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1510,7 +1522,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule74()
         {
             string actual = GenerateAssertionForRule(74);
-            string expected = "count(cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test title']) < 4";
+            string expected = "count(cda:title[text()='Test Title']) < 4";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1519,7 +1531,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule75()
         {
             string actual = GenerateAssertionForRule(75);
-            string expected = "cda:observation[count(cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test title']) < 4]";
+            string expected = "cda:observation[count(cda:title[text()='Test Title']) < 4]";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1537,7 +1549,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule77()
         {
             string actual = GenerateAssertionForRule(77);
-            string expected = "cda:observation[count(cda:title) = (1 or 2 or 3)]";
+            string expected = "cda:observation[count(cda:title)[. >= 1] <= 3]";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1546,7 +1558,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule78()
         {
             string actual = GenerateAssertionForRule(78);
-            string expected = "cda:observation[count(cda:value[@xsi:type='CD']) = (1 or 2 or 3)]";
+            string expected = "cda:observation[count(cda:value[@xsi:type='CD'])[. >= 1] <= 3]";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1555,7 +1567,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule79()
         {
             string actual = GenerateAssertionForRule(79);
-            string expected = "cda:observation[count(cda:value[@code=document('voc.xml')/voc:systems/voc:system[@valueSetOid='1.2.3.4']/voc:code/@value or @nullFlavor]) = (1 or 2 or 3)]";
+            string expected = "cda:observation[count(cda:value[@code=document('voc.xml')/voc:systems/voc:system[@valueSetOid='1.2.3.4']/voc:code/@value or @nullFlavor])[. >= 1] <= 3]";
 
             Assert.AreEqual(expected, actual);
             // TODO: Need to remove outer count() for parent xpath, and only perform a count on 
@@ -1567,7 +1579,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule80()
         {
             string actual = GenerateAssertionForRule(80);
-            string expected = "cda:observation[count(cda:value[@xsi:type='CD' and @code=document('voc.xml')/voc:systems/voc:system[@valueSetOid='1.2.3.4']/voc:code/@value or @nullFlavor]) = (1 or 2 or 3)]";
+            string expected = "cda:observation[count(cda:value[@xsi:type='CD' and @code=document('voc.xml')/voc:systems/voc:system[@valueSetOid='1.2.3.4']/voc:code/@value or @nullFlavor])[. >= 1] <= 3]";
 
             Assert.AreEqual(expected, actual);
         }
@@ -1576,7 +1588,7 @@ namespace Trifolia.Test.Generation.Schematron
         public void TestAssertionLineBuilderRule81()
         {
             string actual = GenerateAssertionForRule(81);
-            string expected = "cda:observation[count(cda:title[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='test title']) = (1 or 2 or 3)]";
+            string expected = "cda:observation[count(cda:title[text()='Test Title'])[. >= 1] <= 3]";
 
             Assert.AreEqual(expected, actual);
         }
@@ -2126,6 +2138,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual(expected, actual);
         }
 
+        /* HQMF schema is not in the test project anymore
         [TestMethod, TestCategory("Schematron")]
         public void TestAssertionLineBuilderRule143()
         {
@@ -2134,6 +2147,7 @@ namespace Trifolia.Test.Generation.Schematron
 
             Assert.AreEqual(expected, actual);
         }
+        */
 
         [TestMethod, TestCategory("Schematron")]
         public void TestAssertionLineBuilderRule144()
@@ -2149,6 +2163,33 @@ namespace Trifolia.Test.Generation.Schematron
         {
             string actual = GenerateAssertionForRule(145);
             string expected = "sdtc:actReference[count(@classCode) > 0]";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod, TestCategory("Schematron")]
+        public void TestAssertionLineBuilderRule146()
+        {
+            string actual = GenerateAssertionForRule(146);
+            string expected = "count(cda:code)=1";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod, TestCategory("Schematron")]
+        public void TestAssertionLineBuilderRule147()
+        {
+            string actual = GenerateAssertionForRule(147);
+            string expected = "count(cda:code)=1";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod, TestCategory("Schematron")]
+        public void TestAssertionLineBuilderRule148()
+        {
+            string actual = GenerateAssertionForRule(148);
+            string expected = "count(cda:code)[. >= 1] <= 4";
 
             Assert.AreEqual(expected, actual);
         }
@@ -2170,7 +2211,7 @@ namespace Trifolia.Test.Generation.Schematron
             var root = ruleRepo.AddConstraintToTemplate(template, id, null, "@root", "SHALL", "1..1", isBranchIdentifier: true, value: "2.16.840.1.113883.3.2074.1", displayName: "CMS EHR Certification Number");
             var extension = ruleRepo.AddConstraintToTemplate(template, id, null, "@extension", "SHALL", "1..1");
 
-            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(ruleRepo, ig.ImplementationGuideType);
+            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(ruleRepo, ig.ImplementationGuideType, ig.ImplementationGuideType.GetSimpleSchema());
             string actual = contextBuilder.CreateFullBranchedParentContext(template, id);
             string expected = "cda:ClinicalDocument[cda:templateId[@root='2.16.92.3.1.5.2.34']]/cda:participant/cda:associatedEntity/cda:id[@root='2.16.840.1.113883.3.2074.1']";
 

@@ -19,7 +19,6 @@ using Template = Trifolia.DB.Template;
 using ValueSet = Trifolia.DB.ValueSet;
 using CodeSystem = Trifolia.DB.CodeSystem;
 using Trifolia.DB;
-using Trifolia.Export.Schematron.Utilities;
 using Trifolia.Import.Native;
 using System.IO;
 using System.Xml.Serialization;
@@ -549,7 +548,7 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.AreEqual(parentElement.ElementName, tc10486.ParentConstraint.Context, "Failed to properly parse the constraint to a document element.");
             Assert.AreEqual(attribute.AttributeName, tc10486.Context.Replace("@", ""), "Failed to properly parse the constraint to a document element.");
 
-            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(tdb, consolidationIg.ImplementationGuideType);
+            TemplateContextBuilder contextBuilder = new TemplateContextBuilder(tdb, consolidationIg.ImplementationGuideType, cdaType.GetSimpleSchema());
             string path = contextBuilder.CreateFullBranchedParentContext(template, tc8662);
             string expectedPath = "cda:observation[cda:templateId[@root='2.16.840.1.113883.10.20.22.4.48']]/cda:participant[@typeCode='VRF'][cda:templateId[@root='2.16.840.1.113883.10.20.1.58']][cda:participantRole]";
             Assert.AreEqual(expectedPath, path, "Invalid path returned from ConstraintToDocumentElementMapper");
@@ -564,7 +563,7 @@ namespace Trifolia.Test.Generation.Schematron
             var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
             var entryTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_ENTRY_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
-            TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType);
+            TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType, igType.GetSimpleSchema());
 
             Template entryTemplate = tdb.CreateTemplate("urn:oid:1.2.3.4", entryTemplateType, "Test Branch Template", ig, "entry", "Entry");
             var c1 = tdb.AddConstraintToTemplate(entryTemplate, null, null, "text", "SHALL", "1..1");
@@ -1514,7 +1513,7 @@ namespace Trifolia.Test.Generation.Schematron
                 .Assertions
                 .Single(y => y.Id == "0-7");
 
-            string expected = "count(cda:td[translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='xxx identifier'])=1";
+            string expected = "count(cda:td[text()='XXX Identifier'])=1";
             Assert.AreEqual(expected, foundAssert.Test);
         }
 
@@ -1909,6 +1908,74 @@ namespace Trifolia.Test.Generation.Schematron
             Assert.IsNotNull(pattern, "No pattern found with Id of " + "p-DOCUMENT-TEMPLATE");
             Assert.AreEqual("cda:ClinicalDocument", pattern.Rules[0].Context, "Incorrect context generated");
             Assert.AreEqual("cda:organizer[cda:templateId[@root='1.2.3.4.1']] or cda:organizer[cda:templateId[@root='1.2.3.4']]", pattern.Rules[0].Assertions[0].Test, "Incorrect rule generated");
+        }
+
+        #endregion
+
+        #region Value Conformance
+
+        /// <summary>
+        /// Tests that a constraint with an element/attribute conformance of SHALL with a value conformance of SHOULD
+        /// creates an error assertion for the code element, and a separate warning assertion that tests the value set
+        /// </summary>
+        [TestMethod, TestCategory("Schematron")]
+        public void CodeSHALLValueSetShould()
+        {
+            ValueSet vs = tdb.FindOrCreateValueSet("test", "urn:oid:2.16.1.2.4.1.2.3");
+            ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "CodeSHALLValueSetShould");
+            Template template = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "observation", "Observation");
+            TemplateConstraint constraint = tdb.AddConstraintToTemplate(template, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", valueSet: vs);
+
+            Phase errorPhase = new Phase();
+            Phase warningPhase = new Phase();
+            SchematronGenerator generator = new SchematronGenerator(tdb, myIg, myIg.GetRecursiveTemplates(tdb), true);
+            generator.AddTemplate(template, errorPhase, warningPhase);
+
+            Assert.IsNotNull(errorPhase);
+            Assert.AreEqual(1, errorPhase.ActivePatterns.Count);
+            Assert.AreEqual(1, errorPhase.ActivePatterns[0].Rules.Count);
+            Assert.AreEqual(1, errorPhase.ActivePatterns[0].Rules[0].Assertions.Count);
+            Assert.AreEqual("count(cda:code)=1", errorPhase.ActivePatterns[0].Rules[0].Assertions[0].Test);
+
+            Assert.IsNotNull(warningPhase);
+            Assert.AreEqual(1, warningPhase.ActivePatterns.Count);
+            Assert.AreEqual(1, warningPhase.ActivePatterns[0].Rules.Count);
+            Assert.AreEqual(1, warningPhase.ActivePatterns[0].Rules[0].Assertions.Count);
+            Assert.AreEqual(
+                "count(cda:code[@code=document('voc.xml')/voc:systems/voc:system[@valueSetOid='2.16.1.2.4.1.2.3']/voc:code/@value or @nullFlavor])=1",
+                warningPhase.ActivePatterns[0].Rules[0].Assertions[0].Test);
+        }
+
+        /// <summary>
+        /// Tests that a constraint with an element/attribute conformance of SHALL with a value conformance of SHOULD
+        /// creates an error assertion for the code element, and a separate warning assertion that tests the code system
+        /// </summary>
+        [TestMethod, TestCategory("Schematron")]
+        public void CodeSHALLCodeSystemShould()
+        {
+            CodeSystem codeSystem = tdb.FindOrCreateCodeSystem("Test CS", "urn:oid:2.16.2341.2344333");
+            ImplementationGuide myIg = tdb.FindOrCreateImplementationGuide(cdaType, "CodeSHALLValueSetShould");
+            Template template = tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Parent", myIg, "observation", "Observation");
+            TemplateConstraint constraint = tdb.AddConstraintToTemplate(template, null, null, "code", "SHALL", "1..1", valueConformance: "SHOULD", codeSystem: codeSystem);
+
+            Phase errorPhase = new Phase();
+            Phase warningPhase = new Phase();
+            SchematronGenerator generator = new SchematronGenerator(tdb, myIg, myIg.GetRecursiveTemplates(tdb), true);
+            generator.AddTemplate(template, errorPhase, warningPhase);
+
+            Assert.IsNotNull(errorPhase);
+            Assert.AreEqual(1, errorPhase.ActivePatterns.Count);
+            Assert.AreEqual(1, errorPhase.ActivePatterns[0].Rules.Count);
+            Assert.AreEqual(1, errorPhase.ActivePatterns[0].Rules[0].Assertions.Count);
+            Assert.AreEqual("count(cda:code)=1", errorPhase.ActivePatterns[0].Rules[0].Assertions[0].Test);
+
+            Assert.IsNotNull(warningPhase);
+            Assert.AreEqual(1, warningPhase.ActivePatterns.Count);
+            Assert.AreEqual(1, warningPhase.ActivePatterns[0].Rules.Count);
+            Assert.AreEqual(1, warningPhase.ActivePatterns[0].Rules[0].Assertions.Count);
+            Assert.AreEqual(
+                "count(cda:code[@codeSystem='2.16.2341.2344333' or @nullFlavor])=1",
+                warningPhase.ActivePatterns[0].Rules[0].Assertions[0].Test);
         }
 
         #endregion

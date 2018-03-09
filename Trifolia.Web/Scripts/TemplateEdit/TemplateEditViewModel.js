@@ -681,6 +681,7 @@ var templateEditViewModel = function (templateId, defaults) {
             // Create the constraint
             var newConstraint = new ConstraintModel(null, parentConstraint, self);
             newConstraint.IsPrimitive(true);
+            newConstraint.Schematron('not(.)');
             newConstraint.Conformance("SHALL");
 
             // Create the node

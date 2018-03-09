@@ -183,68 +183,36 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts17">Version 5.1.0</span></span></h2>
-<p class="rvps8"><span class="rvts14">Released on Wednesday, October 25, 2017</span></p>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts16">VSAC Integration</span></span></h2>
-<p class="rvps9"><span class="rvts14">We completed beta testing of the VSAC integration. We found only one minor bug in saving user profiles with UMLS/VSAC passwords that contain special characters.</span></p>
-<p class="rvps9"><span class="rvts14">VSAC integration is now in the Alpha stage of release.</span></p>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts16">Export UI Redesign, Bug Fixes</span></span></h2>
-<p class="rvps9"><span class="rvts14">We discovered some minor issues in the redesign of the export screen. We fixed the issues with saving and loading default settings. We found the export format does not support some display fields. Also, the output did not include some check boxes because it did not follow all export settings in MS Word.</span></p>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts16">Support for FHIR</span></span></h2>
-<p class="rvps9"><span class="rvts14">We added a new implementation guide type to Trifolia that represents the current FHIR build. This IG type is called "FHIR Current Build" and it supports the latest schema and model from&nbsp;</span><a class="rvts15" href="http://build.fhir.org/">http://build.fhir.org</a><span class="rvts14">&nbsp;as of October 11, 2017.</span></p>
-<p class="rvps9"><span class="rvts14">We created a new REST API endpoint to represent the current build of FHIR (/api/FHIRLatest/). This new endpoint is a copy of the functionality at /api/FHIR3/. We will assess the need to update Trifolia with the latest schema and models and REST API functionality as FHIR's build changes.</span></p>
-<h3 class="rvps10"><span class="rvts0"><span class="rvts16">Development Log</span></span></h3>
-<div class="rvps9"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Type</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts18">Summary</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Task</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Extended testing on re-designed export screen</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Task</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Created IG Type "FHIR Current Build" representing build.fhir.org</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Defect</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Folder/file naming in FHIR IG export</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Defect</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">FHIR IG package outputting un-escaped ampersands</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Defect</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Export Templates to Word: Publish Status checkbox doesn't work properly</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Defect</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Export MS Word - Inconsistency in conformance between Context vs. Constraint Overview table</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Defect</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts14">Export MS Word - All templates have "Draft as part of", even in published IGs</span></p>
-</td>
-</tr>
-</table>
-</div>
+<h2 class="rvps9"><span class="rvts0"><span class="rvts15">Version 5.2.0</span></span></h2>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts14">Released on 3/9/2018</span></span></h2>
+<h3 class="rvps10"><span class="rvts0"><span class="rvts16">Improvement</span></span></h3>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps8"><span class="rvts14">Implement "New Template" context selection button</span></li>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps8"><span class="rvts14">Need to implement the "..." for "Applies To" in the new "New Template/Profile" screen that arvind created as part of TRIF-1250.</span><br/><span class="rvts14">User should be able to select a child element in a pop-up window representing the context of the template. Follow the implementation example that exists in the current template editor.</span></li>
+</ul>
+<li class="rvps8"><span class="rvts14">Show identifiers and allow editing concepts from "View Value Set" screen</span></li>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps8"><span class="rvts14">The View screen for value sets used to show the identifier of the value set. After Trifolia was enhanced to allow multiple identifiers for a value set, the View screen was not updated to show the (multiple) identifiers.</span></li>
+</ul>
+<li class="rvps8"><span class="rvts14">Value set validation during export for white spaces</span></li>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps8"><span class="rvts14">When a value set is used by an implementation guide, which has a code or display name with white-spaces at the start or end, display a message to the user. This takes place during design validation (such as when a template is validated, or when the user exports an implementation guide).</span></li>
+</ul></ul>
+<h3 class="rvps10"><span class="rvts0"><span class="rvts16">Task</span></span></h3>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps8"><span class="rvts14">Remove support for FHIR DSTU1</span></li>
+</ul>
+<h3 class="rvps10"><span class="rvts0"><span class="rvts16">Defect</span></span></h3>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps8"><span class="rvts14">SHOULD constraints generating schematron errors (not warnings)</span></li>
+<li class="rvps8"><span class="rvts14">Constraints that have a number as the upper bound create invalid Schematron</span></li>
+<li class="rvps8"><span class="rvts14">Schematron issue with case-insensitive comparison</span></li>
+<li class="rvps8"><span class="rvts14">When adding a narrative constraint, autogenerate Schematron must be set to false</span></li>
+<li class="rvps8"><span class="rvts14">Default export selections result in an empty Schematron</span></li>
+<li class="rvps8"><span class="rvts14">Performance improvements to Schematron Generation</span></li>
+<li class="rvps8"><span class="rvts14">When a template is locked, user should not be able to save the template</span></li>
+</ul>
 <p></p>
 
             </div>

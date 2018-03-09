@@ -142,8 +142,8 @@
             return;
         }
 
-        // Don't get the default export settings before the templates and value sets are done loading.
-        if ($scope.isGettingTemplates || $scope.isGettingValuesets) {
+        // Don't get the default export settings before the templates and value sets are done loading and ExportFormat is selected.
+        if ($scope.isGettingTemplates || $scope.isGettingValuesets || $scope.criteria.ExportFormat === null) {
             return;
         }
 
@@ -173,6 +173,14 @@
 
                 if (shouldReloadTemplates) {
                     $scope.loadTemplates();
+                }
+
+                if ($scope.criteria.TemplateIds.length == 0) {
+                    $scope.toggleSelectAllTemplates();
+                }
+
+                if (!$scope.criteria.DefaultSchematron) {
+                    $scope.criteria.DefaultSchematron = 'not(.)';
                 }
             })
             .catch(function (err) {
@@ -340,7 +348,7 @@
             return true;
         }
 
-        return false;
+        return $scope.criteria.ExportFormat === null;
     };
 
     $scope.openSearch = function () {

@@ -64,6 +64,7 @@ namespace Trifolia.DB
         DbSet<ViewImplementationGuideTemplate> ViewImplementationGuideTemplates { get; }
         DbSet<ViewIGAuditTrail> ViewIGAuditTrails { get; }
         DbSet<ViewCodeSystemUsage> ViewCodeSystemUsages { get; }
+        DbSet<ViewValueSetMemberWhiteSpace> ViewValueSetMemberWhiteSpaces { get; }
 
         // Stored Procedures
         IEnumerable<SearchValueSetResult> SearchValueSet(Nullable<global::System.Int32> userId, global::System.String searchText, Nullable<global::System.Int32> count, Nullable<global::System.Int32> page, global::System.String orderProperty, Nullable<global::System.Boolean> orderDesc);
