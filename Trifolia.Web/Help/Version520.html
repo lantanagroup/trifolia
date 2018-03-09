@@ -11,19 +11,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
-  <title>Extensions</title>
+  <title>Version 5.2.0</title>
   <meta name="description" content="" /> 
-  <meta name="keywords" content="fhir">
+  <meta name="keywords" content="">
 
 
 
   <!-- Twitter Card data -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Extensions">
+  <meta name="twitter:title" content="Version 5.2.0">
   <meta name="twitter:description" content="">
 
   <!-- Open Graph data -->
-  <meta property="og:title" content="Extensions" />
+  <meta property="og:title" content="Version 5.2.0" />
   <meta property="og:type" content="article" />
   <meta property="og:description" content="" />
   <meta property="og:site_name" content="Trifolia Workbench" /> 
@@ -161,65 +161,90 @@
 
     <article>
         <div id="topic-content" class="container-fluid" 
-		  data-hnd-id="Extensions"
-		  data-hnd-context="61"
-		  data-hnd-title="Extensions"
+		  data-hnd-id="Version520"
+		  data-hnd-context="86"
+		  data-hnd-title="Version 5.2.0"
 		>
             
                 <div class="navigation">
                     <ol class="breadcrumb">
-                        <li><a href="FHIR.html">FHIR</a></li>
+                        <li>Previous Versions</li>
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="FHIR.html" title="FHIR" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="API.html" title="API" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="DeveloperDocs.html" title="Developer Docs" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="PreviousVersions.html" title="Previous Versions" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="PreviousVersions.html" title="Previous Versions" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Version505.html" title="Version 5.0.5" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
 
             <a id="main-content"></a>
 
-            <h2>Extensions</h2>
+            <h2>Version 5.2.0</h2>
 
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps11"><span class="rvts0"><span class="rvts18">Re-usable Extensions</span></span></h2>
-<p class="rvps2"><span class="rvts6">Trifolia supports re-usable extensions for FHIR DSTU2 implementation guides and profiles.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts27">Creating a Re-usable Extension</span></span></h3>
-<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts6">Create a new profile in a FHIR DSTU2 implementation guide.</span></li>
-<li value="2" class="rvps2"><span class="rvts6">Select FHIR DSTU2: Extension for the "type" of profile.</span></li>
-<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts6">Note that the Applies To button is disabled for Extension profiles.</span></li>
-<li value="2" class="rvps2"><span class="rvts6">After selecting Extension as the type of profile, a constraint is automatically created by Trifolia for the "@url" attribute and matches the identifier specified for the extension. Any time the identifier is updated, the constraint will automatically be updated as well.</span></li>
-</ol>
-<li value="3" class="rvps2"><span class="rvts6">Define a constraint for the type of value your extension will require (such as "valueCodeableConcept").</span></li>
-<li value="4" class="rvps2"><span class="rvts6">Save the profile.</span></li>
-</ol>
-<p class="rvps2"><span class="rvts6"><br/></span></p>
-<p class="rvps2"><span class="rvts6">Trifolia treats all profiles that are of type FHIR DSTU2: Extension as re-usable extensions. The behavior of Trifolia's template/profile editor adjusts slightly (such as disabling the Applies To selection button, and automatically adding a @url constraint) to account for requirements in the core FHIR DSTU2 standard when editing extension profiles.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts27">Using a Pre-defined Extension</span></span></h3>
-<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts6">Open any FHIR DSTU2 profile.</span></li>
-<li value="2" class="rvps2"><span class="rvts6">In the constraint editor, select an "extension" element that does NOT already have a constraint defined for it.</span></li>
-<li value="3" class="rvps2"><span class="rvts6">A drop-down list shows in the constraint editor panel that provides a list of all extensions for which you have permissions.</span></li>
-<li value="4" class="rvps2"><span class="rvts6">Select the extension you want to add to the profile and select the "+" (add) button.</span></li>
-<li value="5" class="rvps2"><span class="rvts6">The "extension" element is turned into a constraint, and automatically creates constraints for each of the constraints defined in the extension.</span></li>
-<li value="6" class="rvps2"><span class="rvts6">The "extension" element itself should be marked as a slice and the @url constraint within the extension should be marked as a descriminator. The conformance and cardinality is set to "SHALL 1..1" for the new extension constraint, as well as the @url descriminator.</span></li>
-</ol>
-<h2 class="rvps11"><span class="rvts0"><span class="rvts18">Profile Extensions</span></span></h2>
-<p class="rvps2"><span class="rvts6">The profile may define extensions in addition to the constraints. These are extensions that add information to the profile as a whole, but are not required to be implemented where the profile is used/asserted.</span></p>
-<p class="rvps2"><span class="rvts6">Both FHIR DSTU1 and FHIR DSTU2 profiles support extensions on the profile.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts27">Adding Extensions to a Profile</span></span></h3>
-<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts6">Edit any FHIR profile.</span></li>
-<li value="2" class="rvps2"><span class="rvts6">The bottom entry in the Extensions panel of the Template/Profile tab always represents a "new" extension.</span></li>
-<li value="3" class="rvps2"><span class="rvts6">Fill in the identifier, type, and value of the extension (all three fields are required).</span></li>
-<li value="4" class="rvps2"><span class="rvts6">Select the Add button to the right of the fields.</span></li>
-<li value="5" class="rvps2"><span class="rvts6">The extension is now added to the profile, and the profile can be saved. The extension added may be edited, but the type of the extension may not be changed; only the identifier and the value may be changed after extension is added.</span></li>
-</ol>
-<p class="rvps2"><span class="rvts6"><br/></span></p>
-<p class="rvps2"><span class="rvts6">Note: A future version of Trifolia will incorporate re-usable extensions in the profile extensions.</span></p>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts53">Version 5.1.0</span></span></h2>
+<p class="rvps23"><span class="rvts50">Released on Wednesday, October 25, 2017</span></p>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts52">VSAC Integration</span></span></h2>
+<p class="rvps24"><span class="rvts50">We completed beta testing of the VSAC integration. We found only one minor bug in saving user profiles with UMLS/VSAC passwords that contain special characters.</span></p>
+<p class="rvps24"><span class="rvts50">VSAC integration is now in the Alpha stage of release.</span></p>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts52">Export UI Redesign, Bug Fixes</span></span></h2>
+<p class="rvps24"><span class="rvts50">We discovered some minor issues in the redesign of the export screen. We fixed the issues with saving and loading default settings. We found the export format does not support some display fields. Also, the output did not include some check boxes because it did not follow all export settings in MS Word.</span></p>
+<h2 class="rvps7"><span class="rvts0"><span class="rvts52">Support for FHIR</span></span></h2>
+<p class="rvps24"><span class="rvts50">We added a new implementation guide type to Trifolia that represents the current FHIR build. This IG type is called "FHIR Current Build" and it supports the latest schema and model from&nbsp;</span><a class="rvts51" href="http://build.fhir.org/">http://build.fhir.org</a><span class="rvts50">&nbsp;as of October 11, 2017.</span></p>
+<p class="rvps24"><span class="rvts50">We created a new REST API endpoint to represent the current build of FHIR (/api/FHIRLatest/). This new endpoint is a copy of the functionality at /api/FHIR3/. We will assess the need to update Trifolia with the latest schema and models and REST API functionality as FHIR's build changes.</span></p>
+<h3 class="rvps25"><span class="rvts0"><span class="rvts52">Development Log</span></span></h3>
+<div class="rvps24"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts54">Type</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts54">Summary</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Task</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Extended testing on re-designed export screen</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Task</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Created IG Type "FHIR Current Build" representing build.fhir.org</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Defect</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Folder/file naming in FHIR IG export</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Defect</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">FHIR IG package outputting un-escaped ampersands</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Defect</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Export Templates to Word: Publish Status checkbox doesn't work properly</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Defect</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Export MS Word - Inconsistency in conformance between Context vs. Constraint Overview table</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Defect</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts50">Export MS Word - All templates have "Draft as part of", even in published IGs</span></p>
+</td>
+</tr>
+</table>
+</div>
 <p></p>
 
             </div>
