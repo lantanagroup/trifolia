@@ -13,7 +13,7 @@ using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
 namespace Trifolia.Plugins.FHIR
 {
-    public class LatestPlugin : DefaultPlugin, IIGTypePlugin
+    public class CurrentBuildPlugin : DefaultPlugin, IIGTypePlugin
     {
         public byte[] Export(DB.IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<DB.Template> templates, bool includeVocabulary, bool returnJson = true)
         {

@@ -486,14 +486,14 @@
             Gets configuration information used by the client-side application
             </summary>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestConformanceController.GetConformance(System.String)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.CurrentBuild.FHIRLatestConformanceController.GetConformance(System.String)">
             <summary>
             Gets conformance information about the FHIR DSTU2 server.
             </summary>
             <param name="format">The format that the response should be returned in</param>
             <returns>Resource&lt;Conformance&gt;</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestImplementationGuideController.GetImplementationGuide(System.Int32,System.String,System.Nullable{Hl7.Fhir.Rest.SummaryType})">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.CurrentBuild.FHIRLatestImplementationGuideController.GetImplementationGuide(System.Int32,System.String,System.Nullable{Hl7.Fhir.Rest.SummaryType})">
             <summary>
             Get the specified implementation guide in FHIR DSTU2 format
             </summary>
@@ -502,7 +502,7 @@
             <param name="summary">Optional. The type of summary to respond with.</param>
             <returns>Hl7.Fhir.Model.ImplementationGuide</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestImplementationGuideController.GetImplementationGuides(System.String,System.Nullable{Hl7.Fhir.Rest.SummaryType},System.String,System.Nullable{System.Int32},System.String)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.CurrentBuild.FHIRLatestImplementationGuideController.GetImplementationGuides(System.String,System.Nullable{Hl7.Fhir.Rest.SummaryType},System.String,System.Nullable{System.Int32},System.String)">
             <summary>
             Gets implementation guides in FHIR DSTU2 format. Can specify search information, such as the name of the implementation guide and the id of the implementation guide.
             </summary>
@@ -513,7 +513,7 @@
             <param name="name">Specifies the name of the implementation guide to search for. Implementation guides whose name *contains* this value will be returned.</param>
             <returns>Hl7.Fhir.Model.Bundle</returns>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestStructureDefinitionController.GetTemplate(System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.CurrentBuild.FHIRLatestStructureDefinitionController.GetTemplate(System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
             Gets a specific profile and converts it to a StructureDefinition resource.
             </summary>
@@ -522,7 +522,7 @@
             <returns>Hl7.Fhir.Model.StructureDefinition</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestStructureDefinitionController.GetTemplates(System.Nullable{System.Int32},System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.CurrentBuild.FHIRLatestStructureDefinitionController.GetTemplates(System.Nullable{System.Int32},System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
             Searches for profiles within Trifolia and returns them as StructureDefinition resources within a Bundle.
             </summary>
@@ -532,14 +532,14 @@
             <returns>Hl7.Fhir.Model.Bundle</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_LIST">Only users with the ability to list templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestStructureDefinitionController.CreateStructureDefinition(Hl7.Fhir.Model.StructureDefinition)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.CurrentBuild.FHIRLatestStructureDefinitionController.CreateStructureDefinition(Hl7.Fhir.Model.StructureDefinition)">
             <summary>
             Creates a template/profile from the specified StructureDefinition
             </summary>
             <returns>Hl7.Fhir.Model.StructureDefinition</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestStructureDefinitionController.UpdateStructureDefinition(Hl7.Fhir.Model.StructureDefinition,System.String)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.CurrentBuild.FHIRLatestStructureDefinitionController.UpdateStructureDefinition(Hl7.Fhir.Model.StructureDefinition,System.String)">
             <summary>
             Updates an existing template/profile based on the specified StructureDefinition
             </summary>
@@ -548,7 +548,7 @@
             <returns>Hl7.Fhir.Model.StructureDefinition</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_EDIT">Only users with the ability to edit templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestStructureDefinitionController.DeleteStructureDefinition(System.String)">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.CurrentBuild.FHIRLatestStructureDefinitionController.DeleteStructureDefinition(System.String)">
             <summary>
             Deletes the specified profile/template. This is a permanent deletion, and cannot be restored via _history.
             </summary>
@@ -556,7 +556,7 @@
             <returns>Hl7.Fhir.Model.OperationOutcome</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.TEMPLATE_DELETE">Only users with the ability to delete templates/profiles can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestValueSetController.GetValueSet(System.Int32,System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.CurrentBuild.FHIRLatestValueSetController.GetValueSet(System.Int32,System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
             Gets the specified value set from Trifolia, converts it to, and returns a ValueSet resource.
             </summary>
@@ -566,7 +566,7 @@
             <returns>Hl7.Fhir.Model.ValueSet</returns>
             <permission cref="F:Trifolia.Authorization.SecurableNames.VALUESET_LIST">Only users with the ability to list value sets can execute this operation</permission>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.FHIR.Latest.FHIRLatestValueSetController.GetValueSets(System.Nullable{System.Int32},System.String,System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
+        <member name="M:Trifolia.Web.Controllers.API.FHIR.CurrentBuild.FHIRLatestValueSetController.GetValueSets(System.Nullable{System.Int32},System.String,System.String,System.Nullable{Trifolia.Shared.FHIR.SummaryType})">
             <summary>
             Searches value sets within Trifolia and returns them as ValueSet resources within a Bundle.
             </summary>

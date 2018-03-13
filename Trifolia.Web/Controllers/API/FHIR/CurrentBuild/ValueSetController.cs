@@ -13,7 +13,7 @@ using Trifolia.Shared.FHIR;
 using FhirValueSet = fhir_latest.Hl7.Fhir.Model.ValueSet;
 using ValueSet = Trifolia.DB.ValueSet;
 
-namespace Trifolia.Web.Controllers.API.FHIR.Latest
+namespace Trifolia.Web.Controllers.API.FHIR.CurrentBuild
 {
     [LatestConfigAttribute]
     [RoutePrefix("api/FHIRLatest")]

@@ -310,12 +310,12 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\API\AdminController.cs" />
-    <Compile Include="Controllers\API\FHIR\Latest\CapabilityStatementController.cs" />
-    <Compile Include="Controllers\API\FHIR\Latest\ImplementationGuideController.cs" />
-    <Compile Include="Controllers\API\FHIR\Latest\Shared.cs" />
-    <Compile Include="Controllers\API\FHIR\Latest\StructureDefinitionController.cs" />
-    <Compile Include="Controllers\API\FHIR\Latest\ValidationController.cs" />
-    <Compile Include="Controllers\API\FHIR\Latest\ValueSetController.cs" />
+    <Compile Include="Controllers\API\FHIR\CurrentBuild\CapabilityStatementController.cs" />
+    <Compile Include="Controllers\API\FHIR\CurrentBuild\ImplementationGuideController.cs" />
+    <Compile Include="Controllers\API\FHIR\CurrentBuild\Shared.cs" />
+    <Compile Include="Controllers\API\FHIR\CurrentBuild\StructureDefinitionController.cs" />
+    <Compile Include="Controllers\API\FHIR\CurrentBuild\ValidationController.cs" />
+    <Compile Include="Controllers\API\FHIR\CurrentBuild\ValueSetController.cs" />
     <Compile Include="Controllers\API\RoleController.cs" />
     <Compile Include="Controllers\API\AuthController.cs" />
     <Compile Include="Controllers\API\BulkCopyController.cs" />
@@ -1409,379 +1409,379 @@
     <Content Include="App_Data\Schemas\FHIR_STU3\xmldsig-core-schema.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\account.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\account.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\activitydefinition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\activitydefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\adverseevent.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\adverseevent.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\allergyintolerance.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\allergyintolerance.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\appointment.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\appointment.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\appointmentresponse.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\appointmentresponse.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\auditevent.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\auditevent.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\basic.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\basic.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\binary.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\binary.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\bodystructure.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\bodystructure.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\bundle.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\bundle.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\capabilitystatement.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\capabilitystatement.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\careplan.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\careplan.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\careteam.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\careteam.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\catalogentry.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\catalogentry.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\chargeitem.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\chargeitem.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\claim.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\claim.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\claimresponse.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\claimresponse.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\clinicalimpression.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\clinicalimpression.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\codesystem.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\codesystem.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\communication.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\communication.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\communicationrequest.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\communicationrequest.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\compartmentdefinition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\compartmentdefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\composition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\composition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\conceptmap.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\conceptmap.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\condition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\condition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\consent.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\consent.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\contract.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\contract.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\coverage.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\coverage.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\detectedissue.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\detectedissue.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\device.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\device.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\devicecomponent.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\devicecomponent.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\devicemetric.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\devicemetric.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\devicerequest.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\devicerequest.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\deviceusestatement.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\deviceusestatement.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\diagnosticreport.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\diagnosticreport.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\documentmanifest.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\documentmanifest.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\documentreference.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\documentreference.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\eligibilityrequest.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\eligibilityrequest.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\eligibilityresponse.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\eligibilityresponse.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\encounter.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\encounter.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\endpoint.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\endpoint.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\enrollmentrequest.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\enrollmentrequest.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\enrollmentresponse.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\enrollmentresponse.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\episodeofcare.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\episodeofcare.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\eventdefinition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\eventdefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\examplescenario.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\examplescenario.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\expansionprofile.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\expansionprofile.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\explanationofbenefit.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\explanationofbenefit.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\familymemberhistory.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\familymemberhistory.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\fhir-all.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\fhir-all.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\fhir-base.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\fhir-base.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\fhir-single.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\fhir-single.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\fhir-xhtml.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\fhir-xhtml.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\flag.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\flag.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\goal.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\goal.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\graphdefinition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\graphdefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\group.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\group.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\guidanceresponse.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\guidanceresponse.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\healthcareservice.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\healthcareservice.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\imagingmanifest.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\imagingmanifest.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\imagingstudy.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\imagingstudy.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\immunization.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\immunization.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\immunizationrecommendation.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\immunizationrecommendation.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\implementationguide.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\implementationguide.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\library.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\library.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\linkage.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\linkage.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\list.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\list.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\location.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\location.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\measure.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\measure.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\measurereport.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\measurereport.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\media.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\media.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\medication.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\medication.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\medicationadministration.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\medicationadministration.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\medicationdispense.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\medicationdispense.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\medicationrequest.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\medicationrequest.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\medicationstatement.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\medicationstatement.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\messagedefinition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\messagedefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\messageheader.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\messageheader.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\namingsystem.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\namingsystem.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\nutritionorder.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\nutritionorder.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\observation.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\observation.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\operationdefinition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\operationdefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\operationoutcome.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\operationoutcome.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\organization.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\organization.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\parameters.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\parameters.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\patient.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\patient.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\paymentnotice.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\paymentnotice.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\paymentreconciliation.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\paymentreconciliation.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\person.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\person.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\plandefinition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\plandefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\practitioner.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\practitioner.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\practitionerrole.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\practitionerrole.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\procedure.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\procedure.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\procedurerequest.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\procedurerequest.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\processrequest.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\processrequest.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\processresponse.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\processresponse.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\provenance.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\provenance.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\questionnaire.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\questionnaire.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\questionnaireresponse.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\questionnaireresponse.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\relatedperson.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\relatedperson.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\requestgroup.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\requestgroup.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\researchstudy.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\researchstudy.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\researchsubject.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\researchsubject.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\riskassessment.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\riskassessment.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\schedule.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\schedule.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\searchparameter.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\searchparameter.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\sequence.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\sequence.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\servicedefinition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\servicedefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\slot.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\slot.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\specimen.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\specimen.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\specimendefinition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\specimendefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\structuredefinition.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\structuredefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\structuremap.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\structuremap.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\subscription.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\subscription.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\substance.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\substance.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\supplydelivery.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\supplydelivery.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\supplyrequest.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\supplyrequest.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\task.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\task.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\testreport.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\testreport.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\testscript.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\testscript.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\valueset.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\valueset.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\visionprescription.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\visionprescription.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\xml.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\xml.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\FHIR_Latest\xmldsig-core-schema.xsd">
+    <Content Include="App_Data\Schemas\FHIR_Current_Build\xmldsig-core-schema.xsd">
       <SubType>Designer</SubType>
     </Content>
     <None Include="Properties\PublishProfiles\DEV2 %28SHARE%29.pubxml" />

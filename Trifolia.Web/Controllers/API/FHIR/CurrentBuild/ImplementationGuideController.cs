@@ -13,7 +13,7 @@ using Trifolia.Shared.FHIR;
 using FhirImplementationGuide = fhir_latest.Hl7.Fhir.Model.ImplementationGuide;
 using SummaryType = fhir_latest.Hl7.Fhir.Rest.SummaryType;
 
-namespace Trifolia.Web.Controllers.API.FHIR.Latest
+namespace Trifolia.Web.Controllers.API.FHIR.CurrentBuild
 {
     [LatestConfigAttribute]
     [RoutePrefix("api/FHIRLatest")]

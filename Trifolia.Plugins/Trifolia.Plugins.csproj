@@ -125,7 +125,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FHIR\LatestPlugin.cs" />
+    <Compile Include="FHIR\CurrentBuildPlugin.cs" />
     <Compile Include="FHIR\STU3Plugin.cs" />
     <Compile Include="FHIR\DSTU2Plugin.cs" />
     <Compile Include="FHIR\DefaultPlugin.cs" />
