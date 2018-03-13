@@ -1,6 +1,10 @@
 ﻿var BrowseImplementationGuideViewModel = function (listMode) {
     var self = this;
 
+    var caseInsensitiveStringCompare = function (a, b) {
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+    };
+
     var sortItems = function (left, right) {
         var lessThan = self.SortAscending() ? -1 : 1;
         var greaterThan = self.SortAscending() ? 1 : -1;
@@ -10,12 +14,12 @@
 
         switch (self.SortField()) {
             case 'Name':
-                leftVal = left.Title().trim();
-                rightVal = right.Title().trim();
+                leftVal = left.Title().trim().toLowerCase();
+                rightVal = right.Title().trim().toLowerCase();
                 break;
             case 'Status':
-                leftVal = left.Status();
-                rightVal = right.Status();
+                leftVal = left.Status().trim().toLowerCase();
+                rightVal = right.Status().trim().toLowerCase();
                 break;
             case 'PublishDate':
                 if (!left.PublishDate()) {
@@ -32,12 +36,12 @@
 
                 break;
             case 'Organization':
-                leftVal = left.Organization();
-                rightVal = right.Organization();
+                leftVal = left.Organization().trim().toLowerCase();
+                rightVal = right.Organization().trim().toLowerCase();
                 break;
             case 'Type':
-                leftVal = left.Type();
-                rightVal = right.Type();
+                leftVal = left.Type().trim().toLowerCase();
+                rightVal = right.Type().trim().toLowerCase();
                 break;
         }
 
@@ -143,7 +147,7 @@
                     })
                     .uniq()
                     .value();
-                self.Types(types);
+                self.Types(types.sort(caseInsensitiveStringCompare));
 
                 var statuses = _.chain(self.Model().Items())
                     .map(function (item) {
@@ -151,7 +155,7 @@
                     })
                     .uniq()
                     .value();
-                self.Statuses(statuses);
+                self.Statuses(statuses.sort(caseInsensitiveStringCompare));
 
                 var organizations = _.chain(self.Model().Items())
                     .map(function (item) {
@@ -159,7 +163,7 @@
                     })
                     .uniq()
                     .value();
-                self.Organizations(organizations);
+                self.Organizations(organizations.sort(caseInsensitiveStringCompare));
 
                 fireTrifoliaEvent('implementationGuidesLoaded');
             }
