@@ -183,112 +183,112 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts56">Version 5.0.5</span></span></h2>
-<p class="rvps26"><span class="rvts55">Released on Monday, October 2, 2017</span></p>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts60">VSAC Integration</span></span></h2>
-<p class="rvps4"><span class="rvts55">We integrated Trifolia within VSAC to allow users to import value sets from VSAC. A new button is available in Browse &gt; Terminology that allows users to specify an OID to import from Trifolia.</span></p>
-<p class="rvps4"><span class="rvts55">The ability to import from VSAC and view implementation guides containing VSAC-imported value sets requires a license to the UMLS, issued by the NLM.</span></p>
-<p class="rvps4"><span class="rvts55">See the help documentation's Getting Started &gt; User Profiles, and Importing &gt; Terminology sections for more information.</span></p>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts60">Export UI re-design</span></span></h2>
-<p class="rvps4"><span class="rvts55">As a result of the VSAC integration, the Export screen(s) have been re-designed, and consolidated into a single Export screen.</span></p>
+<h2 class="rvps9"><span class="rvts0"><span class="rvts57">Version 5.0.5</span></span></h2>
+<p class="rvps27"><span class="rvts56">Released on Monday, October 2, 2017</span></p>
+<h2 class="rvps9"><span class="rvts0"><span class="rvts61">VSAC Integration</span></span></h2>
+<p class="rvps4"><span class="rvts56">We integrated Trifolia within VSAC to allow users to import value sets from VSAC. A new button is available in Browse &gt; Terminology that allows users to specify an OID to import from Trifolia.</span></p>
+<p class="rvps4"><span class="rvts56">The ability to import from VSAC and view implementation guides containing VSAC-imported value sets requires a license to the UMLS, issued by the NLM.</span></p>
+<p class="rvps4"><span class="rvts56">See the help documentation's Getting Started &gt; User Profiles, and Importing &gt; Terminology sections for more information.</span></p>
+<h2 class="rvps9"><span class="rvts0"><span class="rvts61">Export UI re-design</span></span></h2>
+<p class="rvps4"><span class="rvts56">As a result of the VSAC integration, the Export screen(s) have been re-designed, and consolidated into a single Export screen.</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps4"><span class="rvts55">A more consistent UI across the various export formats</span></li>
-<li class="rvps4"><span class="rvts55">Allows saving default settings (if permitted by implementation guide permissions)</span></li>
-<li class="rvps4"><span class="rvts55">Always performs validation of the design and structure of the implementation guide, which includes ensuring the user has a license to UMLS if the implementation guide contains VSAC content</span></li>
+<li class="rvps4"><span class="rvts56">A more consistent UI across the various export formats</span></li>
+<li class="rvps4"><span class="rvts56">Allows saving default settings (if permitted by implementation guide permissions)</span></li>
+<li class="rvps4"><span class="rvts56">Always performs validation of the design and structure of the implementation guide, which includes ensuring the user has a license to UMLS if the implementation guide contains VSAC content</span></li>
 </ul>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts60">Implementation guide test status</span></span></h2>
-<p class="rvps4"><span class="rvts55">In the free-to-use installation of Trifolia (https://trifolia.lantanagroup.com) there are approximately 40 implementation guides with "test" in their name. As a result, we felt it was appropriate to create a separate workflow status for implementation guides to be labeled as "test". When creating an implementation guide, users have the opportunity to indicate that the implementation guide is a "test" implementation guide, and not intended for use outside of the designer's discretion. If at a later point in time the designer of the implementation guide decides the implementation guide should be shared with others, it can be transitioned to other statuses (such as "draft") via the "View Implementation Guide" screen's "Workflow" drop-down.</span></p>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts60">Multiple contained templates/profiles</span></span></h2>
-<p class="rvps4"><span class="rvts55">A constraint can now reference multiple templates/profiles. This is inspired by FHIR's native structure for supporting multiple "types" of resources referenced in an element/constraint. The template editor's constraint panel now has a list of contained templates/profiles, that can be added to or removed from.</span></p>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts60">Patch Notes</span></span></h2>
+<h2 class="rvps9"><span class="rvts0"><span class="rvts61">Implementation guide test status</span></span></h2>
+<p class="rvps4"><span class="rvts56">In the free-to-use installation of Trifolia (https://trifolia.lantanagroup.com) there are approximately 40 implementation guides with "test" in their name. As a result, we felt it was appropriate to create a separate workflow status for implementation guides to be labeled as "test". When creating an implementation guide, users have the opportunity to indicate that the implementation guide is a "test" implementation guide, and not intended for use outside of the designer's discretion. If at a later point in time the designer of the implementation guide decides the implementation guide should be shared with others, it can be transitioned to other statuses (such as "draft") via the "View Implementation Guide" screen's "Workflow" drop-down.</span></p>
+<h2 class="rvps9"><span class="rvts0"><span class="rvts61">Multiple contained templates/profiles</span></span></h2>
+<p class="rvps4"><span class="rvts56">A constraint can now reference multiple templates/profiles. This is inspired by FHIR's native structure for supporting multiple "types" of resources referenced in an element/constraint. The template editor's constraint panel now has a list of contained templates/profiles, that can be added to or removed from.</span></p>
+<h2 class="rvps9"><span class="rvts0"><span class="rvts61">Patch Notes</span></span></h2>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps4"><span class="rvts55">MS Word export incorrectly references templates/profiles in the context table which are not included in the export</span></li>
-<li class="rvps4"><span class="rvts55">Bug in saving templates where "existing" references in constraints aren't being found.</span></li>
-<li class="rvps4"><span class="rvts55">Bug where changing identifier of template does not update references to it</span></li>
-<li class="rvps4"><span class="rvts55">Modifying template editor so that it uses a dash (-) for the bookmark white-space replacement when working with a FHIR profile due to a warning message suggests that dash (-) be used instead of underscore (_).</span></li>
-<li class="rvps4"><span class="rvts55">Hiding link to "Add contained template" if the constraint properties fields are disabled</span></li>
-<li class="rvps4"><span class="rvts55">Cleaning up ValueSet FHIR export so that it properly shows compose vs. expansion. Exports &lt;compose&gt; when Trifolia is the tool that authored the value set. Exports &lt;expansion&gt; when the value set is imported</span></li>
-<li class="rvps4"><span class="rvts55">Creating FHIR Build package with lower-case resource type directory names under "resources" directory</span></li>
-<li class="rvps4"><span class="rvts55">Bug in MS Word generation where the contains column of the context table is never filled in</span></li>
+<li class="rvps4"><span class="rvts56">MS Word export incorrectly references templates/profiles in the context table which are not included in the export</span></li>
+<li class="rvps4"><span class="rvts56">Bug in saving templates where "existing" references in constraints aren't being found.</span></li>
+<li class="rvps4"><span class="rvts56">Bug where changing identifier of template does not update references to it</span></li>
+<li class="rvps4"><span class="rvts56">Modifying template editor so that it uses a dash (-) for the bookmark white-space replacement when working with a FHIR profile due to a warning message suggests that dash (-) be used instead of underscore (_).</span></li>
+<li class="rvps4"><span class="rvts56">Hiding link to "Add contained template" if the constraint properties fields are disabled</span></li>
+<li class="rvps4"><span class="rvts56">Cleaning up ValueSet FHIR export so that it properly shows compose vs. expansion. Exports &lt;compose&gt; when Trifolia is the tool that authored the value set. Exports &lt;expansion&gt; when the value set is imported</span></li>
+<li class="rvps4"><span class="rvts56">Creating FHIR Build package with lower-case resource type directory names under "resources" directory</span></li>
+<li class="rvps4"><span class="rvts56">Bug in MS Word generation where the contains column of the context table is never filled in</span></li>
 </ul>
-<h3 class="rvps10"><span class="rvts0"><span class="rvts57">Development Log</span></span></h3>
-<div class="rvps27"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
+<h3 class="rvps10"><span class="rvts0"><span class="rvts58">Development Log</span></span></h3>
+<div class="rvps28"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
 <tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts58">Type</span></p>
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Type</span></p>
 </td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts58">Summary</span></p>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Summary</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Defect</span></p>
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Defect</span></p>
 </td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Bugs in Release 5.0.1-5.0.4 required patches</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Defect</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Editing code system incorrectly reports identifier format error</span></p>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Bugs in Release 5.0.1-5.0.4 required patches</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">New Feature</span></p>
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Defect</span></p>
 </td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Merge all export format screens into a single export screen</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Defect</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Performance improvements to saving templates</span></p>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Editing code system incorrectly reports identifier format error</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">New Feature</span></p>
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">New Feature</span></p>
 </td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Allow multiple referenced templates/profiles</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">New Feature</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Capture UMLS License</span></p>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Merge all export format screens into a single export screen</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">New Feature</span></p>
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Defect</span></p>
 </td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Disable ability to edit value sets that were imported from VSAC</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">New Feature</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Extend value set meta-data in Trifolia</span></p>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Performance improvements to saving templates</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">New Feature</span></p>
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">New Feature</span></p>
 </td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Import VSAC Value Sets into Trifolia</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">New Feature</span></p>
-</td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Create screens for importing from VSAC</span></p>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Allow multiple referenced templates/profiles</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">New Feature</span></p>
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">New Feature</span></p>
 </td>
-<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts59">Add "test" status to Implementation Guide</span></p>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Capture UMLS License</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">New Feature</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Disable ability to edit value sets that were imported from VSAC</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">New Feature</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Extend value set meta-data in Trifolia</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">New Feature</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Import VSAC Value Sets into Trifolia</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">New Feature</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Create screens for importing from VSAC</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">New Feature</span></p>
+</td>
+<td width="706" height="29" valign="top" style="padding: 0px;"><p class="rvps4"><span class="rvts60">Add "test" status to Implementation Guide</span></p>
 </td>
 </tr>
 </table>
 </div>
-<p class="rvps4"><span class="rvts59"><br/></span></p>
-<p class="rvps4"><span class="rvts59"><br/></span></p>
+<p class="rvps4"><span class="rvts60"><br/></span></p>
+<p class="rvps4"><span class="rvts60"><br/></span></p>
 <p></p>
 
             </div>

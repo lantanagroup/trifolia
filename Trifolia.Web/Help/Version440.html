@@ -183,144 +183,144 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps11"><span class="rvts0"><span class="rvts56">Version 4.4.0</span></span></h2>
-<p class="rvps30"><span class="rvts55">Released on Wednesday, April 26, 2017</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts57">FHIR Improvements</span></span></h3>
-<p class="rvps2"><span class="rvts55">The schema used by Trifolia for "FHIR_Latest" is updated with the schema from FHIR STU3's recent publication. In the future, the Implementation Guide Type "FHIR_Latest" will be renamed to "FHIR STU3" and a new implementation guide will be created for "FHIR_Latest" that represents the latest build of FHIR.</span></p>
-<p class="rvps2"><span class="rvts55">The fixed[x] and pattern[x] fields are included in imports of StructureDefinition resources.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts57">Default field selection for exports</span></span></h3>
-<p class="rvps2"><span class="rvts55">The "Save As Default" functionality for "Export templates/profiles to MS Word" was not saving all fields. This is now fixed so that when you indicate to save your preferences as default, the selected templates/profiles </span><span class="rvts61">and </span><span class="rvts55">the sort order are persisted.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts57">Implementation Guide Editing</span></span></h3>
-<p class="rvps2"><span class="rvts55">Permissions management on the "Edit Implementation Guide" screen has been improved so that multiple users can be added with less effort. The "General" tab has been re-organized into two separate columns so that more fields can fit on a single screen, reducing the need to scroll to edit the fields.</span></p>
-<p class="rvps2"><span class="rvts55">When versioning an Implementation Guide, the identifier of the IG is copied to the new version.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts57">Exporting templates/profiles to MS Word</span></span></h3>
-<p class="rvps2"><span class="rvts55">The "Save as Default" functionality is improved so that it remembers the sort order of templates/profiles within the export, and the templates/profiles selected for export.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts57">Template/Profile Editing</span></span></h3>
-<p class="rvps2"><span class="rvts55">The author of a template can be changed in the template/profile editor.</span></p>
-<p class="rvps2"><span class="rvts55">A template/profile cannot reference itself as an implied template/profile anymore.</span></p>
-<p class="rvps2"><span class="rvts55">Bug fix to removing single-value binding from constraints.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts57">Schematron Export Improvements</span></span></h3>
-<p class="rvps2"><span class="rvts55">Several of improvements have been made to Schematron exports including: </span></p>
+<h2 class="rvps12"><span class="rvts0"><span class="rvts57">Version 4.4.0</span></span></h2>
+<p class="rvps31"><span class="rvts56">Released on Wednesday, April 26, 2017</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts58">FHIR Improvements</span></span></h3>
+<p class="rvps2"><span class="rvts56">The schema used by Trifolia for "FHIR_Latest" is updated with the schema from FHIR STU3's recent publication. In the future, the Implementation Guide Type "FHIR_Latest" will be renamed to "FHIR STU3" and a new implementation guide will be created for "FHIR_Latest" that represents the latest build of FHIR.</span></p>
+<p class="rvps2"><span class="rvts56">The fixed[x] and pattern[x] fields are included in imports of StructureDefinition resources.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts58">Default field selection for exports</span></span></h3>
+<p class="rvps2"><span class="rvts56">The "Save As Default" functionality for "Export templates/profiles to MS Word" was not saving all fields. This is now fixed so that when you indicate to save your preferences as default, the selected templates/profiles </span><span class="rvts62">and </span><span class="rvts56">the sort order are persisted.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts58">Implementation Guide Editing</span></span></h3>
+<p class="rvps2"><span class="rvts56">Permissions management on the "Edit Implementation Guide" screen has been improved so that multiple users can be added with less effort. The "General" tab has been re-organized into two separate columns so that more fields can fit on a single screen, reducing the need to scroll to edit the fields.</span></p>
+<p class="rvps2"><span class="rvts56">When versioning an Implementation Guide, the identifier of the IG is copied to the new version.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts58">Exporting templates/profiles to MS Word</span></span></h3>
+<p class="rvps2"><span class="rvts56">The "Save as Default" functionality is improved so that it remembers the sort order of templates/profiles within the export, and the templates/profiles selected for export.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts58">Template/Profile Editing</span></span></h3>
+<p class="rvps2"><span class="rvts56">The author of a template can be changed in the template/profile editor.</span></p>
+<p class="rvps2"><span class="rvts56">A template/profile cannot reference itself as an implied template/profile anymore.</span></p>
+<p class="rvps2"><span class="rvts56">Bug fix to removing single-value binding from constraints.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts58">Schematron Export Improvements</span></span></h3>
+<p class="rvps2"><span class="rvts56">Several of improvements have been made to Schematron exports including: </span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts55">Minor performance improvements</span></li>
-<li class="rvps2"><span class="rvts55">Single-value bindings within branches are tested now</span></li>
-<li class="rvps2"><span class="rvts55">Specialized rule context for templates whose schema doesn't have the typical element used by the template predicate (ex: templateId)</span></li>
-<li class="rvps2"><span class="rvts55">Manual Schematron is exported for primitive constraints SHALL constraints that are a child of a MAY constraint</span></li>
+<li class="rvps2"><span class="rvts56">Minor performance improvements</span></li>
+<li class="rvps2"><span class="rvts56">Single-value bindings within branches are tested now</span></li>
+<li class="rvps2"><span class="rvts56">Specialized rule context for templates whose schema doesn't have the typical element used by the template predicate (ex: templateId)</span></li>
+<li class="rvps2"><span class="rvts56">Manual Schematron is exported for primitive constraints SHALL constraints that are a child of a MAY constraint</span></li>
 </ul>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts57">Developer Improvements</span></span></h3>
-<p class="rvps2"><span class="rvts55">Several improvements have been made to make it easier for developers to work on Trifolia, including:</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts58">Developer Improvements</span></span></h3>
+<p class="rvps2"><span class="rvts56">Several improvements have been made to make it easier for developers to work on Trifolia, including:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts55">Using the latest version of Entity Framework, with code-first approach. This will make it easier to modify the database, and apply those modifications during installation. It is also be easier to setup new installations of Trifolia.</span></li>
-<li class="rvps2"><span class="rvts55">Installation script improvements. Re-designing the installation script to automatically apply the database migrations, and to remove files that are no longer used by the application.</span></li>
+<li class="rvps2"><span class="rvts56">Using the latest version of Entity Framework, with code-first approach. This will make it easier to modify the database, and apply those modifications during installation. It is also be easier to setup new installations of Trifolia.</span></li>
+<li class="rvps2"><span class="rvts56">Installation script improvements. Re-designing the installation script to automatically apply the database migrations, and to remove files that are no longer used by the application.</span></li>
 </ul>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts57">Development Log</span></span></h3>
-<div class="rvps31"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
+<h3 class="rvps13"><span class="rvts0"><span class="rvts58">Development Log</span></span></h3>
+<div class="rvps32"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts58">Issue Type</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Issue Type</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts58">Summary</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Summary</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Defect</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Versioning implementation guide does not copy identifier</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Defect</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Template Save does not display error when another template exists with same identifier</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Versioning implementation guide does not copy identifier</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Defect</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Branch within a branch produces incorrect Schematron rule context</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Defect</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Export to MS. Word - "Save As Default" not working</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Template Save does not display error when another template exists with same identifier</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Defect</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Display errors in user-friendly way</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Defect</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Export Templates to MS Word - Save as Default not saving unchecked templates</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Branch within a branch produces incorrect Schematron rule context</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Defect</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Binding does not delete once set</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Defect</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Template incorrectly allows itself as implied template</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Export to MS. Word - "Save As Default" not working</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Defect</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Schematron: Primitive SHALLs with manual Schematron are not exported when the parent is MAY</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Improvement</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Element with single-value binding within a branch does not test single-value</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Display errors in user-friendly way</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Improvement</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Allow a template/profile's author to be changed</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">New Feature</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Schematron US Realm addr/name etc. templates need manual search and replace contexts in the Schematron file</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Export Templates to MS Word - Save as Default not saving unchecked templates</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">New Feature</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Support multiple identifiers for value sets</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">New Feature</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Easier to add permissions to an implementation guide</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Binding does not delete once set</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">New Feature</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Import fixed[x] and pattern[x] from FHIR StructureDefinition resources</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">New Feature</span></p>
-</td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Allow a template/profile's author to be changed</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Template incorrectly allows itself as implied template</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">New Feature</span></p>
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Defect</span></p>
 </td>
-<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts59">Allow zip package to be downloaded including both Schematron and Vocabulary XML</span></p>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Schematron: Primitive SHALLs with manual Schematron are not exported when the parent is MAY</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Improvement</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Element with single-value binding within a branch does not test single-value</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Improvement</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Allow a template/profile's author to be changed</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">New Feature</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Schematron US Realm addr/name etc. templates need manual search and replace contexts in the Schematron file</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">New Feature</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Support multiple identifiers for value sets</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">New Feature</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Easier to add permissions to an implementation guide</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">New Feature</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Import fixed[x] and pattern[x] from FHIR StructureDefinition resources</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">New Feature</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Allow a template/profile's author to be changed</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="121" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">New Feature</span></p>
+</td>
+<td width="778" height="19" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts60">Allow zip package to be downloaded including both Schematron and Vocabulary XML</span></p>
 </td>
 </tr>
 </table>

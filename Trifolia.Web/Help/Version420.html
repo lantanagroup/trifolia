@@ -183,103 +183,103 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps11"><span class="rvts0"><span class="rvts56">Version 4.2.0</span></span></h2>
-<p class="rvps30"><span class="rvts55">Released on Wednesday, Oct &nbsp;5, 2016</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts67">Open-Source Authentication</span></span></h3>
-<p class="rvps2"><span class="rvts19">The existing Active Directory and custom HL7 authentication has been replaced with a generic authentication method (OAuth 2.0). </span><span class="rvts66">OAuth</span><span class="rvts19"> is an open standard for authorization, commonly used as a way for Internet users to log in to third party websites using their Google, Facebook, Microsoft, GitHub, etc. accounts without exposing their password. &nbsp; &nbsp;</span></p>
-<p class="rvps2"><span class="rvts19"><br/></span></p>
-<p class="rvps2"><span class="rvts19">As part of this migration, all existing Trifolia user accounts have been added/imported to the new OAuth Trifolia directory. Existing Trifolia users will receive a Password Reset link via e-mail that will allow them to use their Trifolia credentials when logging in using the Auth0. Clicking on the link in the email will direct the user to auth0.com and prompt the user to create a new password for your Trifolia account. &nbsp; &nbsp;</span></p>
-<p class="rvps2"><span class="rvts19"><br/></span></p>
-<p class="rvps2"><span class="rvts19">When users click the "Login" option in Trifolia version 4.2.0, they will now see the Auth0 login form. Existing users can use their Trifolia credentials to login, and pre-existing permissions to implementation guides, templates, value sets, code systems, etc., will persist. Each authentication method (Facebook, Microsoft Account, Username/Password, etc.) represents a separate user in Trifolia, with separate permissions. In the future, Trifolia </span><span class="rvts65">may </span><span class="rvts19">support linking these multiple authentication methods to a single account.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts67">Trifolia open source Github support request</span></span></h3>
-<p class="rvps2"><span class="rvts64">Three options are now available for support requests, that are configurable</span></p>
-<p class="rvps2"><span class="rvts64"><br/></span></p>
+<h2 class="rvps12"><span class="rvts0"><span class="rvts57">Version 4.2.0</span></span></h2>
+<p class="rvps31"><span class="rvts56">Released on Wednesday, Oct &nbsp;5, 2016</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts68">Open-Source Authentication</span></span></h3>
+<p class="rvps2"><span class="rvts20">The existing Active Directory and custom HL7 authentication has been replaced with a generic authentication method (OAuth 2.0). </span><span class="rvts67">OAuth</span><span class="rvts20"> is an open standard for authorization, commonly used as a way for Internet users to log in to third party websites using their Google, Facebook, Microsoft, GitHub, etc. accounts without exposing their password. &nbsp; &nbsp;</span></p>
+<p class="rvps2"><span class="rvts20"><br/></span></p>
+<p class="rvps2"><span class="rvts20">As part of this migration, all existing Trifolia user accounts have been added/imported to the new OAuth Trifolia directory. Existing Trifolia users will receive a Password Reset link via e-mail that will allow them to use their Trifolia credentials when logging in using the Auth0. Clicking on the link in the email will direct the user to auth0.com and prompt the user to create a new password for your Trifolia account. &nbsp; &nbsp;</span></p>
+<p class="rvps2"><span class="rvts20"><br/></span></p>
+<p class="rvps2"><span class="rvts20">When users click the "Login" option in Trifolia version 4.2.0, they will now see the Auth0 login form. Existing users can use their Trifolia credentials to login, and pre-existing permissions to implementation guides, templates, value sets, code systems, etc., will persist. Each authentication method (Facebook, Microsoft Account, Username/Password, etc.) represents a separate user in Trifolia, with separate permissions. In the future, Trifolia </span><span class="rvts66">may </span><span class="rvts20">support linking these multiple authentication methods to a single account.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts68">Trifolia open source Github support request</span></span></h3>
+<p class="rvps2"><span class="rvts65">Three options are now available for support requests, that are configurable</span></p>
+<p class="rvps2"><span class="rvts65"><br/></span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts64"> &nbsp; &nbsp;JIRA, when JIRA is configured and enabled</span></li>
-<li class="rvps2"><span class="rvts64"> &nbsp; &nbsp;Email, when a support email address is specified</span></li>
-<li class="rvps2"><span class="rvts64"> &nbsp; &nbsp;If a support request is initiated in Trifolia, but JIRA is not configured and enabled, and a support e-mail address is not configured, a redirect URL will</span></li>
+<li class="rvps2"><span class="rvts65"> &nbsp; &nbsp;JIRA, when JIRA is configured and enabled</span></li>
+<li class="rvps2"><span class="rvts65"> &nbsp; &nbsp;Email, when a support email address is specified</span></li>
+<li class="rvps2"><span class="rvts65"> &nbsp; &nbsp;If a support request is initiated in Trifolia, but JIRA is not configured and enabled, and a support e-mail address is not configured, a redirect URL will</span></li>
 </ul>
-<p class="rvps2"><span class="rvts64"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;be opened in a separate window to allow users to log a ticket in GitHub.</span></p>
-<p class="rvps2"><span class="rvts64"><br/></span></p>
-<p class="rvps2"><span class="rvts64">Lantana's installation of Trifolia (</span><a class="rvts51" href="https://trifolia.lantanagroup.com" target="_blank">https://trifolia.lantanagroup.com</a><span class="rvts64">) re-directs all users to the </span><a class="rvts51" href="https://github.com/lantanagroup/trifolia/issues" target="_blank">Github Trifolia repository's issues page</a><span class="rvts64">.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts67">Remove association between User and Organization</span></span></h3>
-<p class="rvps2"><span class="rvts55">Users and groups are not organization-specific; they are now managed individually. Each user can have their own groups that they can assign members to. Any user can request to join any group.</span></p>
-<p class="rvps2"><span class="rvts55"></span></p>
-<p class="rvps2"><span class="rvts55">When editing an implementation guide, the user no longer needs to select an organization prior to selecting a user/group; searching is performed globally and returns any matching user or group.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts67">Group disclaimers</span></span></h3>
-<p class="rvps2"><span class="rvts64">Group Disclaimers can now be added in a new option called My Groups when the logged-in user clicks on their name. &nbsp;Users can see disclaimers for groups they are associated with by clicking "Disclaimers" from the Help menu.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts67">Identifier/Base identifier field for Implementation Guides</span></span></h3>
-<p class="rvps2"><span class="rvts64">In FHIR implementation guides, it is important to have a base identifier for the implementation guide that each profile follows. A new field has been added to the implementation guide editor which will require identifying a base identifier for all existing implementation guides.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts67">FHIR data type</span></span></h3>
-<p class="rvps2"><span class="rvts64">The MS Word and web-based Implementation Guide exports will now include a column for the "Data Type" of the constraint in the "Constraints Overview" tables.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts62">FHIR build export</span></span></h3>
-<p class="rvps2"><span class="rvts64">Trifolia has a new option under Export XML/JSON to export a "FHIR Build" package. The "FHIR Build" package option is only available for FHIR-based implementation guides. The export produces a ZIP file that includes all files pre-configured to run the FHIR IG Publisher.</span></p>
-<h3 class="rvps12"><span class="rvts0"><span class="rvts27">Development Log</span></span></h3>
-<div class="rvps13"><table width="498" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse;">
+<p class="rvps2"><span class="rvts65"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;be opened in a separate window to allow users to log a ticket in GitHub.</span></p>
+<p class="rvps2"><span class="rvts65"><br/></span></p>
+<p class="rvps2"><span class="rvts65">Lantana's installation of Trifolia (</span><a class="rvts52" href="https://trifolia.lantanagroup.com" target="_blank">https://trifolia.lantanagroup.com</a><span class="rvts65">) re-directs all users to the </span><a class="rvts52" href="https://github.com/lantanagroup/trifolia/issues" target="_blank">Github Trifolia repository's issues page</a><span class="rvts65">.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts68">Remove association between User and Organization</span></span></h3>
+<p class="rvps2"><span class="rvts56">Users and groups are not organization-specific; they are now managed individually. Each user can have their own groups that they can assign members to. Any user can request to join any group.</span></p>
+<p class="rvps2"><span class="rvts56"></span></p>
+<p class="rvps2"><span class="rvts56">When editing an implementation guide, the user no longer needs to select an organization prior to selecting a user/group; searching is performed globally and returns any matching user or group.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts68">Group disclaimers</span></span></h3>
+<p class="rvps2"><span class="rvts65">Group Disclaimers can now be added in a new option called My Groups when the logged-in user clicks on their name. &nbsp;Users can see disclaimers for groups they are associated with by clicking "Disclaimers" from the Help menu.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts68">Identifier/Base identifier field for Implementation Guides</span></span></h3>
+<p class="rvps2"><span class="rvts65">In FHIR implementation guides, it is important to have a base identifier for the implementation guide that each profile follows. A new field has been added to the implementation guide editor which will require identifying a base identifier for all existing implementation guides.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts68">FHIR data type</span></span></h3>
+<p class="rvps2"><span class="rvts65">The MS Word and web-based Implementation Guide exports will now include a column for the "Data Type" of the constraint in the "Constraints Overview" tables.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts63">FHIR build export</span></span></h3>
+<p class="rvps2"><span class="rvts65">Trifolia has a new option under Export XML/JSON to export a "FHIR Build" package. The "FHIR Build" package option is only available for FHIR-based implementation guides. The export produces a ZIP file that includes all files pre-configured to run the FHIR IG Publisher.</span></p>
+<h3 class="rvps13"><span class="rvts0"><span class="rvts28">Development Log</span></span></h3>
+<div class="rvps14"><table width="498" border="1" cellpadding="4" cellspacing="-1" style="border-width: 0px; border-collapse: collapse;">
 <tr valign="top">
-<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts63">Type</span></p>
+<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps34"><span class="rvts64">Type</span></p>
 </td>
-<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts63">Description</span></p>
+<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps34"><span class="rvts64">Description</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps30"><span class="rvts55">New Feature</span></p>
+<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps31"><span class="rvts56">New Feature</span></p>
 </td>
-<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps32"><span class="rvts55">Add field to IG for "Identifier / Base URL"</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps30"><span class="rvts55">New Feature</span></p>
-</td>
-<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps32"><span class="rvts55">Use OAuth2 to authenticate users</span></p>
+<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts56">Add field to IG for "Identifier / Base URL"</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps30"><span class="rvts55">New Feature</span></p>
+<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps31"><span class="rvts56">New Feature</span></p>
 </td>
-<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps32"><span class="rvts55">Show Group Disclaimers</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps30"><span class="rvts55">New Feature</span></p>
-</td>
-<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps32"><span class="rvts55">Create a migration path for user account</span></p>
+<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts56">Use OAuth2 to authenticate users</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps30"><span class="rvts55">New Feature</span></p>
+<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps31"><span class="rvts56">New Feature</span></p>
 </td>
-<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps32"><span class="rvts55">Removed association between User and Organization</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps30"><span class="rvts55">New Feature</span></p>
-</td>
-<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps32"><span class="rvts55">Generate FHIR build/export</span></p>
+<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts56">Show Group Disclaimers</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps30"><span class="rvts55">Improvement</span></p>
+<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps31"><span class="rvts56">New Feature</span></p>
 </td>
-<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps32"><span class="rvts55">Include the FHIR data-type in IG exports</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps30"><span class="rvts55">Improvement</span></p>
-</td>
-<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps32"><span class="rvts55">Default new FHIR profiles to use IG's base URL</span></p>
+<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts56">Create a migration path for user account</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps30"><span class="rvts55">Task</span></p>
+<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps31"><span class="rvts56">New Feature</span></p>
 </td>
-<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps32"><span class="rvts55">Redirect Trifolia Support Requests to Trifolia Open Source GitHub</span></p>
+<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts56">Removed association between User and Organization</span></p>
 </td>
 </tr>
 <tr valign="top">
-<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps30"><span class="rvts55">Defect</span></p>
+<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps31"><span class="rvts56">New Feature</span></p>
 </td>
-<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps32"><span class="rvts55">Cannot download Web-IG for C-CDA on FHIR</span></p>
+<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts56">Generate FHIR build/export</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps31"><span class="rvts56">Improvement</span></p>
+</td>
+<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts56">Include the FHIR data-type in IG exports</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps31"><span class="rvts56">Improvement</span></p>
+</td>
+<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts56">Default new FHIR profiles to use IG's base URL</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps31"><span class="rvts56">Task</span></p>
+</td>
+<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts56">Redirect Trifolia Support Requests to Trifolia Open Source GitHub</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="89" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps31"><span class="rvts56">Defect</span></p>
+</td>
+<td width="377" height="18" valign="top" style="border-width : 1px; border-color: #2d6670; border-style: solid; padding: 0px 7px;"><p class="rvps33"><span class="rvts56">Cannot download Web-IG for C-CDA on FHIR</span></p>
 </td>
 </tr>
 </table>
