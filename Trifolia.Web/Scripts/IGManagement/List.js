@@ -231,7 +231,7 @@
             return [];
         }
 
-        if (!searchQuery && !filterType) {
+        if (!searchQuery && !filterType && !filterStatus && !filterOrganization) {
             return self.Model().Items();
         }
 
