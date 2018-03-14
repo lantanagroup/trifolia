@@ -12,7 +12,7 @@ using Trifolia.Web.Formatters.FHIR.STU3;
 
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 
-namespace Trifolia.Web.Controllers.API.FHIR.Latest
+namespace Trifolia.Web.Controllers.API.FHIR.CurrentBuild
 {
     public class LatestConfigAttributeAttribute : Attribute, IControllerConfiguration
     {

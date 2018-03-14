@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Http;
 using Trifolia.DB;
 
-namespace Trifolia.Web.Controllers.API.FHIR.Latest
+namespace Trifolia.Web.Controllers.API.FHIR.CurrentBuild
 {
     [LatestConfigAttribute]
     [RoutePrefix("api/FHIRLatest")]

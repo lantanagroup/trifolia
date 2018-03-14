@@ -83,6 +83,7 @@ if ($shouldBackup -and $appServicePathExists) {
 	$zip.Dispose()
 	Pop-Location
 	Write-Host "Backup saved to " $backupZipPath
+	Read-Host "Please confirm the backup, then press <enter>."
 }
 
 $currentLocation = Get-Location

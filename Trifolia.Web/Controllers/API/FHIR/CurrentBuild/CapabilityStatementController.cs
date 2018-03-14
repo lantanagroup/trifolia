@@ -10,10 +10,10 @@ using Trifolia.Config;
 
 using CapabilityStatement = fhir_latest.Hl7.Fhir.Model.CapabilityStatement;
 
-namespace Trifolia.Web.Controllers.API.FHIR.Latest
+namespace Trifolia.Web.Controllers.API.FHIR.CurrentBuild
 {
     [LatestConfigAttribute]
-    [RoutePrefix("api/FHIRLatest")]
+    [RoutePrefix("api/FHIRCurrentBuild")]
     public class FHIRLatestConformanceController : ApiController
     {
         private IObjectRepository tdb;

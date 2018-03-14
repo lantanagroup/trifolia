@@ -5,6 +5,22 @@
         .nameColumn {
             max-width: 350px;
         }
+
+        th > div > select {
+            width: 69% !important;
+            margin-right: 5px;
+        }
+
+        .glyphicon.glyphicon-text-height,
+        .glyphicon.glyphicon-sort-by-alphabet,
+        .glyphicon.glyphicon-sort-by-alphabet-alt {
+            cursor: pointer;
+            padding-top: 8px;
+        }
+
+        tr > th:last-child {
+            min-width: 181px;
+        }
     </style>
 </asp:Content>
 
@@ -26,45 +42,55 @@
         <table data-bind="with: Model" class="table table-striped">
             <thead>
                 <tr>
-                    <th style="cursor: pointer;" data-bind="click: function () { $parent.ToggleSort('Name'); }">
+                    <th>
                         Name
-                        <!-- ko if: $parent.SortField() == 'Name' && $parent.SortAscending() -->
-                        <i class="glyphicon glyphicon-chevron-up"></i>
-                        <!-- /ko -->
-                        <!-- ko if: $parent.SortField() == 'Name' && !$parent.SortAscending() -->
-                        <i class="glyphicon glyphicon-chevron-down"></i>
-                        <!-- /ko -->
+                        <i 
+                            class="glyphicon" 
+                            title="Sort by Name" 
+                            data-bind="css: $parent.GetSortIcon('Name'), click: function () { $parent.ToggleSort('Name'); }">
+                        </i>
                     </th>
-                    <th style="cursor: pointer;" data-bind="click: function () { $parent.ToggleSort('Status'); }">
-                        Status
-                        <!-- ko if: $parent.SortField() == 'Status' && $parent.SortAscending() -->
-                        <i class="glyphicon glyphicon-chevron-up"></i>
-                        <!-- /ko -->
-                        <!-- ko if: $parent.SortField() == 'Status' && !$parent.SortAscending() -->
-                        <i class="glyphicon glyphicon-chevron-down"></i>
-                        <!-- /ko -->
-                    </th>
-                    <th style="cursor: pointer; min-width: 125px;" data-bind="click: function () { $parent.ToggleSort('PublishDate'); }">
+                    <th style="min-width: 125px;">
                         Publish Date
-                        <!-- ko if: $parent.SortField() == 'PublishDate' && $parent.SortAscending() -->
-                        <i class="glyphicon glyphicon-chevron-up"></i>
-                        <!-- /ko -->
-                        <!-- ko if: $parent.SortField() == 'PublishDate' && !$parent.SortAscending() -->
-                        <i class="glyphicon glyphicon-chevron-down"></i>
-                        <!-- /ko -->
+                        <i 
+                            class="glyphicon" 
+                            title="Sort by Publish Date" 
+                            data-bind="css: $parent.GetSortIcon('PublishDate'), click: function () { $parent.ToggleSort('PublishDate'); }">
+                        </i>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <select data-bind="options: $parent.Types, value: $parent.FilterType, optionsCaption: 'Type'"></select>
+                            <i 
+                                class="glyphicon" 
+                                title="Sort by Type"
+                                data-bind="css: $parent.GetSortIcon('Type'), click: function () { $parent.ToggleSort('Type'); }">
+                            </i>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <select data-bind="options: $parent.Statuses, value: $parent.FilterStatus, optionsCaption: 'Status', optionsText: function (item) { return item || 'NONE'; }"></select>
+                            <i 
+                                class="glyphicon" 
+                                title="Sort by Status" 
+                                data-bind="css: $parent.GetSortIcon('Status'), click: function () { $parent.ToggleSort('Status'); }">
+                            </i>
+                        </div>
                     </th>
                     <!-- ko if: !HideOrganization() -->
-                    <th style="cursor: pointer;" data-bind="click: function () { $parent.ToggleSort('Organization'); }">
-                        Organization
-                        <!-- ko if: $parent.SortField() == 'Organization' && $parent.SortAscending() -->
-                        <i class="glyphicon glyphicon-chevron-up"></i>
-                        <!-- /ko -->
-                        <!-- ko if: $parent.SortField() == 'Organization' && !$parent.SortAscending() -->
-                        <i class="glyphicon glyphicon-chevron-down"></i>
-                        <!-- /ko -->
+                    <th>
+                        <div class="input-group">
+                            <select data-bind="options: $parent.Organizations, value: $parent.FilterOrganization, optionsCaption: 'Organization', optionsText: function (item) { return item || 'NONE'; }""></select>
+                            <i 
+                                class="glyphicon" 
+                                title="Sort by Organization" 
+                                data-bind="css: $parent.GetSortIcon('Organization'), click: function () { $parent.ToggleSort('Organization'); }">
+                            </i>
+                        </div>
                     </th>
                     <!-- /ko -->
-                    <th style="min-width: 181px;">
+                    <th>
                         <div class="pull-right">
                             <!-- ko if: containerViewModel.HasSecurable(['ImplementationGuideEdit']) -->
                             <button type="button" class="btn btn-primary btn-sm" data-bind="click: $parent.Add" title="Add new implementation guide">Add</button>
@@ -82,8 +108,9 @@
                         <sub data-bind="text: DisplayName"></sub>
                         <!-- /ko -->
                     </td>
-                    <td data-bind="text: Status"></td>
                     <td data-bind="text: formatDateObj(PublishDate())"></td>
+                    <td data-bind="text: Type"></td>
+                    <td data-bind="text: Status"></td>
                     <!-- ko if: !$parent.HideOrganization() -->
                     <td data-bind="text: Organization"></td>
                     <!-- /ko -->

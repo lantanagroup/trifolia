@@ -85,10 +85,20 @@ namespace Trifolia.Plugins.Validation
             {
                 User currentUser = CheckPoint.Instance.GetUser(this.tdb);
 
-                if (!currentUser.HasValidUmlsLicense())
+                try
+                {
+                    if (!currentUser.HasValidUmlsLicense())
+                    {
+                        results.RestrictDownload = true;
+                        results.Messages.Add("This implementation guide contains VSAC content that you do not currently have a license to. <a href=\"/Account/MyProfile\">Update your profile</a> with your UMLS/VSAC credentials to export this implementation guide.");
+                    }
+                }
+                catch (Exception ex)
                 {
                     results.RestrictDownload = true;
-                    results.Messages.Add("This implementation guide contains VSAC content that you do not currently have a license to. <a href=\"/Account/MyProfile\">Update your profile</a> with your UMLS/VSAC credentials to export this implementation guide.");
+                    results.Messages.Add("This implementation guide contains VSAC content. Your UMLS license could not be verified due to an error. Please submit a support request related to this message.");
+                    Logging.Log.For(this).Error("Error checking if the user {0} has a valid UMLS license", ex, currentUser.UserName);
+                    throw ex;
                 }
             }
 

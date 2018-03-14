@@ -16,7 +16,7 @@ using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.FHIR;
 
-namespace Trifolia.Web.Controllers.API.FHIR.Latest
+namespace Trifolia.Web.Controllers.API.FHIR.CurrentBuild
 {
     [LatestConfigAttribute]
     [RoutePrefix("api/FHIRLatest")]

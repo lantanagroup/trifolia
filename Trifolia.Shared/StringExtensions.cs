@@ -119,11 +119,12 @@ namespace Trifolia.Shared
         /// </summary>
         /// <param name="cipherText">The text to decrypt.</param>
         /// <param name="sharedSecret">A password used to generate a key for decryption.</param>
-        public static string DecryptStringAES(this string cipherText)
+        /// <param name="secret"></param>
+        public static string DecryptStringAES(this string cipherText, string secret = null)
         {
             if (string.IsNullOrEmpty(cipherText))
                 throw new ArgumentNullException("cipherText");
-            if (string.IsNullOrEmpty(AppSettings.EncryptionSecret))
+            if (string.IsNullOrEmpty(secret) && string.IsNullOrEmpty(AppSettings.EncryptionSecret))
                 throw new ArgumentNullException("appSettings/EncryptionSecret");
 
             // Declare the RijndaelManaged object
@@ -134,10 +135,13 @@ namespace Trifolia.Shared
             // the decrypted text.
             string plaintext = null;
 
+            if (string.IsNullOrEmpty(secret))
+                secret = AppSettings.EncryptionSecret;
+
             try
             {
                 // generate the key from the shared secret and the salt
-                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(AppSettings.EncryptionSecret, _salt);
+                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(secret, _salt);
 
                 // Create the streams used for decryption.                
                 byte[] bytes = Convert.FromBase64String(cipherText);
@@ -154,10 +158,11 @@ namespace Trifolia.Shared
                     using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                     {
                         using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-
+                        {
                             // Read the decrypted bytes from the decrypting stream
                             // and place them in a string.
                             plaintext = srDecrypt.ReadToEnd();
+                        }
                     }
                 }
             }
