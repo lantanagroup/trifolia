@@ -11,7 +11,7 @@ namespace Trifolia.DB.Migrations
     internal sealed class Configuration : DbMigrationsConfiguration<Trifolia.DB.TrifoliaDatabase>
     {
         private string[] fhirStu3ResourceTypes = new string[] { "Account", "ActivityDefinition", "AllergyIntolerance", "AdverseEvent", "Appointment", "AppointmentResponse", "AuditEvent", "Basic", "Binary", "BodySite", "Bundle", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "Claim", "ClaimResponse", "ClinicalImpression", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition", "Consent", "Contract", "Coverage", "DataElement", "DetectedIssue", "Device", "DeviceComponent", "DeviceMetric", "DeviceRequest", "DeviceUseStatement", "DiagnosticReport", "DocumentManifest", "DocumentReference", "EligibilityRequest", "EligibilityResponse", "Encounter", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "ExpansionProfile", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingManifest", "ImagingStudy", "Immunization", "ImmunizationRecommendation", "ImplementationGuide", "Library", "Linkage", "List", "Location", "Measure", "MeasureReport", "Media", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "MessageDefinition", "MessageHeader", "NamingSystem", "NutritionOrder", "Observation", "OperationDefinition", "OperationOutcome", "Organization", "Parameters", "Patient", "PaymentNotice", "PaymentReconciliation", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "ProcedureRequest", "ProcessRequest", "ProcessResponse", "Provenance", "Questionnaire", "QuestionnaireResponse", "ReferralRequest", "RelatedPerson", "RequestGroup", "ResearchStudy", "ResearchSubject", "RiskAssessment", "Schedule", "SearchParameter", "Sequence", "ServiceDefinition", "Slot", "Specimen", "StructureDefinition", "StructureMap", "Subscription", "Substance", "SupplyDelivery", "SupplyRequest", "Task", "TestScript", "TestReport", "ValueSet", "VisionPrescription" };
-        private string[] fhirCurrentBuildResourceTypes = new string[] { "Account", "ActivityDefinition", "AllergyIntolerance", "AdverseEvent", "Appointment", "AppointmentResponse", "AuditEvent", "Basic", "Binary", "BodyStructure", "Bundle", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "Claim", "ClaimResponse", "ClinicalImpression", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition (aka Problem)", "Consent", "Contract", "Coverage", "DetectedIssue", "Device", "DeviceComponent", "DeviceMetric", "DeviceRequest", "DeviceUseStatement", "DiagnosticReport", "DocumentManifest", "DocumentReference", "EligibilityRequest", "EligibilityResponse", "Encounter", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "EventDefinition", "ExpansionProfile", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingManifest", "ImagingStudy", "Immunization", "ImmunizationRecommendation", "ImplementationGuide", "Library", "Linkage", "List", "Location", "Measure", "MeasureReport", "Media", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "MessageDefinition", "MessageHeader", "NamingSystem", "NutritionOrder", "Observation", "OperationDefinition", "OperationOutcome", "Organization", "Parameters", "Patient", "PaymentNotice", "PaymentReconciliation", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "ProcedureRequest", "ProcessRequest", "ProcessResponse", "Provenance", "Questionnaire", "QuestionnaireResponse", "RelatedPerson", "RequestGroup", "ResearchStudy", "ResearchSubject", "RiskAssessment", "Schedule", "SearchParameter", "Sequence", "ServiceDefinition", "Slot", "Specimen", "StructureDefinition", "StructureMap", "Subscription", "Substance", "SupplyDelivery", "SupplyRequest", "Task", "TestScript", "TestReport", "ValueSet", "VisionPrescription" };
+        private string[] fhirCurrentBuildResourceTypes = new string[] { "Account", "ActivityDefinition", "AllergyIntolerance", "AdverseEvent", "Appointment", "AppointmentResponse", "AuditEvent", "Basic", "Binary", "BodyStructure", "Bundle", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "Claim", "ClaimResponse", "ClinicalImpression", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", "Composition", "ConceptMap", "Condition", "Consent", "Contract", "Coverage", "DetectedIssue", "Device", "DeviceComponent", "DeviceMetric", "DeviceRequest", "DeviceUseStatement", "DiagnosticReport", "DocumentManifest", "DocumentReference", "EligibilityRequest", "EligibilityResponse", "Encounter", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "EventDefinition", "ExpansionProfile", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingManifest", "ImagingStudy", "Immunization", "ImmunizationRecommendation", "ImplementationGuide", "Library", "Linkage", "List", "Location", "Measure", "MeasureReport", "Media", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationRequest", "MedicationStatement", "MessageDefinition", "MessageHeader", "NamingSystem", "NutritionOrder", "Observation", "OperationDefinition", "OperationOutcome", "Organization", "Parameters", "Patient", "PaymentNotice", "PaymentReconciliation", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "ProcedureRequest", "ProcessRequest", "ProcessResponse", "Provenance", "Questionnaire", "QuestionnaireResponse", "RelatedPerson", "RequestGroup", "ResearchStudy", "ResearchSubject", "RiskAssessment", "Schedule", "SearchParameter", "Sequence", "ServiceDefinition", "Slot", "Specimen", "StructureDefinition", "StructureMap", "Subscription", "Substance", "SupplyDelivery", "SupplyRequest", "Task", "TestScript", "TestReport", "ValueSet", "VisionPrescription" };
         private AppSecurable[] appSecurables;
         private Role[] roles;
 
@@ -219,21 +219,36 @@ namespace Trifolia.DB.Migrations
             List<string> resourceTypes = new List<string>(resourceTypesArray);
             resourceTypes.Add("Extension");
             resourceTypes = resourceTypes.OrderBy(y => y).ToList();
+
+            string invalidConditionName = "Condition (aka Problem)";
             
             for (int i = 0; i < resourceTypes.Count; i++)
             {
-                var templateType = new TemplateType()
+                Console.WriteLine("Updating " + resourceTypes[i]);
+
+                if (implementationGuideTypeId == 7 && resourceTypes[i] == "Condition" && context.TemplateTypes.Count(y => y.ImplementationGuideTypeId == 7 && (y.Name == invalidConditionName || y.RootContext == invalidConditionName || y.RootContextType == invalidConditionName)) == 1)
                 {
-                    ImplementationGuideTypeId = implementationGuideTypeId,
-                    Name = resourceTypes[i],
-                    OutputOrder = i + 1,
-                    RootContext = resourceTypes[i],
-                    RootContextType = resourceTypes[i]
-                };
+                    var templateType = context.TemplateTypes.Single(y => y.ImplementationGuideTypeId == 7 && (y.Name == invalidConditionName || y.RootContext == invalidConditionName || y.RootContextType == invalidConditionName));
+                    templateType.Name = "Condition";
+                    templateType.RootContext = "Condition";
+                    templateType.RootContextType = "Condition";
+                    context.TemplateTypes.AddOrUpdate(tt => tt.Id, templateType);
+                }
+                else
+                {
+                    var templateType = new TemplateType()
+                    {
+                        ImplementationGuideTypeId = implementationGuideTypeId,
+                        Name = resourceTypes[i],
+                        OutputOrder = i + 1,
+                        RootContext = resourceTypes[i],
+                        RootContextType = resourceTypes[i]
+                    };
 
-                Console.WriteLine("Adding/updating template type " + templateType.Name);
+                    Console.WriteLine("Adding/updating template type " + templateType.Name);
 
-                context.TemplateTypes.AddOrUpdate(tt => new { tt.ImplementationGuideTypeId, tt.Name }, templateType);
+                    context.TemplateTypes.AddOrUpdate(tt => new { tt.ImplementationGuideTypeId, tt.Name }, templateType);
+                }
             }
 
             var removeTemplateTypes = (from tt in context.TemplateTypes
@@ -242,6 +257,9 @@ namespace Trifolia.DB.Migrations
 
             foreach (var removeTemplateType in removeTemplateTypes)
             {
+                if (implementationGuideTypeId == 7 && (removeTemplateType.Name == "Condition" || removeTemplateType.Name == invalidConditionName || removeTemplateType.RootContext == invalidConditionName || removeTemplateType.RootContextType == invalidConditionName))
+                    continue;
+
                 if (removeTemplateType.Templates.Count > 0)
                 {
                     Console.WriteLine("Can't remove " + removeTemplateType.Name + " from FHIR implementation guide type " + implementationGuideTypeId + " because it is associated with templates");
