@@ -74,6 +74,9 @@ namespace Trifolia.Web.Controllers.API
                     case "STU3":
                         fhirIgType.BaseUrl = "/api/FHIR3/";
                         break;
+                    case "Current Build":
+                        fhirIgType.BaseUrl = "/api/FHIRLatest/";
+                        break;
                 }
 
                 clientConfig.FhirIgTypes.Add(fhirIgType);

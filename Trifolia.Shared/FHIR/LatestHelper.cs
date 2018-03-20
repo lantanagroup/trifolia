@@ -38,7 +38,7 @@ namespace Trifolia.Shared.FHIR
             if (found == null && throwError)
             {
                 string errorMsg = "No Latest FHIR IG Type is defined/configured";
-                Log.For(typeof(STU3Helper)).Error(errorMsg);
+                Log.For(typeof(LatestHelper)).Error(errorMsg);
                 throw new Exception(errorMsg);
             }
 
