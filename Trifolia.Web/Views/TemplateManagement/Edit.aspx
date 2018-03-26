@@ -736,7 +736,7 @@ disable: $parents[1].Template().Locked">
             </table>
 
             <!-- ko if: !$parents[1].DisableConstraintFields() -->
-            <a href="#" data-bind="click: function () { AddContainedTemplate($parents[$parents.length - 1].IsFhir() ? null : $parent.DisplayDataType()); }">Add contained template/profile</a>
+            <a href="#" data-bind="click: function () { AddContainedTemplate($parents[$parents.length - 1].IsFhir(), $parent.DisplayDataType()); }">Add contained template/profile</a>
             <!-- /ko -->
             
             <div class="modal fade" id="constraintReferenceSelectionModal" style="margin-top: 80px;" data-bind="with: ReferenceSelection">

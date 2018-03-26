@@ -15,6 +15,13 @@ namespace Trifolia.Plugins.FHIR
 {
     public class DSTU2Plugin : DefaultPlugin, IIGTypePlugin
     {
+
+        public List<String> GetFhirTypes(string elementPath)
+        {
+            throw new NotSupportedException();
+        }
+
+
         public byte[] Export(DB.IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<DB.Template> templates, bool includeVocabulary, bool returnJson = true)
         {
             var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);

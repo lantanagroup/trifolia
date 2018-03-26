@@ -81,7 +81,8 @@ namespace Trifolia.Web.Controllers.API
                         Identifier = ig.Identifier,
                         Name = ig.NameWithVersion,
                         IsPublished = ig.IsPublished(),
-                        Namespace = ig.ImplementationGuideType.SchemaURI
+                        Namespace = ig.ImplementationGuideType.SchemaURI,
+                        TypeId = ig.ImplementationGuideTypeId
                     })
                     .OrderBy(y => y.Name);
         }

@@ -8,6 +8,7 @@ using Trifolia.Export.FHIR.STU3;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
 using Trifolia.Shared.Validation;
+using Trifolia.Shared.FHIR.Profiles.STU3;
 using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
 using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
@@ -15,6 +16,38 @@ namespace Trifolia.Plugins.FHIR
 {
     public class STU3Plugin : DefaultPlugin, IIGTypePlugin
     {
+        public List<String> GetFhirTypes(string elementPath)
+        {
+            // TODO: Extract the resourceType from elementPath
+            string resourceType = elementPath.Substring(0, elementPath.IndexOf('.'));
+            var strucDef = ProfileHelper.GetProfile(resourceType);
+            List<String> fhirTypes = new List<String>();
+
+            // TODO: element type is not a reference, return empty array
+
+            foreach (var element in strucDef.Snapshot.Element)
+            {
+                if (element.Path != elementPath)
+                    continue;
+
+                foreach(var type in element.Type)
+                {
+                    if (type.Code != "Reference")
+                    {
+                        throw new NotSupportedException("Not a reference");
+                    }
+                    else
+                    {
+                        String profile = type.TargetProfile;
+                        String primaryContext = profile.Substring(profile.LastIndexOf("/") + 1);
+                        fhirTypes.Add(primaryContext);
+                    }
+                }
+            }
+
+            return fhirTypes;
+        }
+
         public byte[] Export(DB.IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<DB.Template> templates, bool includeVocabulary, bool returnJson = true)
         {
             var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);

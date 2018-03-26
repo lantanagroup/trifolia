@@ -394,6 +394,8 @@ namespace Trifolia.Web.Controllers.API
         /// <param name="filterOrganizationId">Matches the id of the organization specified specifically to the organization of the template. Only templates with a matching organization will be returned.</param>
         /// <param name="selfOid">If exists, makes sure not to return the Oid of the template currently in use</param>
         /// <param name="filterContextType">Matches the context specified specifically to the context of the template. Only templates whose context type contain the specified value will be returned.</param>
+        /// <param name="fhirPath">The path to a FHIR element that should be filtered based on the types within the base element</param>
+        /// <param name="implementationGuideTypeId">The type id of the Implementation Guide associated with the template</param>
         /// <returns>Trifolia.Web.Models.TemplateManagement.ListModel</returns>
         [HttpGet, Route("api/Template"), SecurableAction(SecurableNames.TEMPLATE_LIST)]
         public ListModel GetTemplates(
@@ -408,7 +410,9 @@ namespace Trifolia.Web.Controllers.API
             int? filterTemplateTypeId = null,
             int? filterOrganizationId = null,
             string selfOid = null,
-            string filterContextType = null)
+            string filterContextType = null,
+            string fhirPath = null,
+            int? implementationGuideTypeId = null)
         {
             Log.For(this).Trace("BEGIN: Getting list model for List and ListPartial");
 
@@ -435,10 +439,50 @@ namespace Trifolia.Web.Controllers.API
             var query = (from tid in templateIds
                          join vtl in tdb.ViewTemplateLists on tid equals vtl.Id
                          select vtl);
-            if(selfOid != null)
+
+            if (selfOid != null)
+            {
                 query = (from q in query
-                     where q.Oid != selfOid
-                     select q);
+                         where q.Oid != selfOid
+                         select q);
+            }
+
+            if (implementationGuideTypeId != null)
+            {
+                // TODO: Always filter based on the ig type
+                query = (from q in query
+                         where q.ImplementationGuideTypeId == implementationGuideTypeId
+                         select q);
+            }
+            
+
+            // filter based on fhirPath's base element types
+            if (implementationGuideTypeId != null && !string.IsNullOrEmpty(fhirPath))
+            {
+                try
+                {
+                    var igType = this.tdb.ImplementationGuideTypes.Single(y => y.Id == implementationGuideTypeId);
+                    var plugin = igType.GetPlugin();
+                    List<String> types = plugin.GetFhirTypes(fhirPath);
+
+                    // Filter based on the types (only return templates with a Template.PrimaryContextType that matches one of the types[])
+                    query = (from q in query
+                             join t in types on q.PrimaryContextType equals t
+                             select q);
+                }
+                catch (NotSupportedException nse)
+                {
+                    if(nse.Message == "Not a reference")
+                    {
+                        return new ListModel(); //Return an empty model if user tries to attach a container template to a non-reference
+                    }
+                    else
+                    {
+                        // Do nothing... Can't filter like this for DSTU2 (as example)
+                    }
+                }
+            }
+
             int currentUserId = CheckPoint.Instance.GetUser(tdb).Id;
             var editableTemplates = (from tp in this.tdb.ViewTemplatePermissions
                                      where tp.UserId == currentUserId && tp.Permission == "Edit"

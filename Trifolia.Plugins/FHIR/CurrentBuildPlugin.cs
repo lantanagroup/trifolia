@@ -6,6 +6,7 @@ using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.Latest;
 using Trifolia.Shared;
+using Trifolia.Shared.FHIR.Profiles.Latest;
 using Trifolia.Shared.Plugins;
 using Trifolia.Shared.Validation;
 using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
@@ -15,6 +16,35 @@ namespace Trifolia.Plugins.FHIR
 {
     public class CurrentBuildPlugin : DefaultPlugin, IIGTypePlugin
     {
+        public List<String> GetFhirTypes(string elementPath)
+        {
+            string resourceType = elementPath.Substring(0, elementPath.IndexOf('.'));
+            var strucDef = ProfileHelper.GetProfile(resourceType);
+            List<String> fhirTypes = new List<String>();
+
+            foreach (var element in strucDef.Snapshot.Element)
+            {
+                if (element.Path != elementPath)
+                    continue;
+
+                foreach (var type in element.Type)
+                {
+                    if (type.Code != "Reference")
+                    {
+                        throw new NotSupportedException("Not a reference");
+                    }
+                    else
+                    {
+                        String profile = type.TargetProfile;
+                        String primaryContext = profile.Substring(profile.LastIndexOf("/") + 1);
+                        fhirTypes.Add(primaryContext);
+                    }
+                }
+            }
+
+            return fhirTypes;
+        }
+
         public byte[] Export(DB.IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<DB.Template> templates, bool includeVocabulary, bool returnJson = true)
         {
             var uri = HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.Url : new Uri(AppSettings.DefaultBaseUrl);

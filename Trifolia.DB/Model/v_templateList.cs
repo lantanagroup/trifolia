@@ -46,31 +46,34 @@ namespace Trifolia.DB
         [Column("implementationGuideId", Order = 7)]
         public int? ImplementationGuideId { get; set; }
 
-        [Column("organization", Order = 8)]
+        [Column("implementationGuideTypeId", Order = 8)]
+        public int? ImplementationGuideTypeId { get; set; }
+
+        [Column("organization", Order = 9)]
         [StringLength(255)]
         public string Organization { get; set; }
 
-        [Column("organizationId", Order = 9)]
+        [Column("organizationId", Order = 10)]
         public int? OrganizationId { get; set; }
 
-        [Column("publishDate", Order = 10)]
+        [Column("publishDate", Order = 11)]
         public DateTime? PublishDate { get; set; }
 
-        [Column("impliedTemplateName", Order = 11)]
+        [Column("impliedTemplateName", Order = 12)]
         [StringLength(255)]
         public string ImpliedTemplateName { get; set; }
 
-        [Column("impliedTemplateOid", Order = 12)]
+        [Column("impliedTemplateOid", Order = 13)]
         [StringLength(255)]
         public string ImpliedTemplateOid { get; set; }
 
-        [Column("impliedTemplateId", Order = 13)]
+        [Column("impliedTemplateId", Order = 14)]
         public int? ImpliedTemplateId { get; set; }
 
-        [Column("description", Order = 14)]
+        [Column("description", Order = 15)]
         public string Description { get; set; }
 
-        [Column("primaryContextType", Order = 15)]
+        [Column("primaryContextType", Order = 16)]
         [StringLength(255)]
         public string PrimaryContextType { get; set; }
     }

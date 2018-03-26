@@ -129,6 +129,10 @@
     <Compile Include="Migrations\201803052328345_vValueSetMemberWhiteSpace.Designer.cs">
       <DependentUpon>201803052328345_vValueSetMemberWhiteSpace.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803231315265_addImplementationGuideIdTov_templateList.cs" />
+    <Compile Include="Migrations\201803231315265_addImplementationGuideIdTov_templateList.Designer.cs">
+      <DependentUpon>201803231315265_addImplementationGuideIdTov_templateList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -236,6 +240,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803052328345_vValueSetMemberWhiteSpace.resx">
       <DependentUpon>201803052328345_vValueSetMemberWhiteSpace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803231315265_addImplementationGuideIdTov_templateList.resx">
+      <DependentUpon>201803231315265_addImplementationGuideIdTov_templateList.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
