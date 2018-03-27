@@ -310,6 +310,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\API\AdminController.cs" />
+    <Compile Include="Controllers\API\FHIR\AllShared.cs" />
     <Compile Include="Controllers\API\FHIR\CurrentBuild\CapabilityStatementController.cs" />
     <Compile Include="Controllers\API\FHIR\CurrentBuild\ImplementationGuideController.cs" />
     <Compile Include="Controllers\API\FHIR\CurrentBuild\Shared.cs" />

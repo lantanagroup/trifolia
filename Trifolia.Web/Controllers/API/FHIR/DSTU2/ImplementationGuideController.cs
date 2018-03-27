@@ -25,7 +25,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
     /// FHIR DSTU2 ImplementationGuide API Controller
     /// </summary>
     [DSTU2Config]
-    [RoutePrefix("api/FHIR2")]
+    [RoutePrefix("api/FHIR2"), FHIRVersion("DSTU2")]
     public class FHIR2ImplementationGuideController : ApiController
     {
         private const string VERSION_NAME = "DSTU2";
