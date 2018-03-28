@@ -8,6 +8,8 @@ namespace Trifolia.Shared.Plugins
 {
     public interface IIGTypePlugin
     {
+        List<String> GetFhirTypes(string elementPath);
+
         IValidator GetValidator(IObjectRepository tdb);
 
         /// <summary>

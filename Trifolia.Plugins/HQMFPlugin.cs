@@ -13,6 +13,10 @@ namespace Trifolia.Plugins
 {
     public class HQMFPlugin : IIGTypePlugin
     {
+        public List<String> GetFhirTypes(string elementPath)
+        {
+            throw new NotSupportedException();
+        }
         public ValueSetIdentifierTypes DefaultIdentifierType
         {
             get { return ValueSetIdentifierTypes.Oid; }

@@ -13,6 +13,10 @@ namespace Trifolia.Plugins
 {
     public class RIMPlugin : IIGTypePlugin
     {
+        public List<String> GetFhirTypes(string elementPath)
+        {
+            throw new NotSupportedException();
+        }
         public string TemplateIdentifierElementName
         {
             get { return "templateId"; }

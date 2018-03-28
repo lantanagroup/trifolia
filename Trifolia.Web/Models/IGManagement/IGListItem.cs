@@ -10,5 +10,7 @@ namespace Trifolia.Web.Models.IGManagement
         public string Namespace { get; set; }
 
         public string Identifier { get; set; }
+
+        public int TypeId { get; set; }
     }
 }
