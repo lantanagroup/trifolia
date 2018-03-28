@@ -15,13 +15,7 @@ test:
     - Trifolia.Test.dll
   categories:
     except:
-    - FHIR_E2E
-deploy:
-- provider: GitHub
-  auth_token:
-    secure: MK5Z1r4wez57Vscsp0szLszUik1PaRLKK2ZkWKxIHPZ5mzHyEOeymNQmxkCdA/j2
-  draft: true
-  force_update: true
+    - FHIR3_E2E
 notifications:
 - provider: Email
   to:
