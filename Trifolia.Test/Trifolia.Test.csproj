@@ -171,7 +171,10 @@
     <Compile Include="Controllers\API\FHIR\STU3\ExportTests.cs" />
     <Compile Include="Controllers\API\TerminologyControllerTest.cs" />
     <Compile Include="DB\TemplateExtensions.cs" />
-    <Compile Include="Export\FHIR\STU3Tests.cs" />
+    <Compile Include="Export\FHIR\CurrentBuild\BuildPackageTests.cs" />
+    <Compile Include="Export\FHIR\DSTU2\BuildPackageTests.cs" />
+    <Compile Include="Export\FHIR\STU3\STU3Tests.cs" />
+    <Compile Include="Export\FHIR\STU3\BuildPackageTests.cs" />
     <Compile Include="Extensions\ImplementationGuideTest.cs" />
     <Compile Include="Extensions\TemplateConstraintTest.cs" />
     <Compile Include="Generation\IG\FormattedConstraintSchemaChoiceTest.cs" />
@@ -1284,6 +1287,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Generation\Schematron\Data\SingleValueWithinBranch.xml" />
     <EmbeddedResource Include="DocSamples\Camara-FHIR-IG.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Export\FHIR\STU3\org.hl7.fhir.igpublisher.jar">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include=".runsettings" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
