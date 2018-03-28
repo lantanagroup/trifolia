@@ -17,7 +17,7 @@ using SummaryType = fhir_stu3.Hl7.Fhir.Rest.SummaryType;
 namespace Trifolia.Web.Controllers.API.FHIR.STU3
 {
     [STU3Config]
-    [RoutePrefix("api/FHIR3"), FHIRVersion("STU3")]
+    [RoutePrefix("api/FHIR3"), FHIRVersion("STU3", "FHIR STU3")]
     public class FHIR3ImplementationGuideController : ApiController
     {
         private IObjectRepository tdb;
