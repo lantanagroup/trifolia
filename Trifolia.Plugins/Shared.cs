@@ -8,11 +8,11 @@ namespace Trifolia.Plugins
 {
     //Needs a version parameter to easily link the plugin to its corresponding IGController
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public sealed class FHIRPlugin : Attribute
+    public sealed class ImplementationGuideTypePlugin : Attribute
     {
         private String igType;
 
-        public FHIRPlugin(String igType)
+        public ImplementationGuideTypePlugin(String igType)
         {
             this.igType = igType;
         }

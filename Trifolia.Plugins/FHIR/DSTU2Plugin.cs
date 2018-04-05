@@ -13,7 +13,7 @@ using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
 namespace Trifolia.Plugins.FHIR
 {
-    [FHIRPlugin("FHIR DSTU2")]
+    [ImplementationGuideTypePlugin("FHIR DSTU2")]
     public class DSTU2Plugin : DefaultPlugin, IIGTypePlugin
     {
 

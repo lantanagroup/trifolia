@@ -14,7 +14,7 @@ using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
 namespace Trifolia.Plugins.FHIR
 {
-    [FHIRPlugin("FHIR STU3")]
+    [ImplementationGuideTypePlugin("FHIR STU3")]
     public class STU3Plugin : DefaultPlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

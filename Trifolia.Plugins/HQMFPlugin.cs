@@ -11,7 +11,7 @@ using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
 namespace Trifolia.Plugins
 {
-    [FHIRPlugin("HQMF R2")]
+    [ImplementationGuideTypePlugin("HQMF R2")]
     public class HQMFPlugin : IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

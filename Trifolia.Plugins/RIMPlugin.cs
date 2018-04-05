@@ -11,8 +11,8 @@ using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
 namespace Trifolia.Plugins
 {
-    [FHIRPlugin("eMeasure")]
-    [FHIRPlugin("CDA")]
+    [ImplementationGuideTypePlugin("eMeasure")]
+    [ImplementationGuideTypePlugin("CDA")]
     public class RIMPlugin : IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)
