@@ -68,7 +68,7 @@
   <ItemGroup>
     <Compile Include="AppConfig.cs" />
     <Compile Include="BaseCommand.cs" />
-    <Compile Include="MigrateMarkdownCommand.cs" />
+    <Compile Include="GetMigrateMarkdownCommand.cs" />
     <Compile Include="SetSplitFHIRProfilesCommand.cs" />
     <Compile Include="SetImportValueSet.cs" />
     <Compile Include="GetRoseTreeValueSet.cs" />
