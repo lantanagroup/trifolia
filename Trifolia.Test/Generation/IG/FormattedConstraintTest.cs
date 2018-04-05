@@ -2,8 +2,8 @@
 using System;
 using System.Linq;
 
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Export.MSWord;
+using Trifolia.Export.MSWord.ConstraintGeneration;
 using Trifolia.Shared;
 using Trifolia.DB;
 

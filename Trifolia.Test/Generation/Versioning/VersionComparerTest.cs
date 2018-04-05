@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Trifolia.Generation.Versioning;
+using Trifolia.Export.Versioning;
 using Trifolia.DB;
 using Trifolia.Shared.Plugins;
 using Trifolia.Shared;

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Trifolia.DB;
-using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Export.MSWord.ConstraintGeneration;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
 

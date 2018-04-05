@@ -2,7 +2,7 @@
 using System.Xml;
 using System;
 
-using Trifolia.Generation.IG;
+using Trifolia.Export.MSWord;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
 using Trifolia.DB;

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Trifolia.Config;
 using Trifolia.DB;
-using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Export.MSWord.ConstraintGeneration;
 using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.FHIR;

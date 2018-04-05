@@ -181,9 +181,9 @@
       <Project>{3e3c8e62-b392-433d-8c18-a4cfc72b36ef}</Project>
       <Name>Trifolia.DB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Generation\Trifolia.Generation.csproj">
-      <Project>{6070b7b7-78be-44f7-9ebb-5ff0b944aaa3}</Project>
-      <Name>Trifolia.Generation</Name>
+    <ProjectReference Include="..\Trifolia.Export\Trifolia.Export.csproj">
+      <Project>{6be1523e-6d37-4bf2-9564-19170a7341e3}</Project>
+      <Name>Trifolia.Export</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
       <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>

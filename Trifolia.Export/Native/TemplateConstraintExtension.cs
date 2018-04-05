@@ -10,7 +10,7 @@ using ExportValueSet = Trifolia.Shared.ImportExport.Model.ConstraintTypeValueSet
 using ExportCodeSystem = Trifolia.Shared.ImportExport.Model.ConstraintTypeCodeSystem;
 using ExportConformanceTypes = Trifolia.Shared.ImportExport.Model.ConstraintTypeConformance;
 using ExportCategory = Trifolia.Shared.ImportExport.Model.ConstraintTypeCategory;
-using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Export.MSWord.ConstraintGeneration;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
 

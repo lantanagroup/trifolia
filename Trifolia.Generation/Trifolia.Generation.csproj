@@ -62,48 +62,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Green\GreenSchemaPackage.cs" />
-    <Compile Include="Green\GreenTransformGenerator.cs" />
-    <Compile Include="Green\SchemaCopier.cs" />
-    <Compile Include="Green\GreenSchemaGenerator.cs" />
-    <Compile Include="Green\SchemaGenerationBase.cs" />
-    <Compile Include="Green\TransformHelper.cs" />
-    <Compile Include="IG\CodeSystemTable.cs" />
-    <Compile Include="IG\CommentManager.cs" />
-    <Compile Include="IG\ConstraintGenerationFactory.cs" />
-    <Compile Include="IG\ConstraintGeneration\ConsolidatedGeneration.cs" />
-    <Compile Include="IG\ConstraintGeneration\ConstraintPart.cs" />
-    <Compile Include="IG\ConstraintGeneration\ContainedTemplate.cs" />
-    <Compile Include="IG\ConstraintGeneration\FormattedConstraint20161128.cs" />
-    <Compile Include="IG\ConstraintGeneration\FormattedConstraint20150421.cs" />
-    <Compile Include="IG\ConstraintGeneration\FormattedConstraint20140415.cs" />
-    <Compile Include="IG\ConstraintGeneration\FormattedConstraintFactory.cs" />
-    <Compile Include="IG\ConstraintGeneration\IFormattedConstraint.cs" />
-    <Compile Include="IG\ConstraintGeneration\LegacyGeneration.cs" />
-    <Compile Include="IG\ConstraintReference.cs" />
-    <Compile Include="IG\ExportSettings.cs" />
-    <Compile Include="IG\FigureCollection.cs" />
-    <Compile Include="IG\Models\HeaderDescriptor.cs" />
-    <Compile Include="IG\TemplateConstraintTable.cs" />
-    <Compile Include="IG\TemplateContextTable.cs" />
-    <Compile Include="IG\DocHelper.cs" />
-    <Compile Include="IG\GenerationConstants.cs" />
-    <Compile Include="IG\IConstraintGenerator.cs" />
-    <Compile Include="IG\IGDifferenceViewModel.cs" />
-    <Compile Include="IG\ImplementationGuideGenerator.cs" />
-    <Compile Include="IG\TableCollection.cs" />
-    <Compile Include="IG\TemplateContainmentGenerator.cs" />
-    <Compile Include="IG\TemplateSchematronGenerator.cs" />
-    <Compile Include="IG\ValueSetsExport.cs" />
-    <Compile Include="IG\WIKIParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <DependentUpon>Settings.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Versioning\ComparisonResult.cs" />
-    <Compile Include="Versioning\VersionComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trifolia.Authorization\Trifolia.Authorization.csproj">
@@ -124,52 +83,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="IG\Styles\comments.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="IG\Styles\endnotes.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="IG\Styles\fontTable.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="IG\Styles\footnotes.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="IG\Styles\header1.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="IG\Styles\numbering.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="IG\Styles\settings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="IG\Styles\styles.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="IG\Styles\stylesWithEffects.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="IG\Styles\theme1.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="IG\Styles\webSettings.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
-    <None Include="IG\ConstraintGeneration\README.md" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IG\Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

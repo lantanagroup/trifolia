@@ -40,6 +40,9 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WikiNetParser.2.5.2.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.1.0\lib\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
@@ -131,6 +134,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WikiNetParser, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -163,11 +167,44 @@
     <Compile Include="HTML\DownloadPackageModel.cs" />
     <Compile Include="HTML\HtmlExporter.cs" />
     <Compile Include="HTML\ViewDataModel.cs" />
+    <Compile Include="MSWord\CodeSystemTable.cs" />
+    <Compile Include="MSWord\CommentManager.cs" />
+    <Compile Include="MSWord\ConstraintGenerationFactory.cs" />
+    <Compile Include="MSWord\ConstraintGeneration\ConsolidatedGeneration.cs" />
+    <Compile Include="MSWord\ConstraintGeneration\ConstraintPart.cs" />
+    <Compile Include="MSWord\ConstraintGeneration\ContainedTemplate.cs" />
+    <Compile Include="MSWord\ConstraintGeneration\FormattedConstraint20140415.cs" />
+    <Compile Include="MSWord\ConstraintGeneration\FormattedConstraint20150421.cs" />
+    <Compile Include="MSWord\ConstraintGeneration\FormattedConstraint20161128.cs" />
+    <Compile Include="MSWord\ConstraintGeneration\FormattedConstraintFactory.cs" />
+    <Compile Include="MSWord\ConstraintGeneration\IFormattedConstraint.cs" />
+    <Compile Include="MSWord\ConstraintGeneration\LegacyGeneration.cs" />
+    <Compile Include="MSWord\ConstraintReference.cs" />
+    <Compile Include="MSWord\DocHelper.cs" />
+    <Compile Include="MSWord\ExportSettings.cs" />
+    <Compile Include="MSWord\FigureCollection.cs" />
+    <Compile Include="MSWord\GenerationConstants.cs" />
+    <Compile Include="MSWord\IConstraintGenerator.cs" />
+    <Compile Include="MSWord\IGDifferenceViewModel.cs" />
+    <Compile Include="MSWord\ImplementationGuideGenerator.cs" />
+    <Compile Include="MSWord\Models\HeaderDescriptor.cs" />
+    <Compile Include="MSWord\TableCollection.cs" />
+    <Compile Include="MSWord\TemplateConstraintTable.cs" />
+    <Compile Include="MSWord\TemplateContainmentGenerator.cs" />
+    <Compile Include="MSWord\TemplateContextTable.cs" />
+    <Compile Include="MSWord\TemplateSchematronGenerator.cs" />
+    <Compile Include="MSWord\ValueSetsExport.cs" />
+    <Compile Include="MSWord\WIKIParser.cs" />
     <Compile Include="Native\ImplementationGuideExtension.cs" />
     <Compile Include="Native\TemplateConstraintExtension.cs" />
     <Compile Include="Native\TemplateExporter.cs" />
     <Compile Include="Native\TemplateExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
     <Compile Include="Schematron\AssertionLineBuilder.cs" />
     <Compile Include="Schematron\ConstraintParser.cs" />
     <Compile Include="Schematron\ConstraintToDocumentElementMap\BranchHelper.cs" />
@@ -196,6 +233,8 @@
     <Compile Include="Terminology\voc.cs">
       <DependentUpon>voc.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Versioning\ComparisonResult.cs" />
+    <Compile Include="Versioning\VersionComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -207,7 +246,12 @@
     </None>
     <EmbeddedResource Include="FHIR\STU3\package.zip" />
     <EmbeddedResource Include="FHIR\Latest\package.zip" />
+    <None Include="MSWord\ConstraintGeneration\README.md" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="specification.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -234,10 +278,6 @@
       <Project>{3e3c8e62-b392-433d-8c18-a4cfc72b36ef}</Project>
       <Name>Trifolia.DB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Generation\Trifolia.Generation.csproj">
-      <Project>{6070b7b7-78be-44f7-9ebb-5ff0b944aaa3}</Project>
-      <Name>Trifolia.Generation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
       <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>
       <Name>Trifolia.Logging</Name>
@@ -250,7 +290,42 @@
   <ItemGroup>
     <EmbeddedResource Include="Terminology\Svs2FhirValueSet.xslt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="MSWord\Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSWord\Styles\comments.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSWord\Styles\endnotes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSWord\Styles\fontTable.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSWord\Styles\footnotes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSWord\Styles\header1.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSWord\Styles\numbering.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSWord\Styles\settings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSWord\Styles\styles.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSWord\Styles\stylesWithEffects.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSWord\Styles\theme1.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSWord\Styles\webSettings.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

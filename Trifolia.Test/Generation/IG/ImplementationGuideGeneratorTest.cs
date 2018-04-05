@@ -8,8 +8,8 @@ using System.Xml;
 using Ionic.Zip;
 
 using Trifolia.Shared;
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Export.MSWord;
+using Trifolia.Export.MSWord.ConstraintGeneration;
 using Trifolia.DB;
 using Trifolia.Shared.Plugins;
 

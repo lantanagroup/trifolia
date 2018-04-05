@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Export.MSWord;
+using Trifolia.Export.MSWord.ConstraintGeneration;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
 

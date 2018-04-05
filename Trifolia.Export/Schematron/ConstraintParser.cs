@@ -8,7 +8,7 @@ using Trifolia.Shared.Plugins;
 using Trifolia.Export.Schematron.Model;
 using Trifolia.Export.Schematron.ConstraintToDocumentElementMap;
 using Trifolia.DB;
-using Trifolia.Generation.IG;
+using Trifolia.Export.MSWord;
 
 namespace Trifolia.Export.Schematron
 {

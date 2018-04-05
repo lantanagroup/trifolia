@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Trifolia.DB;
-using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Export.MSWord.ConstraintGeneration;
 using Trifolia.Export.Schematron.Model;
 using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.Plugins;
 using System.Data.Entity;
-using Trifolia.Generation.IG;
+using Trifolia.Export.MSWord;
 
 namespace Trifolia.Export.Schematron
 {

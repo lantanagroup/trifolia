@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
 using System.Web;
-
-using Trifolia.Web.Models.TemplateEditing;
-using Trifolia.DB;
+using System.Web.Http;
 using Trifolia.Authorization;
-using Trifolia.Shared;
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Web.Extensions;
-using Trifolia.Shared.Plugins;
-using Trifolia.Shared.Validation;
+using Trifolia.DB;
+using Trifolia.Export.MSWord.ConstraintGeneration;
 using Trifolia.Plugins.Validation;
+using Trifolia.Shared;
+using Trifolia.Shared.Plugins;
+using Trifolia.Web.Extensions;
+using Trifolia.Web.Models.TemplateEditing;
 
 namespace Trifolia.Web.Controllers.API
 {

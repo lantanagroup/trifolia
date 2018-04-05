@@ -234,10 +234,6 @@
       <Project>{6be1523e-6d37-4bf2-9564-19170a7341e3}</Project>
       <Name>Trifolia.Export</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Generation\Trifolia.Generation.csproj">
-      <Project>{6070b7b7-78be-44f7-9ebb-5ff0b944aaa3}</Project>
-      <Name>Trifolia.Generation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Trifolia.Import\Trifolia.Import.csproj">
       <Project>{71345c54-70ca-43c9-92ad-afc064521e43}</Project>
       <Name>Trifolia.Import</Name>

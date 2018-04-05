@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using Trifolia.Generation.Versioning;
+using Trifolia.Export.Versioning;
 
 namespace Trifolia.Export.HTML
 {
