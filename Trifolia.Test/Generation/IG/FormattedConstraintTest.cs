@@ -11,6 +11,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
 using Trifolia.Shared.Plugins;
+using System.IO;
 
 namespace Trifolia.Test.Generation.IG
 {
@@ -318,10 +319,14 @@ namespace Trifolia.Test.Generation.IG
             IGSettingsManager igSettings = new IGSettingsManager(repo);
             var formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(repo, igSettings, null, newConstraint);
 
-            WIKIParser wikiParser = new WIKIParser(repo);
-            Document newDoc = new Document();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                var doc = WordprocessingDocument.Create(ms, WordprocessingDocumentType.Document);
+                var mainPart = doc.AddMainDocumentPart();
+                mainPart.Document = new Document();
 
-            formattedConstraint.AddToDocParagraph(wikiParser, newDoc, 1, 1, "");
+                formattedConstraint.AddToDocParagraph(mainPart, mainPart.Document, 1, 1, "");
+            }
         }
     }
 }

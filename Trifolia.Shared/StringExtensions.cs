@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +15,23 @@ namespace Trifolia.Shared
     public static class StringExtensions
     {
         private static Regex invalidUtf8Characters = new Regex("[^\x00-\x7F]+");
+
+        public static string MarkdownToHtml(this string theString)
+        {
+            return CommonMark.CommonMarkConverter.Convert(theString);
+        }
+
+        public static OpenXmlElement MarkdownToOpenXml(this string theString, MainDocumentPart mainPart)
+        {
+            string html = MarkdownToHtml(theString);
+            return html.HtmlToOpenXml(mainPart);
+        }
+
+        public static OpenXmlElement HtmlToOpenXml(this string html, MainDocumentPart mainPart)
+        {
+            HtmlToOpenXmlConverter converter = new HtmlToOpenXmlConverter(mainPart);
+            return converter.Convert(html);
+        }
 
         public static string XmlEncode(this string theString)
         {

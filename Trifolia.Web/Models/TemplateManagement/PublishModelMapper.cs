@@ -85,7 +85,6 @@ namespace Trifolia.Web.Models.TemplateManagement
             int? aParentConstraintId = null)
         {
             IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(tdb, igSettings, igTypePlugin, dbConstraint);
-            WIKIParser wikiParser = new WIKIParser(tdb);
 
             PublishConstraint newConstraint = new PublishConstraint(dbConstraint, fc);
 

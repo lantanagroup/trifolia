@@ -59,9 +59,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WikiNetParser">
-      <HintPath>..\packages\WikiNetParser.2.5.2.1\lib\WikiNetParser.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -98,7 +95,6 @@
     <Compile Include="IG\TemplateContainmentGenerator.cs" />
     <Compile Include="IG\TemplateSchematronGenerator.cs" />
     <Compile Include="IG\ValueSetsExport.cs" />
-    <Compile Include="IG\WIKIParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <DependentUpon>Settings.settings</DependentUpon>

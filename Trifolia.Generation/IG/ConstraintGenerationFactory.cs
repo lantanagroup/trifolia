@@ -20,7 +20,6 @@ namespace Trifolia.Generation.IG
             Body documentBody, 
             CommentManager cmtMgr,
             FigureCollection figures,
-            WIKIParser wikiParser,
             bool includeSamples,
             IObjectRepository dataSource, 
             List<TemplateConstraint> rootConstraints, 
@@ -40,7 +39,6 @@ namespace Trifolia.Generation.IG
             constraintGenerator.IGSettings = igSettings;
             constraintGenerator.DocumentBody = documentBody;
             constraintGenerator.Figures = figures;
-            constraintGenerator.WikiParser = wikiParser;
             constraintGenerator.IncludeSamples = includeSamples;
             constraintGenerator.DataSource = dataSource;
             constraintGenerator.RootConstraints = rootConstraints;

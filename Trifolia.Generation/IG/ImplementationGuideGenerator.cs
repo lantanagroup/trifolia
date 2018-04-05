@@ -34,7 +34,6 @@ namespace Trifolia.Generation.IG
         private ValueSetsExport valueSetsExport = null;
         private TableCollection tables = null;
         private FigureCollection figures = null;
-        private WIKIParser wikiParser = null;
         private CodeSystemTable codeSystemTable = null;
         private TemplateConstraintTable constraintTableGenerator;
         private PublishStatus retiredStatus = null;
@@ -113,7 +112,6 @@ namespace Trifolia.Generation.IG
                     exportSettings.GenerateValueSetAppendix, 
                     exportSettings.DefaultValueSetMaxMembers,
                     exportSettings.ValueSetMaxMembers);
-            this.wikiParser = new WIKIParser(this._tdb, this.document.MainDocumentPart);
             this.codeSystemTable = new CodeSystemTable(this._tdb, this.document.MainDocumentPart.Document.Body, this.templates, this.tables);
 
             this.AddTitlePage();
@@ -495,7 +493,10 @@ namespace Trifolia.Generation.IG
                 this.document.MainDocumentPart.Document.Body.AppendChild(entryLevelHeading);
 
                 if (!string.IsNullOrEmpty(detailsText))
-                    this.wikiParser.ParseAndAppend(detailsText, this.document.MainDocumentPart.Document.Body);
+                {
+                    OpenXmlElement element = detailsText.MarkdownToOpenXml(this.document.MainDocumentPart);
+                    OpenXmlHelper.Append(element, this.document.MainDocumentPart.Document.Body);
+                }
 
                 foreach (Template cTemplate in notRetiredTemplates)
                 {
@@ -636,7 +637,10 @@ namespace Trifolia.Generation.IG
 
             // Output the template's descriptionz
             if (!string.IsNullOrEmpty(template.Description))
-                this.wikiParser.ParseAndAppend(template.Description, this.document.MainDocumentPart.Document.Body);
+            {
+                OpenXmlElement element = template.Description.MarkdownToOpenXml(this.document.MainDocumentPart);
+                OpenXmlHelper.Append(element, this.document.MainDocumentPart.Document.Body);
+            }
 
             // If we were told to generate tables for the template...
             if (exportSettings.GenerateTemplateConstraintTable)
@@ -678,7 +682,6 @@ namespace Trifolia.Generation.IG
                 this.document.MainDocumentPart.Document.Body,
                 this.commentManager,
                 this.figures,
-                this.wikiParser,
                 exportSettings.IncludeXmlSamples,
                 _tdb,
                 rootConstraints,

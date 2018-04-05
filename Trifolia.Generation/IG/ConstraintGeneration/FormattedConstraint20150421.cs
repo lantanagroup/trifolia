@@ -424,7 +424,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             }
         }
 
-        public Paragraph AddToDocParagraph(WIKIParser wikiParser, OpenXmlElement parent, int level, int id, string headingStyle)
+        public Paragraph AddToDocParagraph(MainDocumentPart mainPart, OpenXmlElement parent, int level, int id, string headingStyle)
         {
             // Add the heading
             if (this.IsHeading && !string.IsNullOrEmpty(this.Context))
@@ -445,7 +445,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
                 if (!string.IsNullOrEmpty(this.HeadingDescription))
                 {
-                    OpenXmlElement parsedHeadingDescription = wikiParser.ParseAsOpenXML(this.HeadingDescription);
+                    OpenXmlElement parsedHeadingDescription = this.HeadingDescription.MarkdownToOpenXml(mainPart);
 
                     if (parsedHeadingDescription != null)
                     {
@@ -462,7 +462,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             // Add the description above the constraint definition
             if (!string.IsNullOrEmpty(this.Description))
             {
-                OpenXmlElement parsedDescription = wikiParser.ParseAsOpenXML(this.Description);
+                OpenXmlElement parsedDescription = this.Description.MarkdownToOpenXml(mainPart);
 
                 if (parsedDescription != null)
                 {
@@ -511,7 +511,8 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                             DocHelper.CreateRun(cPart.Text, (cPart.IsAnchor ? "C_" + this.Number : string.Empty)));
                         break;
                     case ConstraintPart.PartTypes.PrimitiveText:
-                        wikiParser.ParseAndAppend(cPart.Text, para, true);
+                        var element = cPart.Text.MarkdownToOpenXml(mainPart);
+                        OpenXmlHelper.Append(element, para);
                         break;
                     default:
                         para.Append(
@@ -566,7 +567,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             return sb.ToString();
         }
 
-        public string GetHtml(WIKIParser parser, string linkBase, int constraintCount, bool includeLabel)
+        public string GetHtml(string linkBase, int constraintCount, bool includeLabel)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -585,7 +586,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                         sb.Append(string.Format("<a href=\"{0}{1}\">{2}</a>", linkBase, cPart.LinkDestination, cPart.Text));
                         break;
                     case ConstraintPart.PartTypes.PrimitiveText:
-                        sb.Append(parser.ParseAsHtml(cPart.Text));
+                        sb.Append(cPart.Text.MarkdownToHtml());
                         break;
                     default:
                         sb.Append(cPart.Text);
@@ -600,11 +601,6 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             }
 
             return sb.ToString();
-        }
-
-        internal static string HtmlFormatDescriptiveText(WIKIParser parser, string text)
-        {
-            return parser.ParseAsHtml(text);
         }
 
         public class ConstraintPart
