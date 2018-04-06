@@ -187,12 +187,12 @@
 
                                 <div class="input-group description-field">
                                     <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorMetaDataDescriptionField"></div>
-                                    <textarea class="form-control" style="height: 100px;" data-bind="value: Description, disable: DisableEngineerFields"></textarea>
+                                    <textarea class="form-control" style="height: 100px;" data-bind="markdown: Description, disable: DisableEngineerFields"></textarea>
                                 </div>
 
                                 <div class="input-group notes-field">
                                     <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorNotesTooltip }, html: Trifolia.Web.TemplateEditorMetaDataNotesField"></div>
-                                    <textarea class="form-control" style="height: 100px;" data-bind="value: Notes, disable: DisableEngineerFields"></textarea>
+                                    <textarea class="form-control" style="height: 100px;" data-bind="markdown: Notes, disable: DisableEngineerFields"></textarea>
                                 </div>
 
                                 <!-- ko if: $parent.IsFhir() -->
@@ -873,7 +873,7 @@ disable: $parents[1].Template().Locked">
         <!-- Analyst: Primitive Constraint -->
         <div data-bind="if: IsAnalystPrimitive()" class="constraintEditorSet">
             <div style="min-width: 400px">
-                <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: PrimitiveText, disable: $parents[1].Template().Locked" placeholder="Constraint Prose"></textarea>
+                <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: PrimitiveText, limitedToolbar: true, disable: $parents[1].Template().Locked" placeholder="Constraint Prose"></textarea>
                 <div class="input-group input-group-sm">
                     <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorConformance"></div>
                     <select class="form-control input-sm" data-bind="value: Conformance, disable: $parents[1].Template().Locked">
@@ -909,7 +909,7 @@ disable: $parents[1].Template().Locked">
                             
         <!-- Tech Editor: Primitive -->
         <div style="width: 100%;" data-bind="if: IsTechEditorPrimitive()" class="constraintEditorSet">
-            <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: PrimitiveText, disable: $parents[1].Template().Locked" placeholder="Constraint Prose"></textarea>
+            <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: PrimitiveText, limitedToolbar: true, disable: $parents[1].Template().Locked" placeholder="Constraint Prose"></textarea>
 
             <div class="input-group input-group-sm">
                 <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintEditorDescriptionTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorDescription"></div>
