@@ -668,8 +668,8 @@ var ConstraintModel = function (data, parent, viewModel) {
         //Get path of the element being examined (something like "Account.subject")
         while (current) {
             if (fhirPath) { fhirPath = fhirPath + '.'; }
-            fhirPath = fhirPath + self.Context().replace(/@/g, '');
-            current = self.Parent();
+            fhirPath = fhirPath + current.Context().replace(/@/g, '');
+            current = current.Parent();
         }
 
         // Open pop-up
