@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.IO;
 using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 using Trifolia.DB;
-using Trifolia.Shared.Plugins;
+using Trifolia.Plugins;
 using Trifolia.Shared;
 
 namespace Trifolia.Powershell
@@ -51,7 +46,9 @@ namespace Trifolia.Powershell
             SimpleSchema schema = ig.ImplementationGuideType.GetSimpleSchema();
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, ig.Id);
             var templates = ig.GetRecursiveTemplates(this.tdb);
-            byte[] export = ig.ImplementationGuideType.GetPlugin().Export(this.tdb, schema, this.Format, igSettings, null, templates, this.IncludeVocab, this.ReturnJson);
+            var plugin = ig.ImplementationGuideType.GetPlugin();
+            var exporter = plugin.GetExporter();
+            byte[] export = exporter.Export(this.tdb, schema, this.Format, igSettings, null, templates, this.IncludeVocab, this.ReturnJson);
 
             if (!string.IsNullOrEmpty(this.OutputFileName))
             {

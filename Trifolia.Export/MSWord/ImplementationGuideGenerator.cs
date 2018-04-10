@@ -1,18 +1,16 @@
-﻿using System.IO;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System;
-
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml;
-
-using Trifolia.Shared;
-using Trifolia.Logging;
 using Trifolia.DB;
 using Trifolia.Export.Versioning;
-using Trifolia.Shared.Plugins;
+using Trifolia.Logging;
+using Trifolia.Plugins;
+using Trifolia.Shared;
 
 namespace Trifolia.Export.MSWord
 {

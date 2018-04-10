@@ -19,8 +19,8 @@ using Trifolia.Export.HTML;
 using Trifolia.Export.MSWord;
 using Trifolia.Export.Schematron;
 using Trifolia.Export.Terminology;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 using Trifolia.Web.Models.Export;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 
@@ -177,7 +177,8 @@ namespace Trifolia.Web.Controllers.API
                     }
 
                     fileName = string.Format("{0}.{1}", ig.GetDisplayName(true), fileExtension);
-                    export = igTypePlugin.Export(this.tdb, schema, model.ExportFormat, igSettings, model.SelectedCategories, templates, model.IncludeVocabulary, model.ReturnJson);
+                    var pluginExporter = igTypePlugin.GetExporter();
+                    export = pluginExporter.Export(this.tdb, schema, model.ExportFormat, igSettings, model.SelectedCategories, templates, model.IncludeVocabulary, model.ReturnJson);
                     break;
 
                 case ExportFormats.Snapshot_JSON:

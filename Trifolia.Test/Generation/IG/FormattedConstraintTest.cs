@@ -1,21 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-
+using Trifolia.DB;
 using Trifolia.Export.MSWord;
 using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.DB;
-
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Test.Generation.IG
 {
-    
-    
     /// <summary>
     ///This is a test class for FormattedConstraintTest and is intended
     ///to contain all FormattedConstraintTest Unit Tests

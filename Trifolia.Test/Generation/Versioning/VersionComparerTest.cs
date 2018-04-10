@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Trifolia.Export.Versioning;
 using Trifolia.DB;
-using Trifolia.Shared.Plugins;
+using Trifolia.Export.Versioning;
+using Trifolia.Plugins;
 using Trifolia.Shared;
 
 namespace Trifolia.Test.Generation.Versioning

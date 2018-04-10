@@ -1,16 +1,12 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml;
-
-using Trifolia.Shared;
 using Trifolia.DB;
-using Trifolia.Shared.Plugins;
+using Trifolia.Plugins;
+using Trifolia.Shared;
 
 namespace Trifolia.Export.MSWord.ConstraintGeneration
 {

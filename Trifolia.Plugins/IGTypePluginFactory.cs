@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 using Trifolia.DB;
 using Trifolia.Config;
 
-namespace Trifolia.Shared.Plugins
+namespace Trifolia.Plugins
 {
     public class IGTypePluginFactory
     {
         public static IIGTypePlugin GetPlugin(ImplementationGuideType igType)
         {
+            /*
             IGTypeSection config = IGTypeSection.GetSection();
             IGTypePluginElement configElement = config.Plugins[igType.Name];
 
@@ -27,6 +28,10 @@ namespace Trifolia.Shared.Plugins
 
             var pluginInterface = (IIGTypePlugin)Activator.CreateInstance(type);
             return pluginInterface;
+            */
+
+            // TODO: Fill in logic to find an IIGTypePlugin that matches the igType.Name based on ImplementationGuideTypeAttribute.IGType
+            return null;
         }
     }
 

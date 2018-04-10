@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml;
-
+using System.Collections.Generic;
+using System.Linq;
 using Trifolia.DB;
 using Trifolia.Export.MSWord.Models;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.MSWord
 {

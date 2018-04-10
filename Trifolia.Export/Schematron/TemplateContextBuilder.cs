@@ -5,8 +5,8 @@ using System.Text;
 using Trifolia.DB;
 using Trifolia.Export.Schematron.ConstraintToDocumentElementMap;
 using Trifolia.Export.Schematron.Model;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.Schematron
 {

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Trifolia.Plugins
 {
-    //Needs a version parameter to easily link the plugin to its corresponding IGController
+    // TODO: Needs a version parameter to easily link the plugin to its corresponding IGController
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public sealed class ImplementationGuideTypePlugin : Attribute
+    public sealed class ImplementationGuideTypePluginAttribute : Attribute
     {
         private String igType;
 
-        public ImplementationGuideTypePlugin(String igType)
+        public ImplementationGuideTypePluginAttribute(String igType)
         {
             this.igType = igType;
         }

@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trifolia.DB;
-using Trifolia.Shared.Plugins;
 
-namespace Trifolia.Shared
+namespace Trifolia.Plugins
 {
     public static class ValueSetExtensions
     {

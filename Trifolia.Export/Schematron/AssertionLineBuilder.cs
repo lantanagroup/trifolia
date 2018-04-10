@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-
+using Trifolia.DB;
 using Trifolia.Export.Schematron.Model;
 using Trifolia.Shared;
-using Trifolia.DB;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.Schematron
 {

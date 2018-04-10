@@ -134,7 +134,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WikiNetParser, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="WikiNetParser">
+      <HintPath>..\packages\WikiNetParser.2.5.2.1\lib\WikiNetParser.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +235,13 @@
     <Compile Include="Terminology\voc.cs">
       <DependentUpon>voc.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Types\BaseTypeExporter.cs" />
+    <Compile Include="Types\FHIR\STU3Exporter.cs" />
+    <Compile Include="Types\FHIR\DSTU2Exporter.cs" />
+    <Compile Include="Types\FHIR\CurrentBuildExporter.cs" />
+    <Compile Include="Types\HQMFExporter.cs" />
+    <Compile Include="Types\ITypeExporter.cs" />
+    <Compile Include="Types\RIMExporter.cs" />
     <Compile Include="Versioning\ComparisonResult.cs" />
     <Compile Include="Versioning\VersionComparer.cs" />
   </ItemGroup>
@@ -281,6 +290,10 @@
     <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
       <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>
       <Name>Trifolia.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Plugins\Trifolia.Plugins.csproj">
+      <Project>{d723dc35-997a-4bf3-bc7c-a22cb63c3892}</Project>
+      <Name>Trifolia.Plugins</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trifolia.Shared\Trifolia.Shared.csproj">
       <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using Trifolia.DB;
+using Trifolia.Export.MSWord;
 using Trifolia.Export.MSWord.ConstraintGeneration;
 using Trifolia.Export.Schematron.Model;
 using Trifolia.Logging;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
-using System.Data.Entity;
-using Trifolia.Export.MSWord;
 
 namespace Trifolia.Export.Schematron
 {

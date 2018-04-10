@@ -4,7 +4,7 @@ using Trifolia.DB;
 using Trifolia.Shared;
 using Trifolia.Shared.Validation;
 
-namespace Trifolia.Shared.Plugins
+namespace Trifolia.Plugins
 {
     public interface IIGTypePlugin
     {
@@ -84,7 +84,7 @@ namespace Trifolia.Shared.Plugins
 
         string ParseIdentifier(string identifier);
 
-        byte[] Export(IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<Template> templates, bool includeVocabulary, bool returnJson = true);
+        ITypeExporter GetExporter();
 
         string GenerateSample(IObjectRepository tdb, Template template);
 
@@ -93,22 +93,5 @@ namespace Trifolia.Shared.Plugins
         string GetFHIRResourceInstanceJson(string content);
 
         ValueSetIdentifierTypes DefaultIdentifierType { get; }
-    }
-
-    public enum ExportFormats
-    {
-        Microsoft_Word_DOCX = 0,
-        Web_HTML = 1,
-        Snapshot_JSON = 2,
-        Native_XML = 3,
-        FHIR_Bundle = 4,
-        FHIR_Build_Package = 5,
-        Templates_DSTU_XML = 6,
-        Schematron_SCH = 7,
-        Vocabulary_XLSX = 8,
-        Vocabulary_Native_XML = 9,
-        Vocbulary_Single_SVS_XML = 10,
-        Vocabulary_Multiple_SVS_XML = 11,
-        Vocbulary_Bundle_FHIR_XML = 12
     }
 }

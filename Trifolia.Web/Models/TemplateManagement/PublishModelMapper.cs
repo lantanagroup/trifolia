@@ -5,8 +5,8 @@ using System.Web;
 
 using Trifolia.Export.MSWord;
 using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Web.Models.TemplateManagement
 {

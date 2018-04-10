@@ -5,8 +5,8 @@ using System.Web.Mvc;
 using Trifolia.Authorization;
 using Trifolia.DB;
 using Trifolia.Export.Versioning;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 using Trifolia.Web.Models.IGManagement;
 using Trifolia.Web.Models.TemplateManagement;
 

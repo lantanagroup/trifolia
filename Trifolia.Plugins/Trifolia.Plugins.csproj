@@ -125,7 +125,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Shared.cs" />
+    <Compile Include="BasePlugin.cs" />
+    <Compile Include="ExportFormats.cs" />
+    <Compile Include="IGTypePluginFactory.cs" />
+    <Compile Include="IIGTypePlugin.cs" />
+    <Compile Include="ITypeExporter.cs" />
+    <Compile Include="ImplementationGuideTypePluginAttribute.cs" />
     <Compile Include="FHIR\CurrentBuildPlugin.cs" />
     <Compile Include="FHIR\STU3Plugin.cs" />
     <Compile Include="FHIR\DSTU2Plugin.cs" />
@@ -139,6 +144,7 @@
     <Compile Include="Validation\FHIR\LatestValidator.cs" />
     <Compile Include="Validation\FHIR\STU3Validator.cs" />
     <Compile Include="Validation\RIMValidator.cs" />
+    <Compile Include="ValueSetExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trifolia.Authorization\Trifolia.Authorization.csproj">
@@ -152,14 +158,6 @@
     <ProjectReference Include="..\Trifolia.DB\Trifolia.DB.csproj">
       <Project>{3e3c8e62-b392-433d-8c18-a4cfc72b36ef}</Project>
       <Name>Trifolia.DB</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Export\Trifolia.Export.csproj">
-      <Project>{6be1523e-6d37-4bf2-9564-19170a7341e3}</Project>
-      <Name>Trifolia.Export</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Import\Trifolia.Import.csproj">
-      <Project>{71345c54-70ca-43c9-92ad-afc064521e43}</Project>
-      <Name>Trifolia.Import</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
       <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>

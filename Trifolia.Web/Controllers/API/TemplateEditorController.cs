@@ -6,9 +6,9 @@ using System.Web.Http;
 using Trifolia.Authorization;
 using Trifolia.DB;
 using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Plugins;
 using Trifolia.Plugins.Validation;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 using Trifolia.Web.Extensions;
 using Trifolia.Web.Models.TemplateEditing;
 

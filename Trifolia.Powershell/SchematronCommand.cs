@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.IO;
 using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 using Trifolia.DB;
-using Trifolia.Shared.Plugins;
-using Trifolia.Shared;
 using Trifolia.Export.Schematron;
+using Trifolia.Shared;
 
 namespace Trifolia.Powershell
 {
