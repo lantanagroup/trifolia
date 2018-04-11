@@ -6,7 +6,7 @@ using Trifolia.Shared.Validation;
 
 namespace Trifolia.Plugins
 {
-    [ImplementationGuideTypePluginAttribute("HQMF R2")]
+    [ImplementationGuideTypePlugin("HQMF R2")]
     public class HQMFPlugin : BasePlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

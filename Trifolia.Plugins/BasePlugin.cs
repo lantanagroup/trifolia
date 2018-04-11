@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,23 +23,35 @@ namespace Trifolia.Plugins
                 throw new Exception("A single ImplementationGuideTypePlugin attribute is required for the plugin " + this.GetType().Name);
 
             var thisIgTypePluginAttribute = thisIgTypePluginAttributes.Cast<ImplementationGuideTypePluginAttribute>().First();
-            var igTypeExporterTypes =
-                from a in AppDomain.CurrentDomain.GetAssemblies()
-                from t in a.GetTypes()
-                let attributes = t.GetCustomAttributes(typeof(ImplementationGuideTypePluginAttribute), true)
-                let attribute = attributes != null && attributes.Length == 1 ? attributes.Cast<ImplementationGuideTypePluginAttribute>().First() : null
-                where
-                  t.IsAssignableFrom(typeof(ITypeExporter)) &&              // Type must implement ITypeExporter
-                  attribute != null &&                                      // Must have ImplementationGuideType attribute
-                  attribute.IGType == thisIgTypePluginAttribute.IGType      // IGType on attribute must match this class/type's IGType
-                select t;
 
-            if (igTypeExporterTypes.Count() != 1)
-                throw new Exception("Did not find a single ITypeExporter with an ImplementationGuideType of " + thisIgTypePluginAttribute.IGType);
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var exports = assemblies.SingleOrDefault(e => e.FullName.Contains("Trifolia.Export"));
+            if(exports != null)
+            {
+                //Find all IG Exporters
+                var IGExports = exports.GetTypes()
+                .Where(t => t.IsClass && t.GetCustomAttributes(typeof(ImplementationGuideTypePluginAttribute)).Any())
+                .ToArray();
 
-            var igTypeExporterType = igTypeExporterTypes.First();
-            var igTypeExporter = Activator.CreateInstance(igTypeExporterType) as ITypeExporter;
-            return igTypeExporter;
+                foreach(var IGExport in IGExports)
+                {
+                    var attributes = IGExport.GetCustomAttributes();
+
+                    //Check to see if the plugin is of the correct type by examining its attributes
+                    var exportAtt = attributes.SingleOrDefault(a => a.GetType() == typeof(ImplementationGuideTypePluginAttribute) && ((ImplementationGuideTypePluginAttribute)a).IGType == thisIgTypePluginAttribute.IGType);
+
+                    if (exportAtt != null)
+                    {
+                        //Create an instance of the plugin and return it
+                        var igTypeExporter = (ITypeExporter)Activator.CreateInstance(IGExport);
+                        return igTypeExporter;
+                    }
+                }
+
+            }
+
+            throw new Exception("Did not find a single ITypeExporter with an ImplementationGuideType of " + thisIgTypePluginAttribute.IGType);
+
         }
     }
 }

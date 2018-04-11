@@ -6,7 +6,7 @@ using Trifolia.Shared.Validation;
 
 namespace Trifolia.Plugins.FHIR
 {
-    [ImplementationGuideTypePluginAttribute("FHIR DSTU2")]
+    [ImplementationGuideTypePlugin("FHIR DSTU2")]
     public class DSTU2Plugin : DefaultPlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

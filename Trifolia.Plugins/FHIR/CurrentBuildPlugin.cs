@@ -7,7 +7,7 @@ using Trifolia.Shared.Validation;
 
 namespace Trifolia.Plugins.FHIR
 {
-    [ImplementationGuideTypePluginAttribute("FHIR Current Build")]
+    [ImplementationGuideTypePlugin("FHIR Current Build")]
     public class CurrentBuildPlugin : DefaultPlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

@@ -6,8 +6,8 @@ using Trifolia.Shared.Validation;
 
 namespace Trifolia.Plugins
 {
-    [ImplementationGuideTypePluginAttribute("eMeasure")]
-    [ImplementationGuideTypePluginAttribute("CDA")]
+    [ImplementationGuideTypePlugin("eMeasure")]
+    [ImplementationGuideTypePlugin("CDA")]
     public class RIMPlugin : BasePlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

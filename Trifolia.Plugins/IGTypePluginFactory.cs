@@ -41,7 +41,7 @@ namespace Trifolia.Plugins
             }
 
             //IG type plugin we're searching for doesn't exist (should never be the case but seems like a reasonable thing to have a check for)
-            throw new NotSupportedException();
+            throw new Exception("Did not find a single IIGTypePlugin with an ImplementationGuideType of " + igType.Name);
         }
     }
 
