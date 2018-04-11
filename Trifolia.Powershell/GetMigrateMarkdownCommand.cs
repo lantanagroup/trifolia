@@ -36,7 +36,7 @@ namespace Trifolia.Powershell
     public class GetMigrateMarkdownCommand : BaseCommand
     {
         private List<MigrateMarkdownLog> logs;
-        private const string CleanHtmlFormat = "<root xmlns:o=\"urn:msxml\" xmlns:v=\"urn:msxml\" xmlns:w=\"urn:msxml\">{0}</root>";
+        private const string CleanHtmlFormat = "<root xmlns:o=\"urn:msxml\" xmlns:v=\"urn:msxml\" xmlns:w=\"urn:msxml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">{0}</root>";
 
         /*
         [Parameter(
@@ -50,31 +50,49 @@ namespace Trifolia.Powershell
         {
             XDocument doc = null;
 
+            var fixedHtml = html
+                .Replace("style=\"font-family: &quot;Courier New&quot;;\"", "style=\"font-family: 'Courier New';\"")
+                .Replace("&quot;Bookman Old Style&quot;", "'Bookman Old Style'")
+                .Replace(",serif;mso-fareast-font-family:SimSun;\r\n  mso-bidi-font-family:&quot;Times New Roman&quot;;mso-ansi-language:EN-US;mso-fareast-language:\r\n  EN-US;mso-bidi-language:AR-SA;mso-no-proof:yes", "")
+                .Replace("”true”", "\"true\"")
+                .Replace("”LOINC”", "\"LOINC\"")
+                .Replace(",serif;mso-fareast-font-family:SimSun;\nmso-bidi-font-family:&quot;Times New Roman&quot;;mso-ansi-language:EN-US;mso-fareast-language:\nEN-US;mso-bidi-language:AR-SA;mso-no-proof:yes", "")
+                .Replace("&quot;Helvetica Neue&quot;", "'Helvetica Neue'")
+                .Replace("&quot;Times New Roman&quot;", "'Times New Roman'")
+                .Replace("&quot;Arial&quot;", "'Arial'")
+                .Replace("H&amp;P", "H&amp;amp;P")
+                .Replace("&lt;", "&amp;lt;")
+                .Replace("&gt;", "&amp;gt;")
+                .Replace("&quot;", "&amp;quot;");
+
+            Regex msoRegex = new Regex(@"\<\!\-\- \[if gte mso 9\].*\!\[endif\] -->", RegexOptions.Singleline);
+            fixedHtml = msoRegex.Replace(fixedHtml, "");
+
             try
             {
-                doc = XDocument.Parse(string.Format(CleanHtmlFormat, html));
+                doc = XDocument.Parse(string.Format(CleanHtmlFormat, fixedHtml));
             }
             catch (XmlException xex)
             {
                 try
                 {
-                    doc = XDocument.Parse(string.Format(CleanHtmlFormat, html + "</div>"));
+                    doc = XDocument.Parse(string.Format(CleanHtmlFormat, fixedHtml + "</div>"));
                 }
                 catch
                 {
                     try
                     {
-                        doc = XDocument.Parse(string.Format(CleanHtmlFormat, html + "</div></div>"));
+                        doc = XDocument.Parse(string.Format(CleanHtmlFormat, fixedHtml + "</div></div>"));
                     }
                     catch
                     {
-                        return html;
+                        return fixedHtml;
                     }
                 }
             }
             catch (Exception)
             {
-                return html;
+                return fixedHtml;
             }
 
             // Remove empty <ul> elements
@@ -101,9 +119,11 @@ namespace Trifolia.Powershell
 
         private string CleanMarkdown(string markdown)
         {
+            var fixedMarkdown = markdown.Replace(" & ", " &amp; ");
+
             try
             {
-                var doc = XDocument.Parse(string.Format(CleanHtmlFormat, markdown));
+                var doc = XDocument.Parse(string.Format(CleanHtmlFormat, fixedMarkdown));
                 XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
                 nsManager.AddNamespace("o", "urn:msxml");
                 var tableElements = doc.XPathSelectElements("//table");
@@ -296,8 +316,11 @@ namespace Trifolia.Powershell
             return markdown;
         }
 
-        public string ConvertHtmlToMarkdown(string html, int implementationGuideId, int sectionId, string property)
+        public string ConvertHtmlToMarkdown(string html, int implementationGuideId, string property, int? sectionId = null)
         {
+            if (string.IsNullOrEmpty(html))
+                return html;
+
             string cleanHtml = html
                 .Replace("<div>", "")
                 .Replace("</div>", "")
@@ -334,9 +357,11 @@ namespace Trifolia.Powershell
 
             foreach (var implementationGuide in this.tdb.ImplementationGuides)
             {
+                implementationGuide.WebDescription = this.ConvertHtmlToMarkdown(implementationGuide.WebDescription, implementationGuide.Id, "WebDescription");
+
                 foreach (var section in implementationGuide.Sections.Where(y => !string.IsNullOrEmpty(y.Content)))
                 {
-                    section.Content = ConvertHtmlToMarkdown(section.Content, implementationGuide.Id, section.Id, "Content");
+                    section.Content = this.ConvertHtmlToMarkdown(section.Content, implementationGuide.Id, "Content", section.Id);
                     this.WriteVerbose("Updated implementation guide " + implementationGuide.Id + "'s section " + section.Id + " to be markdown");
                 }
             }
