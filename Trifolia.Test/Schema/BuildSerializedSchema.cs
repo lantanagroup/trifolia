@@ -20,7 +20,7 @@ namespace Trifolia.Test.Schema
                 Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                     new ImplementationGuideType()
                         {
-                            Name = "CDA",
+                            Name = Constants.IGType.CDA_IG_TYPE,
                             SchemaLocation = "CDA.xsd"
                         }));
 
@@ -121,7 +121,7 @@ namespace Trifolia.Test.Schema
                 Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                     new ImplementationGuideType()
                     {
-                        Name = "CDA",
+                        Name = Constants.IGType.CDA_IG_TYPE,
                         SchemaLocation = "CDA.xsd"
                     }));
 
@@ -161,7 +161,7 @@ namespace Trifolia.Test.Schema
                 Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                     new ImplementationGuideType()
                     {
-                        Name = "CDA",
+                        Name = Constants.IGType.CDA_IG_TYPE,
                         SchemaLocation = "CDA.xsd"
                     }));
 

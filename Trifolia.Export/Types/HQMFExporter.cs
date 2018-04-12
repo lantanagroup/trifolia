@@ -12,7 +12,7 @@ using System.Web;
 
 namespace Trifolia.Export.Types
 {
-    [ImplementationGuideTypePlugin("HQMF R2")]
+    [ImplementationGuideTypePlugin(Constants.IGType.HQMF_IG_TYPE)]
     public class HQMFExporter : ITypeExporter
     {
         public byte[] Export(DB.IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<DB.Template> templates, bool includeVocabulary, bool returnJson = true)

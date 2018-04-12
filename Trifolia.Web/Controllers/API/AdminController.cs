@@ -53,7 +53,7 @@ namespace Trifolia.Web.Controllers.API
 
             //Find all FHIR API IGControllers
             var FHIRClasses = assembly.GetTypes()
-                .Where(t => t.IsClass && t.GetCustomAttributes(typeof(FHIRVersion)).Any())
+                .Where(t => t.IsClass && t.GetCustomAttributes(typeof(FHIRInfo)).Any())
                 .ToArray();
 
             foreach (var FHIRClass in FHIRClasses)
@@ -62,7 +62,7 @@ namespace Trifolia.Web.Controllers.API
                 var attributes = FHIRClass.GetCustomAttributes();
 
                 //Collect the version attribute of that IGController
-                var versionAttribute = (FHIRVersion)attributes.Single(a => a.GetType() == typeof(FHIRVersion));
+                var versionAttribute = (FHIRInfo)attributes.Single(a => a.GetType() == typeof(FHIRInfo));
 
                 //Find the igType in the database
                 ImplementationGuideType igType = this.tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == versionAttribute.IGType.ToLower());

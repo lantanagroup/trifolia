@@ -8,12 +8,12 @@ using System.Web.Http;
 namespace Trifolia.Web.Controllers.API.FHIR
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class FHIRVersion : Attribute
+    public sealed class FHIRInfo : Attribute
     {
         private String version;
         private String igType;
 
-        public FHIRVersion(String version, String igType)
+        public FHIRInfo(String version, String igType)
         {
             this.version = version;
             this.igType = igType;

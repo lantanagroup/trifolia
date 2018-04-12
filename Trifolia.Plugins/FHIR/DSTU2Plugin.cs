@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using Trifolia.DB;
 using Trifolia.Shared.Validation;
+using Trifolia.Shared;
 
 namespace Trifolia.Plugins.FHIR
 {
-    [ImplementationGuideTypePlugin("FHIR DSTU2")]
+    [ImplementationGuideTypePlugin(Constants.IGType.FHIR_DSTU2_IG_TYPE)]
     public class DSTU2Plugin : DefaultPlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

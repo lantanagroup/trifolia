@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Xml;
 using Trifolia.DB;
 using Trifolia.Shared.Validation;
+using Trifolia.Shared;
 
 namespace Trifolia.Plugins
 {
-    [ImplementationGuideTypePlugin("eMeasure")]
-    [ImplementationGuideTypePlugin("CDA")]
+    [ImplementationGuideTypePlugin(Constants.IGType.EMEASURE_IG_TYPE)]
+    [ImplementationGuideTypePlugin(Constants.IGType.CDA_IG_TYPE)]
     public class RIMPlugin : BasePlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

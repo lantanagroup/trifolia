@@ -21,7 +21,7 @@ namespace Trifolia.Test.Generation.IG
             this.tdb.InitializeCDARepository();
             this.tdb.InitializeFHIR3Repository();
 
-            var fhirIgType = this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_FHIR_STU3_IG_TYPE_NAME);
+            var fhirIgType = this.tdb.FindImplementationGuideType(Constants.IGType.FHIR_STU3_IG_TYPE);
             this.fhirIg = this.tdb.FindOrCreateImplementationGuide(fhirIgType, "Test FHIR IG");
             this.fhirIgSettings = new IGSettingsManager(this.tdb, this.fhirIg.Id);
             this.fhirIgTypePlugin = fhirIgType.GetPlugin();

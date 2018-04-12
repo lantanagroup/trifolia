@@ -24,7 +24,6 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
     [RoutePrefix("api/FHIR2")]
     public class FHIR2StructureDefinitionController : TrifoliaApiController
     {
-        private const string VERSION_NAME = "DSTU2";
         private const string DEFAULT_IG_NAME = "Unowned FHIR DSTU2 Profiles";
 
         private IObjectRepository tdb;

@@ -54,9 +54,6 @@
     <Compile Include="BookmarkTemplateTypeElement.cs" />
     <Compile Include="CodeSystemsSection.cs" />
     <Compile Include="CodeSystemAlternativeElement.cs" />
-    <Compile Include="IGTypeFhirElement.cs" />
-    <Compile Include="IGTypeSection.cs" />
-    <Compile Include="IGTypePluginElement.cs" />
     <Compile Include="HelpContextElement.cs" />
     <Compile Include="JiraMappingElement.cs" />
     <Compile Include="JiraSection.cs" />

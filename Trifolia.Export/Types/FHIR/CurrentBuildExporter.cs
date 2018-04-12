@@ -11,7 +11,7 @@ using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
 namespace Trifolia.Export.Types.FHIR
 {
-    [ImplementationGuideTypePlugin("FHIR Current Build")]
+    [ImplementationGuideTypePlugin(Constants.IGType.FHIR_CURRENT_BUILD_IG_TYPE)]
     public class CurrentBuildExporter : BaseTypeExporter, ITypeExporter
     {
         public byte[] Export(DB.IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<DB.Template> templates, bool includeVocabulary, bool returnJson = true)

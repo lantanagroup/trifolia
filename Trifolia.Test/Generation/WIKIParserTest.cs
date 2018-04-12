@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using Trifolia.DB;
 using Trifolia.Export.MSWord;
+using Trifolia.Shared;
 
 namespace Trifolia.Test.Generation
 {
@@ -24,7 +25,7 @@ namespace Trifolia.Test.Generation
         {
             this.tdb = new MockObjectRepository();
 
-            ImplementationGuideType cdaType = this.tdb.FindOrCreateImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "cda.xsd", "cda", "urn:hl7-org:v3");
+            ImplementationGuideType cdaType = this.tdb.FindOrCreateImplementationGuideType(Constants.IGType.CDA_IG_TYPE, "cda.xsd", "cda", "urn:hl7-org:v3");
             TemplateType docType = this.tdb.FindOrCreateTemplateType(cdaType, "Document Templates", "ClinicalDocument", "ClinicalDocument", 1);
             ImplementationGuide ig = this.tdb.FindOrCreateImplementationGuide(cdaType, "Test IG");
 

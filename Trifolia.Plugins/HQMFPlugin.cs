@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Xml;
 using Trifolia.DB;
 using Trifolia.Shared.Validation;
+using Trifolia.Shared;
 
 namespace Trifolia.Plugins
 {
-    [ImplementationGuideTypePlugin("HQMF R2")]
+    [ImplementationGuideTypePlugin(Constants.IGType.HQMF_IG_TYPE)]
     public class HQMFPlugin : BasePlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

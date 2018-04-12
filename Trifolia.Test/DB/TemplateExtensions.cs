@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Trifolia.DB;
 using Trifolia.Test;
 
+using Trifolia.Shared;
+
 namespace Trifolia.Test.DB
 {
     [TestClass]
@@ -14,7 +16,7 @@ namespace Trifolia.Test.DB
         {
             MockObjectRepository mockDb = new MockObjectRepository();
             mockDb.InitializeCDARepository();
-            var ig = mockDb.FindOrCreateImplementationGuide("CDA", "My Test IG");
+            var ig = mockDb.FindOrCreateImplementationGuide(Constants.IGType.CDA_IG_TYPE, "My Test IG");
 
             var template1 = mockDb.CreateTemplate("1.2.3.4.1", "Document", "My Test Template", ig);
             template1.AuthorId = 2;

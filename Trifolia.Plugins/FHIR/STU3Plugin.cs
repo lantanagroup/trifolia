@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using Trifolia.DB;
 using Trifolia.Shared.FHIR.Profiles.STU3;
 using Trifolia.Shared.Validation;
+using Trifolia.Shared;
 
 namespace Trifolia.Plugins.FHIR
 {
-    [ImplementationGuideTypePlugin("FHIR STU3")]
+    [ImplementationGuideTypePlugin(Constants.IGType.FHIR_STU3_IG_TYPE)]
     public class STU3Plugin : DefaultPlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

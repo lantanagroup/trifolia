@@ -11,8 +11,8 @@ using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
 
 namespace Trifolia.Export.Types
 {
-    [ImplementationGuideTypePlugin("eMeasure")]
-    [ImplementationGuideTypePlugin("CDA")]
+    [ImplementationGuideTypePlugin(Constants.IGType.EMEASURE_IG_TYPE)]
+    [ImplementationGuideTypePlugin(Constants.IGType.CDA_IG_TYPE)]
     public class RIMExporter : ITypeExporter
     {
         public byte[] Export(DB.IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<DB.Template> templates, bool includeVocabulary, bool returnJson = true)

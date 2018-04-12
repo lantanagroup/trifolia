@@ -22,8 +22,8 @@ namespace Trifolia.Test.Reporting
         {
             this.tdb.InitializeCDARepository();
 
-            this.ig = this.tdb.FindOrCreateImplementationGuide(this.tdb.FindImplementationGuideType("CDA"), "Test IG");
-            this.mainSchema = this.tdb.FindImplementationGuideType("CDA").GetSimpleSchema();
+            this.ig = this.tdb.FindOrCreateImplementationGuide(this.tdb.FindImplementationGuideType(Constants.IGType.CDA_IG_TYPE), "Test IG");
+            this.mainSchema = this.tdb.FindImplementationGuideType(Constants.IGType.CDA_IG_TYPE).GetSimpleSchema();
         }
 
         [TestMethod, TestCategory("Validation")]
