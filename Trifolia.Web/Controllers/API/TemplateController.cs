@@ -465,10 +465,16 @@ namespace Trifolia.Web.Controllers.API
                     var plugin = igType.GetPlugin();
                     List<String> types = plugin.GetFhirTypes(fhirPath);
 
-                    // Filter based on the types (only return templates with a Template.PrimaryContextType that matches one of the types[])
-                    query = (from q in query
-                             join t in types on q.PrimaryContextType equals t
-                             select q);
+                    //If types isn't set to resource (all possible templates), filter the query to match
+                    if(!types.Contains("Resource"))
+                    {
+                        // Filter based on the types (only return templates with a Template.PrimaryContextType that matches one of the types[])
+                        query = (from q in query
+                                 join t in types on q.PrimaryContextType equals t
+                                 select q);
+                    }
+
+                    
                 }
                 catch (NotSupportedException nse)
                 {
