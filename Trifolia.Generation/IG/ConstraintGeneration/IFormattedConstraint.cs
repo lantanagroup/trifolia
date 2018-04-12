@@ -54,7 +54,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
         void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, ValueSet valueSet = null, CodeSystem codeSystem = null);
         void ParseFormattedConstraint();
-        Paragraph AddToDocParagraph(MainDocumentPart mainPart, OpenXmlElement parent, int level, int id, string headingStyle);
+        Paragraph AddToDocParagraph(MainDocumentPart mainPart, HyperlinkTracker hyperlinkTracker, OpenXmlElement parent, int level, int id, string headingStyle);
         string GetPlainText(bool includeHeading = true, bool includeDescription = true, bool includeLabel = true);
         string GetHtml(string linkBase, int constraintCount, bool includeLabel);
     }

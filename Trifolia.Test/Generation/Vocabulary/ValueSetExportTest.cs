@@ -54,8 +54,9 @@ namespace Trifolia.Test.Generation.Vocabulary
         [TestMethod]
         public void ValueSetExport_Inline()
         {
+            HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, false, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, false, 2, null);
 
             vse.AddValueSet(this.vs1, DateTime.Now);
 
@@ -93,8 +94,9 @@ namespace Trifolia.Test.Generation.Vocabulary
         [TestMethod]
         public void ValueSetExport_Appendix()
         {
+            HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, true, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, true, 2, null);
 
             vse.AddValueSet(this.vs1, DateTime.Now);
             Assert.AreEqual(0, this.body.ChildElements.Count);
@@ -115,8 +117,9 @@ namespace Trifolia.Test.Generation.Vocabulary
         [TestMethod]
         public void ValueSetExport_NoMembers()
         {
+            HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, false, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, false, 2, null);
 
             vse.AddValueSet(this.vs3, DateTime.Now);
             Assert.AreEqual(0, this.body.ChildElements.Count);
@@ -125,8 +128,9 @@ namespace Trifolia.Test.Generation.Vocabulary
         [TestMethod]
         public void ValueSetExport_SameValueSetTwice()
         {
+            HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, false, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, false, 2, null);
 
             vse.AddValueSet(this.vs2, DateTime.Now);
             Assert.AreEqual(3, this.body.ChildElements.Count);

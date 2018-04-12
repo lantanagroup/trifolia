@@ -27,7 +27,8 @@ namespace Trifolia.Generation.IG
             Template currentTemplate,
             List<Template> allTemplates,
             string constraintHeadingStyle,
-            List<string> selectedCategories)
+            List<string> selectedCategories,
+            HyperlinkTracker hyperlinkTracker)
         {
             IConstraintGenerator constraintGenerator = null;
 
@@ -49,6 +50,7 @@ namespace Trifolia.Generation.IG
             constraintGenerator.CommentManager = cmtMgr;
             constraintGenerator.IncludeCategory = !string.IsNullOrEmpty(igSettings.GetSetting(IGSettingsManager.SettingProperty.Categories));
             constraintGenerator.SelectedCategories = selectedCategories;
+            constraintGenerator.HyperlinkTracker = hyperlinkTracker;
 
             return constraintGenerator;
         }

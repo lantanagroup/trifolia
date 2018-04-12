@@ -317,6 +317,7 @@ namespace Trifolia.Test.Generation.IG
             };
 
             IGSettingsManager igSettings = new IGSettingsManager(repo);
+            HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
             var formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(repo, igSettings, null, newConstraint);
 
             using (MemoryStream ms = new MemoryStream())
@@ -325,7 +326,7 @@ namespace Trifolia.Test.Generation.IG
                 var mainPart = doc.AddMainDocumentPart();
                 mainPart.Document = new Document();
 
-                formattedConstraint.AddToDocParagraph(mainPart, mainPart.Document, 1, 1, "");
+                formattedConstraint.AddToDocParagraph(mainPart, hyperlinkTracker, mainPart.Document, 1, 1, "");
             }
         }
     }

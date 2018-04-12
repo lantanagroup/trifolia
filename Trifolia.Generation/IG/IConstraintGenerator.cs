@@ -31,6 +31,7 @@ namespace Trifolia.Generation.IG
         bool IncludeCategory { get; set; }
         List<string> SelectedCategories { get; set; }
         List<ConstraintReference> ConstraintReferences { get; set; }
+        HyperlinkTracker HyperlinkTracker { get; set; }
 
         void GenerateConstraints(bool aCreateHyperlinksForValueSetNames = false, bool includeNotes = false);
     }

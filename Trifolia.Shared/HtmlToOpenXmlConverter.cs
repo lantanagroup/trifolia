@@ -34,7 +34,7 @@ namespace Trifolia.Shared
         {
             OpenXmlElement current = new Body();
 
-            using (StringReader strReader = new StringReader(html))
+            using (StringReader strReader = new StringReader("<root>" + html + "</root>"))
             {
                 XmlReaderSettings xmlReaderSettings = new XmlReaderSettings()
                 {
@@ -79,7 +79,7 @@ namespace Trifolia.Shared
             if (xmlReader.NodeType == XmlNodeType.Element)
             {
                 // Do something for elements
-                switch (xmlReader.Name)
+                switch (xmlReader.Name.ToLower())
                 {
                     case "p":
                         if (cPara != null)
@@ -213,6 +213,15 @@ namespace Trifolia.Shared
                     case "root":
                     case "tbody":
                         break;
+                    case "strong":
+                        var run = cRun;
+
+                        if (run == null)
+                            run = (Run) NewChild(current, new Run());
+
+                        this.AddBoldToRun(run);
+
+                        return run;
                     default:
                         throw new Exception("Unsupported wiki syntax");
                 }

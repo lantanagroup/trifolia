@@ -54,6 +54,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
         public bool IncludeCategory { get; set; }
         public List<string> SelectedCategories { get; set; }
+        public HyperlinkTracker HyperlinkTracker { get; set; }
 
         private bool HasSelectedCategories
         {
@@ -102,7 +103,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
             bool includeCategory = this.IncludeCategory && (!this.HasSelectedCategories || this.SelectedCategories.Count > 1);
             IFormattedConstraint fConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.DataSource, this.IGSettings, this.IGTypePlugin, constraint, this.ConstraintReferences, linkContainedTemplate: containedTemplateLinked, linkIsBookmark: true, createLinksForValueSets: aCreateLinksForValueSets, includeCategory: includeCategory);
-            Paragraph para = fConstraint.AddToDocParagraph(this.MainPart, this.DocumentBody, level -1, GenerationConstants.BASE_TEMPLATE_INDEX + (int)this.CurrentTemplate.Id, this.ConstraintHeadingStyle);
+            Paragraph para = fConstraint.AddToDocParagraph(this.MainPart, this.HyperlinkTracker, this.DocumentBody, level -1, GenerationConstants.BASE_TEMPLATE_INDEX + (int)this.CurrentTemplate.Id, this.ConstraintHeadingStyle);
 
             if (!string.IsNullOrEmpty(constraint.Notes) && includeNotes)
                 this.CommentManager.AddCommentRange(para, constraint.Notes);

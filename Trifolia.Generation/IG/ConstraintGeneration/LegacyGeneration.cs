@@ -51,6 +51,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
         public bool IncludeCategory { get; set; }
 
         public List<string> SelectedCategories { get; set; }
+        public HyperlinkTracker HyperlinkTracker { get; set; }
 
         #endregion
 
@@ -181,7 +182,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                     if (this.AllTemplates.Exists(y => y.Id == containedTemplate.Id))
                     {
                         pConstraint.Append(
-                            DocHelper.CreateAnchorHyperlink(containedTemplate.Name, containedTemplate.Bookmark, Properties.Settings.Default.LinkStyle),
+                            this.HyperlinkTracker.CreateHyperlink(containedTemplate.Name, containedTemplate.Bookmark, Properties.Settings.Default.LinkStyle),
                             DocHelper.CreateRun(" (" + containedTemplate.Oid + ")", style:Properties.Settings.Default.TemplateOidStyle));
                     }
                     else
@@ -208,17 +209,19 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
                         pConstraint.Append(
                             DocHelper.CreateRun(", which "),
-                            DocHelper.CreateRun(valueConformance, Properties.Settings.Default.ConformanceVerbStyle),
+                            DocHelper.CreateRun(valueConformance, style: Properties.Settings.Default.ConformanceVerbStyle),
                             DocHelper.CreateRun(" be selected from ValueSet "),
-                            DocHelper.CreateRun(constraint.ValueSet.Name + " " + constraint.ValueSet.GetIdentifier(this.IGTypePlugin), 
-                            anchorName:lValueSetAnchor,
-                            style:Properties.Settings.Default.VocabularyConstraintStyle));
+                            new BookmarkStart() { Id = lValueSetAnchor, Name = lValueSetAnchor },
+                            DocHelper.CreateRun(
+                                constraint.ValueSet.Name + " " + constraint.ValueSet.GetIdentifier(this.IGTypePlugin),
+                                style:Properties.Settings.Default.VocabularyConstraintStyle),
+                            new BookmarkEnd() { Id = lValueSetAnchor });
                     }
                     else if (constraint.CodeSystem != null)
                     {
                         pConstraint.Append(
                             DocHelper.CreateRun(", which "),
-                            DocHelper.CreateRun(valueConformance, Properties.Settings.Default.ConformanceVerbStyle),
+                            DocHelper.CreateRun(valueConformance, style: Properties.Settings.Default.ConformanceVerbStyle),
                             DocHelper.CreateRun(" be selected from CodeSystem "),
                             DocHelper.CreateRun(constraint.CodeSystem.Name + " (" + constraint.CodeSystem.Oid + ")", style:Properties.Settings.Default.VocabularyConstraintStyle));
                     }
@@ -259,9 +262,11 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                             DocHelper.CreateRun(")"));
                     }
                 }
-
+                
                 pConstraint.Append(
-                    DocHelper.CreateRun(string.Format(" (CONF:{0})", constraint.Id), "C_" + constraint.Id.ToString()));
+                    new BookmarkStart() { Id = "C_" + constraint.Id.ToString(), Name = "C_" + constraint.Id.ToString() },
+                    DocHelper.CreateRun(string.Format(" (CONF:{0})", constraint.Id)),
+                    new BookmarkEnd() { Id = "C_" + constraint.Id.ToString() });
 
                 if (constraint.IsBranch == true && childConstraints.Count > 0)
                 {

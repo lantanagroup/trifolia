@@ -46,8 +46,8 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlToOpenXml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6ad79d83e2b60e63, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlToOpenXml.dll.2.0.1\lib\net40\HtmlToOpenXml.dll</HintPath>
+    <Reference Include="HtmlToOpenXml, Version=1.5.0.0, Culture=neutral, PublicKeyToken=6ad79d83e2b60e63, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlToOpenXml.dll.1.5.0\lib\net45\HtmlToOpenXml.dll</HintPath>
     </Reference>
     <Reference Include="LantanaGroup.ValidationUtility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -83,6 +83,7 @@
     <Compile Include="IG\ConstraintReference.cs" />
     <Compile Include="IG\ExportSettings.cs" />
     <Compile Include="IG\FigureCollection.cs" />
+    <Compile Include="IG\HyperlinkTracker.cs" />
     <Compile Include="IG\Models\HeaderDescriptor.cs" />
     <Compile Include="IG\TemplateConstraintTable.cs" />
     <Compile Include="IG\TemplateContextTable.cs" />

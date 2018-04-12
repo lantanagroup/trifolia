@@ -425,6 +425,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
                         if (this.LinkContainedTemplate)
                         {
+                            this.parts.Add(new ConstraintPart(" "));
                             this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Link, constraintReference.Name)
                             {
                                 LinkDestination = constraintReference.GetLink(this.LinkIsBookmark, this.TemplateLinkBase)
@@ -476,7 +477,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             }
         }
 
-        public Paragraph AddToDocParagraph(MainDocumentPart mainPart, OpenXmlElement parent, int level, int id, string headingStyle)
+        public Paragraph AddToDocParagraph(MainDocumentPart mainPart, HyperlinkTracker hyperlinkTracker, OpenXmlElement parent, int level, int id, string headingStyle)
         {
             // Add the heading
             if (this.IsHeading && !string.IsNullOrEmpty(this.Context))
@@ -555,12 +556,16 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
                             DocHelper.CreateRun(cPart.Text, style: Properties.Settings.Default.VocabularyConstraintStyle));
                         break;
                     case ConstraintPart.PartTypes.Link:
-                        para.Append(
-                            DocHelper.CreateAnchorHyperlink(cPart.Text, cPart.LinkDestination, Properties.Settings.Default.LinkStyle));
+                        hyperlinkTracker.AddHyperlink(para, cPart.Text, cPart.LinkDestination, Properties.Settings.Default.LinkStyle);
                         break;
                     case ConstraintPart.PartTypes.Constraint:
-                        para.Append(
-                            DocHelper.CreateRun(cPart.Text, (cPart.IsAnchor ? "C_" + this.Number : string.Empty)));
+                        var newRun = DocHelper.CreateRun(cPart.Text);
+
+                        if (cPart.IsAnchor)
+                            hyperlinkTracker.AddAnchorAround(para, "C_" + this.Number, newRun);
+                        else
+                            para.Append(newRun);
+
                         break;
                     case ConstraintPart.PartTypes.PrimitiveText:
                         var element = cPart.Text.MarkdownToOpenXml(mainPart);
@@ -577,7 +582,9 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
             if (!string.IsNullOrEmpty(this.Label))
             {
                 string additionalLabel = string.Format("Note: {0}", this.Label);
-                para.AppendChild(new Break());
+                para.AppendChild(
+                    new Run(
+                        new Break()));
                 para.AppendChild(
                     DocHelper.CreateRun(additionalLabel));
             }

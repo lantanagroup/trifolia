@@ -10,21 +10,29 @@ namespace Trifolia.Shared
 {
     public static class OpenXmlHelper
     {
+        private static void AppendChildren(IEnumerable<OpenXmlElement> sourceElements, OpenXmlElement destination)
+        {
+            foreach (var source in sourceElements)
+            {
+                if (source is Paragraph && destination is Paragraph)
+                {
+                    AppendChildren(source.ChildElements, destination);
+                    continue;
+                }
+
+                if (source is ParagraphProperties && destination.ChildElements.OfType<ParagraphProperties>().Count() > 0)
+                    continue;
+
+                destination.Append(source.CloneNode(true));
+            }
+        }
+
         public static void Append(OpenXmlElement source, OpenXmlElement destination)
         {
-            List<Paragraph> paragraphs = source.ChildElements.OfType<Paragraph>().ToList();
-
-            for (int i = 0; i < paragraphs.Count; i++)
-            {
-                paragraphs[i].ChildElements.ToList().ForEach(c =>
-                {
-                    destination.Append(
-                        c.CloneNode(true));
-                });
-
-                if (i < paragraphs.Count - 1)
-                    destination.Append(new Break());
-            }
+            if (source is Body)
+                AppendChildren(source.ChildElements, destination);
+            else
+                AppendChildren(new OpenXmlElement[] { source }, destination);
         }
     }
 }
