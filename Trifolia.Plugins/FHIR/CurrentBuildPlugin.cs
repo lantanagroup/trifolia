@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using Trifolia.DB;
 using Trifolia.Shared.FHIR.Profiles.Latest;
 using Trifolia.Shared.Validation;
+using Trifolia.Shared;
 
 namespace Trifolia.Plugins.FHIR
 {
-    [ImplementationGuideTypePlugin("FHIR Current Build")]
+    [ImplementationGuideTypePlugin(Constants.IGType.FHIR_CURRENT_BUILD_IG_TYPE)]
     public class CurrentBuildPlugin : DefaultPlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)
