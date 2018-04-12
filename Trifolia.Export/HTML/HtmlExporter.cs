@@ -42,7 +42,6 @@ namespace Trifolia.Export.HTML
             }
             else
             {
-                WIKIParser wikiParser = new WIKIParser(this.tdb);
                 IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
                 var igTypePlugin = IGTypePluginFactory.GetPlugin(ig.ImplementationGuideType);
                 var firstTemplateType = ig.ImplementationGuideType.TemplateTypes.OrderBy(y => y.OutputOrder).FirstOrDefault();
@@ -152,7 +151,7 @@ namespace Trifolia.Export.HTML
                         Context = template.PrimaryContext,
                         Name = template.Name,
                         ImpliedTemplate = template.ImpliedTemplate != null ? new ViewDataModel.TemplateReference(template.ImpliedTemplate) : null,
-                        Description = wikiParser.ParseAsHtml(template.Description),
+                        Description = template.Description.MarkdownToHtml(),
                         Extensibility = template.IsOpen ? "Open" : "Closed",
                         TemplateTypeId = template.TemplateTypeId
                     };
@@ -219,7 +218,7 @@ namespace Trifolia.Export.HTML
 
                     // Create the constraint models (hierarchically)
                     var parentConstraints = template.ChildConstraints.Where(y => y.ParentConstraintId == null);
-                    CreateConstraints(wikiParser, igSettings, igTypePlugin, constraintReferences, parentConstraints, newTemplateModel.Constraints, templateSchema);
+                    CreateConstraints(igSettings, igTypePlugin, constraintReferences, parentConstraints, newTemplateModel.Constraints, templateSchema);
                 }
 
                 // Create models for template types in the IG
@@ -240,7 +239,7 @@ namespace Trifolia.Export.HTML
             return model;
         }
 
-        private void CreateConstraints(WIKIParser wikiParser, IGSettingsManager igManager, IIGTypePlugin igTypePlugin, List<ConstraintReference> constraintReferences, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList, SimpleSchema templateSchema, SimpleSchema.SchemaObject schemaObject = null)
+        private void CreateConstraints(IGSettingsManager igManager, IIGTypePlugin igTypePlugin, List<ConstraintReference> constraintReferences, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList, SimpleSchema templateSchema, SimpleSchema.SchemaObject schemaObject = null)
         {
             foreach (var constraint in constraints.OrderBy(y => y.Order))
             {
@@ -255,7 +254,7 @@ namespace Trifolia.Export.HTML
                 var newConstraintModel = new ViewDataModel.Constraint()
                 {
                     Number = string.Format("{0}-{1}", theConstraint.Template.OwningImplementationGuideId, theConstraint.Number),
-                    Narrative = fc.GetHtml(wikiParser, string.Empty, 1, true),
+                    Narrative = fc.GetHtml(string.Empty, 1, true),
                     Conformance = theConstraint.Conformance,
                     Cardinality = theConstraint.Cardinality,
                     Context = theConstraint.Context,
@@ -291,7 +290,7 @@ namespace Trifolia.Export.HTML
                     null;
 
                 // Recursively add child constraints
-                CreateConstraints(wikiParser, igManager, igTypePlugin, constraintReferences, theConstraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
+                CreateConstraints(igManager, igTypePlugin, constraintReferences, theConstraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
             }
         }
     }

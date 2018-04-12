@@ -96,10 +96,30 @@ namespace Trifolia.Shared
 
             if (!string.IsNullOrEmpty(AppSettings.IGTypeSchemaLocation))
             {
-                if (AppSettings.IGTypeSchemaLocation.StartsWith("~"))
-                    basePath = HttpContext.Current.ApplicationInstance.Server.MapPath(AppSettings.IGTypeSchemaLocation);
+                if (AppSettings.IGTypeSchemaLocation.StartsWith("~\\"))
+                {
+                    if (HttpContext.Current == null)
+                    {
+                        string assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                        string assemblyDir = new FileInfo(assemblyLocation).DirectoryName;
+
+                        if (assemblyDir.EndsWith("\\bin\\Debug") || assemblyDir.EndsWith("\\bin\\Release"))
+                            assemblyDir = new FileInfo(Path.Combine(assemblyDir, "..\\..\\..\\Trifolia.Web\\")).FullName;
+                        else if (assemblyDir.EndsWith("\\bin"))
+                            assemblyDir = new FileInfo(Path.Combine(assemblyDir, "..\\")).FullName;
+
+                        string schemasRelativePath = Path.Combine(assemblyDir, AppSettings.IGTypeSchemaLocation.Replace("~\\", ""));
+                        basePath = new FileInfo(schemasRelativePath).FullName;
+                    }
+                    else
+                    {
+                        basePath = HttpContext.Current.ApplicationInstance.Server.MapPath(AppSettings.IGTypeSchemaLocation);
+                    }
+                }
                 else
+                {
                     basePath = new FileInfo(AppSettings.IGTypeSchemaLocation).FullName;
+                }
             }
 
             return GetSchemasDirectory(basePath, igTypeName);

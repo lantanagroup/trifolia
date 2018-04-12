@@ -4,6 +4,7 @@
 <link href="/Styles/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="/Styles/bootstrap-spinedit.css" rel="stylesheet" type="text/css" />
 <link href="/Styles/datepicker.css" rel="stylesheet" type="text/css" />
+<link href="/Styles/simplemde.min.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="/Styles/Site.css" />
 
 <!-- API Scripts -->
@@ -20,6 +21,8 @@
 <script type="text/javascript" src="/Scripts/lib/bootstrap/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="/Scripts/lib/bootstrap/bootstrap-spinedit.js"></script>
 <script type="text/javascript" src="/Scripts/lib/bootstrap/bootstrap-datepicker.js"></script>
+
+<script type="text/javascript" src="/Scripts/lib/simplemde/simplemde.min.js"></script>
 
 <script type="text/javascript" src="/Scripts/lib/moment-with-locales.min.js"></script>
 <script type="text/javascript" src="/Scripts/lib/lodash.min.js"></script>

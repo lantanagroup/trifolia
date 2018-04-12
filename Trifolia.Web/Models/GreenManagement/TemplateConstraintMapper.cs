@@ -270,7 +270,6 @@ namespace Trifolia.Web.Models.GreenManagement
             int? aParentConstraintId = null)
         {
             IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(tdb, igSettings, igTypePlugin, dbConstraint);
-            WIKIParser wikiParser = new WIKIParser(tdb);
 
             ConstraintViewModel lGreenViewModel = new ConstraintViewModel()
             {

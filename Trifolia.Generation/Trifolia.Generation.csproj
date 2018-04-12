@@ -37,14 +37,17 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocumentFormat.OpenXml.1.0\lib\DocumentFormat.OpenXml.dll</HintPath>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlToOpenXml, Version=1.5.0.0, Culture=neutral, PublicKeyToken=6ad79d83e2b60e63, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlToOpenXml.dll.1.5.0\lib\net45\HtmlToOpenXml.dll</HintPath>
     </Reference>
     <Reference Include="LantanaGroup.ValidationUtility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,9 +59,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WikiNetParser">
-      <HintPath>..\packages\WikiNetParser.2.5.2.1\lib\WikiNetParser.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +83,7 @@
     <Compile Include="IG\ConstraintReference.cs" />
     <Compile Include="IG\ExportSettings.cs" />
     <Compile Include="IG\FigureCollection.cs" />
+    <Compile Include="IG\HyperlinkTracker.cs" />
     <Compile Include="IG\Models\HeaderDescriptor.cs" />
     <Compile Include="IG\TemplateConstraintTable.cs" />
     <Compile Include="IG\TemplateContextTable.cs" />
@@ -95,7 +96,6 @@
     <Compile Include="IG\TemplateContainmentGenerator.cs" />
     <Compile Include="IG\TemplateSchematronGenerator.cs" />
     <Compile Include="IG\ValueSetsExport.cs" />
-    <Compile Include="IG\WIKIParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <DependentUpon>Settings.settings</DependentUpon>

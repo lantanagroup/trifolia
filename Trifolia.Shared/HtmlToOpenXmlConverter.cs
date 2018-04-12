@@ -6,82 +6,35 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
-using Trifolia.DB;
 
-namespace Trifolia.Generation.IG
+namespace Trifolia.Shared
 {
-    public class WIKIParser
+    public class HtmlToOpenXmlConverter
     {
-        private const string RootWrapperFormat =
-@"<?xml version='1.0' standalone='yes' ?>
-<!DOCTYPE r [
-    <!ENTITY nbsp '&#160;'>
-]><root>{0}</root>";
-
-        private IObjectRepository tdb;
-        private MainDocumentPart mainPart;
         private bool currentIsTableHeader = false;
         private int currentListLevel = 0;
         private string currentListStyle = null;
+        private MainDocumentPart mainPart;
 
-        public WIKIParser(IObjectRepository tdb, MainDocumentPart mainPart)
-            : this(tdb)
+        internal HtmlToOpenXmlConverter(MainDocumentPart mainPart)
         {
             this.mainPart = mainPart;
         }
 
-        public WIKIParser(IObjectRepository tdb)
+        public static OpenXmlElement HtmlToOpenXml(MainDocumentPart mainPart, string html)
         {
-            this.tdb = tdb;
+            HtmlToOpenXmlConverter converter = new HtmlToOpenXmlConverter(mainPart);
+            return converter.Convert(html);
         }
 
-        public string ParseAsHtml(string wikiContent)
+        internal OpenXmlElement Convert(string html)
         {
-            if (string.IsNullOrEmpty(wikiContent))
-                return string.Empty;
-
-            string htmlContent = string.Format(RootWrapperFormat, WikiNetParser.WikiProvider.ConvertToHtml(wikiContent));
-
-            XmlDocument htmlDoc = new XmlDocument();
-            htmlDoc.LoadXml(htmlContent);
-
-            foreach (var cHyperlink in htmlDoc.SelectNodes("//a").OfType<XmlElement>())
-            {
-                string cHyperlinkHref = cHyperlink.Attributes["href"] != null ? cHyperlink.Attributes["href"].Value : string.Empty;
-
-                if (!string.IsNullOrEmpty(cHyperlinkHref) && cHyperlinkHref.StartsWith("#"))
-                {
-                    Template foundTemplate = this.tdb.Templates.SingleOrDefault(y => y.Oid == cHyperlinkHref.Substring(1));
-
-                    if (foundTemplate != null)
-                    {
-                        cHyperlink.Attributes["href"].Value = foundTemplate.GetViewUrl();
-                        cHyperlink.InnerText = string.Format("{0} (identifier: {1})", foundTemplate.Name, foundTemplate.Oid);
-                    }
-                }
-                else
-                {
-                    if (cHyperlink.Attributes["target"] == null)
-                        cHyperlink.Attributes.Append(htmlDoc.CreateAttribute("target"));
-
-                    cHyperlink.Attributes["target"].Value = "_new";
-                }
-            }
-
-            return htmlDoc.DocumentElement.InnerXml;
-        }
-
-        public OpenXmlElement ParseAsOpenXML(string wikiContent)
-        {
-            if (string.IsNullOrEmpty(wikiContent))
-                return null;
-
-            string htmlContent = string.Format(RootWrapperFormat, WikiNetParser.WikiProvider.ConvertToHtml(wikiContent));
             OpenXmlElement current = new Body();
 
-            using (StringReader strReader = new StringReader(htmlContent))
+            using (StringReader strReader = new StringReader("<root>" + html + "</root>"))
             {
                 XmlReaderSettings xmlReaderSettings = new XmlReaderSettings()
                 {
@@ -90,12 +43,6 @@ namespace Trifolia.Generation.IG
 
                 XmlReader xmlReader = XmlReader.Create(strReader, xmlReaderSettings);
 
-                // Skip the DTD definition
-                xmlReader.Read();
-                xmlReader.Read();
-                xmlReader.Read();
-                xmlReader.Read();
-
                 while (xmlReader.Read())
                 {
                     current = this.Process(xmlReader, current);
@@ -103,7 +50,7 @@ namespace Trifolia.Generation.IG
             }
 
             // Validate the parsed content. If validation fails return the content in plain-text, wrapped in a para
-            OpenXmlValidator validator = new OpenXmlValidator(FileFormatVersions.Office2007);
+            OpenXmlValidator validator = new OpenXmlValidator();
             IEnumerable<ValidationErrorInfo> validationErrors = validator.Validate(current);
 
             if (validationErrors.ToList().Count > 0)
@@ -113,93 +60,11 @@ namespace Trifolia.Generation.IG
                         new Run(
                             new Text()
                             {
-                                Text = wikiContent
+                                Text = html
                             })));
             }
 
             return current;
-        }
-
-        public void ParseAndAppend(string wikiContent, OpenXmlElement destination)
-        {
-            OpenXmlElement parsedContent = this.ParseAsOpenXML(wikiContent);
-
-            if (parsedContent != null)
-            {
-                foreach (OpenXmlElement cParsedElement in parsedContent.ChildElements)
-                {
-                    destination.Append(
-                        cParsedElement.CloneNode(true));
-                }
-            }
-        }
-
-        public void ParseAndAppend(string wikiContent, Paragraph destination, bool applyKeywordStyles = false)
-        {
-            // Only allow paragraphs (turned into line-breaks)
-            OpenXmlElement parsedPrimitiveText = this.ParseAsOpenXML(wikiContent);
-            string[] keywords = new string[] { "SHALL NOT", "SHOULD NOT", "MAY NOT", "SHALL", "SHOULD", "MAY" };
-
-            if (applyKeywordStyles)
-            {
-                var runs = parsedPrimitiveText.Descendants<Run>().ToList();
-
-                foreach (var cRun in runs)
-                {
-                    var cText = cRun.GetFirstChild<Text>();
-                    Regex regex = new Regex(" SHALL NOT | SHOULD NOT | MAY NOT | SHALL | SHOULD | MAY ");
-                    MatchCollection matches = regex.Matches(cText.Text);
-                    string[] split = regex.Split(cText.Text);
-                    List<OpenXmlElement> newElements = new List<OpenXmlElement>();
-
-                    if (split.Length > 1)
-                    {
-                        var runParent = cRun.Parent != null ? cRun.Parent : parsedPrimitiveText.FirstChild;
-
-                        for (var i = 0; i < split.Length; i++)
-                        {
-                            var newOtherRun = new Run(new Text(split[i]) { Space = SpaceProcessingModeValues.Preserve });
-                            newElements.Add(newOtherRun);
-
-                            if (i < split.Length - 1)
-                            {
-                                var newKeywordRun = new Run(
-                                    new RunProperties(new RunStyle()
-                                        {
-                                            Val = Properties.Settings.Default.ConformanceVerbStyle
-                                        }),
-                                    new Text(matches[i].Value) { Space = SpaceProcessingModeValues.Preserve });
-                                newElements.Add(newKeywordRun);
-                            }
-                        }
-                    }
-
-                    for (var i = newElements.Count - 1; i >= 0; i--)
-                    {
-                        cRun.Parent.InsertAfter(newElements[i], cRun);
-                    }
-
-                    if (newElements.Count > 0)
-                        cRun.Parent.RemoveChild(cRun);
-                }
-            }
-
-            if (parsedPrimitiveText != null)
-            {
-                List<Paragraph> paragraphs = parsedPrimitiveText.ChildElements.OfType<Paragraph>().ToList();
-
-                for (int i = 0; i < paragraphs.Count; i++)
-                {
-                    paragraphs[i].ChildElements.ToList().ForEach(c =>
-                    {
-                        destination.Append(
-                            c.CloneNode(true));
-                    });
-
-                    if (i < paragraphs.Count - 1)
-                        destination.Append(new Break());
-                }
-            }
         }
 
         private OpenXmlElement Process(XmlReader xmlReader, OpenXmlElement current)
@@ -214,17 +79,16 @@ namespace Trifolia.Generation.IG
             if (xmlReader.NodeType == XmlNodeType.Element)
             {
                 // Do something for elements
-                switch (xmlReader.Name)
+                switch (xmlReader.Name.ToLower())
                 {
                     case "p":
                         if (cPara != null)
                             break;
-
                         Paragraph newParagraph = new Paragraph(
                             new ParagraphProperties(
                                 new ParagraphStyleId()
                                 {
-                                    Val = Properties.Settings.Default.TemplateDescriptionStyle
+                                    Val = Properties.Resource.TemplateDescriptionStyle
                                 }));
                         return NewChild(current, newParagraph);
                     case "b":
@@ -260,61 +124,42 @@ namespace Trifolia.Generation.IG
 
                         if (!string.IsNullOrEmpty(hrefAttr))
                         {
-                            Template foundTemplate = null;
-
-                            if (hrefAttr.StartsWith("#") && hrefAttr.Length > 1)
-                                foundTemplate = this.tdb.Templates.SingleOrDefault(y => y.Oid == hrefAttr.Substring(1));
-
-                            if (foundTemplate != null)
+                            try
                             {
-                                newHyperlink.Anchor = foundTemplate.Bookmark;
-                                newHyperlink.Append(
-                                    DocHelper.CreateRun(
-                                        string.Format("{0} ({1})",
-                                            foundTemplate.Name,
-                                            foundTemplate.Oid)));
+                                HyperlinkRelationship rel = this.mainPart.AddHyperlinkRelationship(new Uri(hrefAttr), true);
+                                newHyperlink.History = true;
+                                newHyperlink.Id = rel.Id;
                             }
-                            else
-                            {
-                                try
-                                {
-                                    HyperlinkRelationship rel = mainPart.AddHyperlinkRelationship(new Uri(hrefAttr), true);
-                                    newHyperlink.History = true;
-                                    newHyperlink.Id = rel.Id;
-                                }
-                                catch { }
-                            }
+                            catch { }
                         }
 
                         if (cPara != null)
                         {
                             return NewChild(current, newHyperlink);
                         }
+
                         break;
                     case "ul":
                         this.currentListLevel++;
                         this.currentListStyle = "ListBullet";
-
                         if (current is Paragraph)
                             current = current.Parent;
                         break;
                     case "ol":
                         this.currentListLevel++;
                         this.currentListStyle = "ListNumber";
-
                         if (current is Paragraph)
                             current = current.Parent;
                         break;
                     case "li":
                         Paragraph bulletPara = new Paragraph(
                             new ParagraphProperties(
-                                new ParagraphStyleId(){ Val = this.currentListStyle }));
+                                new ParagraphStyleId() { Val = this.currentListStyle }));
                         return NewChild(current, bulletPara);
                     case "table":
                         Table newTable = new Table(
                             new TableProperties(),
                             new TableGrid());
-
                         return NewChild(current, newTable);
                     case "thead":
                         this.currentIsTableHeader = true;
@@ -323,7 +168,6 @@ namespace Trifolia.Generation.IG
                         if (cTable != null)
                         {
                             TableRow newTableRow = new TableRow();
-
                             if (this.currentIsTableHeader)
                             {
                                 newTableRow.Append(
@@ -331,7 +175,6 @@ namespace Trifolia.Generation.IG
                                         new CantSplit(),
                                         new TableHeader()));
                             }
-
                             return NewChild(current, newTableRow);
                         }
                         break;
@@ -339,7 +182,6 @@ namespace Trifolia.Generation.IG
                         if (cTableRow != null)
                         {
                             TableCell newCell = new TableCell();
-
                             if (this.currentIsTableHeader)
                             {
                                 newCell.Append(
@@ -353,7 +195,6 @@ namespace Trifolia.Generation.IG
                                         }
                                     });
                             }
-
                             // Cells' contents should be within a paragraph
                             Paragraph newPara = new Paragraph();
                             newCell.AppendChild(newPara);
@@ -372,6 +213,15 @@ namespace Trifolia.Generation.IG
                     case "root":
                     case "tbody":
                         break;
+                    case "strong":
+                        var run = cRun;
+
+                        if (run == null)
+                            run = (Run) NewChild(current, new Run());
+
+                        this.AddBoldToRun(run);
+
+                        return run;
                     default:
                         throw new Exception("Unsupported wiki syntax");
                 }
@@ -383,12 +233,12 @@ namespace Trifolia.Generation.IG
 
                 if (current is Paragraph || current is TableCell)
                 {
-                    current.Append(DocHelper.CreateRun(text));
+                    current.Append(CreateRun(text));
                 }
                 else if (cHyperlink != null)
                 {
                     if (!(cHyperlink.LastChild is Run))
-                        cHyperlink.Append(DocHelper.CreateRun(text));
+                        cHyperlink.Append(CreateRun(text));
                 }
                 else if (cRun != null)
                 {
@@ -419,7 +269,7 @@ namespace Trifolia.Generation.IG
                     {
                         cChildRun.RunProperties.RunStyle = new RunStyle()
                         {
-                            Val = Properties.Settings.Default.LinkStyle
+                            Val = Properties.Resource.LinkStyle
                         };
                     }
                 }
@@ -435,60 +285,6 @@ namespace Trifolia.Generation.IG
             }
 
             return current;
-        }
-
-        private int GetLastBulletNumber(OpenXmlElement current)
-        {
-            OpenXmlElement next = current.LastChild;
-            int lastLevel;
-            int lastNumber;
-
-            if (!OpenXmlElementIsBulleted(next, out lastLevel, out lastNumber))
-                return 0;
-
-            if (lastLevel != this.currentListLevel)
-            {
-                next = next.PreviousSibling();
-
-                while (next != null)
-                {
-                    if (!OpenXmlElementIsBulleted(next, out lastLevel, out lastNumber))
-                        return 0;
-
-                    if (lastLevel == this.currentListLevel)
-                        return lastNumber;
-
-                    next = next.PreviousSibling();
-                }
-            }
-
-            if (lastLevel != this.currentListLevel)
-                return 0;
-
-            return lastNumber;
-        }
-
-        private bool OpenXmlElementIsBulleted(OpenXmlElement element, out int level, out int number)
-        {
-            level = number = 0;
-
-            Paragraph para = element as Paragraph;
-
-            if (para == null || para.ParagraphProperties == null || para.ParagraphProperties.NumberingProperties == null)
-                return false;
-
-            NumberingProperties numProp = para.ParagraphProperties.NumberingProperties;
-
-            if (numProp.NumberingId == null || numProp.NumberingId.Val == null)
-                return false;
-
-            if (numProp.NumberingLevelReference == null || numProp.NumberingLevelReference.Val == null)
-                return false;
-
-            level = numProp.NumberingLevelReference.Val.Value;
-            number = numProp.NumberingId.Val.Value;
-
-            return true;
         }
 
         private void AddBoldToRun(Run run)
@@ -513,6 +309,72 @@ namespace Trifolia.Generation.IG
         {
             current.Append(newChild);
             return newChild;
+        }
+
+        private static Run CreateRun(string text, string anchorName = null, bool bold = false, bool italic = false, int? size = null, string style = null, string font = null)
+        {
+            Run newRun = new Run();
+            RunProperties newRunProperties = new RunProperties();
+
+            if (!string.IsNullOrEmpty(anchorName))
+            {
+                newRun.Append(
+                    new BookmarkStart() { Id = anchorName, Name = anchorName },
+                    new BookmarkEnd() { Id = anchorName });
+            }
+
+            if (bold)
+                newRunProperties.Append(new Bold());
+
+            if (italic)
+                newRunProperties.Append(new Italic());
+
+            if (!string.IsNullOrEmpty(font))
+                newRunProperties.Append(
+                    new RunProperties()
+                    {
+                        RunFonts = new RunFonts()
+                        {
+                            Ascii = font,
+                            HighAnsi = new StringValue(font)
+                        }
+                    });
+
+            if (size != null && size != -1)
+                newRunProperties.Append(
+                    new FontSize()
+                    {
+                        Val = new StringValue((2 * size).ToString())
+                    });
+
+            if (!string.IsNullOrEmpty(style))
+                newRunProperties.Append(
+                    new RunStyle()
+                    {
+                        Val = style
+                    });
+
+            newRun.Append(newRunProperties);
+
+            if (text != null)
+            {
+                string[] textSplit = text.Split('\n');
+
+                for (int i = 0; i < textSplit.Length; i++)
+                {
+                    newRun.Append(
+                        new Text(textSplit[i])
+                        {
+                            Space = SpaceProcessingModeValues.Preserve
+                        });
+
+                    if (i < textSplit.Length - 1)
+                        newRun.Append(
+                            new Break());
+                }
+            }
+
+            return newRun;
         }
     }
 }

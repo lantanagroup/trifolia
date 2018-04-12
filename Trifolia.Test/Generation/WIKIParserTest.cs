@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Validation;
+using Trifolia.Shared;
 
 namespace Trifolia.Test.Generation
 {
@@ -49,8 +50,7 @@ namespace Trifolia.Test.Generation
         {
             string testWikiContent = "This *is a bold* test with _italic text as well_";
 
-            WIKIParser parser = new WIKIParser(this.tdb, this.mainPart);
-            OpenXmlElement body = parser.ParseAsOpenXML(testWikiContent);
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
             Assert.AreEqual(1, body.ChildElements.Count);
             Paragraph para = body.ChildElements[0] as Paragraph;
@@ -82,9 +82,8 @@ This is a non-bulleted test
 
 * Test a new bullet list
 * Test a new bullet list ";
-
-            WIKIParser parser = new WIKIParser(this.tdb, this.mainPart);
-            OpenXmlElement table = parser.ParseAsOpenXML(testWikiContent);
+            
+            OpenXmlElement table = testWikiContent.MarkdownToOpenXml(this.mainPart);
         }
 
         [TestMethod, TestCategory("MSWord")]
@@ -93,9 +92,8 @@ This is a non-bulleted test
             string testWikiContent = @"|| Test Header1 || Test Header2
 | TestRowCell1 | TestRowCell2
 | TestRowCell3 | TestRowCell4";
-
-            WIKIParser parser = new WIKIParser(this.tdb, this.mainPart);
-            OpenXmlElement table = parser.ParseAsOpenXML(testWikiContent);
+            
+            OpenXmlElement table = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
             this.mainPart.Document.Body.Append(table);
 
@@ -107,8 +105,7 @@ This is a non-bulleted test
         {
             string testWikiContent = @"This is a test of a [URL:#" + this.template1.Oid + "]";
 
-            WIKIParser parser = new WIKIParser(this.tdb, this.mainPart);
-            OpenXmlElement body = parser.ParseAsOpenXML(testWikiContent);
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
             Assert.AreEqual(1, body.ChildElements.Count);
             Paragraph para = body.ChildElements[0] as Paragraph;
@@ -133,9 +130,8 @@ This is a non-bulleted test
         public void TestParseAsOpenXML_LinkToURLWithoutName()
         {
             string testWikiContent = @"This is a test of a [URL:http://www.awesome.com]";
-
-            WIKIParser parser = new WIKIParser(this.tdb, this.mainPart);
-            OpenXmlElement body = parser.ParseAsOpenXML(testWikiContent);
+            
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
             Assert.AreEqual(1, body.ChildElements.Count);
             Paragraph para = body.ChildElements[0] as Paragraph;
@@ -158,9 +154,8 @@ This is a non-bulleted test
         public void TestParseAsOpenXML_LinkToURLWithName()
         {
             string testWikiContent = @"This is a test of a [URL:Awesome|http://www.awesome.com]";
-
-            WIKIParser parser = new WIKIParser(this.tdb, this.mainPart);
-            OpenXmlElement body = parser.ParseAsOpenXML(testWikiContent);
+            
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
             Assert.AreEqual(1, body.ChildElements.Count);
             Paragraph para = body.ChildElements[0] as Paragraph;
@@ -190,8 +185,7 @@ This is a non-bulleted test
 
 There is more information here: [URL:#2.16.840.1.113883.10.20.29.1] and [URL:here|http://www.lantanagroup.com] and [URL:http://www.lantanagroup.com]";
 
-            WIKIParser parser = new WIKIParser(this.tdb, this.mainPart);
-            OpenXmlElement body = parser.ParseAsOpenXML(testWikiContent);
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
             Assert.AreEqual(3, body.ChildElements.Count);
             Assert.IsInstanceOfType(body.ChildElements[0], typeof(Paragraph));
@@ -208,9 +202,8 @@ There is more information here: [URL:#2.16.840.1.113883.10.20.29.1] and [URL:her
 test of 
 a line break and a url [URL:http://www.seanmcilvenna.com] with 
 another line break";
-
-            WIKIParser parser = new WIKIParser(this.tdb, this.mainPart);
-            OpenXmlElement body = parser.ParseAsOpenXML(testWikiContent);
+            
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
             Assert.AreEqual(4, body.ChildElements.Count);
 

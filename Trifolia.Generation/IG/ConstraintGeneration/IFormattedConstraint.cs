@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
 using Trifolia.DB;
@@ -53,8 +54,8 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
         void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, ValueSet valueSet = null, CodeSystem codeSystem = null);
         void ParseFormattedConstraint();
-        Paragraph AddToDocParagraph(WIKIParser wikiParser, OpenXmlElement parent, int level, int id, string headingStyle);
+        Paragraph AddToDocParagraph(MainDocumentPart mainPart, HyperlinkTracker hyperlinkTracker, OpenXmlElement parent, int level, int id, string headingStyle);
         string GetPlainText(bool includeHeading = true, bool includeDescription = true, bool includeLabel = true);
-        string GetHtml(WIKIParser parser, string linkBase, int constraintCount, bool includeLabel);
+        string GetHtml(string linkBase, int constraintCount, bool includeLabel);
     }
 }

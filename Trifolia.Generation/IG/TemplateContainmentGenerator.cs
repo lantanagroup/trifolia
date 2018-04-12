@@ -15,26 +15,28 @@ namespace Trifolia.Generation.IG
 {
     public class TemplateContainmentGenerator
     {
-        private WordprocessingDocument document = null;
-        private List<Template> allTemplates = null;
+        private WordprocessingDocument document;
+        private List<Template> allTemplates;
         private List<Template> parentTemplates = new List<Template>();
-        private IObjectRepository tdb = null;
-        private TableCollection tables = null;
-        private List<ViewTemplateRelationship> relationships = null;
+        private IObjectRepository tdb;
+        private TableCollection tables;
+        private List<ViewTemplateRelationship> relationships;
+        private HyperlinkTracker hyperlinkTracker;
 
-        public static void AddTable(IObjectRepository tdb, WordprocessingDocument document, List<ViewTemplateRelationship> relationships, List<Template> allTemplates, TableCollection tables)
+        public static void AddTable(IObjectRepository tdb, WordprocessingDocument document, List<ViewTemplateRelationship> relationships, List<Template> allTemplates, TableCollection tables, HyperlinkTracker hyperlinkTracker)
         {
-            TemplateContainmentGenerator tcg = new TemplateContainmentGenerator(tdb, document, relationships, allTemplates, tables);
+            TemplateContainmentGenerator tcg = new TemplateContainmentGenerator(tdb, document, relationships, allTemplates, tables, hyperlinkTracker);
             tcg.GenerateTable();
         }
 
-        private TemplateContainmentGenerator(IObjectRepository tdb, WordprocessingDocument document, List<ViewTemplateRelationship> relationships, List<Template> allTemplates, TableCollection tables)
+        private TemplateContainmentGenerator(IObjectRepository tdb, WordprocessingDocument document, List<ViewTemplateRelationship> relationships, List<Template> allTemplates, TableCollection tables, HyperlinkTracker hyperlinkTracker)
         {
             this.tdb = tdb;
             this.document = document;
             this.relationships = relationships;
             this.allTemplates = allTemplates;
             this.tables = tables;
+            this.hyperlinkTracker = hyperlinkTracker;
         }
 
         private void GenerateTable()
@@ -75,7 +77,7 @@ namespace Trifolia.Generation.IG
                             {
                                 Left = new StringValue(spacing.ToString())
                             }),
-                        DocHelper.CreateAnchorHyperlink(template.Name, template.Bookmark, Properties.Settings.Default.TableLinkStyle))),
+                        this.hyperlinkTracker.CreateHyperlink(template.Name, template.Bookmark, Properties.Settings.Default.TableLinkStyle))),
                 new TableCell(
                     new Paragraph(
                         new ParagraphProperties(

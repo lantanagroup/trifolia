@@ -16,19 +16,20 @@ namespace Trifolia.Generation.IG
         private const string TEMPLATE_CONTEXT_TABLE_USED_BY = "Contained By:";
         private const string TEMPLATE_CONTEXT_TABLE_CONTAINS = "Contains:";
 
-        private IObjectRepository tdb = null;
-        private TableCollection tables = null;
-        private Template template = null;
-        private Body documentBody = null;
-        private List<Template> exportedTemplates = null;
-        private IEnumerable<TemplateConstraint> allConstraints = null;
-        private List<ViewTemplateRelationship> relationships = null;
+        private IObjectRepository tdb;
+        private TableCollection tables;
+        private Template template;
+        private Body documentBody;
+        private List<Template> exportedTemplates;
+        private IEnumerable<TemplateConstraint> allConstraints;
+        private List<ViewTemplateRelationship> relationships;
+        private HyperlinkTracker hyperlinkTracker;
 
         #region Public Static Methods
 
-        public static void AddTable(IObjectRepository tdb, List<ViewTemplateRelationship> relationships, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates)
+        public static void AddTable(IObjectRepository tdb, List<ViewTemplateRelationship> relationships, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates, HyperlinkTracker hyperlinkTracker)
         {
-            TemplateContextTable cot = new TemplateContextTable(tdb, relationships, tables, documentBody, template, exportedTemplates);
+            TemplateContextTable cot = new TemplateContextTable(tdb, relationships, tables, documentBody, template, exportedTemplates, hyperlinkTracker);
             cot.AddTemplateContextTable();
         }
 
@@ -36,7 +37,7 @@ namespace Trifolia.Generation.IG
 
         #region Ctor
 
-        private TemplateContextTable(IObjectRepository tdb, List<ViewTemplateRelationship> relationships, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates)
+        private TemplateContextTable(IObjectRepository tdb, List<ViewTemplateRelationship> relationships, TableCollection tables, Body documentBody, Template template, List<Template> exportedTemplates, HyperlinkTracker hyperlinkTracker)
         {
             this.tdb = tdb;
             this.relationships = relationships;
@@ -44,6 +45,7 @@ namespace Trifolia.Generation.IG
             this.template = template;
             this.documentBody = documentBody;
             this.exportedTemplates = exportedTemplates;
+            this.hyperlinkTracker = hyperlinkTracker;
 
             this.allConstraints = template.ChildConstraints;
         }
@@ -111,7 +113,7 @@ namespace Trifolia.Generation.IG
                 if (usedByTemplateReference != null)
                 {
                     usedByPara.Append(
-                        DocHelper.CreateAnchorHyperlink(usedByTemplateReference.Name, usedByTemplateReference.Bookmark, Properties.Settings.Default.TableLinkStyle),
+                        this.hyperlinkTracker.CreateHyperlink(usedByTemplateReference.Name, usedByTemplateReference.Bookmark, Properties.Settings.Default.TableLinkStyle),
                         DocHelper.CreateRun(usedByTemplateReference.Required ? " (required)" : " (optional)"));
 
                     usedByCell.Append(usedByPara); 
@@ -121,7 +123,7 @@ namespace Trifolia.Generation.IG
                 if (containedTemplateReference != null)
                 {
                     containedPara.Append(
-                        DocHelper.CreateAnchorHyperlink(containedTemplateReference.Name, containedTemplateReference.Bookmark, Properties.Settings.Default.TableLinkStyle),
+                        this.hyperlinkTracker.CreateHyperlink(containedTemplateReference.Name, containedTemplateReference.Bookmark, Properties.Settings.Default.TableLinkStyle),
                         DocHelper.CreateRun(containedTemplateReference.Required ? " (required)" : " (optional)"));
 
                     containedCell.Append(containedPara);

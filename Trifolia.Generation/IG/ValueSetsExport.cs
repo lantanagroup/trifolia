@@ -22,13 +22,15 @@ namespace Trifolia.Generation.IG
         private TableCollection tables;
         private MainDocumentPart mainPart;
         private IIGTypePlugin igTypePlugin;
+        private HyperlinkTracker hyperlinkTracker;
 
         private Dictionary<ValueSet, DateTime> appendixValueSets = new Dictionary<ValueSet, DateTime>();
 
-        public ValueSetsExport(IIGTypePlugin igTypePlugin, MainDocumentPart mainPart, TableCollection tables, bool generateAsAppendix, int defaultMaxMembers, Dictionary<string, int> valueSetMaximumMembers)
+        public ValueSetsExport(IIGTypePlugin igTypePlugin, MainDocumentPart mainPart, HyperlinkTracker hyperlinkTracker, TableCollection tables, bool generateAsAppendix, int defaultMaxMembers, Dictionary<string, int> valueSetMaximumMembers)
         {
             this.igTypePlugin = igTypePlugin;
             this.mainPart = mainPart;
+            this.hyperlinkTracker = hyperlinkTracker;
             this.tables = tables;
             this.generateAsAppendix = generateAsAppendix;
             this.defaultMaxMembers = defaultMaxMembers;
@@ -92,7 +94,7 @@ namespace Trifolia.Generation.IG
                 OpenXmlElement urlRun = DocHelper.CreateRun("N/A");
 
                 if (!string.IsNullOrEmpty(cValueSet.Source))
-                    urlRun = DocHelper.CreateUrlHyperlink(this.mainPart, cValueSet.Source, cValueSet.Source, Properties.Settings.Default.TableLinkStyle);
+                    urlRun = this.hyperlinkTracker.CreateUrlHyperlink(this.mainPart, cValueSet.Source, cValueSet.Source, Properties.Settings.Default.TableLinkStyle);
 
                 TableRow newRow = new TableRow(
                     new TableCell(
@@ -102,7 +104,7 @@ namespace Trifolia.Generation.IG
                                 {
                                     Val = Properties.Settings.Default.TableContentStyle
                                 }),
-                            DocHelper.CreateAnchorHyperlink(cValueSet.Name, cAnchor, Properties.Settings.Default.TableLinkStyle))),
+                            this.hyperlinkTracker.CreateHyperlink(cValueSet.Name, cAnchor, Properties.Settings.Default.TableLinkStyle))),
                     new TableCell(
                         new Paragraph(
                             new ParagraphProperties(
@@ -156,7 +158,7 @@ namespace Trifolia.Generation.IG
                     new Paragraph(
                         new ParagraphProperties(new ParagraphStyleId() { Val = Properties.Settings.Default.TableContentStyle }),
                         DocHelper.CreateRun("Value Set Source: "),
-                        DocHelper.CreateUrlHyperlink(this.mainPart, valueSet.Source, valueSet.Source, Properties.Settings.Default.LinkStyle)));
+                        this.hyperlinkTracker.CreateUrlHyperlink(this.mainPart, valueSet.Source, valueSet.Source, Properties.Settings.Default.LinkStyle)));
 
             Table t = DocHelper.CreateTable(
                 new TableRow(headingCell),

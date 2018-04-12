@@ -206,6 +206,9 @@ namespace Trifolia.Plugins
                 case ExportFormats.Templates_DSTU_XML:
                     DecorExporter decorExporter = new DecorExporter(templates, tdb, igSettings.ImplementationGuideId);
                     return System.Text.Encoding.UTF8.GetBytes(decorExporter.GenerateXML());
+                case ExportFormats.Microsoft_Word_DOCX:
+                    // TODO: make use of ImplementationGuideGenerator after it is moved to Trifolia.Export
+                    throw new NotSupportedException();
                 default:
                     throw new Exception("Invalid export format for the specified implementation guide type");
             }

@@ -496,41 +496,6 @@ ko.bindingHandlers.localization = {
     }
 };
 
-/* sceditor */
-ko.bindingHandlers.sceditor = {
-    init: function (element, valueAccessor, allBindingsAccessor) {
-        var value = valueAccessor();
-
-        setTimeout(function () {
-            $(element).sceditor({
-                plugins: 'xhtml',
-                style: '/Styles/jquery.sceditor.default.min.css',
-                toolbar: 'bold,italic,underline,strike,subscript,superscript|left,center,right,justify|font,size,color,removeformat|cut,copy,paste,pastetext|bulletlist,orderedlist,indent,outdent|table|code,quote|horizontalrule,image,email,link,unlink,anchor|emoticon,youtube,date,time|ltr,rtl|print,maximize,source',
-                imageOpts: allBindingsAccessor().imageOpts
-            });
-
-            var instance = $(element).sceditor('instance');
-
-            instance.nodeChanged(function (e) {
-                var newValue = instance.val();
-                value(newValue);
-            });
-
-            instance.keyUp(function (e) {
-                var newValue = instance.val();
-                value(newValue);
-            });
-
-            instance.trifoliaEditorChange = function () {
-                var newValue = instance.val();
-                value(newValue);
-            };
-        }, 300);
-    },
-    update: function (element, valueAccessor, allBindingsAccessor) {
-    }
-};
-
 /* spinedit */
 ko.bindingHandlers.spinedit = {
     init: function (element, valueAccessor, allBindingsAccessor) {
@@ -592,4 +557,59 @@ ko.bindingHandlers.tooltip = {
             });
         }
     },
+};
+
+/* SimpleMDE */
+ko.bindingHandlers.markdown = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        var value = valueAccessor();
+        var valueUnwrapped = ko.utils.unwrapObservable(valueAccessor());
+        var allBindings = allBindingsAccessor();
+
+        var options = {
+            element: element,
+            initialValue: valueUnwrapped || ''
+        };
+
+        if (allBindings.limitedToolbar) {
+            options.toolbar = ["bold", "italic", "strikethrough", "link", "|", "preview", "fullscreen", "guide"];
+            options.status = false;
+        }
+
+        var simplemde = new SimpleMDE(options);
+
+        // If the markdown plugin is being loaded in a modal window, 
+        // perform a short delay for setting the initial value
+        // to avoid the bug where the text area doesn't actually show any value
+        if ($(element).parents('.modal').length > 0) {
+            setTimeout(function () {
+                simplemde.value(valueUnwrapped);
+            }, 500);
+        }
+
+        var watchValueSubscription = null;
+        var watchValue = function () {
+            if (typeof value === 'function' && value.subscribe) {
+                watchValueSubscription = value.subscribe(function (newValue) {
+                    simplemde.value(newValue);
+                });
+            }
+        }
+
+        simplemde.codemirror.on("change", function () {
+            if (watchValueSubscription) {
+                watchValueSubscription.dispose();       // remove the subscription
+                watchValueSubscription = null;
+            }
+            value(simplemde.value());
+            watchValue();                       // re-add the subscription
+        });
+
+        watchValue();
+
+        ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+            simplemde.toTextArea();
+            simplemde = null;
+        });
+    }
 };
