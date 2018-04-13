@@ -60,6 +60,9 @@ namespace Trifolia.Shared
 
         public static string MarkdownToHtml(this string theString)
         {
+            if (string.IsNullOrEmpty(theString))
+                return theString;
+
             return Markdig.Markdown.ToHtml(theString, mdPipeline);
         }
 
