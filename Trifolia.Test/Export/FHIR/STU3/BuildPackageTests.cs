@@ -192,10 +192,15 @@ namespace Trifolia.Test.Export.FHIR.STU3
             process.StartInfo = startInfo;
             process.OutputDataReceived += (sender, args) =>
             {
-                Console.WriteLine(args.Data);
+                Console.WriteLine("INFO: " + args.Data);
+            };
+            process.ErrorDataReceived += (sender, args) =>
+            {
+                Console.WriteLine("ERROR: " + args.Data);
             };
             process.Start();
             process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
             process.WaitForExit();
             process.CancelOutputRead();
 
