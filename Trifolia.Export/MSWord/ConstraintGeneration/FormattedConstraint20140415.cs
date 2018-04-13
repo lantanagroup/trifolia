@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
@@ -18,40 +19,15 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
         }
 
         private List<ConstraintPart> parts;
-        private IGSettingsManager igSettings;
-        private IObjectRepository tdb;
 
         #region Properties
 
-        public IGSettingsManager IgSettings
-        {
-            get
-            {
-                return this.igSettings;
-            }
-            set
-            {
-                this.igSettings = value;
-            }
-        }
-
-        public IObjectRepository Tdb
-        {
-            get
-            {
-                return this.tdb;
-            }
-            set
-            {
-                this.tdb = value;
-            }
-        }
-
+        public IGSettingsManager IgSettings { get; set; }
+        public IObjectRepository Tdb { get; set; }
         public bool IncludeCategory { get; set; }
         public bool LinkContainedTemplate { get; set; }
         public bool LinkIsBookmark { get; set; }
         public bool CreateLinkForValueSets { get; set; }
-
         public string Category { get; set; }            // Nothing is done with this property in this version
         public string Number { get; set; }
         public string Context { get; set; }
@@ -121,7 +97,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             {
                 // If the caller didn't pass in the ValueSet, get it from the db
                 if (valueSet == null || valueSet.Id != constraint.ValueSetId)
-                    valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
+                    valueSet = this.Tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
 
                 this.ValueSetName = valueSet.Name;
                 this.ValueSetOid = valueSet.GetIdentifier(igTypePlugin);
@@ -132,7 +108,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             {
                 // If the caller didn't pass in the CodeSystem, get it from the db
                 if (codeSystem == null || codeSystem.Id != constraint.ValueCodeSystemId)
-                    codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
+                    codeSystem = this.Tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
 
                 this.CodeSystemName = codeSystem.Name;
                 this.CodeSystemOid = codeSystem.Oid;
@@ -200,32 +176,32 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
                 switch (this.Cardinality)
                 {
                     case "1..1":
-                        if (igSettings != null)
-                            this.parts.Add(new ConstraintPart(igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityOneToOne) + " "));
+                        if (this.IgSettings != null)
+                            this.parts.Add(new ConstraintPart(this.IgSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityOneToOne) + " "));
                         else
                             this.parts.Add(new ConstraintPart(this.Cardinality + " "));
                         break;
                     case "0..1":
-                        if (igSettings != null)
-                            this.parts.Add(new ConstraintPart(igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZeroToOne) + " "));
+                        if (this.IgSettings != null)
+                            this.parts.Add(new ConstraintPart(this.IgSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZeroToOne) + " "));
                         else
                             this.parts.Add(new ConstraintPart(this.Cardinality + " "));
                         break;
                     case "1..*":
-                        if (igSettings != null)
-                            this.parts.Add(new ConstraintPart(igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityAtLeastOne) + " "));
+                        if (this.IgSettings != null)
+                            this.parts.Add(new ConstraintPart(this.IgSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityAtLeastOne) + " "));
                         else
                             this.parts.Add(new ConstraintPart(this.Cardinality + " "));
                         break;
                     case "0..*":
-                        if (igSettings != null)
-                            this.parts.Add(new ConstraintPart(igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZeroOrMore) + " "));
+                        if (this.IgSettings != null)
+                            this.parts.Add(new ConstraintPart(this.IgSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZeroOrMore) + " "));
                         else
                             this.parts.Add(new ConstraintPart(this.Cardinality + " "));
                         break;
                     case "0..0":
-                        if (igSettings != null)
-                            this.parts.Add(new ConstraintPart(igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZero) + " "));
+                        if (this.IgSettings != null)
+                            this.parts.Add(new ConstraintPart(this.IgSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZero) + " "));
                         else
                             this.parts.Add(new ConstraintPart(this.Cardinality + " "));
                         break;
@@ -363,6 +339,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
 
                     if (this.LinkContainedTemplate)
                     {
+                        this.parts.Add(new ConstraintPart(" "));
                         this.parts.Add(new ConstraintPart(ConstraintPart.PartTypes.Link, constraintReference.Name)
                         {
                             LinkDestination = constraintReference.GetLink(this.LinkIsBookmark, this.TemplateLinkBase)
@@ -413,7 +390,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             }
         }
 
-        public Paragraph AddToDocParagraph(WIKIParser wikiParser, OpenXmlElement parent, int level, int id, string headingStyle)
+        public Paragraph AddToDocParagraph(MainDocumentPart mainPart, HyperlinkTracker hyperlinkTracker, OpenXmlElement parent, int level, int id, string headingStyle)
         {
             // Add the heading
             if (this.IsHeading && !string.IsNullOrEmpty(this.Context))
@@ -429,7 +406,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
 
                 if (!string.IsNullOrEmpty(this.HeadingDescription))
                 {
-                    OpenXmlElement parsedHeadingDescription = wikiParser.ParseAsOpenXML(this.HeadingDescription);
+                    OpenXmlElement parsedHeadingDescription = this.HeadingDescription.MarkdownToOpenXml(mainPart);
 
                     if (parsedHeadingDescription != null)
                     {
@@ -446,7 +423,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             // Add the description above the constraint definition
             if (!string.IsNullOrEmpty(this.Description))
             {
-                OpenXmlElement parsedDescription = wikiParser.ParseAsOpenXML(this.Description);
+                OpenXmlElement parsedDescription = this.Description.MarkdownToOpenXml(mainPart);
 
                 if (parsedDescription != null)
                 {
@@ -487,15 +464,20 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
                             DocHelper.CreateRun(cPart.Text, style: Properties.Settings.Default.VocabularyConstraintStyle));
                         break;
                     case ConstraintPart.PartTypes.Link:
-                        para.Append(
-                            DocHelper.CreateAnchorHyperlink(cPart.Text, cPart.LinkDestination, Properties.Settings.Default.LinkStyle));
+                        hyperlinkTracker.AddHyperlink(para, cPart.Text, cPart.LinkDestination, Properties.Settings.Default.LinkStyle);
                         break;
                     case ConstraintPart.PartTypes.Constraint:
-                        para.Append(
-                            DocHelper.CreateRun(cPart.Text, (cPart.IsAnchor ? "C_" + this.Number : string.Empty)));
+                        var newRun = DocHelper.CreateRun(cPart.Text);
+
+                        if (cPart.IsAnchor)
+                            hyperlinkTracker.AddAnchorAround(para, "C_" + this.Number, newRun);
+                        else
+                            para.Append(newRun);
+
                         break;
                     case ConstraintPart.PartTypes.PrimitiveText:
-                        wikiParser.ParseAndAppend(cPart.Text, para, true);
+                        var element = cPart.Text.MarkdownToOpenXml(mainPart, styleKeywords: true);
+                        OpenXmlHelper.Append(element, para);
                         break;
                     default:
                         para.Append(
@@ -508,7 +490,9 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             if (!string.IsNullOrEmpty(this.Label))
             {
                 string additionalLabel = string.Format("Note: {0}", this.Label);
-                para.AppendChild(new Break());
+                para.AppendChild(
+                    new Run(
+                        new Break()));
                 para.AppendChild(
                     DocHelper.CreateRun(additionalLabel));
             }
@@ -550,7 +534,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             return sb.ToString();
         }
 
-        public string GetHtml(WIKIParser parser, string linkBase, int constraintCount, bool includeLabel)
+        public string GetHtml(string linkBase, int constraintCount, bool includeLabel)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -569,7 +553,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
                         sb.Append(string.Format("<a href=\"{0}{1}\">{2}</a>", linkBase, cPart.LinkDestination, cPart.Text));
                         break;
                     case ConstraintPart.PartTypes.PrimitiveText:
-                        sb.Append(parser.ParseAsHtml(cPart.Text));
+                        sb.Append(cPart.Text.MarkdownToHtml());
                         break;
                     default:
                         sb.Append(cPart.Text);
@@ -584,11 +568,6 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             }
 
             return sb.ToString();
-        }
-
-        internal static string HtmlFormatDescriptiveText(WIKIParser parser, string text)
-        {
-            return parser.ParseAsHtml(text);
         }
 
         public class ConstraintPart

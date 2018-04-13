@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Packaging;
 using Trifolia.Export.MSWord.Models;
+using System.Linq;
 
 namespace Trifolia.Export.MSWord
 {
@@ -34,7 +35,10 @@ namespace Trifolia.Export.MSWord
 
             Paragraph p3 = new Paragraph(
                 new ParagraphProperties(
-                    new ParagraphStyleId() { Val = Properties.Settings.Default.TableCaptionStyle }),
+                    new ParagraphStyleId() { Val = Properties.Settings.Default.TableCaptionStyle })
+                );
+
+            p3.Append(
                 DocHelper.CreateRun(caption),
                 new Run(
                     new FieldChar()
@@ -46,8 +50,20 @@ namespace Trifolia.Export.MSWord
                     new FieldChar()
                     {
                         FieldCharType = new EnumValue<FieldCharValues>(FieldCharValues.Separate)
-                    }),
-                DocHelper.CreateRun(count.ToString(), bookmarkId),
+                    }));
+
+            if (!string.IsNullOrEmpty(bookmarkId))
+                p3.Append(
+                    new BookmarkStart() { Id = bookmarkId, Name = bookmarkId });
+
+            p3.Append(
+                DocHelper.CreateRun(count.ToString()));
+
+            if (!string.IsNullOrEmpty(bookmarkId))
+                p3.Append(
+                    new BookmarkEnd() { Id = bookmarkId });
+
+            p3.Append(
                 new Run(
                     new FieldChar()
                     {
@@ -76,15 +92,13 @@ namespace Trifolia.Export.MSWord
         internal static Table CreateTable(params HeaderDescriptor[] headers)
         {
             Table table = CreateTable(new OpenXmlElement[] { });
+            TableGrid lGrid = table.ChildElements.OfType<TableGrid>().First();
             TableProperties lProperties = table.FirstChild as TableProperties;
 
             if (lProperties != null)
             {
                 lProperties.TableStyle = new TableStyle() { Val = new StringValue("TableGrid") };
             }
-
-            TableGrid lGrid = new TableGrid();
-            table.Append(lGrid);
 
             foreach (HeaderDescriptor lDescriptor in headers)
             {
@@ -174,7 +188,8 @@ namespace Trifolia.Export.MSWord
                         LastColumn = new OnOffValue(false),
                         NoVerticalBand = new OnOffValue(false)
                     }
-                });
+                },
+                new TableGrid());
 
             table.Append(children);
 
@@ -215,65 +230,10 @@ namespace Trifolia.Export.MSWord
             return row;
         }
 
-        public static Hyperlink CreateUrlHyperlink(MainDocumentPart mainPart, string text, string url, string style)
-        {
-            RunProperties rp = new RunProperties(
-                new RunStyle()
-                {
-                    Val = style
-                });
-
-            HyperlinkRelationship rel = mainPart.AddHyperlinkRelationship(new Uri(url), true);
-
-            return new Hyperlink(
-                new ProofError() { Type = ProofingErrorValues.GrammarStart },
-                new Run(
-                    rp,
-                    new Text(text)))
-                {
-                    History = true,
-                    Id = rel.Id
-                };
-        }
-
-        public static Hyperlink CreateAnchorHyperlink(string text, string anchor, string style)
-        {
-            return CreateAnchorHyperlink(text, anchor, style, -1);
-        }
-
-        public static Hyperlink CreateAnchorHyperlink(string text, string anchor, string style, int size)
-        {
-            RunProperties rp = new RunProperties(
-                new RunStyle()
-                {
-                    Val = style,
-                });
-
-            if (size != -1)
-                rp.Append(
-                    new FontSize()
-                    {
-                        Val = new StringValue((2 * size).ToString())
-                    });
-
-            return new Hyperlink(
-                new ProofError() { Type = ProofingErrorValues.GrammarStart },
-                new Run(
-                    rp,
-                    new Text(text))) { Anchor = anchor };
-        }
-
-        public static Run CreateRun(string text, string anchorName=null, bool bold=false, bool italic=false, int? size=null, string style=null, string font=null)
+        public static Run CreateRun(string text, bool bold=false, bool italic=false, int? size=null, string style=null, string font=null)
         {
             Run newRun = new Run();
             RunProperties newRunProperties = new RunProperties();
-
-            if (!string.IsNullOrEmpty(anchorName))
-            {
-                newRun.Append(
-                    new BookmarkStart() { Id = anchorName, Name = anchorName },
-                    new BookmarkEnd() { Id = anchorName });
-            }
 
             if (bold)
                 newRunProperties.Append(new Bold());
@@ -332,14 +292,14 @@ namespace Trifolia.Export.MSWord
         public static TableBorders CreateTableBorder()
         {
             TableBorders borders = new TableBorders(
-                new LeftBorder()
+                new TopBorder()
                 {
                     Val = BorderValues.Single,
                     Size = new UInt32Value((uint)4),
                     Space = new UInt32Value((uint)0),
                     Color = new StringValue("auto")
                 },
-                new RightBorder()
+                new LeftBorder()
                 {
                     Val = BorderValues.Single,
                     Size = new UInt32Value((uint)4),
@@ -353,7 +313,7 @@ namespace Trifolia.Export.MSWord
                     Space = new UInt32Value((uint)0),
                     Color = new StringValue("auto")
                 },
-                new TopBorder()
+                new RightBorder()
                 {
                     Val = BorderValues.Single,
                     Size = new UInt32Value((uint)4),

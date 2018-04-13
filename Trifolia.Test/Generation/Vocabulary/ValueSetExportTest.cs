@@ -52,8 +52,9 @@ namespace Trifolia.Test.Generation.Vocabulary
         [TestMethod]
         public void ValueSetExport_Inline()
         {
+            HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, false, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, false, 2, null);
 
             vse.AddValueSet(this.vs1, DateTime.Now);
 
@@ -63,7 +64,7 @@ namespace Trifolia.Test.Generation.Vocabulary
 
             Table t1 = this.body.ChildElements[1] as Table;
             Assert.IsNotNull(t1);
-            Assert.AreEqual(6, t1.ChildElements.Count);
+            Assert.AreEqual(7, t1.ChildElements.Count);
 
             AssertWordXpath(t1, "w:tr[last()][count(w:tc[w:tcPr/w:gridSpan/@w:val='4'])=1]", "Expected to find one column with a gridspan of 4 in the last row");
             AssertWordXpath(t1, "w:tr[last()]/w:tc/w:p/w:r/w:t[text() = '...']", "Expected to find a text block with ...");
@@ -73,7 +74,7 @@ namespace Trifolia.Test.Generation.Vocabulary
 
             Table t2 = this.body.ChildElements[4] as Table;
             Assert.IsNotNull(t2);
-            Assert.AreEqual(5, t2.ChildElements.Count);
+            Assert.AreEqual(6, t2.ChildElements.Count);
 
             AssertWordXpath(t2, "w:tr[last()][not(w:tc/w:p/w:r/w:t[text() = '...'])]", "Shouldn't have found an elipsis in the last row.");
 
@@ -91,8 +92,9 @@ namespace Trifolia.Test.Generation.Vocabulary
         [TestMethod]
         public void ValueSetExport_Appendix()
         {
+            HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, true, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, true, 2, null);
 
             vse.AddValueSet(this.vs1, DateTime.Now);
             Assert.AreEqual(0, this.body.ChildElements.Count);
@@ -113,8 +115,9 @@ namespace Trifolia.Test.Generation.Vocabulary
         [TestMethod]
         public void ValueSetExport_NoMembers()
         {
+            HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, false, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, false, 2, null);
 
             vse.AddValueSet(this.vs3, DateTime.Now);
             Assert.AreEqual(0, this.body.ChildElements.Count);
@@ -123,8 +126,9 @@ namespace Trifolia.Test.Generation.Vocabulary
         [TestMethod]
         public void ValueSetExport_SameValueSetTwice()
         {
+            HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
             TableCollection tables = new TableCollection(this.body);
-            ValueSetsExport vse = new ValueSetsExport(null, mainPart, tables, false, 2, null);
+            ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, false, 2, null);
 
             vse.AddValueSet(this.vs2, DateTime.Now);
             Assert.AreEqual(3, this.body.ChildElements.Count);

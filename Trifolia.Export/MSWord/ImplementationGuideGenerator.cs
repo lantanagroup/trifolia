@@ -41,7 +41,6 @@ namespace Trifolia.Export.MSWord
         private ValueSetsExport valueSetsExport = null;
         private TableCollection tables = null;
         private FigureCollection figures = null;
-        private WIKIParser wikiParser = null;
         private CodeSystemTable codeSystemTable = null;
         private TemplateConstraintTable constraintTableGenerator;
         private PublishStatus retiredStatus = null;
@@ -49,6 +48,7 @@ namespace Trifolia.Export.MSWord
         private List<ViewTemplateRelationship> templateRelationships = null;
         private List<ConstraintReference> constraintReferences = null;
         private SimpleSchema schema = null;
+        private HyperlinkTracker hyperlinkTracker = null;
 
         #endregion
 
@@ -109,18 +109,19 @@ namespace Trifolia.Export.MSWord
                 new Document(
                     new Body());
 
+            this.hyperlinkTracker = new HyperlinkTracker();
             this.tables = new TableCollection(this.document.MainDocumentPart.Document.Body);
-            this.constraintTableGenerator = new TemplateConstraintTable(this._tdb, this.constraintReferences, this.igSettings, igTypePlugin, this.templates, this.tables, exportSettings.SelectedCategories);
+            this.constraintTableGenerator = new TemplateConstraintTable(this._tdb, this.constraintReferences, this.igSettings, igTypePlugin, this.templates, this.tables, exportSettings.SelectedCategories, this.hyperlinkTracker);
             this.figures = new FigureCollection(this.document.MainDocumentPart.Document.Body);
             this.valueSetsExport 
                 = new ValueSetsExport(
                     igTypePlugin,
                     this.document.MainDocumentPart, 
+                    this.hyperlinkTracker,
                     this.tables, 
                     exportSettings.GenerateValueSetAppendix, 
                     exportSettings.DefaultValueSetMaxMembers,
                     exportSettings.ValueSetMaxMembers);
-            this.wikiParser = new WIKIParser(this._tdb, this.document.MainDocumentPart);
             this.codeSystemTable = new CodeSystemTable(this._tdb, this.document.MainDocumentPart.Document.Body, this.templates, this.tables);
 
             this.AddTitlePage();
@@ -146,7 +147,7 @@ namespace Trifolia.Export.MSWord
 
                 if (exportSettings.GenerateDocContainmentTable)
                 {
-                    TemplateContainmentGenerator.AddTable(this._tdb, this.document, this.templateRelationships, this.templates, this.tables);
+                    TemplateContainmentGenerator.AddTable(this._tdb, this.document, this.templateRelationships, this.templates, this.tables, this.hyperlinkTracker);
                 }
             }
 
@@ -211,8 +212,10 @@ namespace Trifolia.Export.MSWord
                     new DocGrid() { LinePitch = 360 });
             this.document.MainDocumentPart.Document.Body.Append(sectionProperties);
 
-            //OpenXmlValidator validator = new OpenXmlValidator(FileFormatVersions.Office2010);
-            //List<ValidationErrorInfo> errors = validator.Validate(this._document).ToList();
+            /*
+            OpenXmlValidator validator = new OpenXmlValidator(FileFormatVersions.Office2010);
+            List<ValidationErrorInfo> errors = validator.Validate(this.document).ToList();
+            */
 
             this.document.Close();
 
@@ -376,13 +379,16 @@ namespace Trifolia.Export.MSWord
                 OpenXmlElement templateTitleElement = DocHelper.CreateRun(string.Format("{0} ({1})", lDifference.TemplateName, lDifference.TemplateOid));
 
                 if (lDifference.ShouldLink)
-                    templateTitleElement = DocHelper.CreateAnchorHyperlink(
-                        string.Format("{0} ({1})", lDifference.TemplateName, lDifference.TemplateOid), lDifference.TemplateBookmark, Properties.Settings.Default.LinkStyle);
+                    templateTitleElement = this.hyperlinkTracker.CreateHyperlink(
+                        string.Format("{0} ({1})", lDifference.TemplateName, lDifference.TemplateOid), 
+                        lDifference.TemplateBookmark, 
+                        Properties.Settings.Default.LinkStyle);
 
                 Paragraph changeLinkPara = new Paragraph(
                     new ParagraphProperties(new KeepNext()),
                     templateTitleElement,
-                    new Break());
+                    new Run(
+                        new Break()));
                 this.document.MainDocumentPart.Document.Body.AppendChild(changeLinkPara);
 
                 Table t = this.tables.AddTable(null, new string[] { "Change", "Old", "New" });
@@ -502,7 +508,10 @@ namespace Trifolia.Export.MSWord
                 this.document.MainDocumentPart.Document.Body.AppendChild(entryLevelHeading);
 
                 if (!string.IsNullOrEmpty(detailsText))
-                    this.wikiParser.ParseAndAppend(detailsText, this.document.MainDocumentPart.Document.Body);
+                {
+                    OpenXmlElement element = detailsText.MarkdownToOpenXml(this.document.MainDocumentPart);
+                    OpenXmlHelper.Append(element, this.document.MainDocumentPart.Document.Body);
+                }
 
                 foreach (Template cTemplate in notRetiredTemplates)
                 {
@@ -589,13 +598,12 @@ namespace Trifolia.Export.MSWord
             // Output the title of the template
             Paragraph pHeading = new Paragraph(
                 new ParagraphProperties(
-                    new ParagraphStyleId() { Val = headingLevel }),
+                    new ParagraphStyleId() { Val = headingLevel }));
+
+            this.hyperlinkTracker.AddAnchorAround(pHeading, bookmarkId, 
                 new Run(
                     new Text(template.Name.Substring(0, 1))),
                 new Run(
-                    new RunProperties(
-                        new BookmarkStart() { Id = bookmarkId, Name = bookmarkId },
-                        new BookmarkEnd() { Id = bookmarkId }),
                     new Text(lTemplateTitle)));
 
             if (!string.IsNullOrEmpty(template.Notes) && this.exportSettings.IncludeNotes)
@@ -639,11 +647,14 @@ namespace Trifolia.Export.MSWord
 
             // If we were told to generate context tables for the template...
             if (exportSettings.GenerateTemplateContextTable)
-                TemplateContextTable.AddTable(this._tdb, this.templateRelationships, this.tables, this.document.MainDocumentPart.Document.Body, template, this.templates);
+                TemplateContextTable.AddTable(this._tdb, this.templateRelationships, this.tables, this.document.MainDocumentPart.Document.Body, template, this.templates, this.hyperlinkTracker);
 
             // Output the template's descriptionz
             if (!string.IsNullOrEmpty(template.Description))
-                this.wikiParser.ParseAndAppend(template.Description, this.document.MainDocumentPart.Document.Body);
+            {
+                OpenXmlElement element = template.Description.MarkdownToOpenXml(this.document.MainDocumentPart);
+                OpenXmlHelper.Append(element, this.document.MainDocumentPart.Document.Body);
+            }
 
             // If we were told to generate tables for the template...
             if (exportSettings.GenerateTemplateConstraintTable)
@@ -663,7 +674,7 @@ namespace Trifolia.Export.MSWord
             {
                 OpenXmlElement templateReference = !this.templates.Contains(template.ImpliedTemplate) ? 
                     (OpenXmlElement) DocHelper.CreateRun(template.ImpliedTemplate.Name) :
-                    (OpenXmlElement) DocHelper.CreateAnchorHyperlink(template.ImpliedTemplate.Name, template.ImpliedTemplate.Bookmark, Properties.Settings.Default.LinkStyle);
+                    (OpenXmlElement) this.hyperlinkTracker.CreateHyperlink(template.ImpliedTemplate.Name, template.ImpliedTemplate.Bookmark, Properties.Settings.Default.LinkStyle);
 
                 Paragraph impliedConstraint = new Paragraph(
                     new ParagraphProperties(
@@ -685,7 +696,6 @@ namespace Trifolia.Export.MSWord
                 this.document.MainDocumentPart.Document.Body,
                 this.commentManager,
                 this.figures,
-                this.wikiParser,
                 exportSettings.IncludeXmlSamples,
                 _tdb,
                 rootConstraints,
@@ -693,7 +703,8 @@ namespace Trifolia.Export.MSWord
                 template,
                 this.templates,
                 Properties.Settings.Default.ConstraintHeadingStyle,
-                exportSettings.SelectedCategories);
+                exportSettings.SelectedCategories,
+                this.hyperlinkTracker);
             constraintGenerator.GenerateConstraints(lCreateValueSetTables, this.exportSettings.IncludeNotes);
 
             // Add value-set tables
@@ -741,7 +752,7 @@ namespace Trifolia.Export.MSWord
                 OpenXmlElement titleElement = DocHelper.CreateRun(cTemplate.Name);
 
                 if (cTemplate.Status != this.retiredStatus)
-                    titleElement = DocHelper.CreateAnchorHyperlink(cTemplate.Name, cTemplate.Bookmark, Properties.Settings.Default.TableLinkStyle);
+                    titleElement = this.hyperlinkTracker.CreateHyperlink(cTemplate.Name, cTemplate.Bookmark, Properties.Settings.Default.TableLinkStyle);
 
                 t.AppendChild(
                     new TableRow(

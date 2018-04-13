@@ -37,9 +37,8 @@
     <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DocumentFormat.OpenXml.1.0\lib\DocumentFormat.OpenXml.dll</HintPath>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.AspNet, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetOpenAuth.AspNet.4.3.4.13329\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
@@ -1890,18 +1889,14 @@
     <Content Include="Scripts\lib\q\spec\q-spec.html" />
     <Content Include="Scripts\lib\q\spec\q-spec.js" />
     <Content Include="Scripts\lib\q\spec\queue-spec.js" />
+    <Content Include="Scripts\lib\simplemde\simplemde.debug.js" />
+    <Content Include="Scripts\lib\simplemde\simplemde.min.js" />
+    <Content Include="Styles\simplemde.min.css" />
     <Content Include="Scripts\Report\Organizations.js" />
     <Content Include="Scripts\Report\TemplateReview.js" />
     <Content Include="Scripts\Report\TemplateUsage.js" />
     <Content Include="Scripts\Report\TemplateValidation.js" />
     <Content Include="Scripts\Admin\Roles.js" />
-    <Content Include="Scripts\lib\sceditor\jquery.sceditor.min.js" />
-    <Content Include="Scripts\lib\sceditor\jquery.sceditor.xhtml.min.js" />
-    <Content Include="Scripts\lib\sceditor\plugins\bbcode.js" />
-    <Content Include="Scripts\lib\sceditor\plugins\format.js" />
-    <Content Include="Scripts\lib\sceditor\plugins\undo.js" />
-    <Content Include="Scripts\lib\sceditor\plugins\xhtml.js" />
-    <Content Include="Scripts\lib\sceditor\sceditor.custom.js" />
     <Content Include="Scripts\Schema\DataTypesViewModel.js" />
     <Content Include="Scripts\lib\Sha1.js" />
     <Content Include="Scripts\TemplateEdit\templateEditGlobals.js" />
@@ -1946,13 +1941,11 @@
     <Content Include="Styles\bootstrap-treenav.min.css" />
     <Content Include="Styles\bootstrap.min.css" />
     <Content Include="Styles\datepicker.css" />
-    <Content Include="Styles\default.min.css" />
     <Content Include="Styles\famfamfam.png" />
     <Content Include="Styles\highlight.css" />
     <Content Include="Styles\font-awesome.min.css" />
     <Content Include="Styles\IGView.css" />
     <Content Include="Styles\joint.min.css" />
-    <Content Include="Styles\jquery.sceditor.default.min.css" />
     <Content Include="Styles\Site.css" />
     <Content Include="Styles\templateEditor.css" />
     <Content Include="Unauthorized.aspx" />

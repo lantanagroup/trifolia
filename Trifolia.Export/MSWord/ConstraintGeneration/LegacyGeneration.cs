@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,96 +16,45 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
 
         #region IConstraintGenerator Properties
 
-        private IGSettingsManager igSettings;
-        private Body documentBody;
-        private IObjectRepository dataSource;
-        private List<TemplateConstraint> rootConstraints;
-        private List<TemplateConstraint> allConstraints;
-        private Template currentTemplate;
-        private List<Template> allTemplates;
-        private string constraintHeadingStyle;
-
         public IIGTypePlugin IGTypePlugin { get; set; }
 
         public CommentManager CommentManager { get; set; }
 
         public List<ConstraintReference> ConstraintReferences { get; set; }
 
-        public string ConstraintHeadingStyle
-        {
-            get { return constraintHeadingStyle; }
-            set { constraintHeadingStyle = value; }
-        }
+        public string ConstraintHeadingStyle { get; set; }
 
-        public WIKIParser WikiParser
-        {
-            get { return null; }
-            set { }
-        }
+        public FigureCollection Figures { get; set; }
 
-        public FigureCollection Figures
-        {
-            get { return null; }
-            set { }
-        }
+        public bool IncludeSamples { get; set; }
 
-        public bool IncludeSamples
-        {
-            get { return false; }
-            set { }
-        }
+        public IGSettingsManager IGSettings { get; set; }
 
-        public IGSettingsManager IGSettings
-        {
-            get { return igSettings; }
-            set { igSettings = value; }
-        }
+        public MainDocumentPart MainPart { get; set; }
 
-        public Body DocumentBody
-        {
-            get { return documentBody; }
-            set { documentBody = value; }
-        }
+        public Body DocumentBody { get; set; }
 
-        public IObjectRepository DataSource
-        {
-            get { return dataSource; }
-            set { dataSource = value; }
-        }
+        public IObjectRepository DataSource { get; set; }
 
-        public List<TemplateConstraint> RootConstraints
-        {
-            get { return rootConstraints; }
-            set { rootConstraints = value; }
-        }
+        public List<TemplateConstraint> RootConstraints { get; set; }
 
-        public List<TemplateConstraint> AllConstraints
-        {
-            get { return allConstraints; }
-            set { allConstraints = value; }
-        }
+        public List<TemplateConstraint> AllConstraints { get; set; }
 
-        public Template CurrentTemplate
-        {
-            get { return currentTemplate; }
-            set { currentTemplate = value; }
-        }
+        public Template CurrentTemplate { get; set; }
 
-        public List<Template> AllTemplates
-        {
-            get { return allTemplates; }
-            set { allTemplates = value; }
-        }
+        public List<Template> AllTemplates { get; set; }
 
         public bool IncludeCategory { get; set; }
+
         public List<string> SelectedCategories { get; set; }
+        public HyperlinkTracker HyperlinkTracker { get; set; }
 
         #endregion
 
         public void GenerateConstraints(bool aCreateHyperlinksForValueSetNames = false, bool includeNotes = false)
         {
             // Output the constraints
-            foreach (TemplateConstraint cConstraint in rootConstraints)
+            foreach (TemplateConstraint cConstraint in this.RootConstraints)
             {
                 this.AddTemplateConstraint(cConstraint, 1);
             }
@@ -113,7 +63,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
         private void AddTemplateConstraint(TemplateConstraint constraint, int level)
         {
             // TODO: May be able to make this more efficient
-            List<TemplateConstraint> childConstraints = allConstraints
+            List<TemplateConstraint> childConstraints = this.AllConstraints
                 .Where(y => y.ParentConstraintId == constraint.Id)
                 .OrderBy(y => y.Order)
                 .ToList();
@@ -136,14 +86,14 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
                         }
                     },
                     DocHelper.CreateRun(constraint.Description, style:"Normal,Normal Not Indented"));
-                this.documentBody.Append(pDescription);
+                this.DocumentBody.Append(pDescription);
             }
 
             Paragraph pConstraint = new Paragraph(
                 new ParagraphProperties(
                     new NumberingProperties(
                         new NumberingLevelReference() { Val = level - 1 },
-                        new NumberingId() { Val = GenerationConstants.BASE_TEMPLATE_INDEX + (int)currentTemplate.Id })));
+                        new NumberingId() { Val = GenerationConstants.BASE_TEMPLATE_INDEX + (int)this.CurrentTemplate.Id })));
             string context = constraint.Context;
 
             // Build the constraint text
@@ -175,23 +125,23 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
                 {
                     case "1..1":
                         pConstraint.Append(
-                            DocHelper.CreateRun(this.igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityOneToOne) + " "));
+                            DocHelper.CreateRun(this.IGSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityOneToOne) + " "));
                         break;
                     case "0..1":
                         pConstraint.Append(
-                            DocHelper.CreateRun(this.igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZeroToOne) + " "));
+                            DocHelper.CreateRun(this.IGSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZeroToOne) + " "));
                         break;
                     case "1..*":
                         pConstraint.Append(
-                            DocHelper.CreateRun(this.igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityAtLeastOne) + " "));
+                            DocHelper.CreateRun(this.IGSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityAtLeastOne) + " "));
                         break;
                     case "0..*":
                         pConstraint.Append(
-                            DocHelper.CreateRun(this.igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZeroOrMore) + " "));
+                            DocHelper.CreateRun(this.IGSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZeroOrMore) + " "));
                         break;
                     case "0..0":
                         pConstraint.Append(
-                            DocHelper.CreateRun(this.igSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZero) + " "));
+                            DocHelper.CreateRun(this.IGSettings.GetSetting(IGSettingsManager.SettingProperty.CardinalityZero) + " "));
                         break;
                     default:
                         pConstraint.Append(
@@ -200,7 +150,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
                 }
 
                 var containedTemplate = (from tcr in constraint.References
-                                         join t in this.dataSource.Templates on tcr.ReferenceIdentifier equals t.Oid
+                                         join t in this.DataSource.Templates on tcr.ReferenceIdentifier equals t.Oid
                                          where tcr.ReferenceType == ConstraintReferenceTypes.Template
                                          select t).FirstOrDefault();
 
@@ -225,10 +175,10 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
                 }
                 else if (containedTemplate != null)
                 {
-                    if (this.allTemplates.Exists(y => y.Id == containedTemplate.Id))
+                    if (this.AllTemplates.Exists(y => y.Id == containedTemplate.Id))
                     {
                         pConstraint.Append(
-                            DocHelper.CreateAnchorHyperlink(containedTemplate.Name, containedTemplate.Bookmark, Properties.Settings.Default.LinkStyle),
+                            this.HyperlinkTracker.CreateHyperlink(containedTemplate.Name, containedTemplate.Bookmark, Properties.Settings.Default.LinkStyle),
                             DocHelper.CreateRun(" (" + containedTemplate.Oid + ")", style:Properties.Settings.Default.TemplateOidStyle));
                     }
                     else
@@ -255,17 +205,19 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
 
                         pConstraint.Append(
                             DocHelper.CreateRun(", which "),
-                            DocHelper.CreateRun(valueConformance, Properties.Settings.Default.ConformanceVerbStyle),
+                            DocHelper.CreateRun(valueConformance, style: Properties.Settings.Default.ConformanceVerbStyle),
                             DocHelper.CreateRun(" be selected from ValueSet "),
-                            DocHelper.CreateRun(constraint.ValueSet.Name + " " + constraint.ValueSet.GetIdentifier(this.IGTypePlugin), 
-                            anchorName:lValueSetAnchor,
-                            style:Properties.Settings.Default.VocabularyConstraintStyle));
+                            new BookmarkStart() { Id = lValueSetAnchor, Name = lValueSetAnchor },
+                            DocHelper.CreateRun(
+                                constraint.ValueSet.Name + " " + constraint.ValueSet.GetIdentifier(this.IGTypePlugin),
+                                style:Properties.Settings.Default.VocabularyConstraintStyle),
+                            new BookmarkEnd() { Id = lValueSetAnchor });
                     }
                     else if (constraint.CodeSystem != null)
                     {
                         pConstraint.Append(
                             DocHelper.CreateRun(", which "),
-                            DocHelper.CreateRun(valueConformance, Properties.Settings.Default.ConformanceVerbStyle),
+                            DocHelper.CreateRun(valueConformance, style: Properties.Settings.Default.ConformanceVerbStyle),
                             DocHelper.CreateRun(" be selected from CodeSystem "),
                             DocHelper.CreateRun(constraint.CodeSystem.Name + " (" + constraint.CodeSystem.Oid + ")", style:Properties.Settings.Default.VocabularyConstraintStyle));
                     }
@@ -306,9 +258,11 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
                             DocHelper.CreateRun(")"));
                     }
                 }
-
+                
                 pConstraint.Append(
-                    DocHelper.CreateRun(string.Format(" (CONF:{0})", constraint.Id), "C_" + constraint.Id.ToString()));
+                    new BookmarkStart() { Id = "C_" + constraint.Id.ToString(), Name = "C_" + constraint.Id.ToString() },
+                    DocHelper.CreateRun(string.Format(" (CONF:{0})", constraint.Id)),
+                    new BookmarkEnd() { Id = "C_" + constraint.Id.ToString() });
 
                 if (constraint.IsBranch == true && childConstraints.Count > 0)
                 {
@@ -318,7 +272,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             }
 
             // Add the constraint as a bullet to the document
-            this.documentBody.Append(pConstraint);
+            this.DocumentBody.Append(pConstraint);
 
             // Add child constraints
             foreach (TemplateConstraint cConstraint in childConstraints)

@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
-using Trifolia.Export.MSWord;
 using Trifolia.Export.MSWord.ConstraintGeneration;
 using Trifolia.Plugins;
 using Trifolia.Shared;
@@ -268,7 +267,6 @@ namespace Trifolia.Web.Models.GreenManagement
             int? aParentConstraintId = null)
         {
             IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(tdb, igSettings, igTypePlugin, dbConstraint);
-            WIKIParser wikiParser = new WIKIParser(tdb);
 
             ConstraintViewModel lGreenViewModel = new ConstraintViewModel()
             {

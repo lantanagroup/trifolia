@@ -13,7 +13,6 @@ namespace Trifolia.Export.MSWord
             Body documentBody, 
             CommentManager cmtMgr,
             FigureCollection figures,
-            WIKIParser wikiParser,
             bool includeSamples,
             IObjectRepository dataSource, 
             List<TemplateConstraint> rootConstraints, 
@@ -21,7 +20,8 @@ namespace Trifolia.Export.MSWord
             Template currentTemplate,
             List<Template> allTemplates,
             string constraintHeadingStyle,
-            List<string> selectedCategories)
+            List<string> selectedCategories,
+            HyperlinkTracker hyperlinkTracker)
         {
             IConstraintGenerator constraintGenerator = null;
 
@@ -33,7 +33,6 @@ namespace Trifolia.Export.MSWord
             constraintGenerator.IGSettings = igSettings;
             constraintGenerator.DocumentBody = documentBody;
             constraintGenerator.Figures = figures;
-            constraintGenerator.WikiParser = wikiParser;
             constraintGenerator.IncludeSamples = includeSamples;
             constraintGenerator.DataSource = dataSource;
             constraintGenerator.RootConstraints = rootConstraints;
@@ -44,6 +43,7 @@ namespace Trifolia.Export.MSWord
             constraintGenerator.CommentManager = cmtMgr;
             constraintGenerator.IncludeCategory = !string.IsNullOrEmpty(igSettings.GetSetting(IGSettingsManager.SettingProperty.Categories));
             constraintGenerator.SelectedCategories = selectedCategories;
+            constraintGenerator.HyperlinkTracker = hyperlinkTracker;
 
             return constraintGenerator;
         }

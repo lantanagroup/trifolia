@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
+﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using System.Collections.Generic;
 using System.Linq;
 using Trifolia.DB;
@@ -12,22 +13,10 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
         #region Private Fields
 
         private int templateConstraintCount = 1;
-        
+
         #endregion
 
         #region IConstraintGenerator Properties
-
-        private IGSettingsManager igSettings;
-        private Body documentBody;
-        private FigureCollection figures;
-        private WIKIParser wikiParser;
-        private bool includeSamples;
-        private IObjectRepository dataSource;
-        private List<TemplateConstraint> rootConstraints;
-        private List<TemplateConstraint> allConstraints;
-        private Template currentTemplate;
-        private List<Template> allTemplates;
-        private string constraintHeadingStyle;
 
         public IIGTypePlugin IGTypePlugin { get; set; }
 
@@ -35,74 +24,31 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
 
         public List<ConstraintReference> ConstraintReferences { get; set; }
 
-        public string ConstraintHeadingStyle
-        {
-            get { return constraintHeadingStyle; }
-            set { constraintHeadingStyle = value; }
-        }
+        public string ConstraintHeadingStyle { get; set; }
 
-        public IGSettingsManager IGSettings
-        {
-            get { return igSettings; }
-            set { igSettings = value; }
-        }
+        public IGSettingsManager IGSettings { get; set; }
 
-        public Body DocumentBody
-        {
-            get { return documentBody; }
-            set { documentBody = value; }
-        }
+        public MainDocumentPart MainPart { get; set; }
 
-        public FigureCollection Figures
-        {
-            get { return figures; }
-            set { figures = value; }
-        }
+        public Body DocumentBody { get; set; }
 
-        public WIKIParser WikiParser
-        {
-            get { return wikiParser; }
-            set { wikiParser = value; }
-        }
+        public FigureCollection Figures { get; set; }
 
-        public bool IncludeSamples
-        {
-            get { return includeSamples; }
-            set { includeSamples = value; }
-        }
+        public bool IncludeSamples { get; set; }
 
-        public IObjectRepository DataSource
-        {
-            get { return dataSource; }
-            set { dataSource = value; }
-        }
+        public IObjectRepository DataSource { get; set; }
 
-        public List<TemplateConstraint> RootConstraints
-        {
-            get { return rootConstraints; }
-            set { rootConstraints = value; }
-        }
+        public List<TemplateConstraint> RootConstraints { get; set; }
 
-        public List<TemplateConstraint> AllConstraints
-        {
-            get { return allConstraints; }
-            set { allConstraints = value; }
-        }
+        public List<TemplateConstraint> AllConstraints { get; set; }
 
-        public Template CurrentTemplate
-        {
-            get { return currentTemplate; }
-            set { currentTemplate = value; }
-        }
+        public Template CurrentTemplate { get; set; }
 
-        public List<Template> AllTemplates
-        {
-            get { return allTemplates; }
-            set { allTemplates = value; }
-        }
+        public List<Template> AllTemplates { get; set; }
 
         public bool IncludeCategory { get; set; }
         public List<string> SelectedCategories { get; set; }
+        public HyperlinkTracker HyperlinkTracker { get; set; }
 
         private bool HasSelectedCategories
         {
@@ -117,7 +63,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
         public void GenerateConstraints(bool aCreateLinksForValueSets = false, bool includeNotes = false)
         {
             // Output the constraints
-            foreach (TemplateConstraint cConstraint in rootConstraints)
+            foreach (TemplateConstraint cConstraint in this.RootConstraints)
             {
                 if (this.HasSelectedCategories && !cConstraint.CategoryIsMatch(this.SelectedCategories))
                     continue;
@@ -134,7 +80,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
                 constraint = constraint.ChildConstraints.First();
 
             // TODO: May be able to make this more efficient
-            List<TemplateConstraint> childConstraints = allConstraints
+            List<TemplateConstraint> childConstraints = this.AllConstraints
                 .Where(y => y.ParentConstraintId == constraint.Id)
                 .OrderBy(y => y.Order)
                 .ToList();
@@ -145,13 +91,13 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             // TODO: Improve so that not all references have to be in the export for some to be linked
             var containedTemplateReferences = constraint.References.Where(y => y.ReferenceType == ConstraintReferenceTypes.Template);
             var containedTemplatesFound = (from ct in containedTemplateReferences
-                                           join t in this.allTemplates on ct.ReferenceIdentifier equals t.Oid
+                                           join t in this.AllTemplates on ct.ReferenceIdentifier equals t.Oid
                                            select t);
             bool containedTemplateLinked = containedTemplateReferences.Count() > 0 && containedTemplateReferences.Count() == containedTemplatesFound.Count();
 
             bool includeCategory = this.IncludeCategory && (!this.HasSelectedCategories || this.SelectedCategories.Count > 1);
-            IFormattedConstraint fConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.dataSource, this.igSettings, this.IGTypePlugin, constraint, this.ConstraintReferences, linkContainedTemplate: containedTemplateLinked, linkIsBookmark: true, createLinksForValueSets: aCreateLinksForValueSets, includeCategory: includeCategory);
-            Paragraph para = fConstraint.AddToDocParagraph(this.wikiParser, this.DocumentBody, level -1, GenerationConstants.BASE_TEMPLATE_INDEX + (int)currentTemplate.Id, this.constraintHeadingStyle);
+            IFormattedConstraint fConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.DataSource, this.IGSettings, this.IGTypePlugin, constraint, this.ConstraintReferences, linkContainedTemplate: containedTemplateLinked, linkIsBookmark: true, createLinksForValueSets: aCreateLinksForValueSets, includeCategory: includeCategory);
+            Paragraph para = fConstraint.AddToDocParagraph(this.MainPart, this.HyperlinkTracker, this.DocumentBody, level -1, GenerationConstants.BASE_TEMPLATE_INDEX + (int)this.CurrentTemplate.Id, this.ConstraintHeadingStyle);
 
             if (!string.IsNullOrEmpty(constraint.Notes) && includeNotes)
                 this.CommentManager.AddCommentRange(para, constraint.Notes);
@@ -170,7 +116,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             {
                 foreach (var cSample in constraint.Samples)
                 {
-                    figures.AddSample(cSample.Name, cSample.SampleText);
+                    this.Figures.AddSample(cSample.Name, cSample.SampleText);
                 }
             }
         }

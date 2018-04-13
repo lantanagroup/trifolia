@@ -81,7 +81,7 @@ namespace Trifolia.Test.Import
             string importXml = Helper.GetSampleContents("Trifolia.Test.DocSamples.ccda1-native.xml");
             ExportModel model = ExportModel.Deserialize(importXml);
 
-            Helper.AuthLogin(tdb, MockObjectRepository.DEFAULT_USERNAME, MockObjectRepository.DEFAULT_ORGANIZATION);
+            Helper.AuthLogin(tdb, MockObjectRepository.DEFAULT_USERNAME);
 
             ImportController controller = new ImportController(tdb);
             var importResponse = controller.ImportTrifoliaModel(model);

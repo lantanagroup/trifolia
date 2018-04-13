@@ -27,13 +27,14 @@ namespace Trifolia.Export.MSWord
         private IIGTypePlugin igTypePlugin;
         private List<Template> templates;
         private TableCollection tables;
-        private List<string> selectedCategories = null;
+        private List<string> selectedCategories;
         private IObjectRepository tdb;
-        private List<ConstraintReference> references = null;
+        private List<ConstraintReference> references;
+        private HyperlinkTracker hyperlinkTracker;
 
         #region Ctor
 
-        public TemplateConstraintTable(IObjectRepository tdb, List<ConstraintReference> references, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, List<Template> templates, TableCollection tables, List<string> selectedCategories)
+        public TemplateConstraintTable(IObjectRepository tdb, List<ConstraintReference> references, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, List<Template> templates, TableCollection tables, List<string> selectedCategories, HyperlinkTracker hyperlinkTracker)
         {
             this.tdb = tdb;
             this.references = references;
@@ -42,6 +43,7 @@ namespace Trifolia.Export.MSWord
             this.templates = templates;
             this.tables = tables;
             this.selectedCategories = selectedCategories;
+            this.hyperlinkTracker = hyperlinkTracker;
         }
 
         #endregion
@@ -75,12 +77,12 @@ namespace Trifolia.Export.MSWord
             if (includeCategoryHeader)
                 lHeaders.Add(new HeaderDescriptor() { HeaderName = CATEGORY, AutoResize = true, AutoWrap = false, ColumnWidth = "720" });
 
-            lHeaders.Add(new HeaderDescriptor() { HeaderName = XPATH, AutoResize = true, AutoWrap = false, ColumnWidth = "3445" });
+            lHeaders.Add(new HeaderDescriptor() { HeaderName = XPATH, AutoResize = true, AutoWrap = false, ColumnWidth = "3345" });
             lHeaders.Add(new HeaderDescriptor() { HeaderName = CARD, AutoResize = false, CellWidth = .5, ColumnWidth = "720" });
             lHeaders.Add(new HeaderDescriptor() { HeaderName = VERB, AutoResize = false, CellWidth = .8, ColumnWidth = "1152" });
             lHeaders.Add(new HeaderDescriptor() { HeaderName = DATA_TYPE, AutoResize = false, CellWidth = .6, ColumnWidth = "864" });
-            lHeaders.Add(new HeaderDescriptor() { HeaderName = CONF, AutoResize = false, CellWidth = .6, ColumnWidth = "864" });
-            lHeaders.Add(new HeaderDescriptor() { HeaderName = FIXED_VALUE, AutoResize = false, CellWidth = .6, ColumnWidth = "3171" });
+            lHeaders.Add(new HeaderDescriptor() { HeaderName = CONF, AutoResize = false, CellWidth = .6, ColumnWidth = "1104" });
+            lHeaders.Add(new HeaderDescriptor() { HeaderName = FIXED_VALUE, AutoResize = false, CellWidth = .6, ColumnWidth = "2975" });
 
             Table t = this.tables.AddTable(string.Format("{0} Constraints Overview", template.Name), lHeaders.ToArray());
 
@@ -134,7 +136,7 @@ namespace Trifolia.Export.MSWord
                 string fixedValue = string.Empty;
                 string fixedValueLink = string.Empty;
                 string levelSpacing = string.Empty;
-                string confNumber = constraint.GetFormattedNumber(this.igSettings.PublishDate);
+                string confNumber = template.OwningImplementationGuideId + "-" + constraint.Number.ToString();
                 var isFhir = constraint.Template.ImplementationGuideType.SchemaURI == ImplementationGuideType.FHIR_NS;
 
                 // Check if we're dealing with a FHIR constraint
@@ -235,7 +237,7 @@ namespace Trifolia.Export.MSWord
                             {
                                 Val = Properties.Settings.Default.TableContentStyle
                             }),
-                        DocHelper.CreateAnchorHyperlink(text, hyperlink, Properties.Settings.Default.TableLinkStyle)));
+                        this.hyperlinkTracker.CreateHyperlink(text, hyperlink, Properties.Settings.Default.TableLinkStyle)));
 
             row.AppendChild(cell);
         }

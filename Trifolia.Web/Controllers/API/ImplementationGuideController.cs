@@ -1096,6 +1096,7 @@ namespace Trifolia.Web.Controllers.API
                             {
                                 dbSection = new ImplementationGuideSection();
                                 dbSection.ImplementationGuide = ig;
+                                auditedTdb.ImplementationGuideSections.Add(dbSection);
                             }
 
                             dbSection.Heading = cSection.Heading;

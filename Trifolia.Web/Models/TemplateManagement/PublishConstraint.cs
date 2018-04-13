@@ -1,8 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Web;
-
 using Trifolia.DB;
 using Trifolia.Export.MSWord.ConstraintGeneration;
 

@@ -21,9 +21,10 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
     [TestClass]
     public class StructureDefinitionControllerTest
     {
-        [TestMethod, TestCategory("FHIR3")]
+        [TestMethod]
+        [TestCategory("FHIR")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
-        public void TestConvertExtension()
+        public void STU3_TestConvertExtension()
         {
             MockObjectRepository mockRepo = new MockObjectRepository();
             mockRepo.InitializeFHIR3Repository();
@@ -115,9 +116,10 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
             Assert.AreEqual(((CodeableConcept)strucDef.Extension[3].Value).Coding[0].System, "urn:oid:2.16.113");
         }
 
-        [TestMethod, TestCategory("FHIR3")]
+        [TestMethod]
+        [TestCategory("FHIR")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
-        public void TestSuccessfulCreate()
+        public void STU3_TestSuccessfulCreate()
         {
             MockObjectRepository mockRepo = new MockObjectRepository();
             mockRepo.InitializeFHIR3Repository();
@@ -151,9 +153,10 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
             Assert.AreEqual(strucDef.Name, result.Content.Name);
         }
 
-        [TestMethod, TestCategory("FHIR3")]
+        [TestMethod]
+        [TestCategory("FHIR")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
-        public void TestGetTemplates()
+        public void STU3_TestGetTemplates()
         {
             MockObjectRepository mockRepo = new MockObjectRepository();
             mockRepo.InitializeFHIR3Repository();
