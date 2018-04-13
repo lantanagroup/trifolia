@@ -66,7 +66,7 @@ namespace Trifolia.Test.Generation.Vocabulary
 
             Table t1 = this.body.ChildElements[1] as Table;
             Assert.IsNotNull(t1);
-            Assert.AreEqual(6, t1.ChildElements.Count);
+            Assert.AreEqual(7, t1.ChildElements.Count);
 
             AssertWordXpath(t1, "w:tr[last()][count(w:tc[w:tcPr/w:gridSpan/@w:val='4'])=1]", "Expected to find one column with a gridspan of 4 in the last row");
             AssertWordXpath(t1, "w:tr[last()]/w:tc/w:p/w:r/w:t[text() = '...']", "Expected to find a text block with ...");
@@ -76,7 +76,7 @@ namespace Trifolia.Test.Generation.Vocabulary
 
             Table t2 = this.body.ChildElements[4] as Table;
             Assert.IsNotNull(t2);
-            Assert.AreEqual(5, t2.ChildElements.Count);
+            Assert.AreEqual(6, t2.ChildElements.Count);
 
             AssertWordXpath(t2, "w:tr[last()][not(w:tc/w:p/w:r/w:t[text() = '...'])]", "Shouldn't have found an elipsis in the last row.");
 

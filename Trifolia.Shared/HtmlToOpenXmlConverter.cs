@@ -104,6 +104,7 @@ namespace Trifolia.Shared
                             return cRun;
                         }
                         break;
+                    case "em":
                     case "i":
                         if (cPara != null)
                         {
@@ -164,7 +165,10 @@ namespace Trifolia.Shared
                     case "thead":
                         this.currentIsTableHeader = true;
                         break;
+                    case "th":
                     case "tr":
+                        // TODO: handle headers separately
+
                         if (cTable != null)
                         {
                             TableRow newTableRow = new TableRow();
@@ -223,7 +227,7 @@ namespace Trifolia.Shared
 
                         return run;
                     default:
-                        throw new Exception("Unsupported wiki syntax");
+                        throw new Exception("Unsupported wiki syntax " + xmlReader.Name);
                 }
             }
             else if (xmlReader.NodeType == XmlNodeType.Text)

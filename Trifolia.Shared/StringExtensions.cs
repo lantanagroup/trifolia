@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Packaging;
 using System;
 using System.Collections.Generic;
@@ -9,22 +10,70 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Trifolia.Config;
+using Markdig;
 
 namespace Trifolia.Shared
 {
     public static class StringExtensions
     {
         private static Regex invalidUtf8Characters = new Regex("[^\x00-\x7F]+");
+        private static MarkdownPipeline mdPipeline = new Markdig.MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+
+        private static void StylizeKeywords(OpenXmlElement openXmlElement)
+        {
+            var runs = openXmlElement.Descendants<Run>().ToList();
+
+            foreach (var cRun in runs)
+            {
+                var cText = cRun.GetFirstChild<Text>();
+                Regex regex = new Regex(" SHALL NOT | SHOULD NOT | MAY NOT | SHALL | SHOULD | MAY ");
+                MatchCollection matches = regex.Matches(cText.Text);
+                string[] split = regex.Split(cText.Text);
+                List<OpenXmlElement> newElements = new List<OpenXmlElement>();
+                if (split.Length > 1)
+                {
+                    var runParent = cRun.Parent != null ? cRun.Parent : openXmlElement.FirstChild;
+                    for (var i = 0; i < split.Length; i++)
+                    {
+                        var newOtherRun = new Run(new Text(split[i]) { Space = SpaceProcessingModeValues.Preserve });
+                        newElements.Add(newOtherRun);
+                        if (i < split.Length - 1)
+                        {
+                            var newKeywordRun = new Run(
+                                new RunProperties(new RunStyle()
+                                {
+                                    Val = "keyword"
+                                }),
+                                new Text(matches[i].Value) { Space = SpaceProcessingModeValues.Preserve });
+                            newElements.Add(newKeywordRun);
+                        }
+                    }
+                }
+                for (var i = newElements.Count - 1; i >= 0; i--)
+                {
+                    cRun.Parent.InsertAfter(newElements[i], cRun);
+                }
+                if (newElements.Count > 0)
+                    cRun.Parent.RemoveChild(cRun);
+            }
+        }
 
         public static string MarkdownToHtml(this string theString)
         {
-            return CommonMark.CommonMarkConverter.Convert(theString);
+            return Markdig.Markdown.ToHtml(theString, mdPipeline);
         }
 
-        public static OpenXmlElement MarkdownToOpenXml(this string theString, MainDocumentPart mainPart)
+        public static OpenXmlElement MarkdownToOpenXml(this string theString, MainDocumentPart mainPart, bool styleKeywords = false)
         {
-            string html = MarkdownToHtml(theString);
-            return html.HtmlToOpenXml(mainPart);
+            string input = theString;
+
+            string html = MarkdownToHtml(input);
+            var openXmlElement = html.HtmlToOpenXml(mainPart);
+
+            if (styleKeywords)
+                StylizeKeywords(openXmlElement);
+
+            return openXmlElement;
         }
 
         public static OpenXmlElement HtmlToOpenXml(this string html, MainDocumentPart mainPart)

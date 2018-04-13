@@ -568,7 +568,7 @@ namespace Trifolia.Generation.IG.ConstraintGeneration
 
                         break;
                     case ConstraintPart.PartTypes.PrimitiveText:
-                        var element = cPart.Text.MarkdownToOpenXml(mainPart);
+                        var element = cPart.Text.MarkdownToOpenXml(mainPart, styleKeywords: true);
                         OpenXmlHelper.Append(element, para);
                         break;
                     default:

@@ -11,11 +11,12 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Validation;
 using Trifolia.Shared;
+using System.Linq;
 
 namespace Trifolia.Test.Generation
 {
     [TestClass]
-    public class WIKIParserTest
+    public class MarkdownConversionTests
     {
         private MainDocumentPart mainPart;
         private MockObjectRepository tdb;
@@ -48,7 +49,7 @@ namespace Trifolia.Test.Generation
         [TestMethod, TestCategory("MSWord")]
         public void TestParseAsOpenXML_Bold_then_Italic()
         {
-            string testWikiContent = "This *is a bold* test with _italic text as well_";
+            string testWikiContent = "This **is a bold** test with _italic text as well_";
 
             OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
@@ -101,35 +102,9 @@ This is a non-bulleted test
         }
 
         [TestMethod, TestCategory("MSWord")]
-        public void TestParseAsOpenXML_LinkToTemplate()
-        {
-            string testWikiContent = @"This is a test of a [URL:#" + this.template1.Oid + "]";
-
-            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
-
-            Assert.AreEqual(1, body.ChildElements.Count);
-            Paragraph para = body.ChildElements[0] as Paragraph;
-            Assert.IsNotNull(para);
-
-            Run run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            AssertRunText(run, "This is a test of a ");
-
-            Hyperlink hyperlink = para.ChildElements[2] as Hyperlink;
-            Assert.IsNotNull(hyperlink);
-            Run hyperlinkRun = hyperlink.LastChild as Run;
-            Assert.IsNotNull(hyperlinkRun);
-            AssertRunText(hyperlinkRun, "Test Template 1 (1.2.3.4.5)");
-            Assert.IsNotNull(hyperlink.Anchor);
-            Assert.AreEqual(this.template1.Bookmark, hyperlink.Anchor.Value);
-
-            AssertOpenXmlValid(body);
-        }
-
-        [TestMethod, TestCategory("MSWord")]
         public void TestParseAsOpenXML_LinkToURLWithoutName()
         {
-            string testWikiContent = @"This is a test of a [URL:http://www.awesome.com]";
+            string testWikiContent = @"This is a test of a http://www.awesome.com";
             
             OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
@@ -153,7 +128,7 @@ This is a non-bulleted test
         [TestMethod, TestCategory("MSWord")]
         public void TestParseAsOpenXML_LinkToURLWithName()
         {
-            string testWikiContent = @"This is a test of a [URL:Awesome|http://www.awesome.com]";
+            string testWikiContent = @"This is a test of a [Awesome](http://www.awesome.com)";
             
             OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
@@ -179,11 +154,12 @@ This is a non-bulleted test
         {
             string testWikiContent = @"The US Realm Patient Generated Document header template must conform to the Universal Realm Patient Generated Document header template. This template is designed to be used in conjunction with the US C-CDA General Header. It only includes additional conformances which further constrain the US C-CDA General Header.
 
-|| TableHead 1 || Table Head 2
-| Table Cell 1 | Table Cell 2
-| Table Cell 3 | Table Cell 4
+| TableHead 1 | Table Head 2 |
+| ----------- | ------------ |
+| Table Cell 1 | Table Cell 2 |
+| Table Cell 3 | Table Cell 4 |
 
-There is more information here: [URL:#2.16.840.1.113883.10.20.29.1] and [URL:here|http://www.lantanagroup.com] and [URL:http://www.lantanagroup.com]";
+There is more information here: [here](http://www.lantanagroup.com) and http://www.lantanagroup.com";
 
             OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
@@ -205,7 +181,38 @@ another line break";
             
             OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
 
-            Assert.AreEqual(4, body.ChildElements.Count);
+            Assert.AreEqual(1, body.ChildElements.Count());
+
+            var para = body.ChildElements.OfType<Paragraph>().First();
+
+            Assert.AreEqual(2, para.ChildElements.Count);
+            var paraProp = para.ChildElements.OfType<ParagraphProperties>().First();
+            var run = para.ChildElements.OfType<Run>().First();
+
+            Assert.IsNotNull(paraProp);
+            Assert.IsNotNull(run);
+
+            Assert.AreEqual(4, run.ChildElements.OfType<Text>().Count(), "Expected four separate text elements");
+            Assert.AreEqual(3, run.ChildElements.OfType<Break>().Count(), "Expected three separate line-breaks");
+
+            AssertOpenXmlValid(body);
+        }
+
+        [TestMethod, TestCategory("MSWord")]
+        public void TestParseAsOpenXml_Paragraphs()
+        {
+            string testWikiContent = @"This is a 
+
+test of 
+
+a line break and a url [URL:http://www.seanmcilvenna.com] with 
+
+another line break";
+
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
+
+            Assert.AreEqual(4, body.ChildElements.Count());
+            Assert.AreEqual(4, body.ChildElements.OfType<Paragraph>().Count());
 
             AssertOpenXmlValid(body);
         }

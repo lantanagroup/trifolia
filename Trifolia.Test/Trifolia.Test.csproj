@@ -201,7 +201,7 @@
     <Compile Include="Reporting\TemplateValidationTest.cs" />
     <Compile Include="Services\Vocabulary\VocabularyServiceTest.cs" />
     <Compile Include="Generation\Vocabulary\ValueSetExportTest.cs" />
-    <Compile Include="Generation\WIKIParserTest.cs" />
+    <Compile Include="Generation\MarkdownConversionTests.cs" />
     <Compile Include="Generation\Versioning\VersionComparerTest.cs" />
     <Compile Include="Generation\IG\FormattedConstraintTest.cs" />
     <Compile Include="Generation\IG\ImplementationGuideGeneratorTest.cs" />

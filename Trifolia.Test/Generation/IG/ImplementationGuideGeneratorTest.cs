@@ -350,9 +350,15 @@ namespace Trifolia.Test.Generation.IG
             Assert.IsNotNull(containedPara.SelectSingleNode("w:r[2][not(w:rPr/w:rStyle)][w:t=' contain ']", docNsMgr), "Missing ' contain '");
             Assert.IsNotNull(containedPara.SelectSingleNode("w:r[3][not(w:rPr/w:rStyle)][w:t='exactly one [1..1] ']", docNsMgr), "Missing cardinality");
             Assert.IsNotNull(containedPara.SelectSingleNode("w:hyperlink[@w:anchor='D_Test_Template_2'][w:r[w:rPr/w:rStyle/@w:val='HyperlinkCourierBold'][w:t='Test Template 2']]", docNsMgr), "Missing hyperlink to contained template");
-            Assert.IsNotNull(containedPara.SelectSingleNode("w:r[4][w:rPr/w:rStyle/@w:val='XMLname'][w:t=' (identifier: 1.2.3.4.5.6)']", docNsMgr), "Missing contained template's oid");
-            Assert.IsNotNull(containedPara.SelectSingleNode("w:r[5][w:bookmarkStart/@w:name='C_1-11'][not(w:rPr/w:rStyle)][w:t=' (CONF:1-11)']", docNsMgr), "Missing CONF #");
-            Assert.IsNotNull(containedPara.SelectSingleNode("w:r[6][not(w:rPr/w:rStyle)][w:t='.']", docNsMgr), "Missing ending period");
+            Assert.IsNotNull(containedPara.SelectSingleNode("w:r[5][w:rPr/w:rStyle/@w:val='XMLname'][w:t=' (identifier: 1.2.3.4.5.6)']", docNsMgr), "Missing contained template's oid");
+            var bookmarkStart = containedPara.SelectSingleNode("w:bookmarkStart[@w:name='C_1-11'][following-sibling::w:r]", docNsMgr);
+            var run = containedPara.SelectSingleNode("w:r[not(w:rPr/w:rStyle)][w:t[text()=' (CONF:1-11)']]", docNsMgr);
+            var bookmarkEnd = containedPara.SelectSingleNode("w:bookmarkEnd[preceding-sibling::w:r]", docNsMgr);
+            Assert.IsNotNull(bookmarkStart);
+            Assert.IsNotNull(run);
+            Assert.IsNotNull(bookmarkEnd);
+            //Assert.IsNotNull(containedPara.SelectSingleNode("w:r[5][w:bookmarkStart/@w:name='C_1-11'][not(w:rPr/w:rStyle)][w:t=' (CONF:1-11)']", docNsMgr), "Missing CONF #");
+            Assert.IsNotNull(containedPara.SelectSingleNode("w:r[7][not(w:rPr/w:rStyle)][w:t='.']", docNsMgr), "Missing ending period");
         }
 
         /// <summary>
@@ -395,7 +401,12 @@ namespace Trifolia.Test.Generation.IG
             Assert.IsNotNull(constraint1Para.SelectSingleNode("w:r[not(w:rPr/w:rStyle)]/w:t[text()=' contain ']", docNsMgr), "Plain text following conformance incorrect for first constraint.");
             Assert.IsNotNull(constraint1Para.SelectSingleNode("w:r[not(w:rPr/w:rStyle)]/w:t[text()='exactly one [1..1] ']", docNsMgr), "Cardinality statement incorrect for first constraint.");
             Assert.IsNotNull(constraint1Para.SelectSingleNode("w:r[w:rPr/w:rStyle/@w:val='XMLnameBold']/w:t[text()='templateId']", docNsMgr), "Context incorrect for first constraint");
-            Assert.IsNotNull(constraint1Para.SelectSingleNode("w:r[w:bookmarkStart/@w:name='C_1-5']/w:t[text()=' (CONF:1-5)']", docNsMgr), "CONF # or bookmark incorrect for first constraint");
+            var bookmarkStart = constraint1Para.SelectSingleNode("w:bookmarkStart[@w:name='C_1-5'][following-sibling::w:r]", docNsMgr);
+            var run = constraint1Para.SelectSingleNode("w:r[w:t[text()=' (CONF:1-5)']]", docNsMgr);
+            var bookmarkEnd = constraint1Para.SelectSingleNode("w:bookmarkEnd[preceding-sibling::w:r]", docNsMgr);
+            Assert.IsNotNull(bookmarkStart);
+            Assert.IsNotNull(run);
+            Assert.IsNotNull(bookmarkEnd);
             Assert.IsNotNull(constraint1Para.SelectSingleNode("w:r[not(w:rPr/w:pStyle)]/w:t[text()='.']", docNsMgr), "Missing period at end of first constraint");
         }
 
@@ -420,7 +431,13 @@ namespace Trifolia.Test.Generation.IG
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[9][not(w:rPr/w:rStyle)]/w:t[text()=' (CodeSystem: ']", docNsMgr), "Missing Code System text from statically defined value");
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[10][w:rPr/w:rStyle/@w:val='XMLname']/w:t[text()='SNOMED CT urn:oid:2.16.840.1.113883.6.96']", docNsMgr), "Missing Code System Name & OID for statically defined value");
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[11][not(w:rPr/w:rStyle)]/w:t[text()=')']", docNsMgr), "Missing closing bracket from statically defined value");
-            Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[12][w:bookmarkStart/@w:name='C_1-7']/w:t[text()=' (CONF:1-7)']", docNsMgr), "CONF # or bookmark incorrect");
+            var bookmarkStart = constraintPara.SelectSingleNode("w:bookmarkStart[@w:name='C_1-7']", docNsMgr);
+            var confRun = constraintPara.SelectSingleNode("w:r[12][w:t[text()=' (CONF:1-7)']]", docNsMgr);
+            var bookmarkEnd = constraintPara.SelectSingleNode("w:bookmarkEnd", docNsMgr);
+            Assert.IsNotNull(bookmarkStart, "Missing bookmarkStart");
+            Assert.IsNotNull(confRun, "CONF # or bookmark incorrect");
+            Assert.AreEqual(bookmarkStart.NextSibling, confRun, "bookmarkStart is supposed to preceed the run");
+            Assert.AreEqual(confRun.NextSibling, bookmarkEnd, "bookmarkEnd is supposed to follow the run");
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[13][not(w:rPr/w:pStyle)]/w:t[text()='.']", docNsMgr), "Missing period at end");
         }
 
@@ -446,7 +463,15 @@ namespace Trifolia.Test.Generation.IG
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[11][not(w:rPr/w:rStyle)][w:t=' be selected from ValueSet ']", docNsMgr), "Valueset narrative incorrect");
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[12][w:rPr/w:rStyle/@w:val='XMLname'][w:t=' urn:oid:2.16.840.1.114222.4.11.3203']", docNsMgr), "Missing valueset name and OID");
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[13][w:rPr/w:rStyle/@w:val='keyword'][w:t=' STATIC']", docNsMgr), "Missing 'STATIC'");
-            Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[14][w:bookmarkStart/@w:name='C_1-9'][w:t=' (CONF:1-9)']", docNsMgr), "Missing CONF# or Bookmark'");
+
+            var bookmarkStart = constraintPara.SelectSingleNode("w:bookmarkStart[@w:name='C_1-9']", docNsMgr);
+            var confRun = constraintPara.SelectSingleNode("w:r[14][w:t[text()=' (CONF:1-9)']]", docNsMgr);
+            var bookmarkEnd = constraintPara.SelectSingleNode("w:bookmarkEnd", docNsMgr);
+            Assert.IsNotNull(bookmarkStart, "Missing bookmarkStart");
+            Assert.IsNotNull(confRun, "CONF # or bookmark incorrect");
+            Assert.AreEqual(bookmarkStart.NextSibling, confRun, "bookmarkStart is supposed to preceed the run");
+            Assert.AreEqual(confRun.NextSibling, bookmarkEnd, "bookmarkEnd is supposed to follow the run");
+            
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[15][not(w:rPr/w:rStyle)][w:t='.']", docNsMgr), "Missing period at end of constraint.'");
         }
 
@@ -472,9 +497,13 @@ namespace Trifolia.Test.Generation.IG
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[10][w:rPr/w:rStyle/@w:val='keyword']/w:t[text()='SHALL']", docNsMgr), "Code System Conformance verb incorrect.");
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[11][not(w:rPr/w:rStyle)]/w:t[text()=' be selected from CodeSystem ']", docNsMgr), "Code System selection text incorrect");
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[12][w:rPr/w:rStyle/@w:val='XMLname'][w:t='LOINC (urn:oid:2.16.840.1.113883.6.1)']", docNsMgr), "Missing valueset definition");
-            Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[13][w:bookmarkStart/@w:name='C_1-1'][w:t=' (CONF:1-1)']", docNsMgr), "Missing CONF# or Bookmark'");
+            var bookmarkStart = constraintPara.SelectSingleNode("w:bookmarkStart[@w:name='C_1-1'][following-sibling::w:r]", docNsMgr);
+            var run = constraintPara.SelectSingleNode("w:r[13][w:t=' (CONF:1-1)']", docNsMgr);
+            var bookmarkEnd = constraintPara.SelectSingleNode("w:bookmarkEnd[preceding-sibling::w:r]", docNsMgr);
+            Assert.IsNotNull(bookmarkStart, "bookmarkStart is not valid, or does not precede a run");
+            Assert.IsNotNull(run, "Run does not exist with conformance number formatted correctly");
+            Assert.IsNotNull(bookmarkEnd, "bookmarkEnd is not valid, or does not follow a run");
             Assert.IsNotNull(constraintPara.SelectSingleNode("w:r[14][not(w:rPr/w:rStyle)][w:t='.']", docNsMgr), "Missing period at end of constraint.'");
-
         }
 
         /// <summary>
@@ -483,13 +512,11 @@ namespace Trifolia.Test.Generation.IG
         [TestMethod, TestCategory("MSWord")]
         public void TestPrimitiveConstraint()
         {
-
             XmlNode constraintPrimitive = doc.SelectSingleNode("/w:document/w:body/w:p[27][w:pPr/w:numPr[w:ilvl/@w:val = 0][w:numId/@w:val = 501]]", docNsMgr);
             Assert.IsNotNull(constraintPrimitive, "Could not find primitive constraint in document");
 
-            Assert.IsNotNull(constraintPrimitive.SelectSingleNode("w:r[2][w:rPr/w:rStyle/@w:val='keyword']/w:t[text()=' SHALL ']", docNsMgr), "Conformance verb incorrect.");
-            Assert.IsNotNull(constraintPrimitive.SelectSingleNode("w:pPr/w:pStyle[@w:val='BodyText']", docNsMgr), "Constraint's paragraph is not styled as 'BodyText'");
             Assert.IsNotNull(constraintPrimitive.SelectSingleNode("w:r[1]/w:t[text() = 'A templateId element']", docNsMgr), "Constraint does not contain the correct text");
+            Assert.IsNotNull(constraintPrimitive.SelectSingleNode("w:r[2][w:rPr/w:rStyle/@w:val='keyword']/w:t[text()=' SHALL ']", docNsMgr), "Conformance verb incorrect.");
             Assert.IsNotNull(constraintPrimitive.SelectSingleNode("w:r[3]/w:t[text() = 'be present representing conformance to this release of the Implementation Guide (CONF:1-4).']", docNsMgr), "Constraint does not contain the correct text");
 
         }
@@ -507,7 +534,9 @@ namespace Trifolia.Test.Generation.IG
             Assert.IsNotNull(constraintBranched.SelectSingleNode("w:r[2]/w:t[text() = ' contain ']", docNsMgr), "Constraint does not contain the correct containment text");
             Assert.IsNotNull(constraintBranched.SelectSingleNode("w:r[3]/w:t[text() = 'exactly one [1..1] ']", docNsMgr), "Constraint does not contain the correct conformance text");
             Assert.IsNotNull(constraintBranched.SelectSingleNode("w:r[4][w:rPr/w:rStyle/@w:val='XMLnameBold']/w:t[text()='participant']", docNsMgr), "Constraint name incorrect.");
-            Assert.IsNotNull(constraintBranched.SelectSingleNode("w:r[5][w:bookmarkStart/@w:name='C_1-2'][w:t=' (CONF:1-2)']", docNsMgr), "Missing CONF# or Bookmark");
+            Assert.IsNotNull(constraintBranched.SelectSingleNode("w:bookmarkStart[@w:name='C_1-2'][following-sibling::w:r]", docNsMgr), "Missing bookmarkStart");
+            Assert.IsNotNull(constraintBranched.SelectSingleNode("w:r[5][w:t=' (CONF:1-2)']", docNsMgr), "Missing CONF#");
+            Assert.IsNotNull(constraintBranched.SelectSingleNode("w:bookmarkEnd[preceding-sibling::w:r]", docNsMgr), "Missing bookmarkEnd");
             Assert.IsNotNull(constraintBranched.SelectSingleNode("w:r[6]/w:t[text() = ' such that it']", docNsMgr), "Constraint Code branching text incorrect");
         }
 
