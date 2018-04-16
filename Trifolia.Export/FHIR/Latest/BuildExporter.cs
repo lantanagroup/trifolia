@@ -424,6 +424,9 @@ namespace Trifolia.Export.FHIR.Latest
 
             foreach (var author in authors)
             {
+                if (author == null)
+                    continue;
+
                 authorsContent += string.Format("<tr><td>{0} {1}</td><td>{2}</td></tr>", author.FirstName.XmlEncode(), author.LastName.XmlEncode(), author.Email.XmlEncode());
             }
 

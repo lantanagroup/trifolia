@@ -230,7 +230,6 @@
     <Compile Include="Types\FHIR\DSTU2Exporter.cs" />
     <Compile Include="Types\FHIR\STU3Exporter.cs" />
     <Compile Include="Types\HQMFExporter.cs" />
-    <Compile Include="Types\ITypeExporter.cs" />
     <Compile Include="Types\RIMExporter.cs" />
     <Compile Include="Versioning\ComparisonResult.cs" />
     <Compile Include="Versioning\VersionComparer.cs" />
