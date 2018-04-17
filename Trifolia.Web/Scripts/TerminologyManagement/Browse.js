@@ -67,7 +67,7 @@
             $scope.isSearching = true;
             /*isSearch is only set to true on actual searches (removing search query or changing/adding a search query). Every other call to search keeps isSearch undefined (or false) 
             to keep you on the same page*/
-            if (isSearch) $scope.$broadcast('SearchPerformed');
+            if (isSearch) $scope.criteria.page = 1;
 
             $cookies.put('BrowseTerminology_ValueSetQuery', $scope.criteria.query);
             $cookies.put('BrowseTerminology_ValueSetSort', $scope.criteria.sort);
@@ -90,7 +90,6 @@
                 })
                 .finally(function () {
                     $scope.isSearching = false;
-                    
                 });
         };
 
@@ -158,12 +157,6 @@
             }
         };
 
-        $scope.resetPage = function(){
-            $scope.criteria.page = 1;
-        }
-
-        $scope.$on('SearchPerformed', $scope.resetPage);
-
         $scope.$on('CurrentTabChanged', $scope.contextTabChanged);
 
 
@@ -187,7 +180,7 @@
             $scope.isSearching = true;
             /*isSearch is only set to true on actual searches (removing search query or changing/adding a search query). Every other call to search keeps isSearch undefined (or false) 
             to keep you on the same page*/
-            if (isSearch) $scope.$broadcast('SearchPerformed');
+            if (isSearch) $scope.criteria.page = 1;
 
             $cookies.put('BrowseTerminology_CodeSystemQuery', $scope.criteria.query);
             $cookies.put('BrowseTerminology_CodeSystemSort', $scope.criteria.sort);
@@ -275,12 +268,6 @@
         };
 
         $scope.$on('CurrentTabChanged', $scope.contextTabChanged);
-
-        $scope.resetPage = function () {
-            $scope.criteria.page = 1;
-        }
-
-        $scope.$on('SearchPerformed', $scope.resetPage);
     })
     .controller('RemoveValueSetModalController', function ($q, $uibModalInstance, $scope, TerminologyService, HelperService, valueSetId) {
         $scope.replaceValueSet = null;
