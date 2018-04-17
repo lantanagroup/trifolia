@@ -313,10 +313,12 @@
         };
 
         $scope.ok = function () {
+            $scope.isDisabled = true;
             var replaceValueSetId = $scope.replaceValueSet ? $scope.replaceValueSet.id : null;
             TerminologyService.removeValueSet(valueSetId, replaceValueSetId)
                 .then(function () {
                     $uibModalInstance.close();
+                    $scope.isDisabled = false;
                 })
                 .catch(function (err) {
                     alert('An error occurred while removing the value set: ' + err);

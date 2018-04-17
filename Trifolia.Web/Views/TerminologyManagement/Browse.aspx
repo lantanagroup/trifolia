@@ -284,7 +284,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" ng-click="ok()">OK</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="isDisabled" ng-click="ok()">OK</button>
                 <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
             </div>
         </script>
