@@ -56,10 +56,10 @@
                         <div class="input-group" style="padding-bottom: 10px;">
                             <input type="text" class="form-control" ng-model="criteria.query" />
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="criteria.query = ''; search();">
+                                <button class="btn btn-default" type="button" ng-click="criteria.query = ''; search(true);">
                                     <i class="glyphicon glyphicon-remove"></i>
                                 </button>
-                                <button class="btn btn-default" type="submit" ng-click="search()">Search</button>
+                                <button class="btn btn-default" type="submit" ng-click="search(true)">Search</button>
                             </span>
                         </div>
                     </form>
@@ -147,10 +147,10 @@
                         <div class="input-group" style="padding-bottom: 10px;">
                             <input type="text" class="form-control" ng-model="criteria.query" />
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="criteria.query = ''; search();">
+                                <button class="btn btn-default" type="button" ng-click="criteria.query = ''; search(true);">
                                     <i class="glyphicon glyphicon-remove"></i>
                                 </button>
-                                <button class="btn btn-default" type="submit" ng-click="search()">Search</button>
+                                <button class="btn btn-default" type="submit" ng-click="search(true)">Search</button>
                             </span>
                         </div>
                     </form>
