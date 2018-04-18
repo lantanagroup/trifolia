@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.Http;
-using System.Xml;
 using Trifolia.Authorization;
-using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Import.Terminology.Excel;
-using Trifolia.Import.Terminology.External;
-using Trifolia.Logging;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 using Trifolia.Web.Models.TerminologyManagement;
 
 namespace Trifolia.Web.Controllers.API

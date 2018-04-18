@@ -1,20 +1,14 @@
 ﻿extern alias fhir_latest;
 using fhir_latest.Hl7.Fhir.Model;
-using fhir_latest.Hl7.Fhir.Serialization;
-using fhir_latest.Hl7.Fhir.Specification.Navigation;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using Trifolia.Config;
 using Trifolia.DB;
-using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Logging;
+using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Plugins;
 using Trifolia.Shared;
 using Trifolia.Shared.FHIR;
 using Trifolia.Shared.FHIR.Profiles.Latest;
-using Trifolia.Shared.Plugins;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using StructureDefinition = fhir_latest.Hl7.Fhir.Model.StructureDefinition;
 

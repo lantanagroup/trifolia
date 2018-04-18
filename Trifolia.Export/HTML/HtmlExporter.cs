@@ -2,14 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Trifolia.DB;
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Generation.Versioning;
+using Trifolia.Export.MSWord;
+using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Export.Versioning;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.HTML
 {
@@ -43,7 +41,7 @@ namespace Trifolia.Export.HTML
             else
             {
                 IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
-                var igTypePlugin = IGTypePluginFactory.GetPlugin(ig.ImplementationGuideType);
+                var igTypePlugin = ig.ImplementationGuideType.GetPlugin();
                 var firstTemplateType = ig.ImplementationGuideType.TemplateTypes.OrderBy(y => y.OutputOrder).FirstOrDefault();
 
                 model = new ViewDataModel()

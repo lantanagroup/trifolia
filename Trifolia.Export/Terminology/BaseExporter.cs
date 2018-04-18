@@ -5,8 +5,8 @@ using System.Text;
 using System.Xml.Serialization;
 using Trifolia.DB;
 using Trifolia.Logging;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.Terminology
 {

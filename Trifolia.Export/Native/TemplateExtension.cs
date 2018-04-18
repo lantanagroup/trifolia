@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
-using ExportConstraint = Trifolia.Shared.ImportExport.Model.ConstraintType;
+using Trifolia.DB;
+using Trifolia.Plugins;
+using Trifolia.Shared;
+using Trifolia.Shared.ImportExport.Model;
 using ExportPreviousVersion = Trifolia.Shared.ImportExport.Model.TrifoliaTemplatePreviousVersion;
 using ExportSample = Trifolia.Shared.ImportExport.Model.TrifoliaTemplateSample;
-using Trifolia.DB;
-using Trifolia.Shared.ImportExport.Model;
-using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
+using ExportTemplate = Trifolia.Shared.ImportExport.Model.TrifoliaTemplate;
 
 namespace Trifolia.Export.Native
 {

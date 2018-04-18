@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Trifolia.DB;
 using Trifolia.Export.Schematron.Model;
-using Trifolia.Shared.Plugins;
+using Trifolia.Plugins;
 
 namespace Trifolia.Export.Schematron.ConstraintToDocumentElementMap
 {

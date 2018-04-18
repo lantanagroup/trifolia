@@ -4,7 +4,6 @@ using System.Linq;
 using System.Xml;
 using Trifolia.DB;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Plugins
 {

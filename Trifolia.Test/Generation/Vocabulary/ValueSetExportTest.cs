@@ -1,14 +1,12 @@
-﻿using System;
-using System.Xml;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Trifolia.DB;
-using Trifolia.Generation.IG;
-
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Wordprocessing;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.IO;
+using System.Xml;
+using Trifolia.DB;
+using Trifolia.Export.MSWord;
 
 namespace Trifolia.Test.Generation.Vocabulary
 {

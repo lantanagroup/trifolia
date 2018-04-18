@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 
 using Trifolia.DB;
-using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Export.MSWord.ConstraintGeneration;
 
 namespace Trifolia.Web.Models.TemplateManagement
 {

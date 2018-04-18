@@ -67,14 +67,14 @@ namespace Trifolia.Test.Schema
             this.cdaSchema = SimpleSchema.CreateSimpleSchema(Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                 new ImplementationGuideType()
                     {
-                        Name = "CDA",
+                        Name = Constants.IGType.CDA_IG_TYPE,
                         SchemaLocation = "CDA.xsd"
                     }));
 
             this.eMeasureSchema = SimpleSchema.CreateSimpleSchema(Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                 new ImplementationGuideType()
                     {
-                        Name = "eMeasure",
+                        Name = Constants.IGType.EMEASURE_IG_TYPE,
                         SchemaLocation = "schemas/EMeasure.xsd"
                     }));
 

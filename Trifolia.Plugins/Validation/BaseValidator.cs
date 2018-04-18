@@ -8,7 +8,7 @@ using System.Xml.XPath;
 using Trifolia.Authorization;
 using Trifolia.DB;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
+using Trifolia.Plugins;
 using Trifolia.Shared.Validation;
 
 namespace Trifolia.Plugins.Validation

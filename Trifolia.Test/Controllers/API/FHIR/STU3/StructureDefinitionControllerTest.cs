@@ -30,7 +30,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
             mockRepo.InitializeFHIR3Repository();
             mockRepo.InitializeLCG();
 
-            var ig = mockRepo.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_FHIR_STU3_IG_TYPE_NAME, "Test IG");
+            var ig = mockRepo.FindOrCreateImplementationGuide(Constants.IGType.FHIR_STU3_IG_TYPE, "Test IG");
             var template = mockRepo.CreateTemplate("http://test.com/fhir/test", "Composition", "Test Composition", ig, "Composition", "Composition");
             template.Extensions.Add(new Trifolia.DB.TemplateExtension()
             {
@@ -80,7 +80,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
                 Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                     new ImplementationGuideType()
                     {
-                        Name = MockObjectRepository.DEFAULT_FHIR_STU3_IG_TYPE_NAME,
+                        Name = Constants.IGType.FHIR_STU3_IG_TYPE,
                         SchemaLocation = "fhir-all.xsd"
                     }));
             
@@ -162,7 +162,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
             mockRepo.InitializeFHIR3Repository();
             mockRepo.InitializeLCGAndLogin();
 
-            var ig = mockRepo.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_FHIR_STU3_IG_TYPE_NAME, "Test IG");
+            var ig = mockRepo.FindOrCreateImplementationGuide(Constants.IGType.FHIR_STU3_IG_TYPE, "Test IG");
             var template = mockRepo.CreateTemplate("http://test.com/profile1", "Composition", "Test Composition", ig);
 
             HttpRequestMessage request = new HttpRequestMessage()

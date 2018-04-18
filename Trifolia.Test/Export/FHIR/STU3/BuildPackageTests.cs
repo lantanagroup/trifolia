@@ -7,6 +7,7 @@ using Ionic.Zip;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3;
+using Trifolia.Shared;
 
 namespace Trifolia.Test.Export.FHIR.STU3
 {
@@ -97,7 +98,7 @@ namespace Trifolia.Test.Export.FHIR.STU3
         {
             tdb = new MockObjectRepository();
             tdb.InitializeFHIR3Repository();
-            igType = tdb.ImplementationGuideTypes.Single(y => y.Name == MockObjectRepository.DEFAULT_FHIR_STU3_IG_TYPE_NAME);
+            igType = tdb.ImplementationGuideTypes.Single(y => y.Name == Constants.IGType.FHIR_STU3_IG_TYPE);
             compositionType = tdb.TemplateTypes.Single(y => y.ImplementationGuideType == igType && y.Name == "Composition");
 
             ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG Publisher Build Package");

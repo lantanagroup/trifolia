@@ -7,8 +7,7 @@ using System.IO;
 using System.Linq;
 using Trifolia.DB;
 using Trifolia.Logging;
-using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
+using Trifolia.Plugins;
 using TDBImplementationGuide = Trifolia.DB.ImplementationGuide;
 
 namespace Trifolia.Export.Terminology

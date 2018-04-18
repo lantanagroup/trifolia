@@ -1,17 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Ionic.Zip;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Xml;
-
-using Ionic.Zip;
-
-using Trifolia.Shared;
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.DB;
-using Trifolia.Shared.Plugins;
+using Trifolia.Export.MSWord;
+using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Plugins;
+using Trifolia.Shared;
 
 namespace Trifolia.Test.Generation.IG
 {

@@ -8,7 +8,6 @@ namespace Trifolia.Shared.FHIR
 {
     public class LatestHelper
     {
-        public const string VERSION_NAME = "Current Build";
         public const string DEFAULT_IG_NAME = "Unowned FHIR Current Build Profiles";
         public const string DEFAULT_USER_NAME = "admin";
         public const string DEFAULT_ORG_NAME = "LCG";
@@ -24,16 +23,7 @@ namespace Trifolia.Shared.FHIR
 
         public static ImplementationGuideType GetImplementationGuideType(IObjectRepository tdb, bool throwError)
         {
-            ImplementationGuideType found = null;
-
-            foreach (IGTypeFhirElement configFhirIgType in IGTypeSection.GetSection().FhirIgTypes)
-            {
-                if (configFhirIgType.Version == VERSION_NAME)
-                {
-                    found = tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == configFhirIgType.ImplementationGuideTypeName.ToLower());
-                    break;
-                }
-            }
+            ImplementationGuideType found = tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == Constants.IGType.FHIR_CURRENT_BUILD_IG_TYPE.ToLower());
 
             if (found == null && throwError)
             {

@@ -1,6 +1,6 @@
 ﻿extern alias fhir_stu3;
-using fhir_stu3.Hl7.Fhir.Serialization;
 using fhir_stu3.Hl7.Fhir.Model;
+using fhir_stu3.Hl7.Fhir.Serialization;
 using Ionic.Zip;
 using Newtonsoft.Json;
 using System;
@@ -14,8 +14,8 @@ using System.Xml.Linq;
 using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3.Models;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 
 namespace Trifolia.Export.FHIR.STU3

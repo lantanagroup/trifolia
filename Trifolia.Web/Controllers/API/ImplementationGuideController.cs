@@ -1,32 +1,26 @@
 ﻿extern alias fhir_dstu1;
 extern alias fhir_dstu2;
 extern alias fhir_stu3;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
 using System.Net.Mail;
-using System.Transactions;
-
-using Trifolia.DB;
-using Trifolia.Shared;
+using System.Web.Http;
 using Trifolia.Authorization;
+using Trifolia.Config;
+using Trifolia.DB;
+using Trifolia.Export.HTML;
+using Trifolia.Logging;
+using Trifolia.Plugins;
+using Trifolia.Shared;
+using Trifolia.Shared.Validation;
+using Trifolia.Web.Extensions;
 using Trifolia.Web.Models;
+using Trifolia.Web.Models.Export;
 using Trifolia.Web.Models.IGManagement;
 using Trifolia.Web.Models.PermissionManagement;
-using Trifolia.Web.Models.Export;
-using Trifolia.Web.Extensions;
-using Trifolia.Logging;
-using Trifolia.Config;
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Generation.Versioning;
-using Trifolia.Shared.Plugins;
-using Trifolia.Shared.Validation;
-using Trifolia.Export.HTML;
 
 namespace Trifolia.Web.Controllers.API
 {
