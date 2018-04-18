@@ -1889,7 +1889,6 @@
     <Content Include="Scripts\lib\q\spec\q-spec.html" />
     <Content Include="Scripts\lib\q\spec\q-spec.js" />
     <Content Include="Scripts\lib\q\spec\queue-spec.js" />
-    <Content Include="Scripts\lib\simplemde\simplemde.debug.js" />
     <Content Include="Scripts\lib\simplemde\simplemde.min.js" />
     <Content Include="Styles\simplemde.min.css" />
     <Content Include="Scripts\Report\Organizations.js" />
