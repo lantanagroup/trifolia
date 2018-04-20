@@ -2088,6 +2088,10 @@
       <Project>{d723dc35-997a-4bf3-bc7c-a22cb63c3892}</Project>
       <Name>Trifolia.Plugins</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Trifolia.Powershell\Trifolia.Powershell.csproj">
+      <Project>{644d3935-88af-40e5-933a-d6e457a3df42}</Project>
+      <Name>Trifolia.Powershell</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trifolia.Shared\Trifolia.Shared.csproj">
       <Project>{c44c370b-2bfe-4503-921f-8ba7674517ae}</Project>
       <Name>Trifolia.Shared</Name>
