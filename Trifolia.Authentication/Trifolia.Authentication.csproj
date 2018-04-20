@@ -32,7 +32,7 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Install Debug|AnyCPU' ">
-    <OutputPath>bin\Install\</OutputPath>
+    <OutputPath>bin\Install Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>

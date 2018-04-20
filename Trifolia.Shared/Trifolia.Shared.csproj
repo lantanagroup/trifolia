@@ -25,7 +25,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Install Debug|AnyCPU' ">
-    <OutputPath>bin\Install\</OutputPath>
+    <OutputPath>bin\Install Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
     <Optimize>false</Optimize>
@@ -156,7 +156,9 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ImportExport\Model\TemplateExport.xsd">
       <SubType>Designer</SubType>
     </None>

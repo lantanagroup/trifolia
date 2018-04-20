@@ -65,7 +65,9 @@ namespace Trifolia.Powershell
             {
                 doc = XDocument.Parse(string.Format(CleanHtmlFormat, fixedHtml));
             }
+#pragma warning disable CS0168 // Variable is declared but never used
             catch (XmlException xex)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
                 try
                 {
@@ -207,7 +209,7 @@ namespace Trifolia.Powershell
             }
             catch (Exception ex)
             {
-                this.WriteVerbose("Could not clean up markdown");
+                this.WriteVerbose("Could not clean up markdown: " + ex.Message);
                 return markdown;
             }
         }
