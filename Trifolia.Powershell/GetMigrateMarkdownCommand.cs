@@ -317,7 +317,19 @@ namespace Trifolia.Powershell
             cleanHtml = this.CleanHtml(cleanHtml);
 
             var converter = new Html2Markdown.Converter();
-            string markdown = converter.Convert(cleanHtml);
+            string markdown;
+
+            try
+            {
+                markdown = converter.Convert(cleanHtml);
+            }
+            catch (Exception ex)
+            {
+                this.WriteVerbose("Error converting to html: " + ex.Message);
+                this.WriteVerbose(cleanHtml);
+                return html;
+            }
+
             markdown = this.CleanMarkdown(markdown);
 
             if (html != markdown)
