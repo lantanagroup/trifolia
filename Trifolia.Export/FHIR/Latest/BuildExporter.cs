@@ -335,8 +335,12 @@ namespace Trifolia.Export.FHIR.Latest
                 string definition = !string.IsNullOrEmpty(valueSet.Description)
                     ? string.Format("<u>{0}</u><br/>\n{1}", valueSetIdentifier.XmlEncode(), valueSet.Description.XmlEncode())
                     : valueSetIdentifier.XmlEncode();
-
-                valueSetsContent += string.Format("<tr><td><a href=\"ValueSet-{0}.html\">{1}</a></td><td>{2}</td></tr>", valueSet.GetFhirId(), valueSet.Name.XmlEncode(), definition);
+                
+                // Ignore value sets from the base spec
+                if (string.IsNullOrEmpty(valueSetIdentifier) || valueSetIdentifier.StartsWith("http://hl7.org/fhir/ValueSet/"))
+                    valueSetsContent += string.Format("<tr><td>{1}</td><td>{2}</td></tr>", valueSet.GetFhirId(), valueSet.Name.XmlEncode(), definition);
+                else
+                    valueSetsContent += string.Format("<tr><td><a href=\"ValueSet-{0}.html\">{1}</a></td><td>{2}</td></tr>", valueSet.GetFhirId(), valueSet.Name.XmlEncode(), definition);
             }
 
             if (valueSets.Any())
