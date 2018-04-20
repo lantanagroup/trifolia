@@ -1511,6 +1511,32 @@ namespace Trifolia.Test
         }
 
         /// <summary>
+        /// Creates an implementation guide section
+        /// </summary>
+        /// <param name="ig">The ig to add the section to</param>
+        /// <param name="heading">The text representation of the heading of the section</param>
+        /// <param name="content">The content of the section</param>
+        /// <param name="order">The order in which this section is output amongst all sections</param>
+        /// <param name="level">The level/depth of the heading (h1, h2, h3, h4, etc.)</param>
+        public ImplementationGuideSection CreateImplementationGuideSection(ImplementationGuide ig, string heading, string content, int order, int level = 1)
+        {
+            ImplementationGuideSection section = new ImplementationGuideSection()
+            {
+                ImplementationGuide = ig,
+                ImplementationGuideId = ig.Id,
+                Heading = heading,
+                Content = content,
+                Order = order,
+                Level = level
+            };
+
+            this.ImplementationGuideSections.Add(section);
+            ig.Sections.Add(section);
+
+            return section;
+        }
+
+        /// <summary>
         /// Craetes a new implementation guide for the specified implementation guide type.
         /// The new implementation guide is added to the mock object repository and the implementation guide type.
         /// </summary>
