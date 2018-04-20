@@ -15,7 +15,7 @@ test:
     - Trifolia.Test.dll
   categories:
     except:
-    - FHIR3_E2E
+    - FHIR_E2E
 notifications:
 - provider: Email
   to:

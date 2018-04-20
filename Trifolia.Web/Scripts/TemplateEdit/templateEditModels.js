@@ -664,14 +664,16 @@ var ConstraintModel = function (data, parent, viewModel) {
     self.AddContainedTemplate = function (isFhir, dataType) {
         var fhirPath = viewModel.Template().PrimaryContextType();
         var current = self;
+        var path = "";
 
         //Get path of the element being examined (something like "Account.subject")
         while (current) {
-            if (fhirPath) { fhirPath = fhirPath + '.'; }
-            fhirPath = fhirPath + self.Context().replace(/@/g, '');
-            current = self.Parent();
+            if (path) { path = "." + path; }
+            path = current.Context().replace(/@/g, '') + path;
+            current = current.Parent();
         }
 
+        fhirPath = fhirPath + "." + path;
         // Open pop-up
         self.ReferenceSelection.SearchQuery('');
         self.ReferenceSelection.Items([]);

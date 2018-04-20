@@ -1,6 +1,6 @@
 ﻿extern alias fhir_latest;
-using fhir_latest.Hl7.Fhir.Serialization;
 using fhir_latest.Hl7.Fhir.Model;
+using fhir_latest.Hl7.Fhir.Serialization;
 using Ionic.Zip;
 using Newtonsoft.Json;
 using System;
@@ -15,8 +15,8 @@ using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.Latest.Models;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
+using Trifolia.Plugins;
 
 namespace Trifolia.Export.FHIR.Latest
 {
@@ -428,6 +428,9 @@ namespace Trifolia.Export.FHIR.Latest
 
             foreach (var author in authors)
             {
+                if (author == null)
+                    continue;
+
                 authorsContent += string.Format("<tr><td>{0} {1}</td><td>{2}</td></tr>", author.FirstName.XmlEncode(), author.LastName.XmlEncode(), author.Email.XmlEncode());
             }
 

@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using System.Web;
-
-using Trifolia.Shared;
 using Trifolia.Authorization;
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Generation.Versioning;
-using Trifolia.Web.Models;
-using Trifolia.Web.Models.TemplateManagement;
-using Trifolia.Web.Extensions;
 using Trifolia.DB;
+using Trifolia.Export.MSWord;
+using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Export.Versioning;
 using Trifolia.Logging;
 using Trifolia.Plugins;
-using Trifolia.Shared.Plugins;
+using Trifolia.Shared;
+using Trifolia.Web.Extensions;
+using Trifolia.Web.Models.TemplateManagement;
 using Trifolia.Web.Models.User;
 
 namespace Trifolia.Web.Controllers.API
@@ -124,8 +118,7 @@ namespace Trifolia.Web.Controllers.API
         {
             if (!CheckPoint.Instance.GrantViewTemplate(templateId))
                 throw new AuthorizationException("You do not have permission to view this template");
-
-            WIKIParser wikiParser = new WIKIParser(this.tdb);
+            
             Template template = this.tdb.Templates
                 .Include("ChildConstraints")
                 .Include("ChildConstraints.ChildConstraints")
@@ -153,8 +146,8 @@ namespace Trifolia.Web.Controllers.API
                 Author = string.Format("{0} {1} ({2})", template.Author.FirstName, template.Author.LastName, template.Author.Email),
                 ImplementationGuideType = template.ImplementationGuideType.Name,
                 ImplementationGuideTypeId = template.ImplementationGuideType.Id,
-                Description = wikiParser.ParseAsHtml(template.Description),
-                Notes = wikiParser.ParseAsHtml(template.Notes),
+                Description = template.Description.MarkdownToHtml(),
+                Notes = template.Notes.MarkdownToHtml(),
                 ImplementationGuideId = template.OwningImplementationGuideId,
                 ImplementationGuide = template.OwningImplementationGuide.GetDisplayName(),
                 ImpliedTemplate = template.ImpliedTemplate != null ? template.ImpliedTemplate.Name : null,
@@ -200,7 +193,7 @@ namespace Trifolia.Web.Controllers.API
             int constraintCount = 0;
             foreach (TemplateConstraint cDbConstraint in template.ChildConstraints.Where(y => y.Parent == null).OrderBy(y => y.Order))
             {
-                ViewModel.Constraint newConstraint = BuildConstraint(wikiParser, baseLink, igManager, igTypePlugin, cDbConstraint, ++constraintCount);
+                ViewModel.Constraint newConstraint = BuildConstraint(baseLink, igManager, igTypePlugin, cDbConstraint, ++constraintCount);
                 model.Constraints.Add(newConstraint);
             }
 
@@ -465,10 +458,16 @@ namespace Trifolia.Web.Controllers.API
                     var plugin = igType.GetPlugin();
                     List<String> types = plugin.GetFhirTypes(fhirPath);
 
-                    // Filter based on the types (only return templates with a Template.PrimaryContextType that matches one of the types[])
-                    query = (from q in query
-                             join t in types on q.PrimaryContextType equals t
-                             select q);
+                    //If types isn't set to resource (all possible templates), filter the query to match
+                    if(!types.Contains("Resource"))
+                    {
+                        // Filter based on the types (only return templates with a Template.PrimaryContextType that matches one of the types[])
+                        query = (from q in query
+                                 join t in types on q.PrimaryContextType equals t
+                                 select q);
+                    }
+
+                    
                 }
                 catch (NotSupportedException nse)
                 {
@@ -1106,24 +1105,24 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
-        private ViewModel.Constraint BuildConstraint(WIKIParser wikiParser, string baseLink, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, TemplateConstraint dbConstraint, int constraintCount)
+        private ViewModel.Constraint BuildConstraint(string baseLink, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, TemplateConstraint dbConstraint, int constraintCount)
         {
             IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, dbConstraint, linkContainedTemplate: true, linkIsBookmark: false, createLinksForValueSets: false);
 
             ViewModel.Constraint newConstraint = new ViewModel.Constraint()
             {
-                Prose = fc.GetHtml(wikiParser, baseLink, constraintCount, false),
+                Prose = fc.GetHtml(baseLink, constraintCount, false),
                 IsHeading = dbConstraint.IsHeading,
                 HeadingTitle = dbConstraint.Context,
                 HeadingDescription = dbConstraint.HeadingDescription,
-                Description = wikiParser.ParseAsHtml(dbConstraint.Description),
+                Description = dbConstraint.Description.MarkdownToHtml(),
                 Label = dbConstraint.Label
             };
 
             int nextConstraintCount = 0;
             foreach (TemplateConstraint cDbConstraint in dbConstraint.ChildConstraints.OrderBy(y => y.Order))
             {
-                ViewModel.Constraint nextNewConstraint = BuildConstraint(wikiParser, baseLink, igSettings, igTypePlugin, cDbConstraint, ++nextConstraintCount);
+                ViewModel.Constraint nextNewConstraint = BuildConstraint(baseLink, igSettings, igTypePlugin, cDbConstraint, ++nextConstraintCount);
                 newConstraint.Children.Add(nextNewConstraint);
             }
 

@@ -72,7 +72,7 @@ namespace Trifolia.Test.Generation.Schematron
             #region Initial Data
 
             // IG Type
-            cdaType = tdb.FindOrCreateImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "cda.xsd", "cda", "urn:hl7-org:v3");
+            cdaType = tdb.FindOrCreateImplementationGuideType(Constants.IGType.CDA_IG_TYPE, "cda.xsd", "cda", "urn:hl7-org:v3");
 
             // Template Type
             docType = tdb.FindOrCreateTemplateType(cdaType, "document", "ClinicalDocument", "ClinicalDocument", 1);
@@ -560,7 +560,7 @@ namespace Trifolia.Test.Generation.Schematron
             var tdb = new MockObjectRepository();
             tdb.InitializeCDARepository();
 
-            var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            var igType = tdb.FindImplementationGuideType(Constants.IGType.CDA_IG_TYPE);
             var entryTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_ENTRY_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
             TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType, igType.GetSimpleSchema());

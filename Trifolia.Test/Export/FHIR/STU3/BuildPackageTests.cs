@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Ionic.Zip;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using Ionic.Zip;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Xml;
+using Trifolia.Shared;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3;
-using System.Xml;
 
 namespace Trifolia.Test.Export.FHIR.STU3
 {
@@ -104,7 +104,7 @@ namespace Trifolia.Test.Export.FHIR.STU3
         {
             tdb = new MockObjectRepository();
             tdb.InitializeFHIR3Repository();
-            igType = tdb.ImplementationGuideTypes.Single(y => y.Name == MockObjectRepository.DEFAULT_FHIR_STU3_IG_TYPE_NAME);
+            igType = tdb.ImplementationGuideTypes.Single(y => y.Name == Constants.IGType.FHIR_STU3_IG_TYPE);
             compositionType = tdb.TemplateTypes.Single(y => y.ImplementationGuideType == igType && y.Name == "Composition");
             extensionType = tdb.TemplateTypes.Single(y => y.ImplementationGuideType == igType && y.Name == "Extension");
 
@@ -311,10 +311,15 @@ namespace Trifolia.Test.Export.FHIR.STU3
             process.StartInfo = startInfo;
             process.OutputDataReceived += (sender, args) =>
             {
-                Console.WriteLine(args.Data);
+                Console.WriteLine("INFO: " + args.Data);
+            };
+            process.ErrorDataReceived += (sender, args) =>
+            {
+                Console.WriteLine("ERROR: " + args.Data);
             };
             process.Start();
             process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
             process.WaitForExit();
             process.CancelOutputRead();
 

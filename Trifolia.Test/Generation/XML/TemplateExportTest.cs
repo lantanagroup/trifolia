@@ -77,7 +77,7 @@ namespace Trifolia.Test.Generation.XML
             tdb.InitializeCDARepository();
 
             Organization org = tdb.FindOrCreateOrganization("LCG Test");
-            ImplementationGuide ig = tdb.FindOrCreateImplementationGuide(tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME), "Test Implementation Guide");
+            ImplementationGuide ig = tdb.FindOrCreateImplementationGuide(tdb.FindImplementationGuideType(Constants.IGType.CDA_IG_TYPE), "Test Implementation Guide");
             IGSettingsManager igSettings = new IGSettingsManager(tdb, ig.Id);
 
             Template template = tdb.CreateTemplate("1.2.3.4", "Document", "Test Template", ig, "observation", "Observation", "Test Description", "Test Notes", org);
@@ -136,7 +136,7 @@ namespace Trifolia.Test.Generation.XML
             tdb.InitializeCDARepository();
 
             Organization org = tdb.FindOrCreateOrganization("LCG Test");
-            ImplementationGuide ig = tdb.FindOrCreateImplementationGuide(tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME), "Test Implementation Guide");
+            ImplementationGuide ig = tdb.FindOrCreateImplementationGuide(tdb.FindImplementationGuideType(Constants.IGType.CDA_IG_TYPE), "Test Implementation Guide");
             IGSettingsManager igSettings = new IGSettingsManager(tdb, ig.Id);
 
             Template template = tdb.CreateTemplate("1.2.3.4", "Document", "Test Template", ig, "observation", "Observation", "Test Description", "Test Notes");
@@ -193,7 +193,7 @@ namespace Trifolia.Test.Generation.XML
             Assert.AreEqual("1.2.3.4.5", identifierAttribute.Value, "Template's identifier has an incorrect value.");
 
             Assert.IsNotNull(implementationGuideTypeAttribute, "Couldn't find implementationGuideType attribute on Template.");
-            Assert.AreEqual(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, implementationGuideTypeAttribute.Value, "Template's implementationGuideType has an incorrect value.");
+            Assert.AreEqual(Constants.IGType.CDA_IG_TYPE, implementationGuideTypeAttribute.Value, "Template's implementationGuideType has an incorrect value.");
 
             Assert.IsNotNull(templateTypeAttribute, "Couldn't find templateType attribute on Template.");
             Assert.AreEqual("Document", templateTypeAttribute.Value, "Template's templateType has an incorrect value.");

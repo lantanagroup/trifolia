@@ -36,6 +36,9 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -72,6 +75,10 @@
       <HintPath>..\libraries\Hl7.FluentPath.dll</HintPath>
       <Aliases>fhir_stu3</Aliases>
     </Reference>
+    <Reference Include="Markdig, Version=0.15.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Markdig.0.15.0\lib\net40\Markdig.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -97,6 +104,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="FHIR\Profiles\Latest\ProfileHelper.cs" />
     <Compile Include="FHIR\Profiles\STU3\ProfileHelper.cs" />
     <Compile Include="FHIR\DSTU2Helper.cs" />
@@ -104,19 +112,24 @@
     <Compile Include="FHIR\STU3Helper.cs" />
     <Compile Include="FHIR\SummaryType.cs" />
     <Compile Include="FHIR\TemplateConstraintExtensions.cs" />
+    <Compile Include="HtmlToOpenXmlConverter.cs" />
     <Compile Include="HttpWebClient.cs" />
     <Compile Include="IdentifierHelper.cs" />
     <Compile Include="ImportExport\Model\TemplateExport.Designer.cs" />
     <Compile Include="JiraIssue.cs" />
     <Compile Include="JIRAIssueData.cs" />
     <Compile Include="JiraUserSearchResponse.cs" />
-    <Compile Include="Plugins\IGTypePluginFactory.cs" />
-    <Compile Include="Plugins\IIGTypePlugin.cs" />
+    <Compile Include="OpenXmlHelper.cs" />
     <Compile Include="ImplementationGuideExtension.cs" />
     <Compile Include="ImplementationGuideTypeExtension.cs" />
     <Compile Include="IWebClient.cs" />
     <Compile Include="LookupPublishStatus.cs" />
     <Compile Include="ObjectExtensions.cs" />
+    <Compile Include="Properties\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="PublishStatuses.cs" />
     <Compile Include="SimpleSchemaObjectExtension.cs" />
     <Compile Include="StringExtensions.cs" />
@@ -136,7 +149,6 @@
     <Compile Include="Validation\TemplateValidationResult.cs" />
     <Compile Include="Validation\ValidationLevels.cs" />
     <Compile Include="Validation\ValidationResult.cs" />
-    <Compile Include="ValueSetExtensions.cs" />
     <Compile Include="VocabularyOutputType.cs" />
     <Compile Include="VocabularyOutputTypeTranslator.cs" />
   </ItemGroup>
@@ -605,8 +617,14 @@
     <Content Include="FHIR\Profiles\Latest\v3-codesystems.xml" />
     <Content Include="FHIR\Profiles\Latest\valuesets.xml" />
     <Content Include="ImportExport\Model\TemplateExportReadme.txt" />
+    <EmbeddedResource Include="Properties\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Plugins\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

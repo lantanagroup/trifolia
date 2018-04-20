@@ -1,21 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Shared;
 using Trifolia.DB;
-
-using DocumentFormat.OpenXml.Wordprocessing;
+using Trifolia.Export.MSWord;
+using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Plugins;
+using Trifolia.Shared;
+using System.IO;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Test.Generation.IG
 {
-    
-    
     /// <summary>
     ///This is a test class for FormattedConstraintTest and is intended
     ///to contain all FormattedConstraintTest Unit Tests
@@ -316,12 +313,17 @@ namespace Trifolia.Test.Generation.IG
             };
 
             IGSettingsManager igSettings = new IGSettingsManager(repo);
+            HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
             var formattedConstraint = FormattedConstraintFactory.NewFormattedConstraint(repo, igSettings, null, newConstraint);
 
-            WIKIParser wikiParser = new WIKIParser(repo);
-            Document newDoc = new Document();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                var doc = WordprocessingDocument.Create(ms, WordprocessingDocumentType.Document);
+                var mainPart = doc.AddMainDocumentPart();
+                mainPart.Document = new Document();
 
-            formattedConstraint.AddToDocParagraph(wikiParser, newDoc, 1, 1, "");
+                formattedConstraint.AddToDocParagraph(mainPart, hyperlinkTracker, mainPart.Document, 1, 1, "");
+            }
         }
     }
 }

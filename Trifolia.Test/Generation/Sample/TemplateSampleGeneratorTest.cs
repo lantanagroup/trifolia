@@ -1,16 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Xml;
-using System;
-
-using Trifolia.Generation.IG;
-using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 using Trifolia.DB;
+using Trifolia.Plugins;
 
 namespace Trifolia.Test.Generation.Sample
 {
-    
-    
+
+
     /// <summary>
     ///This is a test class for TemplateSampleGeneratorTest and is intended
     ///to contain all TemplateSampleGeneratorTest Unit Tests

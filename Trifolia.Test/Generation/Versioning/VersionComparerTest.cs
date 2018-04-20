@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Trifolia.Generation.Versioning;
 using Trifolia.DB;
-using Trifolia.Shared.Plugins;
+using Trifolia.Export.Versioning;
+using Trifolia.Plugins;
 using Trifolia.Shared;
 
 namespace Trifolia.Test.Generation.Versioning
@@ -22,7 +20,7 @@ namespace Trifolia.Test.Generation.Versioning
         {
             this.mockRepo = new MockObjectRepository();
 
-            cdaType = this.mockRepo.FindOrCreateImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, string.Empty, string.Empty, string.Empty);
+            cdaType = this.mockRepo.FindOrCreateImplementationGuideType(Constants.IGType.CDA_IG_TYPE, string.Empty, string.Empty, string.Empty);
             documentType = this.mockRepo.FindOrCreateTemplateType(cdaType, "Document Templates", "ClinicalDocument", "ClinicalDocument", 1);
             ig = this.mockRepo.FindOrCreateImplementationGuide(cdaType, "Test");
         }

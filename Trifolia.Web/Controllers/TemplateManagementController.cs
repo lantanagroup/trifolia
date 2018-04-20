@@ -1,24 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Transactions;
-using System.Text.RegularExpressions;
-
-using Trifolia.Authentication;
-using Trifolia.Shared;
+using Trifolia.Authorization;
+using Trifolia.DB;
 using Trifolia.Logging;
 using Trifolia.Web.Models.TemplateManagement;
-using Trifolia.Web.Models;
-using Trifolia.Web.Extensions;
-using Trifolia.DB;
-
-using Trifolia.Authorization;
-using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Generation.IG;
-using Trifolia.Generation.Versioning;
 
 namespace Trifolia.Web.Controllers
 {
