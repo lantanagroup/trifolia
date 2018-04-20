@@ -3,7 +3,7 @@ using Trifolia.Import.Terminology.External;
 
 namespace Trifolia.Powershell
 {
-    [Cmdlet(VerbsCommon.Set, "ImportValueSet")]
+    [Cmdlet(VerbsCommon.Set, "TrifoliaImportValueSet")]
     public class SetImportValueSet : BaseCommand
     {
         [Parameter(

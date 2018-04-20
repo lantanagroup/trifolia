@@ -4,7 +4,7 @@ using Trifolia.Import.Terminology.External;
 
 namespace Trifolia.Powershell
 {
-    [Cmdlet(VerbsCommon.Get, "RoseTreeValueSet")]
+    [Cmdlet(VerbsCommon.Get, "TrifoliaRoseTreeValueSet")]
     public class GetRoseTreeValueSet : BaseCommand
     {
         [Parameter(

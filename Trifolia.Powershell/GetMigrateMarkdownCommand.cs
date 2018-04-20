@@ -21,23 +21,15 @@ namespace Trifolia.Powershell
     }
 
     /// <summary>
-    /// This PowerShell command should only be used once, after upgrading to Trifolia to 2.5.2+ to
-    /// migrate the WIKI Markup and XHTML fields to be Markdown fields. If run twice, it may screw up
-    /// the markdown.
+    /// <para type="synopsis">Migrates Wiki Markup and XHTML fields to Markdown</para>
+    /// <para type="description">This PowerShell command should only be used once, after upgrading to Trifolia to 2.5.2+ to</para>
+    /// <para type="description">migrate the WIKI Markup and XHTML fields to be Markdown fields. If run twice, it may screw up the markdown.</para>
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "MigrateMarkdown")]
+    [Cmdlet(VerbsCommon.Get, "TrifoliaMigrateMarkdown")]
     public class GetMigrateMarkdownCommand : BaseCommand
     {
         private List<MigrateMarkdownLog> logs;
         private const string CleanHtmlFormat = "<root xmlns:o=\"urn:msxml\" xmlns:v=\"urn:msxml\" xmlns:w=\"urn:msxml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">{0}</root>";
-
-        /*
-        [Parameter(
-            Mandatory = true,
-            HelpMessage = "A filename that the results should be stored to (in CSV format)"
-        )]
-        public string Output { get; set; }
-        */
 
         private string CleanHtml(string html)
         {
