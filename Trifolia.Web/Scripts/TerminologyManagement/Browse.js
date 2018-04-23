@@ -148,7 +148,10 @@
                 }
             });
 
-            modalInstance.result.then($scope.search);
+            modalInstance.result.then(function () {
+                $scope.message = "Successfully removed value set!";
+                $scope.search();
+            });
         };
 
         $scope.contextTabChanged = function () {
