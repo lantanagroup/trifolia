@@ -218,16 +218,26 @@ namespace Trifolia.Shared
                     case "tbody":
                         break;
                     case "strong":
-                        var run = cRun;
+                        var strongRun = cRun;
 
-                        if (run == null)
-                            run = (Run) NewChild(current, new Run());
+                        if (strongRun == null)
+                            strongRun = (Run) NewChild(current, new Run());
 
-                        this.AddBoldToRun(run);
+                        this.AddBoldToRun(strongRun);
 
-                        return run;
+                        return strongRun;
+                    case "cite":
+                        var citeRun = cRun;
+
+                        if (citeRun == null)
+                            citeRun = (Run)NewChild(current, new Run());
+
+                        citeRun.Append(new Text("\"" + xmlReader.ReadElementContentAsString() + "\""));
+
+                        return current;
                     default:
-                        throw new Exception("Unsupported wiki syntax " + xmlReader.Name);
+                        Logging.Log.For(this).Error("Unsupported wiki syntax/element " + xmlReader.Name);
+                        return current;
                 }
             }
             else if (xmlReader.NodeType == XmlNodeType.Text)
