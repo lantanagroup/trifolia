@@ -128,7 +128,7 @@ namespace Trifolia.Export.MSWord
 
             this.AddTableOfContents();
 
-            this.AddTemplates();
+            this.AddTemplateTypeSections();
 
             if (exportSettings.GenerateDocTemplateListTable || exportSettings.GenerateDocContainmentTable)
             {
@@ -470,9 +470,9 @@ namespace Trifolia.Export.MSWord
         /// ImplementationGuideType. For each template type, all templates associated with that type are output
         /// in the order specified by the generation options.
         /// </summary>
-        private void AddTemplates()
+        private void AddTemplateTypeSections()
         {
-            Log.For(this).Info("Adding {0} templates for IG '{1}'", templates.Count(), this.implementationGuide.Id);
+            Log.For(this).Debug("Adding {0} templates for IG '{1}'", templates.Count(), this.implementationGuide.Id);
 
             var templateTypes = this.igSettings.TemplateTypes.OrderBy(y => y.OutputOrder).ThenBy(y => y.Name);
 
@@ -482,7 +482,7 @@ namespace Trifolia.Export.MSWord
                 List<Template> cTemplates = this.GetTemplatesForTemplateType(templateType.TemplateTypeId);
 
                 if (cTemplates.Count > 0)
-                    this.AddTemplates(templateType.Name, templateType.DetailsText, cTemplates);
+                    this.AddTemplateTypeSection(templateType.Name, templateType.DetailsText, cTemplates);
             }
         }
 
@@ -493,7 +493,7 @@ namespace Trifolia.Export.MSWord
         /// <param name="typeName">The template type's name</param>
         /// <param name="detailsText">The details text describing the template type.</param>
         /// <param name="templates">The templates contained within the template type for this ig.</param>
-        private void AddTemplates(string typeName, string detailsText, List<Template> templates)
+        private void AddTemplateTypeSection(string typeName, string detailsText, List<Template> templates)
         {
             var notRetiredTemplates = templates.Where(y => y.Status != this.retiredStatus);
 
