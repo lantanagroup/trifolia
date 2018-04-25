@@ -106,8 +106,11 @@ namespace Trifolia.Export.MSWord
                 lGrid.Append(lColumn);
             }
 
-            TableRow lRow = new TableRow();
-            table.Append(lRow);
+            TableRow headerRow = new TableRow(
+                new TableRowProperties(
+                    new CantSplit(),
+                    new TableHeader()));
+            table.Append(headerRow);
 
             foreach (HeaderDescriptor lDescriptor in headers)
             {
@@ -151,7 +154,7 @@ namespace Trifolia.Export.MSWord
                                 new RunProperties() { Bold = new Bold() },
                                 new Text(lDescriptor.HeaderName) { Space = SpaceProcessingModeValues.Preserve }));
                 lCell.Append(lHeaderParagraph);
-                lRow.Append(lCell);
+                headerRow.Append(lCell);
             }
 
             return table;
