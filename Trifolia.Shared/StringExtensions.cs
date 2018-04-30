@@ -63,7 +63,8 @@ namespace Trifolia.Shared
             if (string.IsNullOrEmpty(theString))
                 return theString;
 
-            return Markdig.Markdown.ToHtml(theString, mdPipeline);
+            string html = Markdig.Markdown.ToHtml(theString, mdPipeline);
+            return html;
         }
 
         public static OpenXmlElement MarkdownToOpenXml(this string theString, MainDocumentPart mainPart, bool styleKeywords = false)

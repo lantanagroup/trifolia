@@ -165,7 +165,6 @@ namespace Trifolia.Shared
                     case "thead":
                         this.currentIsTableHeader = true;
                         break;
-                    case "th":
                     case "tr":
                         // TODO: handle headers separately
 
@@ -182,6 +181,7 @@ namespace Trifolia.Shared
                             return NewChild(current, newTableRow);
                         }
                         break;
+                    case "th":
                     case "td":
                         if (cTableRow != null)
                         {

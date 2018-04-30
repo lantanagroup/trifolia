@@ -110,7 +110,7 @@ namespace Trifolia.Export.MSWord
                     new Body());
 
             this.hyperlinkTracker = new HyperlinkTracker();
-            this.tables = new TableCollection(this.document.MainDocumentPart.Document.Body);
+            this.tables = new TableCollection(this.document.MainDocumentPart.Document.Body, this.hyperlinkTracker);
             this.constraintTableGenerator = new TemplateConstraintTable(this._tdb, this.constraintReferences, this.igSettings, igTypePlugin, this.templates, this.tables, exportSettings.SelectedCategories, this.hyperlinkTracker);
             this.figures = new FigureCollection(this.document.MainDocumentPart.Document.Body);
             this.valueSetsExport 
@@ -212,10 +212,22 @@ namespace Trifolia.Export.MSWord
                     new DocGrid() { LinePitch = 360 });
             this.document.MainDocumentPart.Document.Body.Append(sectionProperties);
 
-            /*
-            OpenXmlValidator validator = new OpenXmlValidator(FileFormatVersions.Office2010);
-            List<ValidationErrorInfo> errors = validator.Validate(this.document).ToList();
-            */
+            // Bug in DocumentFormat.OpenXml adding <numberingIdMacAtClean> at an incorrect location in the document
+            var numberingPart = this.document.MainDocumentPart.NumberingDefinitionsPart;
+            var numberingIdMacAtCleanup = numberingPart.Numbering.OfType<NumberingIdMacAtCleanup>().FirstOrDefault();
+            if (numberingIdMacAtCleanup != null)
+                numberingIdMacAtCleanup.Remove();
+
+            DocumentFormat.OpenXml.Validation.OpenXmlValidator validator = new DocumentFormat.OpenXml.Validation.OpenXmlValidator(FileFormatVersions.Office2010);
+            List<DocumentFormat.OpenXml.Validation.ValidationErrorInfo> errors = validator.Validate(this.document).ToList();
+
+            if (errors.Count > 0)
+            {
+                Log.For(this).Error("Exporting IG with id " + this.implementationGuide.Id + " produced the following OpenXml validation errors: ");
+
+                foreach (var error in errors)
+                    Log.For(this).Error("Description: " + error.Description + "\r\nPath: " + error.Path + "\r\n");
+            }
 
             this.document.Close();
 
@@ -693,7 +705,7 @@ namespace Trifolia.Export.MSWord
 
             IConstraintGenerator constraintGenerator = ConstraintGenerationFactory.NewConstraintGenerator(
                 this.igSettings,
-                this.document.MainDocumentPart.Document.Body,
+                this.document.MainDocumentPart,
                 this.commentManager,
                 this.figures,
                 exportSettings.IncludeXmlSamples,

@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Trifolia.Shared;
 using Trifolia.DB;
 using Trifolia.Export.MSWord.ConstraintGeneration;
+using DocumentFormat.OpenXml.Packaging;
 
 namespace Trifolia.Export.MSWord
 {
@@ -10,7 +11,7 @@ namespace Trifolia.Export.MSWord
     {
         public static IConstraintGenerator NewConstraintGenerator(
             IGSettingsManager igSettings,
-            Body documentBody, 
+            MainDocumentPart mainPart,
             CommentManager cmtMgr,
             FigureCollection figures,
             bool includeSamples,
@@ -31,7 +32,6 @@ namespace Trifolia.Export.MSWord
                 constraintGenerator = new LegacyGeneration();
 
             constraintGenerator.IGSettings = igSettings;
-            constraintGenerator.DocumentBody = documentBody;
             constraintGenerator.Figures = figures;
             constraintGenerator.IncludeSamples = includeSamples;
             constraintGenerator.DataSource = dataSource;
@@ -44,6 +44,8 @@ namespace Trifolia.Export.MSWord
             constraintGenerator.IncludeCategory = !string.IsNullOrEmpty(igSettings.GetSetting(IGSettingsManager.SettingProperty.Categories));
             constraintGenerator.SelectedCategories = selectedCategories;
             constraintGenerator.HyperlinkTracker = hyperlinkTracker;
+            constraintGenerator.MainPart = mainPart;
+            constraintGenerator.DocumentBody = mainPart.Document.Body;
 
             return constraintGenerator;
         }

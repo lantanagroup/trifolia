@@ -24,7 +24,7 @@ namespace Trifolia.Export.MSWord
 
         #endregion
 
-        public static Paragraph CreateCaption(int count, string title, string caption, CaptionTypes captionType, string bookmarkId = null)
+        public static Paragraph CreateCaption(int count, string title, string caption, CaptionTypes captionType, string bookmarkId = null, HyperlinkTracker hyperlinkTracker = null)
         {
             FieldCode fieldCode = null;
 
@@ -51,17 +51,9 @@ namespace Trifolia.Export.MSWord
                     {
                         FieldCharType = new EnumValue<FieldCharValues>(FieldCharValues.Separate)
                     }));
-
-            if (!string.IsNullOrEmpty(bookmarkId))
-                p3.Append(
-                    new BookmarkStart() { Id = bookmarkId, Name = bookmarkId });
-
-            p3.Append(
-                DocHelper.CreateRun(count.ToString()));
-
-            if (!string.IsNullOrEmpty(bookmarkId))
-                p3.Append(
-                    new BookmarkEnd() { Id = bookmarkId });
+            
+            if (!string.IsNullOrEmpty(bookmarkId) && hyperlinkTracker != null)
+                hyperlinkTracker.AddAnchorAround(p3, bookmarkId, DocHelper.CreateRun(count.ToString()));
 
             p3.Append(
                 new Run(
@@ -74,9 +66,11 @@ namespace Trifolia.Export.MSWord
             return p3;
         }
 
-        public static Paragraph CreateTableCaption(int tableCount, string title, string bookmarkId=null, string caption = "Table ")
+        public static Paragraph CreateTableCaption(int tableCount, string title, string bookmarkId = null, string caption = "Table ", HyperlinkTracker hyperlinkTracker = null)
         {
-            return CreateCaption(++tableCount, title, caption, CaptionTypes.Table, bookmarkId);
+            return CreateCaption(++tableCount, title, caption, CaptionTypes.Table, 
+                bookmarkId: bookmarkId, 
+                hyperlinkTracker: hyperlinkTracker);
         }
 
         public static Paragraph CreateFigureCaption(int figureCount, string title, string bookmarkId = null, string caption = "Figure ")
