@@ -32,7 +32,8 @@ namespace Trifolia.Shared
 
         internal OpenXmlElement Convert(string html)
         {
-            OpenXmlElement current = new Body();
+            Body body = new Body();
+            OpenXmlElement current = body;
 
             using (StringReader strReader = new StringReader("<root>" + html + "</root>"))
             {
@@ -186,6 +187,8 @@ namespace Trifolia.Shared
                         if (cTableRow != null)
                         {
                             TableCell newCell = new TableCell();
+
+                            // If we are in the header, shade the cell appropriately
                             if (this.currentIsTableHeader)
                             {
                                 newCell.Append(
@@ -199,12 +202,9 @@ namespace Trifolia.Shared
                                         }
                                     });
                             }
-                            // Cells' contents should be within a paragraph
-                            Paragraph newPara = new Paragraph();
-                            newCell.AppendChild(newPara);
 
                             current.Append(newCell);
-                            return newPara;
+                            return newCell;
                         }
                         break;
                     case "span":
@@ -245,7 +245,12 @@ namespace Trifolia.Shared
                 string text = xmlReader.Value
                     .Replace("&nbsp;", " ");
 
-                if (current is Paragraph || current is TableCell)
+                if (current is TableCell)
+                {
+                    Paragraph tcPara = new Paragraph(CreateRun(text));
+                    current.Append(tcPara);
+                }
+                if (current is Paragraph)
                 {
                     current.Append(CreateRun(text));
                 }
