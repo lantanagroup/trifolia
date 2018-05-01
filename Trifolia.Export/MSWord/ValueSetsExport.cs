@@ -158,9 +158,9 @@ namespace Trifolia.Export.MSWord
 
             TableRow headerRow = DocHelper.CreateTableHeader("Code", "Code System", "Code System OID", "Print Name");
             List<TableCell> headerCells = headerRow.ChildElements.OfType<TableCell>().ToList();
-            headerCells[0].ChildElements.OfType<TableCellProperties>().First().TableCellWidth = new TableCellWidth() { Width = "1170" };
-            headerCells[1].ChildElements.OfType<TableCellProperties>().First().TableCellWidth = new TableCellWidth() { Width = "3195" };
-            headerCells[2].ChildElements.OfType<TableCellProperties>().First().TableCellWidth = new TableCellWidth() { Width = "3195" };
+            headerCells[0].ChildElements.OfType<TableCellProperties>().First().TableCellWidth = new TableCellWidth() { Width = "1560" };
+            headerCells[1].ChildElements.OfType<TableCellProperties>().First().TableCellWidth = new TableCellWidth() { Width = "3000" };
+            headerCells[2].ChildElements.OfType<TableCellProperties>().First().TableCellWidth = new TableCellWidth() { Width = "3000" };
             headerCells[3].ChildElements.OfType<TableCellProperties>().First().TableCellWidth = new TableCellWidth() { Width = "2520" };
             Table t = DocHelper.CreateTable(
                 new TableRow(headingCell),
