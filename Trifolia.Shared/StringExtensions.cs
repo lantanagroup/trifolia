@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Trifolia.Config;
 using Markdig;
+using Trifolia.Logging;
 
 namespace Trifolia.Shared
 {
@@ -69,15 +70,26 @@ namespace Trifolia.Shared
 
         public static OpenXmlElement MarkdownToOpenXml(this string theString, MainDocumentPart mainPart, bool styleKeywords = false)
         {
-            string input = theString;
+            try
+            {
+                string input = theString;
 
-            string html = MarkdownToHtml(input);
-            var openXmlElement = html.HtmlToOpenXml(mainPart);
+                string html = MarkdownToHtml(input);
+                var openXmlElement = html.HtmlToOpenXml(mainPart);
 
-            if (styleKeywords)
-                StylizeKeywords(openXmlElement);
+                if (styleKeywords)
+                    StylizeKeywords(openXmlElement);
 
-            return openXmlElement;
+                return openXmlElement;
+            }
+            catch (Exception ex)
+            {
+                Log.For(typeof(StringExtensions)).Error("Error converting Markdown to OpenXml for the following Markdown:\r\n" + theString, ex);
+                return new Body(
+                    new Paragraph(
+                        new Run(
+                            new Text(theString))));
+            }
         }
 
         public static OpenXmlElement HtmlToOpenXml(this string html, MainDocumentPart mainPart)
