@@ -24,7 +24,7 @@ namespace Trifolia.Export.MSWord
 
         #endregion
 
-        public static Paragraph CreateCaption(int count, string title, string caption, CaptionTypes captionType, string bookmarkId = null)
+        public static Paragraph CreateCaption(int count, string title, string caption, CaptionTypes captionType, string bookmarkId = null, HyperlinkTracker hyperlinkTracker = null)
         {
             FieldCode fieldCode = null;
 
@@ -52,16 +52,12 @@ namespace Trifolia.Export.MSWord
                         FieldCharType = new EnumValue<FieldCharValues>(FieldCharValues.Separate)
                     }));
 
-            if (!string.IsNullOrEmpty(bookmarkId))
-                p3.Append(
-                    new BookmarkStart() { Id = bookmarkId, Name = bookmarkId });
+            var countRun = DocHelper.CreateRun(count.ToString() + ": ");
 
-            p3.Append(
-                DocHelper.CreateRun(count.ToString()));
-
-            if (!string.IsNullOrEmpty(bookmarkId))
-                p3.Append(
-                    new BookmarkEnd() { Id = bookmarkId });
+            if (!string.IsNullOrEmpty(bookmarkId) && hyperlinkTracker != null)
+                hyperlinkTracker.AddAnchorAround(p3, bookmarkId, countRun);
+            else
+                p3.Append(countRun);
 
             p3.Append(
                 new Run(
@@ -69,14 +65,16 @@ namespace Trifolia.Export.MSWord
                     {
                         FieldCharType = new EnumValue<FieldCharValues>(FieldCharValues.End)
                     }),
-                DocHelper.CreateRun(": " + title));
+                DocHelper.CreateRun(title));
 
             return p3;
         }
 
-        public static Paragraph CreateTableCaption(int tableCount, string title, string bookmarkId=null, string caption = "Table ")
+        public static Paragraph CreateTableCaption(int tableCount, string title, string bookmarkId = null, string caption = "Table ", HyperlinkTracker hyperlinkTracker = null)
         {
-            return CreateCaption(++tableCount, title, caption, CaptionTypes.Table, bookmarkId);
+            return CreateCaption(++tableCount, title, caption, CaptionTypes.Table, 
+                bookmarkId: bookmarkId, 
+                hyperlinkTracker: hyperlinkTracker);
         }
 
         public static Paragraph CreateFigureCaption(int figureCount, string title, string bookmarkId = null, string caption = "Figure ")
@@ -106,8 +104,11 @@ namespace Trifolia.Export.MSWord
                 lGrid.Append(lColumn);
             }
 
-            TableRow lRow = new TableRow();
-            table.Append(lRow);
+            TableRow headerRow = new TableRow(
+                new TableRowProperties(
+                    new CantSplit(),
+                    new TableHeader()));
+            table.Append(headerRow);
 
             foreach (HeaderDescriptor lDescriptor in headers)
             {
@@ -151,7 +152,7 @@ namespace Trifolia.Export.MSWord
                                 new RunProperties() { Bold = new Bold() },
                                 new Text(lDescriptor.HeaderName) { Space = SpaceProcessingModeValues.Preserve }));
                 lCell.Append(lHeaderParagraph);
-                lRow.Append(lCell);
+                headerRow.Append(lCell);
             }
 
             return table;

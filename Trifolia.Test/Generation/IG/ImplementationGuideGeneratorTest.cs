@@ -93,7 +93,7 @@ namespace Trifolia.Test.Generation.IG
         public void TestContextTable()
         {
             // Test the template context table's caption
-            XmlElement templateContextTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[contains(text(), ': Test Template 2 Contexts')]]", docNsMgr) as XmlElement;
+            XmlElement templateContextTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[text() = 'Test Template 2 Contexts']]", docNsMgr) as XmlElement;
             Assert.IsNotNull(templateContextTitle);
             Assert.IsNotNull(templateContextTitle.SelectSingleNode("w:pPr/w:pStyle[@w:val='Caption']", docNsMgr), "Expected to find a style on the template list table's caption");
 
@@ -121,7 +121,7 @@ namespace Trifolia.Test.Generation.IG
         public void TestConstraintOverviewTable()
         {
             // Test the constraint table's caption
-            XmlElement constraintTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[contains(text(), ': Test Constraint Description Template Constraints Overview')]]", docNsMgr) as XmlElement;
+            XmlElement constraintTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[text() = 'Test Constraint Description Template Constraints Overview']]", docNsMgr) as XmlElement;
             Assert.IsNotNull(constraintTitle);
             Assert.IsNotNull(constraintTitle.SelectSingleNode("w:pPr/w:pStyle[@w:val='Caption']", docNsMgr), "Expected to find a style on the constraint table's caption");
 
@@ -162,7 +162,7 @@ namespace Trifolia.Test.Generation.IG
         public void TestDocTemplateListTable()
         {
             // Test the template list table's caption
-            XmlElement templateListTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[contains(text(), ': Template List')]]", docNsMgr) as XmlElement;
+            XmlElement templateListTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[contains(text(), 'Template List')]]", docNsMgr) as XmlElement;
             Assert.IsNotNull(templateListTitle);
             Assert.IsNotNull(templateListTitle.SelectSingleNode("w:pPr/w:pStyle[@w:val='Caption']", docNsMgr), "Expected to find a style on the template list table's caption");
 
@@ -193,7 +193,7 @@ namespace Trifolia.Test.Generation.IG
         public void TestDocContainmentTable()
         {
             // Test the template containment table's caption
-            XmlElement templateContainmentTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[contains(text(), ': Template Containments')]]", docNsMgr) as XmlElement;
+            XmlElement templateContainmentTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[text() = 'Template Containments']]", docNsMgr) as XmlElement;
             Assert.IsNotNull(templateContainmentTitle);
             Assert.IsNotNull(templateContainmentTitle.SelectSingleNode("w:pPr/w:pStyle[@w:val='Caption']", docNsMgr), "Expected to find a style on the template list table's caption");
 
@@ -224,7 +224,7 @@ namespace Trifolia.Test.Generation.IG
         public void TestValueSetsTable()
         {
             // Test the Value Sets table's caption
-            XmlElement tableValueSetTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[contains(text(), ': Treatment status')]]", docNsMgr) as XmlElement;
+            XmlElement tableValueSetTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[text() = 'Treatment status']]", docNsMgr) as XmlElement;
             Assert.IsNotNull(tableValueSetTitle);
             Assert.IsNotNull(tableValueSetTitle.SelectSingleNode("w:pPr/w:pStyle[@w:val='Caption']", docNsMgr), "Expected to find a style on the value sets table's heading");
 
@@ -257,7 +257,7 @@ namespace Trifolia.Test.Generation.IG
         public void TestCodeSystemsTable()
         {
             // Test the code system table's caption
-            XmlElement tableCodeSystemTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[contains(text(), ': Code Systems')]]", docNsMgr) as XmlElement;
+            XmlElement tableCodeSystemTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/w:t[text() = 'Code Systems']]", docNsMgr) as XmlElement;
             Assert.IsNotNull(tableCodeSystemTitle);
             Assert.IsNotNull(tableCodeSystemTitle.SelectSingleNode("w:pPr/w:pStyle[@w:val='Caption']", docNsMgr), "Expected to find a style on the code system table's caption");
 
@@ -545,7 +545,7 @@ namespace Trifolia.Test.Generation.IG
         [TestMethod, TestCategory("MSWord")]
         public void TestXMLSampleHeader()
         {
-            XmlElement XMLSampleTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/wrPr/w:t[contains(text(), ': Test_Template_1_Example')]]", docNsMgr) as XmlElement;
+            XmlElement XMLSampleTitle = doc.DocumentElement.SelectSingleNode("//w:p[w:r/wrPr/w:t[text() = 'Test_Template_1_Example']]", docNsMgr) as XmlElement;
             XmlNode xmlSampleHeader = doc.SelectSingleNode("/w:document/w:body/w:p[33]", docNsMgr);
             Assert.IsNotNull(xmlSampleHeader, "Could not find XML Sample"); 
 
@@ -553,8 +553,8 @@ namespace Trifolia.Test.Generation.IG
             Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:pPr/w:ind[@w:left='130']", docNsMgr), "Expected to find a Left Indent for the XML Sample");
             Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:pPr/w:ind[@w:right='115']", docNsMgr), "Expected to find a Right Indent for the XML Sample");
             Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:r[1][not(w:rPr/w:rStyle)]/w:t[text()='Figure ']", docNsMgr), "Did not find XML Sample Label");        
-            Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:r[5][not(w:rPr/w:rStyle)]/w:t[text()='1']", docNsMgr), "Figure Number missing for XML Sample");
-            Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:r[7][not(w:rPr/w:rStyle)]/w:t[text()=': Test_Template_1_Example']", docNsMgr), "Title missing for XML Sample");
+            Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:r[5][not(w:rPr/w:rStyle)]/w:t[text()='1: ']", docNsMgr), "Figure Number missing for XML Sample");
+            Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:r[7][not(w:rPr/w:rStyle)]/w:t[text()='Test_Template_1_Example']", docNsMgr), "Title missing for XML Sample");
         }
 
         /// <summary>

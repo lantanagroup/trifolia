@@ -156,9 +156,15 @@ namespace Trifolia.Export.MSWord
                         DocHelper.CreateRun("Value Set Source: "),
                         this.hyperlinkTracker.CreateUrlHyperlink(this.mainPart, valueSet.Source, valueSet.Source, Properties.Settings.Default.LinkStyle)));
 
+            TableRow headerRow = DocHelper.CreateTableHeader("Code", "Code System", "Code System OID", "Print Name");
+            List<TableCell> headerCells = headerRow.ChildElements.OfType<TableCell>().ToList();
+            headerCells[0].ChildElements.OfType<TableCellProperties>().First().TableCellWidth = new TableCellWidth() { Width = "1560" };
+            headerCells[1].ChildElements.OfType<TableCellProperties>().First().TableCellWidth = new TableCellWidth() { Width = "3000" };
+            headerCells[2].ChildElements.OfType<TableCellProperties>().First().TableCellWidth = new TableCellWidth() { Width = "3000" };
+            headerCells[3].ChildElements.OfType<TableCellProperties>().First().TableCellWidth = new TableCellWidth() { Width = "2520" };
             Table t = DocHelper.CreateTable(
                 new TableRow(headingCell),
-                DocHelper.CreateTableHeader("Code", "Code System", "Code System OID", "Print Name"));
+                headerRow);
 
             int maximumMembers = this.defaultMaxMembers;
 
@@ -173,6 +179,10 @@ namespace Trifolia.Export.MSWord
 
                 TableRow memberRow = new TableRow(
                     new TableCell(
+                        new TableCellProperties()
+                        {
+                            TableCellWidth = new TableCellWidth() { Width = "1170" }
+                        },
                         new Paragraph(
                             new ParagraphProperties(
                                 new ParagraphStyleId() 
@@ -181,6 +191,10 @@ namespace Trifolia.Export.MSWord
                                     }),
                             DocHelper.CreateRun(currentMember.Code))),
                     new TableCell(
+                        new TableCellProperties()
+                        {
+                            TableCellWidth = new TableCellWidth() { Width = "3195" }
+                        },
                         new Paragraph(
                             new ParagraphProperties(
                                 new ParagraphStyleId()
@@ -189,6 +203,10 @@ namespace Trifolia.Export.MSWord
                                 }),
                             DocHelper.CreateRun(currentMember.CodeSystem.Name))),
                     new TableCell(
+                        new TableCellProperties()
+                        {
+                            TableCellWidth = new TableCellWidth() { Width = "3195" }
+                        },
                         new Paragraph(
                             new ParagraphProperties(
                                 new ParagraphStyleId()
@@ -197,6 +215,10 @@ namespace Trifolia.Export.MSWord
                                 }),
                             DocHelper.CreateRun(currentMember.CodeSystem.Oid))),
                     new TableCell(
+                        new TableCellProperties()
+                        {
+                            TableCellWidth = new TableCellWidth() { Width = "2520" }
+                        },
                         new Paragraph(
                             new ParagraphProperties(
                                 new ParagraphStyleId()

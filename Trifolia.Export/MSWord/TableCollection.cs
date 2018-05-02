@@ -6,11 +6,13 @@ namespace Trifolia.Export.MSWord
     public class TableCollection
     {
         private int tableCount = 0;
-        private Body documentBody = null;
+        private Body documentBody;
+        private HyperlinkTracker hyperlinkTracker;
 
-        public TableCollection(Body documentBody)
+        public TableCollection(Body documentBody, HyperlinkTracker hyperlinkTracker)
         {
             this.documentBody = documentBody;
+            this.hyperlinkTracker = hyperlinkTracker;
         }
 
         internal Table AddTable(string title, HeaderDescriptor[] headers, string bookmark = null, string caption = "Table ")
@@ -22,7 +24,8 @@ namespace Trifolia.Export.MSWord
                     tableCount++,
                     title,
                     bookmark,
-                    caption);
+                    caption,
+                    this.hyperlinkTracker);
                 this.documentBody.AppendChild(p3);
 
             }

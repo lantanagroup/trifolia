@@ -53,7 +53,7 @@ namespace Trifolia.Test.Generation.Vocabulary
         public void ValueSetExport_Inline()
         {
             HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
-            TableCollection tables = new TableCollection(this.body);
+            TableCollection tables = new TableCollection(this.body, hyperlinkTracker);
             ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, false, 2, null);
 
             vse.AddValueSet(this.vs1, DateTime.Now);
@@ -93,7 +93,7 @@ namespace Trifolia.Test.Generation.Vocabulary
         public void ValueSetExport_Appendix()
         {
             HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
-            TableCollection tables = new TableCollection(this.body);
+            TableCollection tables = new TableCollection(this.body, hyperlinkTracker);
             ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, true, 2, null);
 
             vse.AddValueSet(this.vs1, DateTime.Now);
@@ -116,7 +116,7 @@ namespace Trifolia.Test.Generation.Vocabulary
         public void ValueSetExport_NoMembers()
         {
             HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
-            TableCollection tables = new TableCollection(this.body);
+            TableCollection tables = new TableCollection(this.body, hyperlinkTracker);
             ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, false, 2, null);
 
             vse.AddValueSet(this.vs3, DateTime.Now);
@@ -127,7 +127,7 @@ namespace Trifolia.Test.Generation.Vocabulary
         public void ValueSetExport_SameValueSetTwice()
         {
             HyperlinkTracker hyperlinkTracker = new HyperlinkTracker();
-            TableCollection tables = new TableCollection(this.body);
+            TableCollection tables = new TableCollection(this.body, hyperlinkTracker);
             ValueSetsExport vse = new ValueSetsExport(null, mainPart, hyperlinkTracker, tables, false, 2, null);
 
             vse.AddValueSet(this.vs2, DateTime.Now);
