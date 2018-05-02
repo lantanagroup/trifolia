@@ -75,5 +75,8 @@ namespace Trifolia.Web.Models.Export
         public bool IncludeInferred { get; set; }
         public List<string> SelectedCategories { get; set; }
         public bool ReturnJson { get; set; }
+
+        //Value that determines selecting all templates or not
+        public bool SelectAll { get; set; }
     }
 }

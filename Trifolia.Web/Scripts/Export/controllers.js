@@ -54,7 +54,8 @@
         Encoding: 0,
         ReturnJSON: false,
         ValueSetOid: [],
-        ValueSetMaxMembers: []
+        ValueSetMaxMembers: [],
+        SelectAll: false
     };
 
     $scope.criteriaTemplateSortOrder = function (newValue) {
@@ -117,16 +118,20 @@
     };
 
     $scope.toggleSelectAllTemplates = function () {
+        $scope.criteria.SelectAll = !$scope.criteria.SelectAll;
         if ($scope.criteria.TemplateIds.length === $scope.templates.length) {
             $scope.criteria.TemplateIds = [];
         } else {
-            $scope.criteria.TemplateIds = [];
-            _.each($scope.templates, function (template) {
-                $scope.criteria.TemplateIds.push(template.Id);
-            });
+            $scope.selectAllTemplates();
         }
     };
 
+    $scope.selectAllTemplates = function () {
+        $scope.criteria.TemplateIds = [];
+        _.each($scope.templates, function (template) {
+            $scope.criteria.TemplateIds.push(template.Id);
+        });
+    }
     $scope.toggleSelectedTemplate = function (templateId) {
         var index = $scope.criteria.TemplateIds.indexOf(templateId);
 
@@ -175,8 +180,8 @@
                     $scope.loadTemplates();
                 }
 
-                if ($scope.criteria.TemplateIds.length == 0) {
-                    $scope.toggleSelectAllTemplates();
+                if ($scope.criteria.SelectAll) {
+                    $scope.selectAllTemplates();
                 }
 
                 if (!$scope.criteria.DefaultSchematron) {
