@@ -194,6 +194,9 @@
     };
 
     $scope.saveDefaultSettings = function () {
+        if ($scope.criteria.TemplateIds.length !== $scope.templates.length) {
+            $scope.criteria.SelectAll = false;
+        }
         ExportService.saveExportSettings($scope.criteria)
             .then(function () {
                 $scope.saveSettingsMessage = 'Successfully saved default export settings.';
