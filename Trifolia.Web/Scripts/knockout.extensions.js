@@ -565,18 +565,61 @@ ko.bindingHandlers.markdown = {
         var value = valueAccessor();
         var valueUnwrapped = ko.utils.unwrapObservable(valueAccessor());
         var allBindings = allBindingsAccessor();
+        var validTags = ['p', 'b', 'i', 'em', 'a', 'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tr', 'td', 'th', 'span', 'strong', 'cite'];
 
+        var checkHTML = function (html) {
+            var doc = document.createElement('div');
+            doc.innerHTML = html;
+            var foundElements = $(doc).find('*');
+            var invalidTags = _.filter(foundElements, function (foundElement) {
+                return foundElement.localName === 'invalid' || validTags.indexOf(foundElement.localName.toLowerCase()) < 0;
+            });
+
+            var results = {
+                // Validate that all tags are properly closed
+                validHTML: (doc.innerHTML.toLowerCase() === html.toLowerCase()),
+
+                // Validate that the markdown only contains tags supported by Trifolia
+                validTags: invalidTags.length == 0
+            };
+
+            return results;
+        };
+
+        var simplemde;
+        var validateTimeout = null;
         var options = {
             element: element,
             initialValue: valueUnwrapped || '',
-            status: false
+            status: [{
+                className: "validation",
+                onUpdate: function (el) {
+                    if (validateTimeout) {
+                        clearTimeout(validateTimeout);
+                        validateTimeout = null;
+                    }
+
+                    // Only validate once every half-second
+                    validateTimeout = setTimeout(function () {
+                        var data = simplemde.value();
+                        var validationResults = checkHTML(data);
+                        if (!validationResults.validHTML) {
+                            el.innerHTML = 'Markdown contains incorrectly formatted HTML which may not be rendered correctly in exports. Ensure all tags are closed.';
+                        } else if (!validationResults.validTags) {
+                            el.innerHTML = 'Markdown contains XML/HTML tags that will not be formatted properly during export. Consider escaping custom HTML/XML.'
+                        } else {
+                            el.innerHTML = '';
+                        }
+                    }, 500);
+                }
+            }, "autosave", "lines", "words", "cursor"]
         };
 
         if (allBindings.limitedToolbar) {
             options.toolbar = ["bold", "italic", "strikethrough", "link", "|", "preview", "fullscreen", "guide"];
         }
 
-        var simplemde = new SimpleMDE(options);
+        simplemde = new SimpleMDE(options);
 
         if (allBindings.disable) {
             function setSimplemdeDisabled(disabled) {

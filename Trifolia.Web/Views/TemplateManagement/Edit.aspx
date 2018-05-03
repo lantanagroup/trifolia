@@ -912,7 +912,7 @@ disable: $parents[1].Template().Locked">
 
             <div class="input-group input-group-sm">
                 <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintEditorDescriptionTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorDescription"></div>
-                <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: Description, disable: $parents[1].Template().Locked" placeholder="Description"></textarea>
+                <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: Description, disable: $parents[1].Template().Locked" placeholder="Description"></textarea>
             </div>
             <div class="input-group input-group-sm">
                 <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintEditorLabelTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorLabel"></div>
@@ -945,7 +945,7 @@ disable: $parents[1].Template().Locked">
         <div data-bind="if: IsTechEditorComputable()" class="constraintEditorSet">
             <div class="input-group input-group-sm">
                 <div class="input-group-addon" data-bind="attr: { title: Trifolia.Web.TemplateEditorConstraintEditorDescriptionTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorDescription"></div>
-                <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: Description, disable: $parents[1].Template().Locked" placeholder="Description"></textarea>
+                <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: Description, disable: $parents[1].Template().Locked" placeholder="Description"></textarea>
             </div>
             <div class="input-group input-group-sm">
                 <div class="input-group-addon" data-bind="attr: { title: Trifolia.Web.TemplateEditorConstraintEditorLabelTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorLabel"></div>

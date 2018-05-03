@@ -12,6 +12,14 @@ using System.Xml;
 
 namespace Trifolia.Shared
 {
+    /// <summary>
+    /// Converts HTML into OpenXML.
+    /// </summary>
+    /// <remarks>
+    /// Recommend updating "markdown" extension in knockout (in the
+    /// knockout.extensions.js file) when adding/removing support 
+    /// for additional HTML tags/elements.
+    /// </remarks>
     public class HtmlToOpenXmlConverter
     {
         private bool currentIsTableHeader = false;
