@@ -566,6 +566,18 @@ ko.bindingHandlers.markdown = {
         var valueUnwrapped = ko.utils.unwrapObservable(valueAccessor());
         var allBindings = allBindingsAccessor();
         var validTags = ['p', 'b', 'i', 'em', 'a', 'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tr', 'td', 'th', 'span', 'strong', 'cite'];
+        var implementationGuideId;
+
+        if (allBindings.implementationGuideId) {
+            if (typeof allBindings.implementationGuideId === 'function') {
+                implementationGuideId = allBindings.implementationGuideId();
+                allBindings.implementationGuideId.subscribe(function () {
+                    implementationGuideId = allBindings.implementationGuideId();
+                });
+            } else {
+                implementationGuideId = allBindings.implementationGuideId;
+            }
+        }
 
         var checkHTML = function (html) {
             var doc = document.createElement('div');
@@ -586,11 +598,62 @@ ko.bindingHandlers.markdown = {
             return results;
         };
 
+        var igImageToolbar = {
+            name: 'ig-image',
+            action: function (editor) {
+                var toolbarDiv = editor.toolbarElements['ig-image'];
+                var foundPopover = $(toolbarDiv).find('.ig-image-popover');
+                var imageElements = '';
+
+                if (foundPopover.length == 0) {
+                    var popoverDiv = '<div class="ig-image-popover" data-toggle="popover" title="Insert images from this IG"></div>';
+                    $(toolbarDiv).append(popoverDiv);
+                    $(toolbarDiv).find('.ig-image-popover').popover({
+                        html: true,
+                        container: $(editor.gui.toolbar).parent()[0],
+                        content: function () {
+                            return imageElements;
+                        }
+                    });
+                }
+
+                var baseIgUrl = '/api/ImplementationGuide/' + implementationGuideId;
+
+                $.get(baseIgUrl + '/Images', function (images) {
+                    imageElements = '';
+
+                    _.each(images, function (image) {
+                        imageElements += '<a href="#" class="ig-image-popover-entry" img-description="' + image.Description + '">' + image.FileName + '</a><br/>';
+                    });
+
+                    $(toolbarDiv).find('.ig-image-popover').popover('toggle');
+
+                    $(editor.gui.toolbar).parent().find('.popover-content a').on('click', function (e) {
+                        var doc = editor.codemirror.getDoc();
+                        var cursor = doc.getCursor();
+                        var description = $(e.target).attr('img-description');
+                        var fileurl = baseIgUrl + '/Image/' + e.target.innerHTML;
+                        doc.replaceRange('![' + (description || filename) + '](' + fileurl + ')', cursor);
+                    });
+                });
+            },
+            className: 'fa fa-star',
+            title: 'Image from IG'
+        };
+
         var simplemde;
         var validateTimeout = null;
         var options = {
             element: element,
             initialValue: valueUnwrapped || '',
+            toolbar: [
+                'bold', 'italic', 'strikethrough', 'heading',
+                '|',
+                'code', 'quote', 'unordered-list', 'ordered-list',
+                '|',
+                'link', 'image', igImageToolbar, 'table',
+                '|',
+                'preview', 'fullscreen', 'guide'],
             status: [{
                 className: "validation",
                 onUpdate: function (el) {
@@ -614,6 +677,11 @@ ko.bindingHandlers.markdown = {
                 }
             }, "autosave", "lines", "words", "cursor"]
         };
+
+        if (!implementationGuideId) {
+            var igImageToolbarIndex = options.toolbar.indexOf(igImageToolbar);
+            options.toolbar.splice(igImageToolbarIndex, 1);
+        }
 
         if (allBindings.limitedToolbar) {
             options.toolbar = ["bold", "italic", "strikethrough", "link", "|", "preview", "fullscreen", "guide"];

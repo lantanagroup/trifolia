@@ -699,8 +699,9 @@ namespace Trifolia.Web.Controllers.API
         [HttpGet, Route("api/ImplementationGuide/{implementationGuideId}/Images")]
         public object GetImplementationGuideImageList(int implementationGuideId)
         {
-            return tdb.ImplementationGuideFiles
-                               .Where(x => x.ImplementationGuideId == implementationGuideId)
+            var igFiles = tdb.ImplementationGuideFiles
+                               .Where(x => x.ImplementationGuideId == implementationGuideId);
+            return igFiles
                                .Where(x => x.ContentType == "Image")
                                .Select(x => new
                                {

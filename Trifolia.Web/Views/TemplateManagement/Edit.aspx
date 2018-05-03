@@ -187,12 +187,12 @@
 
                                 <div class="input-group description-field">
                                     <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorMetaDataDescriptionField"></div>
-                                    <textarea class="form-control" style="height: 100px;" data-bind="markdown: Description, disable: DisableEngineerFields"></textarea>
+                                    <textarea class="form-control" style="height: 100px;" data-bind="markdown: Description, implementationGuideId: OwningImplementationGuideId, disable: DisableEngineerFields"></textarea>
                                 </div>
 
                                 <div class="input-group notes-field">
                                     <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorNotesTooltip }, html: Trifolia.Web.TemplateEditorMetaDataNotesField"></div>
-                                    <textarea class="form-control" style="height: 100px;" data-bind="markdown: Notes, disable: DisableEngineerFields"></textarea>
+                                    <textarea class="form-control" style="height: 100px;" data-bind="markdown: Notes, implementationGuideId: OwningImplementationGuideId, disable: DisableEngineerFields"></textarea>
                                 </div>
 
                                 <!-- ko if: $parent.IsFhir() -->
@@ -912,7 +912,7 @@ disable: $parents[1].Template().Locked">
 
             <div class="input-group input-group-sm">
                 <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintEditorDescriptionTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorDescription"></div>
-                <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: Description, disable: $parents[1].Template().Locked" placeholder="Description"></textarea>
+                <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: Description, implementationGuideId: $parents[1].Template().OwningImplementationGuideId, disable: $parents[1].Template().Locked" placeholder="Description"></textarea>
             </div>
             <div class="input-group input-group-sm">
                 <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintEditorLabelTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorLabel"></div>
@@ -945,7 +945,7 @@ disable: $parents[1].Template().Locked">
         <div data-bind="if: IsTechEditorComputable()" class="constraintEditorSet">
             <div class="input-group input-group-sm">
                 <div class="input-group-addon" data-bind="attr: { title: Trifolia.Web.TemplateEditorConstraintEditorDescriptionTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorDescription"></div>
-                <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: Description, disable: $parents[1].Template().Locked" placeholder="Description"></textarea>
+                <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: Description, implementationGuideId: $parents[1].Template().OwningImplementationGuideId, disable: $parents[1].Template().Locked" placeholder="Description"></textarea>
             </div>
             <div class="input-group input-group-sm">
                 <div class="input-group-addon" data-bind="attr: { title: Trifolia.Web.TemplateEditorConstraintEditorLabelTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorLabel"></div>
@@ -955,7 +955,7 @@ disable: $parents[1].Template().Locked">
                 <div class="input-group-addon">
                     Heading <input type="checkbox" data-bind="checked: IsHeading, disable: $parents[1].Template().Locked" />
                 </div>
-                <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: HeadingDescription, disable: ($parents[1].Template().Locked() || !IsHeading())" placeholder="Heading Description"></textarea>
+                <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: HeadingDescription disable: ($parents[1].Template().Locked() || !IsHeading())" placeholder="Heading Description"></textarea>
             </div>
         </div>
     </script>
