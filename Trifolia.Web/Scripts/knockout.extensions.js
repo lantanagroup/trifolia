@@ -568,15 +568,42 @@ ko.bindingHandlers.markdown = {
 
         var options = {
             element: element,
-            initialValue: valueUnwrapped || ''
+            initialValue: valueUnwrapped || '',
+            status: false
         };
 
         if (allBindings.limitedToolbar) {
             options.toolbar = ["bold", "italic", "strikethrough", "link", "|", "preview", "fullscreen", "guide"];
-            options.status = false;
         }
 
         var simplemde = new SimpleMDE(options);
+
+        if (allBindings.disable) {
+            function setSimplemdeDisabled(disabled) {
+                simplemde.codemirror.options.readOnly = disabled;
+                simplemde.codemirror.display.disabled = disabled;
+
+                if (disabled) {
+                    $(simplemde.gui.toolbar).hide();
+                } else {
+                    $(simplemde.gui.toolbar).show();
+                }
+
+                $(simplemde.gui.toolbar).next().toggleClass('disabled', disabled);
+            }
+
+            if (typeof allBindings.disable === 'function') {
+                setSimplemdeDisabled(allBindings.disable());
+
+                if (allBindings.disable.subscribe) {
+                    allBindings.disable.subscribe(function () {
+                        setSimplemdeDisabled(allBindings.disable());
+                    });
+                }
+            } else {
+                setSimplemdeDisabled(allBindings.disable);
+            }
+        }
 
         // If the markdown plugin is being loaded in a modal window, 
         // perform a short delay for setting the initial value

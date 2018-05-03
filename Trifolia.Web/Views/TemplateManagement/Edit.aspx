@@ -888,12 +888,11 @@ disable: $parents[1].Template().Locked">
                                     
                 <div data-bind="valuesetSelect: ValueSetId, label: 'Value Set:', disable: $parents[1].Template().Locked, small: true, canTypeAhead: true"></div>
 
-                <div class="input-group input-group-sm date" data-bind="date: ValueSetDate">
+                <div class="input-group input-group-sm date">
                     <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBindingDate"></div>
-                    <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" />
+                    <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" data-bind="date: ValueSetDate, disable: $parents[1].Template().Locked" />
                     <span class="input-group-btn" style="width: 20px;">
-                        <button type="button" class="btn btn-default btn-sm btn-clear" data-bind="click: function () { ValueSetDate(''); }"><i class="glyphicon glyphicon-remove"></i></button>
-                        <button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-calendar"></i></button>
+                        <button type="button" class="btn btn-default btn-sm btn-clear" data-bind="click: function () { ValueSetDate(''); }, disable: $parents[1].Template().Locked"><i class="glyphicon glyphicon-remove"></i></button>
                     </span>
                 </div>
                 <div class="input-group input-group-sm">
@@ -990,12 +989,11 @@ disable: $parents[1].Template().Locked">
                                 
         <div data-bind="valuesetSelect: ValueSetId, label: 'Value Set:', disable: $parents[1].Template().Locked, small: true, canTypeAhead: true"></div>
 
-        <div class="input-group input-group-sm date" data-bind="date: ValueSetDate">
+        <div class="input-group input-group-sm date">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBindingDate"></div>
-            <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" data-bind="disable: $parents[1].Template().Locked" />
+            <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" data-bind="date: ValueSetDate, disable: $parents[1].Template().Locked" />
             <span class="input-group-btn" style="width: 20px;">
                 <button type="button" class="btn btn-default btn-sm btn-clear" data-bind="click: function () { ValueSetDate(''); }, disable: $parents[1].Template().Locked"><i class="glyphicon glyphicon-remove"></i></button>
-                <button type="button" class="btn btn-default btn-sm" data-bind="disable: $parents[1].Template().Locked"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
         </div>
         <div class="input-group input-group-sm">
@@ -1057,12 +1055,11 @@ disable: $parents[1].Template().Locked">
                                 
         <div data-bind="valuesetSelect: ValueSetId, label: 'Value Set:', disable: $parents[1].Template().Locked, small: true, canTypeAhead: true"></div>
                                 
-        <div class="input-group input-group-sm date" data-bind="date: ValueSetDate">
+        <div class="input-group input-group-sm date">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBindingDate"></div>
-            <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" data-bind="disable: $parents[1].Template().Locked" />
+            <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" data-bind="date: ValueSetDate, disable: $parents[1].Template().Locked" />
             <span class="input-group-btn" style="width: 20px;">
                 <button type="button" class="btn btn-default btn-sm btn-clear" data-bind="click: function () { ValueSetDate(''); }, disable: $parents[1].Template().Locked"><i class="glyphicon glyphicon-remove"></i></button>
-                <button type="button" class="btn btn-default btn-sm" data-bind="disable: $parents[1].Template().Locked"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
         </div>
         <div class="input-group input-group-sm">

@@ -441,3 +441,8 @@ p table td{
     border: 1px solid #000;
     empty-cells: show;
 }
+
+/* SimpleMDE (CodeMirror) additional styles */
+.CodeMirror.disabled {
+    background-color: #eee;
+}
