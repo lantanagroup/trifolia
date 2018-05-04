@@ -521,7 +521,7 @@ namespace Trifolia.Export.MSWord
 
                 if (!string.IsNullOrEmpty(detailsText))
                 {
-                    OpenXmlElement element = detailsText.MarkdownToOpenXml(this.document.MainDocumentPart);
+                    OpenXmlElement element = detailsText.MarkdownToOpenXml(this._tdb, this.document.MainDocumentPart);
                     OpenXmlHelper.Append(element, this.document.MainDocumentPart.Document.Body);
                 }
 
@@ -664,7 +664,7 @@ namespace Trifolia.Export.MSWord
             // Output the template's descriptionz
             if (!string.IsNullOrEmpty(template.Description))
             {
-                OpenXmlElement element = template.Description.MarkdownToOpenXml(this.document.MainDocumentPart);
+                OpenXmlElement element = template.Description.MarkdownToOpenXml(this._tdb, this.document.MainDocumentPart);
                 OpenXmlHelper.Append(element, this.document.MainDocumentPart.Document.Body);
             }
 

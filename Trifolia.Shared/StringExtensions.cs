@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Trifolia.Config;
 using Markdig;
 using Trifolia.Logging;
+using Trifolia.DB;
 
 namespace Trifolia.Shared
 {
@@ -68,14 +69,14 @@ namespace Trifolia.Shared
             return html;
         }
 
-        public static OpenXmlElement MarkdownToOpenXml(this string theString, MainDocumentPart mainPart, bool styleKeywords = false)
+        public static OpenXmlElement MarkdownToOpenXml(this string theString, IObjectRepository tdb, MainDocumentPart mainPart, bool styleKeywords = false)
         {
             try
             {
                 string input = theString;
 
                 string html = MarkdownToHtml(input);
-                var openXmlElement = html.HtmlToOpenXml(mainPart);
+                var openXmlElement = html.HtmlToOpenXml(tdb, mainPart);
 
                 if (styleKeywords)
                     StylizeKeywords(openXmlElement);
@@ -92,9 +93,9 @@ namespace Trifolia.Shared
             }
         }
 
-        public static OpenXmlElement HtmlToOpenXml(this string html, MainDocumentPart mainPart)
+        public static OpenXmlElement HtmlToOpenXml(this string html, IObjectRepository tdb, MainDocumentPart mainPart)
         {
-            HtmlToOpenXmlConverter converter = new HtmlToOpenXmlConverter(mainPart);
+            HtmlToOpenXmlConverter converter = new HtmlToOpenXmlConverter(tdb, mainPart);
             return converter.Convert(html);
         }
 

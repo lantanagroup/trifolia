@@ -406,7 +406,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
 
                 if (!string.IsNullOrEmpty(this.HeadingDescription))
                 {
-                    OpenXmlElement parsedHeadingDescription = this.HeadingDescription.MarkdownToOpenXml(mainPart);
+                    OpenXmlElement parsedHeadingDescription = this.HeadingDescription.MarkdownToOpenXml(this.Tdb, mainPart);
 
                     if (parsedHeadingDescription != null)
                     {
@@ -423,7 +423,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             // Add the description above the constraint definition
             if (!string.IsNullOrEmpty(this.Description))
             {
-                OpenXmlElement parsedDescription = this.Description.MarkdownToOpenXml(mainPart);
+                OpenXmlElement parsedDescription = this.Description.MarkdownToOpenXml(this.Tdb, mainPart);
 
                 if (parsedDescription != null)
                 {
@@ -476,7 +476,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
 
                         break;
                     case ConstraintPart.PartTypes.PrimitiveText:
-                        var element = cPart.Text.MarkdownToOpenXml(mainPart, styleKeywords: true);
+                        var element = cPart.Text.MarkdownToOpenXml(this.Tdb, mainPart, styleKeywords: true);
                         OpenXmlHelper.Append(element, para);
                         break;
                     default:

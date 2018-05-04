@@ -48,7 +48,7 @@ namespace Trifolia.Test.Generation
         {
             string testWikiContent = "This **is a bold** test with _italic text as well_";
 
-            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.tdb, this.mainPart);
 
             Assert.AreEqual(1, body.ChildElements.Count);
             Paragraph para = body.ChildElements[0] as Paragraph;
@@ -81,7 +81,7 @@ This is a non-bulleted test
 * Test a new bullet list
 * Test a new bullet list ";
             
-            OpenXmlElement table = testWikiContent.MarkdownToOpenXml(this.mainPart);
+            OpenXmlElement table = testWikiContent.MarkdownToOpenXml(this.tdb, this.mainPart);
         }
 
         [TestMethod, TestCategory("MSWord")]
@@ -91,7 +91,7 @@ This is a non-bulleted test
 | TestRowCell1 | TestRowCell2
 | TestRowCell3 | TestRowCell4";
             
-            OpenXmlElement table = testWikiContent.MarkdownToOpenXml(this.mainPart);
+            OpenXmlElement table = testWikiContent.MarkdownToOpenXml(this.tdb, this.mainPart);
 
             this.mainPart.Document.Body.Append(table);
 
@@ -103,7 +103,7 @@ This is a non-bulleted test
         {
             string testWikiContent = @"This is a test of a http://www.awesome.com";
             
-            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.tdb, this.mainPart);
 
             Assert.AreEqual(1, body.ChildElements.Count);
             Paragraph para = body.ChildElements[0] as Paragraph;
@@ -127,7 +127,7 @@ This is a non-bulleted test
         {
             string testWikiContent = @"This is a test of a [Awesome](http://www.awesome.com)";
             
-            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.tdb, this.mainPart);
 
             Assert.AreEqual(1, body.ChildElements.Count);
             Paragraph para = body.ChildElements[0] as Paragraph;
@@ -158,7 +158,7 @@ This is a non-bulleted test
 
 There is more information here: [here](http://www.lantanagroup.com) and http://www.lantanagroup.com";
 
-            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.tdb, this.mainPart);
 
             Assert.AreEqual(3, body.ChildElements.Count);
             Assert.IsInstanceOfType(body.ChildElements[0], typeof(Paragraph));
@@ -176,7 +176,7 @@ test of
 a line break and a url [URL:http://www.seanmcilvenna.com] with 
 another line break";
             
-            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.tdb, this.mainPart);
 
             Assert.AreEqual(1, body.ChildElements.Count());
 
@@ -206,7 +206,7 @@ a line break and a url [URL:http://www.seanmcilvenna.com] with
 
 another line break";
 
-            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.mainPart);
+            OpenXmlElement body = testWikiContent.MarkdownToOpenXml(this.tdb, this.mainPart);
 
             Assert.AreEqual(4, body.ChildElements.Count());
             Assert.AreEqual(4, body.ChildElements.OfType<Paragraph>().Count());

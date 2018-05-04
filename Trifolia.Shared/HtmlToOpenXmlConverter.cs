@@ -2,13 +2,18 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Validation;
 using DocumentFormat.OpenXml.Wordprocessing;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using A = DocumentFormat.OpenXml.Drawing;
+using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
+using Trifolia.DB;
 
 namespace Trifolia.Shared
 {
@@ -22,19 +27,25 @@ namespace Trifolia.Shared
     /// </remarks>
     public class HtmlToOpenXmlConverter
     {
+        private const string OpenXmlPictureNamespace = "http://schemas.openxmlformats.org/drawingml/2006/picture";
+
         private bool currentIsTableHeader = false;
         private int currentListLevel = 0;
         private string currentListStyle = null;
         private MainDocumentPart mainPart;
+        private IObjectRepository tdb;
 
-        internal HtmlToOpenXmlConverter(MainDocumentPart mainPart)
+        private Regex igImageRegex = new Regex(@"\/api\/ImplementationGuide\/(\d+)\/Image/(.+?)$", RegexOptions.Multiline);
+
+        internal HtmlToOpenXmlConverter(IObjectRepository tdb, MainDocumentPart mainPart)
         {
+            this.tdb = tdb;
             this.mainPart = mainPart;
         }
 
-        public static OpenXmlElement HtmlToOpenXml(MainDocumentPart mainPart, string html)
+        public static OpenXmlElement HtmlToOpenXml(IObjectRepository tdb, MainDocumentPart mainPart, string html)
         {
-            HtmlToOpenXmlConverter converter = new HtmlToOpenXmlConverter(mainPart);
+            HtmlToOpenXmlConverter converter = new HtmlToOpenXmlConverter(tdb, mainPart);
             return converter.Convert(html);
         }
 
@@ -61,8 +72,10 @@ namespace Trifolia.Shared
             // Validate the parsed content. If validation fails return the content in plain-text, wrapped in a para
             OpenXmlValidator validator = new OpenXmlValidator();
             IEnumerable<ValidationErrorInfo> validationErrors = validator.Validate(current);
+            var filteredErrors = validationErrors.Where(y => 
+                y.Description != "The 'http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing:editId' attribute is not declared.");
 
-            if (validationErrors.ToList().Count > 0)
+            if (filteredErrors.Count() > 0)
             {
                 return new Body(
                     new Paragraph(
@@ -74,6 +87,28 @@ namespace Trifolia.Shared
             }
 
             return current;
+        }
+
+        private ImagePartType GetImagePartType(string extension)
+        {
+            switch (extension)
+            {
+                case "jpg":
+                case "jpeg":
+                    return ImagePartType.Jpeg;
+                case "bmp":
+                    return ImagePartType.Bmp;
+                case "gif":
+                case "giff":
+                    return ImagePartType.Gif;
+                case "tif":
+                case "tiff":
+                    return ImagePartType.Tiff;
+                case "png":
+                    return ImagePartType.Png;
+                default:
+                    throw new NotSupportedException("Image extension " + extension + " is not supported");
+            }
         }
 
         private OpenXmlElement Process(XmlReader xmlReader, OpenXmlElement current)
@@ -243,6 +278,39 @@ namespace Trifolia.Shared
                         citeRun.Append(new Text("\"" + xmlReader.ReadElementContentAsString() + "\""));
 
                         return current;
+                    case "img":
+                        string imageSource = xmlReader.GetAttribute("src");
+                        string imageExtension = imageSource.Substring(imageSource.LastIndexOf(".") + 1);
+
+                        if (this.igImageRegex.IsMatch(imageSource))
+                        {
+                            var match = this.igImageRegex.Match(imageSource);
+                            int implementationGuideId = Int32.Parse(match.Groups[1].Value);
+                            string fileName = match.Groups[2].Value;
+
+                            var file = this.tdb.ImplementationGuideFiles.SingleOrDefault(y => y.ImplementationGuideId == implementationGuideId && y.FileName.ToLower() == fileName.ToLower());
+
+                            if (file == null)
+                                return current;
+
+                            var latestVersion = file.GetLatestData();
+                            ImagePart newImagePart = this.mainPart.AddImagePart(this.GetImagePartType(imageExtension));
+
+                            using (MemoryStream ms = new MemoryStream(latestVersion.Data))
+                            {
+                                newImagePart.FeedData(ms);
+                            }
+
+                            return AddImage(
+                                current, 
+                                this.mainPart.GetIdOfPart(newImagePart), 
+                                file.FileName, 
+                                file.Description);
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
                     default:
                         Logging.Log.For(this).Error("Unsupported wiki syntax/element " + xmlReader.Name);
                         return current;
@@ -336,6 +404,79 @@ namespace Trifolia.Shared
         {
             current.Append(newChild);
             return newChild;
+        }
+
+        private static Drawing AddImage(OpenXmlElement parent, string relationshipId, string fileName, string description)
+        {
+            // Define the reference of the image.
+            var element =
+                 new Drawing(
+                     new DW.Inline(
+                         new DW.Extent() { Cx = 990000L, Cy = 792000L },
+                         new DW.EffectExtent()
+                         {
+                             LeftEdge = 0L,
+                             TopEdge = 0L,
+                             RightEdge = 0L,
+                             BottomEdge = 0L
+                         },
+                         new DW.DocProperties()
+                         {
+                             Id = (UInt32Value)1U,
+                             Name = description
+                         },
+                         new DW.NonVisualGraphicFrameDrawingProperties(
+                             new A.GraphicFrameLocks() { NoChangeAspect = true }),
+                         new A.Graphic(
+                             new A.GraphicData(
+                                 new PIC.Picture(
+                                     new PIC.NonVisualPictureProperties(
+                                         new PIC.NonVisualDrawingProperties()
+                                         {
+                                             Id = (UInt32Value)0U,
+                                             Name = fileName
+                                         },
+                                         new PIC.NonVisualPictureDrawingProperties()),
+                                     new PIC.BlipFill(
+                                         new A.Blip(
+                                             new A.BlipExtensionList(
+                                                 new A.BlipExtension()
+                                                 {
+                                                     Uri = "{28A0092B-C50C-407E-A947-70E740481C1C}"
+                                                 })
+                                         )
+                                         {
+                                             Embed = relationshipId,
+                                             CompressionState = A.BlipCompressionValues.Print
+                                         },
+                                         new A.Stretch(
+                                             new A.FillRectangle())),
+                                     new PIC.ShapeProperties(
+                                         new A.Transform2D(
+                                             new A.Offset() { X = 0L, Y = 0L },
+                                             new A.Extents() { Cx = 990000L, Cy = 792000L }),
+                                         new A.PresetGeometry(
+                                             new A.AdjustValueList()
+                                         )
+                                         { Preset = A.ShapeTypeValues.Rectangle }))
+                             )
+                             { Uri = OpenXmlPictureNamespace })
+                     )
+                     {
+                         DistanceFromTop = (UInt32Value)0U,
+                         DistanceFromBottom = (UInt32Value)0U,
+                         DistanceFromLeft = (UInt32Value)0U,
+                         DistanceFromRight = (UInt32Value)0U,
+                         EditId = "50D07946"
+                     });
+
+            // Append the reference to body, the element should be in a Run.
+            if (parent is Paragraph)
+                parent.AppendChild(new Run(element));
+            else
+                parent.AppendChild(new Paragraph(new Run(element)));
+
+            return element;
         }
 
         private static Run CreateRun(string text, string anchorName = null, bool bold = false, bool italic = false, int? size = null, string style = null, string font = null)
