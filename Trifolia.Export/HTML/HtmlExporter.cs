@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Trifolia.DB;
 using Trifolia.Export.MSWord;
 using Trifolia.Export.MSWord.ConstraintGeneration;
@@ -14,10 +15,12 @@ namespace Trifolia.Export.HTML
     public class HtmlExporter
     {
         private IObjectRepository tdb;
+        private bool offline = false;
 
-        public HtmlExporter(IObjectRepository tdb)
+        public HtmlExporter(IObjectRepository tdb, bool offline = false)
         {
             this.tdb = tdb;
+            this.offline = offline;
         }
 
         public ViewDataModel GetExportData(int implementationGuideId, int? fileId, int[] templateIds, bool inferred)
@@ -233,8 +236,48 @@ namespace Trifolia.Export.HTML
 
                 model.CodeSystems = model.CodeSystems.Distinct().ToList();
             }
+            
+            this.FixImagePaths(model);
 
             return model;
+        }
+
+        private string FixImagePaths(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return text;
+
+            Regex regex = new Regex(@"src=""\/api\/ImplementationGuide\/(\d+)\/Image\/(.+?)""", RegexOptions.Multiline);
+            MatchCollection matches = regex.Matches(text);
+
+            foreach (Match match in matches)
+            {
+                string replacement = string.Format(@"src=""images/{0}""", match.Groups[2].Value);
+                text = text.Replace(match.Groups[0].Value, replacement);
+            }
+
+            return text;
+        }
+
+        private void FixImagePaths(ViewDataModel model)
+        {
+            if (!this.offline)
+                return;
+
+            foreach (var template in model.Templates)
+            {
+                template.Description = this.FixImagePaths(template.Description);
+                
+                foreach (var constraint in template.Constraints)
+                {
+                    constraint.Narrative = this.FixImagePaths(constraint.Narrative);
+                }
+            }
+
+            foreach (var section in model.Volume1Sections)
+            {
+                section.Content = this.FixImagePaths(section.Content);
+            }
         }
 
         private void CreateConstraints(IGSettingsManager igManager, IIGTypePlugin igTypePlugin, List<ConstraintReference> constraintReferences, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList, SimpleSchema templateSchema, SimpleSchema.SchemaObject schemaObject = null)
