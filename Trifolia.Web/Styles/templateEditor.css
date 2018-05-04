@@ -206,3 +206,9 @@ table.contained-templates td {
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
 }
+
+fieldset {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+}

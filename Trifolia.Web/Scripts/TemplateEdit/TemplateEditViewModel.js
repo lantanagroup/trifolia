@@ -241,8 +241,13 @@ var templateEditViewModel = function (templateId, defaults) {
     });
 
     self.DisableConstraintFields = function() {
-        if (!self.CurrentNode() || !self.CurrentNode().Constraint())
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint()) {
             return false;
+        }
+
+        if (self.Template().Locked()) {
+            return true;
+        }
 
         return self.IsExtensionUrl(self.CurrentNode().Constraint());
     };
