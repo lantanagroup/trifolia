@@ -15,10 +15,44 @@ namespace Trifolia.Export.Types
     [ImplementationGuideTypePlugin(Constants.IGType.CDA_IG_TYPE)]
     public class RIMExporter : ITypeExporter
     {
-        public byte[] Export(DB.IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<DB.Template> templates, bool includeVocabulary, bool returnJson = true)
+        public byte[] Export(
+            DB.IObjectRepository tdb,
+            SimpleSchema schema,
+            ExportFormats format,
+            IGSettingsManager igSettings,
+            List<string> categories,
+            List<DB.Template> templates,
+            bool includeVocabulary,
+            bool returnJson = true)
         {
+            var templateIds = templates.Select(y => y.Id);
+
             switch (format)
             {
+                case ExportFormats.Microsoft_Word_DOCX:
+                    ImplementationGuide ig = tdb.ImplementationGuides.Single(y => y.Id == igSettings.ImplementationGuideId);
+                    MSWord.ImplementationGuideGenerator docxGenerator = new MSWord.ImplementationGuideGenerator(tdb, igSettings.ImplementationGuideId, templateIds);
+
+                    // TODO: Re-factor ITypeExporter to accept ExportSettings
+                    MSWord.ExportSettings exportConfig = new MSWord.ExportSettings();
+                    exportConfig.Use(c =>
+                    {
+                        c.GenerateTemplateConstraintTable = true;
+                        c.GenerateTemplateContextTable = true;
+                        c.GenerateDocTemplateListTable = true;
+                        c.GenerateDocContainmentTable = true;
+                        c.AlphaHierarchicalOrder = true;
+                        c.DefaultValueSetMaxMembers = 100;
+                        c.GenerateValueSetAppendix = true;
+                        c.IncludeXmlSamples = true;
+                        c.IncludeChangeList = true;
+                        c.IncludeTemplateStatus = true;
+                        c.IncludeNotes = false;
+                        c.SelectedCategories = categories;
+                    });
+
+                    docxGenerator.BuildImplementationGuide(exportConfig, ig.ImplementationGuideType.GetPlugin());
+                    return docxGenerator.GetDocument();
                 case ExportFormats.FHIR_Bundle:
                     throw new NotImplementedException();
                 case ExportFormats.Native_XML:
