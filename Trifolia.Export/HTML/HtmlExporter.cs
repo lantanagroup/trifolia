@@ -14,20 +14,15 @@ namespace Trifolia.Export.HTML
 {
     public class HtmlExporter
     {
-        public struct ExportConstraintReference
+        public class ExportConstraintReference : ConstraintReference
         {
-            public int TemplateConstraintId;
-            public string Identifier;
-            public string Bookmark;
-            public string ImplementationGuide;
-            public DateTime? PublishDate;
-            public string Name;
+            public string ImplementationGuide { get; set; }
+            public DateTime? PublishDate { get; set; }
         }
 
         private IObjectRepository tdb;
         private bool offline = false;
-        private List<ExportConstraintReference> exportConstraintReferences;
-        private List<ConstraintReference> constraintReferences;
+        private List<ExportConstraintReference> constraintReferences;
 
         public HtmlExporter(IObjectRepository tdb, bool offline = false)
         {
@@ -66,29 +61,18 @@ namespace Trifolia.Export.HTML
                 this.constraintReferences = (from c in constraints
                                              join tcr in this.tdb.TemplateConstraintReferences.AsNoTracking() on c.Id equals tcr.TemplateConstraintId
                                              join t in this.tdb.Templates.AsNoTracking() on tcr.ReferenceIdentifier equals t.Oid
+                                             join ig1 in this.tdb.ImplementationGuides on t.OwningImplementationGuideId equals ig1.Id
                                              where tcr.ReferenceType == ConstraintReferenceTypes.Template
-                                             select new ConstraintReference()
+                                             select new ExportConstraintReference()
                                              {
                                                  Bookmark = t.Bookmark,
                                                  Identifier = t.Oid,
                                                  Name = t.Name,
                                                  TemplateConstraintId = tcr.TemplateConstraintId,
-                                                 IncludedInIG = templates.Contains(t)
+                                                 IncludedInIG = templates.Contains(t),
+                                                 ImplementationGuide = ig1.GetDisplayName(),
+                                                 PublishDate = ig1.PublishDate
                                              }).ToList();
-                this.exportConstraintReferences = (from c in constraints
-                                                   join tcr in this.tdb.TemplateConstraintReferences on c.Id equals tcr.TemplateConstraintId
-                                                   join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
-                                                   join ig1 in this.tdb.ImplementationGuides on t.OwningImplementationGuideId equals ig1.Id
-                                                   where tcr.ReferenceType == ConstraintReferenceTypes.Template
-                                                   select new ExportConstraintReference()
-                                                   {
-                                                       TemplateConstraintId = c.Id,
-                                                       Identifier = t.Oid,
-                                                       Bookmark = t.Bookmark,
-                                                       ImplementationGuide = ig1.GetDisplayName(),
-                                                       PublishDate = ig1.PublishDate,
-                                                       Name = t.Name
-                                                   }).ToList();
 
                 model = new ViewDataModel()
                 {
@@ -142,22 +126,24 @@ namespace Trifolia.Export.HTML
 
                     var members = valueSet.ValueSet.GetActiveMembers(valueSet.BindingDate);
                     newValueSetModel.Members = (from vsm in members
+                                                join cs in this.tdb.CodeSystems on vsm.CodeSystemId equals cs.Id
                                                 select new ViewDataModel.ValueSetMember()
                                                 {
                                                     Code = vsm.Code,
                                                     DisplayName = vsm.DisplayName,
-                                                    CodeSystemIdentifier = vsm.CodeSystem.Oid,
-                                                    CodeSystemName = vsm.CodeSystem.Name
+                                                    CodeSystemIdentifier = cs.Oid,
+                                                    CodeSystemName = cs.Name
                                                 }).ToList();
 
                     model.ValueSets.Add(newValueSetModel);
 
                     // Add code systems used by this value set to the IG
                     var codeSystems = (from vsm in members
+                                       join cs in this.tdb.CodeSystems on vsm.CodeSystemId equals cs.Id
                                        select new ViewDataModel.CodeSystem()
                                        {
-                                           Identifier = vsm.CodeSystem.Oid,
-                                           Name = vsm.CodeSystem.Name
+                                           Identifier = cs.Oid,
+                                           Name = cs.Name
                                        });
                     model.CodeSystems.AddRange(codeSystems);
                 }
@@ -312,7 +298,7 @@ namespace Trifolia.Export.HTML
                 if (templateSchema != null && schemaObject == null)
                     schemaObject = templateSchema.Children.SingleOrDefault(y => y.Name == constraint.Context);
 
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, igTypePlugin, theConstraint, this.constraintReferences, "#/volume2/", "#/valuesets/#", true, true, true, false);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, igTypePlugin, theConstraint, this.constraintReferences.Cast<ConstraintReference>().ToList(), "#/volume2/", "#/valuesets/#", true, true, true, false);
 
                 var newConstraintModel = new ViewDataModel.Constraint()
                 {
@@ -328,7 +314,7 @@ namespace Trifolia.Export.HTML
                     IsChoice = theConstraint.IsChoice
                 };
 
-                newConstraintModel.ContainedTemplates = (from cr in this.exportConstraintReferences
+                newConstraintModel.ContainedTemplates = (from cr in this.constraintReferences
                                                          where cr.TemplateConstraintId == theConstraint.Id
                                                          select new ViewDataModel.TemplateReference()
                                                          {
