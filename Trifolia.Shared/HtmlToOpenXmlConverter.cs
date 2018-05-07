@@ -280,6 +280,8 @@ namespace Trifolia.Shared
                         return current;
                     case "img":
                         string imageSource = xmlReader.GetAttribute("src");
+                        string imageAlt = xmlReader.GetAttribute("alt");
+                        string imageTitle = xmlReader.GetAttribute("title");
                         string imageExtension = imageSource.Substring(imageSource.LastIndexOf(".") + 1);
 
                         if (this.igImageRegex.IsMatch(imageSource))
@@ -310,11 +312,18 @@ namespace Trifolia.Shared
                                 docImageHeight = (int)Math.Round((decimal)bitmap.Height * 9525);
                             }
 
+                            string description = file.Description;
+
+                            if (!string.IsNullOrEmpty(imageAlt))
+                                description = imageAlt;
+                            else if (!string.IsNullOrEmpty(imageTitle))
+                                description = imageTitle;
+
                             return AddImage(
                                 current,
                                 this.mainPart.GetIdOfPart(newImagePart),
                                 file.FileName,
-                                file.Description,
+                                description,
                                 docImageWidth,
                                 docImageHeight);
                         }
