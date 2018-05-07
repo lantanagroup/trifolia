@@ -50,6 +50,8 @@ namespace Trifolia.Export.HTML
             }
             else
             {
+                Logging.Log.For(this).Trace("Generating HTML export for " + implementationGuideId);
+
                 IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
                 var igTypePlugin = ig.ImplementationGuideType.GetPlugin();
                 var firstTemplateType = ig.ImplementationGuideType.TemplateTypes.OrderBy(y => y.OutputOrder).FirstOrDefault();
@@ -58,6 +60,22 @@ namespace Trifolia.Export.HTML
                 var constraints = (from t in templates
                                    join tc in this.tdb.TemplateConstraints.AsNoTracking() on t.Id equals tc.TemplateId
                                    select tc).AsEnumerable();
+                var containedTemplates = (from st in templates
+                                          join vtr in this.tdb.ViewTemplateRelationships on st.Id equals vtr.ParentTemplateId
+                                          join t in this.tdb.Templates on vtr.ChildTemplateId equals t.Id
+                                          select new
+                                          {
+                                              Relationship = vtr,
+                                              Template = t
+                                          }).ToList();
+                var containedByTemplates = (from st in templates
+                                            join vtr in this.tdb.ViewTemplateRelationships on st.Id equals vtr.ChildTemplateId
+                                            join t in this.tdb.Templates on vtr.ParentTemplateId equals t.Id
+                                            select new
+                                            {
+                                                Relationship = vtr,
+                                                Template = t
+                                            }).ToList();
                 this.constraintReferences = (from c in constraints
                                              join tcr in this.tdb.TemplateConstraintReferences.AsNoTracking() on c.Id equals tcr.TemplateConstraintId
                                              join t in this.tdb.Templates.AsNoTracking() on tcr.ReferenceIdentifier equals t.Oid
@@ -87,6 +105,8 @@ namespace Trifolia.Export.HTML
                 model.ImplementationGuideDescription = ig.WebDescription;
                 model.ImplementationGuideDisplayName = !string.IsNullOrEmpty(ig.WebDisplayName) ? ig.WebDisplayName : model.ImplementationGuideName;
 
+                Logging.Log.For(this).Trace("Including Volume 1 sections");
+
                 // Create the section models
                 model.Volume1Sections = (from igs in ig.Sections.OrderBy(y => y.Order)
                                          select new ViewDataModel.Section()
@@ -95,6 +115,8 @@ namespace Trifolia.Export.HTML
                                              Content = igs.Content,
                                              Level = igs.Level
                                          }).ToList();
+
+                Logging.Log.For(this).Trace("Including FHIR resources attached to IG");
 
                 // Include any FHIR Resource Instance attachments with the IG
                 foreach (var fhirResourceInstanceFile in ig.Files.Where(y => y.ContentType == "FHIRResourceInstance"))
@@ -112,6 +134,8 @@ namespace Trifolia.Export.HTML
                     if (!string.IsNullOrEmpty(newFhirResource.JsonContent) || !string.IsNullOrEmpty(newFhirResource.XmlContent))
                         model.FHIRResources.Add(newFhirResource);
                 }
+
+                Logging.Log.For(this).Trace("Including value sets");
 
                 foreach (var valueSet in valueSets)
                 {
@@ -147,6 +171,8 @@ namespace Trifolia.Export.HTML
                                        });
                     model.CodeSystems.AddRange(codeSystems);
                 }
+
+                Logging.Log.For(this).Trace("Including templates");
 
                 foreach (var template in templates)
                 {
@@ -201,12 +227,19 @@ namespace Trifolia.Export.HTML
                                                     SampleText = ts.XmlSample
                                                 }).ToList();
 
-                    // Contained templates
-                    var containedTemplates = (from tcr in this.tdb.ViewTemplateRelationships.AsNoTracking()
-                                              join t in this.tdb.Templates.AsNoTracking() on tcr.ChildTemplateId equals t.Id
-                                              where tcr.ParentTemplateId == templateId
-                                              select t).Distinct().ToList();
-                    newTemplateModel.ContainedTemplates = containedTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
+                    // Contained templates                    
+                    var thisContainedTemplates = containedTemplates
+                        .Where(y => y.Relationship.ParentTemplateId == templateId)
+                        .GroupBy(y => y.Template)
+                        .Select(y => y.First());
+                    newTemplateModel.ContainedTemplates = thisContainedTemplates.Select(y => new ViewDataModel.TemplateReference(y.Template)).ToList();
+
+                    // Contained by templates                    
+                    var thisContainedByTemplates = containedByTemplates
+                        .Where(y => y.Relationship.ChildTemplateId == templateId)
+                        .GroupBy(y => y.Template)
+                        .Select(y => y.First());
+                    newTemplateModel.ContainedByTemplates = thisContainedByTemplates.Select(y => new ViewDataModel.TemplateReference(y.Template)).ToList();
 
                     // Implying templates
                     var implyingTemplates = (from t in templates
@@ -214,21 +247,14 @@ namespace Trifolia.Export.HTML
                                              select t).Distinct().ToList();
                     newTemplateModel.ImplyingTemplates = implyingTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
 
-                    // Contained by templates
-                    var containedByTemplates = (from tcr in this.tdb.ViewTemplateRelationships.AsNoTracking()
-                                                join t in this.tdb.Templates.AsNoTracking() on tcr.ParentTemplateId equals t.Id
-                                                where tcr.ChildTemplateId == templateId
-                                                select t).Distinct().ToList();
-                    newTemplateModel.ContainedByTemplates = containedByTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
-
                     model.Templates.Add(newTemplateModel);
-
-
 
                     // Create the constraint models (hierarchically)
                     var parentConstraints = template.ChildConstraints.Where(y => y.ParentConstraintId == null);
                     CreateConstraints(igSettings, igTypePlugin, parentConstraints, newTemplateModel.Constraints, templateSchema);
                 }
+
+                Logging.Log.For(this).Trace("Including template types");
 
                 // Create models for template types in the IG
                 model.TemplateTypes = (from igt in igSettings.TemplateTypes
@@ -242,10 +268,13 @@ namespace Trifolia.Export.HTML
                                            Description = igt.DetailsText
                                        }).ToList();
 
+                Logging.Log.For(this).Trace("Including code systems");
                 model.CodeSystems = model.CodeSystems.Distinct().ToList();
             }
             
             this.FixImagePaths(model);
+
+            Logging.Log.For(this).Trace("Done generating HTML export for " + implementationGuideId);
 
             return model;
         }
@@ -271,6 +300,8 @@ namespace Trifolia.Export.HTML
         {
             if (!this.offline)
                 return;
+
+            Logging.Log.For(this).Trace("Fixing paths to images for offline copy.");
 
             foreach (var template in model.Templates)
             {
