@@ -183,111 +183,61 @@
             <div class="main-content">
                 
 <p></p>
-<p class="rvps2"><span class="rvts6">Trifolia allows you to format descriptions, notes, and narrative constraint text using wiki syntax. When you render the output to HTML or Word, the text is formatted correctly.</span></p>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts19">Fields That Support Wiki Syntax</span></span></h2>
-<p class="rvps2"><span class="rvts6">The following fields support wiki syntax formatting:</span></p>
+<p class="rvps4"><span class="rvts6">Trifolia allows you to format descriptions, notes, and narrative constraint text using Markdown syntax. When you render the output to HTML or Word, the text is rendered according to the specified export format.</span></p>
+<h2 class="rvps9"><span class="rvts0"><span class="rvts19">Fields That Support Wiki Syntax</span></span></h2>
+<p class="rvps4"><span class="rvts6">The following fields support wiki syntax formatting:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts6">Primitive Constraint Narrative</span></li>
-<li class="rvps2"><span class="rvts6">Constraint Description</span></li>
-<li class="rvps2"><span class="rvts6">Constraint Heading Description</span></li>
-<li class="rvps2"><span class="rvts6">Template Description</span></li>
-<li class="rvps2"><span class="rvts6">Template Note</span></li>
-<li class="rvps2"><span class="rvts6">Template Type Description (ex: “Document Templates” description)</span></li>
+<li class="rvps4"><span class="rvts6">Templates</span></li>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps4"><span class="rvts6">Description</span></li>
+<li class="rvps4"><span class="rvts6">Notes</span></li>
 </ul>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts19">Bold Text</span></span></h2>
-<p class="rvps2"><span class="rvts27">Input Example</span></p>
-<p class="rvps2"><span class="rvts6">This is *an example of bold* text</span></p>
-<p class="rvps2"><span class="rvts27">Output Example</span></p>
-<p class="rvps2"><span class="rvts6">This is </span><span class="rvts18">an example of bold</span><span class="rvts6"> text</span></p>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts19">Italics</span></span></h2>
-<p class="rvps2"><span class="rvts27">Input Example</span></p>
-<p class="rvps2"><span class="rvts6">This is _an example of italic_ text</span></p>
-<p class="rvps2"><span class="rvts27">Output Example</span></p>
-<p class="rvps2"><span class="rvts6">This is </span><span class="rvts29">an example of italic</span><span class="rvts6"> text</span></p>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts19">Links</span></span></h2>
-<p class="rvps2"><span class="rvts6">You can create links to templates, or to external resources such as websites or reference documents. Depending on the syntax, Trifolia can insert information into the link's text.</span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts28">Link to Template by OID</span></span></h3>
-<p class="rvps2"><span class="rvts27">Input Example</span></p>
-<p class="rvps2"><span class="rvts6">Example of a link to [URL:#1.2.3.4.5]</span></p>
-<p class="rvps2"><span class="rvts27">Output Example</span></p>
-<p class="rvps2"><span class="rvts6">Example of a link to </span><span class="rvts46">My Template Name (1.2.3.4.5)</span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts48">Link to External Website, without Link Text</span></span></h3>
-<p class="rvps2"><span class="rvts49">Input Example</span></p>
-<p class="rvps2"><span class="rvts47">Example of a link to [URL:http://www.lantanagroup.com]</span></p>
-<p class="rvps2"><span class="rvts49">Output Example</span></p>
-<p class="rvps2"><span class="rvts47">Example of a link to </span><span class="rvts49">http://www.lantanagroup.com</span></p>
-<p class="rvps2"><span class="rvts47"><br/></span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts48">Link to External Website, with Link Text</span></span></h3>
-<p class="rvps2"><span class="rvts49">Input Example</span></p>
-<p class="rvps2"><span class="rvts47">Example of a link to [URL:Lantana Consulting Group|http://www.lantanagroup.com]</span></p>
-<p class="rvps2"><span class="rvts49">Output Example</span></p>
-<p class="rvps2"><span class="rvts47">Example of a link to </span><span class="rvts49">Lantana Consulting Group</span></p>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts50">Tables</span></span></h2>
-<p class="rvps2"><span class="rvts49">Input Example</span></p>
-<p class="rvps2"><span class="rvts47">|| Name || Email || Location</span></p>
-<p class="rvps2"><span class="rvts47">| Joe | joe@lantanagroup.com | Texas</span></p>
-<p class="rvps2"><span class="rvts47">| Sally | sally@lantanagroup.com | Arkansas</span></p>
-<p class="rvps2"><span class="rvts47">| John | john@lantanagroup.com | Pennsylvania</span></p>
-<p class="rvps2"><span class="rvts49">Output Example</span></p>
-<div class="rvps2"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Name</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Email</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Location</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Joe</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">joe@lantanagroup.com</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Texas</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Sally</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">sally@lantanagroup.com</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Arkansas</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">John</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">john@lantanagroup.com</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Pennsylvania</span></p>
-</td>
-</tr>
-</table>
-</div>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts50">Bullets and Numbers</span></span></h2>
-<p class="rvps2"><span class="rvts47">Wiki syntax supports ordered (numbered) and unordered (bulleted) lists.</span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts48">Unordered List (Bullets)</span></span></h3>
-<p class="rvps2"><span class="rvts49">Input Example</span></p>
-<p class="rvps2"><span class="rvts47">* Bullet 1</span></p>
-<p class="rvps2"><span class="rvts47">* Bullet 2</span></p>
-<p class="rvps2"><span class="rvts47">* Bullet 3</span></p>
-<p class="rvps2"><span class="rvts49">Output Example</span></p>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts47">Bullet 1</span></li>
-<li class="rvps2"><span class="rvts47">Bullet 2</span></li>
-<li class="rvps2"><span class="rvts47">Bullet 3</span></li>
+<li class="rvps4"><span class="rvts6">Constraints</span></li>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps4"><span class="rvts6">Primitive Constraint Narrative</span></li>
+<li class="rvps4"><span class="rvts6">Constraint Description</span></li>
+<li class="rvps4"><span class="rvts6">Constraint Heading Description</span></li>
 </ul>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts48">Ordered List (Numbers)</span></span></h3>
-<p class="rvps2"><span class="rvts49">Input Example</span></p>
-<p class="rvps2"><span class="rvts47"># Bullet 1</span></p>
-<p class="rvps2"><span class="rvts47"># Bullet 2</span></p>
-<p class="rvps2"><span class="rvts47"># Bullet 3</span></p>
-<p class="rvps2"><span class="rvts49">Output Example</span></p>
-<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts47">Bullet 1</span></li>
-<li value="2" class="rvps2"><span class="rvts47">Bullet 2</span></li>
-<li value="3" class="rvps2"><span class="rvts47">Bullet 3</span></li>
-</ol>
+<li class="rvps4"><span class="rvts6">Implementation Guides</span></li>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps4"><span class="rvts6">Volume 1 Sections</span></li>
+<li class="rvps4"><span class="rvts6">Template Type Description (ex: “Document Templates” description)</span></li>
+</ul></ul>
+<p class="rvps4"><span class="rvts6"><br/></span></p>
+<h2 class="rvps9"><span class="rvts0"><span class="rvts19">Syntax Guide</span></span></h2>
+<h3 class="rvps10"><span class="rvts0"><span class="rvts50">Emphasis</span></span></h3>
+<p class="rvps4"><span class="rvts47">**bold**</span></p>
+<p class="rvps4"><span class="rvts48">*italics*</span></p>
+<p class="rvps4"><span class="rvts49">~~strikethrough~~</span></p>
+<h3 class="rvps10"><span class="rvts0"><span class="rvts50">Headers</span></span></h3>
+<p class="rvps4"><span class="rvts46"># Big header</span></p>
+<p class="rvps4"><span class="rvts46">## Medium header</span></p>
+<p class="rvps4"><span class="rvts46">### Small header</span></p>
+<p class="rvps4"><span class="rvts46">#### Tiny header</span></p>
+<p class="rvps4"><span class="rvts46">##### Even more tiny header</span></p>
+<p class="rvps4"><span class="rvts46">###### Super small header</span></p>
+<h3 class="rvps10"><span class="rvts0"><span class="rvts50">Lists</span></span></h3>
+<p class="rvps4"><span class="rvts46">* Unordered list item</span><br/><span class="rvts46">* Unordered list item</span><br/><span class="rvts46">* Unordered list item</span></p>
+<p class="rvps4"><span class="rvts46">1. Numbered list item</span><br/><span class="rvts46">2. Numbered list item</span><br/><span class="rvts46">3. Numbered list item</span></p>
+<h3 class="rvps10"><span class="rvts0"><span class="rvts50">Links</span></span></h3>
+<p class="rvps4"><span class="rvts46">[alt text](http://example.com)</span></p>
+<h3 class="rvps10"><span class="rvts0"><span class="rvts50">Quotes</span></span></h3>
+<p class="rvps4"><span class="rvts46">&gt; This is a quote</span></p>
+<p class="rvps4"><span class="rvts46">&gt; It can span multiple lines!</span></p>
+<h3 class="rvps10"><span class="rvts0"><span class="rvts50">Images</span></span></h3>
+<p class="rvps4"><span class="rvts46">![alt text](http://example.com/image.jpg)</span></p>
+<h3 class="rvps10"><span class="rvts0"><span class="rvts50">Tables</span></span></h3>
+<p class="rvps4"><span class="rvts46">| Column 1 | Column 2 | Column 3 |</span></p>
+<p class="rvps4"><span class="rvts46">| -------- | -------- | -------- |</span></p>
+<p class="rvps4"><span class="rvts46">| John &nbsp; &nbsp; | Doe &nbsp; &nbsp; &nbsp;| Male &nbsp; &nbsp; |</span></p>
+<p class="rvps4"><span class="rvts46">| Mary &nbsp; &nbsp; | Smith &nbsp; &nbsp;| Female &nbsp; |</span></p>
+<h3 class="rvps10"><span class="rvts0"><span class="rvts50">Embedded Code</span></span></h3>
+<p class="rvps4"><span class="rvts46">`</span></p>
+<p class="rvps4"><span class="rvts46">&lt;ClinicalDocument&gt;</span></p>
+<p class="rvps4"><span class="rvts46"> &nbsp;&lt;setId root="..." /&gt;</span></p>
+<p class="rvps4"><span class="rvts46"> &nbsp;...</span></p>
+<p class="rvps4"><span class="rvts46">&lt;/ClinicalDocument&gt;</span></p>
+<p class="rvps4"><span class="rvts46">`</span></p>
 <p></p>
 
             </div>

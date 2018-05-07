@@ -7,6 +7,7 @@ using Trifolia.DB;
 using Trifolia.Export.MSWord;
 using Trifolia.Export.MSWord.ConstraintGeneration;
 using Trifolia.Export.Versioning;
+using Trifolia.Logging;
 using Trifolia.Plugins;
 using Trifolia.Shared;
 
@@ -50,7 +51,7 @@ namespace Trifolia.Export.HTML
             }
             else
             {
-                Logging.Log.For(this).Trace("Generating HTML export for " + implementationGuideId);
+                Log.For(this).Trace("Generating HTML export for " + implementationGuideId);
 
                 IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
                 var igTypePlugin = ig.ImplementationGuideType.GetPlugin();
@@ -105,18 +106,18 @@ namespace Trifolia.Export.HTML
                 model.ImplementationGuideDescription = ig.WebDescription;
                 model.ImplementationGuideDisplayName = !string.IsNullOrEmpty(ig.WebDisplayName) ? ig.WebDisplayName : model.ImplementationGuideName;
 
-                Logging.Log.For(this).Trace("Including Volume 1 sections");
+                Log.For(this).Trace("Including Volume 1 sections");
 
                 // Create the section models
                 model.Volume1Sections = (from igs in ig.Sections.OrderBy(y => y.Order)
                                          select new ViewDataModel.Section()
                                          {
                                              Heading = igs.Heading,
-                                             Content = igs.Content,
+                                             Content = igs.Content.MarkdownToHtml(),
                                              Level = igs.Level
                                          }).ToList();
 
-                Logging.Log.For(this).Trace("Including FHIR resources attached to IG");
+                Log.For(this).Trace("Including FHIR resources attached to IG");
 
                 // Include any FHIR Resource Instance attachments with the IG
                 foreach (var fhirResourceInstanceFile in ig.Files.Where(y => y.ContentType == "FHIRResourceInstance"))
@@ -135,7 +136,7 @@ namespace Trifolia.Export.HTML
                         model.FHIRResources.Add(newFhirResource);
                 }
 
-                Logging.Log.For(this).Trace("Including value sets");
+                Log.For(this).Trace("Including value sets");
 
                 foreach (var valueSet in valueSets)
                 {
@@ -172,7 +173,7 @@ namespace Trifolia.Export.HTML
                     model.CodeSystems.AddRange(codeSystems);
                 }
 
-                Logging.Log.For(this).Trace("Including templates");
+                Log.For(this).Trace("Including templates");
 
                 foreach (var template in templates)
                 {
@@ -254,7 +255,7 @@ namespace Trifolia.Export.HTML
                     CreateConstraints(igSettings, igTypePlugin, parentConstraints, newTemplateModel.Constraints, templateSchema);
                 }
 
-                Logging.Log.For(this).Trace("Including template types");
+                Log.For(this).Trace("Including template types");
 
                 // Create models for template types in the IG
                 model.TemplateTypes = (from igt in igSettings.TemplateTypes
@@ -268,13 +269,13 @@ namespace Trifolia.Export.HTML
                                            Description = igt.DetailsText
                                        }).ToList();
 
-                Logging.Log.For(this).Trace("Including code systems");
+                Log.For(this).Trace("Including code systems");
                 model.CodeSystems = model.CodeSystems.Distinct().ToList();
             }
             
             this.FixImagePaths(model);
 
-            Logging.Log.For(this).Trace("Done generating HTML export for " + implementationGuideId);
+            Log.For(this).Trace("Done generating HTML export for " + implementationGuideId);
 
             return model;
         }
@@ -301,7 +302,7 @@ namespace Trifolia.Export.HTML
             if (!this.offline)
                 return;
 
-            Logging.Log.For(this).Trace("Fixing paths to images for offline copy.");
+            Log.For(this).Trace("Fixing paths to images for offline copy.");
 
             foreach (var template in model.Templates)
             {

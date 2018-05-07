@@ -230,28 +230,26 @@ span.rvts45
 }
 span.rvts46
 {
- color: #3333ff;
- text-decoration: underline;
+ font-family: 'Courier New', 'Courier', monospace;
 }
 span.rvts47
 {
- color: ;
+ font-family: 'Courier New', 'Courier', monospace;
+ font-weight: bold;
 }
 span.rvts48
 {
- font-size: 13pt;
- font-weight: bold;
- color: ;
+ font-family: 'Courier New', 'Courier', monospace;
+ font-style: italic;
 }
 span.rvts49
 {
- color: ;
- text-decoration: underline;
+ font-family: 'Courier New', 'Courier', monospace;
+ text-decoration: line-through;
 }
 span.rvts50
 {
- font-size: 14pt;
- font-style: italic;
+ font-size: 13pt;
  font-weight: bold;
  color: ;
 }

@@ -68,7 +68,7 @@ namespace Trifolia.DB
                     string msg = string.Format("Vocabulary for IG \"{0}\" includes {1} valueset bindings with different binding dates. Using the latest binding date.",
                         this.Name,
                         cGroupedValueSet.Constraints.Count());
-                    Log.For(typeof(ValueSet)).Info(msg);
+                    Log.For(typeof(ValueSet)).Trace(msg);
                 }
 
                 var maxBindingDate = cGroupedValueSet.Constraints.Max(y => y.BindingDate);

@@ -598,6 +598,15 @@ ko.bindingHandlers.markdown = {
             return results;
         };
 
+        var trifoliaHelpToolbar = {
+            name: 'trifolia-help',
+            action: function (editor) {
+                window.open('/Help/FormattingText.html', '_new');
+            },
+            className: 'fa fa-question-circle',
+            title: 'Formatting guide'
+        };
+
         var igImageToolbar = {
             name: 'ig-image',
             action: function (editor) {
@@ -653,7 +662,7 @@ ko.bindingHandlers.markdown = {
                 '|',
                 'link', 'image', igImageToolbar, 'table',
                 '|',
-                'preview', 'fullscreen', 'guide'],
+                'preview', 'fullscreen', trifoliaHelpToolbar],
             status: [{
                 className: "validation",
                 onUpdate: function (el) {
