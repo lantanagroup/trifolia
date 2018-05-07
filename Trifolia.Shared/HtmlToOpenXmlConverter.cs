@@ -295,17 +295,28 @@ namespace Trifolia.Shared
 
                             var latestVersion = file.GetLatestData();
                             ImagePart newImagePart = this.mainPart.AddImagePart(this.GetImagePartType(imageExtension));
+                            int docImageWidth = 0;
+                            int docImageHeight = 0;
 
                             using (MemoryStream ms = new MemoryStream(latestVersion.Data))
                             {
                                 newImagePart.FeedData(ms);
                             }
 
+                            using (MemoryStream ms = new MemoryStream(latestVersion.Data))
+                            {
+                                System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(ms);
+                                docImageWidth = (int)Math.Round((decimal)bitmap.Width * 9525);
+                                docImageHeight = (int)Math.Round((decimal)bitmap.Height * 9525);
+                            }
+
                             return AddImage(
-                                current, 
-                                this.mainPart.GetIdOfPart(newImagePart), 
-                                file.FileName, 
-                                file.Description);
+                                current,
+                                this.mainPart.GetIdOfPart(newImagePart),
+                                file.FileName,
+                                file.Description,
+                                docImageWidth,
+                                docImageHeight);
                         }
                         else
                         {
@@ -406,13 +417,13 @@ namespace Trifolia.Shared
             return newChild;
         }
 
-        private static Drawing AddImage(OpenXmlElement parent, string relationshipId, string fileName, string description)
+        private static Drawing AddImage(OpenXmlElement parent, string relationshipId, string fileName, string description, int width, int height)
         {
             // Define the reference of the image.
             var element =
                  new Drawing(
                      new DW.Inline(
-                         new DW.Extent() { Cx = 990000L, Cy = 792000L },
+                         new DW.Extent() { Cx = width, Cy = height },
                          new DW.EffectExtent()
                          {
                              LeftEdge = 0L,
@@ -454,7 +465,7 @@ namespace Trifolia.Shared
                                      new PIC.ShapeProperties(
                                          new A.Transform2D(
                                              new A.Offset() { X = 0L, Y = 0L },
-                                             new A.Extents() { Cx = 990000L, Cy = 792000L }),
+                                             new A.Extents() { Cx = width, Cy = height }),
                                          new A.PresetGeometry(
                                              new A.AdjustValueList()
                                          )
@@ -470,11 +481,25 @@ namespace Trifolia.Shared
                          EditId = "50D07946"
                      });
 
-            // Append the reference to body, the element should be in a Run.
-            if (parent is Paragraph)
-                parent.AppendChild(new Run(element));
-            else
-                parent.AppendChild(new Paragraph(new Run(element)));
+            var para = parent as Paragraph;
+
+            if (para == null)
+            {
+                para = new Paragraph();
+                parent.AppendChild(para);
+            }
+
+            var paraProp = para.ChildElements.OfType<ParagraphProperties>().FirstOrDefault();
+
+            if (paraProp == null)
+            {
+                paraProp = new ParagraphProperties();
+                para.AppendChild(paraProp);
+            }
+
+            paraProp.ParagraphStyleId = new ParagraphStyleId() { Val = "BodyImage" };
+
+            para.AppendChild(new Run(element));
 
             return element;
         }

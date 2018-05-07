@@ -1292,6 +1292,7 @@
     <w:qFormat/>
     <w:rsid w:val="000D7863"/>
     <w:pPr>
+      <w:spacing w:line="240" w:lineRule="auto"/>
       <w:ind w:left="720"/>
       <w:jc w:val="center"/>
     </w:pPr>
