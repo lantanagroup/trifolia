@@ -109,7 +109,8 @@ namespace Trifolia.Export.HTML
                 Log.For(this).Trace("Including Volume 1 sections");
 
                 // Create the section models
-                model.Volume1Sections = (from igs in ig.Sections.OrderBy(y => y.Order)
+                var sections = ig.Sections.OrderBy(y => y.Order).ToList();
+                model.Volume1Sections = (from igs in sections
                                          select new ViewDataModel.Section()
                                          {
                                              Heading = igs.Heading,

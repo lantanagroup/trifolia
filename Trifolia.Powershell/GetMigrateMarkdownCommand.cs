@@ -30,12 +30,31 @@ namespace Trifolia.Powershell
     {
         private List<MigrateMarkdownLog> logs;
         private const string CleanHtmlFormat = "<root xmlns:o=\"urn:msxml\" xmlns:v=\"urn:msxml\" xmlns:w=\"urn:msxml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">{0}</root>";
+        private const string TableRegexPattern = @"(<table[^>]*>(?:.|\n)*?<\/table>)";
+        private const string SpanRegexPattern = @"<span[^>]*>((?:.|\n)+?)<\/span>";
+        private const string DivRegexPattern = @"<div[^>]*>((?:.|\n)+?)<\/div>";
+        private const string BadHeadingSpacingRegexPattern = @"(#+\s)\n\s+([A-z]+)";
+        private Html2Markdown.Scheme.Markdown markdown = new Html2Markdown.Scheme.Markdown();
+
+        public GetMigrateMarkdownCommand()
+        {
+            // Replace the stock ReplaceCode replacer with the customized one that uses
+            // three back-ticks for multi-line code blocks instead of tabbing
+            var replacers = this.markdown.Replacers(); //22
+            replacers.RemoveAt(22);
+            replacers.Insert(22, new H2MD.CustomReplacer()
+            {
+                CustomAction = H2MD.Replacers.ReplaceCode
+            });
+        }
 
         private string CleanHtml(string html)
         {
             XDocument doc = null;
 
-            var fixedHtml = html
+            string fixedHtml = html;
+
+            fixedHtml = fixedHtml
                 .Replace("style=\"font-family: &quot;Courier New&quot;;\"", "style=\"font-family: 'Courier New';\"")
                 .Replace("&quot;Bookman Old Style&quot;", "'Bookman Old Style'")
                 .Replace(",serif;mso-fareast-font-family:SimSun;\r\n  mso-bidi-font-family:&quot;Times New Roman&quot;;mso-ansi-language:EN-US;mso-fareast-language:\r\n  EN-US;mso-bidi-language:AR-SA;mso-no-proof:yes", "")
@@ -45,10 +64,10 @@ namespace Trifolia.Powershell
                 .Replace("&quot;Helvetica Neue&quot;", "'Helvetica Neue'")
                 .Replace("&quot;Times New Roman&quot;", "'Times New Roman'")
                 .Replace("&quot;Arial&quot;", "'Arial'")
-                .Replace("H&amp;P", "H&amp;amp;P")
-                .Replace("&lt;", "&amp;lt;")
-                .Replace("&gt;", "&amp;gt;")
-                .Replace("&quot;", "&amp;quot;");
+                .Replace("H&amp;P", "H&amp;amp;P");
+                //.Replace("&lt;", "&amp;lt;")
+                //.Replace("&gt;", "&amp;gt;")
+                //.Replace("&quot;", "&amp;quot;");
 
             Regex msoRegex = new Regex(@"\<\!\-\- \[if gte mso 9\].*\!\[endif\] -->", RegexOptions.Singleline);
             fixedHtml = msoRegex.Replace(fixedHtml, "");
@@ -87,123 +106,157 @@ namespace Trifolia.Powershell
                 .Where(y => y.Nodes().Count() == 0)
                 .Remove();
 
-            using (var reader = doc.FirstNode.CreateReader())
+            this.RemoveOuterElement(doc, "div");
+            this.RemoveOuterElement(doc, "div");
+            this.RemoveOuterElement(doc, "div");
+            this.RemoveOuterElement(doc, "div");
+
+            this.RemoveOuterElement(doc, "span");
+            this.RemoveOuterElement(doc, "span");
+            this.RemoveOuterElement(doc, "span");
+            this.RemoveOuterElement(doc, "span");
+
+            // Replace any paragraphs with ONLY a <code> block in it with just
+            // the code block, so that the Html2Markdown conversion does not
+            // turn the entire code-block into a single line
+            var paras = doc.Descendants("p").ToArray();
+            foreach (var para in paras)
             {
-                reader.MoveToContent();
-                string innerXml = reader.ReadInnerXml();
-                return innerXml;
+                if (para.Elements().Count() == 1 && para.Elements().First().Name == "code")
+                {
+                    para.ReplaceWith(para.Nodes().ToArray());
+                }
+            }
+
+            var rootNodes = doc.XPathSelectElements("/root/*");
+            return rootNodes.Aggregate("", (b, node) => b += node.ToString());
+        }
+
+        private void RemoveOuterElement(XDocument doc, string elementName)
+        {
+            var elements = doc.Descendants(elementName).ToArray();
+            foreach (var element in elements)
+            {
+                element.ReplaceWith(element.Nodes().ToArray());
             }
         }
 
-        private void ReplaceSpans(XDocument doc)
+        private string CreateMarkdownForTable(string tableHtml)
         {
-            var spans = doc.Descendants("span").ToArray();
-            foreach (var span in spans)
+            XDocument tableDoc = XDocument.Parse(tableHtml);
+
+            string tableMarkdown = "\n";
+
+            var headerColumns = tableDoc.XPathSelectElements("thead/tr/td");
+            int headerColumnCount = headerColumns.Count();
+            IEnumerable<XElement> rows = null;
+
+            if (headerColumnCount > 0)
             {
-                span.ReplaceWith(span.Nodes().ToArray());
+                rows = tableDoc.XPathSelectElements("tbody/tr");
+                tableMarkdown += "|";
+
+                foreach (var headerColumn in headerColumns)
+                {
+                    tableMarkdown += " " + headerColumn.Value + " |";
+                }
+
+                tableMarkdown += "\n";
             }
+            else
+            {
+                rows = tableDoc.XPathSelectElements("//tr");
+                headerColumnCount = tableDoc.XPathSelectElements("//tr[1]/td").Count();
+                tableMarkdown += "|";
+
+                for (int i = 0; i < headerColumnCount; i++)
+                {
+                    tableMarkdown += " |";
+                }
+
+                tableMarkdown += "\n";
+            }
+
+            // Header separator
+            tableMarkdown += "|";
+
+            for (int i = 0; i < headerColumnCount; i++)
+            {
+                tableMarkdown += " ----- |";
+            }
+
+            tableMarkdown += "\n";
+
+            foreach (var row in rows)
+            {
+                tableMarkdown += "|";
+
+                foreach (var cell in row.XPathSelectElements("td"))
+                {
+                    tableMarkdown += " " + cell.Value.Trim().Replace("\r", "").Replace("\n\n", "\n").Replace("\n", "<br/>") + " |";
+                }
+
+                tableMarkdown += "\n";
+            }
+
+            return tableMarkdown.ToString();
         }
 
         private string CleanMarkdown(string markdown)
         {
             var fixedMarkdown = markdown.Replace(" & ", " &amp; ");
 
-            try
+            Regex spanRegex = new Regex(SpanRegexPattern, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            Regex tableRegex = new Regex(TableRegexPattern, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            Regex divRegex = new Regex(DivRegexPattern, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            Regex badHeadingSpacingRegex = new Regex(BadHeadingSpacingRegexPattern, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+
+            MatchCollection tableMatches = tableRegex.Matches(markdown);
+            foreach (Match match in tableMatches)
             {
-                var doc = XDocument.Parse(string.Format(CleanHtmlFormat, fixedMarkdown));
-                XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
-                nsManager.AddNamespace("o", "urn:msxml");
-                var tableElements = doc.XPathSelectElements("//table");
+                string tableMarkdown = this.CreateMarkdownForTable(match.Groups[0].Value);
+                markdown = markdown.Replace(match.Groups[0].Value, tableMarkdown);
+            }
 
-                foreach (var tableElement in tableElements)
+            MatchCollection spanMatches = spanRegex.Matches(markdown);
+            while (spanMatches.Count > 0)
+            {
+                foreach (Match match in spanMatches)
                 {
-                    string tableMarkdown = "\n\n";
-
-                    var headerColumns = tableElement.XPathSelectElements("thead/tr/td");
-                    int headerColumnCount = headerColumns.Count();
-                    IEnumerable<XElement> rows = null;
-
-                    if (headerColumnCount > 0)
+                    if (match.Groups[0].Value.StartsWith("<span class=\"tag\">"))
                     {
-                        rows = tableElement.XPathSelectElements("tbody/tr");
-                        tableMarkdown += "|";
-
-                        foreach (var headerColumn in headerColumns)
-                        {
-                            tableMarkdown += " " + headerColumn.Value + " |";
-                        }
-
-                        tableMarkdown += "\n";
+                        // Span with a tag of class is an indicator that it is supposed to be formatted as code
+                        string codeChar = match.Groups[1].Value.Contains("\n") ? "```" : "`";
+                        string replacement = codeChar + match.Groups[1].Value + codeChar;
+                        markdown = markdown.Replace(match.Groups[0].Value, replacement);
                     }
                     else
                     {
-                        rows = tableElement.XPathSelectElements("//tr");
-                        headerColumnCount = tableElement.XPathSelectElements("//tr[1]/td").Count();
-                        tableMarkdown += "|";
-
-                        for (int i = 0; i < headerColumnCount; i++)
-                        {
-                            tableMarkdown += " |";
-                        }
-
-                        tableMarkdown += "\n";
+                        // Other span elements should just be replaced with their inner content
+                        markdown = markdown.Replace(match.Groups[0].Value, match.Groups[1].Value);
                     }
-
-                    // Header separator
-                    tableMarkdown += "|";
-
-                    for (int i = 0; i < headerColumnCount; i++)
-                    {
-                        tableMarkdown += " ----- |";
-                    }
-
-                    tableMarkdown += "\n";
-
-                    foreach (var row in rows)
-                    {
-                        tableMarkdown += "|";
-
-                        foreach (var cell in row.XPathSelectElements("td"))
-                        {
-                            tableMarkdown += " " + cell.Value.Trim().Replace("\r", "").Replace("\n\n", "\n").Replace("\n", "<br/>") + " |";
-                        }
-
-                        tableMarkdown += "\n";
-                    }
-
-                    tableElement.ReplaceWith(tableMarkdown);
                 }
-
-                this.ReplaceSpans(doc);
-                this.ReplaceSpans(doc);
-                this.ReplaceSpans(doc);
-                this.ReplaceSpans(doc);
-
-                var msXmlParagraphs = doc.XPathSelectElements("//o:p", nsManager);
-
-                foreach (var msXmlParagraph in msXmlParagraphs)
-                {
-                    msXmlParagraph.Remove();
-                }
-
-                using (var reader = doc.FirstNode.CreateReader())
-                {
-                    reader.MoveToContent();
-                    string innerXml = reader.ReadInnerXml()
-                        .Replace("\n\n\n\n", "\n\n")
-                        .Replace("\n\n\n", "\n\n")
-                        .Replace("\n\t", "\n")
-                        .Replace("*   ", "* ")
-                        .Replace(". **", ".** ")
-                        .Replace(". **", ".** ");
-                    return innerXml;
-                }
+                spanMatches = spanRegex.Matches(markdown);
             }
-            catch (Exception ex)
+
+            MatchCollection divMatches = divRegex.Matches(markdown);
+            while (divMatches.Count > 0)
             {
-                this.WriteVerbose("Could not clean up markdown: " + ex.Message);
-                return markdown;
+                foreach (Match match in divMatches)
+                {
+                    // Replace all divs with their content
+                    markdown = markdown.Replace(match.Groups[0].Value, match.Groups[1].Value);
+                }
+                divMatches = divRegex.Matches(markdown);
             }
+
+            MatchCollection badHeadingSpacingMatches = badHeadingSpacingRegex.Matches(markdown);
+            foreach (Match match in badHeadingSpacingMatches)
+            {
+                markdown = markdown.Replace(match.Groups[0].Value, match.Groups[1].Value + match.Groups[2].Value);
+            }
+
+            return markdown;
         }
 
         Regex noTitleUrlRegex = new Regex(@"\[URL:(.*?\|)?(ftp:\/\/.*?)\]");
@@ -259,7 +312,7 @@ namespace Trifolia.Powershell
 
         private string ConvertWikiToMarkdown(string wiki, int implementationGuideId, int templateId, string property, int? constraintId = null)
         {
-            var converter = new Html2Markdown.Converter();
+            var converter = new Html2Markdown.Converter(this.markdown);
             string markdown = wiki;
             string cleanWiki = wiki
                 .Trim()
@@ -316,7 +369,7 @@ namespace Trifolia.Powershell
                 .Replace("<br/>", "");
             cleanHtml = this.CleanHtml(cleanHtml);
 
-            var converter = new Html2Markdown.Converter();
+            var converter = new Html2Markdown.Converter(this.markdown);
             string markdown;
 
             try
@@ -330,30 +383,23 @@ namespace Trifolia.Powershell
                 return html;
             }
 
-            markdown = this.CleanMarkdown(markdown);
+            var cleanMarkdown = this.CleanMarkdown(markdown);
 
-            if (html != markdown)
+            if (html != cleanMarkdown)
                 this.logs.Add(new MigrateMarkdownLog()
                 {
                     ImplementationGuideId = implementationGuideId,
                     SectionId = sectionId,
                     Property = property,
                     Original = html,
-                    New = markdown
+                    New = cleanMarkdown
                 });
 
-            return !string.IsNullOrEmpty(markdown) ? markdown : html;
+            return !string.IsNullOrEmpty(markdown) ? cleanMarkdown : html;
         }
 
-        /// <summary>
-        /// Converts the following fields to MarkDown format:
-        /// - Template.Description
-        /// - TemplateConstraint.PrimitiveText
-        /// </summary>
-        protected override void ProcessRecord()
+        private void MigrateImplementationGuides()
         {
-            this.logs = new List<MigrateMarkdownLog>();
-
             foreach (var implementationGuide in this.tdb.ImplementationGuides)
             {
                 implementationGuide.WebDescription = this.ConvertHtmlToMarkdown(implementationGuide.WebDescription, implementationGuide.Id, "WebDescription");
@@ -364,32 +410,56 @@ namespace Trifolia.Powershell
                     this.WriteVerbose("Updated implementation guide " + implementationGuide.Id + "'s section " + section.Id + " to be markdown");
                 }
             }
-            
-            foreach (var template in this.tdb.Templates)
+        }
+
+        private void MigrateConstraints(Trifolia.DB.Template template)
+        {
+            foreach (var constraint in template.ChildConstraints.Where(y => !string.IsNullOrEmpty(y.PrimitiveText)))
             {
-                if (!string.IsNullOrEmpty(template.Description))
+                if (!string.IsNullOrEmpty(constraint.PrimitiveText))
                 {
-                    template.Description = this.ConvertWikiToMarkdown(template.Description, template.OwningImplementationGuideId, template.Id, "Description");
-                    this.WriteVerbose("Updated template " + template.Id + "'s description to be markdown");
-                }
-
-                if (!string.IsNullOrEmpty(template.Notes))
-                {
-                    template.Notes = this.ConvertWikiToMarkdown(template.Notes, template.OwningImplementationGuideId, template.Id, "Notes");
-                    this.WriteVerbose("Updated template " + template.Id + "'s notes to be markdown");
-                }
-
-                foreach (var constraint in template.ChildConstraints.Where(y => !string.IsNullOrEmpty(y.PrimitiveText)))
-                {
-                    if (!string.IsNullOrEmpty(constraint.PrimitiveText))
-                    {
-                        constraint.PrimitiveText = this.ConvertWikiToMarkdown(constraint.PrimitiveText, template.OwningImplementationGuideId, template.Id, "PrimitiveText", constraint.Id);
-                        this.WriteVerbose(string.Format("Update template {0}'s constraint {1}'s PrimitiveText to be markdown",
-                            template.Id,
-                            constraint.Id));
-                    }
+                    constraint.PrimitiveText = this.ConvertWikiToMarkdown(constraint.PrimitiveText, template.OwningImplementationGuideId, template.Id, "PrimitiveText", constraint.Id);
+                    this.WriteVerbose(string.Format("Update template {0}'s constraint {1}'s PrimitiveText to be markdown",
+                        template.Id,
+                        constraint.Id));
                 }
             }
+        }
+
+        private void MigrateTemplate(Trifolia.DB.Template template)
+        {
+            if (!string.IsNullOrEmpty(template.Description))
+            {
+                template.Description = this.ConvertWikiToMarkdown(template.Description, template.OwningImplementationGuideId, template.Id, "Description");
+                this.WriteVerbose("Updated template " + template.Id + "'s description to be markdown");
+            }
+
+            if (!string.IsNullOrEmpty(template.Notes))
+            {
+                template.Notes = this.ConvertWikiToMarkdown(template.Notes, template.OwningImplementationGuideId, template.Id, "Notes");
+                this.WriteVerbose("Updated template " + template.Id + "'s notes to be markdown");
+            }
+
+            this.MigrateConstraints(template);
+        }
+
+        private void MigrateTemplates()
+        {
+            foreach (var template in this.tdb.Templates)
+            {
+                this.MigrateTemplate(template);
+            }
+        }
+
+        /// <summary>
+        /// Converts fields to markdown
+        /// </summary>
+        protected override void ProcessRecord()
+        {
+            this.logs = new List<MigrateMarkdownLog>();
+
+            this.MigrateImplementationGuides();
+            this.MigrateTemplates();
 
             this.WriteObject(this.logs);
             this.tdb.SaveChanges();
