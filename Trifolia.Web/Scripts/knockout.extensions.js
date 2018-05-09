@@ -598,6 +598,40 @@ ko.bindingHandlers.markdown = {
             return results;
         };
 
+        var prettyPrintXmlToolbar = {
+            name: 'pretty-print-xml',
+            action: function (editor) {
+                var selectedText = editor.codemirror.getSelection();
+
+                if (!selectedText) {
+                    return;
+                }
+
+                var singleTickRegex = /^`(.+?)`$/g;
+                var multiTickRegex = /^```(.+?)```$/g;
+                if (multiTickRegex.test(selectedText)) {
+                    var formattedText = vkbeautify.xml(selectedText.substring(3, selectedText.length - 3));
+                    var replaceText = '`' + formattedText + '`';
+                    if (replaceText.indexOf('\n') > 0) {
+                        replaceText = '```' + formattedText + '```';
+                    }
+                    editor.codemirror.replaceSelection(replaceText);
+                } else if (singleTickRegex.test(selectedText)) {
+                    var formattedText = vkbeautify.xml(selectedText.substring(1, selectedText.length - 1));
+                    var replaceText = '`' + formattedText + '`';
+                    if (replaceText.indexOf('\n') > 0) {
+                        replaceText = '```' + formattedText + '```';
+                    }
+                    editor.codemirror.replaceSelection(replaceText);
+                } else {
+                    var formattedText = vkbeautify.xml(selectedText);
+                    editor.codemirror.replaceSelection(formattedText);
+                }
+            },
+            className: 'fa fa-terminal',
+            title: 'Pretty print XML'
+        };
+
         var trifoliaHelpToolbar = {
             name: 'trifolia-help',
             action: function (editor) {
@@ -658,7 +692,7 @@ ko.bindingHandlers.markdown = {
             toolbar: [
                 'bold', 'italic', 'strikethrough', 'heading',
                 '|',
-                'code', 'quote', 'unordered-list', 'ordered-list',
+                'code', prettyPrintXmlToolbar, 'quote', 'unordered-list', 'ordered-list',
                 '|',
                 'link', 'image', igImageToolbar, 'table',
                 '|',
@@ -673,6 +707,9 @@ ko.bindingHandlers.markdown = {
 
                     // Only validate once every half-second
                     validateTimeout = setTimeout(function () {
+                        if (!simplemde) {
+                            return;
+                        }
                         var data = simplemde.value();
                         var validationResults = checkHTML(data);
                         if (!validationResults.validHTML) {
