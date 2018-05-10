@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Trifolia.DB;
@@ -57,21 +58,27 @@ namespace Trifolia.Export.HTML
                 var igTypePlugin = ig.ImplementationGuideType.GetPlugin();
                 var firstTemplateType = ig.ImplementationGuideType.TemplateTypes.OrderBy(y => y.OutputOrder).FirstOrDefault();
                 var valueSets = ig.GetValueSets(this.tdb);
-                var templates = ig.GetRecursiveTemplates(this.tdb, templateIds != null ? templateIds.ToList() : null, inferred);
-                var constraints = (from t in templates
-                                   join tc in this.tdb.TemplateConstraints.AsNoTracking() on t.Id equals tc.TemplateId
-                                   select tc).AsEnumerable();
+                var parentTemplateIds = templateIds != null ? templateIds.ToList() : null;
+                var templates =
+                    ig.GetQueryableRecursiveTemplates(this.tdb, parentTemplateIds, inferred)
+                    .IncludeDetails(true, true, true)
+                    .ToList();
+                var constraints = templates.SelectMany(y => y.ChildConstraints);
+                var previousVersionIds = templates.Where(y => y.PreviousVersionTemplateId != null).Select(y => y.PreviousVersionTemplateId.Value).ToList();
+                var previousVersions = this.tdb.Templates.Where(y => previousVersionIds.Contains(y.Id))
+                                        .IncludeDetails(true, true, true)
+                                        .ToList();
                 var containedTemplates = (from st in templates
-                                          join vtr in this.tdb.ViewTemplateRelationships on st.Id equals vtr.ParentTemplateId
-                                          join t in this.tdb.Templates on vtr.ChildTemplateId equals t.Id
+                                          join vtr in this.tdb.ViewTemplateRelationships.AsNoTracking() on st.Id equals vtr.ParentTemplateId
+                                          join t in this.tdb.Templates.AsNoTracking() on vtr.ChildTemplateId equals t.Id
                                           select new
                                           {
                                               Relationship = vtr,
                                               Template = t
                                           }).ToList();
                 var containedByTemplates = (from st in templates
-                                            join vtr in this.tdb.ViewTemplateRelationships on st.Id equals vtr.ChildTemplateId
-                                            join t in this.tdb.Templates on vtr.ParentTemplateId equals t.Id
+                                            join vtr in this.tdb.ViewTemplateRelationships.AsNoTracking() on st.Id equals vtr.ChildTemplateId
+                                            join t in this.tdb.Templates.AsNoTracking() on vtr.ParentTemplateId equals t.Id
                                             select new
                                             {
                                                 Relationship = vtr,
@@ -80,7 +87,7 @@ namespace Trifolia.Export.HTML
                 this.constraintReferences = (from c in constraints
                                              join tcr in this.tdb.TemplateConstraintReferences.AsNoTracking() on c.Id equals tcr.TemplateConstraintId
                                              join t in this.tdb.Templates.AsNoTracking() on tcr.ReferenceIdentifier equals t.Oid
-                                             join ig1 in this.tdb.ImplementationGuides on t.OwningImplementationGuideId equals ig1.Id
+                                             join ig1 in this.tdb.ImplementationGuides.AsNoTracking() on t.OwningImplementationGuideId equals ig1.Id
                                              where tcr.ReferenceType == ConstraintReferenceTypes.Template
                                              select new ExportConstraintReference()
                                              {
@@ -89,7 +96,10 @@ namespace Trifolia.Export.HTML
                                                  Name = t.Name,
                                                  TemplateConstraintId = tcr.TemplateConstraintId,
                                                  IncludedInIG = templates.Contains(t),
-                                                 ImplementationGuide = ig1.GetDisplayName(),
+                                                 ImplementationGuide = 
+                                                    !string.IsNullOrEmpty(ig1.DisplayName) ? 
+                                                    ig1.DisplayName :
+                                                    ig1.Name + " V" + ig1.Version.ToString(),
                                                  PublishDate = ig1.PublishDate
                                              }).ToList();
 
@@ -180,6 +190,7 @@ namespace Trifolia.Export.HTML
                 {
                     var templateId = template.Id;
                     var templateSchema = schema.GetSchemaFromContext(template.PrimaryContextType);
+                    var previousVersion = previousVersions.SingleOrDefault(y => y.Id == template.PreviousVersionTemplateId);
                     var newTemplateModel = new ViewDataModel.Template()
                     {
                         Identifier = template.Oid,
@@ -194,19 +205,17 @@ namespace Trifolia.Export.HTML
                     };
 
                     // Load Template Changes
-                    var lPreviousVersion = template.PreviousVersion;
-
-                    if (lPreviousVersion != null)
+                    if (previousVersion != null)
                     {
                         var comparer = VersionComparer.CreateComparer(this.tdb, igTypePlugin, igSettings);
-                        var result = comparer.Compare(lPreviousVersion, template);
+                        var result = comparer.Compare(previousVersion, template);
 
                         newTemplateModel.Changes = new DifferenceModel(result)
                         {
                             Id = template.Id,
                             TemplateName = template.Name,
-                            PreviousTemplateName = string.Format("{0} ({1})", lPreviousVersion.Name, lPreviousVersion.Oid),
-                            PreviousTemplateId = lPreviousVersion.Id
+                            PreviousTemplateName = string.Format("{0} ({1})", previousVersion.Name, previousVersion.Oid),
+                            PreviousTemplateId = previousVersion.Id
                         };
                     }
 

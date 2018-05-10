@@ -121,7 +121,9 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             if (constraint.ValueSetId != null)
             {
                 // If the caller didn't pass in the ValueSet, get it from the db
-                if (valueSet == null || valueSet.Id != constraint.ValueSetId)
+                if (valueSet == null && constraint is TemplateConstraint)
+                    valueSet = ((TemplateConstraint)constraint).ValueSet;
+                else if (valueSet == null || valueSet.Id != constraint.ValueSetId)
                     valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
 
                 this.ValueSetName = valueSet.Name;
@@ -132,7 +134,9 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             if (constraint.ValueCodeSystemId != null)
             {
                 // If the caller didn't pass in the CodeSystem, get it from the db
-                if (codeSystem == null || codeSystem.Id != constraint.ValueCodeSystemId)
+                if (codeSystem == null && constraint is TemplateConstraint)
+                    codeSystem = ((TemplateConstraint)constraint).CodeSystem;
+                else if (codeSystem == null || codeSystem.Id != constraint.ValueCodeSystemId)
                     codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
 
                 this.CodeSystemName = codeSystem.Name;

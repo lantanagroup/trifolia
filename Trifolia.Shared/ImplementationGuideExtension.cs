@@ -21,24 +21,6 @@ namespace Trifolia.Shared
             return valueSets.Count() > 0;
         }
 
-        public static string GetDisplayName(this ImplementationGuide implementationGuide, bool? fileNameSafe = false)
-        {
-            string name = implementationGuide.NameWithVersion;
-
-            if (!string.IsNullOrEmpty(implementationGuide.DisplayName))
-                name = implementationGuide.DisplayName;
-
-            if (fileNameSafe == true)
-            {
-                foreach (char c in System.IO.Path.GetInvalidFileNameChars())
-                {
-                    name = name.Replace(c, '_');
-                }
-            }
-
-            return name;
-        }
-
         public static string GetEditUrl(this ImplementationGuide implementationGuide, bool absoluteUrl = false)
         {
             var request = System.Web.HttpContext.Current.Request;

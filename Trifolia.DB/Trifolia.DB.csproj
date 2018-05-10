@@ -84,6 +84,7 @@
     <Compile Include="ImplementationGuideFileTypes.cs" />
     <Compile Include="ImplementationGuideTypeExtension.cs" />
     <Compile Include="IObjectRepository.cs" />
+    <Compile Include="IQueryableExtensions.cs" />
     <Compile Include="ITemplate.cs" />
     <Compile Include="Migrations\201703021923101_init.cs" />
     <Compile Include="Migrations\201703021923101_init.Designer.cs">

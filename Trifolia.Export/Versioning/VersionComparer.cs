@@ -189,19 +189,35 @@ namespace Trifolia.Export.Versioning
 
         private string GetContainedTemplateDisplay(IConstraint constraint)
         {
-            var containedTemplates = (from r in this.tdb.TemplateConstraintReferences
-                                      join t in this.tdb.Templates on r.ReferenceIdentifier equals t.Oid
-                                      where r.ReferenceType == ConstraintReferenceTypes.Template
-                                      select new { t.Name, t.Oid }).ToList();
-            var containedTemplateStrings = containedTemplates.Select(t => string.Format("{0} ({1})", t.Name, t.Oid));
-            return string.Join(", ", containedTemplateStrings);
+            var referenceIdentifiers = constraint.References
+                .Where(y => y.ReferenceType == ConstraintReferenceTypes.Template)
+                .Select(y => y.ReferenceIdentifier)
+                .ToList();
+
+            if (referenceIdentifiers.Count > 0)
+            {
+                var containedTemplates = this.tdb.Templates
+                    .Where(y => referenceIdentifiers.Contains(y.Oid))
+                    .Select(y => new { y.Name, y.Oid })
+                    .ToList();
+                var containedTemplateStrings = containedTemplates.Select(t => string.Format("{0} ({1})", t.Name, t.Oid));
+                return string.Join(", ", containedTemplateStrings);
+            }
+
+            return string.Empty;
         }
 
         private string GetCodeSystemDisplay(IConstraint constraint)
         {
             if (constraint.ValueCodeSystemId != null)
             {
-                CodeSystem codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
+                CodeSystem codeSystem = null;
+
+                if (constraint is TemplateConstraint)
+                    codeSystem = ((TemplateConstraint)constraint).CodeSystem;
+                else
+                    codeSystem = this.tdb.CodeSystems.Single(y => y.Id == constraint.ValueCodeSystemId);
+
                 return string.Format("{0} ({1})", codeSystem.Name, codeSystem.Oid);
             }
 
@@ -212,7 +228,13 @@ namespace Trifolia.Export.Versioning
         {
             if (constraint.ValueSetId != null)
             {
-                ValueSet valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
+                ValueSet valueSet = null;
+
+                if (constraint is TemplateConstraint)
+                    valueSet = ((TemplateConstraint)constraint).ValueSet;
+                else
+                    valueSet = this.tdb.ValueSets.Single(y => y.Id == constraint.ValueSetId);
+
                 return string.Format("{0} ({1})", valueSet.Name, valueSet.GetIdentifier(this.igTypePlugin));
             }
 
@@ -223,8 +245,16 @@ namespace Trifolia.Export.Versioning
         {
             if (template == null || template.ImpliedTemplateId == null)
                 return string.Empty;
+            
+            Template impliedTemplate = null;
 
-            Template impliedTemplate = this.tdb.Templates.Single(y => y.Id == template.ImpliedTemplateId);
+            // If this is an instance of a Template db model, 
+            // just use the ImpliedTemplate property, which may be pre-populated.
+            // Otherwise, get it based on its ID from the database.
+            if (template is Template)
+                impliedTemplate = ((Template)template).ImpliedTemplate;
+            else
+                impliedTemplate = this.tdb.Templates.Single(y => y.Id == template.ImpliedTemplateId);
 
             return string.Format("{0} ({1})", impliedTemplate.Name, impliedTemplate.Oid);
         }

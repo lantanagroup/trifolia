@@ -93,14 +93,6 @@ namespace Trifolia.DB
             }
         }
 
-        public int? ValueCodeSystemId
-        {
-            get
-            {
-                return this.CodeSystemId;
-            }
-        }
-
         public Cardinality CardinalityType
         {
             get
