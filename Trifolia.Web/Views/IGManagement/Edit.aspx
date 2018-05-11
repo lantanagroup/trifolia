@@ -102,7 +102,7 @@
 
                             <div class="form-group">
                                 <label>Web Implementation Guide Description</label>
-                                <textarea style="width: 100%; height: 300px;" data-bind="markdown: WebDescription, value: WebDescription, imageOpts: imageOpts"></textarea>
+                                <textarea style="width: 100%; height: 300px;" data-bind="markdown: WebDescription, implementationGuideId: $parent.ImplementationGuideId, value: WebDescription, imageOpts: imageOpts"></textarea>
                                 <span class="help-block">Web Implementation Guide Description is used only by the web-based implementation guide, in the home screen's "Welcome to the web-based implementation guide for XXX" heading</span>
                             </div>
                             <span data-bind="validationMessage: WebDescription"></span>
@@ -413,7 +413,7 @@
 
                         <div class="form-group">
                             <label>Content</label>
-                            <textarea style="width: 100%; height: 300px;" data-bind="markdown: Content"></textarea>
+                            <textarea style="width: 100%; height: 300px;" data-bind="markdown: Content, implementationGuideId: $parent.ImplementationGuideId"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
