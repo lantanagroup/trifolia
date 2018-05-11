@@ -260,7 +260,12 @@ ko.bindingHandlers.date = {
                 $(element).removeAttr('isUpdating');
             });
 
-        $(element).datepicker('update', value());
+        if (value()) {
+            var valueMoment = moment(value());
+            $(element).datepicker('update', valueMoment.format('MM/DD/YYYY'));
+        } else {
+            $(element).datepicker('update', value());
+        }
 
         /*
         $(element).change(function () {
@@ -279,7 +284,12 @@ ko.bindingHandlers.date = {
             return;
         }
 
-        $(element).datepicker('update', value());
+        if (value()) {
+            var valueMoment = moment(value());
+            $(element).datepicker('update', valueMoment.format('MM/DD/YYYY'));
+        } else {
+            $(element).datepicker('update', value());
+        }
     }
 };
 
