@@ -241,7 +241,7 @@
                     </table>
                 </uib-tab>
                 <uib-tab heading="Templates/Profiles" ng-show="templateSelectionFormats | contains:criteria.ExportFormat">
-                    <multiple-template-select template-ids="criteria.ParentTemplateIds" caption="Parent Templates/Profiles" form-group="true" implementation-guide-id="criteria.ImplementationGuideId" on-changed="loadTemplates()"></multiple-template-select>
+                    <multiple-template-select template-ids="criteria.ParentTemplateIds" caption="Parent Templates/Profiles" form-group="true" implementation-guide-id="criteria.ImplementationGuideId" on-changed="loadTemplates(true)"></multiple-template-select>
 
                     <div class="form-group">
                         <label>Include Inferred?</label>
