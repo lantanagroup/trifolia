@@ -394,9 +394,10 @@
                         
                     <div class="form-group">
                         <label for="codeSystemOid">Identifier</label>
-                        <input type="text" class="form-control" id="codeSystemOid" ng-model="codeSystem.Oid" name="identifier" ng-pattern="identifierRegex" required maxlength="255" />
+                        <input type="text" class="form-control" id="codeSystemOid" ng-model="codeSystem.Oid" name="identifier" ng-pattern="identifierRegex" required maxlength="255" ng-change="oidChanged()" />
                         <span class="help-block" ng-show="editCodeSystemForm.identifier.$error.pattern">The identifier is not in the correct format. Acceptable formats are: http(s)://XXX or urn:oid:XXX or urn:hl7ii:XXX:YYY</span>
                         <span class="help-block" ng-show="editCodeSystemForm.identifier.$error.required">Identifier is required.</span>
+                        <span class="help-block" ng-show="oidIsDuplicate">The identifier specified is already in use by another code system.</span>
                     </div>
                         
                     <div class="form-group">

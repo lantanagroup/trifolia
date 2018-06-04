@@ -37,6 +37,23 @@
         return deferred.promise;
     };
 
+    service.findValueSetByIdentifier = function (identifier, ignoreId) {
+        var url = '/api/Terminology/CodeSystem/Find?identifier=' + encodeURIComponent(identifier) + '&';
+        var deferred = $q.defer();
+
+        if (ignoreId) {
+            url += 'ignoreId=' + encodeURIComponent(ignoreId) + '&';
+        }
+
+        $http.get(url)
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
     service.getValueSetRelationships = function (valueSetId) {
         var url = '/api/Terminology/ValueSet/' + valueSetId + '/Relationships';
         var deferred = $q.defer();

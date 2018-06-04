@@ -340,6 +340,7 @@
             Oid: '',
             Description: ''
         };
+        $scope.oidIsDuplicate = false;
 
         $scope.ok = function () {
             TerminologyService.saveCodeSystem($scope.codeSystem)
@@ -348,6 +349,20 @@
                 })
                 .catch(function (err) {
                     alert('An error occurred while saving the code system: ' + err);
+                });
+        };
+
+        $scope.oidChanged = function () {
+            if (!$scope.codeSystem.Oid) {
+                return;
+            }
+
+            TerminologyService.findValueSetByIdentifier($scope.codeSystem.Oid, $scope.codeSystem.Id)
+                .then(function (results) {
+                    $scope.oidIsDuplicate = !!results;
+                })
+                .catch(function (err) {
+                    alert('An error occurred while validating the OID: ' + err);
                 });
         };
 

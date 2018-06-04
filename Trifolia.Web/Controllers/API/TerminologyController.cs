@@ -264,13 +264,22 @@ namespace Trifolia.Web.Controllers.API
             return !valueSetIds.Any();
         }
 
+        /// <summary>
+        /// Searches for a code system which has the specified identifier
+        /// </summary>
+        /// <param name="identifier">The identifier of the code system to find</param>
+        /// <param name="ignoreId">Indicates an id that should be ignored. Used to validate that a code system does not have the same identifier as another code system.</param>
+        /// <returns>The id of the first code system found with a matching identifier.</returns>
         [HttpGet, Route("api/Terminology/CodeSystem/Find"), SecurableAction(SecurableNames.CODESYSTEM_LIST)]
-        public int? FindCodeSystem(string identifier)
+        public int? FindCodeSystem(string identifier, int? ignoreId = null)
         {
             if (string.IsNullOrEmpty(identifier))
                 throw new ArgumentNullException("identifier");
 
             var codeSystems = this.tdb.CodeSystems.Where(y => y.Oid == identifier);
+
+            if (ignoreId.HasValue)
+                codeSystems = codeSystems.Where(y => y.Id != ignoreId.Value);
 
             if (codeSystems.Count() > 0)
                 return codeSystems.First().Id;
