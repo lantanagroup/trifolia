@@ -446,3 +446,11 @@ p table td{
 .CodeMirror.disabled {
     background-color: #eee;
 }
+
+#whatsNewBody {
+    padding: 15px !important;
+}
+
+#whatsNewDialog .modal-footer {
+    text-align: left !important;
+}

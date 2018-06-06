@@ -8,8 +8,6 @@
     <% } %>
 
     <div id="intro"></div>
-    <hr />
-    <div id="whatsnew"></div>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
