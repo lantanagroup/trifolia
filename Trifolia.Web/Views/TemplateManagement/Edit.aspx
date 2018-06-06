@@ -122,7 +122,7 @@
                             <div data-bind="visible: TemplateTypeId()">
                                 <div class="input-group name-field">
                                     <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorMetaDataNameField"></div>
-                                    <input type="text" class="form-control" data-bind="value: Name, disable: DisableFields, event: { change: $parent.RegenerateBookmark }" autofocus />
+                                    <input type="text" class="form-control" data-bind="value: Name, disable: DisableFields, event: { change: $parent.NameChanged }" autofocus />
                                 </div>
                                 <span class="templateMetaDataError" data-bind="validationMessage: Name"></span>
 

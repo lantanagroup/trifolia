@@ -1216,6 +1216,14 @@
             <param name="identifierId">The id of a valueset identifier that should be ignored while searching</param>
             <returns>True if the identifier is not found, otherwise false.</returns>
         </member>
+        <member name="M:Trifolia.Web.Controllers.API.TerminologyController.FindCodeSystem(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Searches for a code system which has the specified identifier
+            </summary>
+            <param name="identifier">The identifier of the code system to find</param>
+            <param name="ignoreId">Indicates an id that should be ignored. Used to validate that a code system does not have the same identifier as another code system.</param>
+            <returns>The id of the first code system found with a matching identifier.</returns>
+        </member>
         <member name="M:Trifolia.Web.Controllers.API.TerminologyController.DeleteValueSet(System.Int32,System.Nullable{System.Int32})">
             <summary>
             Deletes a value set. If a replacement value set is specified, it will take the place of the value set being deleted
