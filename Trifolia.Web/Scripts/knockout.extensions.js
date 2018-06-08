@@ -685,7 +685,7 @@ ko.bindingHandlers.markdown = {
                         var doc = editor.codemirror.getDoc();
                         var cursor = doc.getCursor();
                         var description = $(e.target).attr('img-description');
-                        var fileurl = baseIgUrl + '/Image/' + e.target.innerHTML;
+                        var fileurl = (baseIgUrl + '/Image/' + e.target.innerHTML).replace(/ /g, '%20');
                         doc.replaceRange('![' + (description || filename) + '](' + fileurl + ')', cursor);
                     });
                 });
