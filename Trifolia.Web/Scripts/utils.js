@@ -218,8 +218,12 @@ function WhatsNewViewModel(versionNumber) {
 
         $("#whatsNewDialog").modal({
             backdrop: 'static',
-            show: shouldShow
+            show: false
         });
+
+        if (shouldShow && (location.pathname === '/home/loggedinindex' || location.pathname === '/')) {
+            self.OpenWhatsNew();
+        }
     };
 
     self.Initialize();
