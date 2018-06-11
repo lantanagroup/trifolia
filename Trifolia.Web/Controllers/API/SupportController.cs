@@ -137,8 +137,14 @@ namespace Trifolia.Web.Controllers.API
                         }
                     }
                 }
-                catch (WebException)
+                catch (WebException wex)
                 {
+                    if (((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        Log.For(this).Error("Request to JIRA returned Unauthorized");
+                        throw new Exception("Error submitting support request to JIRA (System Configuration Error)");
+                    }
+
                     aIssue.description = string.Format("{0}\\n\\nSubmitted By: {1}", aIssue.description, aIssue.reporter);
                     validReporter = false;
                 }
