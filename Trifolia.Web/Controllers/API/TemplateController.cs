@@ -826,6 +826,18 @@ namespace Trifolia.Web.Controllers.API
                     if (model.IsNewVersion)
                         copyTemplate.PreviousVersionTemplateId = sourceTemplate.Id;
 
+                    // Update the template type of the template
+                    if (sourceTemplate.ImplementationGuideType != newImplementationGuide.ImplementationGuideType)
+                    {
+                        var foundTemplateType = newImplementationGuide.ImplementationGuideType.TemplateTypes.SingleOrDefault(y => y.RootContextType == sourceTemplate.TemplateType.RootContextType);
+
+                        if (foundTemplateType == null)
+                            return new { Status = "Failure", Message = "The destination implementation guide does not have a matching template/profile type \"" + sourceTemplate.TemplateType.RootContextType + "\"." };
+
+                        copyTemplate.TemplateTypeId = foundTemplateType.Id;
+                        copyTemplate.TemplateType = foundTemplateType;
+                    }
+
                     // Update the constraints conformance numbers
                     foreach (var cConstraint in model.Constraints)
                     {
