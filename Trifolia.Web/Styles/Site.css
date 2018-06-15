@@ -454,3 +454,7 @@ p table td{
 #whatsNewDialog .modal-footer {
     text-align: left !important;
 }
+
+.XMLName {
+    font-family: 'Courier New';
+}
