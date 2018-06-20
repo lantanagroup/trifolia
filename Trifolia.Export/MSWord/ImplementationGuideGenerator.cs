@@ -27,6 +27,7 @@ namespace Trifolia.Export.MSWord
         private const string WebSettingsStyleResource = "Trifolia.Export.MSWord.Styles.webSettings.xml";
         private const string ThemeStyleResource = "Trifolia.Export.MSWord.Styles.theme1.xml";
         private const string NumberingStyleResource = "Trifolia.Export.MSWord.Styles.numbering.xml";
+
         #region Private Fields
 
         private ImplementationGuide implementationGuide;
@@ -128,6 +129,8 @@ namespace Trifolia.Export.MSWord
 
             this.AddTableOfContents();
 
+            this.AddVolume1();
+
             this.AddTemplateTypeSections();
 
             if (exportSettings.GenerateDocTemplateListTable || exportSettings.GenerateDocContainmentTable)
@@ -159,6 +162,85 @@ namespace Trifolia.Export.MSWord
 
             if (exportSettings.IncludeChangeList)
                 this.LoadChangesAppendix();
+        }
+
+        private string GetHeadingStyle(int level)
+        {
+            switch (level)
+            {
+                case 1:
+                    return "Heading1";
+                case 2:
+                    return "Heading2";
+                case 3:
+                    return "Heading3";
+                case 4:
+                    return "Heading4";
+                case 5:
+                    return "Heading5";
+                case 6:
+                    return "Heading6";
+                case 7:
+                    return "Heading7";
+                case 8:
+                    return "Heading8";
+                case 9:
+                    return "Heading9";
+                default:
+                    return null;
+            }
+        }
+
+        private void AddVolume1()
+        {
+            if (!this.exportSettings.IncludeVolume1)
+                return;
+
+            string html = this.igSettings.GetSetting(IGSettingsManager.SettingProperty.Volume1Html);
+
+            if (!string.IsNullOrEmpty(html))
+            {
+                var next = HtmlToOpenXmlConverter.HtmlToOpenXml(this._tdb, this.document.MainDocumentPart, html);
+
+                if (next != null)
+                {
+                    foreach (OpenXmlElement cParsedChild in next.ChildElements)
+                    {
+                        OpenXmlElement cClonedParsedChild = cParsedChild.CloneNode(true);
+                        this.document.MainDocumentPart.Document.Body.Append(cClonedParsedChild);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var section in this.implementationGuide.Sections)
+                {
+                    string headingStyle = GetHeadingStyle(section.Level);
+
+                    if (headingStyle == null)
+                        continue;
+
+                    // Add the heading
+                    Paragraph heading = new Paragraph(
+                        new ParagraphProperties(
+                            new ParagraphStyleId() { Val = headingStyle }),
+                        new Run(
+                            new Text(section.Heading)));
+                    this.document.MainDocumentPart.Document.Body.AppendChild(heading);
+
+                    // Add the Markdown converted to HTML, then OpenXml
+                    var next = section.Content.MarkdownToOpenXml(this._tdb, this.document.MainDocumentPart, false);
+
+                    if (next != null)
+                    {
+                        foreach (OpenXmlElement cParsedChild in next.ChildElements)
+                        {
+                            OpenXmlElement cClonedParsedChild = cParsedChild.CloneNode(true);
+                            this.document.MainDocumentPart.Document.Body.Append(cClonedParsedChild);
+                        }
+                    }
+                }
+            }
         }
 
         private void AddRetiredTemplatesAppendix()

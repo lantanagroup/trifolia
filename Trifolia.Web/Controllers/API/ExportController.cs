@@ -213,6 +213,7 @@ namespace Trifolia.Web.Controllers.API
                         c.IncludeChangeList = model.IncludeChangeList;
                         c.IncludeTemplateStatus = model.IncludeTemplateStatus;
                         c.IncludeNotes = model.IncludeNotes;
+                        c.IncludeVolume1 = model.IncludeVolume1;
                         c.SelectedCategories = model.SelectedCategories;
                     });
 

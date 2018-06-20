@@ -1,0 +1,24 @@
+<p>The cardinality indicator (0..1, 1..1, 1..*, etc.) specifies the allowable occurrences within a document instance. The cardinality indicators are interpreted with the following format “m…n” where m represents the least and n the most:</p>
+<ul>
+<li>0..1 zero or one</li>
+<li>1..1 exactly one</li>
+<li>1..* at least one</li>
+<li>0..* zero or more</li>
+<li>1..n at least one and not more than n</li>
+</ul>
+<p>When a constraint has subordinate clauses, the scope of the cardinality of the parent constraint must be clear. In the next figure, the constraint says exactly one participant is to be present. The subordinate constraint specifies some additional characteristics of that participant.</p>
+<p><em><strong>Constraints Format - only one allowed</strong></em></p>
+<ol>
+<li>SHALL contain exactly one [1..1] <strong>participant</strong> (CONF:2777).</li>
+</ol>
+<ol type="a">
+<li>This participant** SHALL** contain exactly one [1..1] <strong>@typeCode</strong>=&quot;LOC&quot; (CodeSystem: 2.16.840.1.113883.5.90 HL7ParticipationType) (CONF:2230).</li>
+</ol>
+<p>In the next figure, the constraint says only one participant “like this” is to be present. Other participant elements are not precluded by this constraint.</p>
+<p><em><strong>Constraints Format—only one like this allowed</strong></em></p>
+<ol>
+<li>SHALL contain exactly one [1..1] <strong>participant</strong> (CONF:2777) such that it</li>
+</ol>
+<ol type="a">
+<li>SHALL contain exactly one [1..1] <strong>@typeCode</strong>=&quot;LOC&quot; (CodeSystem: 2.16.840.1.113883.5.90 HL7ParticipationType) (CONF:2230).</li>
+</ol>

@@ -58,6 +58,7 @@ namespace Trifolia.Web.Models.Export
 
         public bool IncludeVocabulary { get; set; }
         public bool IncludeCustomSchematron { get; set; }
+        public bool IncludeVolume1 { get; set; }
         public string DefaultSchematron { get; set; }
 
         // Vocabulary Settings

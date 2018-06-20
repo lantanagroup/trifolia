@@ -210,6 +210,7 @@
     <Compile Include="Generation\Sample\TemplateSampleGeneratorTest.cs" />
     <Compile Include="Shared\HelperTests.cs" />
     <Compile Include="Shared\StringTests.cs" />
+    <Compile Include="Shared\HtmlToOpenXmlConverterTests.cs" />
     <Compile Include="TemplateExtensions.cs" />
     <Compile Include="TestDataGenerator.cs" />
     <Compile Include="XmlTestHelper.cs" />
@@ -1283,6 +1284,31 @@
     <EmbeddedResource Include="DocSamples\Camara-FHIR-IG.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DocSamples\HTML\html1.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html10.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html11.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html12.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html13.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html14.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html15.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html16.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html17.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html18.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html19.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html2.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html20.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html21.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html22.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html23.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html24.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html25.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html3.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html4.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html5.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html6.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html7.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html8.html" />
+    <EmbeddedResource Include="DocSamples\HTML\html9.html" />
     <Content Include="Export\FHIR\STU3\org.hl7.fhir.igpublisher.jar">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

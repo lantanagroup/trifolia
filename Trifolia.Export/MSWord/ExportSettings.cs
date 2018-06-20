@@ -18,6 +18,7 @@ namespace Trifolia.Export.MSWord
         public bool IncludeChangeList { get; set; }
         public bool IncludeTemplateStatus { get; set; }
         public bool IncludeNotes { get; set; }
+        public bool IncludeVolume1 { get; set; }
         public Dictionary<string, int> ValueSetMaxMembers { get; set; }
         public List<string> SelectedCategories { get; set; }
     }

@@ -1,0 +1,16 @@
+<p>The Templates section includes CDA templates and prescribes their use for a set of specific document types. The templates can be viewed either as a hierarchy or an alphabetical list broken down by document-level, section-level and entry-level templates.</p>
+<ul>
+<li><strong>Document-Level Templates.</strong> These templates define the report requirements for all HAI CDA documents. The Healthcare Associated Infection Report requirements apply to any HAI CDA document. They apply to constraints on the CDA header and sections, and include the requirement that the body be represented by a structuredBody element. The header requirements for population summary reports and for single-person reports differ significantly. HAI defines a generic header template for each of these two sets of requirements. Report-specific templates give additional requirements for each report type in this implementation guide.</li>
+<li><strong>Section-Level Templates.</strong> This templates define the generic constraints that apply to all sections along with specific requirements for each section used by the HAI reports in this guide.</li>
+<li><strong>Entry-Level Templates.</strong> These templates define entry-level templates, called clinical statements. Machine processable data are sent in the entry templates. The entry templates are referenced by one or more section templates. Entry-level templates are always contained in section-level templates, and section-level templates are always contained in a document. Requirements for all entries (including organizers) used by the reports in this guide are in alphabetical order.</li>
+</ul>
+<p>The page for each template contains expandable tabs showing various &quot;views&quot; of the template:</p>
+<ul>
+<li>**UML Relationship Diagram. **The UML representation of the templates and its parents and children.</li>
+<li>**Constraints Table. **The template constraints in table form.</li>
+<li>**Narrative Constraints. **The template constraints in prose form.</li>
+<li>**Samples. **(If applicable) Any example XML snippets pertaining to the template.</li>
+<li>**Value Sets. **(If applicable) Any value sets used by the template.</li>
+</ul>
+<p>The Value Sets in This Guide section lists all value set names and OIDs used by HAI templates. Links are provided to external value set sources if appropriate. Additionally, the hai_voc.xlsx spreadsheet is provided as a resource for value-set information.</p>
+<p>The Code Systems in This Guide section lists all code system names and OIDs used by HAI templates, both for value sets and single-value bindings.</p>

@@ -1,0 +1,27 @@
+<p>The CDC has identified questions and allowable responses for HAI form fields. In many cases these questions and responses have been mapped to local CDC/NHSN codes, and it is the CDC's intention to identify corresponding standard codes. Within the CDC, different groups have done vocabulary mapping work (e.g., with HL7 V2 messages), often with different results, and efforts are underway to not only reconcile internal CDC vocabulary usage, but also reconcile CDC vocabulary usage with the Healthcare Information Standards Technology Panel (HITSP) recommendations.</p>
+<p>Vocabularies recommended in this guide are primarily standard vocabularies recommended for use in particular domains. In many cases these vocabularies are further constrained into value sets for use within this guide or were previously constrained into value sets by the CDC.</p>
+<p>The incremental strategy for vocabulary reconciliation for codes, code systems, and value sets in this document is as follows.</p>
+<p><strong>Code and codeSystem Selection</strong></p>
+<ul>
+<li>Where there is conflicting precedent within the CDC, CDC will advise on the preferred CDC code system.</li>
+<li>Where there is a preferred code system within the CDC that is consistent with HITSP recommendations, existing CDC-cited code systems are used.</li>
+<li>Where there is a preferred code system within the CDC that is not consistent with HITSP recommendations, divergence from HITSP is flagged, and reconciliation between CDC and HITSP is planned (but outside the scope of this document).</li>
+<li>Where there is no established precedent within the CDC, available HITSP recommendations will be followed.</li>
+<li>Where there is no established precedent within the CDC and no HITSP recommendations, precedent in prior CDA Implementation Guides will be followed.</li>
+<li>Where there is no established precedent within the CDC, no HITSP recommendations, and no prior CDA IG precedent:
+<ul>
+<li>An attempt will be made to map CDC/NHSN local codes to standard codes (e.g., SNOMED, HL7 V3 vocabularies).</li>
+<li>Where there is no corresponding standard code, the CDC/NHSN local code will be cited. (Submitting local CDC/NHSN codes to SNOMED is outside the scope of this document.)</li>
+</ul>
+</li>
+</ul>
+<p>If post-coordination of SNOMED terms and codes would be required to capture the CDC/NHSN concept, the local CDC/NHSN code will be used.</p>
+<p><strong>Value Set Assignment and Maintenance</strong></p>
+<ul>
+<li>Where there is conflicting precedent within the CDC, CDC will advise on the preferred CDC value set.</li>
+<li>Where there is a preferred CDC value set that is consistent with HITSP recommendations, existing CDC value sets are used.</li>
+<li>Where there is a preferred CDC value set that is not consistent with HITSP recommendations, divergence from HITSP is flagged, and reconciliation between CDC and HITSP is planned (but outside the scope of this document).</li>
+<li>Where there is no established precedent within the CDC, available HITSP recommendations will be followed.</li>
+<li>Where there is no established precedent within the CDC and no HITSP recommendations, then precedent in prior CDA Implementation Guides will be followed.</li>
+<li>Where there is no established precedent within the CDC, no HITSP recommendations, and no prior CDA IG precedent, new value sets will be created, each having a value set OID assigned by the CDC.</li>
+</ul>

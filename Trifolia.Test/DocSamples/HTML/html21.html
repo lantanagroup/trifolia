@@ -1,0 +1,159 @@
+<p>Conformance statements within Volumes 2, 3, 4 and the HTML version of this implementation guide are presented as constraints from Trifolia Workbench, a template repository. An algorithm converts constraints recorded in Trifolia to a printable presentation. Each constraint is uniquely identified by an identifier at or near the end of the constraint (e.g., CONF:86-7345). The digits in the conformance number before the hyphen identify which IG the template belongs to and the number after the hyphen is unique to the owning IG. Together, these two numbers uniquely identify each constraint. These identifiers are persistent but not sequential. Conformance numbers in this guide associated with a conformance statement that is carried forward from a previous version of this guide will carry the same conformance number from the previous version. This is true even if slightly edited. If a conformance statement is entirely new, it will have a new conformance number.</p>
+<p>Bracketed information following each template title indicates the template type (section, observation, act, procedure, etc.), the identifier oid or identifier urn, and whether the template is <a href="#/volume1#section27">open or closed</a>. The identifier oid is the templateId/@root value; all templateIds have an @root value. Newer and/or versioned templates also have an @extension value, which is a date identifying the version of this template; such templates are identified by urn and the HL7 version (urn:hl7ii). The urn identifier includes both the @root and @extension value for the templateId (for example, identifier urn:hl7ii:2.16.840.1.113883.10.20.5.5.41:2014-06-09).</p>
+<p>Each section and entry template in Volumes 2, 3, and 4 of this guide includes a context table. The &quot;Contained By&quot; column indicates which templates use this template, and if the template is optional or required in the containing template. The &quot;Contains&quot; column indicates any templates that the template uses.</p>
+<p><em><strong>Context Tables</strong></em></p>
+<p><em><strong>XXX: Allergy Problem Act (V2) Contexts</strong></em></p>
+<table>
+<thead>
+<tr>
+<th>Contained By:</th>
+<th>Contains:</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Allergies Section (entries optional) (V2) (optional)<br/>Allergies Section (entries required) (V2) (required)</td>
+<td>Allergy - Intolerance Observation (V2)<br/>Author Participation</td>
+</tr>
+</tbody>
+</table>
+<p>Each template also includes a constraint overview table to summarize the constraints in the template.</p>
+<p><em><strong>Constraints Overview Table Example</strong></em></p>
+<table>
+<thead>
+<tr>
+<th>XPath</th>
+<th>Card.</th>
+<th>Verb</th>
+<th>Data Type</th>
+<th>CONF#</th>
+<th>Fixed Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>XPath</td>
+<td>Card.</td>
+<td>Verb</td>
+<td>Data Type</td>
+<td>CONF#</td>
+<td>Fixed Value</td>
+</tr>
+<tr>
+<td>observation[identifier: oid:2.16.840.1.113883.10.20.22.4.31]</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>@classCode</td>
+<td>1..1</td>
+<td>SHALL</td>
+<td></td>
+<td>XXXX</td>
+<td>2.16.840.1.113883.5.6 (HL7ActClass) = OBS</td>
+</tr>
+<tr>
+<td>@moodCode</td>
+<td>1..1</td>
+<td>SHALL</td>
+<td></td>
+<td>XXXX</td>
+<td>2.16.840.1.113883.5.1001 (ActMood) = EVN</td>
+</tr>
+<tr>
+<td>code</td>
+<td>1..1</td>
+<td>SHALL</td>
+<td></td>
+<td>XXXX</td>
+<td></td>
+</tr>
+<tr>
+<td>@code</td>
+<td>1..1</td>
+<td>SHALL</td>
+<td></td>
+<td>XXXX</td>
+<td>2.16.840.1.113883.6.96 (SNOMED CT) = 445518008</td>
+</tr>
+<tr>
+<td>value</td>
+<td>1..1</td>
+<td>SHALL</td>
+<td>PQ</td>
+<td>XXXX</td>
+<td></td>
+</tr>
+<tr>
+<td>@unit</td>
+<td>1..1</td>
+<td>SHALL</td>
+<td>CS</td>
+<td>XXXX</td>
+<td>2.16.840.1.113883.11.20.9.21 (AgePQ_UCUM)</td>
+</tr>
+<tr>
+<td>templateId</td>
+<td>1..1</td>
+<td>SHALL</td>
+<td></td>
+<td>XXXX</td>
+<td></td>
+</tr>
+<tr>
+<td>@root</td>
+<td>1..1</td>
+<td>SHALL</td>
+<td></td>
+<td>XXXX</td>
+<td>2.16.840.1.113883.10.20.22.4.31</td>
+</tr>
+<tr>
+<td>statusCode</td>
+<td>1..1</td>
+<td>SHALL</td>
+<td></td>
+<td>XXXX</td>
+<td></td>
+</tr>
+<tr>
+<td>@code</td>
+<td>1..1</td>
+<td>SHALL</td>
+<td></td>
+<td>XXXX</td>
+<td>2.16.840.1.113883.5.14 (ActStatus) = completed</td>
+</tr>
+</tbody>
+</table>
+<p>The following figure shows a typical template’s set of constraints presented in Volumes 2, 3, and 4 of this guide. The next chapters describe specific aspects of conformance statements—open vs. closed statements, conformance verbs, cardinality, vocabulary conformance, containment relationships, and null flavors. The expression “such that it” means, you (<strong>SHALL/SHOULD/MAY</strong>) have one of those things that look like that, but you can also have another one of those things that look different. The example below states that you must have templateId with a root of 2.16.840.1.113883.10.20.22.4.31 but you can also have other template IDs.</p>
+<p><em><strong>Constraints Format Example</strong></em></p>
+<p><em><strong>Age Observation</strong></em></p>
+<p>[observation: identifier oid:2.16.840.1.113883.10.20.22.4.31(open)]</p>
+<ol>
+<li>SHALL contain exactly one [1..1] @classCode=&quot;OBS&quot; Observation (CodeSystem: HL7ActClass 2.16.840.1.113883.5.6 STATIC) (CONF:XXXX).</li>
+<li>SHALL contain exactly one [1..1] @moodCode=&quot;EVN&quot; Event (CodeSystem: ActMood 2.16.840.1.113883.5.1001 STATIC) (CONF: XXXX).</li>
+<li>SHALL contain exactly one [1..1] templateId (CONF:XXXX) such that it
+<ol type="a">
+<li>SHALL contain exactly one [1..1] @root=&quot;2.16.840.1.113883.10.20.22.4.31&quot; (CONF: XXXX).</li>
+</ol>
+</li>
+<li>SHALL contain exactly one [1..1] code (CONF:7615).
+<ol type="a">
+<li>This code SHALL contain exactly one [1..1] @code=&quot;445518008&quot; Age At Onset (CodeSystem: SNOMED CT 2.16.840.1.113883.6.96 STATIC) (CONF: XXXX).</li>
+</ol>
+</li>
+<li>SHALL contain exactly one [1..1] statusCode (CONF: XXXX).
+<ol type="a">
+<li>This statusCode SHALL contain exactly one [1..1] @code=&quot;completed&quot; Completed (CodeSystem: ActStatus 2.16.840.1.113883.5.14 STATIC) (CONF: XXXX).</li>
+</ol>
+</li>
+<li>SHALL contain exactly one [1..1] value with @xsi:type=&quot;PQ&quot; (CONF:XXXX).
+<ol type="a">
+<li>This value SHALL contain exactly one [1..1] @unit, which SHALL be selected from ValueSet AgePQ_UCUM 2.16.840.1.113883.11.20.9.21 DYNAMIC (CONF: XXXX).</li>
+</ol>
+</li>
+</ol>

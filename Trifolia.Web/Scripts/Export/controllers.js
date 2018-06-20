@@ -47,6 +47,7 @@
         IncludeChangeList: true,
         IncludeTemplateStatus: true,
         IncludeNotes: true,
+        IncludeVolume1: false,
         VocabularyFileName: 'voc.xml',
         IncludeVocabulary: false,
         IncludeCustomSchematron: true,

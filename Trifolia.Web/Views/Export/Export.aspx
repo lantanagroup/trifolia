@@ -30,6 +30,10 @@
             max-height: 250px;
             overflow-y: scroll;
         }
+
+        .panel.validation .btn {
+            margin-top: -5px;
+        }
     </style>
 </asp:Content>
 
@@ -60,7 +64,14 @@
             </div>
 
             <div class="panel panel-default validation" ng-if="hasValidationMessages() || isValidating">
-                <div class="panel-heading">Validation Results</div>
+                <div class="panel-heading">
+                    Validation Results
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default btn-sm" ng-click="loadValidationResults()">
+                            <i class="glyphicon glyphicon-refresh"></i>
+                        </button>
+                    </div>
+                </div>
                 <div class="panel-body">
                     <span ng-show="isValidating">Validating...</span>
                     <table class="table" ng-if="!isValidating && validationResults.Messages.length > 0">
@@ -144,6 +155,11 @@
                         <div class="form-group" ng-if="selectedImplementationGuide.CanEdit">
                             <label>Notes</label>
                             <input type="checkbox" id="IncludeNotes" name="IncludeNotes" value="true" ng-model="criteria.IncludeNotes"/> Include
+                        </div>
+
+                        <div class="form-group">
+                            <label>Volume 1</label>
+                            <input type="checkbox" id="IncludeVolume1" name="IncludeVolume1" value="true" ng-model="criteria.IncludeVolume1"/> Include
                         </div>
                     </div>
                     
