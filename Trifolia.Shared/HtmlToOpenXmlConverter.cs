@@ -76,18 +76,32 @@ namespace Trifolia.Shared
 
         private string CleanupXml(string xmlContent)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xmlContent);
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlContent);
 
-            XmlNamespaceManager nsManager = new XmlNamespaceManager(doc.NameTable);
+            XmlNamespaceManager nsManager = new XmlNamespaceManager(xmlDoc.NameTable);
             nsManager.AddNamespace("w", OpenXmlWordProcessingNamespace);
             nsManager.AddNamespace("a", OpenXmlDrawingMLNamespace);
             nsManager.AddNamespace("r", OpenXmlRelationshipsNamespace);
             nsManager.AddNamespace("pic", OpenXmlPictureNamespace);
             nsManager.AddNamespace("wp", OpenXmlWordProcessingDrawingNamespace);
 
-            var hyperlinkNodes = doc.SelectNodes("//w:hyperlink", nsManager);
-            var drawingNodes = doc.SelectNodes("//w:drawing", nsManager);
+            var hyperlinkNodes = xmlDoc.SelectNodes("//w:hyperlink", nsManager);
+            var drawingNodes = xmlDoc.SelectNodes("//w:drawing", nsManager);
+            var numberIdNodes = xmlDoc.SelectNodes("//w:pPr/w:numPr/w:numId[@val]", nsManager);
+            int numberIdCount = 0;
+
+            // Ensure that all number ids are unique in the OpenXml document
+            foreach (XmlElement numberIdNode in numberIdNodes)
+            {
+                //var numberingPart = this.mainPart.NumberingDefinitionsPart;
+                var nextNumberId = this.mainPart.Document
+                    .Descendants<NumberingId>()
+                    .Select(y => y.Val.HasValue ? y.Val.Value : 0)
+                    .DefaultIfEmpty()
+                    .Max() + (numberIdCount++);
+                numberIdNode.Attributes["val"].Value = nextNumberId.ToString();
+            }
 
             // Ensure that hyperlinks have a HyperlinkRelationship created for them
             // and the id of the relationship is set on the w:hyperlink element
@@ -102,7 +116,7 @@ namespace Trifolia.Shared
 
                 HyperlinkRelationship rel = this.mainPart.AddHyperlinkRelationship(new Uri(href), true);
 
-                XmlAttribute idAttr = doc.CreateAttribute("id", OpenXmlRelationshipsNamespace);
+                XmlAttribute idAttr = xmlDoc.CreateAttribute("id", OpenXmlRelationshipsNamespace);
                 idAttr.Value = rel.Id;
                 hyperlinkNode.Attributes.Append(idAttr);
             }
@@ -165,7 +179,7 @@ namespace Trifolia.Shared
                 }
             }
 
-            return doc.OuterXml;
+            return xmlDoc.OuterXml;
         }
 
         public static OpenXmlElement HtmlToOpenXml(IObjectRepository tdb, MainDocumentPart mainPart, string html, bool returnInvalid = false)
@@ -192,7 +206,7 @@ namespace Trifolia.Shared
                     }
 
                     // Validate the parsed content. If validation fails return the content in plain-text, wrapped in a para
-                    OpenXmlValidator validator = new OpenXmlValidator();
+                    OpenXmlValidator validator = new OpenXmlValidator(FileFormatVersions.Office2010);
                     IEnumerable<ValidationErrorInfo> validationErrors = validator.Validate(newPart.Document.Body);
                     var filteredErrors = validationErrors.Where(y =>
                         y.Description != "The 'http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing:editId' attribute is not declared.");

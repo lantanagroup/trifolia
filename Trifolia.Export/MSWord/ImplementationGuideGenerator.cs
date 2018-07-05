@@ -129,7 +129,7 @@ namespace Trifolia.Export.MSWord
 
             this.AddTableOfContents();
 
-            this.AddVolume1();
+            this.AddVolume1(false);
 
             this.AddTemplateTypeSections();
 
@@ -162,6 +162,8 @@ namespace Trifolia.Export.MSWord
 
             if (exportSettings.IncludeChangeList)
                 this.LoadChangesAppendix();
+
+            this.AddVolume1(true);
         }
 
         private string GetHeadingStyle(int level)
@@ -191,7 +193,7 @@ namespace Trifolia.Export.MSWord
             }
         }
 
-        private void AddVolume1()
+        private void AddVolume1(bool includeAppendix)
         {
             if (!this.exportSettings.IncludeVolume1)
                 return;
@@ -215,6 +217,11 @@ namespace Trifolia.Export.MSWord
             {
                 foreach (var section in this.implementationGuide.Sections)
                 {
+                    bool isAppendix = section.Heading.ToLower().StartsWith("appendix");
+
+                    if (isAppendix != includeAppendix)
+                        continue;
+
                     string headingStyle = GetHeadingStyle(section.Level);
 
                     if (headingStyle == null)

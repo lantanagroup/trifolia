@@ -7,10 +7,10 @@
     xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
     xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
     xmlns:t="https://trifolia.lantanagroup.com" exclude-result-prefixes="xs" version="2.0">
-    <xsl:output indent="yes"/>
+    <xsl:output indent="no" />
     
     <xsl:param name="linkStyle" select="'HyperlinkCourierBold'" />
-    <xsl:param name="bulletListStyle" select="'ListBullet'" />
+    <xsl:param name="bulletListStyle" select="'ListParagraph'" />
     <xsl:param name="orderedListStyle" select="'ListNumber'" />
     <xsl:param name="xmlNameClass" select="'XMLName'" />
 
@@ -27,7 +27,13 @@
 
     <xsl:template match="table">
         <w:tbl>
-            <w:tblPr/>
+            <w:tblPr>
+                <w:tblStyle w:val="TableGrid" />
+                <w:tblW w:w="10080" w:type="dxa" />
+                <w:jc w:val="center" />
+                <w:tblLayout w:type="fixed" />
+                <w:tblLook w:val="02A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="1" w:noVBand="0" />
+            </w:tblPr>
             <w:tblGrid/>
 
             <xsl:apply-templates/>
@@ -38,14 +44,27 @@
         <w:tr>
             <w:trPr>
                 <xsl:if test="parent::thead">
+                    <w:cantSplit />
                     <w:tblHeader />
                 </xsl:if>
+                <w:jc w:val="center" />
             </w:trPr>
             <xsl:apply-templates/>
         </w:tr>
     </xsl:template>
 
-    <xsl:template match="th | td">
+    <xsl:template match="th">
+        <w:tc>
+            <w:tcPr>
+                <w:shd w:val="clear" w:color="auto" w:fill="E6E6E6" />
+            </w:tcPr>
+            <w:p>
+                <xsl:apply-templates mode="inParagraph"/>
+            </w:p>
+        </w:tc>
+    </xsl:template>
+    
+    <xsl:template match="td">
         <w:tc>
             <w:p>
                 <xsl:apply-templates mode="inParagraph"/>
@@ -71,11 +90,19 @@
     </xsl:template>
 
     <xsl:template match="ol/li">
+        <xsl:variable name="olId" select="count(../preceding-sibling::ol)+1" />
+        
         <w:p>
             <w:pPr>
                 <w:pStyle>
-                    <xsl:attribute name="val" namespace="http://schemas.openxmlformats.org/wordprocessingml/2006/main" select="$orderedListStyle" />
+                    <xsl:attribute name="val" namespace="http://schemas.openxmlformats.org/wordprocessingml/2006/main" select="$bulletListStyle" />
                 </w:pStyle>
+                <w:numPr>
+                    <w:ilvl w:val="0" />
+                    <w:numId>
+                        <xsl:attribute namespace="http://schemas.openxmlformats.org/wordprocessingml/2006/main" name="val" select="$olId" />
+                    </w:numId>
+                </w:numPr>
             </w:pPr>
             <xsl:apply-templates mode="inParagraph"/>
         </w:p>
@@ -163,6 +190,14 @@
 
     <xsl:template match="text()" mode="inParagraph">
         <xsl:param name="runStyle" />
+        <xsl:param name="hasXmlClass" select="ancestor::*[@class = $xmlNameClass]" />
+        <xsl:param name="hasItalics" select="ancestor::em or ancestor::i" />
+        <xsl:param name="hasBold" select="ancestor::strong or ancestor::b" />
+        <xsl:param name="hasSuperscript" select="ancestor::sup" />
+        <xsl:param name="hasExample" select="ancestor::pre or ancestor::code" />
+        
+        <xsl:variable name="lines" select="tokenize(.,'\n')" />
+        
         <w:r>
             <w:rPr>
                 <xsl:choose>
@@ -171,7 +206,7 @@
                             <xsl:attribute name="val" namespace="http://schemas.openxmlformats.org/wordprocessingml/2006/main" select="$runStyle" />
                         </w:rStyle>
                     </xsl:when>
-                    <xsl:when test="ancestor::*[@class = $xmlNameClass]">
+                    <xsl:when test="$hasXmlClass">
                         <w:rStyle>
                             <xsl:attribute name="val" namespace="http://schemas.openxmlformats.org/wordprocessingml/2006/main" select="$xmlNameClass" />
                         </w:rStyle>
@@ -179,29 +214,43 @@
                 </xsl:choose>
                 <xsl:choose>
                     <!-- Italics -->
-                    <xsl:when test="ancestor::em or ancestor::i">
+                    <xsl:when test="$hasItalics">
                         <w:i w:val="true"/>
                     </xsl:when>
                     <!-- Bold -->
-                    <xsl:when test="ancestor::strong or ancestor::b">
+                    <xsl:when test="$hasBold">
                         <w:b w:val="true"/>
                     </xsl:when>
                     <!-- Superscript -->
-                    <xsl:when test="ancestor::sup">
+                    <xsl:when test="$hasSuperscript">
                         <w:sz w:val="10"/>
                         <w:vertAlign w:val="superscript"/>
                     </xsl:when>
                 </xsl:choose>
             </w:rPr>
-            <w:t>
-                <xsl:value-of select="."/>
-            </w:t>
+            <xsl:for-each select="$lines">
+                <w:t>
+                    <xsl:if test="$hasExample">
+                        <xsl:attribute name="space" namespace="http://www.w3.org/XML/1998/namespace" select="'preserve'" />
+                    </xsl:if>
+                    <xsl:value-of select="."/>
+                </w:t>
+                <xsl:if test="position() != count($lines)">
+                    <w:br />
+                </xsl:if>
+            </xsl:for-each>
         </w:r>
     </xsl:template>
 
     <xsl:template match="text()">
         <w:p>
-            <w:pPr/>
+            <w:pPr>
+                <xsl:if test="ancestor::pre or ancestor::code">
+                    <w:pStyle>
+                        <xsl:attribute name="val" namespace="http://schemas.openxmlformats.org/wordprocessingml/2006/main" select="'Example'" />
+                    </w:pStyle>
+                </xsl:if>
+            </w:pPr>
             <xsl:apply-templates select="." mode="inParagraph"/>
         </w:p>
     </xsl:template>

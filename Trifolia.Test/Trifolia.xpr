@@ -4,152 +4,17 @@
         <filters directoryPatterns="" filePatterns="project.xpr" positiveFilePatterns="" showHiddenFiles="false"/>
         <options>
             <serialized version="18.1" xml:space="preserve">
-                <map>
+                <serializableOrderedMap>
                     <entry>
                         <String>scenario.associations</String>
                         <scenarioAssociation-array>
                             <scenarioAssociation>
                                 <field name="url">
-                                    <String>DocSamples/HTML/html14.html</String>
+                                    <String>DocSamples/HTML/html25.html</String>
                                 </field>
                                 <field name="scenarioIds">
                                     <list>
-                                        <String>html1</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>DocSamples/HTML/html5.html</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>html1</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>DocSamples/HTML/html1.html</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>html1</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>DocSamples/HTML/html11.html</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>html1</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>DocSamples/HTML/html2.html</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>html1</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>DocSamples/HTML/html16.html</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>html1</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>DocSamples/HTML/html15.html</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>html1</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>DocSamples/HTML/html6.html</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>html1</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>DocSamples/HTML/html4.html</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>html1</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>DocSamples/HTML/html3.html</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>html1</String>
+                                        <String>HTML->OpenXml</String>
                                     </list>
                                 </field>
                                 <field name="scenarioTypes">
@@ -168,7 +33,7 @@
                                     <null/>
                                 </field>
                                 <field name="name">
-                                    <String>html1</String>
+                                    <String>HTML->OpenXml</String>
                                 </field>
                                 <field name="baseURL">
                                     <String></String>
@@ -251,7 +116,7 @@
                             </scenario>
                         </scenario-array>
                     </entry>
-                </map>
+                </serializableOrderedMap>
             </serialized>
         </options>
     </meta>
