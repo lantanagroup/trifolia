@@ -13,7 +13,7 @@ namespace Trifolia.Shared
         {
             var newConstraint = new TemplateConstraint();
 
-            newConstraint.Context = schemaObject.Name;
+            newConstraint.Context = schemaObject.IsAttribute ? "@" + schemaObject.Name : schemaObject.Name;
 
             if (isOpen)
             {
