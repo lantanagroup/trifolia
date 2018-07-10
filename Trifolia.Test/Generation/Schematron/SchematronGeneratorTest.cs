@@ -72,7 +72,7 @@ namespace Trifolia.Test.Generation.Schematron
             #region Initial Data
 
             // IG Type
-            cdaType = tdb.FindOrCreateImplementationGuideType(Constants.IGType.CDA_IG_TYPE, "cda.xsd", "cda", "urn:hl7-org:v3");
+            cdaType = tdb.FindOrCreateImplementationGuideType(Constants.IGTypeNames.CDA, Constants.IGTypeSchemaLocations.CDA, Constants.IGTypePrefixes.CDA, Constants.IGTypeNamespaces.CDA);
 
             // Template Type
             docType = tdb.FindOrCreateTemplateType(cdaType, "document", "ClinicalDocument", "ClinicalDocument", 1);
@@ -560,7 +560,7 @@ namespace Trifolia.Test.Generation.Schematron
             var tdb = new MockObjectRepository();
             tdb.InitializeCDARepository();
 
-            var igType = tdb.FindImplementationGuideType(Constants.IGType.CDA_IG_TYPE);
+            var igType = tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA);
             var entryTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_ENTRY_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
             TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType, igType.GetSimpleSchema());
@@ -598,7 +598,7 @@ namespace Trifolia.Test.Generation.Schematron
 
             Assert.AreEqual(1, errorPhase.ActivePatterns.Count);
             Assert.AreEqual(1, errorPhase.ActivePatterns[0].Rules.Count);
-            Assert.AreEqual("sdtc:inFulfillmentOf1[cda:templateId[@root='2.16.234234']]", errorPhase.ActivePatterns[0].Rules[0].Context);
+            Assert.AreEqual("sdtc:inFulfillmentOf1[sdtc:templateId[@root='2.16.234234']]", errorPhase.ActivePatterns[0].Rules[0].Context);
         }
 
         /// <summary>

@@ -102,7 +102,7 @@ namespace Trifolia.Test.Import
             MockObjectRepository tdb = new MockObjectRepository();
             tdb.InitializeCDARepository();
 
-            var implementationGuide = tdb.FindOrCreateImplementationGuide(Constants.IGType.CDA_IG_TYPE, "Test IG");
+            var implementationGuide = tdb.FindOrCreateImplementationGuide(Constants.IGTypeNames.CDA, "Test IG");
 
             string importXml =
                 "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
@@ -154,7 +154,7 @@ namespace Trifolia.Test.Import
             Assert.AreEqual("D_Test_Template_1", firstTemplate.Bookmark, "First template's bookmark was not set correctly.");
             
             Assert.IsNotNull(firstTemplate.ImplementationGuideType, "First template's implementation guide type was not set.");
-            Assert.AreEqual(Constants.IGType.CDA_IG_TYPE, firstTemplate.ImplementationGuideType.Name, "First template's implementation guide was not correct.");
+            Assert.AreEqual(Constants.IGTypeNames.CDA, firstTemplate.ImplementationGuideType.Name, "First template's implementation guide was not correct.");
 
             Assert.IsNotNull(firstTemplate.TemplateType, "First template's type was not set.");
             Assert.AreEqual("Document", firstTemplate.TemplateType.Name, "First template's type was not correct.");

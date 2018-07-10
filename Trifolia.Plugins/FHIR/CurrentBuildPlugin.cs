@@ -8,7 +8,7 @@ using Trifolia.Shared;
 
 namespace Trifolia.Plugins.FHIR
 {
-    [ImplementationGuideTypePlugin(Constants.IGType.FHIR_CURRENT_BUILD_IG_TYPE)]
+    [ImplementationGuideTypePlugin(Constants.IGTypeNames.FHIR_CURRENT_BUILD)]
     public class CurrentBuildPlugin : DefaultPlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

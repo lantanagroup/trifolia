@@ -25,7 +25,7 @@ namespace Trifolia.Shared.FHIR
 
         public static ImplementationGuideType GetImplementationGuideType(IObjectRepository tdb, bool throwError)
         {
-            ImplementationGuideType found = tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == Constants.IGType.FHIR_DSTU2_IG_TYPE.ToLower());
+            ImplementationGuideType found = tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == Constants.IGTypeNames.FHIR_DSTU2.ToLower());
              
             if (found == null && throwError)
             {

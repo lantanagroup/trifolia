@@ -642,13 +642,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TestClientReferences.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TestClientDialogs.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Wadl.cshtml" />
-    <Content Include="App_Data\Schemas\CDA\CDA.xsd">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="App_Data\Schemas\CDA\CDA_SDTC.xsd">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_Data\Schemas\CDA\datatypes-base.xsd">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Schemas\CDA\datatypes-base_SDTC.xsd">
@@ -661,9 +655,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Schemas\CDA\NarrativeBlock.xsd">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_Data\Schemas\CDA\POCD_MT000040.xsd">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Schemas\CDA\POCD_MT000040_SDTC.xsd">

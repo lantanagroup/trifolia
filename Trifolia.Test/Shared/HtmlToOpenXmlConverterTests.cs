@@ -31,7 +31,7 @@ namespace Trifolia.Test.Shared
 
         private static void ValidateOpenXml(OpenXmlElement element)
         {
-            OpenXmlValidator validator = new OpenXmlValidator();
+            OpenXmlValidator validator = new OpenXmlValidator(FileFormatVersions.Office2010);
             IEnumerable<ValidationErrorInfo> validationErrors = validator.Validate(element);
             var filteredErrors = validationErrors.Where(y =>
                 y.Description != "The 'http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing:editId' attribute is not declared.");

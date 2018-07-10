@@ -7,7 +7,7 @@ using Trifolia.Shared;
 
 namespace Trifolia.Plugins
 {
-    [ImplementationGuideTypePlugin(Constants.IGType.HQMF_IG_TYPE)]
+    [ImplementationGuideTypePlugin(Constants.IGTypeNames.HQMF)]
     public class HQMFPlugin : BasePlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

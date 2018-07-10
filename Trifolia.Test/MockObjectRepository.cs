@@ -79,7 +79,7 @@ namespace Trifolia.Test
         /// </summary>
         public void InitializeCDARepository()
         {
-            ImplementationGuideType cdaType = this.FindOrCreateImplementationGuideType(Constants.IGType.CDA_IG_TYPE, "cda.xsd", "cda", "urn:hl7-org:v3");
+            ImplementationGuideType cdaType = this.FindOrCreateImplementationGuideType(Constants.IGTypeNames.CDA, Constants.IGTypeSchemaLocations.CDA, Constants.IGTypePrefixes.CDA, Constants.IGTypeNamespaces.CDA);
 
             this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_DOC_TYPE, "ClinicalDocument", "ClinicalDocument", 1);
             this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_SECTION_TYPE, "section", "Section", 2);
@@ -90,7 +90,7 @@ namespace Trifolia.Test
 
         public void InitializeFHIR2Repository()
         {
-            ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(Constants.IGType.FHIR_DSTU2_IG_TYPE, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
+            ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(Constants.IGTypeNames.FHIR_DSTU2, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
 
             this.FindOrCreateTemplateType(fhirType, "Composition", "Composition", "Composition", 1);
             this.FindOrCreateTemplateType(fhirType, "Patient", "Patient", "Patient", 2);
@@ -104,7 +104,7 @@ namespace Trifolia.Test
 
         public void InitializeFHIR3Repository()
         {
-            ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(Constants.IGType.FHIR_STU3_IG_TYPE, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
+            ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(Constants.IGTypeNames.FHIR_STU3, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
 
             this.FindOrCreateTemplateType(fhirType, "Account");
             this.FindOrCreateTemplateType(fhirType, "ActivityDefinition");
@@ -1350,8 +1350,8 @@ namespace Trifolia.Test
                 ImplementationGuideType = type.ImplementationGuideType,
                 ImpliedTemplateId = impliedTemplate != null ? (int?)impliedTemplate.Id : null,
                 ImpliedTemplate = impliedTemplate,
-                PrimaryContext = primaryContext,
-                PrimaryContextType = primaryContextType,
+                PrimaryContext = string.IsNullOrEmpty(primaryContext) ? type.RootContext : primaryContext,
+                PrimaryContextType = string.IsNullOrEmpty(primaryContextType) ? type.RootContextType : primaryContextType,
                 TemplateType = type,
                 TemplateTypeId = type.Id,
                 Name = title,

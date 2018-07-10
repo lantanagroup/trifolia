@@ -104,7 +104,7 @@ namespace Trifolia.Test.Export.FHIR.STU3
         {
             tdb = new MockObjectRepository();
             tdb.InitializeFHIR3Repository();
-            igType = tdb.ImplementationGuideTypes.Single(y => y.Name == Constants.IGType.FHIR_STU3_IG_TYPE);
+            igType = tdb.ImplementationGuideTypes.Single(y => y.Name == Constants.IGTypeNames.FHIR_STU3);
             compositionType = tdb.TemplateTypes.Single(y => y.ImplementationGuideType == igType && y.Name == "Composition");
             extensionType = tdb.TemplateTypes.Single(y => y.ImplementationGuideType == igType && y.Name == "Extension");
 

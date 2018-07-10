@@ -20,7 +20,7 @@ namespace Trifolia.Test.Generation.Versioning
         {
             this.mockRepo = new MockObjectRepository();
 
-            cdaType = this.mockRepo.FindOrCreateImplementationGuideType(Constants.IGType.CDA_IG_TYPE, string.Empty, string.Empty, string.Empty);
+            cdaType = this.mockRepo.FindOrCreateImplementationGuideType(Constants.IGTypeNames.CDA, string.Empty, string.Empty, string.Empty);
             documentType = this.mockRepo.FindOrCreateTemplateType(cdaType, "Document Templates", "ClinicalDocument", "ClinicalDocument", 1);
             ig = this.mockRepo.FindOrCreateImplementationGuide(cdaType, "Test");
         }

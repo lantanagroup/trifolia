@@ -269,7 +269,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Schemas\CDA\CDA.xsd">
+    <None Include="Schemas\CDA\CDA_SDTC.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

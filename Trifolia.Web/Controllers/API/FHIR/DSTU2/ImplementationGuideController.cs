@@ -25,7 +25,7 @@ namespace Trifolia.Web.Controllers.API.FHIR.DSTU2
     /// FHIR DSTU2 ImplementationGuide API Controller
     /// </summary>
     [DSTU2Config]
-    [RoutePrefix("api/FHIR2"), FHIRInfo(Constants.FHIRVersion.FHIR_DSTU2_VERSION, Constants.IGType.FHIR_DSTU2_IG_TYPE)]
+    [RoutePrefix("api/FHIR2"), FHIRInfo(Constants.FHIRVersion.FHIR_DSTU2_VERSION, Constants.IGTypeNames.FHIR_DSTU2)]
     public class FHIR2ImplementationGuideController : ApiController
     {
         private IObjectRepository tdb;

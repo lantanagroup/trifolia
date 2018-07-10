@@ -337,7 +337,7 @@ namespace Trifolia.DB.Migrations
                 {
                     Id = 1,
                     Name = "CDA",
-                    SchemaLocation = "cda.xsd",
+                    SchemaLocation = "CDA_SDTC.xsd",
                     SchemaPrefix = "cda",
                     SchemaURI = "urn:hl7-org:v3"
                 },

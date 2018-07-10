@@ -67,14 +67,14 @@ namespace Trifolia.Test.Schema
             this.cdaSchema = SimpleSchema.CreateSimpleSchema(Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                 new ImplementationGuideType()
                     {
-                        Name = Constants.IGType.CDA_IG_TYPE,
-                        SchemaLocation = "CDA.xsd"
+                        Name = Constants.IGTypeNames.CDA,
+                        SchemaLocation = Constants.IGTypeSchemaLocations.CDA
                     }));
 
             this.eMeasureSchema = SimpleSchema.CreateSimpleSchema(Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                 new ImplementationGuideType()
                     {
-                        Name = Constants.IGType.EMEASURE_IG_TYPE,
+                        Name = Constants.IGTypeNames.EMEASURE,
                         SchemaLocation = "schemas/EMeasure.xsd"
                     }));
 
@@ -235,14 +235,49 @@ namespace Trifolia.Test.Schema
         {
             SimpleSchema observationSchema = this.cdaSchema.GetSchemaFromContext("Observation");
             var children = observationSchema.Children;
-
-            Assert.AreEqual(30, children.Count);
-
-            var methodCodeChild = children.Single(y => y.Name == "methodCode" && !y.IsAttribute);
-            Assert.AreEqual("CE", methodCodeChild.DataType);
-
-            var targetSiteCodeChild = children.Single(y => y.Name == "targetSiteCode" && !y.IsAttribute);
-            Assert.AreEqual("CD", targetSiteCodeChild.DataType);
+            
+            Assert.AreEqual(children[0].Name, "nullFlavor");
+            Assert.AreEqual(children[0].IsAttribute, true);
+            Assert.AreEqual(children[1].Name, "classCode");
+            Assert.AreEqual(children[1].IsAttribute, true);
+            Assert.AreEqual(children[2].Name, "moodCode");
+            Assert.AreEqual(children[2].IsAttribute, true);
+            Assert.AreEqual(children[3].Name, "negationInd");
+            Assert.AreEqual(children[3].IsAttribute, true);
+            Assert.AreEqual(children[4].Name, "realmCode");
+            Assert.AreEqual(children[4].IsAttribute, false);
+            Assert.AreEqual(children[5].Name, "typeId");
+            Assert.AreEqual(children[5].IsAttribute, false);
+            Assert.AreEqual(children[6].Name, "templateId");
+            Assert.AreEqual(children[6].IsAttribute, false);
+            Assert.AreEqual(children[7].Name, "id");
+            Assert.AreEqual(children[7].IsAttribute, false);
+            Assert.AreEqual(children[8].Name, "code");
+            Assert.AreEqual(children[8].IsAttribute, false);
+            Assert.AreEqual(children[9].Name, "derivationExpr");
+            Assert.AreEqual(children[10].Name, "text");
+            Assert.AreEqual(children[11].Name, "statusCode");
+            Assert.AreEqual(children[12].Name, "effectiveTime");
+            Assert.AreEqual(children[13].Name, "priorityCode");
+            Assert.AreEqual(children[14].Name, "repeatNumber");
+            Assert.AreEqual(children[15].Name, "languageCode");
+            Assert.AreEqual(children[16].Name, "value");
+            Assert.AreEqual(children[17].Name, "interpretationCode");
+            Assert.AreEqual(children[18].Name, "methodCode");
+            Assert.AreEqual(children[18].DataType, "CE");
+            Assert.AreEqual(children[19].Name, "targetSiteCode");
+            Assert.AreEqual(children[19].DataType, "CD");
+            Assert.AreEqual(children[20].Name, "subject");
+            Assert.AreEqual(children[21].Name, "specimen");
+            Assert.AreEqual(children[22].Name, "performer");
+            Assert.AreEqual(children[23].Name, "author");
+            Assert.AreEqual(children[24].Name, "informant");
+            Assert.AreEqual(children[25].Name, "participant");
+            Assert.AreEqual(children[26].Name, "entryRelationship");
+            Assert.AreEqual(children[27].Name, "reference");
+            Assert.AreEqual(children[28].Name, "precondition");
+            Assert.AreEqual(children[29].Name, "referenceRange");
+            Assert.AreEqual(children[30].Name, "sdtc:inFulfillmentOf1");
         }
     }
 }

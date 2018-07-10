@@ -8,14 +8,32 @@ namespace Trifolia.Shared
 {
     public static class Constants
     {
-        public static class IGType
+        public static class IGTypeNames
         {
-            public const string HQMF_IG_TYPE = "HQMF R2";
-            public const string EMEASURE_IG_TYPE = "eMeasure";
-            public const string CDA_IG_TYPE = "CDA";
-            public const string FHIR_DSTU2_IG_TYPE = "FHIR DSTU2";
-            public const string FHIR_STU3_IG_TYPE = "FHIR STU3";
-            public const string FHIR_CURRENT_BUILD_IG_TYPE = "FHIR Current Build";
+            public const string HQMF = "HQMF R2";
+            public const string EMEASURE = "eMeasure";
+            public const string CDA = "CDA";
+            public const string FHIR_DSTU2 = "FHIR DSTU2";
+            public const string FHIR_STU3 = "FHIR STU3";
+            public const string FHIR_CURRENT_BUILD = "FHIR Current Build";
+        }
+
+        public static class IGTypeSchemaLocations
+        {
+            public const string CDA = "CDA_SDTC.xsd";
+            public const string HQMF = "schemas\\EMeasure.xsd";
+        }
+
+        public static class IGTypePrefixes
+        {
+            public const string CDA = "cda";
+            public const string HQMF = "hqmf";
+        }
+
+        public static class IGTypeNamespaces
+        {
+            public const string CDA = "urn:hl7-org:v3";
+            public const string HQMF = "urn:hl7-org:v3";
         }
         
         public static class FHIRVersion

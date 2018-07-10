@@ -22,14 +22,14 @@ namespace Trifolia.Test.Reporting
         {
             this.tdb.InitializeCDARepository();
 
-            this.ig = this.tdb.FindOrCreateImplementationGuide(this.tdb.FindImplementationGuideType(Constants.IGType.CDA_IG_TYPE), "Test IG");
-            this.mainSchema = this.tdb.FindImplementationGuideType(Constants.IGType.CDA_IG_TYPE).GetSimpleSchema();
+            this.ig = this.tdb.FindOrCreateImplementationGuide(this.tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA), "Test IG");
+            this.mainSchema = this.tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA).GetSimpleSchema();
         }
 
         [TestMethod, TestCategory("Validation")]
         public void TemplateValidationSuccess()
         {
-            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "section", "Section");
+            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "section", "Section");
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "code", "SHALL", "1..1");
             tdb.AddConstraintToTemplate(newTemplate, tc1, null, "@code", "SHALL", "1..1", value: "TEST", displayName: "TESTDISPLAY");
             tdb.AddConstraintToTemplate(newTemplate, null, null, "title", "SHALL", "1..1");
@@ -53,7 +53,7 @@ namespace Trifolia.Test.Reporting
         [TestMethod, TestCategory("Validation")]
         public void TemplateValidationSuccessWithCustomDataType()
         {
-            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "observation", "Observation");
+            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "observation", "Observation");
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, context: "effectiveTime", conformance: "SHALL", cardinality: "1..1", dataType: "IVL_TS");
 
             /* TODO: Schema Choice support temporarily removed from non-FHIR schemas
@@ -80,7 +80,7 @@ namespace Trifolia.Test.Reporting
         [TestMethod, TestCategory("Validation")]
         public void TemplateValidationFailureBadSchematron()
         {
-            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "observation", "Observation");
+            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "observation", "Observation");
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "entryRelationship", "SHALL", "1..1");
             tc1.Schematron = "not(thisisbad";
 
@@ -96,7 +96,7 @@ namespace Trifolia.Test.Reporting
         [TestMethod, TestCategory("Validation")]
         public void TemplateValidationFailureInvalidConstraint()
         {
-            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "observation", "Observation");
+            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "observation", "Observation");
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "badelement", "SHALL", "1..1");
 
             var validator = new RIMValidator(tdb);
@@ -111,7 +111,7 @@ namespace Trifolia.Test.Reporting
         [TestMethod, TestCategory("Validation")]
         public void TemplateValidationFailurePrimitiveWithoutNarrative()
         {
-            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "observation", "Observation");
+            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "observation", "Observation");
             var tc1 = tdb.AddPrimitiveToTemplate(newTemplate, null, "SHALL", string.Empty);
 
             var validator = new RIMValidator(tdb);
@@ -126,10 +126,10 @@ namespace Trifolia.Test.Reporting
         [TestMethod, TestCategory("Validation")]
         public void TemplateValidationSuccessContainedTemplate()
         {
-            Template containedTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "observation", "Observation");
+            Template containedTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "observation", "Observation");
             tdb.AddConstraintToTemplate(containedTemplate, null, null, "effectiveTime", "SHALL", "1..1");
 
-            Template containingTemplate = tdb.CreateTemplate("4.3.2.1", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "observation", "Observation");
+            Template containingTemplate = tdb.CreateTemplate("4.3.2.1", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "observation", "Observation");
 
             /* TODO: Schema Choice support temporarily removed from non-FHIR schemas
             var tc1 = tdb
@@ -152,10 +152,10 @@ namespace Trifolia.Test.Reporting
         [TestMethod, TestCategory("Validation")]
         public void TemplateValidationFailureInvalidContainedTemplate()
         {
-            Template containedTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "observation", "Observation");
+            Template containedTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "observation", "Observation");
             tdb.AddConstraintToTemplate(containedTemplate, null, null, "effectiveTime", "SHALL", "1..1");
 
-            Template containingTemplate = tdb.CreateTemplate("4.3.2.1", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "observation", "Observation");
+            Template containingTemplate = tdb.CreateTemplate("4.3.2.1", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "observation", "Observation");
 
             /* TODO: Schema Choice support temporarily removed from non-FHIR schemas
             var tc1 = tdb.AddConstraintToTemplate(containingTemplate, null, null, "entryRelationship", "SHALL", "1..1");
@@ -178,7 +178,7 @@ namespace Trifolia.Test.Reporting
         [TestMethod, TestCategory("Validation")]
         public void TemplateValidationFailureUnbranchedMultipleCardinality()
         {
-            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "observation", "Observation");
+            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "observation", "Observation");
             newTemplate.IsOpen = true;
 
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "templateId", "SHALL", "1..1");
@@ -199,7 +199,7 @@ namespace Trifolia.Test.Reporting
         [TestMethod, TestCategory("Validation")]
         public void TemplateValidationFailureBranchWithoutIdentifier()
         {
-            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "observation", "Observation");
+            Template newTemplate = tdb.CreateTemplate("1.2.3.4", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "observation", "Observation");
             newTemplate.IsOpen = true;
 
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "templateId", "SHALL", "1..1", isBranch: true);
@@ -217,7 +217,7 @@ namespace Trifolia.Test.Reporting
         [TestMethod, TestCategory("Validation")]
         public void TemplateValidationFailureCodeAndEntryRelationshipUnbranched()
         {
-            Template newTemplate = tdb.CreateTemplate("1.2.3.4.5.6.7", tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document"), "Test 1", this.ig, "observation", "Observation");
+            Template newTemplate = tdb.CreateTemplate("1.2.3.4.5.6.7", tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document"), "Test 1", this.ig, "observation", "Observation");
             newTemplate.IsOpen = true;
 
             var tc1 = tdb.AddConstraintToTemplate(newTemplate, null, null, "value", "SHALL", "1..1", dataType: "CD");

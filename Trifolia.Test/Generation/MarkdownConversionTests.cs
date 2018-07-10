@@ -26,7 +26,7 @@ namespace Trifolia.Test.Generation
         {
             this.tdb = new MockObjectRepository();
 
-            ImplementationGuideType cdaType = this.tdb.FindOrCreateImplementationGuideType(Constants.IGType.CDA_IG_TYPE, "cda.xsd", "cda", "urn:hl7-org:v3");
+            ImplementationGuideType cdaType = this.tdb.FindOrCreateImplementationGuideType(Constants.IGTypeNames.CDA, Constants.IGTypeSchemaLocations.CDA, Constants.IGTypePrefixes.CDA, Constants.IGTypeNamespaces.CDA);
             TemplateType docType = this.tdb.FindOrCreateTemplateType(cdaType, "Document Templates", "ClinicalDocument", "ClinicalDocument", 1);
             ImplementationGuide ig = this.tdb.FindOrCreateImplementationGuide(cdaType, "Test IG");
 
@@ -93,7 +93,7 @@ This is a non-bulleted test
             
             OpenXmlElement table = testWikiContent.MarkdownToOpenXml(this.tdb, this.mainPart);
 
-            this.mainPart.Document.Body.Append(table);
+            this.mainPart.Document.Body.Append(table.CloneNode(true));
 
             AssertOpenXmlValid(table);
         }
@@ -113,7 +113,10 @@ This is a non-bulleted test
             Assert.IsNotNull(run);
             AssertRunText(run, "This is a test of a ");
 
-            Hyperlink hyperlink = para.ChildElements[2] as Hyperlink;
+            OpenXmlMiscNode comment = para.ChildElements[2] as OpenXmlMiscNode;
+            Assert.IsNotNull(comment);
+
+            Hyperlink hyperlink = para.ChildElements[3] as Hyperlink;
             Assert.IsNotNull(hyperlink);
             Run hyperlinkRun = hyperlink.LastChild as Run;
             Assert.IsNotNull(hyperlinkRun);
@@ -137,7 +140,10 @@ This is a non-bulleted test
             Assert.IsNotNull(run);
             AssertRunText(run, "This is a test of a ");
 
-            Hyperlink hyperlink = para.ChildElements[2] as Hyperlink;
+            OpenXmlMiscNode comment = para.ChildElements[2] as OpenXmlMiscNode;
+            Assert.IsNotNull(comment);
+
+            Hyperlink hyperlink = para.ChildElements[3] as Hyperlink;
             Assert.IsNotNull(hyperlink);
             Run hyperlinkRun = hyperlink.LastChild as Run;
             Assert.IsNotNull(hyperlinkRun);
@@ -218,7 +224,7 @@ another line break";
 
         private void AssertOpenXmlValid(OpenXmlElement part)
         {
-            OpenXmlValidator validator = new OpenXmlValidator(FileFormatVersions.Office2007);
+            OpenXmlValidator validator = new OpenXmlValidator(FileFormatVersions.Office2010);
             IEnumerable<ValidationErrorInfo> validationErrors = validator.Validate(part);
 
             foreach (var cError in validationErrors)

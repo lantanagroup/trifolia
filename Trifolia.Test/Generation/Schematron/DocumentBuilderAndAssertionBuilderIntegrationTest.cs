@@ -26,7 +26,7 @@ namespace Schematron.Test.Generation.Schematron
             this.tdb = new MockObjectRepository();
             this.tdb.InitializeCDARepository();
 
-            this.igType = this.tdb.FindImplementationGuideType(Constants.IGType.CDA_IG_TYPE);
+            this.igType = this.tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA);
             this.igTypeSchema = this.igType.GetSimpleSchema();
         }
 

@@ -7,8 +7,8 @@ using Trifolia.Shared;
 
 namespace Trifolia.Plugins
 {
-    [ImplementationGuideTypePlugin(Constants.IGType.EMEASURE_IG_TYPE)]
-    [ImplementationGuideTypePlugin(Constants.IGType.CDA_IG_TYPE)]
+    [ImplementationGuideTypePlugin(Constants.IGTypeNames.EMEASURE)]
+    [ImplementationGuideTypePlugin(Constants.IGTypeNames.CDA)]
     public class RIMPlugin : BasePlugin, IIGTypePlugin
     {
         public List<String> GetFhirTypes(string elementPath)

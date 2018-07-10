@@ -35,7 +35,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             StructureDefinitionControllerTest.mockRepo1.InitializeFHIR2Repository();
             StructureDefinitionControllerTest.mockRepo1.InitializeLCGAndLogin();
 
-            var ig = StructureDefinitionControllerTest.mockRepo1.FindOrCreateImplementationGuide(Constants.IGType.FHIR_DSTU2_IG_TYPE, "Test IG");
+            var ig = StructureDefinitionControllerTest.mockRepo1.FindOrCreateImplementationGuide(Constants.IGTypeNames.FHIR_DSTU2, "Test IG");
             StructureDefinitionControllerTest.profile1 = StructureDefinitionControllerTest.mockRepo1.CreateTemplate("http://test.com/fhir/test", "Composition", "Test Composition", ig, "Composition", "Composition");
             StructureDefinitionControllerTest.profile1.Extensions.Add(new Trifolia.DB.TemplateExtension()
             {
@@ -85,7 +85,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             StructureDefinitionControllerTest.mockRepo2.InitializeFHIR2Repository();
             StructureDefinitionControllerTest.mockRepo2.InitializeLCG();
 
-            var ig2 = StructureDefinitionControllerTest.mockRepo2.FindOrCreateImplementationGuide(Constants.IGType.FHIR_DSTU2_IG_TYPE, "Test IG");
+            var ig2 = StructureDefinitionControllerTest.mockRepo2.FindOrCreateImplementationGuide(Constants.IGTypeNames.FHIR_DSTU2, "Test IG");
             StructureDefinitionControllerTest.mockRepo2.CreateTemplate("http://test.com/fhir/test", "Composition", "Test Composition", ig2, "Composition", "Composition");
 
             // Setup strucDef's
@@ -107,7 +107,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
                 Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                     new ImplementationGuideType()
                     {
-                        Name = Constants.IGType.FHIR_DSTU2_IG_TYPE,
+                        Name = Constants.IGTypeNames.FHIR_DSTU2,
                         SchemaLocation = "fhir-all.xsd"
                     }));
             
@@ -198,7 +198,7 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             // running the GetTemplates() method with authentication, since login is session/thread-specific
             StructureDefinitionControllerTest.mockRepo2.Login();
 
-            var ig = StructureDefinitionControllerTest.mockRepo2.FindOrCreateImplementationGuide(Constants.IGType.FHIR_DSTU2_IG_TYPE, "Test IG");
+            var ig = StructureDefinitionControllerTest.mockRepo2.FindOrCreateImplementationGuide(Constants.IGTypeNames.FHIR_DSTU2, "Test IG");
             HttpRequestMessage request = new HttpRequestMessage()
             {
                 RequestUri = new Uri("http://localhost:8080/api/FHIR2/StructureDefinition")

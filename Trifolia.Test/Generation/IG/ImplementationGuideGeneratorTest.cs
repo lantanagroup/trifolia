@@ -146,7 +146,7 @@ namespace Trifolia.Test.Generation.IG
 
             // Test the constraint table's contents
             XmlNode constraintContent = doc.SelectSingleNode("/w:document/w:body/w:tbl[2]", docNsMgr);
-            Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[2]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='identifier: 1.2.3.4.5']", docNsMgr), "Missing Template ID");
+            Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[2]/w:tc[w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='ClinicalDocument (identifier: 1.2.3.4.5)']", docNsMgr), "Missing Template ID");
             Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[3]/w:tc[1][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='	code']", docNsMgr), "Missing Xpath");
             Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[3]/w:tc[2][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='1..1']", docNsMgr), "Missing Cardinality");
             Assert.IsNotNull(constraintContent.SelectSingleNode("w:tr[3]/w:tc[3][w:p/w:pPr/w:pStyle/@w:val='TableText'][w:p/w:r/w:t='SHALL']", docNsMgr), "Missing Verb");

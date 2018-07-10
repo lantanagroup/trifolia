@@ -11,7 +11,7 @@ using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
 namespace Trifolia.Export.Types.FHIR
 {
-    [ImplementationGuideTypePlugin(Constants.IGType.FHIR_DSTU2_IG_TYPE)]
+    [ImplementationGuideTypePlugin(Constants.IGTypeNames.FHIR_DSTU2)]
     public class DSTU2Exporter : BaseTypeExporter, ITypeExporter
     {
         public byte[] Export(DB.IObjectRepository tdb, SimpleSchema schema, ExportFormats format, IGSettingsManager igSettings, List<string> categories, List<DB.Template> templates, bool includeVocabulary, bool returnJson = true)

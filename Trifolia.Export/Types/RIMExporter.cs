@@ -11,8 +11,8 @@ using DecorExporter = Trifolia.Export.DECOR.TemplateExporter;
 
 namespace Trifolia.Export.Types
 {
-    [ImplementationGuideTypePlugin(Constants.IGType.EMEASURE_IG_TYPE)]
-    [ImplementationGuideTypePlugin(Constants.IGType.CDA_IG_TYPE)]
+    [ImplementationGuideTypePlugin(Constants.IGTypeNames.EMEASURE)]
+    [ImplementationGuideTypePlugin(Constants.IGTypeNames.CDA)]
     public class RIMExporter : ITypeExporter
     {
         public byte[] Export(

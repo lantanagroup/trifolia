@@ -26,13 +26,13 @@ namespace Trifolia.Test.Export.FHIR.STU3
             STU3Tests.tdb = new MockObjectRepository();
             STU3Tests.tdb.InitializeFHIR3Repository();
 
-            var fhirIgType = STU3Tests.tdb.FindImplementationGuideType(Constants.IGType.FHIR_STU3_IG_TYPE);
+            var fhirIgType = STU3Tests.tdb.FindImplementationGuideType(Constants.IGTypeNames.FHIR_STU3);
             STU3Tests.fhirIg = STU3Tests.tdb.FindOrCreateImplementationGuide(fhirIgType, "Test IG");
 
             string schemaLocation = Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(fhirIgType);
             schema = SimpleSchema.CreateSimpleSchema(schemaLocation);
 
-            var templateType = tdb.FindTemplateType(Constants.IGType.FHIR_STU3_IG_TYPE, RESOURCE_TYPE_OBS);
+            var templateType = tdb.FindTemplateType(Constants.IGTypeNames.FHIR_STU3, RESOURCE_TYPE_OBS);
 
             STU3Tests.template1 = STU3Tests.tdb.CreateTemplate("http://test.com/StructureDefinition/1", templateType, "Test Observation", fhirIg, RESOURCE_TYPE_OBS, RESOURCE_TYPE_OBS, DESCRIPTION);
             var c1_1 = STU3Tests.tdb.AddConstraintToTemplate(STU3Tests.template1, null, null, "extension");

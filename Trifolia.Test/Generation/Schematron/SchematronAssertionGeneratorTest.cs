@@ -49,8 +49,8 @@ namespace Trifolia.Test.Generation.Schematron
         public static void MyClassInitialize(TestContext testContext)
         {
             // IG Type
-            ImplementationGuideType cdaType = ruleRepo.FindOrCreateImplementationGuideType(Constants.IGType.CDA_IG_TYPE, "cda.xsd", "cda", "urn:hl7-org:v3");
-            ImplementationGuideType hqmfType = ruleRepo.FindOrCreateImplementationGuideType(Constants.IGType.HQMF_IG_TYPE, "schemas\\EMeasure.xsd", "hqmf", "urn:hl7-org:v3");
+            ImplementationGuideType cdaType = ruleRepo.FindOrCreateImplementationGuideType(Constants.IGTypeNames.CDA, Constants.IGTypeSchemaLocations.CDA, Constants.IGTypePrefixes.CDA, Constants.IGTypeNamespaces.CDA);
+            ImplementationGuideType hqmfType = ruleRepo.FindOrCreateImplementationGuideType(Constants.IGTypeNames.HQMF, Constants.IGTypeSchemaLocations.HQMF, Constants.IGTypePrefixes.HQMF, Constants.IGTypeNamespaces.HQMF);
 
             // CDA IG
             ImplementationGuide cdaIg = ruleRepo.FindOrCreateImplementationGuide(cdaType, "Test CDA IG");
@@ -2201,7 +2201,7 @@ namespace Trifolia.Test.Generation.Schematron
         [TestMethod, TestCategory("Schematron")]
         public void TestParticipant1()
         {
-            var ig = ruleRepo.FindOrCreateImplementationGuide(Constants.IGType.CDA_IG_TYPE, "Test IG");
+            var ig = ruleRepo.FindOrCreateImplementationGuide(Constants.IGTypeNames.CDA, "Test IG");
             var template = ruleRepo.CreateTemplate("urn:oid:2.16.92.3.1.5.2.34", "document", "Test Template", ig, "ClinicalDocument", "ClinicalDocument");
 
             var participant = ruleRepo.AddConstraintToTemplate(template, null, null, "participant", "MAY", "0..*");

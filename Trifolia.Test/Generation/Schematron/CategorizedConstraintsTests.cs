@@ -43,8 +43,8 @@ namespace Trifolia.Test.Generation.Schematron
         {
             this.tdb.InitializeCDARepository();
 
-            var cdaIgType = this.tdb.FindImplementationGuideType(Constants.IGType.CDA_IG_TYPE);
-            var docType = this.tdb.FindTemplateType(Constants.IGType.CDA_IG_TYPE, "Document");
+            var cdaIgType = this.tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA);
+            var docType = this.tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document");
             this.ig = this.tdb.FindOrCreateImplementationGuide(cdaIgType, "Test IG");
 
             var template = this.tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Test Template", ig, "ClinicalDocument", "ClinicalDocument");
