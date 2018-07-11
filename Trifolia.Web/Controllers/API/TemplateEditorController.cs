@@ -384,6 +384,7 @@ namespace Trifolia.Web.Controllers.API
             return null;
         }
 
+        /*  THIS IS NOT USED
         [HttpPost, Route("api/Template/Edit/Prose")]
         public string GetNarrative(ConstraintModel constraint)
         {
@@ -393,6 +394,7 @@ namespace Trifolia.Web.Controllers.API
 
             return fc.GetPlainText(false, false, true);
         }
+        */
 
         [HttpGet, Route("api/Template/Edit/List")]
         public IEnumerable<TemplateItem> GetTemplates()

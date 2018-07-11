@@ -763,7 +763,7 @@ namespace Trifolia.Web.Controllers.API
 
             template.Constraints.ForEach(c =>
             {
-                IFormattedConstraint fc = new FormattedConstraint(this.tdb, igSettings, igTypePlugin, c, constraintReferences);
+                IFormattedConstraint fc = new FormattedConstraint(this.tdb, igSettings, igTypePlugin, (TemplateConstraint) c, constraintReferences);
 
                 model.Constraints.Add(new CopyModel.Constraint()
                 {

@@ -65,7 +65,7 @@ namespace Trifolia.Export.Versioning
                 // Added constraints
                 foreach (var cConstraint in newTemplate.Constraints.Where(b => !previousTemplate.Constraints.Exists(a => a.Number == b.Number)))
                 {
-                    IFormattedConstraint fc = new FormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint, null);
+                    IFormattedConstraint fc = new FormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, (TemplateConstraint) cConstraint, null);
 
                     ComparisonConstraintResult cResult = new ComparisonConstraintResult()
                     {
@@ -84,7 +84,7 @@ namespace Trifolia.Export.Versioning
                 // Deleted constraints
                 foreach (var cConstraint in previousTemplate.Constraints.Where(a => !newTemplate.Constraints.Exists(b => b.Number == a.Number)))
                 {
-                    IFormattedConstraint fc = new FormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, cConstraint, null);
+                    IFormattedConstraint fc = new FormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, (TemplateConstraint) cConstraint, null);
 
                     ComparisonConstraintResult cResult = new ComparisonConstraintResult()
                     {
@@ -131,8 +131,8 @@ namespace Trifolia.Export.Versioning
 
         private ComparisonConstraintResult CompareConstraint(IGSettingsManager igSettings, IConstraint oldConstraint, IConstraint newConstraint)
         {
-            var oldFc = new FormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, oldConstraint, null);
-            var newFc = new FormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, newConstraint, null);
+            var oldFc = new FormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, (TemplateConstraint) oldConstraint, null);
+            var newFc = new FormattedConstraint(this.tdb, this.igSettings, this.igTypePlugin, (TemplateConstraint) newConstraint, null);
 
             var newNarrative = newFc.GetPlainText();
             var oldNarrative = oldFc.GetPlainText();
