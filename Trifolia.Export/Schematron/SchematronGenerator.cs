@@ -911,7 +911,7 @@ namespace Trifolia.Export.Schematron
         {
             List<string> messages = new List<string>();
             
-            IFormattedConstraint currentFc = FormattedConstraintFactory.NewFormattedConstraint(this.rep, this.igSettings, this.igTypePlugin, tc, this.constraintReferences);
+            IFormattedConstraint currentFc = new FormattedConstraint(this.rep, this.igSettings, this.igTypePlugin, tc, this.constraintReferences);
 
             if (!string.IsNullOrEmpty(conformance))
                 currentFc.Conformance = conformance;

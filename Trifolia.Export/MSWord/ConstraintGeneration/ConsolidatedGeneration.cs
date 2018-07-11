@@ -96,7 +96,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             bool containedTemplateLinked = containedTemplateReferences.Count() > 0 && containedTemplateReferences.Count() == containedTemplatesFound.Count();
 
             bool includeCategory = this.IncludeCategory && (!this.HasSelectedCategories || this.SelectedCategories.Count > 1);
-            IFormattedConstraint fConstraint = FormattedConstraintFactory.NewFormattedConstraint(this.DataSource, this.IGSettings, this.IGTypePlugin, constraint, this.ConstraintReferences, linkContainedTemplate: containedTemplateLinked, linkIsBookmark: true, createLinksForValueSets: aCreateLinksForValueSets, includeCategory: includeCategory);
+            IFormattedConstraint fConstraint = new FormattedConstraint(this.DataSource, this.IGSettings, this.IGTypePlugin, constraint, this.ConstraintReferences, linkContainedTemplate: containedTemplateLinked, linkIsBookmark: true, createLinksForValueSets: aCreateLinksForValueSets, includeCategory: includeCategory);
             Paragraph para = fConstraint.AddToDocParagraph(this.MainPart, this.HyperlinkTracker, this.DocumentBody, level -1, GenerationConstants.BASE_TEMPLATE_INDEX + (int)this.CurrentTemplate.Id, this.ConstraintHeadingStyle);
 
             if (!string.IsNullOrEmpty(constraint.Notes) && includeNotes)

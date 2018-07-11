@@ -11,12 +11,57 @@ using Trifolia.Shared;
 
 namespace Trifolia.Export.MSWord.ConstraintGeneration
 {
-    public class FormattedConstraint20161128 : IFormattedConstraint
+    public class FormattedConstraint : IFormattedConstraint
     {
-        public FormattedConstraint20161128()
+        public FormattedConstraint(
+            IObjectRepository tdb,
+            IGSettingsManager igSettings,
+            IIGTypePlugin igTypePlugin,
+            TemplateConstraint constraint,
+            List<ConstraintReference> references = null,
+            string templateLinkBase = null,
+            string valueSetLinkBase = null,
+            bool linkContainedTemplate = false,
+            bool linkIsBookmark = false,
+            bool createLinksForValueSets = false,
+            bool includeCategory = true)
         {
-            this.parts = new List<ConstraintPart>();
-            this.ConstraintReferences = new List<ConstraintReference>();
+            if (references == null)
+            {
+                references = (from tcr in tdb.TemplateConstraintReferences
+                              join t in tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
+                              where tcr.TemplateConstraintId == constraint.Id
+                              select new ConstraintReference()
+                              {
+                                  Bookmark = t.Bookmark,
+                                  Identifier = t.Oid,
+                                  Name = t.Name,
+                                  TemplateConstraintId = tcr.TemplateConstraintId
+                              }).ToList();
+            }
+            else
+            {
+                references = references.Where(y => y.TemplateConstraintId == constraint.Id).ToList();
+            }
+
+            Tdb = tdb;
+            IgSettings = igSettings;
+            IncludeCategory = includeCategory;
+            TemplateLinkBase = templateLinkBase;
+            ValueSetLinkBase = valueSetLinkBase;
+            LinkContainedTemplate = linkContainedTemplate;
+            LinkIsBookmark = linkIsBookmark;
+            CreateLinkForValueSets = createLinksForValueSets;
+            ConstraintReferences = references;
+
+            // Set the properties in the FormattedConstraint based on the IConstraint
+            ParseConstraint(igTypePlugin, constraint, constraint.ValueSet, constraint.CodeSystem);
+
+            // Pre-process the constraint so that calls to GetHtml(), GetPlainText(), etc. returns something
+            ParseFormattedConstraint();
+
+            parts = new List<ConstraintPart>();
+            ConstraintReferences = new List<ConstraintReference>();
         }
 
         private List<ConstraintPart> parts;
@@ -89,6 +134,43 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
         public List<ConstraintReference> ConstraintReferences { get; set; }
 
         #endregion
+
+        public static IFormattedConstraint NewFormattedConstraint(
+            IObjectRepository tdb,
+            IGSettingsManager igSettings,
+            IIGTypePlugin igTypePlugin,
+            IConstraint constraint,
+            List<ConstraintReference> references,
+            string templateLinkBase = null,
+            string valueSetLinkBase = null,
+            bool linkContainedTemplate = false,
+            bool linkIsBookmark = false,
+            bool createLinksForValueSets = false,
+            bool includeCategory = true,
+            ValueSet valueSet = null,
+            CodeSystem codeSystem = null)
+        {
+
+            IFormattedConstraint formattedConstraint = (IFormattedConstraint)Activator.CreateInstance(typeof(FormattedConstraint));
+
+            formattedConstraint.Tdb = tdb;
+            formattedConstraint.IgSettings = igSettings;
+            formattedConstraint.IncludeCategory = includeCategory;
+            formattedConstraint.TemplateLinkBase = templateLinkBase;
+            formattedConstraint.ValueSetLinkBase = valueSetLinkBase;
+            formattedConstraint.LinkContainedTemplate = linkContainedTemplate;
+            formattedConstraint.LinkIsBookmark = linkIsBookmark;
+            formattedConstraint.CreateLinkForValueSets = createLinksForValueSets;
+            formattedConstraint.ConstraintReferences = references;
+
+            // Set the properties in the FormattedConstraint based on the IConstraint
+            formattedConstraint.ParseConstraint(igTypePlugin, constraint, valueSet, codeSystem);
+
+            // Pre-process the constraint so that calls to GetHtml(), GetPlainText(), etc. returns something
+            formattedConstraint.ParseFormattedConstraint();
+
+            return formattedConstraint;
+        }
 
         public void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, ValueSet valueSet = null, CodeSystem codeSystem = null)
         {

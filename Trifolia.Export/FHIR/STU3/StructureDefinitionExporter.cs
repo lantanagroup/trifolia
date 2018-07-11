@@ -110,7 +110,7 @@ namespace Trifolia.Export.FHIR.STU3
             string sliceName = constraint.GetSliceName();
             string elementPath = constraint.GetElementPath(strucDef.Type != null ? strucDef.Type.ToString() : null);
             var igSettings = GetIGSettings(constraint);
-            var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, this.igTypePlugin, constraint);
+            var constraintFormatter = new FormattedConstraint(this.tdb, igSettings, this.igTypePlugin, constraint);
             string definition = constraintFormatter.GetPlainText(false, false, false);
 
             if (definition == null)
@@ -373,7 +373,7 @@ namespace Trifolia.Export.FHIR.STU3
                     foreach (var branchConstraint in sliceGroup)
                     {
                         var igSettings = GetIGSettings(branchConstraint);
-                        var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, this.igTypePlugin, branchConstraint);
+                        var constraintFormatter = new FormattedConstraint(this.tdb, igSettings, this.igTypePlugin, branchConstraint);
                         var branchIdentifiers = branchConstraint.ChildConstraints.Where(y => y.IsBranchIdentifier);
 
                         newElementDef.Definition = constraintFormatter.GetPlainText(false, false, false);

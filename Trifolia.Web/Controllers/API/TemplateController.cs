@@ -763,7 +763,7 @@ namespace Trifolia.Web.Controllers.API
 
             template.Constraints.ForEach(c =>
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, c, constraintReferences);
+                IFormattedConstraint fc = new FormattedConstraint(this.tdb, igSettings, igTypePlugin, c, constraintReferences);
 
                 model.Constraints.Add(new CopyModel.Constraint()
                 {
@@ -969,7 +969,7 @@ namespace Trifolia.Web.Controllers.API
 
             template.ChildConstraints.ToList().ForEach(c =>
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, c);
+                IFormattedConstraint fc = new FormattedConstraint(this.tdb, igSettings, igTypePlugin, c);
 
                 moveConstraints.Add(new MoveConstraint()
                 {
@@ -1119,7 +1119,7 @@ namespace Trifolia.Web.Controllers.API
 
         private ViewModel.Constraint BuildConstraint(string baseLink, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, TemplateConstraint dbConstraint, int constraintCount)
         {
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, dbConstraint, linkContainedTemplate: true, linkIsBookmark: false, createLinksForValueSets: false);
+            IFormattedConstraint fc = new FormattedConstraint(this.tdb, igSettings, igTypePlugin, dbConstraint, linkContainedTemplate: true, linkIsBookmark: false, createLinksForValueSets: false);
 
             ViewModel.Constraint newConstraint = new ViewModel.Constraint()
             {

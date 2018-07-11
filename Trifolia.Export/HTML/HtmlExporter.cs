@@ -340,7 +340,7 @@ namespace Trifolia.Export.HTML
                 if (templateSchema != null && schemaObject == null)
                     schemaObject = templateSchema.Children.SingleOrDefault(y => y.Name == constraint.Context);
 
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, igTypePlugin, theConstraint, this.constraintReferences.Cast<ConstraintReference>().ToList(), "#/volume2/", "#/valuesets/#", true, true, true, false);
+                IFormattedConstraint fc = new FormattedConstraint(this.tdb, igManager, igTypePlugin, theConstraint, this.constraintReferences.Cast<ConstraintReference>().ToList(), "#/volume2/", "#/valuesets/#", true, true, true, false);
 
                 var newConstraintModel = new ViewDataModel.Constraint()
                 {

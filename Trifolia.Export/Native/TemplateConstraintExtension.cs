@@ -134,7 +134,7 @@ namespace Trifolia.Export.Native
 
             if (!constraint.IsPrimitive)
             {
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(tdb, igSettings, igTypePlugin, constraint);
+                IFormattedConstraint fc = new FormattedConstraint(tdb, igSettings, igTypePlugin, constraint);
 
                 // Only include the generated narrative, as Description and Label are already exported in separate fields.
                 exportConstraint.NarrativeText = fc.GetPlainText(false, false, false);

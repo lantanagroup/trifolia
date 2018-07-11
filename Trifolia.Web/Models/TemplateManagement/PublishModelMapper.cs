@@ -84,7 +84,7 @@ namespace Trifolia.Web.Models.TemplateManagement
             int constraintCount, 
             int? aParentConstraintId = null)
         {
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(tdb, igSettings, igTypePlugin, dbConstraint);
+            IFormattedConstraint fc = new FormattedConstraint(tdb, igSettings, igTypePlugin, dbConstraint);
 
             PublishConstraint newConstraint = new PublishConstraint(dbConstraint, fc);
 

@@ -311,7 +311,7 @@ namespace Trifolia.Test.Generation.IG
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, ctConstraint.Template.OwningImplementationGuideId);
             IIGTypePlugin igTypePlugin = ctConstraint.Template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
 
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, ctConstraint);
+            IFormattedConstraint fc = new FormattedConstraint(mockRepo, igSettings, igTypePlugin, ctConstraint);
             string constraintText = fc.GetPlainText();
 
             Assert.IsNotNull(constraintText);
@@ -328,7 +328,7 @@ namespace Trifolia.Test.Generation.IG
             IGSettingsManager igSettings = new IGSettingsManager(this.mockRepo, ctConstraint.Template.OwningImplementationGuideId);
             IIGTypePlugin igTypePlugin = ctConstraint.Template.OwningImplementationGuide.ImplementationGuideType.GetPlugin();
 
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(mockRepo, igSettings, igTypePlugin, ctConstraint);
+            IFormattedConstraint fc = new FormattedConstraint(mockRepo, igSettings, igTypePlugin, ctConstraint);
             string constraintText = fc.GetPlainText();
 
             Assert.IsNotNull(constraintText);

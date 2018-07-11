@@ -222,7 +222,7 @@ namespace Trifolia.Web.Controllers.API
 
         private ConstraintModel CreateConstraintModel(TemplateConstraint constraint, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin)
         {
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, constraint);
+            IFormattedConstraint fc = new FormattedConstraint(this.tdb, igSettings, igTypePlugin, constraint);
 
             var newConstraintModel = new ConstraintModel()
             {
@@ -388,7 +388,7 @@ namespace Trifolia.Web.Controllers.API
         public string GetNarrative(ConstraintModel constraint)
         {
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb);
-            IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, null, constraint, null);
+            IFormattedConstraint fc = new FormattedConstraint(this.tdb, igSettings, null, constraint, null);
             fc.HasChildren = true;
 
             return fc.GetPlainText(false, false, true);

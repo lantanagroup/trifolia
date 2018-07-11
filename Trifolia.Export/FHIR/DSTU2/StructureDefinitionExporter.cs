@@ -113,7 +113,7 @@ namespace Trifolia.Export.FHIR.DSTU2
                 newSliceName = string.Format("{0}_slice_pos{1}", constraint.Context, constraint.Order);
 
             var igSettings = GetIGSettings(constraint);
-            var constraintFormatter = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, this.igTypePlugin, constraint);
+            var constraintFormatter = new FormattedConstraint(this.tdb, igSettings, this.igTypePlugin, constraint);
 
             ElementDefinition newElementDef = new ElementDefinition()
             {
