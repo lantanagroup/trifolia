@@ -169,10 +169,7 @@
     <Compile Include="MSWord\ConstraintGeneration\ConsolidatedGeneration.cs" />
     <Compile Include="MSWord\ConstraintGeneration\ConstraintPart.cs" />
     <Compile Include="MSWord\ConstraintGeneration\ContainedTemplate.cs" />
-    <Compile Include="MSWord\ConstraintGeneration\FormattedConstraint20140415.cs" />
-    <Compile Include="MSWord\ConstraintGeneration\FormattedConstraint20150421.cs" />
-    <Compile Include="MSWord\ConstraintGeneration\FormattedConstraint20161128.cs" />
-    <Compile Include="MSWord\ConstraintGeneration\FormattedConstraintFactory.cs" />
+    <Compile Include="MSWord\ConstraintGeneration\FormattedConstraint.cs" />
     <Compile Include="MSWord\ConstraintGeneration\IFormattedConstraint.cs" />
     <Compile Include="MSWord\ConstraintGeneration\LegacyGeneration.cs" />
     <Compile Include="MSWord\ConstraintReference.cs" />
@@ -246,7 +243,10 @@
     <EmbeddedResource Include="FHIR\Latest\package.zip" />
     <None Include="MSWord\ConstraintGeneration\README.md" />
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
+    </None>
     <None Include="specification.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
