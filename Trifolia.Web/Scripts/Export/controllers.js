@@ -417,6 +417,14 @@
         }
     };
 
+    $scope.submit = function () {
+        if ($scope.criteria.TemplateIds.length === 0 && $scope.templates.length > 0) {
+            if (confirm('No templates are selected. Press OK to select all templates and continues.')) {
+                $scope.selectAllTemplates();
+            }
+        }
+    };
+
     $scope.$watch('criteria', function () {
         $scope.saveSettingsMessage = '';
     }, true);
