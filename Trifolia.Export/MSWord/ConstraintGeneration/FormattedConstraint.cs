@@ -44,15 +44,15 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
                 references = references.Where(y => y.TemplateConstraintId == constraint.Id).ToList();
             }
 
-            Tdb = tdb;
-            IgSettings = igSettings;
-            IncludeCategory = includeCategory;
-            TemplateLinkBase = templateLinkBase;
-            ValueSetLinkBase = valueSetLinkBase;
-            LinkContainedTemplate = linkContainedTemplate;
-            LinkIsBookmark = linkIsBookmark;
-            CreateLinkForValueSets = createLinksForValueSets;
-            ConstraintReferences = references;
+            this.Tdb = tdb;
+            this.IgSettings = igSettings;
+            this.IncludeCategory = includeCategory;
+            this.TemplateLinkBase = templateLinkBase;
+            this.ValueSetLinkBase = valueSetLinkBase;
+            this.LinkContainedTemplate = linkContainedTemplate;
+            this.LinkIsBookmark = linkIsBookmark;
+            this.CreateLinkForValueSets = createLinksForValueSets;
+            this.ConstraintReferences = references;
 
             // Set the properties in the FormattedConstraint based on the IConstraint
             ParseConstraint(igTypePlugin, constraint, constraint.ValueSet, constraint.CodeSystem);
@@ -60,8 +60,8 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
             // Pre-process the constraint so that calls to GetHtml(), GetPlainText(), etc. returns something
             ParseFormattedConstraint();
 
-            parts = new List<ConstraintPart>();
-            ConstraintReferences = new List<ConstraintReference>();
+            this.parts = new List<ConstraintPart>();
+            this.ConstraintReferences = new List<ConstraintReference>();
         }
 
         private List<ConstraintPart> parts;
@@ -134,43 +134,6 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
         public List<ConstraintReference> ConstraintReferences { get; set; }
 
         #endregion
-
-        public static IFormattedConstraint NewFormattedConstraint(
-            IObjectRepository tdb,
-            IGSettingsManager igSettings,
-            IIGTypePlugin igTypePlugin,
-            IConstraint constraint,
-            List<ConstraintReference> references,
-            string templateLinkBase = null,
-            string valueSetLinkBase = null,
-            bool linkContainedTemplate = false,
-            bool linkIsBookmark = false,
-            bool createLinksForValueSets = false,
-            bool includeCategory = true,
-            ValueSet valueSet = null,
-            CodeSystem codeSystem = null)
-        {
-
-            IFormattedConstraint formattedConstraint = (IFormattedConstraint)Activator.CreateInstance(typeof(FormattedConstraint));
-
-            formattedConstraint.Tdb = tdb;
-            formattedConstraint.IgSettings = igSettings;
-            formattedConstraint.IncludeCategory = includeCategory;
-            formattedConstraint.TemplateLinkBase = templateLinkBase;
-            formattedConstraint.ValueSetLinkBase = valueSetLinkBase;
-            formattedConstraint.LinkContainedTemplate = linkContainedTemplate;
-            formattedConstraint.LinkIsBookmark = linkIsBookmark;
-            formattedConstraint.CreateLinkForValueSets = createLinksForValueSets;
-            formattedConstraint.ConstraintReferences = references;
-
-            // Set the properties in the FormattedConstraint based on the IConstraint
-            formattedConstraint.ParseConstraint(igTypePlugin, constraint, valueSet, codeSystem);
-
-            // Pre-process the constraint so that calls to GetHtml(), GetPlainText(), etc. returns something
-            formattedConstraint.ParseFormattedConstraint();
-
-            return formattedConstraint;
-        }
 
         public void ParseConstraint(IIGTypePlugin igTypePlugin, IConstraint constraint, ValueSet valueSet = null, CodeSystem codeSystem = null)
         {
