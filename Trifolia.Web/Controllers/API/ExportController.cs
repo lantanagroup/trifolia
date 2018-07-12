@@ -127,7 +127,8 @@ namespace Trifolia.Web.Controllers.API
             return new ExportSettingsModel()
             {
                 ImplementationGuideId = implementationGuideId,
-                ExportFormat = format
+                ExportFormat = format,
+                SelectAll = true
             };
         }
 
