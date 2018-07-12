@@ -59,9 +59,6 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
 
             // Pre-process the constraint so that calls to GetHtml(), GetPlainText(), etc. returns something
             ParseFormattedConstraint();
-
-            this.parts = new List<ConstraintPart>();
-            this.ConstraintReferences = new List<ConstraintReference>();
         }
 
         private List<ConstraintPart> parts;
