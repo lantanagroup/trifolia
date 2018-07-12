@@ -134,6 +134,10 @@
     <Compile Include="Migrations\201803231315265_addImplementationGuideIdTov_templateList.Designer.cs">
       <DependentUpon>201803231315265_addImplementationGuideIdTov_templateList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807122126363_updateCDASchemaSeedData.cs" />
+    <Compile Include="Migrations\201807122126363_updateCDASchemaSeedData.Designer.cs">
+      <DependentUpon>201807122126363_updateCDASchemaSeedData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -244,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803231315265_addImplementationGuideIdTov_templateList.resx">
       <DependentUpon>201803231315265_addImplementationGuideIdTov_templateList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807122126363_updateCDASchemaSeedData.resx">
+      <DependentUpon>201807122126363_updateCDASchemaSeedData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
