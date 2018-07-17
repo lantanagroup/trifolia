@@ -300,7 +300,7 @@ namespace Trifolia.Import.Terminology.Excel
 
         private static string GetCellValue(Cell cell, WorkbookPart wbPart)
         {
-            if (cell == null)
+            if (cell == null || cell.CellValue == null)
                 return string.Empty;
 
             if (cell.DataType != null && cell.DataType.Value == CellValues.SharedString)
