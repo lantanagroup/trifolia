@@ -104,6 +104,11 @@
                       Performer2/functionCode
       </xs:documentation>
       
+      <xs:documentation>
+        2018-07-09  Added extension approved by SDWG on 2018-06-28
+                      ObservationRange/sdtc:precondition1
+      </xs:documentation>
+      
     
     </xs:annotation>
     <xs:include schemaLocation="datatypes.xsd" />
@@ -904,6 +909,9 @@
             <xs:element name="text" type="ED" minOccurs="0" />
             <xs:element name="value" type="ANY" minOccurs="0" />
             <xs:element name="interpretationCode" type="CE" minOccurs="0" />
+            <!-- Begin Extension: (SDTC) -->
+            <xs:element ref="sdtc:precondition1" minOccurs="0" maxOccurs="unbounded" />
+            <!-- End Extension: (SDTC) -->
         </xs:sequence>
         <xs:attribute name="nullFlavor" type="NullFlavor" use="optional" />
         <xs:attribute name="classCode" type="ActClassObservation" use="optional" default="OBS" />

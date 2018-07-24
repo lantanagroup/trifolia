@@ -102,6 +102,11 @@
       Added extension approved by SDWG on 2017-05-17
       functionCode
     </xs:documentation>
+    <xs:documentation>
+      2018-07-05 
+      Added extension approved by SDWG on 2018-06-28
+      precondition1
+    </xs:documentation>
   </xs:annotation>
   
   <xs:import namespace="urn:hl7-org:v3" schemaLocation="POCD_MT000040_SDTC.xsd" />
@@ -179,6 +184,33 @@
     <xs:attribute name="determinerCode" type="hl7:EntityDeterminer" use="optional" fixed="INSTANCE" />
   </xs:complexType>
   
+  <!-- Precondition1 (created for C-CDA Templates for Infectious Disease (lab reporting)) -->
+  <xs:complexType name="Precondition1">
+    <xs:sequence>
+      <xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0" />
+      <xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded" />
+      <!-- A code specifying the logical conjunction of the criteria among all the condition-links 
+           of Acts (e.g., and, or, exclusive-or).
+           All AND criteria must be true. 
+           If OR and AND criteria occur together, one criterion out of the OR-group must be true 
+           and all AND criteria must be true also. 
+           If XOR criteria occur together with OR and AND criteria, exactly one of the XOR criteria 
+           must be true, and at least one of the OR criteria and all AND criteria must be true. 
+           In other words, the sets of AND, OR, and XOR criteria are in turn combined by a 
+           logical AND operator (all AND criteria and at least one OR criterion and exactly 
+           one XOR criterion). 
+      -->
+      <!-- Values are restricted to the values in HL7 RelationshipConjunction (AND, OR, XOR)-->
+        
+      <xs:element name="conjunctionCode" type="hl7:CS" minOccurs="1" />
+      <xs:element name="criterion1" type="hl7:POCD_MT000040.Criterion" />
+    </xs:sequence>
+    <xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional" />
+    <xs:attribute name="typeCode" type="hl7:ActRelationshipType" use="optional" fixed="PRCN" />
+    
+  </xs:complexType>
+  
   <!-- == End Data Types =================================================================== -->
   
   <!-- == Start Attributes =================================================================== -->
@@ -218,6 +250,8 @@
   <xs:element name="priorityNumber" type="hl7:INT" />
   
   <xs:element name="functionCode" type="hl7:CE" />
+  
+  <xs:element name="precondition1" type="Precondition1" />
   
   <!-- == End Elements =================================================================== -->
   
