@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.3.0.351">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.8.2.643">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -48,7 +48,7 @@
   <link href="css/effects.min.css" rel="stylesheet" />
   <link href="css/theme-light-blue.min.css" rel="stylesheet" />
   <link href="css/print.min.css" rel="stylesheet" media="print" />
-  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded #main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
+  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded div#main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
 
   <!-- Content style -->
   <link href="css/hnd.content.css" rel="stylesheet" />
@@ -171,7 +171,7 @@
                         <li>Tutorials</li>
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="Tutorials.html" title="Tutorials" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="Tutorials.html" title="Tutorials" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="FHIRExtensionsTutorial.html" title="FHIR Extensions" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="Groups.html" title="Groups" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="FHIRExtensionsTutorial.html" title="FHIR Extensions" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
@@ -194,11 +194,11 @@
 <li value="5" class="rvps2"><a class="rvts11" href="BuildingaFHIRIGTutorial.html#export">Export the implementation guide as a FHIR build package.</a></li>
 </ol>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<h2 class="rvps12"><a name="create_ig"></a>
-<span class="rvts0"><span class="rvts19">FHIR and IG Publisher Overview</span></span></h2>
+<h2 class="rvps6"><a name="create_ig"></a>
+<span class="rvts0"><span class="rvts20">FHIR and IG Publisher Overview</span></span></h2>
 <p class="rvps2"><span class="rvts6">See the </span><a class="rvts11" href="http://build.fhir.org/overview-dev.html">FHIR current build</a><span class="rvts6"> for more information.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<p class="rvps2"><span class="rvts32">FHIR (</span><span class="rvts33">Fast Health Interoperability Resources</span><span class="rvts32">) is designed to enable information exchange to support the provision of healthcare in a wide variety of settings. The specification builds on and adapts modern, widely used RESTful practices to enable the provision of integrated healthcare across a wide range of teams and organizations.</span></p>
+<p class="rvps2"><span class="rvts33">FHIR (</span><span class="rvts34">Fast Health Interoperability Resources</span><span class="rvts33">) is designed to enable information exchange to support the provision of healthcare in a wide variety of settings. The specification builds on and adapts modern, widely used RESTful practices to enable the provision of integrated healthcare across a wide range of teams and organizations.</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">Implementation guides are a collection of FHIR resources(profiles, value sets, examples and human readable documentation) tied together by the Implementation Guide resource</span></li>
 <li class="rvps2"><span class="rvts6">Acronym FHIR = F – Fast (to design &amp; to implement) H – Health, I – Interoperable and R – Resources(building blocks)</span></li>
@@ -207,15 +207,15 @@
 <li class="rvps2"><span class="rvts6">The root of a FHIR document is a Composition resource that can be signed, authenticated, etc, and has the same basic obligations as a CDA document.</span></li>
 </ul>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts28">IG Publisher</span></span></h3>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts29">IG Publisher</span></span></h3>
 <p class="rvps2"><span class="rvts6">See the</span><a class="rvts11" href="http://wiki.hl7.org/index.php?title=IG_Publisher_Documentation"> IG Publisher Documentation</a><span class="rvts6"> for more information.</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps17"><span class="rvts34">The FHIR team provides an IG Publishing tool that takes the implementation guide resources and converts them to a set of 3 different types of files (generated resources in xml, json, ttl formats, a set of fragments ready to include in generated html files and Several different zip files: which are used by implementers for various purposes).</span></li>
-<li class="rvps17"><span class="rvts34">The outcome of the publishing process is a set of HTML files that represent the implementation guide. These files can be posted to a web server.</span></li>
-<li class="rvps17"><span class="rvts34">Alternatively, you may use the IG publisher to validate and render a set of Profiles, value sets etc without building a formal IG</span></li>
+<li class="rvps12"><span class="rvts35">The FHIR team provides an IG Publishing tool that takes the implementation guide resources and converts them to a set of 3 different types of files (generated resources in xml, json, ttl formats, a set of fragments ready to include in generated html files and Several different zip files: which are used by implementers for various purposes).</span></li>
+<li class="rvps12"><span class="rvts35">The outcome of the publishing process is a set of HTML files that represent the implementation guide. These files can be posted to a web server.</span></li>
+<li class="rvps12"><span class="rvts35">Alternatively, you may use the IG publisher to validate and render a set of Profiles, value sets etc without building a formal IG</span></li>
 </ul>
-<h2 class="rvps12"><a name="create_ig"></a>
-<span class="rvts0"><span class="rvts19">Create an implementation guide</span></span></h2>
+<h2 class="rvps6"><a name="create_ig"></a>
+<span class="rvts0"><span class="rvts20">Create an implementation guide</span></span></h2>
 <p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="AuthorImplementationGuides.html">Authoring &gt; Implementation Guides</a><span class="rvts6"> for details.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
@@ -225,27 +225,27 @@
 <li class="rvps2"><span class="rvts6">Include additional guidance that will not be inferred by the profiles of the implementation guide in the "Volume 1" tab, by adding sections to "Volume 1". Each of the sections defined in the implementation guide's "Volume 1" tab will be displayed on the "Overview" tab of the implementation guide's front-page.</span></li>
 </ul>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<h2 class="rvps12"><a name="create_profiles"></a>
-<span class="rvts0"><span class="rvts19">Create FHIR profiles for the implementation guide</span></span></h2>
+<h2 class="rvps6"><a name="create_profiles"></a>
+<span class="rvts0"><span class="rvts20">Create FHIR profiles for the implementation guide</span></span></h2>
 <p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="Editor.html">Authoring &gt; Templates/Profiles &gt; Editor</a><span class="rvts6"> for details.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li style="margin-left: 0px" class="rvps18"><span class="rvts6">Each FHIR profile must have the same base url as the implementation guide in the "long id" field. &nbsp;</span><span class="rvts35">The identifier for FHIR profiles is defaulted to a combination of the bookmark/name of the FHIR profile and the associated implementation guide's base url.</span></li>
-<li style="margin-left: 0px" class="rvps18"><span class="rvts6">Each profile must have a "short id" that matches the outer-most leaf level of the long id (everything to the right of the last / in the long id).</span></li>
-<li style="margin-left: 0px" class="rvps18"><span class="rvts6">Define constraints for each profile in the "Constraints" tab of the editor, modifying the cardinality, value set bindings, etc. as appropriate.</span></li>
+<li style="margin-left: 0px" class="rvps13"><span class="rvts6">Each FHIR profile must have the same base url as the implementation guide in the "long id" field. &nbsp;</span><span class="rvts36">The identifier for FHIR profiles is defaulted to a combination of the bookmark/name of the FHIR profile and the associated implementation guide's base url.</span></li>
+<li style="margin-left: 0px" class="rvps13"><span class="rvts6">Each profile must have a "short id" that matches the outer-most leaf level of the long id (everything to the right of the last / in the long id).</span></li>
+<li style="margin-left: 0px" class="rvps13"><span class="rvts6">Define constraints for each profile in the "Constraints" tab of the editor, modifying the cardinality, value set bindings, etc. as appropriate.</span></li>
 </ul>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts28">Defining and using extensions</span></span></h3>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts29">Defining and using extensions</span></span></h3>
 <p class="rvps2"><span class="rvts6">In the event that an extension is necessary, you must produce a profile that describes how the extension is intended to be used, and reference that extension as a "Contained template/profile" on the "extension" element of another profile.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<h2 class="rvps12"><a name="ig_files"></a>
-<span class="rvts0"><span class="rvts19">Upload "FHIR resource instances" to the implementation guide</span></span></h2>
+<h2 class="rvps6"><a name="ig_files"></a>
+<span class="rvts0"><span class="rvts20">Upload "FHIR resource instances" to the implementation guide</span></span></h2>
 <p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="ImplementationGuideFiles.html">Authoring &gt; ImplementationGuides &gt; Files</a><span class="rvts6"> for details.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <p class="rvps2"><span class="rvts6">In certain cases, (such as "Conformance", "SearchParameter" and "Questionnaire") instances of resources need to be uploaded to Trifolia, then associated with the implementation guide rather than defining profiles. Add these "FHIR resource instances" to the implementation guide's files (as type "FHIR Resource Instance") so that they are included in the FHIR build package when exported from Trifolia.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<h2 class="rvps12"><a name="export"></a>
-<span class="rvts0"><span class="rvts19">Export the implementation guide as a FHIR build package</span></span></h2>
+<h2 class="rvps6"><a name="export"></a>
+<span class="rvts0"><span class="rvts20">Export the implementation guide as a FHIR build package</span></span></h2>
 <p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="ExportXMLJSON.html">Exporting &gt; XML/JSON</a><span class="rvts6"> for details.</span></p>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <p class="rvps2"><span class="rvts6">Export the implementation guide as a FHIR build package. The zip package that will be run against the FHIR ig publisher.</span></p>

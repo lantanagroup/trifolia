@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.3.0.351">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.8.2.643">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -48,7 +48,7 @@
   <link href="css/effects.min.css" rel="stylesheet" />
   <link href="css/theme-light-blue.min.css" rel="stylesheet" />
   <link href="css/print.min.css" rel="stylesheet" media="print" />
-  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded #main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
+  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded div#main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
 
   <!-- Content style -->
   <link href="css/hnd.content.css" rel="stylesheet" />
@@ -183,17 +183,17 @@
             <div class="main-content">
                 
 <p></p>
-<p class="rvps4"><span class="rvts6">Trifolia includes limited functionality for the </span><a class="rvts11" href="http://www.hl7.org/fhir/http.html" target="_blank">FHIR REST API</a><span class="rvts6">.</span></p>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts19">Versions</span></span></h2>
-<p class="rvps4"><span class="rvts6">Trifolia supports three different versions of the FHIR REST API for backwards compatibility. However, only the latest version is actively developed and improved.</span></p>
-<p class="rvps4"><span class="rvts6">Each of the base endpoints correlate to their version of the FHIR standard:</span></p>
-<div class="rvps4"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
+<p class="rvps2"><span class="rvts6">Trifolia includes limited functionality for the </span><a class="rvts11" href="http://www.hl7.org/fhir/http.html" target="_blank">FHIR REST API</a><span class="rvts6">.</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts20">Versions</span></span></h2>
+<p class="rvps2"><span class="rvts6">Trifolia supports three different versions of the FHIR REST API for backwards compatibility. However, only the latest version is actively developed and improved.</span></p>
+<p class="rvps2"><span class="rvts6">Each of the base endpoints correlate to their version of the FHIR standard:</span></p>
+<div class="rvps2"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
 <tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Version</span></p>
+<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Version</span></p>
 </td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Endpoint</span></p>
+<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Endpoint</span></p>
 </td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Notes</span></p>
+<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Notes</span></p>
 </td>
 </tr>
 <tr valign="top">
@@ -222,23 +222,23 @@
 </tr>
 </table>
 </div>
-<p class="rvps4"><span class="rvts6">Additionally, each of these endpoints correlate to the appropriate Implementation Guide Type in Trifolia. For example, only Implementation Guides associated with the Implementation Guide Type "FHIR Latest" will be returned by requests to the /api/FHIR3 endpoint. Similarly, only Implementation Guides associated with the Implementation Guide Type "FHIR DSTU2" will be returned by the /api/FHIR2 endpoint.</span></p>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts19">Authentication</span></span></h2>
-<p class="rvps4"><span class="rvts6">All REST endpoints are authenticated with OAuth 2.0 using a Authentication header with a "Bearer" token.</span></p>
-<p class="rvps4"><span class="rvts6">To get a token to use for authentication, login to Trifolia and click on the "My Profile" menu under your name in the top-right corner. In the "My Profile" page, the authentication token for your logged-in user will be shown in a separate panel.</span></p>
-<p class="rvps4"><span class="rvts6">Use the authentication token in the "My Profile" page in REST API calls by adding an "Authorization" header with a value of "Bearer &lt;TOKEN&gt;".</span></p>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts19">Customizations</span></span></h2>
+<p class="rvps2"><span class="rvts6">Additionally, each of these endpoints correlate to the appropriate Implementation Guide Type in Trifolia. For example, only Implementation Guides associated with the Implementation Guide Type "FHIR Latest" will be returned by requests to the /api/FHIR3 endpoint. Similarly, only Implementation Guides associated with the Implementation Guide Type "FHIR DSTU2" will be returned by the /api/FHIR2 endpoint.</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts20">Authentication</span></span></h2>
+<p class="rvps2"><span class="rvts6">All REST endpoints are authenticated with OAuth 2.0 using a Authentication header with a "Bearer" token.</span></p>
+<p class="rvps2"><span class="rvts6">To get a token to use for authentication, login to Trifolia and click on the "My Profile" menu under your name in the top-right corner. In the "My Profile" page, the authentication token for your logged-in user will be shown in a separate panel.</span></p>
+<p class="rvps2"><span class="rvts6">Use the authentication token in the "My Profile" page in REST API calls by adding an "Authorization" header with a value of "Bearer &lt;TOKEN&gt;".</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts20">Customizations</span></span></h2>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps4"><span class="rvts6">StructureDefinition.id cannot exist in the Profile when performing a POST</span></li>
-<li class="rvps4"><span class="rvts6">StructureDefinition.id must not be changed when performing a PUT</span></li>
+<li class="rvps2"><span class="rvts6">StructureDefinition.id cannot exist in the Profile when performing a POST</span></li>
+<li class="rvps2"><span class="rvts6">StructureDefinition.id must not be changed when performing a PUT</span></li>
 </ul>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts19">Supported Operations</span></span></h2>
-<p class="rvps4"><span class="rvts6">See </span><a class="rvts11" href="DeveloperDocs.html">Developer Docs</a><span class="rvts6"> for more details.</span></p>
-<div class="rvps4"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
+<h2 class="rvps6"><span class="rvts0"><span class="rvts20">Supported Operations</span></span></h2>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="DeveloperDocs.html">Developer Docs</a><span class="rvts6"> for more details.</span></p>
+<div class="rvps2"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
 <tr valign="top">
-<td width="105" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Method</span></p>
+<td width="105" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Method</span></p>
 </td>
-<td width="941" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Endpoint</span></p>
+<td width="941" style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts19">Endpoint</span></p>
 </td>
 </tr>
 <tr valign="top">

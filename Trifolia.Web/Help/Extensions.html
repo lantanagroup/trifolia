@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.3.0.351">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.8.2.643">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -48,7 +48,7 @@
   <link href="css/effects.min.css" rel="stylesheet" />
   <link href="css/theme-light-blue.min.css" rel="stylesheet" />
   <link href="css/print.min.css" rel="stylesheet" media="print" />
-  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded #main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
+  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded div#main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
 
   <!-- Content style -->
   <link href="css/hnd.content.css" rel="stylesheet" />
@@ -183,9 +183,9 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts19">Re-usable Extensions</span></span></h2>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts20">Re-usable Extensions</span></span></h2>
 <p class="rvps2"><span class="rvts6">Trifolia supports re-usable extensions for FHIR DSTU2 implementation guides and profiles.</span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts28">Creating a Re-usable Extension</span></span></h3>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts29">Creating a Re-usable Extension</span></span></h3>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">Create a new profile in a FHIR DSTU2 implementation guide.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">Select FHIR DSTU2: Extension for the "type" of profile.</span></li>
@@ -198,7 +198,7 @@
 </ol>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <p class="rvps2"><span class="rvts6">Trifolia treats all profiles that are of type FHIR DSTU2: Extension as re-usable extensions. The behavior of Trifolia's template/profile editor adjusts slightly (such as disabling the Applies To selection button, and automatically adding a @url constraint) to account for requirements in the core FHIR DSTU2 standard when editing extension profiles.</span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts28">Using a Pre-defined Extension</span></span></h3>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts29">Using a Pre-defined Extension</span></span></h3>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">Open any FHIR DSTU2 profile.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">In the constraint editor, select an "extension" element that does NOT already have a constraint defined for it.</span></li>
@@ -207,10 +207,10 @@
 <li value="5" class="rvps2"><span class="rvts6">The "extension" element is turned into a constraint, and automatically creates constraints for each of the constraints defined in the extension.</span></li>
 <li value="6" class="rvps2"><span class="rvts6">The "extension" element itself should be marked as a slice and the @url constraint within the extension should be marked as a descriminator. The conformance and cardinality is set to "SHALL 1..1" for the new extension constraint, as well as the @url descriminator.</span></li>
 </ol>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts19">Profile Extensions</span></span></h2>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts20">Profile Extensions</span></span></h2>
 <p class="rvps2"><span class="rvts6">The profile may define extensions in addition to the constraints. These are extensions that add information to the profile as a whole, but are not required to be implemented where the profile is used/asserted.</span></p>
 <p class="rvps2"><span class="rvts6">Both FHIR DSTU1 and FHIR DSTU2 profiles support extensions on the profile.</span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts28">Adding Extensions to a Profile</span></span></h3>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts29">Adding Extensions to a Profile</span></span></h3>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
 <li value="1" class="rvps2"><span class="rvts6">Edit any FHIR profile.</span></li>
 <li value="2" class="rvps2"><span class="rvts6">The bottom entry in the Extensions panel of the Template/Profile tab always represents a "new" extension.</span></li>

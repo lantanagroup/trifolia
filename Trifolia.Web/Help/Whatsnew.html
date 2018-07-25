@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.3.0.351">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.8.2.643">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -48,7 +48,7 @@
   <link href="css/effects.min.css" rel="stylesheet" />
   <link href="css/theme-light-blue.min.css" rel="stylesheet" />
   <link href="css/print.min.css" rel="stylesheet" media="print" />
-  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded #main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
+  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded div#main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
 
   <!-- Content style -->
   <link href="css/hnd.content.css" rel="stylesheet" />
@@ -183,47 +183,114 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts15">Version 5.2.0 - 5.2.1</span></span></h2>
-<h3 class="rvps10"><span class="rvts0"><span class="rvts16">Version 5.2.1</span></span></h3>
-<p class="rvps4"><span class="rvts14">Released on 3/13/2018</span></p>
-<h3 class="rvps10"><span class="rvts0"><span class="rvts16">Improvement</span></span></h3>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps4"><span class="rvts14">Add filtering and additional "Type" column to implementation guide list</span></li>
-</ul>
-<h3 class="rvps10"><span class="rvts0"><span class="rvts16">Defect</span></span></h3>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps4"><span class="rvts14">Can't create profiles for FHIR Current Build</span></li>
-</ul>
-<h3 class="rvps10"><span class="rvts0"><span class="rvts16">Version 5.2.0</span></span></h3>
-<h2 class="rvps7"><span class="rvts0"><span class="rvts14">Released on 3/9/2018</span></span></h2>
-<h4 class="rvps11"><span class="rvts0"><span class="rvts17">Improvement</span></span></h4>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps8"><span class="rvts14">Implement "New Template" context selection button</span></li>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps8"><span class="rvts14">Need to implement the "..." for "Applies To" in the new "New Template/Profile" screen that arvind created as part of TRIF-1250.</span><br/><span class="rvts14">User should be able to select a child element in a pop-up window representing the context of the template. Follow the implementation example that exists in the current template editor.</span></li>
-</ul>
-<li class="rvps8"><span class="rvts14">Show identifiers and allow editing concepts from "View Value Set" screen</span></li>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps8"><span class="rvts14">The View screen for value sets used to show the identifier of the value set. After Trifolia was enhanced to allow multiple identifiers for a value set, the View screen was not updated to show the (multiple) identifiers.</span></li>
-</ul>
-<li class="rvps8"><span class="rvts14">Value set validation during export for white spaces</span></li>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps8"><span class="rvts14">When a value set is used by an implementation guide, which has a code or display name with white-spaces at the start or end, display a message to the user. This takes place during design validation (such as when a template is validated, or when the user exports an implementation guide).</span></li>
-</ul></ul>
-<h4 class="rvps11"><span class="rvts0"><span class="rvts17">Task</span></span></h4>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps8"><span class="rvts14">Remove support for FHIR DSTU1</span></li>
-</ul>
-<h4 class="rvps11"><span class="rvts0"><span class="rvts17">Defect</span></span></h4>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps8"><span class="rvts14">SHOULD constraints generating schematron errors (not warnings)</span></li>
-<li class="rvps8"><span class="rvts14">Constraints that have a number as the upper bound create invalid Schematron</span></li>
-<li class="rvps8"><span class="rvts14">Schematron issue with case-insensitive comparison</span></li>
-<li class="rvps8"><span class="rvts14">When adding a narrative constraint, autogenerate Schematron must be set to false</span></li>
-<li class="rvps8"><span class="rvts14">Default export selections result in an empty Schematron</span></li>
-<li class="rvps8"><span class="rvts14">Performance improvements to Schematron Generation</span></li>
-<li class="rvps8"><span class="rvts14">When a template is locked, user should not be able to save the template</span></li>
-</ul>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts15">Version 5.3.0</span></span></h2>
+<p class="rvps2"><span class="rvts14">Released 07/25/2018</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts18">Markdown</span></span></h3>
+<p class="rvps2"><span class="rvts14">Trifolia has migrated to using a rich-text syntax called Markdown, instead of Markup &amp; XHTML. In fields such as a template's description, a constraint's narrative text, or volume 1 section text, a Markdown editor is used in place of the previous Markup &amp; XHTML editors. Markdown is a more common syntax that is widely used, and is used by FHIR standards.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts18">Volume 1 content in MS Word exports</span></span></h3>
+<p class="rvps2"><span class="rvts14">The Microsoft Word exports now include the option to include Volume 1 content (which can be defined by editing the Implementation Guide). This is a pre-release of the functionality, as there may still be issues to work out that we have not yet discovered; particularly with regards to the formatting and styling of the content within the MS Word document that gets exported.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts18">Multi-tasking template edits</span></span></h3>
+<p class="rvps2"><span class="rvts14">For those that like to open multiple "template edit" windows at the same time, we have made it easier for you to identify which template is in each tab/window by appending the template's title to the title of the tab.</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts18">Development Log</span></span></h3>
+<div class="rvps7"><table border="0" cellpadding="2" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts17">Type</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts17">Summary</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Defect</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Copying/moving templates to an IG with a different IG Type does not update the template's "template type"</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Defect</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Disabled template editor still allows you to edit value set binding date</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Defect</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Update CDA schema to latest version</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Defect</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Export: Templates/Profiles: Select all check box</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Defect</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Trifolia allows there to be One oid for two different code systems</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Defect</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Removing an import value set generating error</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Defect</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Terminology Search saying "no value set found" when value set exists</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Defect</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Vocab: When values in a value set are retired, they don't export with an IG that was published before they were retired</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Defect</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Constraints Overview Table - repeat header across pages</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Defect</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Value Sets in this Guide table - Reduce width of Code column</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Improvement</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Migrate from WIKI Markup &amp; XHTML to Markdown</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Improvement</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Restrict Template/Profile binding to appropriate types</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">New Feature</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Prominently show release information in pop-up window</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">New Feature</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Append template's name to browser's title bar</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="128" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Task</span></p>
+</td>
+<td width="587" height="23" valign="top" style="padding: 2px;"><p class="rvps2"><span class="rvts16">Refactor the logic for determining the base url of a FHIR version</span></p>
+</td>
+</tr>
+</table>
+</div>
 <p></p>
 
             </div>
