@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:sch="http://www.ascc.net/xml/schematron" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
   <xs:import namespace="urn:hl7-org:sdtc" schemaLocation="SDTC.xsd" />
   <xs:annotation>
@@ -36,6 +36,7 @@
     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
     DAMAGE.
     </xs:documentation>
+
     <xs:documentation>
       2012-07-06 Created datatypes-base_SDTC.xsd (this file) this file is an edited version of datatypes-base.xsd that contains the SDTC extensions.
     </xs:documentation>
@@ -46,6 +47,9 @@
     </xs:documentation>
     <xs:documentation>
       2015-12-26 Commented out Schematron validation rule on II datatype
+    </xs:documentation>
+    <xs:documentation>
+      2017-10-10  Fixed ED datatype bug approved by SD on 2017-09-13 to allow other content in ED
     </xs:documentation>
   </xs:annotation>
   <xs:include schemaLocation="voc.xsd" />
@@ -205,6 +209,9 @@
             </xs:annotation>
           </xs:element>
           <xs:element name="thumbnail" minOccurs="0" maxOccurs="1" type="thumbnail" />
+          <!-- Begin Schema Fix: Added to fix Schema to allow XML/XHTML content in ED data type -->
+          <xs:any minOccurs="0" namespace="##other" processContents="skip" />
+          <!-- End Schema Fix: Added to fix Schema to allow XML/XHTML content in ED data type -->
         </xs:sequence>
         <xs:attribute name="mediaType" type="cs" use="optional" default="text/plain">
           <xs:annotation>
@@ -418,10 +425,12 @@
                   </xs:documentation>
           </xs:annotation>
         </xs:attribute>
+
         <!-- Begin Extensions: SDTC -->
         <xs:attribute ref="sdtc:valueSet" use="optional" />
         <xs:attribute ref="sdtc:valueSetVersion" use="optional" />
         <!-- End Extensions: SDTC -->
+
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

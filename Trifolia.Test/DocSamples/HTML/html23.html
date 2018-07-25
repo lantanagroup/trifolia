@@ -1,0 +1,84 @@
+<p>The templates in this document use terms from several code systems. These vocabularies are defined in various supporting specifications and may be maintained by other bodies, as is the case for the LOINC and SNOMED CT vocabularies.</p>
+<p>Note that value-set identifiers (e.g., ValueSet 2.16.840.1.113883.1.11.78 Observation Interpretation (HL7) DYNAMIC) do not appear in CDA submissions; they tie the conformance requirements of an implementation guide to the appropriate code system for validation.</p>
+<p>Value-set bindings adhere to HL7 Vocabulary Working Group best practices, and include both a conformance verb (<strong>SHALL</strong>, <strong>SHOULD</strong>, <strong>MAY</strong>, etc.) and an indication of <strong>DYNAMIC</strong> vs. **STATIC ** binding. Value-set constraints can be static, meaning that they are bound to a specified version of a value set, or dynamic, meaning that they are bound to the most current version of the value set. A simplified constraint, used when the binding is to a single code, includes the meaning of the code, as follows.</p>
+<p><em><strong>Binding to a Single Code</strong></em></p>
+<ol>
+<li>SHALL contain exactly one [1..1] code (CONF:15403).
+<ol type="a">
+<li>This code SHALL contain exactly one [1..1] @code=&quot;11450-4&quot; Problem List (CONF:15408).</li>
+<li>This code SHALL contain exactly one [1..1] @codeSystem=&quot;2.16.840.1.113883.6.1&quot; (CodeSystem: LOINC 2.16.840.1.113883.6.1 STATIC) (CONF: 31141).</li>
+</ol>
+</li>
+</ol>
+<p>The notation conveys the actual code (11450-4), the code’s displayName (Problem List), the OID of the codeSystem from which the code is drawn (2.16.840.1.113883.6.1), and the codeSystemName (LOINC).</p>
+<p>HL7 Data Types Release 1 requires the codeSystem attribute unless the underlying data type is “Coded Simple” or “CS”, in which case it is prohibited. The displayName and the codeSystemName are optional, but recommended, in all cases.</p>
+<p>The above example would be properly expressed as follows.</p>
+<p><em><strong>XML Expression of a Single-code Binding</strong></em></p>
+<pre><code>&lt;code code=&quot;11450-4&quot; codeSystem=&quot;2.16.840.1.113883.6.1&quot;/&gt;
+&lt;!-- or --&gt;
+&lt;code code=&quot;11450-4&quot; codeSystem=&quot;2.16.840.1.113883.6.1&quot; displayName=&quot;Problem List&quot; codeSystemName=&quot;LOINC&quot;/&gt;
+</code></pre>
+<p>A full discussion of the representation of vocabulary is outside the scope of this document; for more information, see the HL7 V3 Normative Edition 2010<sup>5</sup> sections on Abstract Data Types and XML Data Types R1.</p>
+<p>Value set tables are presented below the first template that uses that value set; links are provided in subsequent templates that use the same value set. The value set tables include the value set identifier, a description, a link (where appropriate), and a list of codes in the value set. Ellipses in the last row of value-set members shown indicate that the list is an excerpt and the complete source must be accessed to see all members. Where the table is an excerpt and no link is provided, the full set of values are contained in the hai_voc.xls spreadsheet included with this package.</p>
+<p><em><strong>Example Value Set Table</strong></em></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Code System</th>
+<th>Code System OID</th>
+<th>Print Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Value Set: Referral Types 2.16.840.1.113883.11.20.9.56<br/>A value set of SNOMED CT codes descending from &quot;3457005&quot; patient referral (procedure).<br/>Value Set Source: <a href="http://vtsl.vetmed.vt.edu/">http://vsac.nlm.nih.gov</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>44383000</td>
+<td>SNOMED CT</td>
+<td>2.16.840.1.113883.6.96</td>
+<td>Patient referral for consultation</td>
+</tr>
+<tr>
+<td>391034007</td>
+<td>SNOMED CT</td>
+<td>2.16.840.1.113883.6.96</td>
+<td>Refer for falls assessment (procedure)</td>
+</tr>
+<tr>
+<td>86395003</td>
+<td>SNOMED CT</td>
+<td>2.16.840.1.113883.6.96</td>
+<td>Patient referral for family planning (procedure)</td>
+</tr>
+<tr>
+<td>306106002</td>
+<td>SNOMED CT</td>
+<td>2.16.840.1.113883.6.96</td>
+<td>Referral to intensive care service (procedure)</td>
+</tr>
+<tr>
+<td>306140002</td>
+<td>SNOMED CT</td>
+<td>2.16.840.1.113883.6.96</td>
+<td>Referral to clinical oncology service (procedure)</td>
+</tr>
+<tr>
+<td>396150002</td>
+<td>SNOMED CT</td>
+<td>2.16.840.1.113883.6.96</td>
+<td>Referral for substance abuse (procedure)</td>
+</tr>
+<tr>
+<td>...</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><sup>5</sup> HL7 Version 3 Interoperability Standards, *Normative Edition 2010. <a href="http://www.hl7.org/memonly/downloads/v3edition.cfm#V32010">http://www.hl7.org/memonly/downloads/v3edition.cfm - V32010</a></p>

@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.3.0.351">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.8.2.643">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -48,7 +48,7 @@
   <link href="css/effects.min.css" rel="stylesheet" />
   <link href="css/theme-light-blue.min.css" rel="stylesheet" />
   <link href="css/print.min.css" rel="stylesheet" media="print" />
-  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded #main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
+  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded div#main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
 
   <!-- Content style -->
   <link href="css/hnd.content.css" rel="stylesheet" />
@@ -171,7 +171,7 @@
                         <li>Importing</li>
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="Importing.html" title="Importing" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="Importing.html" title="Importing" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="ImportingNative.html" title="Native" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="ExportXMLJSON.html" title="XML/JSON" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="ImportingNative.html" title="Native" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
@@ -183,24 +183,24 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps9"><span class="rvts0"><span class="rvts19">Importing using FHIR REST interface</span></span></h2>
-<p class="rvps4"><span class="rvts6">Trifolia provides </span><span class="rvts29">some </span><span class="rvts6">(but not all) POST/PUT/DELETE functionality for FHIR profiles. Below is a list of the operations supported by Trifolia:</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts20">Importing using FHIR REST interface</span></span></h2>
+<p class="rvps2"><span class="rvts6">Trifolia provides </span><span class="rvts30">some </span><span class="rvts6">(but not all) POST/PUT/DELETE functionality for FHIR profiles. Below is a list of the operations supported by Trifolia:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps4"><span class="rvts6">FHIR DSTU2 /api/FHIR2/</span></li>
+<li class="rvps2"><span class="rvts6">FHIR DSTU2 /api/FHIR2/</span></li>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps4"><span class="rvts6">POST /api/FHIR2/StructureDefinition</span></li>
-<li class="rvps4"><span class="rvts6">PUT /api/FHIR2/StructureDefinition/{id}</span></li>
-<li class="rvps4"><span class="rvts6">DELETE /api/FHIR2/StructureDefinition/{id}</span></li>
-<li class="rvps4"><span class="rvts6">POST /api/FHIR2/ValueSet</span></li>
-<li class="rvps4"><span class="rvts6">PUT /api/FHIR2/ValueSet/{id}</span></li>
+<li class="rvps2"><span class="rvts6">POST /api/FHIR2/StructureDefinition</span></li>
+<li class="rvps2"><span class="rvts6">PUT /api/FHIR2/StructureDefinition/{id}</span></li>
+<li class="rvps2"><span class="rvts6">DELETE /api/FHIR2/StructureDefinition/{id}</span></li>
+<li class="rvps2"><span class="rvts6">POST /api/FHIR2/ValueSet</span></li>
+<li class="rvps2"><span class="rvts6">PUT /api/FHIR2/ValueSet/{id}</span></li>
 </ul>
-<li class="rvps4"><span class="rvts6">FHIR STU3 /api/FHIR3/</span></li>
+<li class="rvps2"><span class="rvts6">FHIR STU3 /api/FHIR3/</span></li>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps4"><span class="rvts6">POST /api/FHIR3/StructureDefinition</span></li>
-<li class="rvps4"><span class="rvts6">PUT /api/FHIR3/StructureDefinition/{id}</span></li>
-<li class="rvps4"><span class="rvts6">DELETE /api/FHIR3/StructureDefinition/{id}</span></li>
-<li class="rvps4"><span class="rvts6">POST /api/FHIR3/ValueSet</span></li>
-<li class="rvps4"><span class="rvts6">PUT /api/FHIR3/ValueSet/{id}</span></li>
+<li class="rvps2"><span class="rvts6">POST /api/FHIR3/StructureDefinition</span></li>
+<li class="rvps2"><span class="rvts6">PUT /api/FHIR3/StructureDefinition/{id}</span></li>
+<li class="rvps2"><span class="rvts6">DELETE /api/FHIR3/StructureDefinition/{id}</span></li>
+<li class="rvps2"><span class="rvts6">POST /api/FHIR3/ValueSet</span></li>
+<li class="rvps2"><span class="rvts6">PUT /api/FHIR3/ValueSet/{id}</span></li>
 </ul></ul>
 <p></p>
 

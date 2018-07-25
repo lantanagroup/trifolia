@@ -30,19 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Install Debug|AnyCPU' ">
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>bin\Install Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Install Release|AnyCPU'">
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>bin\Install Release\</OutputPath>
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocumentFormat.OpenXml.1.0\lib\DocumentFormat.OpenXml.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -181,9 +180,9 @@
       <Project>{3e3c8e62-b392-433d-8c18-a4cfc72b36ef}</Project>
       <Name>Trifolia.DB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Trifolia.Generation\Trifolia.Generation.csproj">
-      <Project>{6070b7b7-78be-44f7-9ebb-5ff0b944aaa3}</Project>
-      <Name>Trifolia.Generation</Name>
+    <ProjectReference Include="..\Trifolia.Export\Trifolia.Export.csproj">
+      <Project>{6be1523e-6d37-4bf2-9564-19170a7341e3}</Project>
+      <Name>Trifolia.Export</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trifolia.Logging\Trifolia.Logging.csproj">
       <Project>{9032eeef-9d4e-4f15-8a86-ff9f2a74e763}</Project>

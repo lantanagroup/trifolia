@@ -7,13 +7,13 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.3.0.351">
+  <meta name="generator" content="HelpNDoc Professional Edition 5.8.2.643">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
   <title>Formatting Text</title>
   <meta name="description" content="" /> 
-  <meta name="keywords" content="">
+  <meta name="keywords" content="markdown">
 
 
 
@@ -48,7 +48,7 @@
   <link href="css/effects.min.css" rel="stylesheet" />
   <link href="css/theme-light-blue.min.css" rel="stylesheet" />
   <link href="css/print.min.css" rel="stylesheet" media="print" />
-  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded #main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
+  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded div#main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
 
   <!-- Content style -->
   <link href="css/hnd.content.css" rel="stylesheet" />
@@ -171,7 +171,7 @@
                         <li>Advanced Features</li>
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="AdvancedFeatures.html" title="Advanced Features" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="AdvancedFeatures.html" title="Advanced Features" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="InferredTemplates.html" title="Inferred Templates" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="Reports.html" title="Reports" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="InferredTemplates.html" title="Inferred Templates" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
@@ -183,111 +183,68 @@
             <div class="main-content">
                 
 <p></p>
-<p class="rvps2"><span class="rvts6">Trifolia allows you to format descriptions, notes, and narrative constraint text using wiki syntax. When you render the output to HTML or Word, the text is formatted correctly.</span></p>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts19">Fields That Support Wiki Syntax</span></span></h2>
+<p class="rvps2"><span class="rvts6">Trifolia allows you to format descriptions, notes, and narrative constraint text using Markdown syntax. When you render the output to HTML or Word, the text is rendered according to the specified export format.</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts20">Fields That Support Wiki Syntax</span></span></h2>
 <p class="rvps2"><span class="rvts6">The following fields support wiki syntax formatting:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Templates</span></li>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><span class="rvts6">Description</span></li>
+<li class="rvps2"><span class="rvts6">Notes</span></li>
+</ul>
+<li class="rvps2"><span class="rvts6">Constraints</span></li>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
 <li class="rvps2"><span class="rvts6">Primitive Constraint Narrative</span></li>
 <li class="rvps2"><span class="rvts6">Constraint Description</span></li>
 <li class="rvps2"><span class="rvts6">Constraint Heading Description</span></li>
-<li class="rvps2"><span class="rvts6">Template Description</span></li>
-<li class="rvps2"><span class="rvts6">Template Note</span></li>
+</ul>
+<li class="rvps2"><span class="rvts6">Implementation Guides</span></li>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
+<li class="rvps2"><span class="rvts6">Volume 1 Sections</span></li>
 <li class="rvps2"><span class="rvts6">Template Type Description (ex: “Document Templates” description)</span></li>
-</ul>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts19">Bold Text</span></span></h2>
-<p class="rvps2"><span class="rvts27">Input Example</span></p>
-<p class="rvps2"><span class="rvts6">This is *an example of bold* text</span></p>
-<p class="rvps2"><span class="rvts27">Output Example</span></p>
-<p class="rvps2"><span class="rvts6">This is </span><span class="rvts18">an example of bold</span><span class="rvts6"> text</span></p>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts19">Italics</span></span></h2>
-<p class="rvps2"><span class="rvts27">Input Example</span></p>
-<p class="rvps2"><span class="rvts6">This is _an example of italic_ text</span></p>
-<p class="rvps2"><span class="rvts27">Output Example</span></p>
-<p class="rvps2"><span class="rvts6">This is </span><span class="rvts29">an example of italic</span><span class="rvts6"> text</span></p>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts19">Links</span></span></h2>
-<p class="rvps2"><span class="rvts6">You can create links to templates, or to external resources such as websites or reference documents. Depending on the syntax, Trifolia can insert information into the link's text.</span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts28">Link to Template by OID</span></span></h3>
-<p class="rvps2"><span class="rvts27">Input Example</span></p>
-<p class="rvps2"><span class="rvts6">Example of a link to [URL:#1.2.3.4.5]</span></p>
-<p class="rvps2"><span class="rvts27">Output Example</span></p>
-<p class="rvps2"><span class="rvts6">Example of a link to </span><span class="rvts46">My Template Name (1.2.3.4.5)</span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts48">Link to External Website, without Link Text</span></span></h3>
-<p class="rvps2"><span class="rvts49">Input Example</span></p>
-<p class="rvps2"><span class="rvts47">Example of a link to [URL:http://www.lantanagroup.com]</span></p>
-<p class="rvps2"><span class="rvts49">Output Example</span></p>
-<p class="rvps2"><span class="rvts47">Example of a link to </span><span class="rvts49">http://www.lantanagroup.com</span></p>
-<p class="rvps2"><span class="rvts47"><br/></span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts48">Link to External Website, with Link Text</span></span></h3>
-<p class="rvps2"><span class="rvts49">Input Example</span></p>
-<p class="rvps2"><span class="rvts47">Example of a link to [URL:Lantana Consulting Group|http://www.lantanagroup.com]</span></p>
-<p class="rvps2"><span class="rvts49">Output Example</span></p>
-<p class="rvps2"><span class="rvts47">Example of a link to </span><span class="rvts49">Lantana Consulting Group</span></p>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts50">Tables</span></span></h2>
-<p class="rvps2"><span class="rvts49">Input Example</span></p>
-<p class="rvps2"><span class="rvts47">|| Name || Email || Location</span></p>
-<p class="rvps2"><span class="rvts47">| Joe | joe@lantanagroup.com | Texas</span></p>
-<p class="rvps2"><span class="rvts47">| Sally | sally@lantanagroup.com | Arkansas</span></p>
-<p class="rvps2"><span class="rvts47">| John | john@lantanagroup.com | Pennsylvania</span></p>
-<p class="rvps2"><span class="rvts49">Output Example</span></p>
-<div class="rvps2"><table width="100%" border="1" cellpadding="1" cellspacing="2" style="border-color: #000000; border-style: solid; border-spacing: 2px;">
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Name</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Email</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts18">Location</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Joe</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">joe@lantanagroup.com</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Texas</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Sally</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">sally@lantanagroup.com</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Arkansas</span></p>
-</td>
-</tr>
-<tr valign="top">
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">John</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">john@lantanagroup.com</span></p>
-</td>
-<td style="border-color: #000000; border-style: solid; padding: 1px;"><p class="rvps2"><span class="rvts6">Pennsylvania</span></p>
-</td>
-</tr>
-</table>
-</div>
-<h2 class="rvps12"><span class="rvts0"><span class="rvts50">Bullets and Numbers</span></span></h2>
-<p class="rvps2"><span class="rvts47">Wiki syntax supports ordered (numbered) and unordered (bulleted) lists.</span></p>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts48">Unordered List (Bullets)</span></span></h3>
-<p class="rvps2"><span class="rvts49">Input Example</span></p>
-<p class="rvps2"><span class="rvts47">* Bullet 1</span></p>
-<p class="rvps2"><span class="rvts47">* Bullet 2</span></p>
-<p class="rvps2"><span class="rvts47">* Bullet 3</span></p>
-<p class="rvps2"><span class="rvts49">Output Example</span></p>
-<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts47">Bullet 1</span></li>
-<li class="rvps2"><span class="rvts47">Bullet 2</span></li>
-<li class="rvps2"><span class="rvts47">Bullet 3</span></li>
-</ul>
-<h3 class="rvps13"><span class="rvts0"><span class="rvts48">Ordered List (Numbers)</span></span></h3>
-<p class="rvps2"><span class="rvts49">Input Example</span></p>
-<p class="rvps2"><span class="rvts47"># Bullet 1</span></p>
-<p class="rvps2"><span class="rvts47"># Bullet 2</span></p>
-<p class="rvps2"><span class="rvts47"># Bullet 3</span></p>
-<p class="rvps2"><span class="rvts49">Output Example</span></p>
-<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
-<li value="1" class="rvps2"><span class="rvts47">Bullet 1</span></li>
-<li value="2" class="rvps2"><span class="rvts47">Bullet 2</span></li>
-<li value="3" class="rvps2"><span class="rvts47">Bullet 3</span></li>
-</ol>
+</ul></ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts20">HTML</span></span></h2>
+<p class="rvps2"><span class="rvts6">The Markdown fields in Trifolia may have a mix of Markdown and HTML. For example:</span></p>
+<p class="rvps18"><span class="rvts52">This **is an** example of &lt;span class="font-family: Courier New"&gt;mixed html&lt;/span&gt; and markdown.</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts20">Formatting XML elements</span></span></h2>
+<p class="rvps2"><span class="rvts6">You may want to highlight XML element names so that they show in a different format than other text. A CSS class has been added to accommodate this, which is also respected by MS Word documents.</span></p>
+<p class="rvps2"><span class="rvts6">The CSS class name is "XMLName", and may be used like so:</span></p>
+<p class="rvps18"><span class="rvts52">These pilot instance identifiers begin with </span><span class="rvts53">&lt;span class="XMLName"&gt;</span><span class="rvts54">2.16.840.1.113883.3.117.1.1.5</span><span class="rvts53">&lt;/span&gt;</span><span class="rvts52">; HL7 example identifiers begin with </span><span class="rvts53">&lt;span class="XMLName"&gt;</span><span class="rvts54">2.16.840.1.113883.19.5</span><span class="rvts53">&lt;/span&gt;</span><span class="rvts52">.</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts20">Syntax Guide</span></span></h2>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Emphasis</span></span></h3>
+<p class="rvps2"><span class="rvts48">**bold**</span></p>
+<p class="rvps2"><span class="rvts49">*italics*</span></p>
+<p class="rvps2"><span class="rvts50">~~strikethrough~~</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Headers</span></span></h3>
+<p class="rvps2"><span class="rvts47"># Big header</span></p>
+<p class="rvps2"><span class="rvts47">## Medium header</span></p>
+<p class="rvps2"><span class="rvts47">### Small header</span></p>
+<p class="rvps2"><span class="rvts47">#### Tiny header</span></p>
+<p class="rvps2"><span class="rvts47">##### Even more tiny header</span></p>
+<p class="rvps2"><span class="rvts47">###### Super small header</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Lists</span></span></h3>
+<p class="rvps2"><span class="rvts47">* Unordered list item</span><br/><span class="rvts47">* Unordered list item</span><br/><span class="rvts47">* Unordered list item</span></p>
+<p class="rvps2"><span class="rvts47">1. Numbered list item</span><br/><span class="rvts47">2. Numbered list item</span><br/><span class="rvts47">3. Numbered list item</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Links</span></span></h3>
+<p class="rvps2"><span class="rvts47">[alt text](http://example.com)</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Quotes</span></span></h3>
+<p class="rvps2"><span class="rvts47">&gt; This is a quote</span></p>
+<p class="rvps2"><span class="rvts47">&gt; It can span multiple lines!</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Images</span></span></h3>
+<p class="rvps2"><span class="rvts47">![alt text](http://example.com/image.jpg)</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Tables</span></span></h3>
+<p class="rvps2"><span class="rvts47">| Column 1 | Column 2 | Column 3 |</span></p>
+<p class="rvps2"><span class="rvts47">| -------- | -------- | -------- |</span></p>
+<p class="rvps2"><span class="rvts47">| John &nbsp; &nbsp; | Doe &nbsp; &nbsp; &nbsp;| Male &nbsp; &nbsp; |</span></p>
+<p class="rvps2"><span class="rvts47">| Mary &nbsp; &nbsp; | Smith &nbsp; &nbsp;| Female &nbsp; |</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Embedded Code</span></span></h3>
+<p class="rvps2"><span class="rvts47">`</span></p>
+<p class="rvps2"><span class="rvts47">&lt;ClinicalDocument&gt;</span></p>
+<p class="rvps2"><span class="rvts47"> &nbsp;&lt;setId root="..." /&gt;</span></p>
+<p class="rvps2"><span class="rvts47"> &nbsp;...</span></p>
+<p class="rvps2"><span class="rvts47">&lt;/ClinicalDocument&gt;</span></p>
+<p class="rvps2"><span class="rvts47">`</span></p>
 <p></p>
 
             </div>

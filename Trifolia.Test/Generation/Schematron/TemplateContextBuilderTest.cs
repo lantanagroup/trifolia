@@ -24,7 +24,7 @@ namespace Trifolia.Test.Generation.Schematron
             this.tdb = new MockObjectRepository();
             this.tdb.InitializeCDARepository();
 
-            this.igType = this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            this.igType = this.tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA);
             this.igTypeSchema = this.igType.GetSimpleSchema();
         }
 
@@ -90,7 +90,7 @@ namespace Trifolia.Test.Generation.Schematron
             MockObjectRepository tdb = new MockObjectRepository();
             tdb.InitializeCDARepository();
 
-            var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            var igType = tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA);
             var unspecifiedTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_UNSPECIFIED_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
             TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType, igType.GetSimpleSchema());
@@ -110,9 +110,9 @@ namespace Trifolia.Test.Generation.Schematron
             MockObjectRepository tdb = new MockObjectRepository();
             tdb.InitializeCDARepository();
 
-            var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            var igType = tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA);
             var unspecifiedTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_UNSPECIFIED_TYPE);
-            var docTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            var docTemplateType = tdb.FindOrCreateTemplateType(igType, Constants.IGTypeNames.CDA);
             var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
             TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType, igType.GetSimpleSchema());
 
@@ -136,9 +136,9 @@ namespace Trifolia.Test.Generation.Schematron
             MockObjectRepository tdb = new MockObjectRepository();
             tdb.InitializeCDARepository();
 
-            var igType = tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            var igType = tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA);
             var unspecifiedTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_UNSPECIFIED_TYPE);
-            var docTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
+            var docTemplateType = tdb.FindOrCreateTemplateType(igType, Constants.IGTypeNames.CDA);
             var entryTemplateType = tdb.FindOrCreateTemplateType(igType, MockObjectRepository.DEFAULT_CDA_ENTRY_TYPE);
             var ig = tdb.FindOrCreateImplementationGuide(igType, "Test IG");
             TemplateContextBuilder tcb = new TemplateContextBuilder(tdb, igType, igType.GetSimpleSchema());

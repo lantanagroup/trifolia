@@ -20,12 +20,12 @@ namespace Trifolia.Test.Schema
                 Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                     new ImplementationGuideType()
                         {
-                            Name = "CDA",
-                            SchemaLocation = "CDA.xsd"
+                            Name = Constants.IGTypeNames.CDA,
+                            SchemaLocation = Constants.IGTypeSchemaLocations.CDA
                         }));
 
             Assert.IsNotNull(cdaSchema.ComplexTypes);
-            Assert.AreEqual(219, cdaSchema.ComplexTypes.Count);
+            Assert.AreEqual(225, cdaSchema.ComplexTypes.Count);
             Assert.IsNotNull(cdaSchema.Children);
             Assert.AreEqual(1, cdaSchema.Children.Count);
 
@@ -34,7 +34,7 @@ namespace Trifolia.Test.Schema
             Assert.IsNotNull(clinicalDocument);
             Assert.AreEqual("ClinicalDocument", clinicalDocument.DataType);
             Assert.AreEqual(false, clinicalDocument.Mixed);
-            Assert.AreEqual(30, clinicalDocument.Children.Count);
+            Assert.AreEqual(31, clinicalDocument.Children.Count);
             var clinicalDocumentInvalidChildNames = clinicalDocument.Children.Where(y => string.IsNullOrEmpty(y.Name) || y.Name.Length <= 1);
             Assert.IsTrue(clinicalDocumentInvalidChildNames.Count() == 0);
             Assert.AreEqual(SimpleSchema.ObjectTypes.Element, clinicalDocument.Type);
@@ -91,7 +91,7 @@ namespace Trifolia.Test.Schema
             Assert.AreEqual("0..1", patient.Cardinality);
             Assert.AreEqual("MAY", patient.Conformance);
             Assert.AreEqual(false, patient.Mixed);
-            Assert.AreEqual(18, patient.Children.Count);
+            Assert.AreEqual(24, patient.Children.Count);
             Assert.IsNotNull(patient.Children.SingleOrDefault(y => y.Name == "sdtc:raceCode"));
             var patientInvalidNames = patient.Children.Where(y => string.IsNullOrEmpty(y.Name) || y.Name.Length <= 1);
             Assert.IsTrue(patientInvalidNames.Count() == 0);
@@ -121,8 +121,8 @@ namespace Trifolia.Test.Schema
                 Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                     new ImplementationGuideType()
                     {
-                        Name = "CDA",
-                        SchemaLocation = "CDA.xsd"
+                        Name = Constants.IGTypeNames.CDA,
+                        SchemaLocation = Constants.IGTypeSchemaLocations.CDA
                     }));
 
             cdaSchema = cdaSchema.GetSchemaFromContext("Observation");
@@ -161,8 +161,8 @@ namespace Trifolia.Test.Schema
                 Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                     new ImplementationGuideType()
                     {
-                        Name = "CDA",
-                        SchemaLocation = "CDA.xsd"
+                        Name = Constants.IGTypeNames.CDA,
+                        SchemaLocation = Constants.IGTypeSchemaLocations.CDA
                     }));
 
             cdaSchema = cdaSchema.GetSchemaFromContext("Observation");

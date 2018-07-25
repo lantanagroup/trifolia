@@ -14,6 +14,20 @@
         );
 };
 
+function loadHelpTopic(selector, url) {
+    $.get(url, function (data) {
+        var bodyContent = data.replace(/^[\S\s]*<body[^>]*?>/i, "").replace(/<\/body[\S\s]*$/i, "");
+        var body = $(bodyContent).find('.main-content');
+        body.find('.additionalFormats').remove();
+        body.find('img[src]').each(function () {
+            var img = this;
+            var src = $(img).attr('src');
+            $(img).attr('src', '/Help/' + src);
+        });
+        $(selector).append(body);
+    });
+};
+
 function createUUID() {
     // http://www.ietf.org/rfc/rfc4122.txt
     var s = [];
@@ -170,4 +184,47 @@ function joinUrl() {
     }
 
     return joined;
+}
+
+function WhatsNewViewModel(versionNumber) {
+    var self = this;
+    var whatsNewUrl = '/Help/Whatsnew.html?v=' + versionNumber;
+    var cookieKey = 'whatsNewLastSeenVersion';
+    var lastSeenVersionNumber = $.cookie(cookieKey);
+
+    self.HideNextTime = ko.observable(lastSeenVersionNumber === versionNumber);
+
+    self.CloseWhatsNew = function () {
+        $('#whatsNewDialog').modal('hide');
+    };
+
+    self.OpenWhatsNew = function () {
+        $('#whatsNewDialog').modal('show');
+    };
+
+    self.Initialize = function () {
+        var shouldShow = lastSeenVersionNumber !== versionNumber;
+        var versionExt = versionNumber ? '?' + versionNumber : '';
+        var whatsNewUrl = '/Help/Whatsnew.html' + versionExt;
+        loadHelpTopic('#whatsNewBody', whatsNewUrl);
+
+        $('#whatsNewDialog').on('hidden.bs.modal', function (e) {
+            if (self.HideNextTime()) {
+                $.cookie(cookieKey, versionNumber);
+            } else {
+                $.removeCookie(cookieKey);
+            }
+        });
+
+        $("#whatsNewDialog").modal({
+            backdrop: 'static',
+            show: false
+        });
+
+        if (shouldShow && (location.pathname === '/home/loggedinindex' || location.pathname === '/')) {
+            self.OpenWhatsNew();
+        }
+    };
+
+    self.Initialize();
 }

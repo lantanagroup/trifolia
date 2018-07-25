@@ -1,21 +1,15 @@
 ﻿extern alias fhir_stu3;
 using fhir_stu3.Hl7.Fhir.Model;
-using fhir_stu3.Hl7.Fhir.Serialization;
 using fhir_stu3.Hl7.Fhir.Specification.Navigation;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Trifolia.Config;
 using Trifolia.DB;
-using Trifolia.Generation.IG.ConstraintGeneration;
 using Trifolia.Logging;
 using Trifolia.Shared;
 using Trifolia.Shared.FHIR;
-using Trifolia.Shared.FHIR.Profiles.STU3;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using StructureDefinition = fhir_stu3.Hl7.Fhir.Model.StructureDefinition;
-using SummaryType = fhir_stu3.Hl7.Fhir.Rest.SummaryType;
 
 namespace Trifolia.Import.FHIR.STU3
 {

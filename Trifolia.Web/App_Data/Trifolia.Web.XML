@@ -1157,7 +1157,7 @@
             </summary>
             <param name="templateId">The internal id of the template to get</param>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.TemplateController.GetTemplates(System.Nullable{System.Int32},System.Int32,System.String,System.Boolean,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
+        <member name="M:Trifolia.Web.Controllers.API.TemplateController.GetTemplates(System.Nullable{System.Int32},System.Int32,System.String,System.Boolean,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.Nullable{System.Int32})">
             <summary>
             Searches for templates and returns basic meta-data about the templates
             </summary>
@@ -1173,6 +1173,8 @@
             <param name="filterOrganizationId">Matches the id of the organization specified specifically to the organization of the template. Only templates with a matching organization will be returned.</param>
             <param name="selfOid">If exists, makes sure not to return the Oid of the template currently in use</param>
             <param name="filterContextType">Matches the context specified specifically to the context of the template. Only templates whose context type contain the specified value will be returned.</param>
+            <param name="fhirPath">The path to a FHIR element that should be filtered based on the types within the base element</param>
+            <param name="implementationGuideTypeId">The type id of the Implementation Guide associated with the template</param>
             <returns>Trifolia.Web.Models.TemplateManagement.ListModel</returns>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.TemplateEditorController.GetAvailableExtensions(System.Int32)">
@@ -1213,6 +1215,14 @@
             <param name="identifier">The identifier to search for</param>
             <param name="identifierId">The id of a valueset identifier that should be ignored while searching</param>
             <returns>True if the identifier is not found, otherwise false.</returns>
+        </member>
+        <member name="M:Trifolia.Web.Controllers.API.TerminologyController.FindCodeSystem(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Searches for a code system which has the specified identifier
+            </summary>
+            <param name="identifier">The identifier of the code system to find</param>
+            <param name="ignoreId">Indicates an id that should be ignored. Used to validate that a code system does not have the same identifier as another code system.</param>
+            <returns>The id of the first code system found with a matching identifier.</returns>
         </member>
         <member name="M:Trifolia.Web.Controllers.API.TerminologyController.DeleteValueSet(System.Int32,System.Nullable{System.Int32})">
             <summary>

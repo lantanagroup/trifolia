@@ -54,8 +54,9 @@ namespace Trifolia.Test.Controllers.API.FHIR.STU3
         /// <summary>
         /// Tests aspects of structure definition exports that are not covered by schematron from the FHIR build
         /// </summary>
-        [TestMethod, TestCategory("FHIR3")]
-        public void TestStructureDefinition()
+        [TestMethod]
+        [TestCategory("FHIR")]
+        public void STU3_TestStructureDefinition()
         {
             var structureDefinitions = ExportTests.exportedBundle.Entry
                 .Where(y => y.Resource is StructureDefinition)

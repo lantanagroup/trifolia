@@ -56,10 +56,10 @@
                         <div class="input-group" style="padding-bottom: 10px;">
                             <input type="text" class="form-control" ng-model="criteria.query" />
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="criteria.query = ''; search();">
+                                <button class="btn btn-default" type="button" ng-click="criteria.query = ''; search(true);">
                                     <i class="glyphicon glyphicon-remove"></i>
                                 </button>
-                                <button class="btn btn-default" type="submit" ng-click="search()">Search</button>
+                                <button class="btn btn-default" type="submit" ng-click="search(true)">Search</button>
                             </span>
                         </div>
                     </form>
@@ -147,10 +147,10 @@
                         <div class="input-group" style="padding-bottom: 10px;">
                             <input type="text" class="form-control" ng-model="criteria.query" />
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="criteria.query = ''; search();">
+                                <button class="btn btn-default" type="button" ng-click="criteria.query = ''; search(true);">
                                     <i class="glyphicon glyphicon-remove"></i>
                                 </button>
-                                <button class="btn btn-default" type="submit" ng-click="search()">Search</button>
+                                <button class="btn btn-default" type="submit" ng-click="search(true)">Search</button>
                             </span>
                         </div>
                     </form>
@@ -284,7 +284,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" ng-click="ok()">OK</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="isDisabled" ng-click="ok()">{{isDisabled ? 'Deleting Value Set, please wait...' : 'OK'}}</button>
                 <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
             </div>
         </script>
@@ -394,9 +394,10 @@
                         
                     <div class="form-group">
                         <label for="codeSystemOid">Identifier</label>
-                        <input type="text" class="form-control" id="codeSystemOid" ng-model="codeSystem.Oid" name="identifier" ng-pattern="identifierRegex" required maxlength="255" />
+                        <input type="text" class="form-control" id="codeSystemOid" ng-model="codeSystem.Oid" name="identifier" ng-pattern="identifierRegex" required maxlength="255" ng-change="oidChanged()" />
                         <span class="help-block" ng-show="editCodeSystemForm.identifier.$error.pattern">The identifier is not in the correct format. Acceptable formats are: http(s)://XXX or urn:oid:XXX or urn:hl7ii:XXX:YYY</span>
                         <span class="help-block" ng-show="editCodeSystemForm.identifier.$error.required">Identifier is required.</span>
+                        <span class="help-block" ng-show="oidIsDuplicate">The identifier specified is already in use by another code system.</span>
                     </div>
                         
                     <div class="form-group">
@@ -405,7 +406,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="editCodeSystemForm.$invalid">OK</button>
+                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="editCodeSystemForm.$invalid || oidIsDuplicate">OK</button>
                     <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
                 </div>
             </form>

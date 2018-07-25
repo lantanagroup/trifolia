@@ -420,11 +420,6 @@ a.btn.btn-primary {
     display: none;
 }
 
-/* Rich-text editor */
-.sceditor-container p {
-    margin-top: 5px;
-}
-
 #constraintNumberEdit {
     margin-top: 61px;
     padding: 15px;
@@ -432,26 +427,6 @@ a.btn.btn-primary {
 
 .row-striped > .row:nth-child(odd) {
     background-color: #f9f9f9;
-}
-
-.sceditor-create-anchor button {
-    width: 100%;
-}
-
-.sceditor-button-anchor div {
-    background-image: url('/Images/anchor.png') !important;
-}
-
-.sceditor-customimage {
-    margin: .5em;
-    border: 3px solid #fff;
-    max-width: 400px;
-    width: auto;
-    height: 200px;
-}
-
-.sceditor-customimage.selected {
-    border: 3px solid #ECBA42;
 }
 
 copy-button {
@@ -465,4 +440,21 @@ copy-button {
 p table td{
     border: 1px solid #000;
     empty-cells: show;
+}
+
+/* SimpleMDE (CodeMirror) additional styles */
+.CodeMirror.disabled {
+    background-color: #eee;
+}
+
+#whatsNewBody {
+    padding: 15px !important;
+}
+
+#whatsNewDialog .modal-footer {
+    text-align: left !important;
+}
+
+.XMLName {
+    font-family: 'Courier New';
 }

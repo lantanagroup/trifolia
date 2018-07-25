@@ -260,7 +260,12 @@ ko.bindingHandlers.date = {
                 $(element).removeAttr('isUpdating');
             });
 
-        $(element).datepicker('update', value());
+        if (value()) {
+            var valueMoment = moment(value());
+            $(element).datepicker('update', valueMoment.format('MM/DD/YYYY'));
+        } else {
+            $(element).datepicker('update', value());
+        }
 
         /*
         $(element).change(function () {
@@ -279,7 +284,12 @@ ko.bindingHandlers.date = {
             return;
         }
 
-        $(element).datepicker('update', value());
+        if (value()) {
+            var valueMoment = moment(value());
+            $(element).datepicker('update', valueMoment.format('MM/DD/YYYY'));
+        } else {
+            $(element).datepicker('update', value());
+        }
     }
 };
 
@@ -496,41 +506,6 @@ ko.bindingHandlers.localization = {
     }
 };
 
-/* sceditor */
-ko.bindingHandlers.sceditor = {
-    init: function (element, valueAccessor, allBindingsAccessor) {
-        var value = valueAccessor();
-
-        setTimeout(function () {
-            $(element).sceditor({
-                plugins: 'xhtml',
-                style: '/Styles/jquery.sceditor.default.min.css',
-                toolbar: 'bold,italic,underline,strike,subscript,superscript|left,center,right,justify|font,size,color,removeformat|cut,copy,paste,pastetext|bulletlist,orderedlist,indent,outdent|table|code,quote|horizontalrule,image,email,link,unlink,anchor|emoticon,youtube,date,time|ltr,rtl|print,maximize,source',
-                imageOpts: allBindingsAccessor().imageOpts
-            });
-
-            var instance = $(element).sceditor('instance');
-
-            instance.nodeChanged(function (e) {
-                var newValue = instance.val();
-                value(newValue);
-            });
-
-            instance.keyUp(function (e) {
-                var newValue = instance.val();
-                value(newValue);
-            });
-
-            instance.trifoliaEditorChange = function () {
-                var newValue = instance.val();
-                value(newValue);
-            };
-        }, 300);
-    },
-    update: function (element, valueAccessor, allBindingsAccessor) {
-    }
-};
-
 /* spinedit */
 ko.bindingHandlers.spinedit = {
     init: function (element, valueAccessor, allBindingsAccessor) {
@@ -592,4 +567,243 @@ ko.bindingHandlers.tooltip = {
             });
         }
     },
+};
+
+/* SimpleMDE */
+ko.bindingHandlers.markdown = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        var value = valueAccessor();
+        var valueUnwrapped = ko.utils.unwrapObservable(valueAccessor());
+        var allBindings = allBindingsAccessor();
+        var validTags = ['p', 'b', 'i', 'em', 'a', 'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tr', 'td', 'th', 'span', 'strong', 'cite'];
+        var implementationGuideId;
+
+        if (allBindings.implementationGuideId) {
+            if (typeof allBindings.implementationGuideId === 'function') {
+                implementationGuideId = allBindings.implementationGuideId();
+                allBindings.implementationGuideId.subscribe(function () {
+                    implementationGuideId = allBindings.implementationGuideId();
+                });
+            } else {
+                implementationGuideId = allBindings.implementationGuideId;
+            }
+        }
+
+        var checkHTML = function (html) {
+            var doc = document.createElement('div');
+            doc.innerHTML = html;
+            var foundElements = $(doc).find('*');
+            var invalidTags = _.filter(foundElements, function (foundElement) {
+                return foundElement.localName === 'invalid' || validTags.indexOf(foundElement.localName.toLowerCase()) < 0;
+            });
+
+            var results = {
+                // Validate that all tags are properly closed
+                validHTML: (doc.innerHTML.toLowerCase() === html.toLowerCase()),
+
+                // Validate that the markdown only contains tags supported by Trifolia
+                validTags: invalidTags.length == 0
+            };
+
+            return results;
+        };
+
+        var prettyPrintXmlToolbar = {
+            name: 'pretty-print-xml',
+            action: function (editor) {
+                var selectedText = editor.codemirror.getSelection();
+
+                if (!selectedText) {
+                    return;
+                }
+
+                var singleTickRegex = /^`(.+?)`$/g;
+                var multiTickRegex = /^```(.+?)```$/g;
+                if (multiTickRegex.test(selectedText)) {
+                    var formattedText = vkbeautify.xml(selectedText.substring(3, selectedText.length - 3));
+                    var replaceText = '`' + formattedText + '`';
+                    if (replaceText.indexOf('\n') > 0) {
+                        replaceText = '```' + formattedText + '```';
+                    }
+                    editor.codemirror.replaceSelection(replaceText);
+                } else if (singleTickRegex.test(selectedText)) {
+                    var formattedText = vkbeautify.xml(selectedText.substring(1, selectedText.length - 1));
+                    var replaceText = '`' + formattedText + '`';
+                    if (replaceText.indexOf('\n') > 0) {
+                        replaceText = '```' + formattedText + '```';
+                    }
+                    editor.codemirror.replaceSelection(replaceText);
+                } else {
+                    var formattedText = vkbeautify.xml(selectedText);
+                    editor.codemirror.replaceSelection(formattedText);
+                }
+            },
+            className: 'fa fa-terminal',
+            title: 'Pretty print XML'
+        };
+
+        var trifoliaHelpToolbar = {
+            name: 'trifolia-help',
+            action: function (editor) {
+                window.open('/Help/FormattingText.html', '_new');
+            },
+            className: 'fa fa-question-circle',
+            title: 'Formatting guide'
+        };
+
+        var igImageToolbar = {
+            name: 'ig-image',
+            action: function (editor) {
+                var toolbarDiv = editor.toolbarElements['ig-image'];
+                var foundPopover = $(toolbarDiv).find('.ig-image-popover');
+                var imageElements = '';
+
+                if (foundPopover.length == 0) {
+                    var popoverDiv = '<div class="ig-image-popover" data-toggle="popover" title="Insert images from this IG"></div>';
+                    $(toolbarDiv).append(popoverDiv);
+                    $(toolbarDiv).find('.ig-image-popover').popover({
+                        html: true,
+                        container: $(editor.gui.toolbar).parent()[0],
+                        content: function () {
+                            return imageElements;
+                        }
+                    });
+                }
+
+                var baseIgUrl = '/api/ImplementationGuide/' + implementationGuideId;
+
+                $.get(baseIgUrl + '/Images', function (images) {
+                    imageElements = '';
+
+                    _.each(images, function (image) {
+                        imageElements += '<a href="#" class="ig-image-popover-entry" img-description="' + image.Description + '">' + image.FileName + '</a><br/>';
+                    });
+
+                    $(toolbarDiv).find('.ig-image-popover').popover('toggle');
+
+                    $(editor.gui.toolbar).parent().find('.popover-content a').on('click', function (e) {
+                        var doc = editor.codemirror.getDoc();
+                        var cursor = doc.getCursor();
+                        var description = $(e.target).attr('img-description');
+                        var fileurl = (baseIgUrl + '/Image/' + e.target.innerHTML).replace(/ /g, '%20');
+                        doc.replaceRange('![' + (description || filename) + '](' + fileurl + ')', cursor);
+                    });
+                });
+            },
+            className: 'fa fa-star',
+            title: 'Image from IG'
+        };
+
+        var simplemde;
+        var validateTimeout = null;
+        var options = {
+            element: element,
+            initialValue: valueUnwrapped || '',
+            toolbar: [
+                'bold', 'italic', 'strikethrough', 'heading',
+                '|',
+                'code', prettyPrintXmlToolbar, 'quote', 'unordered-list', 'ordered-list',
+                '|',
+                'link', 'image', igImageToolbar, 'table',
+                '|',
+                'preview', 'fullscreen', trifoliaHelpToolbar],
+            status: [{
+                className: "validation",
+                onUpdate: function (el) {
+                    if (validateTimeout) {
+                        clearTimeout(validateTimeout);
+                        validateTimeout = null;
+                    }
+
+                    // Only validate once every half-second
+                    validateTimeout = setTimeout(function () {
+                        if (!simplemde) {
+                            return;
+                        }
+                        var data = simplemde.value();
+                        var validationResults = checkHTML(data);
+                        if (!validationResults.validHTML) {
+                            el.innerHTML = 'Markdown contains incorrectly formatted HTML which may not be rendered correctly in exports. Ensure all tags are closed.';
+                        } else if (!validationResults.validTags) {
+                            el.innerHTML = 'Markdown contains XML/HTML tags that will not be formatted properly during export. Consider escaping custom HTML/XML.'
+                        } else {
+                            el.innerHTML = '';
+                        }
+                    }, 500);
+                }
+            }, "autosave", "lines", "words", "cursor"]
+        };
+
+        if (!implementationGuideId) {
+            var igImageToolbarIndex = options.toolbar.indexOf(igImageToolbar);
+            options.toolbar.splice(igImageToolbarIndex, 1);
+        }
+
+        if (allBindings.limitedToolbar) {
+            options.toolbar = ["bold", "italic", "strikethrough", "link", "|", "preview", "fullscreen", "guide"];
+        }
+
+        simplemde = new SimpleMDE(options);
+
+        if (allBindings.disable) {
+            function setSimplemdeDisabled(disabled) {
+                simplemde.codemirror.options.readOnly = disabled;
+                simplemde.codemirror.display.disabled = disabled;
+
+                if (disabled) {
+                    $(simplemde.gui.toolbar).hide();
+                } else {
+                    $(simplemde.gui.toolbar).show();
+                }
+
+                $(simplemde.gui.toolbar).next().toggleClass('disabled', disabled);
+            }
+
+            if (typeof allBindings.disable === 'function') {
+                setSimplemdeDisabled(allBindings.disable());
+
+                if (allBindings.disable.subscribe) {
+                    allBindings.disable.subscribe(function () {
+                        setSimplemdeDisabled(allBindings.disable());
+                    });
+                }
+            } else {
+                setSimplemdeDisabled(allBindings.disable);
+            }
+        }
+
+        // If the markdown plugin is being loaded in a modal window, 
+        // perform a short delay for setting the initial value
+        // to avoid the bug where the text area doesn't actually show any value
+        if ($(element).parents('.modal').length > 0) {
+            setTimeout(function () {
+                simplemde.value(valueUnwrapped);
+            }, 500);
+        }
+
+        var watchValueSubscription = null;
+        var watchValue = function () {
+            if (typeof value === 'function' && value.subscribe) {
+                watchValueSubscription = value.subscribe(function (newValue) {
+                    simplemde.value(newValue);
+                });
+            }
+        }
+
+        simplemde.codemirror.on("change", function () {
+            if (watchValueSubscription) {
+                watchValueSubscription.dispose();       // remove the subscription
+                watchValueSubscription = null;
+            }
+            value(simplemde.value());
+            watchValue();                       // re-add the subscription
+        });
+
+        watchValue();
+
+        ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+            simplemde.toTextArea();
+            simplemde = null;
+        });
+    }
 };

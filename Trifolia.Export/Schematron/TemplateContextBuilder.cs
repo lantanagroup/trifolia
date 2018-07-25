@@ -5,8 +5,8 @@ using System.Text;
 using Trifolia.DB;
 using Trifolia.Export.Schematron.ConstraintToDocumentElementMap;
 using Trifolia.Export.Schematron.Model;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.Schematron
 {
@@ -32,22 +32,24 @@ namespace Trifolia.Export.Schematron
 
         public string BuildContextString(Template template)
         {
-            if (!IdentifierExistsForContext(template.PrimaryContextType))
+            string templateIdentifierElementName = IdentifierExistsForContext(template.PrimaryContextType);
+
+            if (string.IsNullOrEmpty(templateIdentifierElementName))
                 return BuildContextWithoutIdentifierElement(template);
 
-            return BuildContextWithIdentifierElement(template.Oid, template.PrimaryContext);
+            return BuildContextWithIdentifierElement(template.Oid, template.PrimaryContext, templateIdentifierElementName);
         }
 
-        public string BuildContextString(string templateIdentifier, string primaryContext = null, string primaryContextType = null)
+        public string BuildContextString(string templateIdentifier, string primaryContext = null, string primaryContextType = null, string templateIdentifierElementName = null)
         {
-            return BuildContextWithIdentifierElement(templateIdentifier, primaryContext);
+            return BuildContextWithIdentifierElement(templateIdentifier, primaryContext, templateIdentifierElementName);
         }
 
-        private bool IdentifierExistsForContext(string primaryContextType)
+        private string IdentifierExistsForContext(string primaryContextType)
         {
             // Assume identifier exists if we aren't given a context type
             if (string.IsNullOrEmpty(primaryContextType))
-                return true;
+                return null;
             
             var schema = this.igTypeSchema.GetSchemaFromContext(primaryContextType);
 
@@ -55,26 +57,18 @@ namespace Trifolia.Export.Schematron
             {
                 string[] identifierElementNameSplit = this.plugin.TemplateIdentifierElementName.Split('/');
                 var currentChildren = schema.Children;
-                bool identifierExists = true;
 
                 foreach (var identifierElementNamePart in identifierElementNameSplit)
                 {
-                    var foundChildElement = currentChildren.SingleOrDefault(y => y.Name.ToLower() == identifierElementNamePart.ToLower());
+                    var foundChildElement = currentChildren.SingleOrDefault(y => y.Name.ToLower().Substring(y.Name.IndexOf(":") + 1) == identifierElementNamePart.ToLower());
 
-                    if (foundChildElement == null)
-                    {
-                        identifierExists = false;
-                        break;
-                    }
-
-                    currentChildren = foundChildElement.Children;
+                    if (foundChildElement != null)
+                        return foundChildElement.Name;
                 }
-
-                return identifierExists;
             }
 
             // Assume identifier exists if we aren't given a context type
-            return true;
+            return null;
         }
 
         /// <summary>
@@ -166,13 +160,21 @@ namespace Trifolia.Export.Schematron
         /// Example: Where "ClinicalDocument" has a "templateId" element
         /// Example: Where a FHIR element DOES have "meta/profile"
         /// </remarks>
-        /// <param name="template"></param>
+        /// <param name="templateIdentifier"></param>
+        /// <param name="primaryContext"></param>
+        /// <param name="templateIdentifierElementName"></param>
         /// <returns></returns>
-        private string BuildContextWithIdentifierElement(string templateIdentifier, string primaryContext = null)
+        private string BuildContextWithIdentifierElement(string templateIdentifier, string primaryContext = null, string templateIdentifierElementName = null)
         {
             string contextFormat = "{0}";
             string root = null;
             string extension = null;
+
+            if (string.IsNullOrEmpty(templateIdentifierElementName))
+                templateIdentifierElementName = this.GetTemplateIdentifierElementName();
+
+            if (templateIdentifierElementName.IndexOf(":") < 0)
+                templateIdentifierElementName = this.prefix + ":" + templateIdentifierElementName;
 
             if (!string.IsNullOrEmpty(primaryContext))
             {
@@ -200,7 +202,7 @@ namespace Trifolia.Export.Schematron
             if (!string.IsNullOrEmpty(extension) && !string.IsNullOrEmpty(this.plugin.TemplateIdentifierExtensionName))
             {
                 string predicate = string.Format("{0}[{1}='{3}' and {2}='{4}']",
-                    this.GetTemplateIdentifierElementName(),
+                    templateIdentifierElementName,
                     this.plugin.TemplateIdentifierRootName,
                     this.plugin.TemplateIdentifierExtensionName,
                     root,
@@ -210,7 +212,7 @@ namespace Trifolia.Export.Schematron
             else
             {
                 string predicate = string.Format("{0}[{1}='{2}']",
-                    this.GetTemplateIdentifierElementName(),
+                    templateIdentifierElementName,
                     this.plugin.TemplateIdentifierRootName,
                     root);
                 return string.Format(contextFormat, predicate);

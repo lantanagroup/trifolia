@@ -661,10 +661,29 @@ var ConstraintModel = function (data, parent, viewModel) {
         return messages.join('<br/>\n');
     });
 
-    self.AddContainedTemplate = function (dataType) {
+    self.AddContainedTemplate = function (isFhir, dataType) {
+        var fhirPath = viewModel.Template().PrimaryContextType();
+        var current = self;
+        var path = "";
+
+        //Get path of the element being examined (something like "Account.subject")
+        while (current) {
+            if (path) { path = "." + path; }
+            path = current.Context().replace(/@/g, '') + path;
+            current = current.Parent();
+        }
+
+        fhirPath = fhirPath + "." + path;
         // Open pop-up
         self.ReferenceSelection.SearchQuery('');
         self.ReferenceSelection.Items([]);
+        self.ReferenceSelection.FhirPath(isFhir ? fhirPath : null);
+        var implementationGuideId = viewModel.Template().OwningImplementationGuideId();
+        var implementationGuide = _.find(viewModel.ImplementationGuides(), function (ig) {
+            return ig.Id === implementationGuideId;
+        })
+
+        self.ReferenceSelection.ImplementationGuideTypeId(implementationGuide.TypeId);
         self.ReferenceSelection.FilterContextType(dataType);
         self.ReferenceSelection.TotalItems(0);
 
@@ -701,6 +720,8 @@ var ConstraintModel = function (data, parent, viewModel) {
         IsSearching: ko.observable(false),
         TotalItems: ko.observable(0),
         FilterContextType: ko.observable(null),
+        FhirPath: ko.observable(null),
+        ImplementationGuideTypeId: ko.observable(null),
         SearchPage: 1,
         SelectedTemplate: null,
 
@@ -719,9 +740,16 @@ var ConstraintModel = function (data, parent, viewModel) {
                 url += '&queryText=' + encodeURIComponent(self.ReferenceSelection.SearchQuery());
             }
 
-            if (self.ReferenceSelection.FilterContextType()) {
+            if (!self.ReferenceSelection.FhirPath() && self.ReferenceSelection.FilterContextType()) {
                 url += '&filterContextType=' + encodeURIComponent(self.ReferenceSelection.FilterContextType());
             }
+
+            if (self.ReferenceSelection.FhirPath()) {
+                url += '&fhirPath=' + self.ReferenceSelection.FhirPath();
+            }
+
+            url += '&implementationGuideTypeId=' + self.ReferenceSelection.ImplementationGuideTypeId();
+            // TODO: Pass implementationGuideTypeId to the controller
 
             self.ReferenceSelection.IsSearching(true);
 

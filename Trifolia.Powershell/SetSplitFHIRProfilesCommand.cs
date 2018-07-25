@@ -10,7 +10,7 @@ using Trifolia.DB;
 
 namespace Trifolia.Powershell
 {
-    [Cmdlet(VerbsCommon.Set, "SplitFHIRProfiles")]
+    [Cmdlet(VerbsCommon.Set, "TrifoliaSplitFHIRProfiles")]
     public class SetSplitFHIRProfilesCommand : BaseCommand
     {
         [Parameter(

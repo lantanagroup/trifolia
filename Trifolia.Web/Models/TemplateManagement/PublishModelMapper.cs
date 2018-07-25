@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Export.MSWord;
+using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Web.Models.TemplateManagement
 {
@@ -85,7 +85,6 @@ namespace Trifolia.Web.Models.TemplateManagement
             int? aParentConstraintId = null)
         {
             IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(tdb, igSettings, igTypePlugin, dbConstraint);
-            WIKIParser wikiParser = new WIKIParser(tdb);
 
             PublishConstraint newConstraint = new PublishConstraint(dbConstraint, fc);
 

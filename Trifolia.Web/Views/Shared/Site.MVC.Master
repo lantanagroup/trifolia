@@ -17,6 +17,7 @@
     <%= GoogleAnalyticsScript %>
     <script type="text/javascript" src="/Scripts/ContainerViewModel.js?<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>"></script>
     <script type="text/javascript">
+        var versionNumber = '<%= ViewContext.Controller.GetType().Assembly.GetName().Version %>';
         var containerViewModel = new ContainerViewModel();
         var supportViewModel = new SupportViewModel(containerViewModel);
     </script>
@@ -107,6 +108,7 @@
                             <!-- /ko -->
                             <li><a href="#" data-bind="if: GroupDisclaimers() && GroupDisclaimers().length > 0, click: OpenDisclaimers">Disclaimers</a></li>
                             <li><a href="#" data-bind="click: function () { $('#keyboardShortcutsDialog').modal('show'); }">Keyboard Shortcuts</a></li>
+                            <li><a href="#" data-bind="click: whatsNewViewModel.OpenWhatsNew">What's new</a></li>
                             <% if (!string.IsNullOrEmpty(this.DatabaseLabel) || !string.IsNullOrEmpty(this.VersionLabel)) { %>
                             <li class="divider"></li>
                             <% } %>
@@ -352,6 +354,25 @@
             </div>
         </div>
     </div>
+
+    <!-- What's new popup dialog -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="whatsNewDialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-label="Close" data-bind="click: CloseWhatsNew"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">What's new</h4>
+                </div>
+                <div class="modal-body" style="padding: 2px 0 0 0;" id="whatsNewBody"></div>
+                <div class="modal-footer">
+                    <input type="checkbox" data-bind="checked: HideNextTime" /> Don't show this next time
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default" data-bind="click: CloseWhatsNew">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
         
     <!-- Template Selector Knockout Template -->
     <script type="text/html" id="selectTemplateDialogTemplate">
@@ -533,13 +554,17 @@
         var supportViewModel;
         var helpModel;
         var containerViewModel;
+        var whatsNewViewModel;
         var trifoliaConfig;
 
         $(document).ready(function () {
+            whatsNewViewModel = new WhatsNewViewModel(versionNumber);
+
             $(document).ready(function () {
                 ko.applyBindings(containerViewModel, $('#appnav')[0]);
                 ko.applyBindings(containerViewModel, $('#GroupDisclaimersDialog')[0]);
                 ko.applyBindings(containerViewModel, $('#accessRequestsDialog')[0]);
+                ko.applyBindings(whatsNewViewModel, $('#whatsNewDialog')[0]);
             });
 
             $(document).mousemove(function (e) {

@@ -2,7 +2,6 @@
 extern alias fhir_dstu2;
 extern alias fhir_stu3;
 using Ionic.Zip;
-using Microsoft.AspNet.WebApi.MessageHandlers.Compression.Attributes;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,16 +16,13 @@ using Trifolia.Authorization;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3;
 using Trifolia.Export.HTML;
+using Trifolia.Export.MSWord;
 using Trifolia.Export.Schematron;
 using Trifolia.Export.Terminology;
-using Trifolia.Generation.Green;
-using Trifolia.Generation.IG;
-using Trifolia.Logging;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 using Trifolia.Web.Models.Export;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
-using NativeExporter = Trifolia.Export.Native.TemplateExporter;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -131,7 +127,8 @@ namespace Trifolia.Web.Controllers.API
             return new ExportSettingsModel()
             {
                 ImplementationGuideId = implementationGuideId,
-                ExportFormat = format
+                ExportFormat = format,
+                SelectAll = true
             };
         }
 
@@ -181,7 +178,8 @@ namespace Trifolia.Web.Controllers.API
                     }
 
                     fileName = string.Format("{0}.{1}", ig.GetDisplayName(true), fileExtension);
-                    export = igTypePlugin.Export(this.tdb, schema, model.ExportFormat, igSettings, model.SelectedCategories, templates, model.IncludeVocabulary, model.ReturnJson);
+                    var pluginExporter = igTypePlugin.GetExporter();
+                    export = pluginExporter.Export(this.tdb, schema, model.ExportFormat, igSettings, model.SelectedCategories, templates, model.IncludeVocabulary, model.ReturnJson);
                     break;
 
                 case ExportFormats.Snapshot_JSON:
@@ -216,6 +214,7 @@ namespace Trifolia.Web.Controllers.API
                         c.IncludeChangeList = model.IncludeChangeList;
                         c.IncludeTemplateStatus = model.IncludeTemplateStatus;
                         c.IncludeNotes = model.IncludeNotes;
+                        c.IncludeVolume1 = model.IncludeVolume1;
                         c.SelectedCategories = model.SelectedCategories;
                     });
 

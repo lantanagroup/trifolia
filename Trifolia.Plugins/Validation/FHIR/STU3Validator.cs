@@ -92,10 +92,9 @@ namespace Trifolia.Plugins.Validation.FHIR
                         resource = parser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     // Do nothing? Skip?
-
                 }
 
                 if (resource != null)
@@ -118,10 +117,9 @@ namespace Trifolia.Plugins.Validation.FHIR
                     fhir_stu3.Hl7.Fhir.Serialization.FhirXmlParser parser = new FhirXmlParser();
                     resource = parser.Parse<fhir_stu3.Hl7.Fhir.Model.Resource>(fileContent);
                 }
-                catch (Exception ex)
+                catch
                 {
                     // Do nothing
-
                 }
                 if (resource != null)
                 {

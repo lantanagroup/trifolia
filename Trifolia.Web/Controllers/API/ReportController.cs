@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-
-using Trifolia.DB;
 using Trifolia.Authorization;
-using Trifolia.Web.Models.Report;
-using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
+using Trifolia.DB;
+using Trifolia.Plugins;
 using Trifolia.Shared.Validation;
+using Trifolia.Web.Models.Report;
 
 namespace Trifolia.Web.Controllers.API
 {

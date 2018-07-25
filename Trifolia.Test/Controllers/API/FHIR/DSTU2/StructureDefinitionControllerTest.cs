@@ -21,69 +21,97 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
     [TestClass]
     public class StructureDefinitionControllerTest
     {
-        [TestMethod, TestCategory("FHIR2")]
-        [DeploymentItem("Schemas\\", "Schemas\\")]
-        public void TestConvertExtension()
-        {
-            MockObjectRepository mockRepo = new MockObjectRepository();
-            mockRepo.InitializeFHIR2Repository();
-            mockRepo.InitializeLCG();
+        private static MockObjectRepository mockRepo1;
+        private static MockObjectRepository mockRepo2;
+        private static Trifolia.DB.Template profile1;
+        private static StructureDefinition dafPatientStrucDef1;
+        private static StructureDefinition dafPatientStrucDef2;
 
-            var ig = mockRepo.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU2_IG_TYPE_NAME, "Test IG");
-            var template = mockRepo.CreateTemplate("http://test.com/fhir/test", "Composition", "Test Composition", ig, "Composition", "Composition");
-            template.Extensions.Add(new Trifolia.DB.TemplateExtension()
+        [ClassInitialize]
+        public static void SetupData(TestContext context)
+        {
+            // Setup mockRepo1
+            StructureDefinitionControllerTest.mockRepo1 = new MockObjectRepository();
+            StructureDefinitionControllerTest.mockRepo1.InitializeFHIR2Repository();
+            StructureDefinitionControllerTest.mockRepo1.InitializeLCGAndLogin();
+
+            var ig = StructureDefinitionControllerTest.mockRepo1.FindOrCreateImplementationGuide(Constants.IGTypeNames.FHIR_DSTU2, "Test IG");
+            StructureDefinitionControllerTest.profile1 = StructureDefinitionControllerTest.mockRepo1.CreateTemplate("http://test.com/fhir/test", "Composition", "Test Composition", ig, "Composition", "Composition");
+            StructureDefinitionControllerTest.profile1.Extensions.Add(new Trifolia.DB.TemplateExtension()
             {
                 Identifier = "http://test.com/extension",
                 Type = "String",
                 Value = "Test string extension value"
             });
-            template.Extensions.Add(new Trifolia.DB.TemplateExtension()
+            StructureDefinitionControllerTest.profile1.Extensions.Add(new Trifolia.DB.TemplateExtension()
             {
                 Identifier = "http://test2.com/extension",
                 Type = "Date",
                 Value = "2016234234234"     // Invalid date format, but should still be parsed by FHIR library
             });
-            template.Extensions.Add(new Trifolia.DB.TemplateExtension()
+            StructureDefinitionControllerTest.profile1.Extensions.Add(new Trifolia.DB.TemplateExtension()
             {
                 Identifier = "http://test3.com/extension",
                 Type = "Coding",
                 Value = "xyz-123|display|urn:oid:2.16.113"
             });
-            template.Extensions.Add(new Trifolia.DB.TemplateExtension()
+            StructureDefinitionControllerTest.profile1.Extensions.Add(new Trifolia.DB.TemplateExtension()
             {
                 Identifier = "http://test4.com/extension",
                 Type = "CodeableConcept",
                 Value = "xyz-123|display|urn:oid:2.16.113"
             });
-            template.Extensions.Add(new Trifolia.DB.TemplateExtension()         // Extension has invalid value... It is skipped
+            StructureDefinitionControllerTest.profile1.Extensions.Add(new Trifolia.DB.TemplateExtension()         // Extension has invalid value... It is skipped
             {
                 Identifier = "http://test5.com/extension",
                 Type = "CodeableConcept",
                 Value = "test"
             });
-            template.Extensions.Add(new Trifolia.DB.TemplateExtension()         // Extension has invalid value... It is skipped
+            StructureDefinitionControllerTest.profile1.Extensions.Add(new Trifolia.DB.TemplateExtension()         // Extension has invalid value... It is skipped
             {
                 Identifier = "http://test6.com/extension",
                 Type = "Boolean",
                 Value = "test"
             });
-            template.Extensions.Add(new Trifolia.DB.TemplateExtension()         // Extension has invalid value... It is skipped
+            StructureDefinitionControllerTest.profile1.Extensions.Add(new Trifolia.DB.TemplateExtension()         // Extension has invalid value... It is skipped
             {
                 Identifier = "http://test7.com/extension",
                 Type = "Integer",
                 Value = "test"
             });
 
-            StructureDefinitionExporter exporter = new StructureDefinitionExporter(mockRepo, "http", "test.com");
+            // Setup mockRepo2 for DSTU2_TestGetTemplates()
+            StructureDefinitionControllerTest.mockRepo2 = new MockObjectRepository();
+            StructureDefinitionControllerTest.mockRepo2.InitializeFHIR2Repository();
+            StructureDefinitionControllerTest.mockRepo2.InitializeLCG();
+
+            var ig2 = StructureDefinitionControllerTest.mockRepo2.FindOrCreateImplementationGuide(Constants.IGTypeNames.FHIR_DSTU2, "Test IG");
+            StructureDefinitionControllerTest.mockRepo2.CreateTemplate("http://test.com/fhir/test", "Composition", "Test Composition", ig2, "Composition", "Composition");
+
+            // Setup strucDef's
+            var dafPatientJson = Helper.GetSampleContents("Trifolia.Test.DocSamples.daf-patient_struc_def.json");
+            StructureDefinitionControllerTest.dafPatientStrucDef1 = (StructureDefinition)FhirParser.ParseResourceFromJson(dafPatientJson);
+            StructureDefinitionControllerTest.dafPatientStrucDef1.Url = "http://hl7.org/fhir/StructureDefinition/daf-patient1";
+            StructureDefinitionControllerTest.dafPatientStrucDef2 = (StructureDefinition)FhirParser.ParseResourceFromJson(dafPatientJson);
+            StructureDefinitionControllerTest.dafPatientStrucDef2.Id = "daf-patient2";
+            StructureDefinitionControllerTest.dafPatientStrucDef2.Url = "http://hl7.org/fhir/StructureDefinition/daf-patient2";
+        }
+
+        [TestMethod]
+        [TestCategory("FHIR")]
+        [DeploymentItem("Schemas\\", "Schemas\\")]
+        public void DSTU2_TestConvertExtension()
+        {
+            StructureDefinitionExporter exporter = new StructureDefinitionExporter(StructureDefinitionControllerTest.mockRepo1, "http", "test.com");
             SimpleSchema schema = SimpleSchema.CreateSimpleSchema(
                 Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
                     new ImplementationGuideType()
                     {
-                        Name = MockObjectRepository.DEFAULT_FHIR_DSTU2_IG_TYPE_NAME,
+                        Name = Constants.IGTypeNames.FHIR_DSTU2,
                         SchemaLocation = "fhir-all.xsd"
                     }));
             
-            StructureDefinition strucDef = exporter.Convert(template, schema);
+            StructureDefinition strucDef = exporter.Convert(StructureDefinitionControllerTest.profile1, schema);
 
             Assert.IsNotNull(strucDef);
             Assert.IsNotNull(strucDef.Extension);
@@ -115,17 +143,11 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             Assert.AreEqual(((CodeableConcept)strucDef.Extension[3].Value).Coding[0].System, "urn:oid:2.16.113");
         }
 
-        [TestMethod, TestCategory("FHIR2")]
+        [TestMethod]
+        [TestCategory("FHIR")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
-        public void TestSuccessfulCreate()
+        public void DSTU2_TestSuccessfulCreate()
         {
-            MockObjectRepository mockRepo = new MockObjectRepository();
-            mockRepo.InitializeFHIR2Repository();
-            mockRepo.InitializeLCG();
-
-            var dafPatientJson = Helper.GetSampleContents("Trifolia.Test.DocSamples.daf-patient_struc_def.json");
-            StructureDefinition strucDef = (StructureDefinition)FhirParser.ParseResourceFromJson(dafPatientJson);
-
             HttpRequestMessage request = new HttpRequestMessage();
             request.RequestUri = new Uri("http://localhost:8080/api/FHIR2/StructureDefinition");
 
@@ -133,30 +155,23 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             HttpResponse contextResponse = new HttpResponse(new StringWriter());
             HttpContext.Current = new HttpContext(contextRequest, contextResponse);
             
-            FHIR2StructureDefinitionController controller = new FHIR2StructureDefinitionController(mockRepo, request);
-            var response = controller.CreateStructureDefinition(strucDef);
+            FHIR2StructureDefinitionController controller = new FHIR2StructureDefinitionController(StructureDefinitionControllerTest.mockRepo1, request);
+            var response = controller.CreateStructureDefinition(StructureDefinitionControllerTest.dafPatientStrucDef1);
             var result = AssertHelper.IsType<TrifoliaApiController.CustomHeadersWithContentResult<StructureDefinition>>(response);
 
             Assert.AreEqual(HttpStatusCode.Created, result.StatusCode);
             Assert.IsNotNull(result.CustomHeaders["Location"]);
-            Assert.AreEqual(result.CustomHeaders["Location"], "http://localhost:8080/api/FHIR2/StructureDefinition/1");
+            Assert.AreEqual(result.CustomHeaders["Location"], "http://localhost:8080/api/FHIR2/StructureDefinition/2");     // "2" because a profile already exists in the DB from SetupData()
 
             Assert.IsNotNull(result.Content);
-            Assert.AreEqual(strucDef.Name, result.Content.Name);
+            Assert.AreEqual(StructureDefinitionControllerTest.dafPatientStrucDef1.Name, result.Content.Name);
         }
 
-        [TestMethod, TestCategory("FHIR2")]
+        [TestMethod]
+        [TestCategory("FHIR")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
-        public void TestFailedCreate_Id()
+        public void DSTU2_TestFailedCreate_Id()
         {
-            MockObjectRepository mockRepo = new MockObjectRepository();
-            mockRepo.InitializeFHIR2Repository();
-            mockRepo.InitializeLCG();
-
-            var dafPatientJson = Helper.GetSampleContents("Trifolia.Test.DocSamples.daf-patient_struc_def.json");
-            StructureDefinition strucDef = (StructureDefinition)FhirParser.ParseResourceFromJson(dafPatientJson);
-            strucDef.Id = "daf-patient";
-
             HttpRequestMessage request = new HttpRequestMessage();
             request.RequestUri = new Uri("http://localhost:8080/api/FHIR2/StructureDefinition");
 
@@ -164,8 +179,8 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             HttpResponse contextResponse = new HttpResponse(new StringWriter());
             HttpContext.Current = new HttpContext(contextRequest, contextResponse);
 
-            FHIR2StructureDefinitionController controller = new FHIR2StructureDefinitionController(mockRepo, request);
-            var response = controller.CreateStructureDefinition(strucDef);
+            FHIR2StructureDefinitionController controller = new FHIR2StructureDefinitionController(StructureDefinitionControllerTest.mockRepo1, request);
+            var response = controller.CreateStructureDefinition(StructureDefinitionControllerTest.dafPatientStrucDef2);
             var result = AssertHelper.IsType<NegotiatedContentResult<OperationOutcome>>(response);
 
             Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
@@ -174,17 +189,16 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             Assert.AreEqual(1, result.Content.Issue.Count);
         }
 
-        [TestMethod, TestCategory("FHIR2")]
+        [TestMethod]
+        [TestCategory("FHIR")]
         [DeploymentItem("Schemas\\", "Schemas\\")]
-        public void TestGetTemplates()
+        public void DSTU2_TestGetTemplates()
         {
-            MockObjectRepository mockRepo = new MockObjectRepository();
-            mockRepo.InitializeFHIR2Repository();
-            mockRepo.InitializeLCGAndLogin();
+            // Login for the user. This is important to do here (outside of setup) so that it associates the thread
+            // running the GetTemplates() method with authentication, since login is session/thread-specific
+            StructureDefinitionControllerTest.mockRepo2.Login();
 
-            var ig = mockRepo.FindOrCreateImplementationGuide(MockObjectRepository.DEFAULT_FHIR_DSTU2_IG_TYPE_NAME, "Test IG");
-            var template = mockRepo.CreateTemplate("http://test.com/profile1", "Composition", "Test Composition", ig);
-
+            var ig = StructureDefinitionControllerTest.mockRepo2.FindOrCreateImplementationGuide(Constants.IGTypeNames.FHIR_DSTU2, "Test IG");
             HttpRequestMessage request = new HttpRequestMessage()
             {
                 RequestUri = new Uri("http://localhost:8080/api/FHIR2/StructureDefinition")
@@ -193,8 +207,12 @@ namespace Trifolia.Test.Controllers.API.FHIR.DSTU2
             HttpResponse contextResponse = new HttpResponse(new StringWriter());
             HttpContext.Current = new HttpContext(contextRequest, contextResponse);
 
-            FHIR2StructureDefinitionController controller = new FHIR2StructureDefinitionController(mockRepo, request);
+            FHIR2StructureDefinitionController controller = new FHIR2StructureDefinitionController(StructureDefinitionControllerTest.mockRepo2, request);
+
+            // Do the work: GetTemplates()
+            // This responds with an HTTP response, which needs to be converted into the actual Bundle result
             var response = controller.GetTemplates();
+
             var result = AssertHelper.IsType<NegotiatedContentResult<Bundle>>(response);
 
             Assert.IsNotNull(result.Content);

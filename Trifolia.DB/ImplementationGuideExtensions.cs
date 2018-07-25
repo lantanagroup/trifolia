@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
-
+using System.Data.Entity;
 using Trifolia.Logging;
+using System.Data.Entity.Core.Objects;
 
 namespace Trifolia.DB
 {
@@ -68,7 +69,7 @@ namespace Trifolia.DB
                     string msg = string.Format("Vocabulary for IG \"{0}\" includes {1} valueset bindings with different binding dates. Using the latest binding date.",
                         this.Name,
                         cGroupedValueSet.Constraints.Count());
-                    Log.For(typeof(ValueSet)).Info(msg);
+                    Log.For(typeof(ValueSet)).Trace(msg);
                 }
 
                 var maxBindingDate = cGroupedValueSet.Constraints.Max(y => y.BindingDate);
@@ -98,6 +99,38 @@ namespace Trifolia.DB
                 .ToList();
         }
 
+        public IQueryable<Template> GetQueryableRecursiveTemplates(IObjectRepository tdb, List<int> parentTemplateIds = null, bool inferred = true, string[] categories = null)
+        {
+            List<int?> templateIds;
+
+            if (parentTemplateIds != null && parentTemplateIds.Count > 0)
+            {
+                templateIds = new List<int?>();
+
+                foreach (int parentTemplateId in parentTemplateIds)
+                {
+                    var cParentTemplateIds =
+                        tdb.GetImplementationGuideTemplates(this.Id, inferred, parentTemplateId, categories)
+                        .Select(y => y.Value);
+                    templateIds.AddRange(cParentTemplateIds.Cast<int?>());
+                }
+            }
+            else
+            {
+                templateIds = tdb.GetImplementationGuideTemplates(this.Id, inferred, null, categories).ToList();
+            }
+
+            var templatesQuery =
+                tdb.Templates.Where(y => templateIds.Contains(y.Id))
+                .Where(y => y.Oid != "http://hl7.org/fhir/StructureDefinition/" + y.Bookmark)       // Don't return base profiles from FHIR
+                .Distinct()
+                .OrderBy(y => y.TemplateType.Name)
+                .ThenBy(y => y.Name)
+                .AsQueryable<Template>();
+
+            return templatesQuery;
+        }
+
         /// <summary>
         /// Gets all templates associated to an implementation guide.
         /// Starts out with all templates that are directly associated to an implementation guide via ownership.
@@ -105,41 +138,39 @@ namespace Trifolia.DB
         /// </summary>
         /// <param name="tdb"></param>
         /// <returns></returns>
-        public List<Template> GetRecursiveTemplates(IObjectRepository tdb, List<int> parentTemplateIds = null, bool inferred = true, string[] categories = null)
+        public List<Template> GetRecursiveTemplates(IObjectRepository tdb, List<int> parentTemplateIds = null, bool inferred = true, string[] categories = null, bool includeImplied = false, bool includeConstraints = false, bool includePrevious = false, bool includeSamples = false)
         {
-            if (parentTemplateIds != null && parentTemplateIds.Count > 0)
-            {
-                List<int> templateIds = new List<int>();
+            var templatesQuery = 
+                this.GetQueryableRecursiveTemplates(tdb, parentTemplateIds, inferred, categories)
+                .IncludeDetails(
+                    includeImplied: includeImplied,
+                    includeConstraints: includeConstraints,
+                    includeSamples: includeSamples);
 
-                foreach (int parentTemplateId in parentTemplateIds)
+            return templatesQuery.ToList();
+        }
+
+        public string GetDisplayName()
+        {
+            return this.GetDisplayName(false);
+        }
+
+        public string GetDisplayName(bool fileNameSafe)
+        {
+            string name = this.NameWithVersion;
+
+            if (!string.IsNullOrEmpty(this.DisplayName))
+                name = this.DisplayName;
+
+            if (fileNameSafe)
+            {
+                foreach (char c in System.IO.Path.GetInvalidFileNameChars())
                 {
-                    var cParentTemplateIds = (from igt in tdb.GetImplementationGuideTemplates(this.Id, inferred, parentTemplateId, categories)
-                                              select igt.Value);
-                    templateIds.AddRange(cParentTemplateIds);
+                    name = name.Replace(c, '_');
                 }
-
-                var templates = (from tid in templateIds.Distinct()
-                                 join t in tdb.Templates on tid equals t.Id
-                                 select t).ToList();
-
-                return templates
-                    .Where(y => y.Oid != "http://hl7.org/fhir/StructureDefinition/" + y.Bookmark)       // Don't return base profiles from FHIR
-                    .Distinct()
-                    .ToList();
             }
-            else
-            {
-                var templateIds = tdb.GetImplementationGuideTemplates(this.Id, inferred, null, categories);
-                var templates = (from tid in templateIds
-                                 join t in tdb.Templates on tid equals t.Id
-                                 select t).ToList();
 
-                return templates
-                    .Where(y => y.Oid != "http://hl7.org/fhir/StructureDefinition/" + y.Bookmark)       // Don't return base profiles from FHIR
-                    .Distinct()
-                    .OrderBy(y => y.TemplateType.Name)
-                    .ThenBy(y => y.Name).ToList();
-            }
+            return name;
         }
 
         /// <summary>

@@ -1,32 +1,26 @@
 ﻿extern alias fhir_dstu1;
 extern alias fhir_dstu2;
 extern alias fhir_stu3;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
 using System.Net.Mail;
-using System.Transactions;
-
-using Trifolia.DB;
-using Trifolia.Shared;
+using System.Web.Http;
 using Trifolia.Authorization;
+using Trifolia.Config;
+using Trifolia.DB;
+using Trifolia.Export.HTML;
+using Trifolia.Logging;
+using Trifolia.Plugins;
+using Trifolia.Shared;
+using Trifolia.Shared.Validation;
+using Trifolia.Web.Extensions;
 using Trifolia.Web.Models;
+using Trifolia.Web.Models.Export;
 using Trifolia.Web.Models.IGManagement;
 using Trifolia.Web.Models.PermissionManagement;
-using Trifolia.Web.Models.Export;
-using Trifolia.Web.Extensions;
-using Trifolia.Logging;
-using Trifolia.Config;
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Generation.Versioning;
-using Trifolia.Shared.Plugins;
-using Trifolia.Shared.Validation;
-using Trifolia.Export.HTML;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -81,7 +75,8 @@ namespace Trifolia.Web.Controllers.API
                         Identifier = ig.Identifier,
                         Name = ig.NameWithVersion,
                         IsPublished = ig.IsPublished(),
-                        Namespace = ig.ImplementationGuideType.SchemaURI
+                        Namespace = ig.ImplementationGuideType.SchemaURI,
+                        TypeId = ig.ImplementationGuideTypeId
                     })
                     .OrderBy(y => y.Name);
         }
@@ -704,8 +699,9 @@ namespace Trifolia.Web.Controllers.API
         [HttpGet, Route("api/ImplementationGuide/{implementationGuideId}/Images")]
         public object GetImplementationGuideImageList(int implementationGuideId)
         {
-            return tdb.ImplementationGuideFiles
-                               .Where(x => x.ImplementationGuideId == implementationGuideId)
+            var igFiles = tdb.ImplementationGuideFiles
+                               .Where(x => x.ImplementationGuideId == implementationGuideId);
+            return igFiles
                                .Where(x => x.ContentType == "Image")
                                .Select(x => new
                                {
@@ -1101,6 +1097,7 @@ namespace Trifolia.Web.Controllers.API
                             {
                                 dbSection = new ImplementationGuideSection();
                                 dbSection.ImplementationGuide = ig;
+                                auditedTdb.ImplementationGuideSections.Add(dbSection);
                             }
 
                             dbSection.Heading = cSection.Heading;

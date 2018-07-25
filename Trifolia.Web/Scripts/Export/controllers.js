@@ -47,6 +47,7 @@
         IncludeChangeList: true,
         IncludeTemplateStatus: true,
         IncludeNotes: true,
+        IncludeVolume1: false,
         VocabularyFileName: 'voc.xml',
         IncludeVocabulary: false,
         IncludeCustomSchematron: true,
@@ -54,7 +55,8 @@
         Encoding: 0,
         ReturnJSON: false,
         ValueSetOid: [],
-        ValueSetMaxMembers: []
+        ValueSetMaxMembers: [],
+        SelectAll: false
     };
 
     $scope.criteriaTemplateSortOrder = function (newValue) {
@@ -117,16 +119,20 @@
     };
 
     $scope.toggleSelectAllTemplates = function () {
+        $scope.criteria.SelectAll = !$scope.criteria.SelectAll;
         if ($scope.criteria.TemplateIds.length === $scope.templates.length) {
             $scope.criteria.TemplateIds = [];
         } else {
-            $scope.criteria.TemplateIds = [];
-            _.each($scope.templates, function (template) {
-                $scope.criteria.TemplateIds.push(template.Id);
-            });
+            $scope.selectAllTemplates();
         }
     };
 
+    $scope.selectAllTemplates = function () {
+        $scope.criteria.TemplateIds = [];
+        _.each($scope.templates, function (template) {
+            $scope.criteria.TemplateIds.push(template.Id);
+        });
+    }
     $scope.toggleSelectedTemplate = function (templateId) {
         var index = $scope.criteria.TemplateIds.indexOf(templateId);
 
@@ -175,8 +181,8 @@
                     $scope.loadTemplates();
                 }
 
-                if ($scope.criteria.TemplateIds.length == 0) {
-                    $scope.toggleSelectAllTemplates();
+                if ($scope.criteria.SelectAll) {
+                    $scope.selectAllTemplates();
                 }
 
                 if (!$scope.criteria.DefaultSchematron) {
@@ -189,6 +195,9 @@
     };
 
     $scope.saveDefaultSettings = function () {
+        if ($scope.criteria.TemplateIds.length !== $scope.templates.length) {
+            $scope.criteria.SelectAll = false;
+        }
         ExportService.saveExportSettings($scope.criteria)
             .then(function () {
                 $scope.saveSettingsMessage = 'Successfully saved default export settings.';
@@ -405,6 +414,14 @@
                 .catch(function (err) {
                     console.error(err);
                 });
+        }
+    };
+
+    $scope.submit = function () {
+        if ($scope.criteria.TemplateIds.length === 0 && $scope.templates.length > 0) {
+            if (confirm('No templates are selected. Press OK to select all templates and continues.')) {
+                $scope.selectAllTemplates();
+            }
         }
     };
 

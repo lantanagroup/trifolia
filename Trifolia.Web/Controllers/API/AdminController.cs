@@ -8,6 +8,8 @@ using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Logging;
 using Trifolia.Web.Models.Admin;
+using System.Reflection;
+using Trifolia.Web.Controllers.API.FHIR;
 
 namespace Trifolia.Web.Controllers.API
 {
@@ -46,35 +48,51 @@ namespace Trifolia.Web.Controllers.API
         {
             var clientConfig = new ClientConfigModel();
 
-            foreach (IGTypeFhirElement fit in IGTypeSection.GetSection().FhirIgTypes)
-            {
-                ImplementationGuideType igType = this.tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == fit.ImplementationGuideTypeName.ToLower());
+            //Collect all methods in script
+            Assembly assembly = Assembly.GetExecutingAssembly();
 
+            //Find all FHIR API IGControllers
+            var FHIRClasses = assembly.GetTypes()
+                .Where(t => t.IsClass && t.GetCustomAttributes(typeof(FHIRInfo)).Any())
+                .ToArray();
+
+            foreach (var FHIRClass in FHIRClasses)
+            {
+                //Get the attributes of the FHIR IGController being examined
+                var attributes = FHIRClass.GetCustomAttributes();
+
+                //Collect the version attribute of that IGController
+                var versionAttribute = (FHIRInfo)attributes.Single(a => a.GetType() == typeof(FHIRInfo));
+
+                //Find the igType in the database
+                ImplementationGuideType igType = this.tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == versionAttribute.IGType.ToLower());
+
+                //If doesn't exist, throw an error but continue
                 if (igType == null)
                 {
-                    Log.For(this).Error("Implementation guide type defined in web.config not found in database: " + fit.ImplementationGuideTypeName);
+                    Log.For(this).Error("Implementation guide type defined in web.config not found in database: " + versionAttribute.IGType);
                     continue;
                 }
 
+                //Get the route attribute
+                var routeCheck = attributes.Where(a => a.GetType() == typeof(RoutePrefixAttribute));
+
+                //Make sure there's exactly one route attribute (shouldn't be possible but doesn't hurt to check)
+                if (routeCheck.Count() > 1 || routeCheck.Count() == 0)
+                {
+                    throw new Exception("There are " + routeCheck.Count().ToString() + " route prefixes when there should be 1 for FHIR " + versionAttribute.Version);
+                }
+
+                //Get the route attribute of the IGController
+                var routeAttribute = (RoutePrefixAttribute)attributes.Single(a => a.GetType() == typeof(RoutePrefixAttribute));
+                
                 var fhirIgType = new ClientConfigModel.FhirIgType()
                 {
                     Id = igType.Id,
                     Name = igType.Name,
-                    Version = fit.Version
+                    Version = versionAttribute.Version,
+                    BaseUrl = "/" + routeAttribute.Prefix + "/"
                 };
-
-                switch (fhirIgType.Version)
-                {
-                    case "DSTU1":
-                        fhirIgType.BaseUrl = "/api/FHIR1/";
-                        break;
-                    case "DSTU2":
-                        fhirIgType.BaseUrl = "/api/FHIR2/";
-                        break;
-                    case "STU3":
-                        fhirIgType.BaseUrl = "/api/FHIR3/";
-                        break;
-                }
 
                 clientConfig.FhirIgTypes.Add(fhirIgType);
             }

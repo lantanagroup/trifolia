@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="generator" content="HelpNDoc Professional Edition 5.8.2.643">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="favicon.ico"/>
+
+  <title>Building a FHIR IG</title>
+  <meta name="description" content="" /> 
+  <meta name="keywords" content="tutorial">
+
+
+
+  <!-- Twitter Card data -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Building a FHIR IG">
+  <meta name="twitter:description" content="">
+
+  <!-- Open Graph data -->
+  <meta property="og:title" content="Building a FHIR IG" />
+  <meta property="og:type" content="article" />
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Trifolia Workbench" /> 
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendors/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="vendors/bootstrap-3.3.6/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="vendors/html5shiv-3.7.2/html5shiv.min.js"></script>
+      <script src="vendors/respond-1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  <!-- JsTree styles -->
+  <link href="vendors/jstree-3.3.2/themes/default/style.min.css" rel="stylesheet"/>
+
+  <!-- Hnd styles -->
+  <link href="css/layout.min.css" rel="stylesheet" />
+  <link href="css/effects.min.css" rel="stylesheet" />
+  <link href="css/theme-light-blue.min.css" rel="stylesheet" />
+  <link href="css/print.min.css" rel="stylesheet" media="print" />
+  <style type="text/css">nav { width: 350px} @media screen and (min-width:769px) { body.md-nav-expanded div#main { margin-left: 350px} body.md-nav-expanded header { padding-left: 364px} }</style>
+
+  <!-- Content style -->
+  <link href="css/hnd.content.css" rel="stylesheet" />
+
+  
+
+
+
+</head>
+
+<body class="md-nav-expanded">
+
+
+
+  <div id="skip-link">
+    <a href="#main-content" class="element-invisible">Skip to main content</a>
+  </div>
+
+  <header class="headroom">
+    <button class="hnd-toggle btn btn-default">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>        
+    </button>
+    <h1>Trifolia Workbench</h1>
+    
+  </header>
+
+  <nav class="md-nav-expanded">
+    <!-- Nav tabs -->
+    <ul class="tab-tabs nav nav-tabs" role="tablist">
+      <li id="nav-close"> 
+        <button class="hnd-toggle btn btn-default">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </button>
+      </li>
+      
+	  
+        <li role="presentation" class="tab active">
+            <a href="#contents" id="tab-contents" aria-controls="contents" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-list"></i>
+                Contents
+            </a>
+        </li>
+      
+        <li role="presentation" class="tab">
+            <a href="#index" id="tab-index" aria-controls="index" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-asterisk"></i>
+                Index
+            </a>
+        </li>
+      
+        <li role="presentation" class="tab">
+            <a href="#search" id="tab-search" aria-controls="search" role="tab" data-toggle="tab">
+                <i class="glyphicon glyphicon-search"></i>
+                Search
+            </a>
+        </li>
+      
+    </ul>  <!-- /Nav tabs -->
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+	  
+      <div role="tabpanel" class="tab-pane active" id="contents">
+        <div id="toc" class="tree-container unselectable"
+            data-url="_toc.json"
+            data-openlvl="1"
+        >
+            
+        </div>
+      </div>  <!-- /contents-->
+      
+      <div role="tabpanel" class="tab-pane" id="index">
+        <div id="keywords" class="tree-container unselectable"
+            data-url="_keywords.json"
+            data-openlvl="1"
+        >
+            
+        </div>
+      </div>  <!-- /index-->
+      
+      <div role="tabpanel" class="tab-pane" id="search">
+        <div class="search-content">
+          <div class="search-input">
+            <form id="search-form">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="input-search" name="input-search" placeholder="Search..." />
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>  <!-- /search-input -->
+          <div class="search-result">
+            <div id="search-info"></div>
+            <div class="tree-container unselectable" id="search-tree"></div>
+          </div>  <!-- /search-result -->
+        </div>  <!-- /search-content -->
+      </div>  <!-- /search-->
+      
+    </div>  <!-- /Tab panes -->
+
+  </nav>
+
+  <div id="main">
+
+    <article>
+        <div id="topic-content" class="container-fluid" 
+		  data-hnd-id="BuildingaFHIRIGTutorial"
+		  data-hnd-context="70"
+		  data-hnd-title="Building a FHIR IG"
+		>
+            
+                <div class="navigation">
+                    <ol class="breadcrumb">
+                        <li>Tutorials</li>
+                    </ol>
+                    <div class="nav-arrows">
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="Groups.html" title="Groups" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="FHIRExtensionsTutorial.html" title="FHIR Extensions" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                    </div>
+                </div> 
+            
+
+            <a id="main-content"></a>
+
+            <h2>Building a FHIR IG</h2>
+
+            <div class="main-content">
+                
+<p></p>
+<p class="rvps2"><span class="rvts6">This tutorial will provide an overview of the workflow/process used to design/develop a FHIR implementation guide using Trifolia.</span></p>
+<p class="rvps2"><span class="rvts6">The basic steps are as follows, with details below:</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><a class="rvts11" href="BuildingaFHIRIGTutorial.html#create_ig">FHIR and IG Publisher Overview</a></li>
+<li value="2" class="rvps2"><a class="rvts11" href="BuildingaFHIRIGTutorial.html#create_ig">Create an implementation guide</a><span class="rvts6">.</span></li>
+<li value="3" class="rvps2"><a class="rvts11" href="BuildingaFHIRIGTutorial.html#create_profiles">Create profiles for the implementation guide. </a></li>
+<li value="4" class="rvps2"><a class="rvts11" href="BuildingaFHIRIGTutorial.html#ig_files">Upload "FHIR resource instances" to the implementation guide.</a></li>
+<li value="5" class="rvps2"><a class="rvts11" href="BuildingaFHIRIGTutorial.html#export">Export the implementation guide as a FHIR build package.</a></li>
+</ol>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h2 class="rvps6"><a name="create_ig"></a>
+<span class="rvts0"><span class="rvts20">FHIR and IG Publisher Overview</span></span></h2>
+<p class="rvps2"><span class="rvts6">See the </span><a class="rvts11" href="http://build.fhir.org/overview-dev.html">FHIR current build</a><span class="rvts6"> for more information.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts33">FHIR (</span><span class="rvts34">Fast Health Interoperability Resources</span><span class="rvts33">) is designed to enable information exchange to support the provision of healthcare in a wide variety of settings. The specification builds on and adapts modern, widely used RESTful practices to enable the provision of integrated healthcare across a wide range of teams and organizations.</span></p>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">Implementation guides are a collection of FHIR resources(profiles, value sets, examples and human readable documentation) tied together by the Implementation Guide resource</span></li>
+<li class="rvps2"><span class="rvts6">Acronym FHIR = F – Fast (to design &amp; to implement) H – Health, I – Interoperable and R – Resources(building blocks)</span></li>
+<li class="rvps2"><span class="rvts6">Resources are discrete chunks of clinical information, can be assembled into larger constructs and resources are operated on via FHIR’s REST APIs</span></li>
+<li class="rvps2"><span class="rvts6">FHIR documents are a collection of resources bound together, and are transferred between systems as a Bundle resource</span></li>
+<li class="rvps2"><span class="rvts6">The root of a FHIR document is a Composition resource that can be signed, authenticated, etc, and has the same basic obligations as a CDA document.</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts29">IG Publisher</span></span></h3>
+<p class="rvps2"><span class="rvts6">See the</span><a class="rvts11" href="http://wiki.hl7.org/index.php?title=IG_Publisher_Documentation"> IG Publisher Documentation</a><span class="rvts6"> for more information.</span></p>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps12"><span class="rvts35">The FHIR team provides an IG Publishing tool that takes the implementation guide resources and converts them to a set of 3 different types of files (generated resources in xml, json, ttl formats, a set of fragments ready to include in generated html files and Several different zip files: which are used by implementers for various purposes).</span></li>
+<li class="rvps12"><span class="rvts35">The outcome of the publishing process is a set of HTML files that represent the implementation guide. These files can be posted to a web server.</span></li>
+<li class="rvps12"><span class="rvts35">Alternatively, you may use the IG publisher to validate and render a set of Profiles, value sets etc without building a formal IG</span></li>
+</ul>
+<h2 class="rvps6"><a name="create_ig"></a>
+<span class="rvts0"><span class="rvts20">Create an implementation guide</span></span></h2>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="AuthorImplementationGuides.html">Authoring &gt; Implementation Guides</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
+<li class="rvps2"><span class="rvts6">The "type" of implementation guide is set to a FHIR implementation guide type.</span></li>
+<li class="rvps2"><span class="rvts6">Create a base identifier for the implementation guide that is a URL (ex: https://trifolia.lantanagroup.com/my_base_id"). This base url will be used by the FHIR IG publisher, and requires that all profiles within the implementation guide have a matching base identifier.</span></li>
+<li class="rvps2"><span class="rvts6">Provide a description for the implementation guide. This description (if specified in the Implementation Guide Editor) is on the front page of the implementation guide after the IG publisher has been run on the artifacts produced by Trifolia.</span></li>
+<li class="rvps2"><span class="rvts6">Include additional guidance that will not be inferred by the profiles of the implementation guide in the "Volume 1" tab, by adding sections to "Volume 1". Each of the sections defined in the implementation guide's "Volume 1" tab will be displayed on the "Overview" tab of the implementation guide's front-page.</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h2 class="rvps6"><a name="create_profiles"></a>
+<span class="rvts0"><span class="rvts20">Create FHIR profiles for the implementation guide</span></span></h2>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="Editor.html">Authoring &gt; Templates/Profiles &gt; Editor</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
+<li style="margin-left: 0px" class="rvps13"><span class="rvts6">Each FHIR profile must have the same base url as the implementation guide in the "long id" field. &nbsp;</span><span class="rvts36">The identifier for FHIR profiles is defaulted to a combination of the bookmark/name of the FHIR profile and the associated implementation guide's base url.</span></li>
+<li style="margin-left: 0px" class="rvps13"><span class="rvts6">Each profile must have a "short id" that matches the outer-most leaf level of the long id (everything to the right of the last / in the long id).</span></li>
+<li style="margin-left: 0px" class="rvps13"><span class="rvts6">Define constraints for each profile in the "Constraints" tab of the editor, modifying the cardinality, value set bindings, etc. as appropriate.</span></li>
+</ul>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts29">Defining and using extensions</span></span></h3>
+<p class="rvps2"><span class="rvts6">In the event that an extension is necessary, you must produce a profile that describes how the extension is intended to be used, and reference that extension as a "Contained template/profile" on the "extension" element of another profile.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h2 class="rvps6"><a name="ig_files"></a>
+<span class="rvts0"><span class="rvts20">Upload "FHIR resource instances" to the implementation guide</span></span></h2>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="ImplementationGuideFiles.html">Authoring &gt; ImplementationGuides &gt; Files</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">In certain cases, (such as "Conformance", "SearchParameter" and "Questionnaire") instances of resources need to be uploaded to Trifolia, then associated with the implementation guide rather than defining profiles. Add these "FHIR resource instances" to the implementation guide's files (as type "FHIR Resource Instance") so that they are included in the FHIR build package when exported from Trifolia.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<h2 class="rvps6"><a name="export"></a>
+<span class="rvts0"><span class="rvts20">Export the implementation guide as a FHIR build package</span></span></h2>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="ExportXMLJSON.html">Exporting &gt; XML/JSON</a><span class="rvts6"> for details.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">Export the implementation guide as a FHIR build package. The zip package that will be run against the FHIR ig publisher.</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">Run the FHIR IG publisher by following these steps:</span></p>
+<ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
+<li value="1" class="rvps2"><span class="rvts6">Extract the FHIR IG Package to a directory on your machine.</span></li>
+<li value="2" class="rvps2"><span class="rvts6">Download the FHIR IG Publisher jar file from the FHIR's </span><a class="rvts11" href="http://build.fhir.org/downloads.html" target="_blank">Downloads</a><span class="rvts6"> page or click </span><a class="rvts11" href="http://build.fhir.org/org.hl7.fhir.igpublisher.jar" target="_blank">here</a><span class="rvts6"> to directly download the .jar file. Store the .jar file in the same directory that the FHIR IG Package was extracted to.</span></li>
+<li value="3" class="rvps2"><span class="rvts6">Execute the "RunIGPublisher.bat" batch script.</span></li>
+<li value="4" class="rvps2"><span class="rvts6">If using the GUI interface, select the XXXX.json file exported from the ZIP.</span></li>
+<li value="5" class="rvps2"><span class="rvts6">Press "execute".</span></li>
+</ol>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts6">Note: The FHIR IG publisher is new functionality, being actively developed. If the latest version of the FHIR IG publisher produces errors, you should seek guidance from </span><a class="rvts11" href="http://chat.fhir.org" target="_blank">http://chat.fhir.org</a><span class="rvts6"> in the #Implementers channel.</span></p>
+<p></p>
+
+            </div>
+            
+            <div id="topic_footer"><div id="topic_footer_content">Copyright &copy; 2017 by Lantana Consulting Group. All Rights Reserved.</div></div>
+        </div>  <!-- /#topic-content -->
+    </article>
+
+    <footer></footer>
+
+  </div>  <!-- /#main -->
+
+  <div class="mask" data-toggle="sm-nav-expanded"></div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="hndModal" tabindex="-1" role="dialog" aria-labelledby="hndModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hndModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary modal-btn-close" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
+  <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+  <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
+  <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.18.9/uri.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
+  
+  <!-- Headroom -->
+  <script src="vendors/headroom-0.9.3/headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.3/jquery.headroom.min.js"></script>
+
+  <!-- JsTree -->
+  <script src="vendors/jstree-3.3.2/jstree.min.js"></script>
+
+  <!-- HelpNDoc scripts -->
+  <script src="_translations.js"></script>
+  <script src="js/hndsd.min.js"></script>
+  <script src="js/hndse.min.js"></script>
+  <script src="js/app.min.js"></script>
+
+  <!-- Scripts -->
+  <script>
+    $(function() {
+      // Instanciate FastClick
+      Origami.fastclick(document.body);
+      // Create the app
+      var app = new Hnd.App();
+      // Update translations
+      hnd_ut(app);
+	  // Custom JS
+	  
+      // Boot the app
+      app.Boot();
+    });
+  </script>
+
+
+
+</body>
+
+</html>
+

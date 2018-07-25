@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Trifolia.Shared.Plugins;
+using Trifolia.Plugins;
 
 namespace Trifolia.Web.Models.Export
 {
@@ -61,6 +58,7 @@ namespace Trifolia.Web.Models.Export
 
         public bool IncludeVocabulary { get; set; }
         public bool IncludeCustomSchematron { get; set; }
+        public bool IncludeVolume1 { get; set; }
         public string DefaultSchematron { get; set; }
 
         // Vocabulary Settings
@@ -78,5 +76,8 @@ namespace Trifolia.Web.Models.Export
         public bool IncludeInferred { get; set; }
         public List<string> SelectedCategories { get; set; }
         public bool ReturnJson { get; set; }
+
+        //Value that determines selecting all templates or not
+        public bool SelectAll { get; set; }
     }
 }

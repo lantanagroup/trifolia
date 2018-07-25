@@ -11,7 +11,9 @@ $distAppPath = Join-Path $distPath "Trifolia.Web"
 $sourceWebConfigPath = Join-Path $buildPath "TransformWebConfig\transformed\Web.config"
 $distWebConfigPath = Join-Path $distPath "Trifolia.Web\Web.config"
 $sourceMigrateToolPath = Join-Path $sourcePath "packages\EntityFramework.6.1.3\tools\migrate.exe"
+$runPowershellPath = Join-Path $sourcePath "runPowershell.bat"
 $distMigrateToolPath = Join-Path $distPath "Trifolia.Web\bin\migrate.exe"
+$runPowershellDistPath = Join-Path $distPath "Trifolia.Web\bin\runPowershell.bat"
 $appManifestPath = Join-Path $distAppPath "manifest.txt"
 
 if (([IO.Directory]::Exists($distPath))) {
@@ -23,5 +25,6 @@ New-Item -ItemType directory -Path $distPath | Out-Null
 Copy-Item -Path $sourceAppPath -Destination $distAppPath -Recurse
 Copy-Item -Path $sourceWebConfigPath -Destination $distWebConfigPath
 Copy-Item -Path $sourceMigrateToolPath -Destination $distMigrateToolPath
+Copy-Item -Path $runPowershellPath -Destination $runPowershellDistPath
 Copy-Item -Path ".\*.ps1" -Destination $distPath
 Get-ChildItem $distAppPath -Recurse -File -Name > $appManifestPath

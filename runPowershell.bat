@@ -1,0 +1,1 @@
+powershell.exe -NoProfile -NoExit -Command "Import-Module .\Trifolia.Powershell.dll; Set-TrifoliaConfig -ConfigLocation ..\Web.config -Username admin"

@@ -1,25 +1,35 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using Trifolia.DB;
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Generation.Versioning;
+using Trifolia.Export.MSWord;
+using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Export.Versioning;
+using Trifolia.Logging;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Export.HTML
 {
     public class HtmlExporter
     {
-        private IObjectRepository tdb;
+        public class ExportConstraintReference : ConstraintReference
+        {
+            public string ImplementationGuide { get; set; }
+            public DateTime? PublishDate { get; set; }
+        }
 
-        public HtmlExporter(IObjectRepository tdb)
+        private IObjectRepository tdb;
+        private bool offline = false;
+        private List<ExportConstraintReference> constraintReferences;
+
+        public HtmlExporter(IObjectRepository tdb, bool offline = false)
         {
             this.tdb = tdb;
+            this.offline = offline;
         }
 
         public ViewDataModel GetExportData(int implementationGuideId, int? fileId, int[] templateIds, bool inferred)
@@ -42,10 +52,56 @@ namespace Trifolia.Export.HTML
             }
             else
             {
-                WIKIParser wikiParser = new WIKIParser(this.tdb);
+                Log.For(this).Trace("Generating HTML export for " + implementationGuideId);
+
                 IGSettingsManager igSettings = new IGSettingsManager(this.tdb, implementationGuideId);
-                var igTypePlugin = IGTypePluginFactory.GetPlugin(ig.ImplementationGuideType);
+                var igTypePlugin = ig.ImplementationGuideType.GetPlugin();
                 var firstTemplateType = ig.ImplementationGuideType.TemplateTypes.OrderBy(y => y.OutputOrder).FirstOrDefault();
+                var valueSets = ig.GetValueSets(this.tdb);
+                var parentTemplateIds = templateIds != null ? templateIds.ToList() : null;
+                var templates =
+                    ig.GetQueryableRecursiveTemplates(this.tdb, parentTemplateIds, inferred)
+                    .IncludeDetails(true, true, true)
+                    .ToList();
+                var constraints = templates.SelectMany(y => y.ChildConstraints);
+                var previousVersionIds = templates.Where(y => y.PreviousVersionTemplateId != null).Select(y => y.PreviousVersionTemplateId.Value).ToList();
+                var previousVersions = this.tdb.Templates.Where(y => previousVersionIds.Contains(y.Id))
+                                        .IncludeDetails(true, true, true)
+                                        .ToList();
+                var containedTemplates = (from st in templates
+                                          join vtr in this.tdb.ViewTemplateRelationships.AsNoTracking() on st.Id equals vtr.ParentTemplateId
+                                          join t in this.tdb.Templates.AsNoTracking() on vtr.ChildTemplateId equals t.Id
+                                          select new
+                                          {
+                                              Relationship = vtr,
+                                              Template = t
+                                          }).ToList();
+                var containedByTemplates = (from st in templates
+                                            join vtr in this.tdb.ViewTemplateRelationships.AsNoTracking() on st.Id equals vtr.ChildTemplateId
+                                            join t in this.tdb.Templates.AsNoTracking() on vtr.ParentTemplateId equals t.Id
+                                            select new
+                                            {
+                                                Relationship = vtr,
+                                                Template = t
+                                            }).ToList();
+                this.constraintReferences = (from c in constraints
+                                             join tcr in this.tdb.TemplateConstraintReferences.AsNoTracking() on c.Id equals tcr.TemplateConstraintId
+                                             join t in this.tdb.Templates.AsNoTracking() on tcr.ReferenceIdentifier equals t.Oid
+                                             join ig1 in this.tdb.ImplementationGuides.AsNoTracking() on t.OwningImplementationGuideId equals ig1.Id
+                                             where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                                             select new ExportConstraintReference()
+                                             {
+                                                 Bookmark = t.Bookmark,
+                                                 Identifier = t.Oid,
+                                                 Name = t.Name,
+                                                 TemplateConstraintId = tcr.TemplateConstraintId,
+                                                 IncludedInIG = templates.Contains(t),
+                                                 ImplementationGuide = 
+                                                    !string.IsNullOrEmpty(ig1.DisplayName) ? 
+                                                    ig1.DisplayName :
+                                                    ig1.Name + " V" + ig1.Version.ToString(),
+                                                 PublishDate = ig1.PublishDate
+                                             }).ToList();
 
                 model = new ViewDataModel()
                 {
@@ -60,14 +116,19 @@ namespace Trifolia.Export.HTML
                 model.ImplementationGuideDescription = ig.WebDescription;
                 model.ImplementationGuideDisplayName = !string.IsNullOrEmpty(ig.WebDisplayName) ? ig.WebDisplayName : model.ImplementationGuideName;
 
+                Log.For(this).Trace("Including Volume 1 sections");
+
                 // Create the section models
-                model.Volume1Sections = (from igs in ig.Sections.OrderBy(y => y.Order)
+                var sections = ig.Sections.OrderBy(y => y.Order).ToList();
+                model.Volume1Sections = (from igs in sections
                                          select new ViewDataModel.Section()
                                          {
                                              Heading = igs.Heading,
-                                             Content = igs.Content,
+                                             Content = igs.Content.MarkdownToHtml(),
                                              Level = igs.Level
                                          }).ToList();
+
+                Log.For(this).Trace("Including FHIR resources attached to IG");
 
                 // Include any FHIR Resource Instance attachments with the IG
                 foreach (var fhirResourceInstanceFile in ig.Files.Where(y => y.ContentType == "FHIRResourceInstance"))
@@ -86,8 +147,7 @@ namespace Trifolia.Export.HTML
                         model.FHIRResources.Add(newFhirResource);
                 }
 
-                // Create the value set models
-                var valueSets = ig.GetValueSets(this.tdb);
+                Log.For(this).Trace("Including value sets");
 
                 foreach (var valueSet in valueSets)
                 {
@@ -102,48 +162,35 @@ namespace Trifolia.Export.HTML
 
                     var members = valueSet.ValueSet.GetActiveMembers(valueSet.BindingDate);
                     newValueSetModel.Members = (from vsm in members
+                                                join cs in this.tdb.CodeSystems on vsm.CodeSystemId equals cs.Id
                                                 select new ViewDataModel.ValueSetMember()
                                                 {
                                                     Code = vsm.Code,
                                                     DisplayName = vsm.DisplayName,
-                                                    CodeSystemIdentifier = vsm.CodeSystem.Oid,
-                                                    CodeSystemName = vsm.CodeSystem.Name
+                                                    CodeSystemIdentifier = cs.Oid,
+                                                    CodeSystemName = cs.Name
                                                 }).ToList();
 
                     model.ValueSets.Add(newValueSetModel);
 
                     // Add code systems used by this value set to the IG
                     var codeSystems = (from vsm in members
+                                       join cs in this.tdb.CodeSystems on vsm.CodeSystemId equals cs.Id
                                        select new ViewDataModel.CodeSystem()
                                        {
-                                           Identifier = vsm.CodeSystem.Oid,
-                                           Name = vsm.CodeSystem.Name
+                                           Identifier = cs.Oid,
+                                           Name = cs.Name
                                        });
                     model.CodeSystems.AddRange(codeSystems);
                 }
 
-                // Create the template models
-                var templates = ig.GetRecursiveTemplates(this.tdb, templateIds != null ? templateIds.ToList() : null, inferred);
-                var constraints = (from t in templates
-                                   join tc in this.tdb.TemplateConstraints.AsNoTracking() on t.Id equals tc.TemplateId
-                                   select tc).AsEnumerable();
-                var constraintReferences = (from c in constraints
-                                            join tcr in this.tdb.TemplateConstraintReferences.AsNoTracking() on c.Id equals tcr.TemplateConstraintId
-                                            join t in this.tdb.Templates.AsNoTracking() on tcr.ReferenceIdentifier equals t.Oid
-                                            where tcr.ReferenceType == ConstraintReferenceTypes.Template
-                                            select new ConstraintReference()
-                                            {
-                                                Bookmark = t.Bookmark,
-                                                Identifier = t.Oid,
-                                                Name = t.Name,
-                                                TemplateConstraintId = tcr.TemplateConstraintId,
-                                                IncludedInIG = templates.Contains(t)
-                                            }).ToList();
+                Log.For(this).Trace("Including templates");
 
                 foreach (var template in templates)
                 {
                     var templateId = template.Id;
                     var templateSchema = schema.GetSchemaFromContext(template.PrimaryContextType);
+                    var previousVersion = previousVersions.SingleOrDefault(y => y.Id == template.PreviousVersionTemplateId);
                     var newTemplateModel = new ViewDataModel.Template()
                     {
                         Identifier = template.Oid,
@@ -152,25 +199,23 @@ namespace Trifolia.Export.HTML
                         Context = template.PrimaryContext,
                         Name = template.Name,
                         ImpliedTemplate = template.ImpliedTemplate != null ? new ViewDataModel.TemplateReference(template.ImpliedTemplate) : null,
-                        Description = wikiParser.ParseAsHtml(template.Description),
+                        Description = template.Description.MarkdownToHtml(),
                         Extensibility = template.IsOpen ? "Open" : "Closed",
                         TemplateTypeId = template.TemplateTypeId
                     };
 
                     // Load Template Changes
-                    var lPreviousVersion = template.PreviousVersion;
-
-                    if (lPreviousVersion != null)
+                    if (previousVersion != null)
                     {
                         var comparer = VersionComparer.CreateComparer(this.tdb, igTypePlugin, igSettings);
-                        var result = comparer.Compare(lPreviousVersion, template);
+                        var result = comparer.Compare(previousVersion, template);
 
                         newTemplateModel.Changes = new DifferenceModel(result)
                         {
                             Id = template.Id,
                             TemplateName = template.Name,
-                            PreviousTemplateName = string.Format("{0} ({1})", lPreviousVersion.Name, lPreviousVersion.Oid),
-                            PreviousTemplateId = lPreviousVersion.Id
+                            PreviousTemplateName = string.Format("{0} ({1})", previousVersion.Name, previousVersion.Oid),
+                            PreviousTemplateId = previousVersion.Id
                         };
                     }
 
@@ -193,12 +238,19 @@ namespace Trifolia.Export.HTML
                                                     SampleText = ts.XmlSample
                                                 }).ToList();
 
-                    // Contained templates
-                    var containedTemplates = (from tcr in this.tdb.ViewTemplateRelationships.AsNoTracking()
-                                              join t in this.tdb.Templates.AsNoTracking() on tcr.ChildTemplateId equals t.Id
-                                              where tcr.ParentTemplateId == templateId
-                                              select t).Distinct().ToList();
-                    newTemplateModel.ContainedTemplates = containedTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
+                    // Contained templates                    
+                    var thisContainedTemplates = containedTemplates
+                        .Where(y => y.Relationship.ParentTemplateId == templateId)
+                        .GroupBy(y => y.Template)
+                        .Select(y => y.First());
+                    newTemplateModel.ContainedTemplates = thisContainedTemplates.Select(y => new ViewDataModel.TemplateReference(y.Template)).ToList();
+
+                    // Contained by templates                    
+                    var thisContainedByTemplates = containedByTemplates
+                        .Where(y => y.Relationship.ChildTemplateId == templateId)
+                        .GroupBy(y => y.Template)
+                        .Select(y => y.First());
+                    newTemplateModel.ContainedByTemplates = thisContainedByTemplates.Select(y => new ViewDataModel.TemplateReference(y.Template)).ToList();
 
                     // Implying templates
                     var implyingTemplates = (from t in templates
@@ -206,21 +258,14 @@ namespace Trifolia.Export.HTML
                                              select t).Distinct().ToList();
                     newTemplateModel.ImplyingTemplates = implyingTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
 
-                    // Contained by templates
-                    var containedByTemplates = (from tcr in this.tdb.ViewTemplateRelationships.AsNoTracking()
-                                                join t in this.tdb.Templates.AsNoTracking() on tcr.ParentTemplateId equals t.Id
-                                                where tcr.ChildTemplateId == templateId
-                                                select t).Distinct().ToList();
-                    newTemplateModel.ContainedByTemplates = containedByTemplates.Select(y => new ViewDataModel.TemplateReference(y)).ToList();
-
                     model.Templates.Add(newTemplateModel);
-
-
 
                     // Create the constraint models (hierarchically)
                     var parentConstraints = template.ChildConstraints.Where(y => y.ParentConstraintId == null);
-                    CreateConstraints(wikiParser, igSettings, igTypePlugin, constraintReferences, parentConstraints, newTemplateModel.Constraints, templateSchema);
+                    CreateConstraints(igSettings, igTypePlugin, parentConstraints, newTemplateModel.Constraints, templateSchema);
                 }
+
+                Log.For(this).Trace("Including template types");
 
                 // Create models for template types in the IG
                 model.TemplateTypes = (from igt in igSettings.TemplateTypes
@@ -234,13 +279,58 @@ namespace Trifolia.Export.HTML
                                            Description = igt.DetailsText
                                        }).ToList();
 
+                Log.For(this).Trace("Including code systems");
                 model.CodeSystems = model.CodeSystems.Distinct().ToList();
             }
+            
+            this.FixImagePaths(model);
+
+            Log.For(this).Trace("Done generating HTML export for " + implementationGuideId);
 
             return model;
         }
 
-        private void CreateConstraints(WIKIParser wikiParser, IGSettingsManager igManager, IIGTypePlugin igTypePlugin, List<ConstraintReference> constraintReferences, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList, SimpleSchema templateSchema, SimpleSchema.SchemaObject schemaObject = null)
+        private string FixImagePaths(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return text;
+
+            Regex regex = new Regex(@"src=""\/api\/ImplementationGuide\/(\d+)\/Image\/(.+?)""", RegexOptions.Multiline);
+            MatchCollection matches = regex.Matches(text);
+
+            foreach (Match match in matches)
+            {
+                string replacement = string.Format(@"src=""images/{0}""", match.Groups[2].Value);
+                text = text.Replace(match.Groups[0].Value, replacement);
+            }
+
+            return text;
+        }
+
+        private void FixImagePaths(ViewDataModel model)
+        {
+            if (!this.offline)
+                return;
+
+            Log.For(this).Trace("Fixing paths to images for offline copy.");
+
+            foreach (var template in model.Templates)
+            {
+                template.Description = this.FixImagePaths(template.Description);
+                
+                foreach (var constraint in template.Constraints)
+                {
+                    constraint.Narrative = this.FixImagePaths(constraint.Narrative);
+                }
+            }
+
+            foreach (var section in model.Volume1Sections)
+            {
+                section.Content = this.FixImagePaths(section.Content);
+            }
+        }
+
+        private void CreateConstraints(IGSettingsManager igManager, IIGTypePlugin igTypePlugin, IEnumerable<TemplateConstraint> constraints, List<ViewDataModel.Constraint> parentList, SimpleSchema templateSchema, SimpleSchema.SchemaObject schemaObject = null)
         {
             foreach (var constraint in constraints.OrderBy(y => y.Order))
             {
@@ -250,12 +340,12 @@ namespace Trifolia.Export.HTML
                 if (templateSchema != null && schemaObject == null)
                     schemaObject = templateSchema.Children.SingleOrDefault(y => y.Name == constraint.Context);
 
-                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, igTypePlugin, theConstraint, constraintReferences, "#/volume2/", "#/valuesets/#", true, true, true, false);
+                IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igManager, igTypePlugin, theConstraint, this.constraintReferences.Cast<ConstraintReference>().ToList(), "#/volume2/", "#/valuesets/#", true, true, true, false);
 
                 var newConstraintModel = new ViewDataModel.Constraint()
                 {
                     Number = string.Format("{0}-{1}", theConstraint.Template.OwningImplementationGuideId, theConstraint.Number),
-                    Narrative = fc.GetHtml(wikiParser, string.Empty, 1, true),
+                    Narrative = fc.GetHtml(string.Empty, 1, true),
                     Conformance = theConstraint.Conformance,
                     Cardinality = theConstraint.Cardinality,
                     Context = theConstraint.Context,
@@ -266,16 +356,15 @@ namespace Trifolia.Export.HTML
                     IsChoice = theConstraint.IsChoice
                 };
 
-                newConstraintModel.ContainedTemplates = (from tcr in theConstraint.References
-                                                         join t in this.tdb.Templates.AsNoTracking() on tcr.ReferenceIdentifier equals t.Oid
-                                                         where tcr.ReferenceType == ConstraintReferenceTypes.Template
+                newConstraintModel.ContainedTemplates = (from cr in this.constraintReferences
+                                                         where cr.TemplateConstraintId == theConstraint.Id
                                                          select new ViewDataModel.TemplateReference()
                                                          {
-                                                             Identifier = t.Oid,
-                                                             Bookmark = t.Bookmark,
-                                                             ImplementationGuide = t.OwningImplementationGuide.GetDisplayName(),
-                                                             PublishDate = t.OwningImplementationGuide.PublishDate,
-                                                             Name = t.Name
+                                                             Identifier = cr.Identifier,
+                                                             Bookmark = cr.Bookmark,
+                                                             ImplementationGuide = cr.ImplementationGuide,
+                                                             PublishDate = cr.PublishDate,
+                                                             Name = cr.Name
                                                          }).ToList();
 
                 var isFhir = constraint.Template.ImplementationGuideType.SchemaURI == ImplementationGuideType.FHIR_NS;
@@ -291,7 +380,7 @@ namespace Trifolia.Export.HTML
                     null;
 
                 // Recursively add child constraints
-                CreateConstraints(wikiParser, igManager, igTypePlugin, constraintReferences, theConstraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
+                CreateConstraints(igManager, igTypePlugin, theConstraint.ChildConstraints, newConstraintModel.Constraints, null, nextSchemaObject);
             }
         }
     }

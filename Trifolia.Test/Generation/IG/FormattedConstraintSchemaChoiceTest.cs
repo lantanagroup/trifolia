@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Trifolia.DB;
-using Trifolia.Generation.IG.ConstraintGeneration;
+using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Plugins;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 
 namespace Trifolia.Test.Generation.IG
 {
@@ -22,7 +21,7 @@ namespace Trifolia.Test.Generation.IG
             this.tdb.InitializeCDARepository();
             this.tdb.InitializeFHIR3Repository();
 
-            var fhirIgType = this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_FHIR_STU3_IG_TYPE_NAME);
+            var fhirIgType = this.tdb.FindImplementationGuideType(Constants.IGTypeNames.FHIR_STU3);
             this.fhirIg = this.tdb.FindOrCreateImplementationGuide(fhirIgType, "Test FHIR IG");
             this.fhirIgSettings = new IGSettingsManager(this.tdb, this.fhirIg.Id);
             this.fhirIgTypePlugin = fhirIgType.GetPlugin();

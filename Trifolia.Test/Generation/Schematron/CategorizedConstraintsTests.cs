@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Xml;
 
+using Trifolia.Shared;
 using Trifolia.Export.Schematron;
 using Trifolia.DB;
 
@@ -42,8 +43,8 @@ namespace Trifolia.Test.Generation.Schematron
         {
             this.tdb.InitializeCDARepository();
 
-            var cdaIgType = this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME);
-            var docType = this.tdb.FindTemplateType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME, "Document");
+            var cdaIgType = this.tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA);
+            var docType = this.tdb.FindTemplateType(Constants.IGTypeNames.CDA, "Document");
             this.ig = this.tdb.FindOrCreateImplementationGuide(cdaIgType, "Test IG");
 
             var template = this.tdb.CreateTemplate("urn:oid:1.2.3.4", docType, "Test Template", ig, "ClinicalDocument", "ClinicalDocument");

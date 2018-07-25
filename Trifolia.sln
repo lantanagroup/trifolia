@@ -1,14 +1,15 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C1DF6EA4-3295-4D10-B208-7FEE96746C15}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
 		Install.ps1 = Install.ps1
 		Local.testsettings = Local.testsettings
-		prepare_package.bat = prepare_package.bat
+		PreparePackage.ps1 = PreparePackage.ps1
 		README.md = README.md
+		runPowershell.bat = runPowershell.bat
 		TemplateDatabaseManagement.vsmdi = TemplateDatabaseManagement.vsmdi
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
@@ -20,8 +21,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Authentication", "Trifolia.Authentication\Trifolia.Authentication.csproj", "{FB7FF53B-DF9F-437A-ADBA-AB0BEB854243}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Test", "Trifolia.Test\Trifolia.Test.csproj", "{C37CBF55-BED6-4B95-889F-9DDB8B2FEB3F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Generation", "Trifolia.Generation\Trifolia.Generation.csproj", "{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trifolia.Logging", "Trifolia.Logging\Trifolia.Logging.csproj", "{9032EEEF-9D4E-4F15-8A86-FF9F2A74E763}"
 EndProject
@@ -223,44 +222,6 @@ Global
 		{C37CBF55-BED6-4B95-889F-9DDB8B2FEB3F}.SingleImage|Mixed Platforms.Build.0 = Install Release|Any CPU
 		{C37CBF55-BED6-4B95-889F-9DDB8B2FEB3F}.SingleImage|x86.ActiveCfg = Install Release|Any CPU
 		{C37CBF55-BED6-4B95-889F-9DDB8B2FEB3F}.SingleImage|x86.Build.0 = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.CD_ROM|Any CPU.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.CD_ROM|Any CPU.Build.0 = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.CD_ROM|Mixed Platforms.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.CD_ROM|Mixed Platforms.Build.0 = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.CD_ROM|x86.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.CD_ROM|x86.Build.0 = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.DVD-5|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.DVD-5|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.DVD-5|x86.ActiveCfg = Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.DVD-5|x86.Build.0 = Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Install Debug|Any CPU.ActiveCfg = Install Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Install Debug|Any CPU.Build.0 = Install Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Install Debug|Mixed Platforms.ActiveCfg = Install Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Install Debug|Mixed Platforms.Build.0 = Install Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Install Debug|x86.ActiveCfg = Install Debug|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Install Release|Any CPU.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Install Release|Any CPU.Build.0 = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Install Release|Mixed Platforms.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Install Release|Mixed Platforms.Build.0 = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Install Release|x86.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Release|Any CPU.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Release|Any CPU.Build.0 = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Release|Mixed Platforms.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Release|Mixed Platforms.Build.0 = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.Release|x86.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.SingleImage|Any CPU.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.SingleImage|Any CPU.Build.0 = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.SingleImage|Mixed Platforms.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.SingleImage|Mixed Platforms.Build.0 = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.SingleImage|x86.ActiveCfg = Install Release|Any CPU
-		{6070B7B7-78BE-44F7-9EBB-5FF0B944AAA3}.SingleImage|x86.Build.0 = Install Release|Any CPU
 		{9032EEEF-9D4E-4F15-8A86-FF9F2A74E763}.CD_ROM|Any CPU.ActiveCfg = Install Release|Any CPU
 		{9032EEEF-9D4E-4F15-8A86-FF9F2A74E763}.CD_ROM|Any CPU.Build.0 = Install Release|Any CPU
 		{9032EEEF-9D4E-4F15-8A86-FF9F2A74E763}.CD_ROM|Mixed Platforms.ActiveCfg = Install Release|Any CPU
@@ -432,13 +393,13 @@ Global
 		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.DVD-5|x86.Build.0 = Debug|Any CPU
 		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Debug|Mixed Platforms.ActiveCfg = Install Debug|Any CPU
+		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Debug|Mixed Platforms.Build.0 = Install Debug|Any CPU
 		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Debug|x86.ActiveCfg = Debug|Any CPU
 		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Release|Any CPU.Build.0 = Release|Any CPU
-		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Release|Mixed Platforms.ActiveCfg = Install Release|Any CPU
+		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Release|Mixed Platforms.Build.0 = Install Release|Any CPU
 		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Install Release|x86.ActiveCfg = Release|Any CPU
 		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D723DC35-997A-4BF3-BC7C-A22CB63C3892}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -470,13 +431,13 @@ Global
 		{71345C54-70CA-43C9-92AD-AFC064521E43}.DVD-5|x86.Build.0 = Debug|Any CPU
 		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Debug|Mixed Platforms.ActiveCfg = Install Debug|Any CPU
+		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Debug|Mixed Platforms.Build.0 = Install Debug|Any CPU
 		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Debug|x86.ActiveCfg = Debug|Any CPU
 		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Release|Any CPU.Build.0 = Release|Any CPU
-		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Release|Mixed Platforms.ActiveCfg = Install Release|Any CPU
+		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Release|Mixed Platforms.Build.0 = Install Release|Any CPU
 		{71345C54-70CA-43C9-92AD-AFC064521E43}.Install Release|x86.ActiveCfg = Release|Any CPU
 		{71345C54-70CA-43C9-92AD-AFC064521E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71345C54-70CA-43C9-92AD-AFC064521E43}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -508,13 +469,13 @@ Global
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.DVD-5|x86.Build.0 = Debug|Any CPU
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Debug|Mixed Platforms.ActiveCfg = Install Debug|Any CPU
+		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Debug|Mixed Platforms.Build.0 = Install Debug|Any CPU
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Debug|x86.ActiveCfg = Debug|Any CPU
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Release|Any CPU.Build.0 = Release|Any CPU
-		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Release|Mixed Platforms.ActiveCfg = Install Release|Any CPU
+		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Release|Mixed Platforms.Build.0 = Install Release|Any CPU
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Install Release|x86.ActiveCfg = Release|Any CPU
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BE1523E-6D37-4BF2-9564-19170A7341E3}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -546,13 +507,13 @@ Global
 		{644D3935-88AF-40E5-933A-D6E457A3DF42}.DVD-5|x86.Build.0 = Debug|Any CPU
 		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|Any CPU.Build.0 = Debug|Any CPU
-		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|Mixed Platforms.ActiveCfg = Install Debug|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|Mixed Platforms.Build.0 = Install Debug|Any CPU
 		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Debug|x86.ActiveCfg = Debug|Any CPU
 		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|Any CPU.ActiveCfg = Release|Any CPU
 		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|Any CPU.Build.0 = Release|Any CPU
-		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|Mixed Platforms.ActiveCfg = Install Release|Any CPU
+		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|Mixed Platforms.Build.0 = Install Release|Any CPU
 		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Install Release|x86.ActiveCfg = Release|Any CPU
 		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{644D3935-88AF-40E5-933A-D6E457A3DF42}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -573,6 +534,7 @@ Global
 		{A22A62E4-E697-4618-94C9-B46626E4E6CF} = {C1DF6EA4-3295-4D10-B208-7FEE96746C15}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {17074010-361C-43D1-A74A-086344123F00}
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution

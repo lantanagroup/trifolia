@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 using Trifolia.DB;
 using Trifolia.Shared;
-using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Shared.Plugins;
+using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Plugins;
 
 namespace Trifolia.Export.DECOR
 {

@@ -25,7 +25,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Install Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Install\</OutputPath>
+    <OutputPath>bin\Install Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -84,6 +84,7 @@
     <Compile Include="ImplementationGuideFileTypes.cs" />
     <Compile Include="ImplementationGuideTypeExtension.cs" />
     <Compile Include="IObjectRepository.cs" />
+    <Compile Include="IQueryableExtensions.cs" />
     <Compile Include="ITemplate.cs" />
     <Compile Include="Migrations\201703021923101_init.cs" />
     <Compile Include="Migrations\201703021923101_init.Designer.cs">
@@ -128,6 +129,14 @@
     <Compile Include="Migrations\201803052328345_vValueSetMemberWhiteSpace.cs" />
     <Compile Include="Migrations\201803052328345_vValueSetMemberWhiteSpace.Designer.cs">
       <DependentUpon>201803052328345_vValueSetMemberWhiteSpace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803231315265_addImplementationGuideIdTov_templateList.cs" />
+    <Compile Include="Migrations\201803231315265_addImplementationGuideIdTov_templateList.Designer.cs">
+      <DependentUpon>201803231315265_addImplementationGuideIdTov_templateList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807122126363_updateCDASchemaSeedData.cs" />
+    <Compile Include="Migrations\201807122126363_updateCDASchemaSeedData.Designer.cs">
+      <DependentUpon>201807122126363_updateCDASchemaSeedData.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
@@ -236,6 +245,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803052328345_vValueSetMemberWhiteSpace.resx">
       <DependentUpon>201803052328345_vValueSetMemberWhiteSpace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803231315265_addImplementationGuideIdTov_templateList.resx">
+      <DependentUpon>201803231315265_addImplementationGuideIdTov_templateList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807122126363_updateCDASchemaSeedData.resx">
+      <DependentUpon>201807122126363_updateCDASchemaSeedData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -179,7 +179,7 @@ namespace Trifolia.Web.Controllers
             var ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
 
             // Get the data from the API controller
-            HtmlExporter exporter = new HtmlExporter(this.tdb);
+            HtmlExporter exporter = new HtmlExporter(this.tdb, true);
             var dataModel = exporter.GetExportData(implementationGuideId, null, templateIds, inferred);
 
             // Serialize the data to JSON

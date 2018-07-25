@@ -21,10 +21,7 @@ namespace Trifolia.Test
     public class MockObjectRepository : IObjectRepository
     {
         public const string DEFAULT_ORGANIZATION = "LCG";
-        public const string DEFAULT_FHIR_DSTU2_IG_TYPE_NAME = "FHIR DSTU2";
-        public const string DEFAULT_FHIR_STU3_IG_TYPE_NAME = "FHIR STU3";
-        public const string DEFAULT_CDA_IG_TYPE_NAME = "CDA";
-        public const string DEFAULT_HQMF_R2_IG_TYPE_NAME = "HQMF R2";
+        public const string DEFAULT_FHIR_CURRENT_BUILD_IG_TYPE_NAME = "FHIR Current Build";
         public const string DEFAULT_USERNAME = "admin";
 
         public const string DEFAULT_CDA_DOC_TYPE = "Document";
@@ -82,7 +79,7 @@ namespace Trifolia.Test
         /// </summary>
         public void InitializeCDARepository()
         {
-            ImplementationGuideType cdaType = this.FindOrCreateImplementationGuideType(DEFAULT_CDA_IG_TYPE_NAME, "cda.xsd", "cda", "urn:hl7-org:v3");
+            ImplementationGuideType cdaType = this.FindOrCreateImplementationGuideType(Constants.IGTypeNames.CDA, Constants.IGTypeSchemaLocations.CDA, Constants.IGTypePrefixes.CDA, Constants.IGTypeNamespaces.CDA);
 
             this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_DOC_TYPE, "ClinicalDocument", "ClinicalDocument", 1);
             this.FindOrCreateTemplateType(cdaType, DEFAULT_CDA_SECTION_TYPE, "section", "Section", 2);
@@ -93,7 +90,7 @@ namespace Trifolia.Test
 
         public void InitializeFHIR2Repository()
         {
-            ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(DEFAULT_FHIR_DSTU2_IG_TYPE_NAME, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
+            ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(Constants.IGTypeNames.FHIR_DSTU2, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
 
             this.FindOrCreateTemplateType(fhirType, "Composition", "Composition", "Composition", 1);
             this.FindOrCreateTemplateType(fhirType, "Patient", "Patient", "Patient", 2);
@@ -107,7 +104,7 @@ namespace Trifolia.Test
 
         public void InitializeFHIR3Repository()
         {
-            ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(DEFAULT_FHIR_STU3_IG_TYPE_NAME, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
+            ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(Constants.IGTypeNames.FHIR_STU3, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
 
             this.FindOrCreateTemplateType(fhirType, "Account");
             this.FindOrCreateTemplateType(fhirType, "ActivityDefinition");
@@ -224,6 +221,130 @@ namespace Trifolia.Test
             this.FindOrCreateImplementationGuide(fhirType, "Unowned FHIR STU3 Profiles");
         }
 
+        public void InitializeFHIRCurrentBuildRepository()
+        {
+            ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(DEFAULT_FHIR_CURRENT_BUILD_IG_TYPE_NAME, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
+
+            this.FindOrCreateTemplateType(fhirType, "Account");
+            this.FindOrCreateTemplateType(fhirType, "ActivityDefinition");
+            this.FindOrCreateTemplateType(fhirType, "AllergyIntolerance");
+            this.FindOrCreateTemplateType(fhirType, "AdverseEvent");
+            this.FindOrCreateTemplateType(fhirType, "Appointment");
+            this.FindOrCreateTemplateType(fhirType, "AppointmentResponse");
+            this.FindOrCreateTemplateType(fhirType, "AuditEvent");
+            this.FindOrCreateTemplateType(fhirType, "Basic");
+            this.FindOrCreateTemplateType(fhirType, "Binary");
+            this.FindOrCreateTemplateType(fhirType, "BodyStructure");
+            this.FindOrCreateTemplateType(fhirType, "Bundle");
+            this.FindOrCreateTemplateType(fhirType, "CapabilityStatement");
+            this.FindOrCreateTemplateType(fhirType, "CarePlan");
+            this.FindOrCreateTemplateType(fhirType, "CareTeam");
+            this.FindOrCreateTemplateType(fhirType, "ChargeItem");
+            this.FindOrCreateTemplateType(fhirType, "Claim");
+            this.FindOrCreateTemplateType(fhirType, "ClaimResponse");
+            this.FindOrCreateTemplateType(fhirType, "ClinicalImpression");
+            this.FindOrCreateTemplateType(fhirType, "CodeSystem");
+            this.FindOrCreateTemplateType(fhirType, "Communication");
+            this.FindOrCreateTemplateType(fhirType, "CommunicationRequest");
+            this.FindOrCreateTemplateType(fhirType, "CompartmentDefinition");
+            this.FindOrCreateTemplateType(fhirType, "Composition");
+            this.FindOrCreateTemplateType(fhirType, "ConceptMap");
+            this.FindOrCreateTemplateType(fhirType, "Condition");
+            this.FindOrCreateTemplateType(fhirType, "Consent");
+            this.FindOrCreateTemplateType(fhirType, "Contract");
+            this.FindOrCreateTemplateType(fhirType, "Coverage");
+            this.FindOrCreateTemplateType(fhirType, "DetectedIssue");
+            this.FindOrCreateTemplateType(fhirType, "Device");
+            this.FindOrCreateTemplateType(fhirType, "DeviceComponent");
+            this.FindOrCreateTemplateType(fhirType, "DeviceMetric");
+            this.FindOrCreateTemplateType(fhirType, "DeviceRequest");
+            this.FindOrCreateTemplateType(fhirType, "DeviceUseStatement");
+            this.FindOrCreateTemplateType(fhirType, "DiagnosticReport");
+            this.FindOrCreateTemplateType(fhirType, "DocumentManifest");
+            this.FindOrCreateTemplateType(fhirType, "DocumentReference");
+            this.FindOrCreateTemplateType(fhirType, "EligibilityRequest");
+            this.FindOrCreateTemplateType(fhirType, "EligibilityResponse");
+            this.FindOrCreateTemplateType(fhirType, "Encounter");
+            this.FindOrCreateTemplateType(fhirType, "Endpoint");
+            this.FindOrCreateTemplateType(fhirType, "EnrollmentRequest");
+            this.FindOrCreateTemplateType(fhirType, "EnrollmentResponse");
+            this.FindOrCreateTemplateType(fhirType, "EpisodeOfCare");
+            this.FindOrCreateTemplateType(fhirType, "EventDefinition");
+            this.FindOrCreateTemplateType(fhirType, "ExpansionProfile");
+            this.FindOrCreateTemplateType(fhirType, "ExplanationOfBenefit");
+            this.FindOrCreateTemplateType(fhirType, "FamilyMemberHistory");
+            this.FindOrCreateTemplateType(fhirType, "Flag");
+            this.FindOrCreateTemplateType(fhirType, "Goal");
+            this.FindOrCreateTemplateType(fhirType, "GraphDefinition");
+            this.FindOrCreateTemplateType(fhirType, "Group");
+            this.FindOrCreateTemplateType(fhirType, "GuidanceResponse");
+            this.FindOrCreateTemplateType(fhirType, "HealthcareService");
+            this.FindOrCreateTemplateType(fhirType, "ImagingManifest");
+            this.FindOrCreateTemplateType(fhirType, "ImagingStudy");
+            this.FindOrCreateTemplateType(fhirType, "Immunization");
+            this.FindOrCreateTemplateType(fhirType, "ImmunizationRecommendation");
+            this.FindOrCreateTemplateType(fhirType, "ImplementationGuide");
+            this.FindOrCreateTemplateType(fhirType, "Library");
+            this.FindOrCreateTemplateType(fhirType, "Linkage");
+            this.FindOrCreateTemplateType(fhirType, "List");
+            this.FindOrCreateTemplateType(fhirType, "Location");
+            this.FindOrCreateTemplateType(fhirType, "Measure");
+            this.FindOrCreateTemplateType(fhirType, "MeasureReport");
+            this.FindOrCreateTemplateType(fhirType, "Media");
+            this.FindOrCreateTemplateType(fhirType, "Medication");
+            this.FindOrCreateTemplateType(fhirType, "MedicationAdministration");
+            this.FindOrCreateTemplateType(fhirType, "MedicationDispense");
+            this.FindOrCreateTemplateType(fhirType, "MedicationRequest");
+            this.FindOrCreateTemplateType(fhirType, "MedicationStatement");
+            this.FindOrCreateTemplateType(fhirType, "MessageDefinition");
+            this.FindOrCreateTemplateType(fhirType, "MessageHeader");
+            this.FindOrCreateTemplateType(fhirType, "NamingSystem");
+            this.FindOrCreateTemplateType(fhirType, "NutritionOrder");
+            this.FindOrCreateTemplateType(fhirType, "Observation");
+            this.FindOrCreateTemplateType(fhirType, "OperationDefinition");
+            this.FindOrCreateTemplateType(fhirType, "OperationOutcome");
+            this.FindOrCreateTemplateType(fhirType, "Organization");
+            this.FindOrCreateTemplateType(fhirType, "Parameters");
+            this.FindOrCreateTemplateType(fhirType, "Patient");
+            this.FindOrCreateTemplateType(fhirType, "PaymentNotice");
+            this.FindOrCreateTemplateType(fhirType, "PaymentReconciliation");
+            this.FindOrCreateTemplateType(fhirType, "Person");
+            this.FindOrCreateTemplateType(fhirType, "PlanDefinition");
+            this.FindOrCreateTemplateType(fhirType, "Practitioner");
+            this.FindOrCreateTemplateType(fhirType, "PractitionerRole");
+            this.FindOrCreateTemplateType(fhirType, "Procedure");
+            this.FindOrCreateTemplateType(fhirType, "ProcedureRequest");
+            this.FindOrCreateTemplateType(fhirType, "ProcessRequest");
+            this.FindOrCreateTemplateType(fhirType, "ProcessResponse");
+            this.FindOrCreateTemplateType(fhirType, "Provenance");
+            this.FindOrCreateTemplateType(fhirType, "Questionnaire");
+            this.FindOrCreateTemplateType(fhirType, "QuestionnaireResponse");
+            this.FindOrCreateTemplateType(fhirType, "RelatedPerson");
+            this.FindOrCreateTemplateType(fhirType, "RequestGroup");
+            this.FindOrCreateTemplateType(fhirType, "ResearchStudy");
+            this.FindOrCreateTemplateType(fhirType, "ResearchSubject");
+            this.FindOrCreateTemplateType(fhirType, "RiskAssessment");
+            this.FindOrCreateTemplateType(fhirType, "Schedule");
+            this.FindOrCreateTemplateType(fhirType, "SearchParameter");
+            this.FindOrCreateTemplateType(fhirType, "Sequence");
+            this.FindOrCreateTemplateType(fhirType, "ServiceDefinition");
+            this.FindOrCreateTemplateType(fhirType, "Slot");
+            this.FindOrCreateTemplateType(fhirType, "Specimen");
+            this.FindOrCreateTemplateType(fhirType, "StructureDefinition");
+            this.FindOrCreateTemplateType(fhirType, "StructureMap");
+            this.FindOrCreateTemplateType(fhirType, "Subscription");
+            this.FindOrCreateTemplateType(fhirType, "Substance");
+            this.FindOrCreateTemplateType(fhirType, "SupplyDelivery");
+            this.FindOrCreateTemplateType(fhirType, "SupplyRequest");
+            this.FindOrCreateTemplateType(fhirType, "Task");
+            this.FindOrCreateTemplateType(fhirType, "TestScript");
+            this.FindOrCreateTemplateType(fhirType, "TestReport");
+            this.FindOrCreateTemplateType(fhirType, "ValueSet");
+            this.FindOrCreateTemplateType(fhirType, "VisionPrescription");
+
+            this.FindOrCreateImplementationGuide(fhirType, "Unowned FHIR Current Build Profiles");
+        }
+
         public void InitializeLCG()
         {
             var org = this.FindOrCreateOrganization(DEFAULT_ORGANIZATION);
@@ -234,7 +355,21 @@ namespace Trifolia.Test
         public void InitializeLCGAndLogin()
         {
             this.InitializeLCG();
-            Helper.AuthLogin(this, DEFAULT_USERNAME, DEFAULT_ORGANIZATION);
+            this.Login();
+        }
+
+        /// <summary>
+        /// Login for the user. This results in associating the thread with an identity.
+        /// This needs to be called for each thread that will be running against the mockRepo.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="organization"></param>
+        public void Login(string username = null)
+        {
+            if (username == null)
+                username = DEFAULT_USERNAME;
+
+            Helper.AuthLogin(this, username);
         }
 
         #region IObjectRepository Collections
@@ -1191,7 +1326,7 @@ namespace Trifolia.Test
         /// <param name="notes">The notes of the template</param>
         /// <param name="owningImplementationGuide">The implementation guide that owns the template.</param>
         /// <returns>A new instance of Template that has been appropriately added to the mock object repository.</returns>
-        public Template CreateTemplate(string oid, TemplateType type, string title, ImplementationGuide owningImplementationGuide, string primaryContext = null, string primaryContextType = null, string description = null, string notes = null, Template impliedTemplate = null, PublishStatus status = null)
+        public Template CreateTemplate(string oid, TemplateType type, string title, ImplementationGuide owningImplementationGuide, string primaryContext = null, string primaryContextType = null, string description = null, string notes = null, Template impliedTemplate = null, PublishStatus status = null, string bookmark = null)
         {
             if (string.IsNullOrEmpty(oid))
                 throw new ArgumentNullException("oid");
@@ -1208,14 +1343,15 @@ namespace Trifolia.Test
             Template template = new Template()
             {
                 Id = this.Templates.DefaultIfEmpty().Max(y => y != null ? y.Id : 0) + 1,
+                Bookmark = string.IsNullOrEmpty(bookmark) ? bookmark : null,
                 OwningImplementationGuideId = owningImplementationGuide.Id,
                 OwningImplementationGuide = owningImplementationGuide,
                 ImplementationGuideTypeId = type.ImplementationGuideTypeId,
                 ImplementationGuideType = type.ImplementationGuideType,
                 ImpliedTemplateId = impliedTemplate != null ? (int?)impliedTemplate.Id : null,
                 ImpliedTemplate = impliedTemplate,
-                PrimaryContext = primaryContext,
-                PrimaryContextType = primaryContextType,
+                PrimaryContext = string.IsNullOrEmpty(primaryContext) ? type.RootContext : primaryContext,
+                PrimaryContextType = string.IsNullOrEmpty(primaryContextType) ? type.RootContextType : primaryContextType,
                 TemplateType = type,
                 TemplateTypeId = type.Id,
                 Name = title,
@@ -1368,6 +1504,32 @@ namespace Trifolia.Test
                 ig.SetPreviousVersion(previousVersion);
 
             return ig;
+        }
+
+        /// <summary>
+        /// Creates an implementation guide section
+        /// </summary>
+        /// <param name="ig">The ig to add the section to</param>
+        /// <param name="heading">The text representation of the heading of the section</param>
+        /// <param name="content">The content of the section</param>
+        /// <param name="order">The order in which this section is output amongst all sections</param>
+        /// <param name="level">The level/depth of the heading (h1, h2, h3, h4, etc.)</param>
+        public ImplementationGuideSection CreateImplementationGuideSection(ImplementationGuide ig, string heading, string content, int order, int level = 1)
+        {
+            ImplementationGuideSection section = new ImplementationGuideSection()
+            {
+                ImplementationGuide = ig,
+                ImplementationGuideId = ig.Id,
+                Heading = heading,
+                Content = content,
+                Order = order,
+                Level = level
+            };
+
+            this.ImplementationGuideSections.Add(section);
+            ig.Sections.Add(section);
+
+            return section;
         }
 
         /// <summary>

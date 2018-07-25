@@ -1,0 +1,19 @@
+<p>Instead of the traditional dotted notation used by HL7 to represent RIM classes, this document uses XML Path Language (XPath) notation<sup>7</sup> in conformance statements and elsewhere to identify the Extensible Markup Language (XML) elements and attributes within the CDA document instance to which various constraints are applied. The implicit context of these expressions is the root of the document. This notation provides a mechanism that will be familiar to developers for identifying parts of an XML document.</p>
+<p>XPath statements appear in this document in a monospace font.</p>
+<p>XPath syntax selects nodes from an XML document using a path containing the context of the node(s). The path is constructed from node names and attribute names (prefixed by a &quot;@&quot;) and catenated with a &quot;/&quot; symbol.</p>
+<p><em><strong>XML Document Example</strong></em></p>
+<pre><code>&lt;author&gt;
+  &lt;assignedAuthor&gt;
+    ...
+    &lt;code codeSystem='2.16.840.1.113883.6.96' 
+      codeSystemName='SNOMED CT'
+      code='17561000' 
+      displayName='Cardiologist' /&gt;
+    ...
+  &lt;/assignedAuthor&gt;
+&lt;/author&gt;
+</code></pre>
+<p>In the above example, the codeattribute of the code could be selected with the XPath expression in the next figure.</p>
+<p><em><strong>XPath Expression Example</strong></em></p>
+<p><code>author/assignedAuthor/code/@code</code></p>
+<p><sup>7</sup> <a href="http://www.w3.org/TR/xpath/">http://www.w3.org/TR/xpath/</a></p>

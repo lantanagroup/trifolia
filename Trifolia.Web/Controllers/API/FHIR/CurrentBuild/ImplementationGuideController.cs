@@ -16,7 +16,7 @@ using SummaryType = fhir_latest.Hl7.Fhir.Rest.SummaryType;
 namespace Trifolia.Web.Controllers.API.FHIR.CurrentBuild
 {
     [LatestConfigAttribute]
-    [RoutePrefix("api/FHIRLatest")]
+    [RoutePrefix("api/FHIRLatest"), FHIRInfo(Constants.FHIRVersion.FHIR_CURRENT_BUILD_VERSION, Constants.IGTypeNames.FHIR_CURRENT_BUILD)]
     public class FHIRLatestImplementationGuideController : ApiController
     {
         private IObjectRepository tdb;

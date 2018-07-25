@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using System.Web;
-
-using Trifolia.Shared;
 using Trifolia.Authorization;
-using Trifolia.Generation.IG;
-using Trifolia.Generation.IG.ConstraintGeneration;
-using Trifolia.Generation.Versioning;
-using Trifolia.Web.Models;
-using Trifolia.Web.Models.TemplateManagement;
-using Trifolia.Web.Extensions;
 using Trifolia.DB;
+using Trifolia.Export.MSWord;
+using Trifolia.Export.MSWord.ConstraintGeneration;
+using Trifolia.Export.Versioning;
 using Trifolia.Logging;
 using Trifolia.Plugins;
-using Trifolia.Shared.Plugins;
+using Trifolia.Shared;
+using Trifolia.Web.Extensions;
+using Trifolia.Web.Models.TemplateManagement;
 using Trifolia.Web.Models.User;
 
 namespace Trifolia.Web.Controllers.API
@@ -124,8 +118,7 @@ namespace Trifolia.Web.Controllers.API
         {
             if (!CheckPoint.Instance.GrantViewTemplate(templateId))
                 throw new AuthorizationException("You do not have permission to view this template");
-
-            WIKIParser wikiParser = new WIKIParser(this.tdb);
+            
             Template template = this.tdb.Templates
                 .Include("ChildConstraints")
                 .Include("ChildConstraints.ChildConstraints")
@@ -153,8 +146,8 @@ namespace Trifolia.Web.Controllers.API
                 Author = string.Format("{0} {1} ({2})", template.Author.FirstName, template.Author.LastName, template.Author.Email),
                 ImplementationGuideType = template.ImplementationGuideType.Name,
                 ImplementationGuideTypeId = template.ImplementationGuideType.Id,
-                Description = wikiParser.ParseAsHtml(template.Description),
-                Notes = wikiParser.ParseAsHtml(template.Notes),
+                Description = template.Description.MarkdownToHtml(),
+                Notes = template.Notes.MarkdownToHtml(),
                 ImplementationGuideId = template.OwningImplementationGuideId,
                 ImplementationGuide = template.OwningImplementationGuide.GetDisplayName(),
                 ImpliedTemplate = template.ImpliedTemplate != null ? template.ImpliedTemplate.Name : null,
@@ -200,7 +193,7 @@ namespace Trifolia.Web.Controllers.API
             int constraintCount = 0;
             foreach (TemplateConstraint cDbConstraint in template.ChildConstraints.Where(y => y.Parent == null).OrderBy(y => y.Order))
             {
-                ViewModel.Constraint newConstraint = BuildConstraint(wikiParser, baseLink, igManager, igTypePlugin, cDbConstraint, ++constraintCount);
+                ViewModel.Constraint newConstraint = BuildConstraint(baseLink, igManager, igTypePlugin, cDbConstraint, ++constraintCount);
                 model.Constraints.Add(newConstraint);
             }
 
@@ -394,6 +387,8 @@ namespace Trifolia.Web.Controllers.API
         /// <param name="filterOrganizationId">Matches the id of the organization specified specifically to the organization of the template. Only templates with a matching organization will be returned.</param>
         /// <param name="selfOid">If exists, makes sure not to return the Oid of the template currently in use</param>
         /// <param name="filterContextType">Matches the context specified specifically to the context of the template. Only templates whose context type contain the specified value will be returned.</param>
+        /// <param name="fhirPath">The path to a FHIR element that should be filtered based on the types within the base element</param>
+        /// <param name="implementationGuideTypeId">The type id of the Implementation Guide associated with the template</param>
         /// <returns>Trifolia.Web.Models.TemplateManagement.ListModel</returns>
         [HttpGet, Route("api/Template"), SecurableAction(SecurableNames.TEMPLATE_LIST)]
         public ListModel GetTemplates(
@@ -408,7 +403,9 @@ namespace Trifolia.Web.Controllers.API
             int? filterTemplateTypeId = null,
             int? filterOrganizationId = null,
             string selfOid = null,
-            string filterContextType = null)
+            string filterContextType = null,
+            string fhirPath = null,
+            int? implementationGuideTypeId = null)
         {
             Log.For(this).Trace("BEGIN: Getting list model for List and ListPartial");
 
@@ -435,10 +432,56 @@ namespace Trifolia.Web.Controllers.API
             var query = (from tid in templateIds
                          join vtl in tdb.ViewTemplateLists on tid equals vtl.Id
                          select vtl);
-            if(selfOid != null)
+
+            if (selfOid != null)
+            {
                 query = (from q in query
-                     where q.Oid != selfOid
-                     select q);
+                         where q.Oid != selfOid
+                         select q);
+            }
+
+            if (implementationGuideTypeId != null)
+            {
+                // TODO: Always filter based on the ig type
+                query = (from q in query
+                         where q.ImplementationGuideTypeId == implementationGuideTypeId
+                         select q);
+            }
+            
+
+            // filter based on fhirPath's base element types
+            if (implementationGuideTypeId != null && !string.IsNullOrEmpty(fhirPath))
+            {
+                try
+                {
+                    var igType = this.tdb.ImplementationGuideTypes.Single(y => y.Id == implementationGuideTypeId);
+                    var plugin = igType.GetPlugin();
+                    List<String> types = plugin.GetFhirTypes(fhirPath);
+
+                    //If types isn't set to resource (all possible templates), filter the query to match
+                    if(!types.Contains("Resource"))
+                    {
+                        // Filter based on the types (only return templates with a Template.PrimaryContextType that matches one of the types[])
+                        query = (from q in query
+                                 join t in types on q.PrimaryContextType equals t
+                                 select q);
+                    }
+
+                    
+                }
+                catch (NotSupportedException nse)
+                {
+                    if(nse.Message == "Not a reference")
+                    {
+                        return new ListModel(); //Return an empty model if user tries to attach a container template to a non-reference
+                    }
+                    else
+                    {
+                        // Do nothing... Can't filter like this for DSTU2 (as example)
+                    }
+                }
+            }
+
             int currentUserId = CheckPoint.Instance.GetUser(tdb).Id;
             var editableTemplates = (from tp in this.tdb.ViewTemplatePermissions
                                      where tp.UserId == currentUserId && tp.Permission == "Edit"
@@ -783,6 +826,18 @@ namespace Trifolia.Web.Controllers.API
                     if (model.IsNewVersion)
                         copyTemplate.PreviousVersionTemplateId = sourceTemplate.Id;
 
+                    // Update the template type of the template
+                    if (sourceTemplate.ImplementationGuideType != newImplementationGuide.ImplementationGuideType)
+                    {
+                        var foundTemplateType = newImplementationGuide.ImplementationGuideType.TemplateTypes.SingleOrDefault(y => y.RootContextType == sourceTemplate.TemplateType.RootContextType);
+
+                        if (foundTemplateType == null)
+                            return new { Status = "Failure", Message = "The destination implementation guide does not have a matching template/profile type \"" + sourceTemplate.TemplateType.RootContextType + "\"." };
+
+                        copyTemplate.TemplateTypeId = foundTemplateType.Id;
+                        copyTemplate.TemplateType = foundTemplateType;
+                    }
+
                     // Update the constraints conformance numbers
                     foreach (var cConstraint in model.Constraints)
                     {
@@ -1062,24 +1117,24 @@ namespace Trifolia.Web.Controllers.API
 
         #endregion
 
-        private ViewModel.Constraint BuildConstraint(WIKIParser wikiParser, string baseLink, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, TemplateConstraint dbConstraint, int constraintCount)
+        private ViewModel.Constraint BuildConstraint(string baseLink, IGSettingsManager igSettings, IIGTypePlugin igTypePlugin, TemplateConstraint dbConstraint, int constraintCount)
         {
             IFormattedConstraint fc = FormattedConstraintFactory.NewFormattedConstraint(this.tdb, igSettings, igTypePlugin, dbConstraint, linkContainedTemplate: true, linkIsBookmark: false, createLinksForValueSets: false);
 
             ViewModel.Constraint newConstraint = new ViewModel.Constraint()
             {
-                Prose = fc.GetHtml(wikiParser, baseLink, constraintCount, false),
+                Prose = fc.GetHtml(baseLink, constraintCount, false),
                 IsHeading = dbConstraint.IsHeading,
                 HeadingTitle = dbConstraint.Context,
                 HeadingDescription = dbConstraint.HeadingDescription,
-                Description = wikiParser.ParseAsHtml(dbConstraint.Description),
+                Description = dbConstraint.Description.MarkdownToHtml(),
                 Label = dbConstraint.Label
             };
 
             int nextConstraintCount = 0;
             foreach (TemplateConstraint cDbConstraint in dbConstraint.ChildConstraints.OrderBy(y => y.Order))
             {
-                ViewModel.Constraint nextNewConstraint = BuildConstraint(wikiParser, baseLink, igSettings, igTypePlugin, cDbConstraint, ++nextConstraintCount);
+                ViewModel.Constraint nextNewConstraint = BuildConstraint(baseLink, igSettings, igTypePlugin, cDbConstraint, ++nextConstraintCount);
                 newConstraint.Children.Add(nextNewConstraint);
             }
 

@@ -24,6 +24,20 @@ var templateEditViewModel = function (templateId, defaults) {
     self.AvailableExtensions = ko.observableArray([]);
     self.SelectedAvailableExtensionId = ko.observable();
 
+    function getTitleBarDisplay() {
+        var display = 'Trifolia: Edit Template';
+
+        if (self.IsModified()) {
+            display = '* ' + display;
+        }
+
+        if (self.Template() && self.Template().Name()) {
+            display += ' - ' + self.Template().Name();
+        }
+
+        return display;
+    };
+
     /**
      * Check to see if a constraint is a duplicate node within the same level of the tree
      */
@@ -225,6 +239,11 @@ var templateEditViewModel = function (templateId, defaults) {
         self.Template().Bookmark(newBookmark.substring(0, 39));
     };
 
+    self.NameChanged = function () {
+        document.title = getTitleBarDisplay();
+        self.RegenerateBookmark();
+    };
+
     // Subscribe to changes to the ViewMode() observable and store the value in 
     // cookies so that when the user next opens the template editor, the same ViewMode() is selected
     self.ViewMode.subscribe(function (newViewMode) {
@@ -233,16 +252,17 @@ var templateEditViewModel = function (templateId, defaults) {
 
     // Update the browser's title for the page when the IsModified() observable changes
     self.IsModified.subscribe(function (newValue) {
-        if (newValue) {
-            document.title = '* Trifolia Workbench: Edit Template';
-        } else {
-            document.title = 'Trifolia Workbench: Edit Template';
-        }
+        document.title = getTitleBarDisplay();
     });
 
     self.DisableConstraintFields = function() {
-        if (!self.CurrentNode() || !self.CurrentNode().Constraint())
+        if (!self.CurrentNode() || !self.CurrentNode().Constraint()) {
             return false;
+        }
+
+        if (self.Template().Locked()) {
+            return true;
+        }
 
         return self.IsExtensionUrl(self.CurrentNode().Constraint());
     };
@@ -1615,6 +1635,8 @@ var templateEditViewModel = function (templateId, defaults) {
                 self.Template(template);
                 self.Template().SubscribeChanges();
                 self.Template().IsNew(false);
+
+                document.title = getTitleBarDisplay();
 
                 // Initialize the template types before we bind to self.Template so that it doesn't screw up the template's TemplateTypeId()
                 self.InitializeTemplateTypes(template.OwningImplementationGuideId())

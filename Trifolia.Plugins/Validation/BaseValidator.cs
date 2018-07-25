@@ -8,7 +8,8 @@ using System.Xml.XPath;
 using Trifolia.Authorization;
 using Trifolia.DB;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
+using Trifolia.Plugins;
+using Trifolia.Shared;
 using Trifolia.Shared.Validation;
 
 namespace Trifolia.Plugins.Validation
@@ -55,6 +56,24 @@ namespace Trifolia.Plugins.Validation
                                                    ValueSet = vs,
                                                    ValueSetMember = vsm
                                                });
+
+            foreach (var section in implementationGuide.Sections)
+            {
+                try
+                {
+                    string html = section.Content.MarkdownToHtml();
+                    XmlDocument doc = new XmlDocument();
+                    doc.LoadXml("<root>" + html + "</root>");
+                }
+                catch (Exception ex)
+                {
+                    results.Messages.Add(string.Format("Section \"{0}\" includes invalid HTML. This section will not output correctly in exports.", section.Heading));
+                    Logging.Log.For(this).Error("Implementation guide {0} has invalid HTML for section {1} (id {2})\n{3}\n\n{4}\n", implementationGuide.Id, section.Heading, section.Id, ex.Message, section.Content.MarkdownToHtml());
+                }
+
+                if (section.Level < 1 || section.Level > 9)
+                    results.Messages.Add(string.Format("Section \"{0}\" has an invalid heading level. Only levels 1-9 are supported.", section.Heading));
+            }
 
             foreach (var template in implementationGuide.ChildTemplates)
             {

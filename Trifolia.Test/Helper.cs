@@ -39,19 +39,19 @@ namespace Trifolia.Test
             }
         }
 
-        public static void AuthLogin(IObjectRepository repo, string userName, string organizationName)
+        public static void AuthLogin(IObjectRepository repo, string userName)
         {
             HttpRequest request = new HttpRequest("", "http://tempuri.org", "");
             HttpResponse response = new HttpResponse(new StringWriter());
             HttpContext.Current = new HttpContext(request, response);
 
-            var principal = AuthLogin(repo, HttpContext.Current, userName, organizationName);
+            var principal = AuthLogin(repo, HttpContext.Current, userName);
 
             Thread.CurrentPrincipal = principal;
             DBContext.Instance = repo;
         }
 
-        public static GenericPrincipal AuthLogin(IObjectRepository repo, HttpContext context, string userName, string organizationName)
+        public static GenericPrincipal AuthLogin(IObjectRepository repo, HttpContext context, string userName)
         {
             /*
             string userData = string.Format("Organization={0}", organizationName);

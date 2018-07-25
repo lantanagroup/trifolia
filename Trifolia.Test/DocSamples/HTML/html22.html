@@ -1,0 +1,143 @@
+<p>Information technology solutions store and manage data, but sometimes data are not available. An item may be unknown, not relevant, or not computable or measureable, such as where a patient arrives at an Emergency Department unconscious and with no identification.</p>
+<p>In many cases, the CDA standard will stipulate that a piece of information is required (e.g., via a <strong>SHALL</strong> conformance verb). However, in most of these cases, the standard provides an “out”, allowing the sender to indicate that the information isn’t known.</p>
+<p>Here, we provide guidance on representing unknown information. Further details can be found in the HL7 V3 Data Types, Release One specification that accompanies the CDA R2 normative standard.</p>
+<p>A &quot;@nullFlavor&quot; attribute may be used to indicate that information is unknown. Allowable values for populating the attribute give more details about the reason the information is unknown, as shown in the following example.</p>
+<p><em><strong>nullFlavor Example</strong></em></p>
+<pre><code>&lt;!-- CDA requires the consumable element, however NHSN does not collect further information about the antifungal --&gt;
+&lt;consumable&gt;
+  &lt;manufacturedProduct&gt;
+    &lt;templateId root=&quot;2.16.840.1.113883.10.20.22.4.37&quot;/&gt;
+    &lt;manufacturedMaterial&gt;
+      &lt;code nullFlavor=&quot;NI&quot;/&gt;
+    &lt;/manufacturedMaterial&gt;
+  &lt;/manufacturedProduct&gt;
+&lt;/consumable&gt;
+</code></pre>
+<p>Use null flavors for unknown, required, or optional attributes, where allowed per the NHSN protocol:</p>
+<ul>
+<li>NI No information. This is the most general and default null flavor.</li>
+<li>NA Not applicable. Known to have no proper value (e.g., last menstrual period for a male).</li>
+<li>UNK Unknown. A proper value is applicable, but is not known.</li>
+<li>ASKU Asked, but not known. Information was sought, but not found (e.g., the patient was asked but did not know).</li>
+<li>NAV Temporarily unavailable. The information is not available, but is expected to be available later.</li>
+<li>NASK Not asked. The patient was not asked.</li>
+<li>MSK There is information on this item available but it has not been provided by the sender due to security, privacy, or other reasons. There may be an alternate mechanism for gaining access to this information.</li>
+<li>OTH The actual value is not an element in the value domain of a variable. (e.g., concept not provided by required code system).</li>
+</ul>
+<p>The list above contains those null flavors that are commonly used in clinical documents. For the full list and descriptions, see the nullFlavor vocabulary domain in the CDA normative edition.<sup>3</sup></p>
+<p>Any <strong>SHALL</strong>, <strong>SHOULD</strong> and <strong>MAY</strong> conformance statement may use nullFlavor, unless the nullFlavor is explicitly disallowed (e.g., through another conformance statement).</p>
+<p><em><strong>Attribute Required—nullFlavor not allowed</strong></em></p>
+<ol>
+<li>SHALL contain exactly one [1..1] code (CONF:15407).</li>
+</ol>
+<ol type="a">
+<li>This code <strong>SHALL</strong> contain exactly one [1..1] @code=&quot;11450-4&quot; Problem List (CodeSystem: LOINC 2.16.840.1.113883.6.1) (CONF:15408).
+or</li>
+<li><strong>SHALL</strong> contain exactly one [1..1] <strong>effectiveTime/@value</strong> (CONF:5256).</li>
+</ol>
+<p><em><strong>Allowed nullFlavors When Element is Required—with XML examples</strong></em></p>
+<ol>
+<li>SHALL contain at least one [1..*] id</li>
+<li>SHALL contain exactly one [1..1] code</li>
+<li>SHALL contain exactly one [1..1] effectiveTime</li>
+</ol>
+<pre><code>&lt;entry&gt;
+  &lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+    &lt;id nullFlavor=&quot;NI&quot;/&gt;
+    &lt;code nullFlavor=&quot;OTH&quot;&gt;
+      &lt;originalText&gt;New Grading system&lt;/originalText&gt;
+    &lt;/code&gt;
+    &lt;statusCode code=&quot;completed&quot;/&gt;
+    &lt;effectiveTime nullFlavor=&quot;UNK&quot;/&gt;
+    &lt;value xsi:type=&quot;CD&quot; nullFlavor=&quot;OTH&quot;&gt;
+      &lt;originalText&gt;Spiculated mass grade 5&lt;/originalText&gt;
+    &lt;/value&gt;
+  &lt;/observation&gt;
+&lt;/entry&gt;
+</code></pre>
+<p>If a sender wants to state that a piece of information is unknown, the following principles apply:</p>
+<ul>
+<li>If the sender doesn’t know an attribute of an act, that attribute can be null.</li>
+</ul>
+<p><em><strong>Unknown Medication Example</strong></em></p>
+<pre><code>&lt;entry&gt;
+  &lt;text&gt;patient was given a medication but I do not know what it was&lt;/text&gt;
+  &lt;substanceAdministration moodCode=&quot;EVN&quot; classCode=&quot;SBADM&quot;&gt;
+    &lt;consumable&gt;
+      &lt;manufacturedProduct&gt;
+        &lt;manufacturedLabeledDrug&gt;
+          &lt;code nullFlavor=&quot;NI&quot;/&gt;
+        &lt;/manufacturedLabeledDrug&gt;
+      &lt;/manufacturedProduct&gt;
+    &lt;/consumable&gt;
+  &lt;/substanceAdministration&gt;
+&lt;/entry&gt;
+</code></pre>
+<ul>
+<li>If the sender doesn’t know if an act occurred, the nullFlavor is on the act (detail could include specific allergy, drug, etc.).</li>
+</ul>
+<p><em><strong>Unknown Medication Use of Anticoagulant Drug Example</strong></em></p>
+<pre><code>&lt;entry&gt;
+  &lt;substanceAdministration moodCode=&quot;EVN&quot; classCode=&quot;SBADM&quot; nullFlavor=&quot;NI&quot;&gt;
+    &lt;text&gt;I do not know whether or not patient received an anticoagulant drug&lt;/text&gt;
+    &lt;consumable&gt;
+      &lt;manufacturedProduct&gt;
+        &lt;manufacturedLabeledDrug&gt;
+          &lt;code code=&quot;81839001&quot; displayName=&quot;anticoagulant drug&quot;
+            codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+            codeSystemName=&quot;SNOMED CT&quot;/&gt;
+        &lt;/manufacturedLabeledDrug&gt;
+      &lt;/manufacturedProduct&gt;
+    &lt;/consumable&gt;
+  &lt;/substanceAdministration&gt;
+&lt;/entry&gt;
+</code></pre>
+<ul>
+<li>If the sender wants to state ‘no known’, a negationInd can be used on the corresponding act (substanceAdministration, Procedure, etc.)</li>
+</ul>
+<p><em><strong>No Known Medications Example</strong></em></p>
+<pre><code>&lt;entry&gt;
+  &lt;substanceAdministration moodCode=&quot;EVN&quot; classCode=&quot;SBADM&quot; negationInd=&quot;true&quot;&gt;
+    &lt;text&gt;No known medications&lt;/text&gt;
+    &lt;consumable&gt;
+      &lt;manufacturedProduct&gt;
+        &lt;manufacturedLabeledDrug&gt;
+          &lt;code code=&quot;410942007&quot; displayName=&quot;drug or medication&quot;
+            codeSystem=&quot;2.16.840.1.113883.6.96&quot;
+            codeSystemName=&quot;SNOMED CT&quot;/&gt;
+        &lt;/manufacturedLabeledDrug&gt;
+      &lt;/manufacturedProduct&gt;
+    &lt;/consumable&gt;
+  &lt;/substanceAdministration&gt;
+&lt;/entry&gt;
+</code></pre>
+<p>These next examples illustrate additional nuances of representing unknown information in coded fields.</p>
+<p><em><strong>Value Known—code for value not known</strong></em></p>
+<pre><code>&lt;entry&gt;
+  &lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+    ...
+    &lt;value xsi:type=&quot;CD&quot; nullFlavor=&quot;OTH&quot;&gt;
+      &lt;originalText&gt;Spiculated mass grade 5&lt;/originalText&gt;
+    &lt;/value&gt;
+  &lt;/observation&gt;
+&lt;/entry&gt;
+</code></pre>
+<p><em><strong>Value Completely Unknown</strong></em></p>
+<pre><code>&lt;entry&gt;
+  &lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+    ...
+    &lt;value xsi:type=&quot;CD&quot; nullFlavor=&quot;UNK&quot;/&gt;
+  &lt;/observation&gt;
+&lt;/entry&gt;
+</code></pre>
+<p><em><strong>Value Known—code in required code system not known but code from another code system is known</strong></em></p>
+<pre><code>&lt;entry&gt;
+  &lt;observation classCode=&quot;OBS&quot; moodCode=&quot;EVN&quot;&gt;
+    ...
+    &lt;value xsi:type=&quot;CD&quot; nullFlavor=&quot;OTH&quot;&gt;
+      &lt;originalText&gt;Spiculated mass grade 5&lt;/originalText&gt;
+    &lt;/value&gt;
+  &lt;/observation&gt;
+&lt;/entry&gt;
+</code></pre>
+<p><sup>3</sup> <em>HL7 Clinical Document Architecture (CDA Release 2)</em> <a href="http://www.hl7.org/implement/standards/cda.cfm">http://www.hl7.org/implement/standards/cda.cfm</a></p>

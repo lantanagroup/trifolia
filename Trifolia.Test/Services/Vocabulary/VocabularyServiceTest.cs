@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using Trifolia.DB;
+using Trifolia.Shared;
 using Trifolia.Export.Terminology;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 
@@ -49,7 +50,7 @@ namespace Trifolia.Test.Services.Vocabulary
             this.tdb.FindOrCreateValueSetMember(this.vs3, cs, "4", "Four", valueSetStatus: "active");
             this.tdb.FindOrCreateValueSetMember(this.vs3, cs, "5", "Five");
 
-            this.ig = this.tdb.FindOrCreateImplementationGuide("CDA", "Test IG");
+            this.ig = this.tdb.FindOrCreateImplementationGuide(Constants.IGTypeNames.CDA, "Test IG");
         }
 
         /// <summary>

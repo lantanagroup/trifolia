@@ -23,7 +23,7 @@ namespace Trifolia.Test
             Organization internalOrg = mockRepo.FindOrCreateOrganization("Lantana");
             Organization testOrg = mockRepo.FindOrCreateOrganization("Test Organization");
 
-            ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType("CDA", "CDA.xsd", "cda", "urn:hl7-org:v3");
+            ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType(Constants.IGTypeNames.CDA, Constants.IGTypeSchemaLocations.CDA, Constants.IGTypePrefixes.CDA, Constants.IGTypeNamespaces.CDA);
 
             TemplateType docType = mockRepo.FindOrCreateTemplateType(igType, "Document", "ClinicalDocument", "ClinicalDocument", 1);
             TemplateType sectionType = mockRepo.FindOrCreateTemplateType(igType, "Section", "Section", "Section", 2);
@@ -100,7 +100,7 @@ namespace Trifolia.Test
             mockRepo.FindOrCreateValueSetMember(genderCodeValueSet, hl7CodeSystem, "F", "Female", "active", "01/02/2012");
             mockRepo.FindOrCreateValueSetMember(genderCodeValueSet, hl7CodeSystem, "U", "Undetermined", "active", "01/02/2012");
 
-            ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType("CDA", "CDA.xsd", "cda", "urn:hl7-org:v3");
+            ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType(Constants.IGTypeNames.CDA, Constants.IGTypeSchemaLocations.CDA, Constants.IGTypePrefixes.CDA, Constants.IGTypeNamespaces.CDA);
 
             ImplementationGuide ig = mockRepo.FindOrCreateImplementationGuide(igType, DS2_IG_NAME);
 
@@ -153,7 +153,7 @@ namespace Trifolia.Test
             mockRepo.FindOrCreateCodeSystem("HL7ActStatus", "113883.5.14");
             mockRepo.FindOrCreateValueSet("GenderCode", "11.1");
 
-            ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType("CDA", "CDA.xsd", "cda", "urn:hl7-org:v3");
+            ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType(Constants.IGTypeNames.CDA, Constants.IGTypeSchemaLocations.CDA, Constants.IGTypePrefixes.CDA, Constants.IGTypeNamespaces.CDA);
             TemplateType docType = mockRepo.FindOrCreateTemplateType(igType, "Document", "ClinicalDocument", "ClinicalDocument", 1);
             TemplateType sectionType = mockRepo.FindOrCreateTemplateType(igType, "Section", "section", "Section", 2);
 
@@ -191,7 +191,7 @@ namespace Trifolia.Test
             Organization internalOrg = mockRepo.FindOrCreateOrganization("Lantana");
             Organization testOrg = mockRepo.FindOrCreateOrganization("Test Organization");
 
-            ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType("CDA", "CDA.xsd", "cda", "urn:hl7-org:v3");
+            ImplementationGuideType igType = mockRepo.FindOrCreateImplementationGuideType(Constants.IGTypeNames.CDA, Constants.IGTypeSchemaLocations.CDA, Constants.IGTypePrefixes.CDA, Constants.IGTypeNamespaces.CDA);
 
             TemplateType docType = mockRepo.FindOrCreateTemplateType(igType, "Document", "ClinicalDocument", "ClinicalDocument", 1);
             TemplateType sectionType = mockRepo.FindOrCreateTemplateType(igType, "Section", "Section", "Section", 2);

@@ -1,21 +1,25 @@
-﻿version: 5.2.1-{build}
-
-before_build:
-  - nuget restore
-  
+﻿version: 5.3.0-{build}
 branches:
   except:
-    - gh-pages
-    - data
-    
-skip_tags: true
-
-image: Visual Studio 2015
-
+  - gh-pages
+  - data
+  - regression_test
+before_build:
+- cmd: nuget restore
 build:
-  parallel: true
   project: Trifolia.sln
-  
+  verbosity: minimal
 test:
   assemblies:
+    only:
     - Trifolia.Test.dll
+  categories:
+    except:
+    - FHIR_E2E
+notifications:
+- provider: Email
+  to:
+  - sean.mcilvenna@lantanagroup.com
+  on_build_success: false
+  on_build_failure: true
+  on_build_status_changed: false

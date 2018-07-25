@@ -1,6 +1,6 @@
 ﻿extern alias fhir_stu3;
-using fhir_stu3.Hl7.Fhir.Serialization;
 using fhir_stu3.Hl7.Fhir.Model;
+using fhir_stu3.Hl7.Fhir.Serialization;
 using Ionic.Zip;
 using Newtonsoft.Json;
 using System;
@@ -15,8 +15,8 @@ using Trifolia.Config;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3.Models;
 using Trifolia.Shared;
-using Trifolia.Shared.Plugins;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
+using Trifolia.Plugins;
 
 namespace Trifolia.Export.FHIR.STU3
 {
@@ -336,7 +336,11 @@ namespace Trifolia.Export.FHIR.STU3
                     ? string.Format("<u>{0}</u><br/>\n{1}", valueSetIdentifier.XmlEncode(), valueSet.Description.XmlEncode())
                     : valueSetIdentifier.XmlEncode();
 
-                valueSetsContent += string.Format("<tr><td><a href=\"ValueSet-{0}.html\">{1}</a></td><td>{2}</td></tr>", valueSet.GetFhirId(), valueSet.Name.XmlEncode(), definition);
+                // Ignore value sets from the base spec
+                if (string.IsNullOrEmpty(valueSetIdentifier) || valueSetIdentifier.StartsWith("http://hl7.org/fhir/ValueSet/"))
+                    valueSetsContent += string.Format("<tr><td>{1}</td><td>{2}</td></tr>", valueSet.GetFhirId(), valueSet.Name.XmlEncode(), definition);
+                else
+                    valueSetsContent += string.Format("<tr><td><a href=\"ValueSet-{0}.html\">{1}</a></td><td>{2}</td></tr>", valueSet.GetFhirId(), valueSet.Name.XmlEncode(), definition);
             }
 
             if (valueSets.Any())
@@ -424,6 +428,9 @@ namespace Trifolia.Export.FHIR.STU3
 
             foreach (var author in authors)
             {
+                if (author == null)
+                    continue;
+
                 authorsContent += string.Format("<tr><td>{0} {1}</td><td>{2}</td></tr>", author.FirstName.XmlEncode(), author.LastName.XmlEncode(), author.Email.XmlEncode());
             }
 

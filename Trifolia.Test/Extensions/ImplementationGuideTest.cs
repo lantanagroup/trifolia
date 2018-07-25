@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Trifolia.DB;
+using Trifolia.Shared;
 
 namespace Trifolia.Test.Extensions
 {
@@ -38,7 +39,7 @@ namespace Trifolia.Test.Extensions
         [TestMethod, TestCategory("Terminology")]
         public void GetValueSetsTest_NoPublishDate()
         {
-            ImplementationGuide ig = this.tdb.FindOrCreateImplementationGuide(this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME), "Test IG");
+            ImplementationGuide ig = this.tdb.FindOrCreateImplementationGuide(this.tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA), "Test IG");
             Template t1 = this.tdb.CreateTemplate("1.2.3.4", "Document", "Test Document Template", ig);
             this.tdb.AddConstraintToTemplate(t1, null, null, "code", "SHALL", "1..1", valueSet: this.vs1);
             Template t2 = this.tdb.CreateTemplate("1.2.3.4", "Document", "Test Document Template", ig);
@@ -65,7 +66,7 @@ namespace Trifolia.Test.Extensions
         [TestMethod, TestCategory("Terminology")]
         public void GetValueSetsTest_PublishDate()
         {
-            ImplementationGuide ig = this.tdb.FindOrCreateImplementationGuide(this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME), "Test IG");
+            ImplementationGuide ig = this.tdb.FindOrCreateImplementationGuide(this.tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA), "Test IG");
             ig.PublishDate = new DateTime(2012, 5, 1);
 
             Template t1 = this.tdb.CreateTemplate("1.2.3.4", "Document", "Test Document Template", ig);
@@ -93,7 +94,7 @@ namespace Trifolia.Test.Extensions
         [TestMethod, TestCategory("Terminology")]
         public void GetValueSetsTest_Static()
         {
-            ImplementationGuide ig = this.tdb.FindOrCreateImplementationGuide(this.tdb.FindImplementationGuideType(MockObjectRepository.DEFAULT_CDA_IG_TYPE_NAME), "Test IG");
+            ImplementationGuide ig = this.tdb.FindOrCreateImplementationGuide(this.tdb.FindImplementationGuideType(Constants.IGTypeNames.CDA), "Test IG");
             Template t1 = this.tdb.CreateTemplate("1.2.3.4", "Document", "Test Document Template", ig);
             var tc1 = this.tdb.AddConstraintToTemplate(t1, null, null, "code", "SHALL", "1..1", valueSet: this.vs1);
             tc1.IsStatic = false;

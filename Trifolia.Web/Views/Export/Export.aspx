@@ -30,6 +30,10 @@
             max-height: 250px;
             overflow-y: scroll;
         }
+
+        .panel.validation .btn {
+            margin-top: -5px;
+        }
     </style>
 </asp:Content>
 
@@ -37,7 +41,7 @@
     <h2>Export</h2>
 
     <div class="ng-cloak" ng-app="Trifolia" ng-controller="ExportCtrl" ng-init="init()">
-        <form method="post" action="/api/Export">
+        <form ng-submit="submit()" method="post" action="/api/Export">
             <div class="alert alert-info" ng-show="message">{{message}}</div>
 
             <div class="form-group">
@@ -60,7 +64,14 @@
             </div>
 
             <div class="panel panel-default validation" ng-if="hasValidationMessages() || isValidating">
-                <div class="panel-heading">Validation Results</div>
+                <div class="panel-heading">
+                    Validation Results
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default btn-sm" ng-click="loadValidationResults()">
+                            <i class="glyphicon glyphicon-refresh"></i>
+                        </button>
+                    </div>
+                </div>
                 <div class="panel-body">
                     <span ng-show="isValidating">Validating...</span>
                     <table class="table" ng-if="!isValidating && validationResults.Messages.length > 0">
@@ -144,6 +155,11 @@
                         <div class="form-group" ng-if="selectedImplementationGuide.CanEdit">
                             <label>Notes</label>
                             <input type="checkbox" id="IncludeNotes" name="IncludeNotes" value="true" ng-model="criteria.IncludeNotes"/> Include
+                        </div>
+
+                        <div class="form-group">
+                            <label>Volume 1</label>
+                            <input type="checkbox" id="IncludeVolume1" name="IncludeVolume1" value="true" ng-model="criteria.IncludeVolume1"/> Include
                         </div>
                     </div>
                     
@@ -241,7 +257,7 @@
                     </table>
                 </uib-tab>
                 <uib-tab heading="Templates/Profiles" ng-show="templateSelectionFormats | contains:criteria.ExportFormat">
-                    <multiple-template-select template-ids="criteria.ParentTemplateIds" caption="Parent Templates/Profiles" form-group="true" implementation-guide-id="criteria.ImplementationGuideId" on-changed="loadTemplates()"></multiple-template-select>
+                    <multiple-template-select template-ids="criteria.ParentTemplateIds" caption="Parent Templates/Profiles" form-group="true" implementation-guide-id="criteria.ImplementationGuideId" on-changed="loadTemplates(true)"></multiple-template-select>
 
                     <div class="form-group">
                         <label>Include Inferred?</label>

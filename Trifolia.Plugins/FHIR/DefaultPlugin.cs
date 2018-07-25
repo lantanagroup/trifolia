@@ -8,7 +8,7 @@ using Trifolia.DB;
 
 namespace Trifolia.Plugins.FHIR
 {
-    public class DefaultPlugin
+    public class DefaultPlugin : BasePlugin
     {
         public ValueSetIdentifierTypes DefaultIdentifierType
         {

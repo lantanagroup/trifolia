@@ -122,7 +122,7 @@
                             <div data-bind="visible: TemplateTypeId()">
                                 <div class="input-group name-field">
                                     <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorMetaDataNameField"></div>
-                                    <input type="text" class="form-control" data-bind="value: Name, disable: DisableFields, event: { change: $parent.RegenerateBookmark }" autofocus />
+                                    <input type="text" class="form-control" data-bind="value: Name, disable: DisableFields, event: { change: $parent.NameChanged }" autofocus />
                                 </div>
                                 <span class="templateMetaDataError" data-bind="validationMessage: Name"></span>
 
@@ -187,12 +187,12 @@
 
                                 <div class="input-group description-field">
                                     <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorMetaDataDescriptionField"></div>
-                                    <textarea class="form-control" style="height: 100px;" data-bind="value: Description, disable: DisableEngineerFields"></textarea>
+                                    <textarea class="form-control" style="height: 100px;" data-bind="markdown: Description, implementationGuideId: OwningImplementationGuideId, disable: DisableEngineerFields"></textarea>
                                 </div>
 
                                 <div class="input-group notes-field">
                                     <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorNotesTooltip }, html: Trifolia.Web.TemplateEditorMetaDataNotesField"></div>
-                                    <textarea class="form-control" style="height: 100px;" data-bind="value: Notes, disable: DisableEngineerFields"></textarea>
+                                    <textarea class="form-control" style="height: 100px;" data-bind="markdown: Notes, implementationGuideId: OwningImplementationGuideId, disable: DisableEngineerFields"></textarea>
                                 </div>
 
                                 <!-- ko if: $parent.IsFhir() -->
@@ -654,229 +654,15 @@
     </script>
 
     <script type="text/html" id="constraintEditorBody">
-        <!-- Analyst: Computable -->
-        <div data-bind="if: IsAnalystComputable(), disableAll: $parents[1].DisableConstraintFields()" class="constraintEditorSet">
-            <!-- Main Constraint Details -->
+        <fieldset data-bind="disable: $parents[1].DisableConstraintFields()">
+            <!-- Analyst: Computable -->
+            <div data-bind="if: IsAnalystComputable()" class="constraintEditorSet">
+                <!-- Main Constraint Details -->
 
-            <!-- ko if: !$root.CurrentNode().IsChildOfChoice() -->
-            <div class="input-group input-group-sm" style="width: 100%;">
-                <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorConformanceCardinality"></div>
-                <select class="form-control input-sm" style="width: 50%;" data-bind="value: Conformance, disable: $parents[1].Template().Locked">
-                    <option>SHALL</option>
-                    <option>SHOULD</option>
-                    <option>MAY</option>
-                    <option>SHALL NOT</option>
-                    <option>SHOULD NOT</option>
-                    <option>MAY NOT</option>
-                </select>
-                <div class="input-group input-group-sm cardinality" style="width:50%; padding-top: 0px">
-                    <input class="span2 form-control" id="appendedInputButton" size="16" type="text" data-bind="value: Cardinality, disable: $parents[1].Template().Locked">
-                    <div class="input-group-btn">
-                        <a class="dropdown-toggle btn btn-primary btn-sm" data-toggle="dropdown" href="#">
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a href="#" data-bind="click: function () { Cardinality('0..0') }">0..0</a></li>
-                            <li><a href="#" data-bind="click: function () { Cardinality('0..1') }">0..1</a></li>
-                            <li><a href="#" data-bind="click: function () { Cardinality('0..*') }">0..*</a></li>
-                            <li><a href="#" data-bind="click: function () { Cardinality('1..1') }">1..1</a></li>
-                            <li><a href="#" data-bind="click: function () { Cardinality('1..*') }">1..*</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <span class="help-block" data-bind="validationMessage: Cardinality"></span>
-            
-            <div class="input-group input-group-sm">
-                <div class="input-group-addon">
-                    <span data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorDataType"></span>
-                    <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorDataTypeTooltip, placement: 'right' }"></div>
-                </div>
-                <select class="form-control input-sm" data-bind="
-options: $parents[1].GetDataTypes($parent.DataType()),
-optionsText: 'Text', optionsValue: 'Value',
-value: DataType,
-event: { change: $parents[1].ConstraintDataTypeChanged },
-disable: $parents[1].Template().Locked">
-                </select>
-            </div>
-            <!-- /ko -->
-
-            <!-- ko if: !$root.CurrentNode().IsChoice() && !$root.CurrentNode().IsChildOfChoice() -->
-            <div class="input-group input-group-sm branching">
-                <div class="input-group-addon" data-bind="text: Trifolia.Web.TemplateEditorBranchingTitle"></div>
-                <div class="form-control">
-                    <input type="checkbox" name="Branching" data-bind="checked: IsBranch, disable: (IsBranchDisabled() || $parents[1].Template().Locked())" />&nbsp;<span data-bind="text: Trifolia.Web.TemplateEditorBranchRootOption"></span><br />
-                    <input type="checkbox" name="Branching" data-bind="checked: IsBranchIdentifier, disable: (IsBranchIdentifierDisabled() || $parents[1].Template().Locked())" />&nbsp;<span data-bind="text: Trifolia.Web.TemplateEditorBranchIdentifierOption"></span>
-                </div>
-            </div>
-            <!-- /ko -->
-
-            <!-- ko if: !$root.CurrentNode().IsChoice() -->
-            <!-- ko if: $parents[1].Categories().length > 0 -->
-            <div class="input-group input-group-sm">
-                <div class="input-group-addon">Category</div>
-                <select class="form-control input-sm" multiple="multiple" data-bind="disable: $parents[1].Template().Locked, options: $parents[1].Categories, selectedOptions: Categories"></select>
-            </div>
-            <!-- /ko -->
-
-            <u>Contained Template(s)</u>
-
-            <table class="table table-striped contained-templates" style="margin-bottom: 0px;">
-                <tbody data-bind="foreach: References">
-                    <tr>
-                        <td>
-                            <span data-bind="text: ReferenceDisplay"></span> (<span data-bind="text: ReferenceIdentifier"></span>)
-                        </td>
-                        <td style="width: 20px;">
-                            <i class="glyphicon glyphicon-remove" style="cursor: pointer;" title="Remove this contained template/profile" data-bind="click: function () { $parent.RemoveContainedTemplate($data) }"></i>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- ko if: !$parents[1].DisableConstraintFields() -->
-            <a href="#" data-bind="click: function () { AddContainedTemplate($parents[$parents.length - 1].IsFhir() ? null : $parent.DisplayDataType()); }">Add contained template/profile</a>
-            <!-- /ko -->
-            
-            <div class="modal fade" id="constraintReferenceSelectionModal" style="margin-top: 80px;" data-bind="with: ReferenceSelection">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Select template/profile...</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter search text..." data-bind="value: SearchQuery, valueUpdate: 'keyup'" />
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default" data-bind="click: function () { Search(true); }">Search</button>
-                                </div>
-                            </div>
-
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Identifier</th>
-                                        <th>Implementation Guide</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody data-bind="highlight: $parent.SearchQuery">
-                                    <!-- ko foreach: Items -->
-                                    <tr>
-                                        <td>
-                                            <span data-bind="text: Name"></span>
-                                            <!-- ko if: Description() -->
-                                            <i class="glyphicon glyphicon-comment" data-bind="tooltip: Description"></i>
-                                            <!-- /ko -->
-                                        </td>
-                                        <td data-bind="text: Oid"></td>
-                                        <td data-bind="text: ImplementationGuide"></td>
-                                        <td>
-                                            <button type="button" class="btn btn-default btn-sm" data-bind="click: function () { $parent.Select($data); }">Select</button>
-                                        </td>
-                                    </tr>
-                                    <!-- /ko -->
-                                    <!-- ko if: IsSearching() -->
-                                    <tr>
-                                        <td colspan="4">Searching...</td>
-                                    </tr>
-                                    <!-- /ko -->
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="4">Showing <span data-bind="text: Items().length"></span> templates/profiles of <span data-bind="text: TotalItems()"></span>. <a href="#" data-bind="if: TotalItems() > Items().length, click: MoreResults">Show more...</a></td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <!-- ko if: FilterContextType() -->
-                            <div class="pull-left">
-                                <div class="label label-info">Only showing templates/profiles with a context type of <span data-bind="text: FilterContextType"></span></div>
-                            </div>
-                            <!-- /ko -->
-                            <button type="button" class="btn btn-default" data-bind="click: Cancel">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="input-group input-group-sm">
-                <div class="input-group-addon">
-                    Binding Type:
-                    <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorBindingTypeTooltip, placement: 'right' }"></div>
-                </div>
-                <select class="form-control input-sm" data-bind="value: BindingType, disable: $parents[1].Template().Locked">
-                    <option value="None">None</option>
-                    <option value="SingleValue">Single Value</option>
-                    <option value="ValueSet">Value Set</option>
-                    <option value="CodeSystem">Code System</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-
-            <div data-bind="if: BindingType() == 'SingleValue'">
-                <div data-bind="template: { name: 'singleValueBinding' }"></div>
-            </div>
-                                        
-            <div data-bind="if: BindingType() == 'ValueSet'">
-                <div data-bind="template: { name: 'valueSetBinding' }"></div>
-            </div>
-                                        
-            <div data-bind="if: BindingType() == 'CodeSystem'">
-                <div data-bind="template: { name: 'codeSystemBinding' }"></div>
-            </div>
-                                        
-            <div data-bind="if: BindingType() == 'Other'">
-                <div data-bind="template: { name: 'otherBinding' }"></div>
-            </div>
-
-            <!-- ko if: $parents[$parents.length-1].IsFhir() -->
-
-            <!-- ko if: BindingType() == 'SingleValue' || BindingType() == 'Other' -->
-            <div class="input-group input-group-sm">
-                <div class="input-group-addon">
-                    <span>Is Fixed?</span>
-                    <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorIsFixedTooltip, placement: 'right' }"></div>
-                </div>
-                <div class="form-control">
-                    <input type="checkbox" name="Fixed" data-bind="checked: IsFixed"/>
-                </div>
-            </div>
-            <!-- /ko -->
-
-            <div class="input-group input-group-sm">
-                <div class="input-group-addon">
-                    <span>Is Modifier?</span>
-                    <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorIsModifierTooltip, placement: 'right' }"></div>
-                </div>
-                <div class="form-control">
-                    <input type="checkbox" name="Modifier" data-bind="checked: IsModifier"/>
-                </div>
-            </div>
-
-            <div class="input-group input-group-sm">
-                <div class="input-group-addon">
-                    <span>Must Support?</span>
-                    <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorMustSupportTooltip, placement: 'right' }"></div>
-                </div>
-                <div class="form-control">
-                    <input type="checkbox" name="Support" data-bind="checked: MustSupport"/>
-                </div>
-            </div>
-            <!-- /ko -->
-            <!-- /ko -->
-        </div>
-
-        <!-- Analyst: Primitive Constraint -->
-        <div data-bind="if: IsAnalystPrimitive()" class="constraintEditorSet">
-            <div style="min-width: 400px">
-                <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: PrimitiveText, disable: $parents[1].Template().Locked" placeholder="Constraint Prose"></textarea>
-                <div class="input-group input-group-sm">
-                    <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorConformance"></div>
-                    <select class="form-control input-sm" data-bind="value: Conformance, disable: $parents[1].Template().Locked">
+                <!-- ko if: !$root.CurrentNode().IsChildOfChoice() -->
+                <div class="input-group input-group-sm" style="width: 100%;">
+                    <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorConformanceCardinality"></div>
+                    <select class="form-control input-sm" style="width: 50%;" data-bind="value: Conformance">
                         <option>SHALL</option>
                         <option>SHOULD</option>
                         <option>MAY</option>
@@ -884,92 +670,307 @@ disable: $parents[1].Template().Locked">
                         <option>SHOULD NOT</option>
                         <option>MAY NOT</option>
                     </select>
+                    <div class="input-group input-group-sm cardinality" style="width:50%; padding-top: 0px">
+                        <input class="span2 form-control" id="appendedInputButton" size="16" type="text" data-bind="value: Cardinality">
+                        <div class="input-group-btn">
+                            <a class="dropdown-toggle btn btn-primary btn-sm" data-toggle="dropdown" href="#">
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="#" data-bind="click: function () { Cardinality('0..0') }">0..0</a></li>
+                                <li><a href="#" data-bind="click: function () { Cardinality('0..1') }">0..1</a></li>
+                                <li><a href="#" data-bind="click: function () { Cardinality('0..*') }">0..*</a></li>
+                                <li><a href="#" data-bind="click: function () { Cardinality('1..1') }">1..1</a></li>
+                                <li><a href="#" data-bind="click: function () { Cardinality('1..*') }">1..*</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                                    
-                <div data-bind="valuesetSelect: ValueSetId, label: 'Value Set:', disable: $parents[1].Template().Locked, small: true, canTypeAhead: true"></div>
-
-                <div class="input-group input-group-sm date" data-bind="date: ValueSetDate">
-                    <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBindingDate"></div>
-                    <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" />
-                    <span class="input-group-btn" style="width: 20px;">
-                        <button type="button" class="btn btn-default btn-sm btn-clear" data-bind="click: function () { ValueSetDate(''); }"><i class="glyphicon glyphicon-remove"></i></button>
-                        <button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
+                <span class="help-block" data-bind="validationMessage: Cardinality"></span>
+            
                 <div class="input-group input-group-sm">
-                    <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBinding"></div>
-                    <select class="form-control input-sm" data-bind="value: Binding, disable: $parents[1].Template().Locked">
-                        <option value="DEFAULT"></option>
-                        <option>STATIC</option>
-                        <option>DYNAMIC</option>
+                    <div class="input-group-addon">
+                        <span data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorDataType"></span>
+                        <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorDataTypeTooltip, placement: 'right' }"></div>
+                    </div>
+                    <select class="form-control input-sm" data-bind="
+    options: $parents[1].GetDataTypes($parent.DataType()),
+    optionsText: 'Text', optionsValue: 'Value',
+    value: DataType,
+    event: { change: $parents[1].ConstraintDataTypeChanged }">
                     </select>
                 </div>
-            </div>
-        </div>
-                            
-        <!-- Tech Editor: Primitive -->
-        <div style="width: 100%;" data-bind="if: IsTechEditorPrimitive()" class="constraintEditorSet">
-            <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: PrimitiveText, disable: $parents[1].Template().Locked" placeholder="Constraint Prose"></textarea>
+                <!-- /ko -->
 
-            <div class="input-group input-group-sm">
-                <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintEditorDescriptionTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorDescription"></div>
-                <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: Description, disable: $parents[1].Template().Locked" placeholder="Description"></textarea>
-            </div>
-            <div class="input-group input-group-sm">
-                <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintEditorLabelTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorLabel"></div>
-                <input type="text" class="form-control input-sm" data-bind="value: Label, disable: $parents[1].Template().Locked" />
-            </div>
-        </div>
-
-        <!-- Engineer -->
-        <div style="width: 100%;" data-bind="if: IsEngineer()">
-            <div class="input-group input-group-sm">
-                <span data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorAutoGenerate"></span>
-                <span style="white-space: pre;"> </span>
-                <input type="checkbox" data-bind="checked: IsAutomaticSchematron, disable: $parents[1].Template().Locked" />
-            </div>
-            <div class="input-group input-group-sm">
-                <span data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorInheritable"></span>
-                <span style="white-space: pre;"> </span>
-                <input type="checkbox" data-bind="checked: IsInheritable, disable: $parents[1].Template().Locked" />
-            </div>
-            <div class="input-group input-group-sm">
-                <span data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorRooted"></span>
-                <span style="white-space: pre;"> </span>
-                <input type="checkbox" data-bind="checked: IsSchRooted, disable: $parents[1].Template().Locked" />
-            </div>
-
-            <textarea class="form-control input-sm" style="height: 50px;" data-bind="disable: (IsAutomaticSchematron() || $parents[1].Template().Locked()), value: Schematron" placeholder="Custom Schematron"></textarea>
-        </div>
-
-        <!-- Tech Editor: Computable -->
-        <div data-bind="if: IsTechEditorComputable()" class="constraintEditorSet">
-            <div class="input-group input-group-sm">
-                <div class="input-group-addon" data-bind="attr: { title: Trifolia.Web.TemplateEditorConstraintEditorDescriptionTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorDescription"></div>
-                <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: Description, disable: $parents[1].Template().Locked" placeholder="Description"></textarea>
-            </div>
-            <div class="input-group input-group-sm">
-                <div class="input-group-addon" data-bind="attr: { title: Trifolia.Web.TemplateEditorConstraintEditorLabelTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorLabel"></div>
-                <input type="text" class="form-control input-sm" data-bind="value: Label, disable: $parents[1].Template().Locked" />
-            </div>
-            <div class="input-group input-group-sm">
-                <div class="input-group-addon">
-                    Heading <input type="checkbox" data-bind="checked: IsHeading, disable: $parents[1].Template().Locked" />
+                <!-- ko if: !$root.CurrentNode().IsChoice() && !$root.CurrentNode().IsChildOfChoice() -->
+                <div class="input-group input-group-sm branching">
+                    <div class="input-group-addon" data-bind="text: Trifolia.Web.TemplateEditorBranchingTitle"></div>
+                    <div class="form-control">
+                        <input type="checkbox" name="Branching" data-bind="checked: IsBranch, disable: (IsBranchDisabled() || $parents[1].Template().Locked())" />&nbsp;<span data-bind="text: Trifolia.Web.TemplateEditorBranchRootOption"></span><br />
+                        <input type="checkbox" name="Branching" data-bind="checked: IsBranchIdentifier, disable: (IsBranchIdentifierDisabled() || $parents[1].Template().Locked())" />&nbsp;<span data-bind="text: Trifolia.Web.TemplateEditorBranchIdentifierOption"></span>
+                    </div>
                 </div>
-                <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: HeadingDescription, disable: ($parents[1].Template().Locked() || !IsHeading())" placeholder="Heading Description"></textarea>
+                <!-- /ko -->
+
+                <!-- ko if: !$root.CurrentNode().IsChoice() -->
+                <!-- ko if: $parents[1].Categories().length > 0 -->
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">Category</div>
+                    <select class="form-control input-sm" multiple="multiple" data-bind="options: $parents[1].Categories, selectedOptions: Categories"></select>
+                </div>
+                <!-- /ko -->
+
+                <u>Contained Template(s)</u>
+
+                <table class="table table-striped contained-templates" style="margin-bottom: 0px;">
+                    <tbody data-bind="foreach: References">
+                        <tr>
+                            <td>
+                                <span data-bind="text: ReferenceDisplay"></span> (<span data-bind="text: ReferenceIdentifier"></span>)
+                            </td>
+                            <td style="width: 20px;">
+                                <i class="glyphicon glyphicon-remove" style="cursor: pointer;" title="Remove this contained template/profile" data-bind="click: function () { $parent.RemoveContainedTemplate($data) }"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- ko if: !$parents[1].DisableConstraintFields() -->
+                <a href="#" data-bind="click: function () { AddContainedTemplate($parents[$parents.length - 1].IsFhir(), $parent.DisplayDataType()); }">Add contained template/profile</a>
+                <!-- /ko -->
+            
+                <div class="modal fade" id="constraintReferenceSelectionModal" style="margin-top: 80px;" data-bind="with: ReferenceSelection">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Select template/profile...</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter search text..." data-bind="value: SearchQuery, valueUpdate: 'keyup'" />
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default" data-bind="click: function () { Search(true); }">Search</button>
+                                    </div>
+                                </div>
+
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Identifier</th>
+                                            <th>Implementation Guide</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="highlight: $parent.SearchQuery">
+                                        <!-- ko foreach: Items -->
+                                        <tr>
+                                            <td>
+                                                <span data-bind="text: Name"></span>
+                                                <!-- ko if: Description() -->
+                                                <i class="glyphicon glyphicon-comment" data-bind="tooltip: Description"></i>
+                                                <!-- /ko -->
+                                            </td>
+                                            <td data-bind="text: Oid"></td>
+                                            <td data-bind="text: ImplementationGuide"></td>
+                                            <td>
+                                                <button type="button" class="btn btn-default btn-sm" data-bind="click: function () { $parent.Select($data); }">Select</button>
+                                            </td>
+                                        </tr>
+                                        <!-- /ko -->
+                                        <!-- ko if: IsSearching() -->
+                                        <tr>
+                                            <td colspan="4">Searching...</td>
+                                        </tr>
+                                        <!-- /ko -->
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4">Showing <span data-bind="text: Items().length"></span> templates/profiles of <span data-bind="text: TotalItems()"></span>. <a href="#" data-bind="if: TotalItems() > Items().length, click: MoreResults">Show more...</a></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <!-- ko if: FilterContextType() -->
+                                <div class="pull-left">
+                                    <div class="label label-info">Only showing templates/profiles with a context type of <span data-bind="text: FilterContextType"></span></div>
+                                </div>
+                                <!-- /ko -->
+                                <button type="button" class="btn btn-default" data-bind="click: Cancel">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        Binding Type:
+                        <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorBindingTypeTooltip, placement: 'right' }"></div>
+                    </div>
+                    <select class="form-control input-sm" data-bind="value: BindingType">
+                        <option value="None">None</option>
+                        <option value="SingleValue">Single Value</option>
+                        <option value="ValueSet">Value Set</option>
+                        <option value="CodeSystem">Code System</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div data-bind="if: BindingType() == 'SingleValue'">
+                    <div data-bind="template: { name: 'singleValueBinding' }"></div>
+                </div>
+                                        
+                <div data-bind="if: BindingType() == 'ValueSet'">
+                    <div data-bind="template: { name: 'valueSetBinding' }"></div>
+                </div>
+                                        
+                <div data-bind="if: BindingType() == 'CodeSystem'">
+                    <div data-bind="template: { name: 'codeSystemBinding' }"></div>
+                </div>
+                                        
+                <div data-bind="if: BindingType() == 'Other'">
+                    <div data-bind="template: { name: 'otherBinding' }"></div>
+                </div>
+
+                <!-- ko if: $parents[$parents.length-1].IsFhir() -->
+
+                <!-- ko if: BindingType() == 'SingleValue' || BindingType() == 'Other' -->
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        <span>Is Fixed?</span>
+                        <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorIsFixedTooltip, placement: 'right' }"></div>
+                    </div>
+                    <div class="form-control">
+                        <input type="checkbox" name="Fixed" data-bind="checked: IsFixed"/>
+                    </div>
+                </div>
+                <!-- /ko -->
+
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        <span>Is Modifier?</span>
+                        <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorIsModifierTooltip, placement: 'right' }"></div>
+                    </div>
+                    <div class="form-control">
+                        <input type="checkbox" name="Modifier" data-bind="checked: IsModifier"/>
+                    </div>
+                </div>
+
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        <span>Must Support?</span>
+                        <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorMustSupportTooltip, placement: 'right' }"></div>
+                    </div>
+                    <div class="form-control">
+                        <input type="checkbox" name="Support" data-bind="checked: MustSupport"/>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
             </div>
-        </div>
+
+            <!-- Analyst: Primitive Constraint -->
+            <div data-bind="if: IsAnalystPrimitive()" class="constraintEditorSet">
+                <div style="min-width: 400px">
+                    <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: PrimitiveText, limitedToolbar: true" placeholder="Constraint Prose"></textarea>
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorConformance"></div>
+                        <select class="form-control input-sm" data-bind="value: Conformance">
+                            <option>SHALL</option>
+                            <option>SHOULD</option>
+                            <option>MAY</option>
+                            <option>SHALL NOT</option>
+                            <option>SHOULD NOT</option>
+                            <option>MAY NOT</option>
+                        </select>
+                    </div>
+                                    
+                    <div data-bind="valuesetSelect: ValueSetId, label: 'Value Set:', small: true, canTypeAhead: true"></div>
+
+                    <div class="input-group input-group-sm date">
+                        <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBindingDate"></div>
+                        <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" data-bind="date: ValueSetDate" />
+                        <span class="input-group-btn" style="width: 20px;">
+                            <button type="button" class="btn btn-default btn-sm btn-clear" data-bind="click: function () { ValueSetDate(''); }"><i class="glyphicon glyphicon-remove"></i></button>
+                        </span>
+                    </div>
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBinding"></div>
+                        <select class="form-control input-sm" data-bind="value: Binding">
+                            <option value="DEFAULT"></option>
+                            <option>STATIC</option>
+                            <option>DYNAMIC</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+                            
+            <!-- Tech Editor: Primitive -->
+            <div style="width: 100%;" data-bind="if: IsTechEditorPrimitive()" class="constraintEditorSet">
+                <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: PrimitiveText, limitedToolbar: true" placeholder="Constraint Prose"></textarea>
+
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintEditorDescriptionTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorDescription"></div>
+                    <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: Description, implementationGuideId: $parents[1].Template().OwningImplementationGuideId" placeholder="Description"></textarea>
+                </div>
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon" data-bind="attr: { 'title': Trifolia.Web.TemplateEditorConstraintEditorLabelTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorLabel"></div>
+                    <input type="text" class="form-control input-sm" data-bind="value: Label" />
+                </div>
+            </div>
+
+            <!-- Engineer -->
+            <div style="width: 100%;" data-bind="if: IsEngineer()">
+                <div class="input-group input-group-sm">
+                    <span data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorAutoGenerate"></span>
+                    <span style="white-space: pre;"> </span>
+                    <input type="checkbox" data-bind="checked: IsAutomaticSchematron" />
+                </div>
+                <div class="input-group input-group-sm">
+                    <span data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorInheritable"></span>
+                    <span style="white-space: pre;"> </span>
+                    <input type="checkbox" data-bind="checked: IsInheritable" />
+                </div>
+                <div class="input-group input-group-sm">
+                    <span data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorRooted"></span>
+                    <span style="white-space: pre;"> </span>
+                    <input type="checkbox" data-bind="checked: IsSchRooted" />
+                </div>
+
+                <textarea class="form-control input-sm" style="height: 50px;" data-bind="disable: (IsAutomaticSchematron() || $parents[1].Template().Locked()), value: Schematron" placeholder="Custom Schematron"></textarea>
+            </div>
+
+            <!-- Tech Editor: Computable -->
+            <div data-bind="if: IsTechEditorComputable()" class="constraintEditorSet">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon" data-bind="attr: { title: Trifolia.Web.TemplateEditorConstraintEditorDescriptionTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorDescription"></div>
+                    <textarea class="form-control input-sm" style="height: 50px;" data-bind="markdown: Description, implementationGuideId: $parents[1].Template().OwningImplementationGuideId" placeholder="Description"></textarea>
+                </div>
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon" data-bind="attr: { title: Trifolia.Web.TemplateEditorConstraintEditorLabelTooltip }, html: Trifolia.Web.TemplateEditorConstraintEditorLabel"></div>
+                    <input type="text" class="form-control input-sm" data-bind="value: Label" />
+                </div>
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        Heading <input type="checkbox" data-bind="checked: IsHeading" />
+                    </div>
+                    <textarea class="form-control input-sm" style="height: 50px;" data-bind="value: HeadingDescription, disable: ($parents[1].Template().Locked() || !IsHeading())" placeholder="Heading Description"></textarea>
+                </div>
+            </div>
+
+        </fieldset>
     </script>
 
     <script type="text/html" id="singleValueBinding">
         <div class="input-group input-group-sm" style="width: 100%;">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorCode"></div>
-            <input type="text" style="width: 50%;" class="form-control input-sm" data-bind="value: Value, disable: $parents[1].Template().Locked" placeholder="Code XXXX" />
-            <input type="text" style="width: 50%;" class="form-control input-sm" data-bind="value: ValueDisplayName, disable: $parents[1].Template().Locked" placeholder="Display XXXX" />
+            <input type="text" style="width: 50%;" class="form-control input-sm" data-bind="value: Value" placeholder="Code XXXX" />
+            <input type="text" style="width: 50%;" class="form-control input-sm" data-bind="value: ValueDisplayName" placeholder="Display XXXX" />
         </div>
         <div class="input-group input-group-sm">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorCodeSystem"></div>
-            <select class="form-control input-sm" data-bind="value: ValueCodeSystemId, options: $parents[1].CodeSystems, optionsText: 'Display', optionsValue: 'Id', optionsCaption: 'Select', disable: $parents[1].Template().Locked">
+            <select class="form-control input-sm" data-bind="value: ValueCodeSystemId, options: $parents[1].CodeSystems, optionsText: 'Display', optionsValue: 'Id', optionsCaption: 'Select'">
             </select>
         </div>
     </script>
@@ -977,7 +978,7 @@ disable: $parents[1].Template().Locked">
     <script type="text/html" id="valueSetBinding">
         <div class="input-group input-group-sm">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorValueConformance"></div>
-            <select class="form-control input-sm" data-bind="value: ValueConformance, disable: $parents[1].Template().Locked">
+            <select class="form-control input-sm" data-bind="value: ValueConformance">
                 <option value="">NONE</option>
                 <option>SHALL</option>
                 <option>SHOULD</option>
@@ -988,19 +989,18 @@ disable: $parents[1].Template().Locked">
             </select>
         </div>
                                 
-        <div data-bind="valuesetSelect: ValueSetId, label: 'Value Set:', disable: $parents[1].Template().Locked, small: true, canTypeAhead: true"></div>
+        <div data-bind="valuesetSelect: ValueSetId, label: 'Value Set:', small: true, canTypeAhead: true"></div>
 
-        <div class="input-group input-group-sm date" data-bind="date: ValueSetDate">
+        <div class="input-group input-group-sm date">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBindingDate"></div>
-            <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" data-bind="disable: $parents[1].Template().Locked" />
+            <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" data-bind="date: ValueSetDate" />
             <span class="input-group-btn" style="width: 20px;">
-                <button type="button" class="btn btn-default btn-sm btn-clear" data-bind="click: function () { ValueSetDate(''); }, disable: $parents[1].Template().Locked"><i class="glyphicon glyphicon-remove"></i></button>
-                <button type="button" class="btn btn-default btn-sm" data-bind="disable: $parents[1].Template().Locked"><i class="glyphicon glyphicon-calendar"></i></button>
+                <button type="button" class="btn btn-default btn-sm btn-clear" data-bind="click: function () { ValueSetDate(''); }"><i class="glyphicon glyphicon-remove"></i></button>
             </span>
         </div>
         <div class="input-group input-group-sm">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBinding"></div>
-            <select class="form-control input-sm" data-bind="value: Binding, disable: $parents[1].Template().Locked">
+            <select class="form-control input-sm" data-bind="value: Binding">
                 <option value="DEFAULT"></option>
                 <option>STATIC</option>
                 <option>DYNAMIC</option>
@@ -1011,7 +1011,7 @@ disable: $parents[1].Template().Locked">
     <script type="text/html" id="codeSystemBinding">
         <div class="input-group input-group-sm">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorValueConformance"></div>
-            <select class="form-control input-sm" data-bind="value: ValueConformance, disable: $parents[1].Template().Locked">
+            <select class="form-control input-sm" data-bind="value: ValueConformance">
                 <option value="">NONE</option>
                 <option>SHALL</option>
                 <option>SHOULD</option>
@@ -1023,12 +1023,12 @@ disable: $parents[1].Template().Locked">
         </div>
         <div class="input-group input-group-sm">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorCodeSystem"></div>
-            <select class="form-control input-sm" data-bind="value: ValueCodeSystemId, options: $parents[1].CodeSystems, optionsText: 'Display', optionsValue: 'Id', optionsCaption: 'Select', disable: $parents[1].Template().Locked">
+            <select class="form-control input-sm" data-bind="value: ValueCodeSystemId, options: $parents[1].CodeSystems, optionsText: 'Display', optionsValue: 'Id', optionsCaption: 'Select'">
             </select>
         </div>
         <div class="input-group input-group-sm">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBinding"></div>
-            <select class="form-control input-sm" data-bind="value: Binding, disable: $parents[1].Template().Locked">
+            <select class="form-control input-sm" data-bind="value: Binding">
                 <option value="DEFAULT"></option>
                 <option>STATIC</option>
                 <option>DYNAMIC</option>
@@ -1039,7 +1039,7 @@ disable: $parents[1].Template().Locked">
     <script type="text/html" id="otherBinding">
         <div class="input-group input-group-sm">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorValueConformance"></div>
-            <select class="form-control input-sm" data-bind="value: ValueConformance, disable: $parents[1].Template().Locked">
+            <select class="form-control input-sm" data-bind="value: ValueConformance">
                 <option value="">NONE</option>
                 <option>SHALL</option>
                 <option>SHOULD</option>
@@ -1051,28 +1051,27 @@ disable: $parents[1].Template().Locked">
         </div>
         <div class="input-group input-group-sm">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorCode"></div>
-            <input type="text" class="form-control input-sm" style="width: 50%;" data-bind="value: Value, disable: $parents[1].Template().Locked" placeholder="Code XXXX" />
-            <input type="text" class="form-control input-sm" style="width: 50%;" data-bind="value: ValueDisplayName, disable: $parents[1].Template().Locked" placeholder="Display XXXX" />
+            <input type="text" class="form-control input-sm" style="width: 50%;" data-bind="value: Value" placeholder="Code XXXX" />
+            <input type="text" class="form-control input-sm" style="width: 50%;" data-bind="value: ValueDisplayName" placeholder="Display XXXX" />
         </div>
                                 
-        <div data-bind="valuesetSelect: ValueSetId, label: 'Value Set:', disable: $parents[1].Template().Locked, small: true, canTypeAhead: true"></div>
+        <div data-bind="valuesetSelect: ValueSetId, label: 'Value Set:', small: true, canTypeAhead: true"></div>
                                 
-        <div class="input-group input-group-sm date" data-bind="date: ValueSetDate">
+        <div class="input-group input-group-sm date">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBindingDate"></div>
-            <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" data-bind="disable: $parents[1].Template().Locked" />
+            <input type="text" class="form-control input-sm" placeholder="MM/DD/YYYY" data-bind="date: ValueSetDate" />
             <span class="input-group-btn" style="width: 20px;">
-                <button type="button" class="btn btn-default btn-sm btn-clear" data-bind="click: function () { ValueSetDate(''); }, disable: $parents[1].Template().Locked"><i class="glyphicon glyphicon-remove"></i></button>
-                <button type="button" class="btn btn-default btn-sm" data-bind="disable: $parents[1].Template().Locked"><i class="glyphicon glyphicon-calendar"></i></button>
+                <button type="button" class="btn btn-default btn-sm btn-clear" data-bind="click: function () { ValueSetDate(''); }"><i class="glyphicon glyphicon-remove"></i></button>
             </span>
         </div>
         <div class="input-group input-group-sm">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorCodeSystem"></div>
-            <select class="form-control input-sm" data-bind="value: ValueCodeSystemId, options: $parents[1].CodeSystems, optionsText: 'Display', optionsValue: 'Id', optionsCaption: 'Select', disable: $parents[1].Template().Locked">
+            <select class="form-control input-sm" data-bind="value: ValueCodeSystemId, options: $parents[1].CodeSystems, optionsText: 'Display', optionsValue: 'Id', optionsCaption: 'Select'">
             </select>
         </div>
         <div class="input-group input-group-sm">
             <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorBinding"></div>
-            <select class="form-control input-sm" data-bind="value: Binding, disable: $parents[1].Template().Locked">
+            <select class="form-control input-sm" data-bind="value: Binding">
                 <option value="DEFAULT"></option>
                 <option>STATIC</option>
                 <option>DYNAMIC</option>
