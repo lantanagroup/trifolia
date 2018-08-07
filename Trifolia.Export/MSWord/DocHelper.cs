@@ -50,6 +50,11 @@ namespace Trifolia.Export.MSWord
                     new FieldChar()
                     {
                         FieldCharType = new EnumValue<FieldCharValues>(FieldCharValues.Separate)
+                    }),
+                new Run(
+                    new FieldChar()
+                    {
+                        FieldCharType = new EnumValue<FieldCharValues>(FieldCharValues.End)
                     }));
 
             var countRun = DocHelper.CreateRun(count.ToString() + ": ");
@@ -60,11 +65,6 @@ namespace Trifolia.Export.MSWord
                 p3.Append(countRun);
 
             p3.Append(
-                new Run(
-                    new FieldChar()
-                    {
-                        FieldCharType = new EnumValue<FieldCharValues>(FieldCharValues.End)
-                    }),
                 DocHelper.CreateRun(title));
 
             return p3;

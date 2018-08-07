@@ -10,6 +10,21 @@
                         <scenarioAssociation-array>
                             <scenarioAssociation>
                                 <field name="url">
+                                    <String>DocSamples/HTML/html6.html</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>HTML->OpenXml</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>XSL</String>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
+                            <scenarioAssociation>
+                                <field name="url">
                                     <String>DocSamples/HTML/html25.html</String>
                                 </field>
                                 <field name="scenarioIds">
