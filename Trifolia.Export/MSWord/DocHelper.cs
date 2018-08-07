@@ -51,21 +51,20 @@ namespace Trifolia.Export.MSWord
                     {
                         FieldCharType = new EnumValue<FieldCharValues>(FieldCharValues.Separate)
                     }),
+                DocHelper.CreateRun(count.ToString()),
                 new Run(
                     new FieldChar()
                     {
                         FieldCharType = new EnumValue<FieldCharValues>(FieldCharValues.End)
-                    }));
+                    }),
+                DocHelper.CreateRun(": "));
 
-            var countRun = DocHelper.CreateRun(count.ToString() + ": ");
+            var titleRun = DocHelper.CreateRun(title);
 
-            if (!string.IsNullOrEmpty(bookmarkId) && hyperlinkTracker != null)
-                hyperlinkTracker.AddAnchorAround(p3, bookmarkId, countRun);
+            if (!string.IsNullOrEmpty(bookmarkId))
+                hyperlinkTracker.AddAnchorAround(p3, bookmarkId, titleRun);
             else
-                p3.Append(countRun);
-
-            p3.Append(
-                DocHelper.CreateRun(title));
+                p3.Append(titleRun);
 
             return p3;
         }
