@@ -229,12 +229,7 @@
                 </xsl:choose>
             </w:rPr>
             <xsl:for-each select="$lines">
-                <w:t>
-                    <xsl:if test="$hasExample">
-                        <xsl:attribute name="space" namespace="http://www.w3.org/XML/1998/namespace" select="'preserve'" />
-                    </xsl:if>
-                    <xsl:value-of select="."/>
-                </w:t>
+                <w:t xml:space="preserve"><xsl:value-of select="."/></w:t>
                 <xsl:if test="position() != count($lines)">
                     <w:br />
                 </xsl:if>
