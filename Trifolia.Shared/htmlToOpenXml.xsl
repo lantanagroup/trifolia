@@ -197,10 +197,23 @@
         <xsl:param name="hasExample" select="ancestor::pre or ancestor::code" />
         
         <xsl:variable name="lines" select="tokenize(.,'\n')" />
+        <xsl:variable name="isKeyword" select=". = 'SHALL' or . = 'SHOULD' or . = 'MAY' or . = 'SHALL NOT' or . = 'SHOULD NOT' or . = 'MAY NOT'" />
+        <xsl:variable name="isXmlName" select=". = 'DYNAMIC' or . = 'STATIC'" />
+        <xsl:variable name="isXsiType" select="matches(. , '^xsi:type=&quot;.+?&quot;$')" />
         
         <w:r>
             <w:rPr>
                 <xsl:choose>
+                    <xsl:when test="$isKeyword and $hasBold">
+                        <w:rStyle>
+                            <xsl:attribute name="val" namespace="http://schemas.openxmlformats.org/wordprocessingml/2006/main">keyword</xsl:attribute>
+                        </w:rStyle>
+                    </xsl:when>
+                    <xsl:when test="($isXmlName or $isXsiType) and $hasBold">
+                        <w:rStyle>
+                            <xsl:attribute name="val" namespace="http://schemas.openxmlformats.org/wordprocessingml/2006/main">XMLnameBold</xsl:attribute>
+                        </w:rStyle>
+                    </xsl:when>
                     <xsl:when test="$runStyle">
                         <w:rStyle>
                             <xsl:attribute name="val" namespace="http://schemas.openxmlformats.org/wordprocessingml/2006/main" select="$runStyle" />
@@ -218,7 +231,7 @@
                         <w:i w:val="true"/>
                     </xsl:when>
                     <!-- Bold -->
-                    <xsl:when test="$hasBold">
+                    <xsl:when test="$hasBold and not($isKeyword) and not($isXmlName) and not($isXsiType)">
                         <w:b w:val="true"/>
                     </xsl:when>
                     <!-- Superscript -->
@@ -229,12 +242,7 @@
                 </xsl:choose>
             </w:rPr>
             <xsl:for-each select="$lines">
-                <w:t>
-                    <xsl:if test="$hasExample">
-                        <xsl:attribute name="space" namespace="http://www.w3.org/XML/1998/namespace" select="'preserve'" />
-                    </xsl:if>
-                    <xsl:value-of select="."/>
-                </w:t>
+                <w:t xml:space="preserve"><xsl:value-of select="."/></w:t>
                 <xsl:if test="position() != count($lines)">
                     <w:br />
                 </xsl:if>

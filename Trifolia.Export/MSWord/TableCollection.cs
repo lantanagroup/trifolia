@@ -82,7 +82,8 @@ namespace Trifolia.Export.MSWord
                     tableCount++,
                     title,
                     bookmark,
-                    caption);
+                    caption,
+                    this.hyperlinkTracker);
                 this.documentBody.AppendChild(p3);
             }
 

@@ -553,8 +553,9 @@ namespace Trifolia.Test.Generation.IG
             Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:pPr/w:ind[@w:left='130']", docNsMgr), "Expected to find a Left Indent for the XML Sample");
             Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:pPr/w:ind[@w:right='115']", docNsMgr), "Expected to find a Right Indent for the XML Sample");
             Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:r[1][not(w:rPr/w:rStyle)]/w:t[text()='Figure ']", docNsMgr), "Did not find XML Sample Label");        
-            Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:r[5][not(w:rPr/w:rStyle)]/w:t[text()='1: ']", docNsMgr), "Figure Number missing for XML Sample");
-            Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:r[7][not(w:rPr/w:rStyle)]/w:t[text()='Test_Template_1_Example']", docNsMgr), "Title missing for XML Sample");
+            Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:r[5][not(w:rPr/w:rStyle)]/w:t[text()='1']", docNsMgr), "Figure Number missing for XML Sample table caption");
+            Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:r[7][not(w:rPr/w:rStyle)]/w:t[text()=': ']", docNsMgr), "Colon separator missing for XML Sample table caption");
+            Assert.IsNotNull(xmlSampleHeader.SelectSingleNode("w:r[8][not(w:rPr/w:rStyle)]/w:t[text()='Test_Template_1_Example']", docNsMgr), "Title missing for XML Sample table caption");
         }
 
         /// <summary>

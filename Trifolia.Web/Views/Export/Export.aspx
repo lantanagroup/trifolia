@@ -215,19 +215,19 @@
                             <input type="radio" name="ValueSetTables" ng-value="true" ng-model="criteria.ValueSetTables">Yes <input type="radio" name="ValueSetTables" ng-value="false" ng-model="criteria.ValueSetTables"> No
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" ng-if="criteria.ValueSetTables">
                             <label>Maximum Members <i class="glyphicon glyphicon-question-sign clickable" uib-tooltip="Indicates the maximum number of members that should be exported for a given value set. 0 indicates that no members should be exported, and will omit the valueset tables from the export entirely."></i></label>
                             <input type="number" class="form-control" name="MaximumValueSetMembers" ng-model="criteria.MaximumValueSetMembers" ng-change="maximumValueSetMembersChanged()">
                             <span class="help-block">Changing this applies this number to all of the value sets listed in the table below.</span>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" ng-if="criteria.ValueSetTables">
                             <label>Create as appendix</label>
                             <input type="radio" name="ValueSetAppendix" ng-value="true" ng-model="criteria.ValueSetAppendix"> Yes <input type="radio" name="ValueSetAppendix" ng-value="false" ng-model="criteria.ValueSetAppendix"> No
                         </div>
                     </div>
 
-                    <table class="table">
+                    <table class="table" ng-if="criteria.ValueSetTables">
                         <thead>
                             <tr>
                                 <th>Name</th>

@@ -5,6 +5,7 @@ using System.Linq;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Validation;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Trifolia.Shared;
 
@@ -49,6 +50,25 @@ namespace Trifolia.Test.Shared
             string html = Helper.GetSampleContents("Trifolia.Test.DocSamples.HTML.html" + number + ".html");
             OpenXmlElement element = HtmlToOpenXmlConverter.HtmlToOpenXml(tdb, mdp, html, true);
             ValidateOpenXml(element);
+        }
+
+        [TestMethod]
+        public void TestWhiteSpacePreservation()
+        {
+            string html = "<span>This is <bold>a test</bold> of bold text</span>";
+            OpenXmlElement element = HtmlToOpenXmlConverter.HtmlToOpenXml(tdb, mdp, html, true);
+
+            Paragraph para = element.FirstChild as Paragraph;
+            Assert.IsNotNull(para);
+
+            Run run = para.OfType<Run>().FirstOrDefault();
+            Assert.IsNotNull(run);
+
+            Text text = run.OfType<Text>().FirstOrDefault();
+            Assert.IsNotNull(text);
+            Assert.IsNotNull(text.Space);
+            Assert.AreEqual(SpaceProcessingModeValues.Preserve, text.Space.Value);
+            Assert.AreEqual("This is ", text.Text);
         }
 
         [TestMethod]
