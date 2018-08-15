@@ -35,14 +35,21 @@ namespace Trifolia.Test.Extensions
         [TestMethod]
         public void GetSliceNameTest()
         {
+            Template t = new Template();
+
             TemplateConstraint tc1 = new TemplateConstraint();
+            t.ChildConstraints.Add(tc1);
+            tc1.Template = t;
             tc1.Context = "section";
             tc1.IsBranch = true;
             tc1.Order = 1;
 
             TemplateConstraint tc2 = new TemplateConstraint();
+            t.ChildConstraints.Add(tc2);
+            tc2.Template = t;
             tc2.Context = "entry";
             tc2.ParentConstraint = tc1;
+            tc1.ChildConstraints.Add(tc2);
 
             string actual = tc1.GetSliceName();
             Assert.AreEqual("section1", actual);
@@ -58,33 +65,41 @@ namespace Trifolia.Test.Extensions
             t.PrimaryContextType = "Composition";
 
             TemplateConstraint section1 = new TemplateConstraint();
+            t.ChildConstraints.Add(section1);
             section1.Template = t;
             section1.Context = "section";
             section1.IsBranch = true;
             section1.Order = 1;
 
             TemplateConstraint section2 = new TemplateConstraint();
+            t.ChildConstraints.Add(section2);
             section2.Template = t;
             section2.Context = "section";
             section2.IsBranch = true;
             section2.Order = 2;
 
             TemplateConstraint entry1 = new TemplateConstraint();
+            t.ChildConstraints.Add(entry1);
             entry1.Template = t;
             entry1.Context = "entry";
             entry1.ParentConstraint = section1;
+            section1.ChildConstraints.Add(entry1);
             entry1.Order = 1;
 
             TemplateConstraint entry2 = new TemplateConstraint();
+            t.ChildConstraints.Add(entry2);
             entry2.Template = t;
             entry2.Context = "entry";
             entry2.ParentConstraint = section2;
+            section2.ChildConstraints.Add(entry2);
             entry2.Order = 1;
 
             TemplateConstraint title2 = new TemplateConstraint();
+            t.ChildConstraints.Add(title2);
             title2.Template = t;
             title2.Context = "title";
             title2.ParentConstraint = section2;
+            section2.ChildConstraints.Add(title2);
             title2.Order = 2;
 
             string actual = section1.GetElementId();

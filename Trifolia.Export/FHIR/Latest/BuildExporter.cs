@@ -56,7 +56,7 @@ namespace Trifolia.Export.FHIR.Latest
 
             this.schema = this.ig.ImplementationGuideType.GetSimpleSchema();
             this.igName = this.ig.Name.Replace(" ", "_");
-            this.controlFileName = this.igName + ".json";
+            this.controlFileName = "ig.json";
             this.JsonFormat = jsonFormat;
 
             this.dataExamples = new DataExamples();
@@ -79,8 +79,11 @@ namespace Trifolia.Export.FHIR.Latest
 
         public byte[] Export(bool includeVocabulary = true)
         {
-            this.control = new Models.Control();
-            this.control.canonicalBase = this.ig.Identifier;
+            string npmName = Regex.Replace(this.ig.Name, @"[^0-9a-zA-Z]+", "");
+
+            this.control = new Models.Control("current");
+            this.control.CanonicalBase = this.ig.Identifier;
+            this.control.NpmName = "hl7.fhir.us." + npmName;
 
             var igDependencies = (from t in templates
                                   join tc in this.tdb.TemplateConstraints.AsNoTracking() on t.Id equals tc.TemplateId
@@ -90,15 +93,15 @@ namespace Trifolia.Export.FHIR.Latest
                                   where ig.Id != this.ig.Id && ig.Identifier != "http://hl7.org/fhir/" && tcr.ReferenceType == ConstraintReferenceTypes.Template
                                   select ig).Distinct();
 
-            this.control.dependencyList = (from ig in igDependencies
+            this.control.DependencyList = (from ig in igDependencies
                                            select new Control.Dependency()
                                            {
-                                               name = ig.Name.RemoveSpecialCharacters().Replace(" ", "-").ToLower(),
-                                               location = ig.Identifier
+                                               Name = ig.Name.RemoveSpecialCharacters().Replace(" ", "-").ToLower(),
+                                               Location = ig.Identifier
                                            }).ToList();
 
-            if (!string.IsNullOrEmpty(this.control.canonicalBase) && this.control.canonicalBase.LastIndexOf("/") == this.control.canonicalBase.Length - 1)
-                this.control.canonicalBase = this.control.canonicalBase.Substring(0, this.control.canonicalBase.Length - 1);
+            if (!string.IsNullOrEmpty(this.control.CanonicalBase) && this.control.CanonicalBase.LastIndexOf("/") == this.control.CanonicalBase.Length - 1)
+                this.control.CanonicalBase = this.control.CanonicalBase.Substring(0, this.control.CanonicalBase.Length - 1);
 
             this.zip = GetPackage();
 
@@ -296,10 +299,10 @@ namespace Trifolia.Export.FHIR.Latest
                 string keyValue = string.Format("{0}/{1}", resource.ResourceType.ToString(), resource.Id);
                 string baseValue = string.Format("{0}-{1}.html", resource.ResourceType.ToString(), resource.Id);
                 
-                this.control.resources.Add(keyValue, new Models.Control.ResourceReference()
+                this.control.Resources.Add(keyValue, new Models.Control.ResourceReference()
                 {
                     //template_base = "instance-template-example.html",
-                    reference_base = baseValue
+                    ReferenceBase = baseValue
                 });
 
                 strucDefExamples.Examples.Add(new DataExamples.Example()
@@ -453,7 +456,7 @@ namespace Trifolia.Export.FHIR.Latest
                 var xml = sr.ReadToEnd();
 
                 xml = xml.Replace("##ig_name##", this.igName);
-                xml = xml.Replace("##specification##", this.control.paths.specification);
+                xml = xml.Replace("##specification##", this.control.Paths.Specification);
 
                 this.zip.UpdateEntry("build.xml", xml);
             }
@@ -511,7 +514,7 @@ namespace Trifolia.Export.FHIR.Latest
                 // If the value set is part of a different implementation guide (has a different base url from this IG)
                 // add the url to the control file's special-urls property so that the ig publisher knows to handle it differently
                 if (!fhirValueSet.Url.StartsWith(this.ig.Identifier))
-                    this.control.special_urls.Add(fhirValueSet.Url);
+                    this.control.SpecialUrls.Add(fhirValueSet.Url);
 
                 // Add the value set file to the package
                 this.zip.AddEntry(fhirValueSetFileName, fhirValueSetContent);
@@ -519,10 +522,10 @@ namespace Trifolia.Export.FHIR.Latest
                 // Add the value set to the control file so it knows what to do with it
                 string resourceKey = string.Format("ValueSet/{0}", fhirValueSet.Id);
 
-                this.control.resources.Add(resourceKey, new Models.Control.ResourceReference()
+                this.control.Resources.Add(resourceKey, new Models.Control.ResourceReference()
                 {
                     //template_base = "instance-template-format.html",
-                    reference_base = string.Format("ValueSet-{0}.html", valueSet.GetFhirId())
+                    ReferenceBase = string.Format("ValueSet-{0}.html", valueSet.GetFhirId())
                 });
             }
         }
@@ -535,7 +538,7 @@ namespace Trifolia.Export.FHIR.Latest
             string fileExtension = this.JsonFormat ? "json" : "xml";
             string fhirIgFileName = string.Format("resources/implementationguide/{0}.{1}", fhirIg.Id, fileExtension);
 
-            this.control.source = string.Format("implementationguide/{0}.{1}", fhirIg.Id, fileExtension);
+            this.control.Source = string.Format("implementationguide/{0}.{1}", fhirIg.Id, fileExtension);
 
             this.zip.AddEntry(fhirIgFileName, fhirIgContent);
         }
@@ -563,7 +566,7 @@ namespace Trifolia.Export.FHIR.Latest
                 string strucDefFileName = string.Format("resources/structuredefinition/{0}.{1}", strucDef.Id, fileExtension);
                 this.zip.AddEntry(strucDefFileName, strucDefContent);
 
-                this.control.resources.Add(location, new Models.Control.ResourceReference("StructureDefinition-" + strucDef.Id + ".html"));
+                this.control.Resources.Add(location, new Models.Control.ResourceReference("StructureDefinition-" + strucDef.Id + ".html"));
             }
         }
 

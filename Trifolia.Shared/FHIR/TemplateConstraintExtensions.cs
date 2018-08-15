@@ -69,14 +69,22 @@ namespace Trifolia.Shared.FHIR
                         sliceName = "_" + sliceName;
 
                     string elementName = !string.IsNullOrEmpty(current.Context) ? current.Context : "slice";
+                    var list = current.Parent == null ?
+                        current.Template.ChildConstraints.Where(y => y.Parent == null && y.Context == current.Context) :
+                        current.Parent.Children.Where(y => y.Context == current.Context);
+                    var count = list.ToList().IndexOf(current) + 1;
 
-                    sliceName = elementName + current.Order.ToString() + sliceName;
+                    return elementName + count + sliceName;
+                }
+                else if (current.Parent != null && current.Parent.IsChoice)
+                {
+                    return current.Context;
                 }
 
                 current = current.ParentConstraint;
             }
 
-            return sliceName;
+            return null;
         }
 
         /// <summary>
@@ -93,8 +101,10 @@ namespace Trifolia.Shared.FHIR
 
             while (current != null)
             {
+                string separator = current.IsChoice ? ":" : ".";
+
                 if (!string.IsNullOrEmpty(elementId))
-                    elementId = "." + elementId;
+                    elementId = separator + elementId;
 
                 if (checkBranch && current.IsBranch)
                 {
@@ -108,6 +118,9 @@ namespace Trifolia.Shared.FHIR
 
                 current = current.ParentConstraint;
             }
+
+            if (checkBranch)
+                return constraint.Template.PrimaryContextType + "." + elementId;
 
             return elementId;
         }

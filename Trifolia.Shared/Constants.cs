@@ -15,7 +15,7 @@ namespace Trifolia.Shared
             public const string CDA = "CDA";
             public const string FHIR_DSTU2 = "FHIR DSTU2";
             public const string FHIR_STU3 = "FHIR STU3";
-            public const string FHIR_CURRENT_BUILD = "FHIR Current Build";
+            public const string FHIR_LATEST = "FHIR Current Build";
         }
 
         public static class IGTypeSchemaLocations

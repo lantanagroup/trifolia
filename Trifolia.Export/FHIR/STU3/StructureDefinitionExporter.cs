@@ -122,7 +122,7 @@ namespace Trifolia.Export.FHIR.STU3
                 Label = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : null,
                 Comment = !string.IsNullOrEmpty(constraint.Notes) ? constraint.Notes : null,
                 Path = elementPath,
-                SliceName = constraint.IsBranch ? sliceName : null,
+                SliceName = sliceName,
                 Definition = definition,
                 ElementId = constraint.GetElementId()
             };
@@ -132,10 +132,14 @@ namespace Trifolia.Export.FHIR.STU3
                 newElementDef.Slicing = new ElementDefinition.SlicingComponent();
                 newElementDef.Slicing.Discriminator.Add(new ElementDefinition.DiscriminatorComponent()
                 {
-                    Type = ElementDefinition.DiscriminatorType.Value,
-                    Path = "@type"
+                    Type = ElementDefinition.DiscriminatorType.Type,
+                    Path = "$this"
                 });
                 newElementDef.Slicing.Rules = ElementDefinition.SlicingRules.Open;
+            }
+            else if (constraint.Parent != null && constraint.Parent.IsChoice)
+            {
+                newElementDef.SliceName = constraint.Context;
             }
 
             // Cardinality
@@ -188,6 +192,9 @@ namespace Trifolia.Export.FHIR.STU3
                         if (constraint.CodeSystem != null)
                             coding.System = constraint.CodeSystem.Oid;
 
+                        if (!string.IsNullOrEmpty(constraint.DisplayName))
+                            coding.Display = constraint.DisplayName;
+
                         elementBinding = codableConceptBinding;
                         break;
                     case "Coding":
@@ -198,6 +205,9 @@ namespace Trifolia.Export.FHIR.STU3
 
                         if (constraint.CodeSystem != null)
                             codingBinding.System = constraint.CodeSystem.Oid;
+
+                        if (!string.IsNullOrEmpty(constraint.DisplayName))
+                            codingBinding.Display = constraint.DisplayName;
 
                         elementBinding = codingBinding;
                         break;
@@ -349,7 +359,8 @@ namespace Trifolia.Export.FHIR.STU3
                 rootElement.ElementId = template.PrimaryContextType;
                 differential.Element.Add(rootElement);
 
-                foreach (var constraint in template.ChildConstraints.Where(y => y.ParentConstraint == null).OrderBy(y => y.Order))
+                var rootConstraints = template.ChildConstraints.Where(y => y.ParentConstraint == null).OrderBy(y => y.Order);
+                foreach (var constraint in rootConstraints)
                 {
                     SimpleSchema.SchemaObject schemaObject = null;
 
@@ -364,11 +375,13 @@ namespace Trifolia.Export.FHIR.STU3
                 var sliceGroups = slices.GroupBy(y => y.GetElementPath(template.TemplateType.RootContextType));
                 int currentSliceGroupCount = 2;
 
+                // Adds an element that contains "slicing" information for the branch(es)
                 foreach (var sliceGroup in sliceGroups)
                 {
                     ElementDefinition newElementDef = new ElementDefinition();
                     //newElementDef.ElementId = string.Format("{0}-{1}", template.Id, currentSliceGroupCount.ToString("00"));
                     newElementDef.Path = sliceGroup.Key;
+                    newElementDef.ElementId = sliceGroup.First().GetElementPath(template.PrimaryContextType);
 
                     foreach (var branchConstraint in sliceGroup)
                     {

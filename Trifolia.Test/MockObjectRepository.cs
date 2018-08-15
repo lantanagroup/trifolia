@@ -221,7 +221,7 @@ namespace Trifolia.Test
             this.FindOrCreateImplementationGuide(fhirType, "Unowned FHIR STU3 Profiles");
         }
 
-        public void InitializeFHIRCurrentBuildRepository()
+        public void InitializeFHIRLatestRepository()
         {
             ImplementationGuideType fhirType = this.FindOrCreateImplementationGuideType(DEFAULT_FHIR_CURRENT_BUILD_IG_TYPE_NAME, "fhir-all.xsd", "fhir", "http://hl7.org/fhir");
 

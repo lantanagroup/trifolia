@@ -8,6 +8,7 @@ using System.Xml;
 using Trifolia.Shared;
 using Trifolia.DB;
 using Trifolia.Export.FHIR.STU3;
+using Newtonsoft.Json;
 
 namespace Trifolia.Test.Export.FHIR.STU3
 {
@@ -96,7 +97,7 @@ namespace Trifolia.Test.Export.FHIR.STU3
             "instance-template-base.html",
             "instance-template-format.html",
             "instance-template-sd.html",
-            "STU3_IG_Publisher_Build_Package.json",
+            "ig.json",
             "RunIGPublisherCmd.bat" };
 
         [ClassInitialize]
@@ -235,6 +236,27 @@ namespace Trifolia.Test.Export.FHIR.STU3
             return exported;
         }
 
+        private static string GetZipFileEntryContents(ZipEntry entry)
+        {
+            using (MemoryStream nms = new MemoryStream())
+            {
+                entry.Extract(nms);
+                nms.Position = 0;
+                StreamReader sr = new StreamReader(nms);
+                return sr.ReadToEnd();
+            }
+        }
+
+        private void TestControlFile(string controlFileContents)
+        {
+            Newtonsoft.Json.Linq.JObject jsonObj = (Newtonsoft.Json.Linq.JObject) JsonConvert.DeserializeObject(controlFileContents);
+            Assert.AreEqual("jekyll", jsonObj.Value<string>("tool"));
+            Assert.AreEqual("3.0.1", jsonObj.Value<string>("version"));
+            Assert.AreEqual("CC0-1.0", jsonObj.Value<string>("license"));
+            Assert.AreEqual("hl7.fhir.us.STU3IGPublisherBuildPackage", jsonObj.Value<string>("npm-name"));
+            Assert.AreEqual("implementationguide/2.xml", jsonObj.Value<string>("source"));
+        }
+
         /// <summary>
         /// Tests that the build package export produces a correctly-formatted ZIP file
         /// </summary>
@@ -268,6 +290,9 @@ namespace Trifolia.Test.Export.FHIR.STU3
                         var found = expectedFiles.Contains(entry.FileName);
                         Assert.IsTrue(found, "Found unexpected file " + entry.FileName + " in zip package");
                     }
+
+                    var controlFile = zip.Entries.Single(y => y.FileName == "ig.json");
+                    this.TestControlFile(GetZipFileEntryContents(controlFile));
                 }
             }
         }
@@ -301,7 +326,7 @@ namespace Trifolia.Test.Export.FHIR.STU3
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
             startInfo.FileName = "java";
-            startInfo.Arguments = "-jar " + igPublisherJarFileName + " -ig " + jsonFileName;
+            startInfo.Arguments = "-jar " + igPublisherJarFileName + " -ig " + jsonFileName + " -tx N/A";
             startInfo.WorkingDirectory = extractDirectory;
             startInfo.RedirectStandardError = true;
             startInfo.RedirectStandardOutput = true;
