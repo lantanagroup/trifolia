@@ -169,6 +169,9 @@ namespace Trifolia.Import.Terminology.Excel
         private void ProcessConceptSheet(ImportCheckResponse response, SheetData sheetData, WorkbookPart wbPart, bool firstRowIsHeader)
         {
             var rows = sheetData.Descendants<Row>();
+            Dictionary<string, CodeSystem> cachedCodeSystems = new Dictionary<string, CodeSystem>();
+            SharedStringTablePart shareStringPart = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
+            SharedStringItem[] items = shareStringPart != null ? shareStringPart.SharedStringTable.Elements<SharedStringItem>().ToArray() : null;
 
             foreach (var row in rows)
             {
@@ -190,12 +193,12 @@ namespace Trifolia.Import.Terminology.Excel
                 Cell statusCell = cells.SingleOrDefault(y => y.CellReference == "E" + row.RowIndex.Value.ToString());
                 Cell statusDateCell = cells.SingleOrDefault(y => y.CellReference == "F" + row.RowIndex.Value.ToString());
 
-                string valuesetOid = GetCellValue(valuesetOidCell, wbPart);
-                string code = GetCellValue(codeCell, wbPart);
-                string display = GetCellValue(displayCell, wbPart);
-                string codeSystemOid = GetCellValue(codeSystemOidCell, wbPart);
-                string status = GetCellValue(statusCell, wbPart);
-                string statusDateText = GetCellValue(statusDateCell, wbPart);
+                string valuesetOid = GetCellValue(valuesetOidCell, items);
+                string code = GetCellValue(codeCell, items);
+                string display = GetCellValue(displayCell, items);
+                string codeSystemOid = GetCellValue(codeSystemOidCell, items);
+                string status = GetCellValue(statusCell, items);
+                string statusDateText = GetCellValue(statusDateCell, items);
 
                 if (string.IsNullOrEmpty(valuesetOid))
                 {
@@ -222,7 +225,20 @@ namespace Trifolia.Import.Terminology.Excel
                 }
 
                 var foundValueSetChange = response.ValueSets.SingleOrDefault(y => y.Oid == valuesetOid);
-                var foundCodeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid == codeSystemOid);
+                CodeSystem foundCodeSystem = cachedCodeSystems.ContainsKey(codeSystemOid) ? cachedCodeSystems[codeSystemOid] : null;
+
+                if (foundCodeSystem == null)
+                {
+                    foundCodeSystem = this.tdb.CodeSystems.SingleOrDefault(y => y.Oid == codeSystemOid);
+
+                    if (foundCodeSystem == null)
+                    {
+                        response.Errors.Add(string.Format("Could not find specified code system {0} on row {1} of concept sheet.", codeSystemOid, row.RowIndex.Value));
+                        continue;
+                    }
+
+                    cachedCodeSystems.Add(codeSystemOid, foundCodeSystem);
+                }
 
                 if (foundValueSetChange == null)
                 {
@@ -239,12 +255,6 @@ namespace Trifolia.Import.Terminology.Excel
                 if (string.IsNullOrEmpty(display))
                 {
                     response.Errors.Add(string.Format("Row {0} on concept sheet does not have a valid display name.", row.RowIndex.Value));
-                    continue;
-                }
-
-                if (foundCodeSystem == null)
-                {
-                    response.Errors.Add(string.Format("Could not find specified code system {0} on row {1} of concept sheet.", codeSystemOid, row.RowIndex.Value));
                     continue;
                 }
 
@@ -296,6 +306,17 @@ namespace Trifolia.Import.Terminology.Excel
 
                 foundValueSetChange.Concepts.Add(conceptChange);
             }
+        }
+
+        private static string GetCellValue(Cell cell, SharedStringItem[] items)
+        {
+            if (cell == null || cell.CellValue == null)
+                return string.Empty;
+
+            if (cell.DataType != null && cell.DataType.Value == CellValues.SharedString)
+                return items[int.Parse(cell.CellValue.Text)].InnerText;
+
+            return cell.CellValue.Text;
         }
 
         private static string GetCellValue(Cell cell, WorkbookPart wbPart)
