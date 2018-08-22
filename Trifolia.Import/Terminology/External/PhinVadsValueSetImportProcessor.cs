@@ -56,7 +56,9 @@ namespace Trifolia.Import.Terminology.External
 
                 ValueSetVersionResultDto versionResults = vocabService.getValueSetVersionsByValueSetOid(oid);
                 DateTime latestVersionDate = versionResults.valueSetVersions.Max(y => y.effectiveDate);
-                ValueSetVersion latestVersion = versionResults.valueSetVersions.Single(y => y.effectiveDate == latestVersionDate);
+                ValueSetVersion latestVersion = versionResults.valueSetVersions
+                    .OrderByDescending(y => y.statusDate)
+                    .First(y => y.effectiveDate == latestVersionDate);
 
                 int cPage = 1;
                 ValueSetConceptResultDto valueSetConceptResults = vocabService.getValueSetConceptsByValueSetVersionId(latestVersion.id, cPage, MEMBER_PAGE_SIZE);
