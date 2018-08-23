@@ -25,19 +25,28 @@ namespace Trifolia.Import.Terminology.External
 
             oid = oid.Trim();       // Remove trailing spaces
 
+            Logging.Log.For(this).Trace("Creating client to connect to PHIN VADS at URL " + AppSettings.PhinVadsServiceUrl);
+
             hessiancsharp.client.CHessianProxyFactory factory = new hessiancsharp.client.CHessianProxyFactory();
             VocabService vocabService = (VocabService)factory.Create(typeof(VocabService), AppSettings.PhinVadsServiceUrl);
             ValueSetResultDto valueSetResults = null;
 
             try
             {
+                Logging.Log.For(this).Trace("Retrieving value set from PHIN VADS");
+
                 valueSetResults = vocabService.getValueSetByOid(oid);
 
                 if (!string.IsNullOrEmpty(valueSetResults.errorText))
                     throw new ExternalSourceConnectionException();
 
                 if (valueSetResults == null || valueSetResults.totalResults != 1)
+                {
+                    Logging.Log.For(this).Trace("No value set found when searching PHIN VADS for identifier " + oid);
                     return null;
+                }
+
+                Logging.Log.For(this).Trace("Successfully retrieved one value set from PHIN VADS");
 
                 string searchOid = oid;
 
