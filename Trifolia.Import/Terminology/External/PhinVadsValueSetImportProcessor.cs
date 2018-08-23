@@ -98,6 +98,8 @@ namespace Trifolia.Import.Terminology.External
             }
             catch (hessiancsharp.io.CHessianException che)
             {
+                Logging.Log.For(this).Critical("Hessian error communicating with PHIN VADS", che);
+
                 if (che.Message.Contains("404"))
                     return null;
 
@@ -105,6 +107,8 @@ namespace Trifolia.Import.Terminology.External
             }
             catch (Exception ex)
             {
+                Logging.Log.For(this).Critical("General error finding value set in PHIN VADS", ex);
+
                 if (ex.Message.Contains("Unable to connect to the remote server"))
                     throw new ExternalSourceConnectionException();
 
