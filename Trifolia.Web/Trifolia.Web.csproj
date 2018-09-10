@@ -539,7 +539,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Schemas\HQMF_R2\model\POQM_RM000001UV.xml" />
     <Content Include="App_Data\Trifolia.Authorization.XML" />
     <Content Include="App_Data\Trifolia.Web.XML">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1017,14 +1016,10 @@
     <Content Include="App_Data\Schemas\HQMF_R2\coreschemas\voc-r2.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Schemas\HQMF_R2\model\POQM_RM000001UV.vsd" />
     <Content Include="App_Data\Schemas\HQMF_R2\schemas\EMeasure.xsd">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Schemas\HQMF_R2\schemas\POQM_MT000001UV.xsd">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_Data\Schemas\HQMF_R2\schemas\POQM_MT000001UV02.xsd">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Schemas\FHIR_STU3\account.xsd">
@@ -1769,6 +1764,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Schemas\FHIR_Current_Build\xmldsig-core-schema.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Data\Schemas\HQMF_R2\coreschemas\hl7-r2_datatypes.xsd">
       <SubType>Designer</SubType>
     </Content>
     <None Include="Properties\PublishProfiles\DEV2 %28SHARE%29.pubxml" />
