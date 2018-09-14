@@ -23,7 +23,7 @@ namespace Trifolia.Shared.FHIR
 
         public static ImplementationGuideType GetImplementationGuideType(IObjectRepository tdb, bool throwError)
         {
-            ImplementationGuideType found = tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == Constants.IGTypeNames.FHIR_CURRENT_BUILD.ToLower());
+            ImplementationGuideType found = tdb.ImplementationGuideTypes.SingleOrDefault(y => y.Name.ToLower() == Constants.IGTypeNames.FHIR_LATEST.ToLower());
 
             if (found == null && throwError)
             {

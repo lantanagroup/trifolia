@@ -21,6 +21,7 @@ namespace Trifolia.Test.Schema
     {
         private SimpleSchema eMeasureSchema = null;
         private SimpleSchema cdaSchema = null;
+        private SimpleSchema hqmfSchema = null;
 
         #region Context
 
@@ -78,8 +79,16 @@ namespace Trifolia.Test.Schema
                         SchemaLocation = "schemas/EMeasure.xsd"
                     }));
 
+            this.hqmfSchema = SimpleSchema.CreateSimpleSchema(Trifolia.Shared.Helper.GetIGSimplifiedSchemaLocation(
+                new ImplementationGuideType()
+                {
+                    Name = Constants.IGTypeNames.HQMF,
+                    SchemaLocation = "schemas/EMeasure.xsd"
+                }));
+
             Assert.IsNotNull(this.eMeasureSchema);
             Assert.IsNotNull(this.cdaSchema);
+            Assert.IsNotNull(this.hqmfSchema);
         }
         
         // Use TestCleanup to run code after each test has run
@@ -137,6 +146,36 @@ namespace Trifolia.Test.Schema
         }
 
         #endregion
+
+        [TestMethod]
+        public void HqmfSchemaTest()
+        {
+            Assert.IsNotNull(this.hqmfSchema.Children);
+            Assert.AreEqual(1, this.hqmfSchema.Children.Count);
+            Assert.AreEqual("QualityMeasureDocument", this.hqmfSchema.Children[0].Name);
+            Assert.AreEqual("QualityMeasureDocument", this.hqmfSchema.Children[0].DataType);
+
+            var qmd = this.hqmfSchema.Children[0];
+            Assert.IsNotNull(qmd.Children);
+            Assert.AreEqual(25, qmd.Children.Count);
+
+            Assert.AreEqual("classCode", qmd.Children[0].Name);
+            Assert.AreEqual("ActClass", qmd.Children[0].DataType);
+            Assert.AreEqual("DOC", qmd.Children[0].FixedValue);
+            
+            Assert.AreEqual("component", qmd.Children[24].Name);
+            Assert.AreEqual("Component2", qmd.Children[24].DataType);
+            Assert.IsNull(qmd.Children[24].FixedValue);
+
+            var author = qmd.Children[15];
+            Assert.AreEqual("author", author.Name);
+            Assert.AreEqual("Author", author.DataType);
+            Assert.IsNotNull(author.Children);
+            Assert.AreEqual(10, author.Children.Count);
+
+            Assert.AreEqual("signatureText", author.Children[8].Name);
+            Assert.AreEqual("ED", author.Children[8].DataType);
+        }
 
         /// <summary>
         /// Tests that the IVL_TS is properly populated with @nullFlavor, @value, low/@nullFlavor and low/@value

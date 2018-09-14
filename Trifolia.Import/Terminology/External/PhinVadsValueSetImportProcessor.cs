@@ -25,19 +25,28 @@ namespace Trifolia.Import.Terminology.External
 
             oid = oid.Trim();       // Remove trailing spaces
 
+            Logging.Log.For(this).Trace("Creating client to connect to PHIN VADS at URL " + AppSettings.PhinVadsServiceUrl);
+
             hessiancsharp.client.CHessianProxyFactory factory = new hessiancsharp.client.CHessianProxyFactory();
             VocabService vocabService = (VocabService)factory.Create(typeof(VocabService), AppSettings.PhinVadsServiceUrl);
             ValueSetResultDto valueSetResults = null;
 
             try
             {
+                Logging.Log.For(this).Trace("Retrieving value set from PHIN VADS");
+
                 valueSetResults = vocabService.getValueSetByOid(oid);
 
                 if (!string.IsNullOrEmpty(valueSetResults.errorText))
                     throw new ExternalSourceConnectionException();
 
                 if (valueSetResults == null || valueSetResults.totalResults != 1)
+                {
+                    Logging.Log.For(this).Trace("No value set found when searching PHIN VADS for identifier " + oid);
                     return null;
+                }
+
+                Logging.Log.For(this).Trace("Successfully retrieved one value set from PHIN VADS");
 
                 string searchOid = oid;
 
@@ -56,7 +65,9 @@ namespace Trifolia.Import.Terminology.External
 
                 ValueSetVersionResultDto versionResults = vocabService.getValueSetVersionsByValueSetOid(oid);
                 DateTime latestVersionDate = versionResults.valueSetVersions.Max(y => y.effectiveDate);
-                ValueSetVersion latestVersion = versionResults.valueSetVersions.Single(y => y.effectiveDate == latestVersionDate);
+                ValueSetVersion latestVersion = versionResults.valueSetVersions
+                    .OrderByDescending(y => y.statusDate)
+                    .First(y => y.effectiveDate == latestVersionDate);
 
                 int cPage = 1;
                 ValueSetConceptResultDto valueSetConceptResults = vocabService.getValueSetConceptsByValueSetVersionId(latestVersion.id, cPage, MEMBER_PAGE_SIZE);
@@ -96,6 +107,8 @@ namespace Trifolia.Import.Terminology.External
             }
             catch (hessiancsharp.io.CHessianException che)
             {
+                Logging.Log.For(this).Critical("Hessian error communicating with PHIN VADS", che);
+
                 if (che.Message.Contains("404"))
                     return null;
 
@@ -103,6 +116,8 @@ namespace Trifolia.Import.Terminology.External
             }
             catch (Exception ex)
             {
+                Logging.Log.For(this).Critical("General error finding value set in PHIN VADS", ex);
+
                 if (ex.Message.Contains("Unable to connect to the remote server"))
                     throw new ExternalSourceConnectionException();
 
