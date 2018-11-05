@@ -93,13 +93,27 @@ namespace Trifolia.Import.VSAC
             XmlDocument doc = new XmlDocument();
             XmlNamespaceManager nsManager = new XmlNamespaceManager(doc.NameTable);
             nsManager.AddNamespace("svs", SVS_NS);
-            doc.LoadXml(retrieveValueSetResponse);
+
+            try
+            {
+                doc.LoadXml(retrieveValueSetResponse);
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.For(this).Error("Error parsing response from VSAC: " + ex.Message);
+                throw ex;
+            }
 
             var svsValueSetNodes = doc.SelectNodes("/svs:RetrieveMultipleValueSetsResponse/svs:DescribedValueSet", nsManager);
+
+            Logging.Log.For(this).Debug("Found " + svsValueSetNodes.Count + " value sets");
 
             foreach (XmlElement svsValueSetNode in svsValueSetNodes)
             {
                 string svsValueSetId = svsValueSetNode.Attributes["ID"].Value;
+
+                Logging.Log.For(this).Debug("Parsing VSAC value set " + svsValueSetId);
+
                 string svsValueSetVersion = svsValueSetNode.Attributes["version"].Value;
                 string identifier = string.Format("urn:oid:{0}", svsValueSetId);
                 string name = svsValueSetNode.Attributes["displayName"].Value;
@@ -167,8 +181,12 @@ namespace Trifolia.Import.VSAC
                 List<ValueSetMember> currentCodes = foundValueSet.Members.ToList();
                 currentCodes.ForEach(m => this.tdb.ValueSetMembers.Remove(m));
 
+                Logging.Log.For(this).Debug(currentCodes.Count + " codes already exist in the value set and are being removed to be overwritten");
+
                 // Add all codes to value set
                 var svsConceptNodes = svsValueSetNode.SelectNodes("svs:ConceptList/svs:Concept", nsManager);
+
+                Logging.Log.For(this).Debug("Found " + svsConceptNodes.Count + " codes in the VSAC value set. Parsing all codes for import");
 
                 foreach (XmlElement svsConceptNode in svsConceptNodes)
                 {
@@ -193,6 +211,12 @@ namespace Trifolia.Import.VSAC
                         CodeSystem = foundCodeSystem,
                         Status = "active"
                     };
+
+                    if (svsMember.DisplayName != null && svsMember.DisplayName.Length > 1021)
+                    {
+                        Logging.Log.For(this).Debug("Found code " + svsMember.Code + " has more than 1024 characters for a display name. Truncating.");
+                        svsMember.DisplayName = "..." + svsMember.DisplayName.Substring(svsMember.DisplayName.Length - 1021);
+                    }
 
                     foundValueSet.Members.Add(svsMember);
                 }
