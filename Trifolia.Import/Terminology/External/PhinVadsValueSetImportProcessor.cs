@@ -138,6 +138,7 @@ namespace Trifolia.Import.Terminology.External
             importValueSet.ImportSource = "PHIN VADS";
             importValueSet.ImportSourceId = importSourceId;
             importValueSet.ImportStatus = DetermineValueSetStatus(importValueSet, currentValueSet);
+            importValueSet.SourceUrl = "https://phinvads.cdc.gov/vads/ViewValueSet.action?oid=" + vadsValueSet.oid;
 
             return importValueSet;
         }

@@ -156,6 +156,12 @@ namespace Trifolia.Import.Terminology.External
                 changed = true;
             }
 
+            if (foundValueSet.Source != valueSet.SourceUrl)
+            {
+                foundValueSet.Source = valueSet.SourceUrl;
+                changed = true;
+            }
+
             if (valueSet.ImportSource == "PHIN VADS")
             {
                 if (foundValueSet.ImportSource.HasValue && foundValueSet.ImportSource != ValueSetImportSources.PHINVADS)
