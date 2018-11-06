@@ -11,6 +11,10 @@
   margin-top: 0;
 }
 
+.navbar {
+    z-index: 1;
+}
+
 /* Messages 
 ----------------------------------------------------------*/
 
@@ -132,7 +136,7 @@ first child of the left and right table columns */
     width: 100%;
     background-color: #f5f5f5;
     padding: 10px;
-    z-index: 1000;
+    z-index: 999;
 }
 
 .main #footer {
@@ -457,4 +461,10 @@ p table td{
 
 .XMLName {
     font-family: 'Courier New';
+}
+
+.editor-toolbar.fullscreen,
+.CodeMirror-fullscreen,
+.editor-preview-side {
+    z-index: 2000
 }
