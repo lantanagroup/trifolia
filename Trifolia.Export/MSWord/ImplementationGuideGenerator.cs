@@ -614,6 +614,9 @@ namespace Trifolia.Export.MSWord
                     OpenXmlHelper.Append(element, this.document.MainDocumentPart.Document.Body);
                 }
 
+                if (typeName.ToLower() == "document-level templates")
+                    RequiredAndOptionalSectionsTableGenerator.Append(this._tdb, this.tables, this.hyperlinkTracker, this.templates);
+
                 foreach (Template cTemplate in notRetiredTemplates)
                 {
                     this.AddTemplate(cTemplate);

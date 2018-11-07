@@ -7,6 +7,14 @@ namespace Trifolia.Export.MSWord.Models
 {
     internal class HeaderDescriptor
     {
+        public HeaderDescriptor()
+        { }
+
+        public HeaderDescriptor(string headerName)
+        {
+            this.HeaderName = headerName;
+        }
+
         #region Public Properties
 
         /// <summary>

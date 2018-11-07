@@ -185,6 +185,7 @@
     <Compile Include="MSWord\IGDifferenceViewModel.cs" />
     <Compile Include="MSWord\ImplementationGuideGenerator.cs" />
     <Compile Include="MSWord\Models\HeaderDescriptor.cs" />
+    <Compile Include="MSWord\RequiredAndOptionalSectionsTableGenerator.cs" />
     <Compile Include="MSWord\TableCollection.cs" />
     <Compile Include="MSWord\TemplateConstraintTable.cs" />
     <Compile Include="MSWord\TemplateContainmentGenerator.cs" />
