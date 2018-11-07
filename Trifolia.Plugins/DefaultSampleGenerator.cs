@@ -77,6 +77,9 @@ namespace Trifolia.Plugins
                 this._nsManager.AddNamespace(this.simpleSchema.Namespaces[cNamespace], cNamespace);
             }
 
+            if (!this._nsManager.HasNamespace("xsi"))
+                this._nsManager.AddNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
             if (string.IsNullOrEmpty(this.template.PrimaryContext))
             {
                 rootEle = _currentDocument.CreateElement(this.template.TemplateType.RootContext);
@@ -340,6 +343,13 @@ namespace Trifolia.Plugins
                                     newAttribute.Value = lCurrentSchemaAttribute.Value;
                                 else
                                     newAttribute.Value = "YYY";
+                            }
+
+                            if (!string.IsNullOrEmpty(aConstraint.DataType) && lSchemaObject.DataType != aConstraint.DataType)
+                            {
+                                XmlAttribute xsiTypeAttribute = _currentDocument.CreateAttribute("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance");
+                                xsiTypeAttribute.Value = aConstraint.DataType;
+                                lNewContextElement.Attributes.Append(xsiTypeAttribute);
                             }
                         }
 

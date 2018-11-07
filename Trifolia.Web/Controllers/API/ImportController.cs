@@ -72,18 +72,22 @@ namespace Trifolia.Web.Controllers.API
                             if (!CheckPoint.Instance.HasSecurables(SecurableNames.IMPORT_VSAC))
                                 throw new AuthorizationException("You do not have the securable required to import from VSAC");
 
+                            Logging.Log.For(this).Debug("Starting VSAC import for " + model.Id);
+
                             User currentUser = CheckPoint.Instance.GetUser(auditedTdb);
                             VSACImporter importer = new VSACImporter(auditedTdb);
 
                             if (string.IsNullOrEmpty(currentUser.UMLSUsername) || string.IsNullOrEmpty(currentUser.UMLSPassword))
                             {
                                 responseModel.Message = "Your profile does not have your UMLS credentials. <a href=\"/Account/MyProfile\">Update your profile</a> to import from VSAC.";
+                                Logging.Log.For(this).Debug("User does not have UMLS credentials stored.");
                                 break;
                             }
 
                             if (!importer.Authenticate(currentUser.UMLSUsername.DecryptStringAES(), currentUser.UMLSPassword.DecryptStringAES()))
                             {
                                 responseModel.Message = "Invalid UMLS username/password associated with your profile.";
+                                Logging.Log.For(this).Debug("User's UMLS credentials are invalid for VSAC import");
                                 break;
                             }
 
@@ -94,6 +98,8 @@ namespace Trifolia.Web.Controllers.API
                         case ValueSetImportSources.PHINVADS:
                             if (!CheckPoint.Instance.HasSecurables(SecurableNames.IMPORT_PHINVADS))
                                 throw new AuthorizationException("You do not have the securable required to import from PHIN VADS");
+
+                            Logging.Log.For(this).Debug("Starting PHIN VADS import for " + model.Id);
 
                             PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember> processor =
                                 new PhinVadsValueSetImportProcessor<ImportValueSet, ImportValueSetMember>();
@@ -114,14 +120,20 @@ namespace Trifolia.Web.Controllers.API
                 }
                 catch (WebException wex)
                 {
+                    Logging.Log.For(this).Error("An error occurred while importing value set " + model.Id + " from " + model.Source, wex);
+
                     if (wex.Response != null && wex.Response is HttpWebResponse && ((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.NotFound)
                         responseModel.Message = string.Format("Value set with identifier \"{0}\" was not found on the terminology server.", model.Id);
                     else
                         responseModel.Message = wex.Message;
+                    responseModel.Success = false;
                 }
                 catch (Exception ex)
                 {
+                    Logging.Log.For(this).Error("An error occurred while importing value set " + model.Id + " from " + model.Source, ex);
+
                     responseModel.Message = ex.Message;
+                    responseModel.Success = false;
                 }
             }
 

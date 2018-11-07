@@ -186,7 +186,7 @@ table.contained-templates td {
     padding: 2px !important;
 }
 
-.constraintEditorSet .CodeMirror {
+.constraintEditorSet .CodeMirror:not(.CodeMirror-fullscreen) {
     min-height: 100px !important;
     height: 100px !important;
 }
