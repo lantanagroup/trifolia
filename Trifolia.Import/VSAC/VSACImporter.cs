@@ -193,10 +193,9 @@ namespace Trifolia.Import.VSAC
                 Logging.Log.For(this).Debug("Done setting meta-data properties of value set. Removing existing members from value set first.");
 
                 // Remove all existing codes in the value set so they can be re-added
-                List<ValueSetMember> currentCodes = foundValueSet.Members.ToList();
-                currentCodes.ForEach(m => this.tdb.ValueSetMembers.Remove(m));
+                this.tdb.ValueSetMembers.RemoveRange(foundValueSet.Members);
 
-                Logging.Log.For(this).Debug(currentCodes.Count + " codes already exist in the value set and are being removed to be overwritten");
+                Logging.Log.For(this).Debug(foundValueSet.Members.Count() + " codes already exist in the value set and are being removed to be overwritten");
 
                 // Add all codes to value set
                 var svsConceptNodes = svsValueSetNode.SelectNodes("svs:ConceptList/svs:Concept", nsManager);
