@@ -106,7 +106,12 @@ namespace Trifolia.Import.VSAC
 
             var svsValueSetNodes = doc.SelectNodes("/svs:RetrieveMultipleValueSetsResponse/svs:DescribedValueSet", nsManager);
 
-            Logging.Log.For(this).Debug("Found " + svsValueSetNodes.Count + " value sets");
+            if (svsValueSetNodes.Count > 1)
+            {
+                string msg = "Found " + svsValueSetNodes.Count + " value sets in results. Not continuing.";
+                Logging.Log.For(this).Error(msg);
+                throw new Exception(msg);
+            }
 
             foreach (XmlElement svsValueSetNode in svsValueSetNodes)
             {
@@ -140,6 +145,8 @@ namespace Trifolia.Import.VSAC
 
                 if (foundValueSet == null)
                 {
+                    Logging.Log.For(this).Debug("No existing value set with the same identifier found, creating a new one");
+
                     foundValueSet = new ValueSet();
                     foundValueSet.LastUpdate = DateTime.Now;
                     this.tdb.ValueSets.Add(foundValueSet);
@@ -153,7 +160,13 @@ namespace Trifolia.Import.VSAC
                 }
                 else if (foundValueSet.ImportSource.HasValue && foundValueSet.ImportSource != ValueSetImportSources.VSAC)
                 {
-                    throw new Exception("This value set was imported from another source. It cannot be re-imported from a different source.");
+                    string msg = "This value set was imported from another source. It cannot be re-imported from a different source.";
+                    Logging.Log.For(this).Error(msg);
+                    throw new Exception(msg);
+                }
+                else
+                {
+                    Logging.Log.For(this).Debug("Found already-existing value set with identifier " + identifier + ". Going to update it.");
                 }
 
                 if (foundValueSet.Name != name)
@@ -176,6 +189,8 @@ namespace Trifolia.Import.VSAC
                 foundValueSet.Code = null;
                 foundValueSet.IsIncomplete = false;
                 foundValueSet.LastUpdate = DateTime.Now;
+
+                Logging.Log.For(this).Debug("Done setting meta-data properties of value set. Removing existing members from value set first.");
 
                 // Remove all existing codes in the value set so they can be re-added
                 List<ValueSetMember> currentCodes = foundValueSet.Members.ToList();
