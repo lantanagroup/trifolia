@@ -21,5 +21,8 @@ namespace Trifolia.Export.MSWord
         public bool IncludeVolume1 { get; set; }
         public Dictionary<string, int> ValueSetMaxMembers { get; set; }
         public List<string> SelectedCategories { get; set; }
+        public bool GenerateRequiredAndOptionalSectionsTable { get; set; }
+        public int? DocumentTemplateTypeId { get; set; }
+        public int? SectionTemplateTypeId { get; set; }
     }
 }

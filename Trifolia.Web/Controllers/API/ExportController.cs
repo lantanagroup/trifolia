@@ -216,6 +216,9 @@ namespace Trifolia.Web.Controllers.API
                         c.IncludeNotes = model.IncludeNotes;
                         c.IncludeVolume1 = model.IncludeVolume1;
                         c.SelectedCategories = model.SelectedCategories;
+                        c.GenerateRequiredAndOptionalSectionsTable = model.GenerateRequiredAndOptionalSectionsTable;
+                        c.DocumentTemplateTypeId = model.DocumentTemplateTypeId;
+                        c.SectionTemplateTypeId = model.SectionTemplateTypeId;
                     });
 
                     if (model.ValueSetOid != null && model.ValueSetOid.Count > 0)

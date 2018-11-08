@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trifolia.DB;
+using Trifolia.Export.Schematron;
 
 namespace Trifolia.Export.MSWord
 {
@@ -14,22 +15,40 @@ namespace Trifolia.Export.MSWord
         private HyperlinkTracker hyperlinkTracker;
         private List<Template> templates;
         private IObjectRepository tdb;
+        private int documentTemplateTypeId;
+        private int sectionTemplateTypeId;
 
-        private RequiredAndOptionalSectionsTableGenerator(IObjectRepository tdb, TableCollection tables, HyperlinkTracker hyperlinkTracker, List<Template> templates)
+        private RequiredAndOptionalSectionsTableGenerator(
+            IObjectRepository tdb, 
+            TableCollection tables, 
+            HyperlinkTracker hyperlinkTracker, 
+            List<Template> templates, 
+            int documentTemplateTypeId,
+            int sectionTemplateTypeId)
         {
             this.tdb = tdb;
             this.tables = tables;
             this.hyperlinkTracker = hyperlinkTracker;
             this.templates = templates;
+            this.documentTemplateTypeId = documentTemplateTypeId;
+            this.sectionTemplateTypeId = sectionTemplateTypeId;
         }
 
-        public static void Append(IObjectRepository tdb, TableCollection tableCollection, HyperlinkTracker hyperlinkTracker, List<Template> templates)
+        public static void Append(
+            IObjectRepository tdb, 
+            TableCollection tableCollection, 
+            HyperlinkTracker hyperlinkTracker, 
+            List<Template> templates, 
+            int documentTemplateTypeId,
+            int sectionTemplateTypeId)
         {
             RequiredAndOptionalSectionsTableGenerator generator = new RequiredAndOptionalSectionsTableGenerator(
                 tdb,
                 tableCollection, 
                 hyperlinkTracker, 
-                templates);
+                templates,
+                documentTemplateTypeId,
+                sectionTemplateTypeId);
             generator.Generate();
         }
 
@@ -47,8 +66,7 @@ namespace Trifolia.Export.MSWord
         {
             Table table = this.CreateTable();
 
-            var documentTemplates = this.templates.Where(y => y.PrimaryContextType == "ClinicalDocument").OrderBy(y => y.Name);
-            var sectionTemplates = this.templates.Where(y => y.PrimaryContextType == "Section").OrderBy(y => y.Name);
+            var documentTemplates = this.templates.Where(y => y.TemplateTypeId == this.documentTemplateTypeId).OrderBy(y => y.Name);
 
             foreach (var documentTemplate in documentTemplates)
             {
@@ -64,27 +82,27 @@ namespace Trifolia.Export.MSWord
                 this.hyperlinkTracker.AddHyperlink(docTypePara, documentTemplate.Name, documentTemplate.Bookmark, Properties.Settings.Default.LinkStyle);
                 docTypePara.Append(new Break(), DocHelper.CreateRun(documentTemplate.Oid));
 
-                var requiredSections = (from tc in documentTemplate.ChildConstraints
-                                        join tcr in this.tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
-                                        join st in this.templates on tcr.ReferenceIdentifier equals st.Oid
-                                        join ptc in documentTemplate.ChildConstraints on tc.ParentConstraintId equals ptc.Id
-                                        where 
-                                            tc.Context == "section" && 
-                                            tcr.ReferenceType == ConstraintReferenceTypes.Template && 
-                                            ptc.Context == "component" && 
-                                            (ptc.Conformance == "SHALL" || ptc.Conformance == "SHALL NOT")
-                                        select st).ToList();
+                var sectionsConstraints = (from tc in documentTemplate.ChildConstraints
+                                           join tcr in this.tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
+                                           join st in this.templates on tcr.ReferenceIdentifier equals st.Oid
+                                           join ptc in documentTemplate.ChildConstraints on tc.ParentConstraintId equals ptc.Id
+                                           where tcr.ReferenceType == ConstraintReferenceTypes.Template &&
+                                               st.TemplateTypeId == this.sectionTemplateTypeId
+                                           select new { Constraint = tc, Template = st });
 
-                var optionalSections = (from tc in documentTemplate.ChildConstraints
-                                        join tcr in this.tdb.TemplateConstraintReferences on tc.Id equals tcr.TemplateConstraintId
-                                        join st in this.templates on tcr.ReferenceIdentifier equals st.Oid
-                                        join ptc in documentTemplate.ChildConstraints on tc.ParentConstraintId equals ptc.Id
-                                        where
-                                            tc.Context == "section" &&
-                                            tcr.ReferenceType == ConstraintReferenceTypes.Template &&
-                                            ptc.Context == "component" &&
-                                            (ptc.Conformance.StartsWith("SHOULD") || ptc.Conformance.StartsWith("MAY"))
-                                        select st).ToList();
+                List<Template> requiredSections = new List<Template>();
+                List<Template> optionalSections = new List<Template>();
+
+                foreach (var sectionConstraint in sectionsConstraints)
+                {
+                    bool isRequiredAtTopLevel = sectionConstraint.Constraint.ParentConstraintId == null && sectionConstraint.Constraint.IsRequiredConformance();
+                    bool isRequiredByParent = sectionConstraint.Constraint.ParentConstraintId != null && sectionConstraint.Constraint.ParentConstraint.HasRequiredParent();
+
+                    if (isRequiredAtTopLevel || isRequiredByParent)
+                        requiredSections.Add(sectionConstraint.Template);
+                    else
+                        optionalSections.Add(sectionConstraint.Template);
+                }
 
                 TableCell requiredSectionsCell = new TableCell(new TableCellProperties());
                 row.Append(requiredSectionsCell);
