@@ -74,6 +74,7 @@ namespace Trifolia.Shared
             HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(url);
             webRequest.Method = "POST";
             webRequest.ContentType = "x-www-form-urlencoded";
+            webRequest.Accept = "application/xml";
 
             var response = (HttpWebResponse) webRequest.GetResponse();
 
@@ -84,6 +85,9 @@ namespace Trifolia.Shared
             {
                 var responseContent = sr.ReadToEnd();
                 bool isValid = false;
+
+                if (responseContent.StartsWith("\"") && responseContent.EndsWith("\""))
+                    responseContent = responseContent.Substring(0, responseContent.Length - 2);
 
                 try
                 {
