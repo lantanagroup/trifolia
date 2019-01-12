@@ -583,7 +583,7 @@ namespace Trifolia.Export.MSWord
                 List<Template> cTemplates = this.GetTemplatesForTemplateType(templateType.TemplateTypeId);
 
                 if (cTemplates.Count > 0)
-                    this.AddTemplateTypeSection(templateType.Name, templateType.DetailsText, cTemplates);
+                    this.AddTemplateTypeSection(templateType, cTemplates);
             }
         }
 
@@ -594,7 +594,7 @@ namespace Trifolia.Export.MSWord
         /// <param name="typeName">The template type's name</param>
         /// <param name="detailsText">The details text describing the template type.</param>
         /// <param name="templates">The templates contained within the template type for this ig.</param>
-        private void AddTemplateTypeSection(string typeName, string detailsText, List<Template> templates)
+        private void AddTemplateTypeSection(IGSettingsManager.IGTemplateType templateType, List<Template> templates)
         {
             var notRetiredTemplates = templates.Where(y => y.Status != this.retiredStatus);
 
@@ -605,14 +605,31 @@ namespace Trifolia.Export.MSWord
                     new ParagraphProperties(
                         new ParagraphStyleId() { Val = Properties.Settings.Default.TemplateTypeHeadingStyle }),
                     new Run(
-                        new Text(typeName)));
+                        new Text(templateType.Name)));
                 this.document.MainDocumentPart.Document.Body.AppendChild(entryLevelHeading);
 
-                if (!string.IsNullOrEmpty(detailsText))
+                if (!string.IsNullOrEmpty(templateType.DetailsText))
                 {
-                    OpenXmlElement element = detailsText.MarkdownToOpenXml(this._tdb, this.document.MainDocumentPart);
+                    OpenXmlElement element = templateType.DetailsText.MarkdownToOpenXml(this._tdb, this.document.MainDocumentPart);
                     OpenXmlHelper.Append(element, this.document.MainDocumentPart.Document.Body);
                 }
+
+                // Generate the required and optional sections document table overview if the export settings indicate
+                // it should be generated AND provide both a document and section template type id
+                bool generateRandOSectionsTable =
+                    this.exportSettings.GenerateRequiredAndOptionalSectionsTable &&
+                    this.exportSettings.DocumentTemplateTypeId != null &&
+                    this.exportSettings.SectionTemplateTypeId != null &&
+                    this.exportSettings.DocumentTemplateTypeId == templateType.TemplateTypeId;
+
+                if (generateRandOSectionsTable)
+                    RequiredAndOptionalSectionsTableGenerator.Append(
+                        this._tdb, 
+                        this.tables, 
+                        this.hyperlinkTracker, 
+                        this.templates, 
+                        this.exportSettings.DocumentTemplateTypeId.Value, 
+                        this.exportSettings.SectionTemplateTypeId.Value);
 
                 foreach (Template cTemplate in notRetiredTemplates)
                 {

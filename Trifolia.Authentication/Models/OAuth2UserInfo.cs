@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -54,8 +55,13 @@ namespace Trifolia.Authentication.Models
             }
         }
 
+        public static ConcurrentDictionary<string, OAuth2UserInfo> cachedUserInfo = new ConcurrentDictionary<string, OAuth2UserInfo>();
+
         public static OAuth2UserInfo GetUserInfo(string accessToken)
         {
+            if (cachedUserInfo.ContainsKey(accessToken))
+                return cachedUserInfo[accessToken];
+
             WebClient userInfoClient = new WebClient();
             userInfoClient.Headers.Add("Authorization", "Bearer " + accessToken);
             var userInfoStream = userInfoClient.OpenRead(AppSettings.OAuth2UserInfoEndpoint);
@@ -64,6 +70,8 @@ namespace Trifolia.Authentication.Models
             {
                 var userInfoString = sr.ReadToEnd();
                 var userInfo = JsonConvert.DeserializeObject<OAuth2UserInfo>(userInfoString);
+
+                cachedUserInfo[accessToken] = userInfo;
 
                 return userInfo;
             }

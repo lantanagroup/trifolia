@@ -475,6 +475,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-info" ng-show="message" ng-bind-html="message"></div>
+                    <div class="alert alert-info" ng-show="importing">Importing... Depending on the size of the value set being imported, this may take a while. Please be patient and do not refresh your browser until the import is done.</div>
 
                     <div class="form-group">
                         <label>Source</label>
@@ -491,8 +492,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="!isValid()">OK</button>
-                    <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="!isValid() || importing">OK</button>
+                    <button type="button" class="btn btn-default" ng-click="cancel()" ng-disabled="importing">Cancel</button>
                 </div>
             </form>
         </script>

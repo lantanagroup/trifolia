@@ -79,5 +79,9 @@ namespace Trifolia.Web.Models.Export
 
         //Value that determines selecting all templates or not
         public bool SelectAll { get; set; }
+
+        public bool GenerateRequiredAndOptionalSectionsTable { get; set; }
+        public int? DocumentTemplateTypeId { get; set; }
+        public int? SectionTemplateTypeId { get; set; }
     }
 }

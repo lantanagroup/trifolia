@@ -56,7 +56,33 @@
         ReturnJSON: false,
         ValueSetOid: [],
         ValueSetMaxMembers: [],
-        SelectAll: false
+        SelectAll: false,
+        GenerateRequiredAndOptionalSectionsTable: false,
+        DocumentTemplateTypeId: null,
+        SectionTemplateTypeId: null
+    };
+    $scope.templateTypes = [];
+
+    $scope.criteriaDocumentTemplateTypeId = function (newValue) {
+        if (arguments.length === 1) {
+            $scope.criteria.DocumentTemplateTypeId = parseInt(newValue);
+        } else {
+            if ($scope.criteria.DocumentTemplateTypeId === null) {
+                return '';
+            }
+            return $scope.criteria.DocumentTemplateTypeId.toString();
+        }
+    };
+
+    $scope.criteriaSectionTemplateTypeId = function (newValue) {
+        if (arguments.length === 1) {
+            $scope.criteria.SectionTemplateTypeId = parseInt(newValue);
+        } else {
+            if ($scope.criteria.SectionTemplateTypeId === null) {
+                return '';
+            }
+            return $scope.criteria.SectionTemplateTypeId.toString();
+        }
     };
 
     $scope.criteriaTemplateSortOrder = function (newValue) {
@@ -87,7 +113,7 @@
         return $scope.criteria.ExportFormat >= 0 &&
             $scope.criteria.ExportFormat !== null &&
             $scope.criteria.ExportFormat !== undefined;
-    }
+    };
 
     $scope.getExportFormats = function () {
         // Get a list of the formats that the user has permission to export (based on securables)
@@ -380,6 +406,14 @@
             $scope.loadSettings();
 
             $scope.loadValidationResults();
+
+            ImplementationGuideService.getTemplateTypes(selectedItem.Id)
+                .then(function (results) {
+                    $scope.templateTypes = results;
+                })
+                .catch(function (err) {
+                    $scope.message = err;
+                });
         }, function () {
             // Do nothing when closed without selecting
         });

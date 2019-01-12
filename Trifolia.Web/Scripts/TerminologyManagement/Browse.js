@@ -49,6 +49,7 @@
                 controller: 'ImportValueSetModalController',
                 templateUrl: 'importValueSetModal.html',
                 size: 'lg',
+                backdrop: 'static',
                 resolve: {
                     source: function () { return source; },
                     id: function () { return id; }
@@ -579,14 +580,19 @@
         $scope.message = '';
         $scope.canImportVSAC = UserService.hasSecurable(['ImportVSAC']);
         $scope.canImportPHINVADS = UserService.hasSecurable(['ImportPHINVADS']);
+        $scope.importing = false;
 
         $scope.isValid = function () {
             return $scope.source && $scope.id;
         };
 
         $scope.ok = function () {
+            $scope.importing = true;
+
             ImportService.importValueSet($scope.source, $scope.id)
                 .then(function (results) {
+                    $scope.importing = false;
+
                     if (results.Success) {
                         $uibModalInstance.close();
                     } else {

@@ -398,6 +398,20 @@ angular.module('Trifolia').service('ConfigService', function ($http, $q, HelperS
 angular.module('Trifolia').service('ImplementationGuideService', function ($http, $q, HelperService) {
     var service = {};
 
+    service.getTemplateTypes = function (implementationGuideId) {
+        var deferred = $q.defer();
+
+        $http.get('/api/ImplementationGuide/' + encodeURIComponent(implementationGuideId) + '/TemplateType')
+            .then(function (results) {
+                deferred.resolve(results.data);
+            })
+            .catch(function (err) {
+                deferred.reject(HelperService.getErrorMessage(err));
+            });
+
+        return deferred.promise;
+    };
+
     service.validate = function (implementationGuideId) {
         var deferred = $q.defer();
 

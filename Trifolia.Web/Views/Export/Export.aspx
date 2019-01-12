@@ -137,6 +137,30 @@
                             </select>
                         </div>
 
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <input type="checkbox" name="GenerateRequiredAndOptionalSectionsTable" value="true" ng-model="criteria.GenerateRequiredAndOptionalSectionsTable" /> 
+                                Generate Section Summary Table
+                            </div>
+                            <div class="panel-body" ng-if="criteria.GenerateRequiredAndOptionalSectionsTable">
+                                <div class="form-group">
+                                    <label>Document Template Type</label>
+                                    <input type="hidden" name="DocumentTemplateTypeId" ng-if="criteria.DocumentTemplateTypeId !== null" value="{{criteria.DocumentTemplateTypeId}}" />
+                                    <select class="form-control" ng-options="o.Id as o.FullName for o in templateTypes" ng-model="criteria.DocumentTemplateTypeId">
+                                        <option value="">SELECT</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Section Template Type</label>
+                                    <input type="hidden" name="SectionTemplateTypeId" ng-if="criteria.SectionTemplateTypeId !== null" value="{{criteria.SectionTemplateTypeId}}" />
+                                    <select class="form-control" ng-options="o.Id as o.FullName for o in templateTypes" ng-model="criteria.SectionTemplateTypeId">
+                                        <option value="">SELECT</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label>XML Samples</label>
                             <input type="checkbox" name="IncludeXmlSample" value="true" ng-model="criteria.IncludeXmlSample" /> Include

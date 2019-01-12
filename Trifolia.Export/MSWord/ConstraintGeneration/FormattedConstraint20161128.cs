@@ -218,7 +218,7 @@ namespace Trifolia.Export.MSWord.ConstraintGeneration
                 {
 
                     // If we have defined a contained template, then ignore the context.
-                    if (this.ConstraintReferences != null && this.ConstraintReferences.Count > 0)
+                    if (this.ConstraintReferences != null && this.ConstraintReferences.Count > 0 && !this.IsHeading)
                         this.Context = null;
 
                     if (!this.ParentIsBranch && !string.IsNullOrEmpty(this.ParentContext) && !string.IsNullOrEmpty(this.ParentCardinality))
