@@ -263,8 +263,9 @@ namespace Trifolia.Web.Controllers.API
             var authData = CheckPoint.Instance.GetAuthenticatedData();
             SupportTypes supportType = SupportTypes.DEFAULT;
 
-            if (authData.ContainsKey(CheckPoint.AUTH_DATA_SUPPORT_METHOD) && !string.IsNullOrEmpty(authData[CheckPoint.AUTH_DATA_SUPPORT_METHOD]))
-                Enum.TryParse<SupportTypes>(authData[CheckPoint.AUTH_DATA_SUPPORT_METHOD], out supportType);
+            // If certain logged-in accounts should have a specific support method
+            //if (authData.ContainsKey(CheckPoint.AUTH_DATA_SUPPORT_METHOD) && !string.IsNullOrEmpty(authData[CheckPoint.AUTH_DATA_SUPPORT_METHOD]))
+            //    Enum.TryParse<SupportTypes>(authData[CheckPoint.AUTH_DATA_SUPPORT_METHOD], out supportType);
 
             // If the user's account doesn't specify a support method, and Trifolia is configured with a default support method, use it
             if (supportType == SupportTypes.DEFAULT && !string.IsNullOrEmpty(AppSettings.DefaultSupportMethod))
