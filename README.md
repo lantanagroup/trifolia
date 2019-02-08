@@ -6,6 +6,7 @@ Trifolia template/profile editor, repository and publication tool
 ## Support/Issues
 
 Change requests, issues, ideas can be submitted using JIRA Service Desk: https://trifolia.atlassian.net/servicedesk/customer/portal/2
+
 The active backlog of triaged issues can be found here: https://trifolia.atlassian.net/secure/RapidBoard.jspa?rapidView=60&projectKey=TRIF
 
 ## Developer Setup
