@@ -33,15 +33,23 @@ namespace Trifolia.Export.MSWord
 
             var implementationGuides = this.templates.Select(y => y.OwningImplementationGuideId).Distinct();
 
-            this.codeSystems = (from igcs in this.tdb.ViewImplementationGuideCodeSystems
-                                join ig in implementationGuides on igcs.ImplementationGuideId equals ig
-                                select new CodeSystemTable.CodeSystem()
-                                {
-                                    Name = igcs.Name,
-                                    Identifier = igcs.Identifier
-                                })
-                                .Distinct()
-                                .OrderBy(y => y.Name);
+            // Perform the query first, then determine the distinct values next. This is for performance. Without it being
+            // done like this, the DB query hangs forever.
+            var igCodeSytsems = (from igcs in this.tdb.ViewImplementationGuideCodeSystems
+                                 join ig in implementationGuides on igcs.ImplementationGuideId equals ig
+                                 select new CodeSystemTable.CodeSystem()
+                                 {
+                                     Name = igcs.Name,
+                                     Identifier = igcs.Identifier
+                                 }).ToList();
+            this.codeSystems = igCodeSytsems
+                .GroupBy(y => new { y.Identifier, y.Name })
+                .Select(y => new CodeSystemTable.CodeSystem()
+                {
+                    Name = y.First().Name,
+                    Identifier = y.First().Identifier
+                })
+                .OrderBy(y => y.Name);
         }
 
         /// <summary>
