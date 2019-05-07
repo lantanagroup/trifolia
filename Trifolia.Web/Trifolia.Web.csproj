@@ -611,6 +611,9 @@
     <Content Include="Global.asax" />
     <Content Include="Help\**" />
     <Content Include="Images\**" />
+    <Content Include="logo_128.png" />
+    <Content Include="logo_32.png" />
+    <Content Include="logo_64.png" />
     <Content Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

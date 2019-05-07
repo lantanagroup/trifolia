@@ -12,7 +12,19 @@
 }
 
 .navbar {
-    z-index: 1;
+    z-index: 3;
+}
+
+@media (min-width: 768px) {
+    .navbar-brand {
+        margin-left: 64px !important;
+    }
+
+    .navbar-brand img {
+        position: absolute;
+        margin-left: -79px;
+        margin-top: -10px;
+    }
 }
 
 /* Messages 

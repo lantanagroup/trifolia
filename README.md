@@ -3,6 +3,12 @@ Trifolia template/profile editor, repository and publication tool
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ch1e3gsaip09w2f2?svg=true)](https://ci.appveyor.com/project/seanmcilvenna/trifolia)
 
+## Support/Issues
+
+Change requests, issues, ideas can be submitted using JIRA Service Desk: https://trifolia.atlassian.net/servicedesk/customer/portal/2
+
+The active backlog of triaged issues can be found here: https://trifolia.atlassian.net/secure/RapidBoard.jspa?rapidView=60&projectKey=TRIF
+
 ## Developer Setup
 
 - Visual Studio 2012 or 2015 (at least Express for Web)

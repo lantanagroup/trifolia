@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.9.1.788">
+  <meta name="generator" content="HelpNDoc Professional Edition 6.0.1.167">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -31,19 +31,19 @@
   <meta property="og:site_name" content="Trifolia Workbench" /> 
 
   <!-- Bootstrap core CSS -->
-  <link href="vendors/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/bootstrap.min.css" rel="stylesheet"/>
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <link href="vendors/bootstrap-3.3.6/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
-      <script src="vendors/html5shiv-3.7.2/html5shiv.min.js"></script>
+      <script src="vendors/html5shiv-3.7.3/html5shiv.min.js"></script>
       <script src="vendors/respond-1.4.2/respond.min.js"></script>
     <![endif]-->
 
   <!-- JsTree styles -->
-  <link href="vendors/jstree-3.3.2/themes/default/style.min.css" rel="stylesheet"/>
+  <link href="vendors/jstree-3.3.7/themes/default/style.min.css" rel="stylesheet"/>
 
   <!-- Hnd styles -->
   <link href="css/layout.min.css" rel="stylesheet" />
@@ -187,18 +187,18 @@
 <p></p>
 <p class="rvps2"><span class="rvts6">The Constraints tab first shows only the element/attributes from the base standard/schema. Element/nodes (or nodes) that are associated with constraints are bold.</span></p>
 <p class="rvps2"><span class="rvts6">After selecting a node in the tree, the constraint editor window opens on the right side of the screen. The view displayed in the constraint editor depends on whether the node has been constrained. The constraints editor view also varies with the “Role” selected for the template/profile editor as a whole (Analyst, Editor, and Engineer).</span></p>
-<p class="rvps2"><span class="rvts19">Computable</span><span class="rvts6"> constraints are constraints based on the element/attributes within the schema that can be represented using the fields supported by Trifolia (such as Conformance, Cardinality, Contained Template, Value Set, etc.). All computable constraints have a context, such as “@classCode”.</span></p>
-<p class="rvps2"><span class="rvts19">Primitive</span><span class="rvts6"> constraints are free-text constraints that cannot be represented using the standard computable fields within Trifolia. Primitive constraints are always shown below computable constraints so that the order of computable constraints can be preserved and accurately reflected in exports. Primitive constraints do not have a context; instead, primitive constraints show “N/A” for the context.</span></p>
+<p class="rvps2"><span class="rvts19">Computable</span><span class="rvts6">&nbsp;constraints are constraints based on the element/attributes within the schema that can be represented using the fields supported by Trifolia (such as Conformance, Cardinality, Contained Template, Value Set, etc.). All computable constraints have a context, such as “@classCode”.</span></p>
+<p class="rvps2"><span class="rvts19">Primitive</span><span class="rvts6">&nbsp;constraints are free-text constraints that cannot be represented using the standard computable fields within Trifolia. Primitive constraints are always shown below computable constraints so that the order of computable constraints can be preserved and accurately reflected in exports. Primitive constraints do not have a context; instead, primitive constraints show “N/A” for the context.</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
 <li class="rvps2"><span class="rvts6">To create a constraint on a node within the tree, select a node and select the + icon (Create Computable) icon in the header of the constraint editor.</span></li>
-<li class="rvps2"><span class="rvts6">To create a primitive constraint at the top-level of the tree, select the </span><span class="rvts39">T</span><span class="rvts19"> </span><span class="rvts6">“Add Top-Level Primitive” icon located in the header of the tree, after the Value column.</span></li>
-<li class="rvps2"><span class="rvts6">To create a primitive constraint within a computable constraint, select a computable constraint and select the </span><span class="rvts39">T</span><span class="rvts6"> “Add Child Primitive” icon in the header of the constraint editor.</span></li>
+<li class="rvps2"><span class="rvts6">To create a primitive constraint at the top-level of the tree, select the </span><span class="rvts38">T</span><span class="rvts19">&nbsp;</span><span class="rvts6">“Add Top-Level Primitive” icon located in the header of the tree, after the Value column.</span></li>
+<li class="rvps2"><span class="rvts6">To create a primitive constraint within a computable constraint, select a computable constraint and select the </span><span class="rvts38">T</span><span class="rvts6">&nbsp;“Add Child Primitive” icon in the header of the constraint editor.</span></li>
 <li class="rvps2"><span class="rvts6">To remove a constraint and return the node to the default definition of the schema, select the Trash can (Remove) icon in the header of the constraint editor.</span></li>
 <li class="rvps2"><span class="rvts6">To create a note on a constraint (which is only available to template/profile authors, and is not included in exports), select the “Edit Note” icon in the header of the constraint editor.</span></li>
 <li class="rvps2"><span class="rvts6">The constraint editor window can be expanded and collapsed with the "Minimize/maximize" in the upper left corner of the Constraint Editor window.</span></li>
 </ul>
 <p class="rvps2"><span class="rvts6"><br/></span></p>
-<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="Extensions.html">FHIR &gt; Extensions</a><span class="rvts6"> for information on using</span><span class="rvts30"> </span><span class="rvts6">pre-defined/reusable extensions.</span></p>
+<p class="rvps2"><span class="rvts6">See </span><a class="rvts11" href="Extensions.html">FHIR &gt; Extensions</a><span class="rvts6">&nbsp;for information on using</span><span class="rvts30">&nbsp;</span><span class="rvts6">pre-defined/reusable extensions.</span></p>
 <p></p>
 
             </div>
@@ -231,20 +231,21 @@
   </div>
 
   <!-- Scripts -->
-  <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
-  <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+  <script src="vendors/jquery-3.3.1/jquery.min.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
-  <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
-  <script src="vendors/uri-1.18.9/uri.min.js"></script>
+  <script src="vendors/markjs-8.11.1/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.19.1/uri.min.js"></script>
+  <script src="vendors/imageMapResizer-1.0.7/imageMapResizer.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/ie10-viewport-bug-workaround.js"></script>
   
   <!-- Headroom -->
-  <script src="vendors/headroom-0.9.3/headroom.min.js"></script>
-  <script src="vendors/headroom-0.9.3/jquery.headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/jquery.headroom.min.js"></script>
 
   <!-- JsTree -->
-  <script src="vendors/jstree-3.3.2/jstree.min.js"></script>
+  <script src="vendors/jstree-3.3.7/jstree.min.js"></script>
 
   <!-- HelpNDoc scripts -->
   <script src="_translations.js"></script>
@@ -261,6 +262,8 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Instanciate imageMapResizer
+	  imageMapResize();
 	  // Custom JS
 	  
       // Boot the app

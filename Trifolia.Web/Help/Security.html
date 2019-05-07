@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.9.1.788">
+  <meta name="generator" content="HelpNDoc Professional Edition 6.0.1.167">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -31,19 +31,19 @@
   <meta property="og:site_name" content="Trifolia Workbench" /> 
 
   <!-- Bootstrap core CSS -->
-  <link href="vendors/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/bootstrap.min.css" rel="stylesheet"/>
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <link href="vendors/bootstrap-3.3.6/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
-      <script src="vendors/html5shiv-3.7.2/html5shiv.min.js"></script>
+      <script src="vendors/html5shiv-3.7.3/html5shiv.min.js"></script>
       <script src="vendors/respond-1.4.2/respond.min.js"></script>
     <![endif]-->
 
   <!-- JsTree styles -->
-  <link href="vendors/jstree-3.3.2/themes/default/style.min.css" rel="stylesheet"/>
+  <link href="vendors/jstree-3.3.7/themes/default/style.min.css" rel="stylesheet"/>
 
   <!-- Hnd styles -->
   <link href="css/layout.min.css" rel="stylesheet" />
@@ -187,8 +187,8 @@
 <p></p>
 <p class="rvps2"><span class="rvts6">Trifolia uses two different methods of security:</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts19">Role-based security</span><span class="rvts6"> - Controls what a user can do. This includes all actions and controls. It controls what a user can select to initiate an action. Roles are assigned on a system-wide basis, meaning that the role does not change for the different areas of functionality within the application.</span></li>
-<li class="rvps2"><span class="rvts19">Permissions-based security</span><span class="rvts6"> - Controls what a user can view or edit. This controls the user's ability to view and edit implementation guides and Templates/Profiles. Permissions are assigned to implementation guides using the Permissions tab in the Implementation Guide Editor. &nbsp;See the</span><a class="rvts11" href="ImplementationGuidePermissions.html"> Permissions</a><span class="rvts6"> section in </span><a class="rvts11" href="AuthorImplementationGuides.html">Authoring Implementation Guides</a><span class="rvts6">.</span></li>
+<li class="rvps2"><span class="rvts19">Role-based security</span><span class="rvts6">&nbsp;- Controls what a user can do. This includes all actions and controls. It controls what a user can select to initiate an action. Roles are assigned on a system-wide basis, meaning that the role does not change for the different areas of functionality within the application.</span></li>
+<li class="rvps2"><span class="rvts19">Permissions-based security</span><span class="rvts6">&nbsp;- Controls what a user can view or edit. This controls the user's ability to view and edit implementation guides and Templates/Profiles. Permissions are assigned to implementation guides using the Permissions tab in the Implementation Guide Editor. &nbsp;See the</span><a class="rvts11" href="ImplementationGuidePermissions.html">&nbsp;Permissions</a><span class="rvts6">&nbsp;section in </span><a class="rvts11" href="AuthorImplementationGuides.html">Authoring Implementation Guides</a><span class="rvts6">.</span></li>
 </ul>
 <h2 class="rvps6"><span class="rvts0"><span class="rvts20">Organizations</span></span></h2>
 <p class="rvps2"><span class="rvts6">Trifolia organizes users and groups for each configured organization. For example, Lantana Consulting Group is configured to be an organization that has access to Trifolia, using it's own authentication method, and granting access to implementation guides and templates/profiles to users within that organization. HL7 is another organization configured to have access to Trifolia with its own set of users and roles.</span></p>
@@ -224,20 +224,21 @@
   </div>
 
   <!-- Scripts -->
-  <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
-  <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+  <script src="vendors/jquery-3.3.1/jquery.min.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
-  <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
-  <script src="vendors/uri-1.18.9/uri.min.js"></script>
+  <script src="vendors/markjs-8.11.1/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.19.1/uri.min.js"></script>
+  <script src="vendors/imageMapResizer-1.0.7/imageMapResizer.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/ie10-viewport-bug-workaround.js"></script>
   
   <!-- Headroom -->
-  <script src="vendors/headroom-0.9.3/headroom.min.js"></script>
-  <script src="vendors/headroom-0.9.3/jquery.headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/jquery.headroom.min.js"></script>
 
   <!-- JsTree -->
-  <script src="vendors/jstree-3.3.2/jstree.min.js"></script>
+  <script src="vendors/jstree-3.3.7/jstree.min.js"></script>
 
   <!-- HelpNDoc scripts -->
   <script src="_translations.js"></script>
@@ -254,6 +255,8 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Instanciate imageMapResizer
+	  imageMapResize();
 	  // Custom JS
 	  
       // Boot the app
