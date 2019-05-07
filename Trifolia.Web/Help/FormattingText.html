@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.9.1.788">
+  <meta name="generator" content="HelpNDoc Professional Edition 6.0.1.167">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -31,19 +31,19 @@
   <meta property="og:site_name" content="Trifolia Workbench" /> 
 
   <!-- Bootstrap core CSS -->
-  <link href="vendors/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/bootstrap.min.css" rel="stylesheet"/>
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <link href="vendors/bootstrap-3.3.6/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
-      <script src="vendors/html5shiv-3.7.2/html5shiv.min.js"></script>
+      <script src="vendors/html5shiv-3.7.3/html5shiv.min.js"></script>
       <script src="vendors/respond-1.4.2/respond.min.js"></script>
     <![endif]-->
 
   <!-- JsTree styles -->
-  <link href="vendors/jstree-3.3.2/themes/default/style.min.css" rel="stylesheet"/>
+  <link href="vendors/jstree-3.3.7/themes/default/style.min.css" rel="stylesheet"/>
 
   <!-- Hnd styles -->
   <link href="css/layout.min.css" rel="stylesheet" />
@@ -170,10 +170,10 @@
             
                 <div class="navigation">
                     <ol class="breadcrumb">
-                        <li>Advanced Features</li>
+                        <li><a href="Tutorials.html">Tutorials</a></li>
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="Reports.html" title="Reports" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="InferredTemplates.html" title="Inferred Templates" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="Tutorials.html" title="Tutorials" role="button"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a><a class="btn btn-default" href="FHIRBestPractices.html" title="FHIR Best Practices" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="PrimitiveConstraints.html" title="Primitive Constraints" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
@@ -208,45 +208,45 @@
 <p class="rvps2"><span class="rvts6"><br/></span></p>
 <h2 class="rvps6"><span class="rvts0"><span class="rvts20">HTML</span></span></h2>
 <p class="rvps2"><span class="rvts6">The Markdown fields in Trifolia may have a mix of Markdown and HTML. For example:</span></p>
-<p class="rvps18"><span class="rvts52">This **is an** example of &lt;span class="font-family: Courier New"&gt;mixed html&lt;/span&gt; and markdown.</span></p>
+<p class="rvps15"><span class="rvts44">This **is an** example of &lt;span class="font-family: Courier New"&gt;mixed html&lt;/span&gt; and markdown.</span></p>
 <h2 class="rvps6"><span class="rvts0"><span class="rvts20">Formatting XML elements</span></span></h2>
 <p class="rvps2"><span class="rvts6">You may want to highlight XML element names so that they show in a different format than other text. A CSS class has been added to accommodate this, which is also respected by MS Word documents.</span></p>
 <p class="rvps2"><span class="rvts6">The CSS class name is "XMLName", and may be used like so:</span></p>
-<p class="rvps18"><span class="rvts52">These pilot instance identifiers begin with </span><span class="rvts53">&lt;span class="XMLName"&gt;</span><span class="rvts54">2.16.840.1.113883.3.117.1.1.5</span><span class="rvts53">&lt;/span&gt;</span><span class="rvts52">; HL7 example identifiers begin with </span><span class="rvts53">&lt;span class="XMLName"&gt;</span><span class="rvts54">2.16.840.1.113883.19.5</span><span class="rvts53">&lt;/span&gt;</span><span class="rvts52">.</span></p>
+<p class="rvps15"><span class="rvts44">These pilot instance identifiers begin with </span><span class="rvts45">&lt;span class="XMLName"&gt;</span><span class="rvts46">2.16.840.1.113883.3.117.1.1.5</span><span class="rvts45">&lt;/span&gt;</span><span class="rvts44">; HL7 example identifiers begin with </span><span class="rvts45">&lt;span class="XMLName"&gt;</span><span class="rvts46">2.16.840.1.113883.19.5</span><span class="rvts45">&lt;/span&gt;</span><span class="rvts44">.</span></p>
 <h2 class="rvps6"><span class="rvts0"><span class="rvts20">Syntax Guide</span></span></h2>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Emphasis</span></span></h3>
-<p class="rvps2"><span class="rvts48">**bold**</span></p>
-<p class="rvps2"><span class="rvts49">*italics*</span></p>
-<p class="rvps2"><span class="rvts50">~~strikethrough~~</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Headers</span></span></h3>
-<p class="rvps2"><span class="rvts47"># Big header</span></p>
-<p class="rvps2"><span class="rvts47">## Medium header</span></p>
-<p class="rvps2"><span class="rvts47">### Small header</span></p>
-<p class="rvps2"><span class="rvts47">#### Tiny header</span></p>
-<p class="rvps2"><span class="rvts47">##### Even more tiny header</span></p>
-<p class="rvps2"><span class="rvts47">###### Super small header</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Lists</span></span></h3>
-<p class="rvps2"><span class="rvts47">* Unordered list item</span><br/><span class="rvts47">* Unordered list item</span><br/><span class="rvts47">* Unordered list item</span></p>
-<p class="rvps2"><span class="rvts47">1. Numbered list item</span><br/><span class="rvts47">2. Numbered list item</span><br/><span class="rvts47">3. Numbered list item</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Links</span></span></h3>
-<p class="rvps2"><span class="rvts47">[alt text](http://example.com)</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Quotes</span></span></h3>
-<p class="rvps2"><span class="rvts47">&gt; This is a quote</span></p>
-<p class="rvps2"><span class="rvts47">&gt; It can span multiple lines!</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Images</span></span></h3>
-<p class="rvps2"><span class="rvts47">![alt text](http://example.com/image.jpg)</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Tables</span></span></h3>
-<p class="rvps2"><span class="rvts47">| Column 1 | Column 2 | Column 3 |</span></p>
-<p class="rvps2"><span class="rvts47">| -------- | -------- | -------- |</span></p>
-<p class="rvps2"><span class="rvts47">| John &nbsp; &nbsp; | Doe &nbsp; &nbsp; &nbsp;| Male &nbsp; &nbsp; |</span></p>
-<p class="rvps2"><span class="rvts47">| Mary &nbsp; &nbsp; | Smith &nbsp; &nbsp;| Female &nbsp; |</span></p>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts51">Embedded Code</span></span></h3>
-<p class="rvps2"><span class="rvts47">`</span></p>
-<p class="rvps2"><span class="rvts47">&lt;ClinicalDocument&gt;</span></p>
-<p class="rvps2"><span class="rvts47"> &nbsp;&lt;setId root="..." /&gt;</span></p>
-<p class="rvps2"><span class="rvts47"> &nbsp;...</span></p>
-<p class="rvps2"><span class="rvts47">&lt;/ClinicalDocument&gt;</span></p>
-<p class="rvps2"><span class="rvts47">`</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts43">Emphasis</span></span></h3>
+<p class="rvps2"><span class="rvts40">**bold**</span></p>
+<p class="rvps2"><span class="rvts41">*italics*</span></p>
+<p class="rvps2"><span class="rvts42">~~strikethrough~~</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts43">Headers</span></span></h3>
+<p class="rvps2"><span class="rvts39"># Big header</span></p>
+<p class="rvps2"><span class="rvts39">## Medium header</span></p>
+<p class="rvps2"><span class="rvts39">### Small header</span></p>
+<p class="rvps2"><span class="rvts39">#### Tiny header</span></p>
+<p class="rvps2"><span class="rvts39">##### Even more tiny header</span></p>
+<p class="rvps2"><span class="rvts39">###### Super small header</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts43">Lists</span></span></h3>
+<p class="rvps2"><span class="rvts39">* Unordered list item</span><br/><span class="rvts39">* Unordered list item</span><br/><span class="rvts39">* Unordered list item</span></p>
+<p class="rvps2"><span class="rvts39">1. Numbered list item</span><br/><span class="rvts39">2. Numbered list item</span><br/><span class="rvts39">3. Numbered list item</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts43">Links</span></span></h3>
+<p class="rvps2"><span class="rvts39">[alt text](http://example.com)</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts43">Quotes</span></span></h3>
+<p class="rvps2"><span class="rvts39">&gt; This is a quote</span></p>
+<p class="rvps2"><span class="rvts39">&gt; It can span multiple lines!</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts43">Images</span></span></h3>
+<p class="rvps2"><span class="rvts39">![alt text](http://example.com/image.jpg)</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts43">Tables</span></span></h3>
+<p class="rvps2"><span class="rvts39">| Column 1 | Column 2 | Column 3 |</span></p>
+<p class="rvps2"><span class="rvts39">| -------- | -------- | -------- |</span></p>
+<p class="rvps2"><span class="rvts39">| John &nbsp; &nbsp; | Doe &nbsp; &nbsp; &nbsp;| Male &nbsp; &nbsp; |</span></p>
+<p class="rvps2"><span class="rvts39">| Mary &nbsp; &nbsp; | Smith &nbsp; &nbsp;| Female &nbsp; |</span></p>
+<h3 class="rvps8"><span class="rvts0"><span class="rvts43">Embedded Code</span></span></h3>
+<p class="rvps2"><span class="rvts39">`</span></p>
+<p class="rvps2"><span class="rvts39">&lt;ClinicalDocument&gt;</span></p>
+<p class="rvps2"><span class="rvts39">&nbsp; &lt;setId root="..." /&gt;</span></p>
+<p class="rvps2"><span class="rvts39">&nbsp; ...</span></p>
+<p class="rvps2"><span class="rvts39">&lt;/ClinicalDocument&gt;</span></p>
+<p class="rvps2"><span class="rvts39">`</span></p>
 <p></p>
 
             </div>
@@ -279,20 +279,21 @@
   </div>
 
   <!-- Scripts -->
-  <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
-  <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+  <script src="vendors/jquery-3.3.1/jquery.min.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
-  <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
-  <script src="vendors/uri-1.18.9/uri.min.js"></script>
+  <script src="vendors/markjs-8.11.1/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.19.1/uri.min.js"></script>
+  <script src="vendors/imageMapResizer-1.0.7/imageMapResizer.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/ie10-viewport-bug-workaround.js"></script>
   
   <!-- Headroom -->
-  <script src="vendors/headroom-0.9.3/headroom.min.js"></script>
-  <script src="vendors/headroom-0.9.3/jquery.headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/jquery.headroom.min.js"></script>
 
   <!-- JsTree -->
-  <script src="vendors/jstree-3.3.2/jstree.min.js"></script>
+  <script src="vendors/jstree-3.3.7/jstree.min.js"></script>
 
   <!-- HelpNDoc scripts -->
   <script src="_translations.js"></script>
@@ -309,6 +310,8 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Instanciate imageMapResizer
+	  imageMapResize();
 	  // Custom JS
 	  
       // Boot the app

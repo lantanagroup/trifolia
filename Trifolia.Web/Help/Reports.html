@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.9.1.788">
+  <meta name="generator" content="HelpNDoc Professional Edition 6.0.1.167">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -31,19 +31,19 @@
   <meta property="og:site_name" content="Trifolia Workbench" /> 
 
   <!-- Bootstrap core CSS -->
-  <link href="vendors/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/bootstrap.min.css" rel="stylesheet"/>
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <link href="vendors/bootstrap-3.3.6/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
-      <script src="vendors/html5shiv-3.7.2/html5shiv.min.js"></script>
+      <script src="vendors/html5shiv-3.7.3/html5shiv.min.js"></script>
       <script src="vendors/respond-1.4.2/respond.min.js"></script>
     <![endif]-->
 
   <!-- JsTree styles -->
-  <link href="vendors/jstree-3.3.2/themes/default/style.min.css" rel="stylesheet"/>
+  <link href="vendors/jstree-3.3.7/themes/default/style.min.css" rel="stylesheet"/>
 
   <!-- Hnd styles -->
   <link href="css/layout.min.css" rel="stylesheet" />
@@ -173,7 +173,7 @@
                         
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="ImportingTerminology.html" title="Terminology" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="FormattingText.html" title="Formatting Text" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="ImportingTerminology.html" title="Terminology" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="FHIR.html" title="FHIR" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
@@ -187,9 +187,9 @@
 <p></p>
 <p class="rvps2"><span class="rvts6">Use the Reports menu to choose and generate a variety of reports. The following reports are available from the Reports menu.</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts19">Template Review</span><span class="rvts6"> - lists templates and their details. Filter and group in many ways.</span></li>
-<li class="rvps2"><span class="rvts19">Template Validation</span><span class="rvts6"> - select the implementation guide you want to validate. Select to show Warnings, Errors, or All. Shows the status of any templates containing warnings or errors.</span></li>
-<li class="rvps2"><span class="rvts19">Organization</span><span class="rvts6"> - lists all users in an organization, along with their permissions and contact info.</span></li>
+<li class="rvps2"><span class="rvts19">Template Review</span><span class="rvts6">&nbsp;- lists templates and their details. Filter and group in many ways.</span></li>
+<li class="rvps2"><span class="rvts19">Template Validation</span><span class="rvts6">&nbsp;- select the implementation guide you want to validate. Select to show Warnings, Errors, or All. Shows the status of any templates containing warnings or errors.</span></li>
+<li class="rvps2"><span class="rvts19">Organization</span><span class="rvts6">&nbsp;- lists all users in an organization, along with their permissions and contact info.</span></li>
 </ul>
 <h2 class="rvps6"><span class="rvts0"><span class="rvts20">View a Report</span></span></h2>
 <ol style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: decimal;">
@@ -200,8 +200,8 @@
 <h3 class="rvps8"><span class="rvts0"><span class="rvts29">Report Filters</span></span></h3>
 <p class="rvps2"><span class="rvts6">You can filter by the contents of a column to limit the data that appears in the report.</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts19">String filter</span><span class="rvts6"> - Enter text in one or more columns.</span></li>
-<li class="rvps2"><span class="rvts19">Dropdown filter</span><span class="rvts6"> - Choose a filter from the drop-down menu at the top of a column to view only entries with that value.</span></li>
+<li class="rvps2"><span class="rvts19">String filter</span><span class="rvts6">&nbsp;- Enter text in one or more columns.</span></li>
+<li class="rvps2"><span class="rvts19">Dropdown filter</span><span class="rvts6">&nbsp;- Choose a filter from the drop-down menu at the top of a column to view only entries with that value.</span></li>
 </ul>
 <p></p>
 
@@ -235,20 +235,21 @@
   </div>
 
   <!-- Scripts -->
-  <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
-  <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+  <script src="vendors/jquery-3.3.1/jquery.min.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
-  <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
-  <script src="vendors/uri-1.18.9/uri.min.js"></script>
+  <script src="vendors/markjs-8.11.1/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.19.1/uri.min.js"></script>
+  <script src="vendors/imageMapResizer-1.0.7/imageMapResizer.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/ie10-viewport-bug-workaround.js"></script>
   
   <!-- Headroom -->
-  <script src="vendors/headroom-0.9.3/headroom.min.js"></script>
-  <script src="vendors/headroom-0.9.3/jquery.headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/jquery.headroom.min.js"></script>
 
   <!-- JsTree -->
-  <script src="vendors/jstree-3.3.2/jstree.min.js"></script>
+  <script src="vendors/jstree-3.3.7/jstree.min.js"></script>
 
   <!-- HelpNDoc scripts -->
   <script src="_translations.js"></script>
@@ -265,6 +266,8 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Instanciate imageMapResizer
+	  imageMapResize();
 	  // Custom JS
 	  
       // Boot the app

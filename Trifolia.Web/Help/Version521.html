@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.9.1.788">
+  <meta name="generator" content="HelpNDoc Professional Edition 6.0.1.167">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -31,19 +31,19 @@
   <meta property="og:site_name" content="Trifolia Workbench" /> 
 
   <!-- Bootstrap core CSS -->
-  <link href="vendors/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/bootstrap.min.css" rel="stylesheet"/>
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <link href="vendors/bootstrap-3.3.6/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
-      <script src="vendors/html5shiv-3.7.2/html5shiv.min.js"></script>
+      <script src="vendors/html5shiv-3.7.3/html5shiv.min.js"></script>
       <script src="vendors/respond-1.4.2/respond.min.js"></script>
     <![endif]-->
 
   <!-- JsTree styles -->
-  <link href="vendors/jstree-3.3.2/themes/default/style.min.css" rel="stylesheet"/>
+  <link href="vendors/jstree-3.3.7/themes/default/style.min.css" rel="stylesheet"/>
 
   <!-- Hnd styles -->
   <link href="css/layout.min.css" rel="stylesheet" />
@@ -173,7 +173,7 @@
                         <li>Previous Versions</li>
                     </ol>
                     <div class="nav-arrows">
-                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="DeveloperDocs.html" title="Developer Docs" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Version510.html" title="Version 5.1.0" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
+                        <div class="btn-group btn-group-xs" role="group"><a class="btn btn-default" href="FAQ.html" title="FAQ" role="button"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a><a class="btn btn-default" href="Version510.html" title="Version 5.1.0" role="button"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></div>
                     </div>
                 </div> 
             
@@ -197,34 +197,34 @@
 <li class="rvps2"><span class="rvts14">Can't create profiles for FHIR Current Build</span></li>
 </ul>
 <h3 class="rvps8"><span class="rvts0"><span class="rvts18">Version 5.2.0</span></span></h3>
-<h2 class="rvps19"><span class="rvts0"><span class="rvts14">Released on 3/9/2018</span></span></h2>
-<h4 class="rvps21"><span class="rvts0"><span class="rvts55">Improvement</span></span></h4>
+<h2 class="rvps22"><span class="rvts0"><span class="rvts14">Released on 3/9/2018</span></span></h2>
+<h4 class="rvps24"><span class="rvts0"><span class="rvts60">Improvement</span></span></h4>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps20"><span class="rvts14">Implement "New Template" context selection button</span></li>
+<li class="rvps23"><span class="rvts14">Implement "New Template" context selection button</span></li>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps20"><span class="rvts14">Need to implement the "..." for "Applies To" in the new "New Template/Profile" screen that arvind created as part of TRIF-1250.</span><br/><span class="rvts14">User should be able to select a child element in a pop-up window representing the context of the template. Follow the implementation example that exists in the current template editor.</span></li>
+<li class="rvps23"><span class="rvts14">Need to implement the "..." for "Applies To" in the new "New Template/Profile" screen that arvind created as part of TRIF-1250.</span><br/><span class="rvts14">User should be able to select a child element in a pop-up window representing the context of the template. Follow the implementation example that exists in the current template editor.</span></li>
 </ul>
-<li class="rvps20"><span class="rvts14">Show identifiers and allow editing concepts from "View Value Set" screen</span></li>
+<li class="rvps23"><span class="rvts14">Show identifiers and allow editing concepts from "View Value Set" screen</span></li>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps20"><span class="rvts14">The View screen for value sets used to show the identifier of the value set. After Trifolia was enhanced to allow multiple identifiers for a value set, the View screen was not updated to show the (multiple) identifiers.</span></li>
+<li class="rvps23"><span class="rvts14">The View screen for value sets used to show the identifier of the value set. After Trifolia was enhanced to allow multiple identifiers for a value set, the View screen was not updated to show the (multiple) identifiers.</span></li>
 </ul>
-<li class="rvps20"><span class="rvts14">Value set validation during export for white spaces</span></li>
+<li class="rvps23"><span class="rvts14">Value set validation during export for white spaces</span></li>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 48px; list-style-position: outside; list-style-type: circle;">
-<li class="rvps20"><span class="rvts14">When a value set is used by an implementation guide, which has a code or display name with white-spaces at the start or end, display a message to the user. This takes place during design validation (such as when a template is validated, or when the user exports an implementation guide).</span></li>
+<li class="rvps23"><span class="rvts14">When a value set is used by an implementation guide, which has a code or display name with white-spaces at the start or end, display a message to the user. This takes place during design validation (such as when a template is validated, or when the user exports an implementation guide).</span></li>
 </ul></ul>
-<h4 class="rvps21"><span class="rvts0"><span class="rvts55">Task</span></span></h4>
+<h4 class="rvps24"><span class="rvts0"><span class="rvts60">Task</span></span></h4>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps20"><span class="rvts14">Remove support for FHIR DSTU1</span></li>
+<li class="rvps23"><span class="rvts14">Remove support for FHIR DSTU1</span></li>
 </ul>
-<h4 class="rvps21"><span class="rvts0"><span class="rvts55">Defect</span></span></h4>
+<h4 class="rvps24"><span class="rvts0"><span class="rvts60">Defect</span></span></h4>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps20"><span class="rvts14">SHOULD constraints generating schematron errors (not warnings)</span></li>
-<li class="rvps20"><span class="rvts14">Constraints that have a number as the upper bound create invalid Schematron</span></li>
-<li class="rvps20"><span class="rvts14">Schematron issue with case-insensitive comparison</span></li>
-<li class="rvps20"><span class="rvts14">When adding a narrative constraint, autogenerate Schematron must be set to false</span></li>
-<li class="rvps20"><span class="rvts14">Default export selections result in an empty Schematron</span></li>
-<li class="rvps20"><span class="rvts14">Performance improvements to Schematron Generation</span></li>
-<li class="rvps20"><span class="rvts14">When a template is locked, user should not be able to save the template</span></li>
+<li class="rvps23"><span class="rvts14">SHOULD constraints generating schematron errors (not warnings)</span></li>
+<li class="rvps23"><span class="rvts14">Constraints that have a number as the upper bound create invalid Schematron</span></li>
+<li class="rvps23"><span class="rvts14">Schematron issue with case-insensitive comparison</span></li>
+<li class="rvps23"><span class="rvts14">When adding a narrative constraint, autogenerate Schematron must be set to false</span></li>
+<li class="rvps23"><span class="rvts14">Default export selections result in an empty Schematron</span></li>
+<li class="rvps23"><span class="rvts14">Performance improvements to Schematron Generation</span></li>
+<li class="rvps23"><span class="rvts14">When a template is locked, user should not be able to save the template</span></li>
 </ul>
 <p></p>
 
@@ -258,20 +258,21 @@
   </div>
 
   <!-- Scripts -->
-  <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
-  <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+  <script src="vendors/jquery-3.3.1/jquery.min.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
-  <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
-  <script src="vendors/uri-1.18.9/uri.min.js"></script>
+  <script src="vendors/markjs-8.11.1/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.19.1/uri.min.js"></script>
+  <script src="vendors/imageMapResizer-1.0.7/imageMapResizer.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/ie10-viewport-bug-workaround.js"></script>
   
   <!-- Headroom -->
-  <script src="vendors/headroom-0.9.3/headroom.min.js"></script>
-  <script src="vendors/headroom-0.9.3/jquery.headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/jquery.headroom.min.js"></script>
 
   <!-- JsTree -->
-  <script src="vendors/jstree-3.3.2/jstree.min.js"></script>
+  <script src="vendors/jstree-3.3.7/jstree.min.js"></script>
 
   <!-- HelpNDoc scripts -->
   <script src="_translations.js"></script>
@@ -288,6 +289,8 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Instanciate imageMapResizer
+	  imageMapResize();
 	  // Custom JS
 	  
       // Boot the app

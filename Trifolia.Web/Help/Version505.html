@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 5.9.1.788">
+  <meta name="generator" content="HelpNDoc Professional Edition 6.0.1.167">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -31,19 +31,19 @@
   <meta property="og:site_name" content="Trifolia Workbench" /> 
 
   <!-- Bootstrap core CSS -->
-  <link href="vendors/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/bootstrap.min.css" rel="stylesheet"/>
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <link href="vendors/bootstrap-3.3.6/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+  <link href="vendors/bootstrap-3.4.0/css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
-      <script src="vendors/html5shiv-3.7.2/html5shiv.min.js"></script>
+      <script src="vendors/html5shiv-3.7.3/html5shiv.min.js"></script>
       <script src="vendors/respond-1.4.2/respond.min.js"></script>
     <![endif]-->
 
   <!-- JsTree styles -->
-  <link href="vendors/jstree-3.3.2/themes/default/style.min.css" rel="stylesheet"/>
+  <link href="vendors/jstree-3.3.7/themes/default/style.min.css" rel="stylesheet"/>
 
   <!-- Hnd styles -->
   <link href="css/layout.min.css" rel="stylesheet" />
@@ -185,36 +185,36 @@
             <div class="main-content">
                 
 <p></p>
-<h2 class="rvps6"><span class="rvts0"><span class="rvts62">Version 5.0.5</span></span></h2>
-<p class="rvps25"><span class="rvts61">Released on Monday, October 2, 2017</span></p>
-<h2 class="rvps6"><span class="rvts0"><span class="rvts64">VSAC Integration</span></span></h2>
-<p class="rvps2"><span class="rvts61">We integrated Trifolia within VSAC to allow users to import value sets from VSAC. A new button is available in Browse &gt; Terminology that allows users to specify an OID to import from Trifolia.</span></p>
-<p class="rvps2"><span class="rvts61">The ability to import from VSAC and view implementation guides containing VSAC-imported value sets requires a license to the UMLS, issued by the NLM.</span></p>
-<p class="rvps2"><span class="rvts61">See the help documentation's Getting Started &gt; User Profiles, and Importing &gt; Terminology sections for more information.</span></p>
-<h2 class="rvps6"><span class="rvts0"><span class="rvts64">Export UI re-design</span></span></h2>
-<p class="rvps2"><span class="rvts61">As a result of the VSAC integration, the Export screen(s) have been re-designed, and consolidated into a single Export screen.</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts67">Version 5.0.5</span></span></h2>
+<p class="rvps28"><span class="rvts66">Released on Monday, October 2, 2017</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts69">VSAC Integration</span></span></h2>
+<p class="rvps2"><span class="rvts66">We integrated Trifolia within VSAC to allow users to import value sets from VSAC. A new button is available in Browse &gt; Terminology that allows users to specify an OID to import from Trifolia.</span></p>
+<p class="rvps2"><span class="rvts66">The ability to import from VSAC and view implementation guides containing VSAC-imported value sets requires a license to the UMLS, issued by the NLM.</span></p>
+<p class="rvps2"><span class="rvts66">See the help documentation's Getting Started &gt; User Profiles, and Importing &gt; Terminology sections for more information.</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts69">Export UI re-design</span></span></h2>
+<p class="rvps2"><span class="rvts66">As a result of the VSAC integration, the Export screen(s) have been re-designed, and consolidated into a single Export screen.</span></p>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts61">A more consistent UI across the various export formats</span></li>
-<li class="rvps2"><span class="rvts61">Allows saving default settings (if permitted by implementation guide permissions)</span></li>
-<li class="rvps2"><span class="rvts61">Always performs validation of the design and structure of the implementation guide, which includes ensuring the user has a license to UMLS if the implementation guide contains VSAC content</span></li>
+<li class="rvps2"><span class="rvts66">A more consistent UI across the various export formats</span></li>
+<li class="rvps2"><span class="rvts66">Allows saving default settings (if permitted by implementation guide permissions)</span></li>
+<li class="rvps2"><span class="rvts66">Always performs validation of the design and structure of the implementation guide, which includes ensuring the user has a license to UMLS if the implementation guide contains VSAC content</span></li>
 </ul>
-<h2 class="rvps6"><span class="rvts0"><span class="rvts64">Implementation guide test status</span></span></h2>
-<p class="rvps2"><span class="rvts61">In the free-to-use installation of Trifolia (https://trifolia.lantanagroup.com) there are approximately 40 implementation guides with "test" in their name. As a result, we felt it was appropriate to create a separate workflow status for implementation guides to be labeled as "test". When creating an implementation guide, users have the opportunity to indicate that the implementation guide is a "test" implementation guide, and not intended for use outside of the designer's discretion. If at a later point in time the designer of the implementation guide decides the implementation guide should be shared with others, it can be transitioned to other statuses (such as "draft") via the "View Implementation Guide" screen's "Workflow" drop-down.</span></p>
-<h2 class="rvps6"><span class="rvts0"><span class="rvts64">Multiple contained templates/profiles</span></span></h2>
-<p class="rvps2"><span class="rvts61">A constraint can now reference multiple templates/profiles. This is inspired by FHIR's native structure for supporting multiple "types" of resources referenced in an element/constraint. The template editor's constraint panel now has a list of contained templates/profiles, that can be added to or removed from.</span></p>
-<h2 class="rvps6"><span class="rvts0"><span class="rvts64">Patch Notes</span></span></h2>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts69">Implementation guide test status</span></span></h2>
+<p class="rvps2"><span class="rvts66">In the free-to-use installation of Trifolia (https://trifolia.lantanagroup.com) there are approximately 40 implementation guides with "test" in their name. As a result, we felt it was appropriate to create a separate workflow status for implementation guides to be labeled as "test". When creating an implementation guide, users have the opportunity to indicate that the implementation guide is a "test" implementation guide, and not intended for use outside of the designer's discretion. If at a later point in time the designer of the implementation guide decides the implementation guide should be shared with others, it can be transitioned to other statuses (such as "draft") via the "View Implementation Guide" screen's "Workflow" drop-down.</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts69">Multiple contained templates/profiles</span></span></h2>
+<p class="rvps2"><span class="rvts66">A constraint can now reference multiple templates/profiles. This is inspired by FHIR's native structure for supporting multiple "types" of resources referenced in an element/constraint. The template editor's constraint panel now has a list of contained templates/profiles, that can be added to or removed from.</span></p>
+<h2 class="rvps6"><span class="rvts0"><span class="rvts69">Patch Notes</span></span></h2>
 <ul style="text-indent: 0px; padding: 0; margin: 0 0 0 24px; list-style-position: outside; list-style-type: disc;">
-<li class="rvps2"><span class="rvts61">MS Word export incorrectly references templates/profiles in the context table which are not included in the export</span></li>
-<li class="rvps2"><span class="rvts61">Bug in saving templates where "existing" references in constraints aren't being found.</span></li>
-<li class="rvps2"><span class="rvts61">Bug where changing identifier of template does not update references to it</span></li>
-<li class="rvps2"><span class="rvts61">Modifying template editor so that it uses a dash (-) for the bookmark white-space replacement when working with a FHIR profile due to a warning message suggests that dash (-) be used instead of underscore (_).</span></li>
-<li class="rvps2"><span class="rvts61">Hiding link to "Add contained template" if the constraint properties fields are disabled</span></li>
-<li class="rvps2"><span class="rvts61">Cleaning up ValueSet FHIR export so that it properly shows compose vs. expansion. Exports &lt;compose&gt; when Trifolia is the tool that authored the value set. Exports &lt;expansion&gt; when the value set is imported</span></li>
-<li class="rvps2"><span class="rvts61">Creating FHIR Build package with lower-case resource type directory names under "resources" directory</span></li>
-<li class="rvps2"><span class="rvts61">Bug in MS Word generation where the contains column of the context table is never filled in</span></li>
+<li class="rvps2"><span class="rvts66">MS Word export incorrectly references templates/profiles in the context table which are not included in the export</span></li>
+<li class="rvps2"><span class="rvts66">Bug in saving templates where "existing" references in constraints aren't being found.</span></li>
+<li class="rvps2"><span class="rvts66">Bug where changing identifier of template does not update references to it</span></li>
+<li class="rvps2"><span class="rvts66">Modifying template editor so that it uses a dash (-) for the bookmark white-space replacement when working with a FHIR profile due to a warning message suggests that dash (-) be used instead of underscore (_).</span></li>
+<li class="rvps2"><span class="rvts66">Hiding link to "Add contained template" if the constraint properties fields are disabled</span></li>
+<li class="rvps2"><span class="rvts66">Cleaning up ValueSet FHIR export so that it properly shows compose vs. expansion. Exports &lt;compose&gt; when Trifolia is the tool that authored the value set. Exports &lt;expansion&gt; when the value set is imported</span></li>
+<li class="rvps2"><span class="rvts66">Creating FHIR Build package with lower-case resource type directory names under "resources" directory</span></li>
+<li class="rvps2"><span class="rvts66">Bug in MS Word generation where the contains column of the context table is never filled in</span></li>
 </ul>
-<h3 class="rvps8"><span class="rvts0"><span class="rvts63">Development Log</span></span></h3>
-<div class="rvps26"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
+<h3 class="rvps8"><span class="rvts0"><span class="rvts68">Development Log</span></span></h3>
+<div class="rvps29"><table border="0" cellpadding="0" cellspacing="0" style="border-width: 0px; border-spacing: 0px;">
 <tr valign="top">
 <td width="187" height="29" valign="top" style="padding: 0px;"><p class="rvps2"><span class="rvts17">Type</span></p>
 </td>
@@ -323,20 +323,21 @@
   </div>
 
   <!-- Scripts -->
-  <script src="vendors/jquery-1.11.3/jquery.min.js"></script>
-  <script src="vendors/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+  <script src="vendors/jquery-3.3.1/jquery.min.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/bootstrap.min.js"></script>
   <script src="vendors/fastclick-1.0.6/fastclick.min.js"></script>
-  <script src="vendors/markjs-8.8.3/jquery.mark.min.js"></script>
-  <script src="vendors/uri-1.18.9/uri.min.js"></script>
+  <script src="vendors/markjs-8.11.1/jquery.mark.min.js"></script>
+  <script src="vendors/uri-1.19.1/uri.min.js"></script>
+  <script src="vendors/imageMapResizer-1.0.7/imageMapResizer.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <script src="vendors/bootstrap-3.3.6/js/ie10-viewport-bug-workaround.js"></script>
+  <script src="vendors/bootstrap-3.4.0/js/ie10-viewport-bug-workaround.js"></script>
   
   <!-- Headroom -->
-  <script src="vendors/headroom-0.9.3/headroom.min.js"></script>
-  <script src="vendors/headroom-0.9.3/jquery.headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/headroom.min.js"></script>
+  <script src="vendors/headroom-0.9.4/jquery.headroom.min.js"></script>
 
   <!-- JsTree -->
-  <script src="vendors/jstree-3.3.2/jstree.min.js"></script>
+  <script src="vendors/jstree-3.3.7/jstree.min.js"></script>
 
   <!-- HelpNDoc scripts -->
   <script src="_translations.js"></script>
@@ -353,6 +354,8 @@
       var app = new Hnd.App();
       // Update translations
       hnd_ut(app);
+	  // Instanciate imageMapResizer
+	  imageMapResize();
 	  // Custom JS
 	  
       // Boot the app
