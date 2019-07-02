@@ -113,7 +113,7 @@ namespace Trifolia.Shared.FHIR
                 }
                 else
                 {
-                    elementId = current.Context + elementId;
+                    elementId = current.Context.Replace("@", "") + elementId;
                 }
 
                 current = current.ParentConstraint;

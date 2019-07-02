@@ -9,6 +9,7 @@ using Trifolia.Plugins;
 using Trifolia.Shared;
 using Trifolia.Shared.FHIR;
 using Trifolia.Shared.FHIR.Profiles.STU3;
+using static fhir_stu3::Hl7.Fhir.Model.ElementDefinition;
 using ImplementationGuide = Trifolia.DB.ImplementationGuide;
 using StructureDefinition = fhir_stu3.Hl7.Fhir.Model.StructureDefinition;
 
@@ -118,7 +119,7 @@ namespace Trifolia.Export.FHIR.STU3
 
             ElementDefinition newElementDef = new ElementDefinition()
             {
-                Short = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : constraint.Context,
+                Short = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : constraint.Context.Replace("@", ""),
                 Label = !string.IsNullOrEmpty(constraint.Label) ? constraint.Label : null,
                 Comment = !string.IsNullOrEmpty(constraint.Notes) ? constraint.Notes : null,
                 Path = elementPath,
@@ -126,6 +127,17 @@ namespace Trifolia.Export.FHIR.STU3
                 Definition = definition,
                 ElementId = constraint.GetElementId()
             };
+
+            /*
+            if (constraint.IsBranch && schemaObject != null && schemaObject.UpperBound <= 1)
+            {
+                newElementDef.Extension.Add(new Extension()
+                {
+                    Url = "https://trifolia.lantanagroup.com/fhir/StructureDefinition/extension-not-slicable",
+                    Value = new FhirBoolean(true)
+                });
+            }
+            */
 
             if (constraint.IsChoice)
             {
@@ -139,7 +151,7 @@ namespace Trifolia.Export.FHIR.STU3
             }
             else if (constraint.Parent != null && constraint.Parent.IsChoice)
             {
-                newElementDef.SliceName = constraint.Context;
+                newElementDef.SliceName = constraint.Context.Replace("@", "");
             }
 
             // Cardinality
@@ -239,9 +251,9 @@ namespace Trifolia.Export.FHIR.STU3
                                           join t in this.tdb.Templates on tcr.ReferenceIdentifier equals t.Oid
                                           where tcr.ReferenceType == ConstraintReferenceTypes.Template
                                           select new { Identifier = t.Oid, t.PrimaryContextType });
-
+                
                 // If there is a contained template/profile, make sure it supports a "Reference" type, and then output the profile identifier in the type
-                if (containedTemplates.Count() > 0 && newElementDef.Type.Exists(y => y.Code == "Reference" || y.Code == "Extension"))
+                if (containedTemplates.Count() > 0)
                 {
                     if (!string.IsNullOrEmpty(newElementDef.SliceName))
                     {
@@ -257,13 +269,11 @@ namespace Trifolia.Export.FHIR.STU3
                     var containedTypes = new List<ElementDefinition.TypeRefComponent>();
                     foreach (var containedTemplate in containedTemplates)
                     {
-                        bool isExtension = containedTemplate.PrimaryContextType == "Extension" && newElementDef.Type.Exists(y => y.Code == "Extension");
-
                         containedTypes.Add(new ElementDefinition.TypeRefComponent()
                         {
-                            Code = isExtension ? "Extension" : "Reference",
-                            Profile = isExtension ? containedTemplate.Identifier : null,
-                            TargetProfile = !isExtension ? containedTemplate.Identifier : null
+                            Code = containedTemplate.PrimaryContextType,
+                            Profile = containedTemplate.PrimaryContextType == "Extension" ? containedTemplate.Identifier : null,
+                            TargetProfile = containedTemplate.PrimaryContextType != "Extension" ? containedTemplate.Identifier : null
                         });
                     }
 
@@ -276,28 +286,132 @@ namespace Trifolia.Export.FHIR.STU3
                 strucDef.Differential.Element.Add(newElementDef);
 
             // Children
-            foreach (var childConstraint in constraint.ChildConstraints.OrderBy(y => y.Order))
+            foreach (var childConstraint in constraint.ChildConstraints.Where(y => !y.IsPrimitive).OrderBy(y => y.Order))
             {
-                var childSchemaObject = schemaObject != null ? schemaObject.Children.SingleOrDefault(y => y.Name == childConstraint.Context) : null;
+                SimpleSchema.SchemaObject childSchemaObject = null;
+
+                if (schemaObject != null)
+                {
+                    if (childConstraint.Context.StartsWith("@"))
+                        childSchemaObject = schemaObject.Children.SingleOrDefault(y => y.Name == childConstraint.Context.Substring(1) && y.IsAttribute);
+                    else
+                        childSchemaObject = schemaObject.Children.SingleOrDefault(y => y.Name == childConstraint.Context);
+                }
+
                 CreateElementDefinition(strucDef, childConstraint, childSchemaObject);
             }
         }
 
+        private IEnumerable<TemplateConstraint> GetTemplateConstraints(Template template)
+        {
+            List<TemplateConstraint> constraints = template.ChildConstraints.Where(y => !y.IsPrimitive).ToList();
+             
+            // Remove all primitives from the child constraints of all the constraints in the template
+            // We use .ChildConstraints in a lot of places in this class, so we need to make sure primitives are not part of it
+            for (var x = constraints.Count - 1; x >= 0; x--)
+            {
+                var constraint = constraints.ElementAt(x);
+
+                for (var i = constraint.ChildConstraints.Count - 1; i >= 0; i--)
+                {
+                    var childConstraint = constraint.ChildConstraints.ElementAt(i);
+
+                    if (childConstraint.IsPrimitive)
+                        constraint.ChildConstraints.Remove(childConstraint);
+                }
+
+                // If it's an empty constraint
+                if (!constraint.HasBinding() && !constraint.HasContainedTemplates() && constraint.ChildConstraints.Count == 0)
+                {
+                    // and there are other constraints for the same context
+                    if (constraints.Exists(y => y != constraint && y.ParentConstraintId == constraint.ParentConstraintId && y.Context == constraint.Context))
+                    {
+                        // remove the constraint because it doesn't do anything...
+                        constraints.Remove(constraint);
+                    }
+                }
+            }
+
+            var groupedBranches = constraints.Where(y => y.IsBranch && (y.ChildConstraints.Count > 0 || y.References.Count > 0)).GroupBy(y => y.Context).Where(y => y.Count() > 1);
+
+            foreach (var groupedBranch in groupedBranches)
+            {
+                var allHasContainedTemplate = true;
+
+                foreach (var branch in groupedBranch)
+                {
+                    if (branch.ChildConstraints.Count == 1 && branch.ChildConstraints.First().References.Count != 1)
+                        allHasContainedTemplate = false;
+                    else if (branch.ChildConstraints.Count > 1)
+                        allHasContainedTemplate = false;
+                    else if (branch.ChildConstraints.Count == 0 && branch.References.Count != 1)
+                        allHasContainedTemplate = false;
+                }
+
+                if (allHasContainedTemplate)
+                {
+                    var firstBranch = groupedBranch.ElementAt(0);
+
+                    for (var i = groupedBranch.Count() - 1; i > 0; i--)
+                    {
+                        var branch = groupedBranch.ElementAt(i);
+
+                        if (branch.References.Count == 1)
+                        {
+                            // The reference is directly on the branch root
+                            firstBranch.References.Add(branch.References.First());
+                            constraints.Remove(branch);
+                        }
+                        else if (branch.ChildConstraints.Count == 1 && firstBranch.ChildConstraints.Count == 1)
+                        {
+                            // The reference is on the only child in the branch root
+                            firstBranch.ChildConstraints.First().References.Add(branch.ChildConstraints.First().References.First());
+                            constraints.Remove(branch.ChildConstraints.First());
+                            constraints.Remove(branch);
+                        }
+                    }
+
+                    firstBranch.IsBranch = false;
+                }
+            }
+
+            return constraints;
+        }
+
         public StructureDefinition Convert(Template template, SimpleSchema schema, SummaryType? summaryType = null)
         {
+            string id = template.FhirId();
+            string version = "";
+
+            var isCDA = schema.Namespaces.ToList().Exists(y => y.Key == "urn:hl7-org:v3");
+
+            if (isCDA)
+            {
+                if (template.IsIdentifierOID())
+                    template.GetIdentifierOID(out id);
+                else if (template.IsIdentifierII())
+                    template.GetIdentifierII(out id, out version);
+            }
+
             var fhirStructureDef = new fhir_stu3.Hl7.Fhir.Model.StructureDefinition()
             {
-                Id = template.FhirId(),
+                Id = id,
+                Version = version,
                 Name = template.Name,
                 Description = template.Description != null ? new Markdown(template.Description.RemoveInvalidUtf8Characters()) : null,
                 Kind = template.PrimaryContextType == "Extension" ? StructureDefinition.StructureDefinitionKind.ComplexType : StructureDefinition.StructureDefinitionKind.Resource,
                 Url = template.FhirUrl(),
-                Type = template.TemplateType.RootContextType,
+                Type = isCDA ? template.PrimaryContextType : template.TemplateType.RootContextType,
                 Context = new List<string> { template.PrimaryContextType },
                 ContextType = StructureDefinition.ExtensionContext.Resource,
                 Abstract = false,
                 Derivation = StructureDefinition.TypeDerivationRule.Constraint
             };
+
+            fhirStructureDef.Identifier.Add(new Identifier()
+            {
+                Value = template.Oid
+            });
 
             // If this is an extension, determine what uses the extension and list them in the
             // "context" field so that the extension knows where it can be used.
@@ -350,6 +464,8 @@ namespace Trifolia.Export.FHIR.STU3
             // Constraints
             if (summaryType == null || summaryType == SummaryType.Data)
             {
+                var constraints = this.GetTemplateConstraints(template);
+
                 var differential = new StructureDefinition.DifferentialComponent();
                 fhirStructureDef.Differential = differential;
 
@@ -359,20 +475,25 @@ namespace Trifolia.Export.FHIR.STU3
                 rootElement.ElementId = template.PrimaryContextType;
                 differential.Element.Add(rootElement);
 
-                var rootConstraints = template.ChildConstraints.Where(y => y.ParentConstraint == null).OrderBy(y => y.Order);
+                var rootConstraints = constraints.Where(y => y.ParentConstraint == null && !string.IsNullOrEmpty(y.Context)).OrderBy(y => y.Order);
                 foreach (var constraint in rootConstraints)
                 {
                     SimpleSchema.SchemaObject schemaObject = null;
 
                     if (schema != null)
-                        schemaObject = schema.Children.SingleOrDefault(y => y.Name == constraint.Context);
+                    {
+                        if (constraint.Context.StartsWith("@"))
+                            schemaObject = schema.Children.SingleOrDefault(y => y.Name == constraint.Context.Substring(1) && y.IsAttribute);
+                        else
+                            schemaObject = schema.Children.SingleOrDefault(y => y.Name == constraint.Context);
+                    }
 
                     CreateElementDefinition(fhirStructureDef, constraint, schemaObject);
                 }
 
                 // Slices
-                var slices = template.ChildConstraints.Where(y => y.IsBranch);
-                var sliceGroups = slices.GroupBy(y => y.GetElementPath(template.TemplateType.RootContextType));
+                var slices = constraints.Where(y => y.IsBranch);
+                var sliceGroups = slices.GroupBy(y => y.GetElementPath(isCDA ? template.PrimaryContextType : template.TemplateType.RootContextType));
                 int currentSliceGroupCount = 2;
 
                 // Adds an element that contains "slicing" information for the branch(es)
@@ -422,6 +543,7 @@ namespace Trifolia.Export.FHIR.STU3
                                 discriminatorConstraints = singleValueDiscriminators;
 
                             newElementDef.Slicing.Discriminator = (from d in discriminatorConstraints
+                                                                   where !d.IsPrimitive
                                                                    select new ElementDefinition.DiscriminatorComponent()
                                                                    {
                                                                        Type = ElementDefinition.DiscriminatorType.Value,
@@ -479,6 +601,22 @@ namespace Trifolia.Export.FHIR.STU3
                 return null;
 
             return element.Type;
+        }
+    }
+
+    public static class TemplateConstraintExtensions
+    {
+        public static bool HasBinding(this TemplateConstraint constraint)
+        {
+            return !string.IsNullOrEmpty(constraint.Value) ||
+                !string.IsNullOrEmpty(constraint.DisplayName) ||
+                constraint.ValueSetId != null ||
+                constraint.CodeSystemId != null;
+        }
+
+        public static bool HasContainedTemplates(this TemplateConstraint constraint)
+        {
+            return constraint.References.Count > 0;
         }
     }
 }

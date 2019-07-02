@@ -22,8 +22,11 @@ namespace Trifolia.Export.FHIR.STU3
 
             string urlEnd = "/" + template.Bookmark;
 
-            if (template.Oid.LastIndexOf(urlEnd) == template.Oid.Length - urlEnd.Length)
-                return template.Oid.Substring(0, template.Oid.LastIndexOf(template.Bookmark)) + template.FhirId();
+            if (template.Oid.StartsWith("http://") || template.Oid.StartsWith("https://"))
+            {
+                if (template.Oid.LastIndexOf(urlEnd) == template.Oid.Length - urlEnd.Length)
+                    return template.Oid.Substring(0, template.Oid.LastIndexOf(template.Bookmark)) + template.FhirId();
+            }
 
             return template.Oid;
         }

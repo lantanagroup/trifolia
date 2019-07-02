@@ -66,6 +66,9 @@
       <Private>True</Private>
       <Aliases>fhir_dstu2</Aliases>
     </Reference>
+    <Reference Include="Hl7.Fhir.ElementModel, Version=1.2.1.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.ElementModel.1.2.1\lib\net45\Hl7.Fhir.ElementModel.dll</HintPath>
+    </Reference>
     <Reference Include="Hl7.Fhir.Latest.Core">
       <HintPath>..\libraries\FHIRLatest\Hl7.Fhir.Latest.Core.dll</HintPath>
       <Aliases>fhir_latest</Aliases>
@@ -73,6 +76,13 @@
     <Reference Include="Hl7.Fhir.Latest.Specification">
       <HintPath>..\libraries\FHIRLatest\Hl7.Fhir.Latest.Specification.dll</HintPath>
       <Aliases>fhir_latest</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.R4.Core, Version=1.2.1.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.R4.1.2.1\lib\net45\Hl7.Fhir.R4.Core.dll</HintPath>
+      <Aliases>fhir_r4</Aliases>
+    </Reference>
+    <Reference Include="Hl7.Fhir.Serialization, Version=1.2.1.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.Serialization.1.2.1\lib\net45\Hl7.Fhir.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Hl7.Fhir.Specification, Version=0.11.5.28861, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
       <HintPath>..\packages\Hl7.Fhir.Specification.0.11.5\lib\net45\Hl7.Fhir.Specification.dll</HintPath>
@@ -87,11 +97,11 @@
       <HintPath>..\packages\Hl7.Fhir.STU3.0.93.4\lib\net45\Hl7.Fhir.STU3.Core.dll</HintPath>
       <Aliases>fhir_stu3</Aliases>
     </Reference>
-    <Reference Include="Hl7.Fhir.Support, Version=0.4.2.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hl7.Fhir.Support.0.4.2\lib\net45\Hl7.Fhir.Support.dll</HintPath>
+    <Reference Include="Hl7.Fhir.Support, Version=1.2.1.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.Fhir.Support.1.2.1\lib\net45\Hl7.Fhir.Support.dll</HintPath>
     </Reference>
-    <Reference Include="Hl7.FhirPath, Version=0.4.2.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hl7.FhirPath.0.4.2\lib\net45\Hl7.FhirPath.dll</HintPath>
+    <Reference Include="Hl7.FhirPath, Version=1.2.1.0, Culture=neutral, PublicKeyToken=d706911480550fc3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hl7.FhirPath.1.2.1\lib\net45\Hl7.FhirPath.dll</HintPath>
     </Reference>
     <Reference Include="Hl7.FluentPath">
       <HintPath>..\libraries\Hl7.FluentPath.dll</HintPath>
@@ -104,9 +114,8 @@
     <Reference Include="LantanaGroup.ValidationUtility">
       <HintPath>..\libraries\LantanaGroup.ValidationUtility.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SharpCompress, Version=0.10.3.0, Culture=neutral, PublicKeyToken=64eb6448c87dfed9, processorArchitecture=MSIL">
       <HintPath>..\packages\p3-sharpcompress.0.10.5.2\lib\net40\SharpCompress.dll</HintPath>
@@ -122,8 +131,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -147,6 +156,14 @@
     <Compile Include="FHIR\Latest\TemplateExtensions.cs" />
     <Compile Include="FHIR\Latest\ValueSetExporter.cs" />
     <Compile Include="FHIR\Latest\ValueSetExtensions.cs" />
+    <Compile Include="FHIR\R4\BuildExporter.cs" />
+    <Compile Include="FHIR\R4\ImplementationGuideExporter.cs" />
+    <Compile Include="FHIR\R4\Models\Control.cs" />
+    <Compile Include="FHIR\R4\Models\DataExamples.cs" />
+    <Compile Include="FHIR\R4\StructureDefinitionExporter.cs" />
+    <Compile Include="FHIR\R4\TemplateExtensions.cs" />
+    <Compile Include="FHIR\R4\ValueSetExporter.cs" />
+    <Compile Include="FHIR\R4\ValueSetExtensions.cs" />
     <Compile Include="FHIR\STU3\BuildExporter.cs" />
     <Compile Include="FHIR\STU3\ImplementationGuideExporter.cs" />
     <Compile Include="FHIR\STU3\Models\Control.cs" />
@@ -245,6 +262,7 @@
     </None>
     <EmbeddedResource Include="FHIR\STU3\package.zip" />
     <EmbeddedResource Include="FHIR\Latest\package.zip" />
+    <EmbeddedResource Include="FHIR\R4\package.zip" />
     <None Include="MSWord\ConstraintGeneration\README.md" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings" />
