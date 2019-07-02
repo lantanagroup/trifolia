@@ -1,4 +1,4 @@
-﻿version: 5.3.5-{build}
+﻿version: 5.-3.6-{build}
 branches:
   except:
   - gh-pages
