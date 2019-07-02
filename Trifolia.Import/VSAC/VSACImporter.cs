@@ -153,7 +153,7 @@ namespace Trifolia.Import.VSAC
 
                     foundValueSet.Identifiers.Add(new ValueSetIdentifier()
                     {
-                        Type = ValueSetIdentifierTypes.HL7II,
+                        Type = ValueSetIdentifierTypes.Oid,
                         Identifier = identifier,
                         IsDefault = true
                     });
