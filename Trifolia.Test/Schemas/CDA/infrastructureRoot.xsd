@@ -14,8 +14,8 @@ This model was rendered into XML using software provided to HL7 by Beeler Consul
   Static MIF to Schema Transform: $Id: StaticMifToXsd.xsl 7598 2009-03-16 19:52:42Z wbeeler $
   Package Id Conversion: $Id: TransformPackageIds.xsl 7375 2009-01-26 19:26:53Z wbeeler $</xs:documentation>
    </xs:annotation>
-   <xs:include schemaLocation="voc.xsd"/>
-   <xs:include schemaLocation="datatypes.xsd"/>
+   <xs:include schemaLocation="../coreschemas/voc.xsd"/>
+   <xs:include schemaLocation="../coreschemas/datatypes.xsd"/>
    <xs:group name="InfrastructureRootElements">
       <xs:sequence>
          <xs:element name="realmCode" type="CS" minOccurs="0" maxOccurs="unbounded"/>

@@ -107,6 +107,17 @@
       Added extension approved by SDWG on 2018-06-28
       precondition1
     </xs:documentation>
+    <xs:documentation>
+      2019-04-14 
+      Added extension approved by SDWG in 2018-11
+      organizer.text
+    </xs:documentation>
+    
+    <xs:documentation>
+      2019-08-06  Extensions created for Form Definition Document IG include: 
+      precondition2, AllFalse, AllTrue, AtLeastOneFalse, AtLeastOneTrue, OnlyOneFalse, OnlyOneTrue
+      NOT YET APPROVED BY SD
+    </xs:documentation>
   </xs:annotation>
   
   <xs:import namespace="urn:hl7-org:v3" schemaLocation="POCD_MT000040_SDTC.xsd" />
@@ -211,6 +222,121 @@
     
   </xs:complexType>
   
+  <!-- Precondition2 (created for Structured Form Definition) -->
+  <xs:complexType name="Precondition2">
+    <xs:sequence>
+      <xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0" />
+      <xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="conjunctionCode" type="hl7:CS" minOccurs="0" maxOccurs="1" />
+      <xs:choice>
+        <xs:choice>
+          <xs:element name="allTrue" type="AllTrue" nillable="true" minOccurs="1" maxOccurs="1" />
+          <xs:element name="allFalse" type="AllFalse" nillable="true" minOccurs="1" maxOccurs="1" />
+          <xs:element name="atLeastOneTrue" type="AtLeastOneTrue" nillable="true" minOccurs="1" maxOccurs="1" />
+          <xs:element name="atLeastOneFalse" type="AtLeastOneFalse" nillable="true" minOccurs="1" maxOccurs="1" />
+          <xs:element name="onlyOneTrue" type="OnlyOneTrue" nillable="true" minOccurs="1" maxOccurs="1" />
+          <xs:element name="onlyOneFalse" type="OnlyOneFalse" nillable="true" minOccurs="1" maxOccurs="1" />
+        </xs:choice>
+        <xs:choice>
+          <xs:element name="criterion" type="hl7:POCD_MT000040.Criterion" />
+        </xs:choice>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="typeCode" type="hl7:ActRelationshipType" use="optional" fixed="PRCN" />
+    <xs:attribute name="negationInd" type="xs:boolean" use="optional" fixed="true" />
+  </xs:complexType>
+  
+  <!-- AllFalse (created for Structured Form Definition) -->
+  <xs:complexType name="AllFalse">
+    <xs:sequence>
+      <xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0" />
+      <xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="id" type="hl7:II" minOccurs="1" maxOccurs="1" />
+      <xs:element name="precondition" type="Precondition2" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional" />
+    <!-- SG: Changed this from GROUPER to CLUSTER -->
+    <xs:attribute name="classCode" type="hl7:ActClass" use="optional" fixed="CLUSTER" />
+    <xs:attribute name="moodCode" type="hl7:ActMood" use="optional" fixed="EVN" />
+  </xs:complexType>
+  
+  <!-- AllTrue (created for Structured Form Definition) -->
+  <xs:complexType name="AllTrue">
+    <xs:sequence>
+      <xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0" />
+      <xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="id" type="hl7:II" minOccurs="1" maxOccurs="1" />
+      <xs:element name="precondition" type="Precondition2" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional" />
+    <!-- SG: Changed this from GROUPER to CLUSTER -->
+    <xs:attribute name="classCode" type="hl7:ActClass" use="optional" fixed="CLUSTER" />
+    <xs:attribute name="moodCode" type="hl7:ActMood" use="optional" fixed="EVN" />
+  </xs:complexType>
+  
+  <!-- AtLeastOneFalse (created for Structured Form Definition) -->
+  <xs:complexType name="AtLeastOneFalse">
+    <xs:sequence>
+      <xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0" />
+      <xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="id" type="hl7:II" minOccurs="1" maxOccurs="1" />
+      <xs:element name="precondition" type="Precondition2" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional" />
+    <!-- SG: Changed this from GROUPER to CLUSTER -->
+    <xs:attribute name="classCode" type="hl7:ActClass" use="optional" fixed="CLUSTER" />
+    <xs:attribute name="moodCode" type="hl7:ActMood" use="optional" fixed="EVN" />
+  </xs:complexType>
+  
+  <!-- AtLeastOneTrue (created for Structured Form Definition) -->
+  <xs:complexType name="AtLeastOneTrue">
+    <xs:sequence>
+      <xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0" />
+      <xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="id" type="hl7:II" minOccurs="1" maxOccurs="1" />
+      <xs:element name="precondition2" type="Precondition2" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional" />
+    <!-- SG: Changed this from GROUPER to CLUSTER -->
+    <xs:attribute name="classCode" type="hl7:ActClass" use="optional" fixed="CLUSTER" />
+    <xs:attribute name="moodCode" type="hl7:ActMood" use="optional" fixed="EVN" />
+  </xs:complexType>
+  
+  <!-- OnlyOneFalse (created for Structured Form Definition) -->
+  <xs:complexType name="OnlyOneFalse">
+    <xs:sequence>
+      <xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0" />
+      <xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="id" type="hl7:II" minOccurs="1" maxOccurs="1" />
+      <xs:element name="precondition" type="Precondition2" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional" />
+    <!-- SG: Changed this from GROUPER to CLUSTER -->
+    <xs:attribute name="classCode" type="hl7:ActClass" use="optional" fixed="CLUSTER" />
+    <xs:attribute name="moodCode" type="hl7:ActMood" use="optional" fixed="EVN" />
+  </xs:complexType>
+  
+  <!-- OnlyOneTrue (created for Structured Form Definition) -->
+  <xs:complexType name="OnlyOneTrue">
+    <xs:sequence>
+      <xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0" />
+      <xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="id" type="hl7:II" minOccurs="1" maxOccurs="1" />
+      <xs:element name="precondition" type="Precondition2" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional" />
+    <!-- SG: Changed this from GROUPER to CLUSTER -->
+    <xs:attribute name="classCode" type="hl7:ActClass" use="optional" fixed="CLUSTER" />
+    <xs:attribute name="moodCode" type="hl7:ActMood" use="optional" fixed="EVN" />
+  </xs:complexType>
+  
   <!-- == End Data Types =================================================================== -->
   
   <!-- == Start Attributes =================================================================== -->
@@ -252,6 +378,12 @@
   <xs:element name="functionCode" type="hl7:CE" />
   
   <xs:element name="precondition1" type="Precondition1" />
+  
+  <!-- created for Structured Form Definition -->
+  <xs:element name="precondition2" type="Precondition2" />
+  
+  
+  <xs:element name="text" type="hl7:ED" />
   
   <!-- == End Elements =================================================================== -->
   
