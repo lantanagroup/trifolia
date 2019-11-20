@@ -393,6 +393,10 @@ namespace Trifolia.DB
             {
                 tdb.TemplateConstraints.Remove(y);
                 y.GreenConstraints.ToList().ForEach(x => tdb.GreenConstraints.Remove(x));
+
+                // TODO: Not sure why, by y.Samples is not populating correctly from EF right now.
+                var samples = tdb.TemplateConstraintSamples.Where(x => x.TemplateConstraintId == y.Id);
+                samples.ToList().ForEach(x => tdb.TemplateConstraintSamples.Remove(x));
             });
 
             // Remove any green templates associated with this template
