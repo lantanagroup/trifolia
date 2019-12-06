@@ -274,7 +274,7 @@ namespace Trifolia.Plugins.Validation
                         !currentConstraint.IsBranch &&
                         isDuplicate)
                     {
-                        var error = ValidationResult.CreateResult(template.Id, template.Name, currentConstraint.Number.Value, ValidationLevels.Warning, "Schema allows multiple for \"{0}\" but the constraint is not branched. Consider branching this constraint.", currentConstraint.GetXpath());
+                        var error = ValidationResult.CreateResult(template.Id, template.Name, currentConstraint.Number.Value, ValidationLevels.Warning, "Schema allows multiple for \"{0}\" ({1}) but the constraint is not branched. Consider branching this constraint.", currentConstraint.GetXpath(), currentConstraint.GetFormattedNumber());
                         results.Add(error);
                     }
 
