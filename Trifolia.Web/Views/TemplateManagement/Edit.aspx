@@ -964,7 +964,10 @@
 
     <script type="text/html" id="singleValueBinding">
         <div class="input-group input-group-sm" style="width: 100%;">
-            <div class="input-group-addon" data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorCode"></div>
+            <div class="input-group-addon">
+                <span data-bind="html: Trifolia.Web.TemplateEditorConstraintEditorCode"></span>
+                <div data-bind="helpTooltip: { title: Trifolia.Web.TemplateEditorConstraintEditorCodeTooltip, placement: 'right' }"></div>
+            </div>
             <input type="text" style="width: 50%;" class="form-control input-sm" data-bind="value: Value" placeholder="Code XXXX" />
             <input type="text" style="width: 50%;" class="form-control input-sm" data-bind="value: ValueDisplayName" placeholder="Display XXXX" />
         </div>
