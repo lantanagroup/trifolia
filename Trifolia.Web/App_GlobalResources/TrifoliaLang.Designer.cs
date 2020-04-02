@@ -322,6 +322,15 @@ namespace Trifolia.Web.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please consult the help documentation&apos;s &quot;CDA Best Practices&quot; section for information on how to require a single value binding on a MAY attribute..
+        /// </summary>
+        public static string TemplateEditorConstraintEditorCodeTooltip {
+            get {
+                return ResourceManager.GetString("TemplateEditorConstraintEditorCodeTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conformance:.
         /// </summary>
         public static string TemplateEditorConstraintEditorConformance {

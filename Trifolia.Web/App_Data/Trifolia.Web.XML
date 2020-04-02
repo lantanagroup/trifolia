@@ -1900,6 +1900,11 @@
               Looks up a localized string similar to Code System:.
             </summary>
         </member>
+        <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorCodeTooltip">
+            <summary>
+              Looks up a localized string similar to Please consult the help documentation&apos;s &quot;CDA Best Practices&quot; section for information on how to require a single value binding on a MAY attribute..
+            </summary>
+        </member>
         <member name="P:Trifolia.Web.App_GlobalResources.TrifoliaLang.TemplateEditorConstraintEditorConformance">
             <summary>
               Looks up a localized string similar to Conformance:.

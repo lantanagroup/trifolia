@@ -249,6 +249,9 @@
   <data name="TemplateEditorConstraintEditorCode" xml:space="preserve">
     <value>Code:</value>
   </data>
+  <data name="TemplateEditorConstraintEditorCodeTooltip" xml:space="preserve">
+    <value>Please consult the help documentation's "CDA Best Practices" section for information on how to require a single value binding on a MAY attribute.</value>
+  </data>
   <data name="TemplateEditorConstraintEditorCodeSystem" xml:space="preserve">
     <value>Code System:</value>
   </data>

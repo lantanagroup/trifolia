@@ -596,7 +596,7 @@
                 }
             });
 
-            $.get('/Help/help.xml', {}, function (xml) {
+            $.get('/help.xml', {}, function (xml) {
                 helpModel = new HelpModel(xml, $('#helpPopup'));
             });
         });

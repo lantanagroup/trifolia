@@ -609,6 +609,7 @@
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="GenericError.html" />
     <Content Include="Global.asax" />
+    <Content Include="help.xml" />
     <Content Include="Help\**" />
     <Content Include="Images\**" />
     <Content Include="logo_128.png" />
@@ -2098,6 +2099,7 @@
     <EmbeddedResource Include="App_GlobalResources\TrifoliaLang.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TrifoliaLang.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
