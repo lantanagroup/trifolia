@@ -25,7 +25,7 @@ namespace Trifolia.Test.Schema
                         }));
 
             Assert.IsNotNull(cdaSchema.ComplexTypes);
-            Assert.AreEqual(225, cdaSchema.ComplexTypes.Count);
+            Assert.AreEqual(232, cdaSchema.ComplexTypes.Count);         // This number may change if the schema changes
             Assert.IsNotNull(cdaSchema.Children);
             Assert.AreEqual(1, cdaSchema.Children.Count);
 

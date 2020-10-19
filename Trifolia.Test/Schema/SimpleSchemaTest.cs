@@ -315,8 +315,9 @@ namespace Trifolia.Test.Schema
             Assert.AreEqual(children[26].Name, "entryRelationship");
             Assert.AreEqual(children[27].Name, "reference");
             Assert.AreEqual(children[28].Name, "precondition");
-            Assert.AreEqual(children[29].Name, "referenceRange");
-            Assert.AreEqual(children[30].Name, "sdtc:inFulfillmentOf1");
+            Assert.AreEqual(children[29].Name, "sdtc:precondition2");
+            Assert.AreEqual(children[30].Name, "referenceRange");
+            Assert.AreEqual(children[31].Name, "sdtc:inFulfillmentOf1");
         }
     }
 }

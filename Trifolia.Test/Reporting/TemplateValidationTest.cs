@@ -192,7 +192,7 @@ namespace Trifolia.Test.Reporting
 
             Assert.IsNotNull(errors, "Errors list should not be null.");
             Assert.AreEqual(2, errors.Count, "Expected to find an error for each templateId constraint because they are not branched.");
-            Assert.AreEqual("Schema allows multiple for \"templateId\" but the constraint is not branched. Consider branching this constraint.", errors[0].Message);
+            Assert.AreEqual("Schema allows multiple for \"templateId\" (1-1) but the constraint is not branched. Consider branching this constraint.", errors[0].Message);
             Assert.AreEqual(ValidationLevels.Warning, errors[0].Level);
         }
 

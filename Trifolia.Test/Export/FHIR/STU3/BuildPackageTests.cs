@@ -307,7 +307,7 @@ namespace Trifolia.Test.Export.FHIR.STU3
         public void STU3_IGPublisherTest()
         {
             var exported = GenerateExport();
-            string jsonFileName = "STU3_IG_Publisher_Build_Package.json";
+            string jsonFileName = "ig.json";
 
             using (MemoryStream ms = new MemoryStream(exported))
             {
