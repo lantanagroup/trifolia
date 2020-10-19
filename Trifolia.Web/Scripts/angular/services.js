@@ -477,7 +477,9 @@ angular.module('Trifolia').service('ImplementationGuideService', function ($http
         var url = '/api/ImplementationGuide/' + encodeURIComponent(implementationGuideId) + '/Template?';
 
         if (parentTemplateIds) {
-            url += 'parentTemplateIds=' + encodeURIComponent(parentTemplateIds.join(',')) + '&';
+            for (var i = 0; i < parentTemplateIds.length; i++) {
+                url += 'parentTemplateIds=' + encodeURIComponent(parentTemplateIds[i]) + '&';
+            }
         }
 
         if (typeof(inferred) !== 'undefined') {
@@ -485,7 +487,9 @@ angular.module('Trifolia').service('ImplementationGuideService', function ($http
         }
 
         if (categories) {
-            url += 'categories=' + encodeURIComponent(categories.join(',')) + '&';
+            for (var i = 0; i < categories.length; i++) {
+                url += 'categories=' + encodeURIComponent(categories[i]) + '&';
+            }
         }
 
         $http.get(url)
