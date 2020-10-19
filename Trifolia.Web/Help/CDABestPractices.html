@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 6.5.0.399">
+  <meta name="generator" content="HelpNDoc Professional Edition 6.8.0.521">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -198,6 +198,31 @@
 <p class="rvps14"><span class="rvts37">Definition: Coded data in its simplest form, where only the code is not predetermined. The code system and code system version are fixed by the context in which the CS value occurs. CS is used for coded attributes that have a single HL7-defined value set.</span></p>
 <p class="rvps2"><span class="rvts6">This means that you should only specify the "Code" attribute for a single-value binding. An example of where this is commonly the case is with the "statusCode" element.</span></p>
 <p class="rvps2"><img width="800" height="287" alt="" style="padding : 1px;" src="lib/BestPrac_StatusCodeExample.jpg"></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts38">Constraints on nullFlavor</span></p>
+<p class="rvps2"><span class="rvts6">Flavors of null are defined as follows:</span></p>
+<p class="rvps2"><span class="rvts39">NI No information. This is the most general and default null flavor. </span></p>
+<p class="rvps2"><span class="rvts39">NA Not applicable. Known to have no proper value (e.g., last menstrual period for a male). </span></p>
+<p class="rvps2"><span class="rvts39">UNK Unknown. A proper value is applicable, but is not known. </span></p>
+<p class="rvps2"><span class="rvts39">ASKU Asked, but not known. Information was sought, but not found (e.g., the patient was asked but did not know). </span></p>
+<p class="rvps2"><span class="rvts39">NAV Temporarily unavailable. The information is not available, but is expected to be available later. </span></p>
+<p class="rvps2"><span class="rvts39">NASK Not asked. The patient was not asked. </span></p>
+<p class="rvps2"><span class="rvts39">MSK There is information on this item available but it has not been provided by the sender due to security, privacy, or other reasons. There may be an alternate mechanism for gaining access to this information. </span></p>
+<p class="rvps2"><span class="rvts39">OTH The actual value is not an element in the value domain of a variable. (e.g., concept not provided by required code system). </span></p>
+<p class="rvps2"><span class="rvts39"><br/></span></p>
+<p class="rvps2"><span class="rvts39">Some use cases may justify optionally allowing for a nullFlavor [0..1], and requiring that the appropriate value for nullFlavor attribute be &nbsp;present (i.e. bind to single-value binding) when nullFlavor is present. In order to achieve this:</span></p>
+<p class="rvps2"><span class="rvts39">1. Create constraint on nullFlavor with MAY Cardinality [0..1]</span></p>
+<p class="rvps2"><span class="rvts39">2. Select the binding type of 'Single Value Binding' </span></p>
+<p class="rvps2"><span class="rvts39">3. Enter the appropriate Code, Display, and Code System for the flavor of null that will be required when nullFlavor is present</span></p>
+<p class="rvps2"><img alt="" style="padding : 1px;" src="lib/NewItem.png"></p>
+<p class="rvps2"><span class="rvts39">4. Add a Child Primitive constraint to nullFlavor by selecting the underscored 'T' icon in the constraint editor (right)</span></p>
+<p class="rvps2"><img alt="" style="padding : 1px;" src="lib/NewItem2.png"></p>
+<p class="rvps2"><span class="rvts39">5. Select you're newly created primitive constraint. Add 'If nullFlavor is present, nullFlavor SHALL be 'NI'' into the text box.</span></p>
+<p class="rvps2"><span class="rvts39">6. In the bottom right 'View Mode', change view to Engineer, de-select 'Auto Generate' and enter to the custom schematron logic in order to technically validate that the desired value of nullFlavor is found when nullFlavor is present. </span></p>
+<p class="rvps2"><img alt="" style="padding : 1px;" src="lib/NewItem1.png"></p>
+<p class="rvps2"><span class="rvts39">For the example above, the constraint states "MAY contain zero or one [0..1] @nullFlavor="NI" No Information (CodeSystem: HL7NullFlavor urn:oid:2.16.1.113883.5.1008)". The custom schematron to validate that nullFlavor has a value of 'NI' in all cases when nullFlavor exists is: "test=not(nullFlavor) or nullFlavor='NI'"</span></p>
+<p class="rvps2"><span class="rvts6"><br/></span></p>
+<p class="rvps2"><span class="rvts39"><br/></span></p>
 <p></p>
 
             </div>

@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="generator" content="HelpNDoc Professional Edition 6.5.0.399">
+  <meta name="generator" content="HelpNDoc Professional Edition 6.8.0.521">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.ico"/>
 
@@ -190,10 +190,10 @@
 <p class="rvps2"><span class="rvts6">An issue within Trifolia to be aware of is for the case where a MAY primitive on a template that contains a SHALL primitive.</span></p>
 <p class="rvps2"><span class="rvts6">Schematron is expected to enforce the SHALL primitive in every instance where the MAY constraint is present. In other words, when MAY primitive is found to be present, the Schematron is expected to subsequently enforce that the SHALL primitive does not break the rule as specified. </span></p>
 <p class="rvps2"><span class="rvts6">The SHALL primitive is enforced (as expected) in cases when the MAY primitive constraint is placed on </span><span class="rvts30">a template:</span></p>
-<p class="rvps2"><span class="rvts30">1. </span><span class="rvts47">MAY</span><span class="rvts30">&nbsp;contain zero or one [0..1] Certifier performer </span><span class="rvts48">(identifier: urn:hl7ii:XXXX:YYYY)(CONF:XXX-XXXX)</span><span class="rvts30">such that it</span></p>
+<p class="rvps2"><span class="rvts30">1. </span><span class="rvts49">MAY</span><span class="rvts30">&nbsp;contain zero or one [0..1] Certifier performer </span><span class="rvts50">(identifier: urn:hl7ii:XXXX:YYYY)(CONF:XXX-XXXX)</span><span class="rvts30">such that it</span></p>
 <p class="rvps16"><span class="rvts6">a. </span><span class="rvts19">SHALL</span><span class="rvts6">&nbsp;contain exactly one [1..1] </span><span class="rvts19">@root</span><span class="rvts6">&nbsp;(CONF:XXX-XXXY). </span></p>
 <p class="rvps2"><span class="rvts6">In this example, Schematron enforces that @root exists when Certifier performer is present; these are both computable constraints that don’t have custom prose </span><span class="rvts30">or </span><span class="rvts6">custom Schematron.</span></p>
-<p class="rvps2"><span class="rvts30">1. </span><span class="rvts47">MAY</span><span class="rvts30">&nbsp;contain zero or one [0..1] Certifier performer </span><span class="rvts48">(identifier: urn:hl7ii:XXXX:YYYY)(</span><a class="rvts49" href="CONF:XXX-XXXX">CONF:XXX-XXXX</a><span class="rvts48">) </span><span class="rvts50">when the document type is XXXX</span><span class="rvts30">, such that it</span></p>
+<p class="rvps2"><span class="rvts30">1. </span><span class="rvts49">MAY</span><span class="rvts30">&nbsp;contain zero or one [0..1] Certifier performer </span><span class="rvts50">(identifier: urn:hl7ii:XXXX:YYYY)(</span><a class="rvts51" href="CONF:XXX-XXXX">CONF:XXX-XXXX</a><span class="rvts50">) </span><span class="rvts52">when the document type is XXXX</span><span class="rvts30">, such that it</span></p>
 <p class="rvps16"><span class="rvts6">a. </span><span class="rvts19">SHALL</span><span class="rvts6">&nbsp;contain exactly one [1..1] </span><span class="rvts19">@root</span><span class="rvts6">&nbsp;(CONF:XXX-XXXY). </span></p>
 <p class="rvps2"><span class="rvts6">In this example, “when the document type is XXXX” must be represented by a primitive constraint. Because the parent constraint (the MAY constraint) is a primitive constraint, the Schematron cannot enforce @root exists when Ceritifier performer is present.</span></p>
 <h3 class="rvps8"><span class="rvts0"><span class="rvts29">Solution 1</span></span></h3>
@@ -204,7 +204,7 @@
 <h3 class="rvps8"><span class="rvts0"><span class="rvts29">Solution 2</span></span></h3>
 <p class="rvps2"><span class="rvts6">Do not nest SHALL primitives within a MAY primitive. Rather, such SHALL primitives should exist as their own constraint at the top level within the template. </span></p>
 <p class="rvps18"><span class="rvts19">Example:</span></p>
-<p class="rvps18"><span class="rvts6">10. The performer containing the Certifier Performer template </span><span class="rvts51">SHALL</span><span class="rvts6">&nbsp;be present for a live birth certificate but </span><span class="rvts51">SHALL NOT</span><span class="rvts6">&nbsp;be present for a fetal death report (CONF:XXX-XXXXX).</span></p>
+<p class="rvps18"><span class="rvts6">10. The performer containing the Certifier Performer template </span><span class="rvts53">SHALL</span><span class="rvts6">&nbsp;be present for a live birth certificate but </span><span class="rvts53">SHALL NOT</span><span class="rvts6">&nbsp;be present for a fetal death report (CONF:XXX-XXXXX).</span></p>
 <p></p>
 
             </div>
