@@ -138,6 +138,10 @@
     <Compile Include="Migrations\201807122126363_updateCDASchemaSeedData.Designer.cs">
       <DependentUpon>201807122126363_updateCDASchemaSeedData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202102230058351_umls.cs" />
+    <Compile Include="Migrations\202102230058351_umls.Designer.cs">
+      <DependentUpon>202102230058351_umls.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\appsecurable_role.cs" />
     <Compile Include="Model\app_securable.cs" />
@@ -251,6 +255,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807122126363_updateCDASchemaSeedData.resx">
       <DependentUpon>201807122126363_updateCDASchemaSeedData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102230058351_umls.resx">
+      <DependentUpon>202102230058351_umls.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

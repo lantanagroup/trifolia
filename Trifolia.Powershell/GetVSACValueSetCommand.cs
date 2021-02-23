@@ -20,20 +20,14 @@ namespace Trifolia.Powershell
 
         [Parameter(
             Mandatory = true,
-            HelpMessage = "The username to authenticate with VSAC"
+            HelpMessage = "The API Key to authenticate with UMLS/VSAC"
         )]
-        public string VSACUsername { get; set; }
-
-        [Parameter(
-            Mandatory = true,
-            HelpMessage = "The password to authenticate with VSAC"
-        )]
-        public string VSACPassword { get; set; }
+        public string UMLSApiKey { get; set; }
 
         protected override void ProcessRecord()
         {
             VSACImporter importer = new VSACImporter(this.tdb);
-            importer.Authenticate(this.VSACUsername, this.VSACPassword);
+            importer.Authenticate(this.UMLSApiKey);
 
             if (importer.ImportValueSet(this.Oid))
                 this.WriteObject("Successfully imported value set");

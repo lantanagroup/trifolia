@@ -18,7 +18,6 @@ namespace Trifolia.Web.Models.Account
         public string OrganizationType { get; set; }
         public string AuthToken { get; set; }
         public string OpenIdConfigUrl { get; set; }
-        public string UmlsUsername { get; set; }
-        public string UmlsPassword { get; set; }
+        public string UMLSApiKey { get; set; }
     }
 }

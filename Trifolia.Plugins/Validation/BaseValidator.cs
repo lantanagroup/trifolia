@@ -106,7 +106,7 @@ namespace Trifolia.Plugins.Validation
 
                 try
                 {
-                    if (!currentUser.HasValidUmlsLicense())
+                    if (!currentUser.HasValidUMLSApiKey())
                     {
                         results.RestrictDownload = true;
                         results.Messages.Add("This implementation guide contains VSAC content that you do not currently have a license to. <a href=\"/Account/MyProfile\">Update your profile</a> with your UMLS/VSAC credentials to export this implementation guide.");

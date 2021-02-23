@@ -30,14 +30,9 @@ namespace Trifolia.Config
             get { return ConfigurationManager.AppSettings["GoogleAnalyticsGtag"]; }
         }
 
-        public static string UmlsValidateUrl
+        public static string UMLSTicketGrantingTicketURL
         {
-            get { return ConfigurationManager.AppSettings["UmlsValidateUrl"]; }
-        }
-
-        public static string UmlsLicenseCode
-        {
-            get { return ConfigurationManager.AppSettings["UmlsLicenseCode"]; }
+            get { return ConfigurationManager.AppSettings["UMLSTicketGrantingTicketURL"]; }
         }
 
         public static string EncryptionSecret

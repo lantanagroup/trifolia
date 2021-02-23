@@ -77,14 +77,14 @@ namespace Trifolia.Web.Controllers.API
                             User currentUser = CheckPoint.Instance.GetUser(auditedTdb);
                             VSACImporter importer = new VSACImporter(auditedTdb);
 
-                            if (string.IsNullOrEmpty(currentUser.UMLSUsername) || string.IsNullOrEmpty(currentUser.UMLSPassword))
+                            if (string.IsNullOrEmpty(currentUser.UMLSApiKey))
                             {
-                                responseModel.Message = "Your profile does not have your UMLS credentials. <a href=\"/Account/MyProfile\">Update your profile</a> to import from VSAC.";
-                                Logging.Log.For(this).Debug("User does not have UMLS credentials stored.");
+                                responseModel.Message = "Your profile does not have your UMLS API Key. <a href=\"/Account/MyProfile\">Update your profile</a> to import from VSAC.";
+                                Logging.Log.For(this).Debug("User does not have UMLS API Key stored.");
                                 break;
                             }
 
-                            if (!importer.Authenticate(currentUser.UMLSUsername.DecryptStringAES(), currentUser.UMLSPassword.DecryptStringAES()))
+                            if (!importer.Authenticate(currentUser.UMLSApiKey.DecryptStringAES()))
                             {
                                 responseModel.Message = "Invalid UMLS username/password associated with your profile.";
                                 Logging.Log.For(this).Debug("User's UMLS credentials are invalid for VSAC import");

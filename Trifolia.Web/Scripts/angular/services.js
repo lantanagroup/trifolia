@@ -336,14 +336,11 @@ angular.module('Trifolia').service('UserService', function ($http, $q, HelperSer
         return $http.delete('/api/User/Me/ReleaseAnnouncement');
     };
 
-    service.validateUmlsCredentials = function (username, password) {
+    service.validateUMLSApiKey = function (apiKey) {
         var deferred = $q.defer();
-        var data = {
-            Username: username,
-            Password: password
-        };
+        var data = { ApiKey: apiKey };
 
-        $http.post('/api/User/ValidateUmlsCredentials', data)
+        $http.post('/api/User/ValidateUMLSApiKey', data)
             .then(function (results) {
                 deferred.resolve(results.data);
             })

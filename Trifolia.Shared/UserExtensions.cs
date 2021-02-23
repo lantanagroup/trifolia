@@ -9,32 +9,15 @@ namespace Trifolia.Shared
 {
     public static class UserExtensions
     {
-        public static bool HasValidUmlsLicense(this User user, string username = null, string password = null)
+        public static bool HasValidUMLSApiKey(this User user, string apiKey = null)
         {
-            if (string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(user.UMLSUsername))
-                username = user.UMLSUsername.DecryptStringAES();
+            if (string.IsNullOrEmpty(apiKey) && !string.IsNullOrEmpty(user.UMLSApiKey))
+                apiKey = user.UMLSApiKey.DecryptStringAES();
 
-            if (string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(user.UMLSPassword))
-                password = user.UMLSPassword.DecryptStringAES();
-
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(apiKey))
                 return false;
 
-            return UmlsHelper.ValidateLicense(username, password);
-        }
-
-        public static bool HasValidUmlsCredentials(this User user, string username = null, string password = null)
-        {
-            if (string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(user.UMLSUsername))
-                username = user.UMLSUsername.DecryptStringAES();
-
-            if (string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(user.UMLSPassword))
-                password = user.UMLSPassword.DecryptStringAES();
-
-            if (string.IsNullOrEmpty(user.UMLSUsername) || string.IsNullOrEmpty(user.UMLSPassword))
-                return false;
-
-            return UmlsHelper.ValidateCredentials(username, password);
+            return UmlsHelper.ValidateLicense(apiKey);
         }
     }
 }

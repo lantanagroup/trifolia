@@ -79,20 +79,16 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">UMLS/VSAC Licensing Credentials</div>
                         <div class="panel-body">
-                            <p>To import value sets from VSAC and view/export implementation guides that include VSAC content, please specify your credentials so that we can verify you have an active UMLS license. These credentials are encrypted and stored in the Trifolia database to limit the number of times you have to authenticate against UMLS/VSAC. These credentials are <strong>not</strong> used for any purpose other than to validate your UMLS/VSAC license.</p>
-
-                            <div class="form-group">
-                                <label>Username</label>
-                                <input type="text" class="form-control" ng-model="userModel.UmlsUsername" ng-change="umlsCredentialsChanged()" />
-                            </div>
+                            <p>To import value sets from VSAC and view/export implementation guides that include VSAC content, please specify your UMLS/VSAC API KEY so that we can verify you have an active UMLS license. This API KEY is encrypted and stored in the Trifolia database to limit the number of times you have to authenticate against UMLS/VSAC. These credentials are <strong>not</strong> used for any purpose other than to validate your UMLS/VSAC license.</p>
+                            <p>To find your API KEY, login to <a href="https://uts.nlm.nih.gov/uts/" target="_new">UMLS Terminology Services</a>, select "Visit Your Profile" under "UTF Profile" (on the right), and copy/paste the value from the "API KEY" field.</p>
                         
                             <div class="form-group">
-                                <label>Password</label>
-                                <input type="password" class="form-control" ng-model="userModel.UmlsPassword" ng-change="umlsCredentialsChanged()" />
+                                <label>API KEY</label>
+                                <input type="password" class="form-control" ng-model="userModel.UMLSApiKey" ng-change="umlsCredentialsChanged()" />
                             </div>
 
                             <p>
-                                <button type="button" class="btn btn-default" ng-click="validateUmlsCredentials()" ng-disabled="!userModel.UmlsUsername || !userModel.UmlsPassword || userModel.UmlsUsername == '******' || userModel.UmlsPassword == '******'">Test</button>
+                                <button type="button" class="btn btn-default" ng-click="validateUMLSApiKey()" ng-disabled="!userModel.UMLSApiKey || userModel.UMLSApiKey == '******'">Test</button>
                                 <span>This test will confirm if the credentials you entered are valid. You should test your credentials prior to saving your profile changes.</span>
                             </p>
                         </div>
@@ -112,7 +108,7 @@
                 </div>
             </div>
 
-            <p class="alert alert-info" ng-if="!umlsCredentialsConfirmed && (userModel.UmlsUsername || userModel.UmlsPassword)">Confirm/test your UMLS credentials before saving.</p>
+            <p class="alert alert-info" ng-if="!umlsCredentialsConfirmed && userModel.UMLSApiKey">Confirm/test your UMLS API Key before saving.</p>
             <p><button type="submit" class="btn btn-primary" ng-click="save()" ng-disabled="!umlsCredentialsConfirmed || !userProfileForm.$valid">Save</button></p>
         </form>
     </div>

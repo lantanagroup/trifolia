@@ -1,113 +1,77 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using Trifolia.Config;
-using Trifolia.Logging;
 
 namespace Trifolia.Shared
 {
     public class UmlsHelper
     {
-        private const string TGT_URL = "https://vsac.nlm.nih.gov/vsac/ws/Ticket";
-        private const string TGT_BODY_FORMAT = "username={0}&password={1}";
-
-        /// <summary>
-        /// Authenticates the user with the VSAC using the credentials specified.
-        /// </summary>
-        /// <param name="username">The VSAC username</param>
-        /// <param name="password">The VSAC password</param>
-        /// <returns>True if authenticated, otherwise false.</returns>
-        public static string Authenticate(string username, string password)
+        public static string GetTicketGrantingTicket(string apiKey)
         {
-            HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(TGT_URL);
-            string body = string.Format(TGT_BODY_FORMAT, username, password);
-            byte[] rawBody = Encoding.UTF8.GetBytes(body);
-            webRequest.Method = "POST";
-            webRequest.ContentType = "text/plain";
-            webRequest.ContentLength = rawBody.Length;
-
-            using (var sw = webRequest.GetRequestStream())
-            {
-                sw.Write(rawBody, 0, rawBody.Length);
-            }
+            string url = AppSettings.UMLSTicketGrantingTicketURL;
+            HttpWebRequest tgtRequest = (HttpWebRequest)HttpWebRequest.Create(url);
+            tgtRequest.Method = "POST";
+            tgtRequest.ContentType = "application/x-www-form-urlencoded";
+            tgtRequest.Accept = "application/xml";
 
             try
             {
-                HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
-
-                if (response.StatusCode == HttpStatusCode.OK)
+                using (StreamWriter sw = new StreamWriter(tgtRequest.GetRequestStream()))
                 {
-                    using (StreamReader sr = new StreamReader(response.GetResponseStream()))
-                    {
-                        return sr.ReadToEnd();
-                    }
+                    sw.Write("apikey=" + apiKey);
                 }
-            }
-            catch (WebException wex)
-            {
-                Log.For(typeof(UmlsHelper)).Error("Error authenticating with UMLS", wex);
-            }
 
-            return null;
+                HttpWebResponse tgtResponse = (HttpWebResponse)tgtRequest.GetResponse();
+
+                if (tgtResponse.StatusCode != HttpStatusCode.Created)
+                    return null;
+
+                string location = tgtResponse.GetResponseHeader("Location");
+
+                if (string.IsNullOrEmpty(location) || location.IndexOf("TGT") < 0)
+                    return null;
+
+                return location.Substring(location.IndexOf("TGT"));
+            }
+            catch
+            {
+                return null;
+            }
         }
 
-        public static bool ValidateCredentials(string username, string password)
+        public static string GetServiceTicket(string tgt)
         {
-            string ticketGrantingTicket = Authenticate(username, password);
-            return !string.IsNullOrEmpty(ticketGrantingTicket);
-        }
+            HttpWebRequest serviceTicketRequest = (HttpWebRequest) HttpWebRequest.Create("https://utslogin.nlm.nih.gov/cas/v1/tickets/" + tgt);
+            serviceTicketRequest.Method = "POST";
+            serviceTicketRequest.ContentType = "application/x-www-form-urlencoded";
 
-        public static bool ValidateLicense(string username, string password)
-        {
-            string licenseCode = AppSettings.UmlsLicenseCode;
-            string[] query = new string[] {
-                "user=" + Uri.EscapeDataString(username),
-                "password=" + Uri.EscapeDataString(password),
-                "licenseCode=" + Uri.EscapeDataString(licenseCode)
-            };
-            string url = AppSettings.UmlsValidateUrl + "?" + string.Join("&", query);
-            HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(url);
-            webRequest.Method = "POST";
-            webRequest.ContentType = "x-www-form-urlencoded";
-            webRequest.Accept = "application/xml";
-
-            var response = (HttpWebResponse) webRequest.GetResponse();
-
-            if (response.StatusCode != HttpStatusCode.OK)
-                return false;
-
-            using (StreamReader sr = new StreamReader(response.GetResponseStream()))
+            try
             {
-                var responseContent = sr.ReadToEnd();
-                bool isValid = false;
-
-                if (responseContent.StartsWith("\"") && responseContent.EndsWith("\""))
-                    responseContent = responseContent.Substring(0, responseContent.Length - 2);
-
-                try
+                using (StreamWriter sw = new StreamWriter(serviceTicketRequest.GetRequestStream()))
                 {
-                    XmlDocument doc = new XmlDocument();
-                    doc.LoadXml(responseContent);
-
-                    if (doc.DocumentElement.Name != "Result" || !Boolean.TryParse(doc.DocumentElement.InnerText, out isValid))
-                    {
-                        Log.For(typeof(UmlsHelper)).Error("Unexpected response from UMLS validation service: {0}", responseContent);
-                        return false;
-                    }
-
-                    return isValid;
+                    sw.Write("service=http://umlsks.nlm.nih.gov");
                 }
-                catch (Exception ex)
+
+                HttpWebResponse stResponse = (HttpWebResponse)serviceTicketRequest.GetResponse();
+
+                using (StreamReader sr = new StreamReader(stResponse.GetResponseStream()))
                 {
-                    Log.For(typeof(UmlsHelper)).Error("Error validation UMLS license for {0}", ex, username);
-                    return false;
+                    return sr.ReadToEnd();
                 }
             }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static bool ValidateLicense(string apiKey)
+        {
+            string tgt = GetTicketGrantingTicket(apiKey);
+            if (string.IsNullOrEmpty(tgt)) return false;
+            string serviceTicket = GetServiceTicket(tgt);
+            return !string.IsNullOrEmpty(serviceTicket);
         }
     }
 }

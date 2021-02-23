@@ -910,7 +910,7 @@
             Gets the profile model for the currently logged-in user.
             </summary>
         </member>
-        <member name="M:Trifolia.Web.Controllers.API.UserController.ValidateUmlsCredentials(Trifolia.Web.Models.User.ValidateUmlsCredentialsRequestModel)">
+        <member name="M:Trifolia.Web.Controllers.API.UserController.ValidateUMLSApiKey(Trifolia.Web.Models.User.ValidateUmlsCredentialsRequestModel)">
             <summary>
             This method is a public route for <see cref="!:ValidateUmlsCredentials(IObjectRepository, ValidateUmlsCredentialsRequestModel)"></see>
             </summary>

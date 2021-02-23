@@ -26,9 +26,9 @@ namespace Trifolia.Import.VSAC
             this.tdb = tdb;
         }
 
-        public bool Authenticate(string username, string password)
+        public bool Authenticate(string apiKey)
         {
-            string tgt = UmlsHelper.Authenticate(username, password);
+            string tgt = UmlsHelper.GetTicketGrantingTicket(apiKey);
             this.ticketGrantingTicket = tgt;
             return !string.IsNullOrEmpty(this.ticketGrantingTicket);
         }
@@ -41,7 +41,10 @@ namespace Trifolia.Import.VSAC
         /// <param name="oid">The oid of the value set to retrieve. Should not include any prefix (i.e. "urn:oid:")</param>
         public bool ImportValueSet(string oid)
         {
-            string serviceTicket = this.GetServiceTicket();
+            string serviceTicket = UmlsHelper.GetServiceTicket(this.ticketGrantingTicket);
+
+            if (string.IsNullOrEmpty(serviceTicket)) return false;
+
             string url = string.Format(SVS_RETRIEVE_VALUE_SET_URL_FORMAT, oid, serviceTicket);
             HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(url);
             HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
@@ -56,33 +59,6 @@ namespace Trifolia.Import.VSAC
             }
 
             return false;
-        }
-
-        private string GetServiceTicket()
-        {
-            string url = string.Format(ST_URL_FORMAT, this.ticketGrantingTicket);
-            HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(url);
-            byte[] rawBody = Encoding.UTF8.GetBytes("service=http://umlsks.nlm.nih.gov");
-            webRequest.Method = "POST";
-            webRequest.ContentType = "text/plain";
-            webRequest.ContentLength = rawBody.Length;
-
-            using (var sw = webRequest.GetRequestStream())
-            {
-                sw.Write(rawBody, 0, rawBody.Length);
-            }
-
-            HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
-
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                using (StreamReader sr = new StreamReader(response.GetResponseStream()))
-                {
-                    return sr.ReadToEnd();
-                }
-            }
-
-            return null;
         }
 
         private bool ImportRetrieveValueSet(string retrieveValueSetResponse)

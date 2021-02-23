@@ -60,13 +60,9 @@ namespace Trifolia.DB
         [StringLength(50)]
         public string ExternalOrganizationType { get; set; }
 
-        [Column("umlsUsername")]
+        [Column("umlsApiKey")]
         [StringLength(255)]
-        public string UMLSUsername { get; set; }
-
-        [Column("umlsPassword")]
-        [StringLength(255)]
-        public string UMLSPassword { get; set; }
+        public string UMLSApiKey { get; set; }
 
         [Column("apiKey")]
         [StringLength(255)]

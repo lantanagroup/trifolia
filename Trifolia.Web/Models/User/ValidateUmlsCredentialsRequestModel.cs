@@ -7,7 +7,6 @@ namespace Trifolia.Web.Models.User
 {
     public class ValidateUmlsCredentialsRequestModel
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string ApiKey { get; set; }
     }
 }

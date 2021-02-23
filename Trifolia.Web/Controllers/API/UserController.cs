@@ -339,8 +339,7 @@ namespace Trifolia.Web.Controllers.API
                 OkayToContact = currentUser.OkayToContact.HasValue ? currentUser.OkayToContact.Value : false,
                 Organization = currentUser.ExternalOrganizationName,
                 OrganizationType = currentUser.ExternalOrganizationType,
-                UmlsUsername = !string.IsNullOrEmpty(currentUser.UMLSUsername) ? "******" : string.Empty,
-                UmlsPassword = !string.IsNullOrEmpty(currentUser.UMLSPassword) ? "******" : string.Empty
+                UMLSApiKey = !string.IsNullOrEmpty(currentUser.UMLSApiKey) ? "******" : string.Empty
             };
 
             if (!string.IsNullOrEmpty(AppSettings.OpenIdConfigUrl))
@@ -358,26 +357,17 @@ namespace Trifolia.Web.Controllers.API
         /// <summary>
         /// This method is a public route for <see cref="ValidateUmlsCredentials(IObjectRepository, ValidateUmlsCredentialsRequestModel)"></see>
         /// </summary>
-        [HttpPost, Route("api/User/ValidateUmlsCredentials"), SecurableAction]
-        public ValidateUmlsCredentialsResponseModel ValidateUmlsCredentials(ValidateUmlsCredentialsRequestModel model)
+        [HttpPost, Route("api/User/ValidateUMLSApiKey"), SecurableAction]
+        public ValidateUmlsCredentialsResponseModel ValidateUMLSApiKey(ValidateUmlsCredentialsRequestModel model)
         {
             User current = CheckPoint.Instance.GetUser(this.tdb);
             ValidateUmlsCredentialsResponseModel response = new ValidateUmlsCredentialsResponseModel();
 
             // If they have a valid umls license, they have valid credentials
-            if (current.HasValidUmlsLicense(model.Username, model.Password))
+            if (current.HasValidUMLSApiKey(model.ApiKey))
             {
                 response.CredentialsValid = true;
                 response.LicenseValid = true;
-            }
-            else
-            {
-                // If they don't have a valid umls license,
-                // check if they can authenticate... Their credentials may be valid.
-                if (current.HasValidUmlsCredentials(model.Username, model.Password))
-                {
-                    response.CredentialsValid = true;
-                }
             }
 
             return response;
@@ -413,11 +403,8 @@ namespace Trifolia.Web.Controllers.API
             if (currentUser.ExternalOrganizationType != model.OrganizationType)
                 currentUser.ExternalOrganizationType = model.OrganizationType;
 
-            if (currentUser.UMLSUsername != model.UmlsUsername && model.UmlsUsername != "******")
-                currentUser.UMLSUsername = model.UmlsUsername.EncryptStringAES();
-
-            if (currentUser.UMLSPassword != model.UmlsPassword && model.UmlsPassword != "******")
-                currentUser.UMLSPassword = model.UmlsPassword.EncryptStringAES();
+            if (currentUser.UMLSApiKey != model.UMLSApiKey && model.UMLSApiKey != "******")
+                currentUser.UMLSApiKey = model.UMLSApiKey.EncryptStringAES();
 
             tdb.SaveChanges();
         }

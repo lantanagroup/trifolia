@@ -95,7 +95,7 @@ namespace Trifolia.Web.Controllers.API
             {
                 var currentUser = CheckPoint.Instance.GetUser(this.tdb);
 
-                if (!currentUser.HasValidUmlsLicense())
+                if (!currentUser.HasValidUMLSApiKey())
                     throw new AuthorizationException("You do not have a valid/active UMLS license, and cannot view the concepts within this value set. <a href=\"/Account/MyProfile\">Update your profile</a> to view this value set.");
             }
 
@@ -127,7 +127,7 @@ namespace Trifolia.Web.Controllers.API
             {
                 var currentUser = CheckPoint.Instance.GetUser(this.tdb);
 
-                if (!currentUser.HasValidUmlsLicense())
+                if (!currentUser.HasValidUMLSApiKey())
                     throw new AuthorizationException("You do not have a valid/active UMLS license, and cannot view the concepts within this value set. <a href=\"/Account/MyProfile\">Update your profile</a> to view this value set.");
             }
 

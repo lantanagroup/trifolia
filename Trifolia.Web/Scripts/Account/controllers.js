@@ -35,7 +35,7 @@
     };
 
     $scope.umlsCredentialsChanged = function () {
-        if (!$scope.userModel.UmlsUsername && !$scope.userModel.UmlsPassword) {
+        if (!$scope.userModel.UMLSApiKey) {
             $scope.umlsCredentialsConfirmed = true;
             return;
         }
@@ -43,19 +43,19 @@
         $scope.umlsCredentialsConfirmed = false;
     };
 
-    $scope.validateUmlsCredentials = function () {
-        UserService.validateUmlsCredentials($scope.userModel.UmlsUsername, $scope.userModel.UmlsPassword)
+    $scope.validateUMLSApiKey = function () {
+        UserService.validateUMLSApiKey($scope.userModel.UMLSApiKey)
             .then(function (results) {
                 if (!results.CredentialsValid) {
-                    $scope.message = 'Invalid UMLS credentials.';
+                    $scope.message = 'Invalid UMLS API Key or license.';
                     $scope.messageIsWarning = true;
                 } else if (!results.LicenseValid) {
                     $scope.umlsCredentialsConfirmed = true;
-                    $scope.message = 'UMLS credentials do not have a valid/active license to UMLS/VSAC data.';
+                    $scope.message = 'UMLS API Key does not have a valid/active license to UMLS/VSAC data.';
                     $scope.messageIsWarning = true;
                 } else {
                     $scope.umlsCredentialsConfirmed = true;
-                    $scope.message = 'UMLS credentials are valid, and have a valid/active license to UMLS/VSAC data.';
+                    $scope.message = 'UMLS API Key is valid.';
                     $scope.messageIsWarning = false;
                 }
             })
