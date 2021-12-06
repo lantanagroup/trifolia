@@ -70,7 +70,7 @@
                 <span data-bind="text: NewVersionImplementationGuideName"></span>
                 <!-- /ko -->
 
-                <!-- kof if: !IsNewVersion() -->
+                <!-- ko if: !IsNewVersion() -->
                 <select class="form-control" name="ImplementationGuideId" id="ImplementationGuideId" data-bind="value: ImplementationGuideId, options: ImplementationGuides, optionsText: 'Name', optionsValue: 'Id', optionsCaption: 'Select...'"></select>
                 <!-- TODO -->
                 <!-- /ko -->
@@ -105,7 +105,7 @@
         var viewModel = null;
 
         $(document).ready(function () {
-            viewModel = new CopyModel(<%= Model.TemplateId %>, <%= Model.NewVersion ? "true" : "false" %>);
+            viewModel = new CopyModel(<%= Model.TemplateId %>, <%= Model.NewVersion ? "true" : "false" %>, <%= Model.NewVersionImplementationGuideId != null ? Model.NewVersionImplementationGuideId.ToString() : "null" %>);
             ko.applyBindings(viewModel, $("#CopyTemplate")[0]);
         });
     </script>

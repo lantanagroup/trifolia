@@ -48,7 +48,17 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <!-- ko foreach: Actions -->
-                        <li data-bind="css: { 'disabled': Disabled }"><a data-bind="    text: Text, attr: { href: (Disabled() ? '#' : Url()) }, tooltip: ToolTip"></a></li>
+                        <li data-bind="css: { 'disabled': Disabled }"><a data-bind="text: Text, attr: { href: (Disabled() ? '#' : Url()) }, tooltip: ToolTip"></a></li>
+                        <!-- /ko -->
+                        <!-- ko if: CanCopy && CanVersion -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New Version <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <!-- ko foreach: Object.keys(NewVersionImplementationGuides) -->
+                                <li><a data-bind="text: $parent['NewVersionImplementationGuides'][$data], attr: { href: '/TemplateManagement/Copy?newVersion=true&templateId=' + $parent['Id']() + '&newVersionImplementationGuideId=' + $data }"></a></li>
+                                <!-- /ko -->
+                            </ul>
+                        </li>
                         <!-- /ko -->
                     </ul>
                 </div>

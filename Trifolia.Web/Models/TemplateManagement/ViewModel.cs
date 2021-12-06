@@ -29,6 +29,7 @@ namespace Trifolia.Web.Models.TemplateManagement
         public int? ImpliedTemplateId { get; set; }
         public string ImpliedTemplateOid { get; set; }
         public string ImpliedTemplateImplementationGuide { get; set; }
+        public Dictionary<int, String> NewVersionImplementationGuides { get; set; }
         public string Description { get; set; }
         public string Notes { get; set; }
         public bool ShowNotes { get; set; }

@@ -67,18 +67,25 @@ namespace Trifolia.Web.Controllers
         #region Copy Actions
 
         [Securable(SecurableNames.TEMPLATE_COPY)]
-        public ActionResult Copy(int templateId, bool newVersion = false)
+        public ActionResult Copy(int templateId, bool newVersion = false, int? newVersionImplementationGuideId = null)
         {
             CopyRequestModel model = new CopyRequestModel()
             {
                 TemplateId = templateId,
-                NewVersion = newVersion
+                NewVersion = newVersion,
+                NewVersionImplementationGuideId = newVersionImplementationGuideId
             };
 
             if (newVersion)
             {
                 var template = this.tdb.Templates.Single(y => y.Id == templateId);
-                var newVersionImplementationGuide = this.tdb.ImplementationGuides.SingleOrDefault(y => y.PreviousVersionImplementationGuideId == template.OwningImplementationGuideId);
+                ImplementationGuide newVersionImplementationGuide;
+
+                // If the new IG is specified, use it, otherwise assume there is only one new version of the implementation guide
+                if (newVersionImplementationGuideId == null)
+                    newVersionImplementationGuide = this.tdb.ImplementationGuides.SingleOrDefault(y => y.PreviousVersionImplementationGuideId == template.OwningImplementationGuideId);
+                else
+                    newVersionImplementationGuide = this.tdb.ImplementationGuides.SingleOrDefault(y => y.Id == newVersionImplementationGuideId);
 
                 if (newVersionImplementationGuide == null)
                     throw new Exception("A new version of the template's implementation guide does not exist yet.");

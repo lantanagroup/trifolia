@@ -9,5 +9,6 @@ namespace Trifolia.Web.Models.TemplateManagement
     {
         public int TemplateId { get; set; }
         public bool NewVersion { get; set; }
+        public int? NewVersionImplementationGuideId { get; set; }
     }
 }

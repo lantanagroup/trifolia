@@ -171,6 +171,9 @@ namespace Trifolia.Web.Controllers.API
                 HasGreenModel = template.GreenTemplates.Any()
             };
 
+            if (template.OwningImplementationGuide.NextVersions != null && template.OwningImplementationGuide.NextVersions.Count > 0)
+                model.NewVersionImplementationGuides = template.OwningImplementationGuide.NextVersions.ToDictionary(ig => ig.Id, ig => ig.GetDisplayName());
+
             PublishStatus lStatus = template.Status;
 
             if (lStatus == null)
@@ -323,6 +326,7 @@ namespace Trifolia.Web.Controllers.API
                 });
             }
 
+            /*
             if (model.CanCopy)
             {
                 model.Actions.Add(new ViewModel.ActionItem()
@@ -333,6 +337,7 @@ namespace Trifolia.Web.Controllers.API
                     ToolTip = !model.CanVersion ? "You cannot version this template because the associated implementation guide is not versioned yet." : string.Empty
                 });
             }
+            */
 
             if (model.CanDelete)
             {
@@ -650,13 +655,18 @@ namespace Trifolia.Web.Controllers.API
         }
 
         [HttpGet, Route("api/Template/{templateId}/Copy"), SecurableAction(SecurableNames.TEMPLATE_COPY)]
-        public CopyModel Copy(int templateId, bool newVersion = false)
+        public CopyModel Copy(int templateId, bool newVersion = false, int? newVersionImplementationGuideId = null)
         {
             if (!CheckPoint.Instance.GrantViewTemplate(templateId))
                 throw new AuthorizationException("You do not have permission to view this template.");
 
             Template template = this.tdb.Templates.Single(y => y.Id == templateId);
-            ImplementationGuide previousVersionIg = tdb.ImplementationGuides.SingleOrDefault(y => y.PreviousVersionImplementationGuideId == template.OwningImplementationGuideId);
+            ImplementationGuide previousVersionIg;
+
+            if (newVersionImplementationGuideId == null)
+                previousVersionIg = tdb.ImplementationGuides.SingleOrDefault(y => y.PreviousVersionImplementationGuideId == template.OwningImplementationGuideId);
+            else
+                previousVersionIg = tdb.ImplementationGuides.Single(y => y.Id == newVersionImplementationGuideId);
 
             string newOid = template.Oid;
             string oid, root, extension;

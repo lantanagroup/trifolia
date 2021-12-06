@@ -1,4 +1,4 @@
-﻿var CopyModel = function (templateId, isNewVersion) {
+﻿var CopyModel = function (templateId, isNewVersion, newVersionImplementationGuideId) {
     var self = this;
     var mapping = {
         include: [ 'TemplateId', 'Bookmark', 'Constraints', 'ImplementationGuideId', 'IsNewVersion', 'Message', 'Name', 'NewVersionImplementationGuideName', 'Oid', 'OriginalOid', 'OriginalName', 'SubmitEnabled', 'Type' ],
@@ -175,8 +175,14 @@
             }
         });
 
+        var copyUrl = '/api/Template/' + templateId + '/Copy?newVersion=' + isNewVersion;
+
+        if (newVersionImplementationGuideId) {
+            copyUrl += '&newVersionImplementationGuideId=' + newVersionImplementationGuideId;
+        }
+
         $.ajax({
-            url: '/api/Template/' + templateId + '/Copy?newVersion=' + isNewVersion,
+            url: copyUrl,
             success: function (data) {
                 ko.mapping.fromJS(data, mapping, self);
             }
