@@ -109,6 +109,32 @@ namespace Trifolia.Web.Controllers.API
             return GetTemplate(templateId);
         }
 
+        private Dictionary<int, String> GetNewVersionImplementationGuides(List<ImplementationGuide> igs)
+        {
+            Dictionary<int, String> ret = new Dictionary<int, string>();
+
+            foreach (var ig in igs)
+            {
+                ret.Add(ig.Id, ig.GetDisplayName());
+                List<ImplementationGuide> nextIgs = this.GetNewVersionImplementationGuides(ig);
+
+                foreach (var nextIg in nextIgs)
+                    ret.Add(nextIg.Id, nextIg.GetDisplayName());
+            }
+
+            return ret;
+        }
+
+        private List<ImplementationGuide> GetNewVersionImplementationGuides(ImplementationGuide ig)
+        {
+            if (ig.NextVersions == null || ig.NextVersions.Count == 0) return new List<ImplementationGuide>();
+            var nextVersions = ig.NextVersions.ToList();
+            List<ImplementationGuide> ret = new List<ImplementationGuide>(nextVersions);
+            foreach (var nextVersion in nextVersions)
+                ret.AddRange(this.GetNewVersionImplementationGuides(nextVersion));
+            return ret;
+        }
+
         /// <summary>
         /// Gets the template by the template's internal id within Trifolia
         /// </summary>
@@ -171,8 +197,7 @@ namespace Trifolia.Web.Controllers.API
                 HasGreenModel = template.GreenTemplates.Any()
             };
 
-            if (template.OwningImplementationGuide.NextVersions != null && template.OwningImplementationGuide.NextVersions.Count > 0)
-                model.NewVersionImplementationGuides = template.OwningImplementationGuide.NextVersions.ToDictionary(ig => ig.Id, ig => ig.GetDisplayName());
+            model.NewVersionImplementationGuides = this.GetNewVersionImplementationGuides(template.OwningImplementationGuide.NextVersions.ToList());
 
             PublishStatus lStatus = template.Status;
 
