@@ -69,8 +69,10 @@
                 <span class="label label-success" title="Previous Version"><i class="glyphicon glyphicon-share"></i> <a data-bind="attr: { href: '/IGManagement/View/' + PreviousVersionImplementationGuideId() }">Previous Version</a></span>&nbsp;
                 <!-- /ko -->
                 
-                <!-- ko if: NextVersionImplementationGuideId -->
-                <span class="label label-success" title="Next Version"><i class="glyphicon glyphicon-share"></i> <a data-bind="attr: { href: '/IGManagement/View/' + NextVersionImplementationGuideId() }">Next Version</a></span>
+                <!-- ko if: NextVersionImplementationGuides() && Object.keys(NextVersionImplementationGuides()).length > 0 -->
+                    <!-- ko foreach: Object.keys(NextVersionImplementationGuides()) -->
+                    <span class="label label-success" data-bind="attr: { title: $parent.NextVersionImplementationGuides()[$data] }"><i class="glyphicon glyphicon-share"></i> <a data-bind="attr: { href: '/IGManagement/View/' + $data }, text: 'Next Version ' + ($index() + 1)">Next Version</a></span>
+                    <!-- /ko -->
                 <!-- /ko -->
 
                 <span class="label label-primary" data-bind="text: Type" title="Implementation Guide Type"></span> 

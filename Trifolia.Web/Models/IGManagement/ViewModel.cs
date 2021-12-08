@@ -17,7 +17,7 @@ namespace Trifolia.Web.Models.IGManagement
 
         public int Id { get; set; }
         public int? PreviousVersionImplementationGuideId { get; set; }
-        public int? NextVersionImplementationGuideId { get; set; }
+        public Dictionary<int, String> NextVersionImplementationGuides { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public string Type { get; set; }

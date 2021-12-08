@@ -9,10 +9,16 @@
         <h2>Delete Implementation Guide</h2>
 
         <div data-bind="with: ImplementationGuide">
-            <h3 data-bind="text: Name"></h3>
+            <h3 data-bind="text: NextVersionImplementationGuides"></h3>
 
-            <!-- ko if: NextVersionImplementationGuideId() -->
-            <div class="alert alert-warning" role="alert">This implementation guide cannot be deleted because it has been versioned. In order to delete this implementation guide, you must delete the <a data-bind="attr: { href: '/IGManagement/View/' + NextVersionImplementationGuideId() }">new version</a> first.</div>
+            <!-- ko if: $parent.HasNewVersions() -->
+                <div class="alert alert-warning" role="alert">
+                    <p>This implementation guide cannot be deleted because it has been versioned. In order to delete this implementation guide, you must delete the following implementation guides:</p>
+                    <ul>
+                        <!-- ko foreach: Object.keys(NextVersionImplementationGuides) -->
+                        <li><a data-bind="attr: { href: '/IGManagement/View/' + $data }, text: $parent.NextVersionImplementationGuides[$data]">new version</a></li>
+                        <!-- /ko -->
+                    </ul></div>
             <!-- /ko -->
 
             <p>This is an irreversable action. Deleting the implementation guide will remove it permanently. Any templates associated with the implementation guide will be removed as well, unless you specify a replacement implementation guide. Selecting a replacement implementation guide will move the templates to the replacement.</p>
@@ -26,7 +32,7 @@
             </div>
 
             <div class="form-group">
-                <button type="button" class="btn" data-bind="click: $parent.Delete, enable: $parent.CanDelete">Delete!</button>
+                <button type="button" class="btn btn-primary" data-bind="click: $parent.Delete, enable: $parent.CanDelete">Delete!</button>
             </div>
         </div>
     </div>

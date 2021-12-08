@@ -7,13 +7,28 @@
     self.ReplaceImplementationGuideId = ko.observable();
 
     self.CanDelete = ko.computed(function () {
-        return self.ImplementationGuide() && !self.ImplementationGuide().NextVersionImplementationGuideId();
+        if (!self.ImplementationGuide()) {
+            return false;
+        }
+
+        return !self.HasNewVersions();
+    });
+
+    self.HasNewVersions = ko.computed(function () {
+        if (!self.ImplementationGuide()) {
+            return false;
+        }
+
+        return self.ImplementationGuide().NextVersionImplementationGuides && Object.keys(self.ImplementationGuide().NextVersionImplementationGuides).length > 0;
     });
 
     self.Initialize = function () {
         $.ajax({
             url: '/api/ImplementationGuide/' + implementationGuideId,
             success: function (results) {
+                if (!results.NextVersionImplementationGuides) {
+                    results.NextVersionImplementationGuides = {};
+                }
                 ko.mapping.fromJS({ ImplementationGuide: results }, {}, self);
             }
         });
@@ -29,7 +44,7 @@
             url: '/api/ImplementationGuide',
             success: function (results) {
                 var filtered = ko.utils.arrayFilter(results.Items, function (item) {
-                    return item.Id != implementationGuideId;
+                    return item.Id !== implementationGuideId;
                 });
 
                 ko.mapping.fromJS({ ImplementationGuides: filtered }, {}, self);

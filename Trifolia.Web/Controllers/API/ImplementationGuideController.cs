@@ -241,7 +241,7 @@ namespace Trifolia.Web.Controllers.API
                 throw new AuthorizationException("You do not have permission to retrieve this implementation guide");
 
             ImplementationGuide ig = this.tdb.ImplementationGuides.Single(y => y.Id == implementationGuideId);
-            ImplementationGuide nextVersionIg = this.tdb.ImplementationGuides.SingleOrDefault(y => y.PreviousVersionImplementationGuideId == ig.Id);
+            List<ImplementationGuide> nextIgVersions = this.tdb.ImplementationGuides.Where(y => y.PreviousVersionImplementationGuideId == ig.Id).ToList();
             IGSettingsManager igSettings = new IGSettingsManager(this.tdb, ig.Id);
 
             bool canEdit = CheckPoint.Instance.HasSecurables(SecurableNames.IMPLEMENTATIONGUIDE_EDIT);
@@ -270,12 +270,14 @@ namespace Trifolia.Web.Controllers.API
                 ShowPublish = grantEdit && canEdit,
                 ShowNewVersion = grantEdit && canEdit,
                 ShowDelete = grantEdit && canEdit,
-                EnableNewVersion = nextVersionIg == null && ig.IsPublished(),
+                EnableNewVersion = !nextIgVersions.Any() && ig.IsPublished(),
                 Status = ig.PublishStatus != null ? ig.PublishStatus.Status : null
             };
 
-            if (nextVersionIg != null && CheckPoint.Instance.GrantViewImplementationGuide(nextVersionIg.Id))
-                viewModel.NextVersionImplementationGuideId = nextVersionIg != null ? new int?(nextVersionIg.Id) : null;
+            if (nextIgVersions.Any())
+                viewModel.NextVersionImplementationGuides = nextIgVersions
+                    .Where(nig => CheckPoint.Instance.GrantViewImplementationGuide(nig.Id))
+                    .ToDictionary(nig => nig.Id, nig => nig.GetDisplayName());
 
             if (ig.PreviousVersionImplementationGuideId.HasValue && CheckPoint.Instance.GrantViewImplementationGuide(ig.PreviousVersionImplementationGuideId.Value))
             {
