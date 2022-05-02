@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using Trifolia.Config;
 
 namespace Trifolia.Shared
@@ -68,10 +69,33 @@ namespace Trifolia.Shared
 
         public static bool ValidateLicense(string apiKey)
         {
-            string tgt = GetTicketGrantingTicket(apiKey);
-            if (string.IsNullOrEmpty(tgt)) return false;
-            string serviceTicket = GetServiceTicket(tgt);
-            return !string.IsNullOrEmpty(serviceTicket);
+            HttpClient client = new HttpClient();
+            String authenticationString = $"apikey:{apiKey}";
+            String base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(authenticationString));
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1096.82");
+            request.Headers.Add("Cache-Control", "no-cache");
+            request.Headers.Add("Authorization", "Basic " + base64EncodedAuthenticationString);
+
+            try
+            {
+                HttpResponseMessage response = client.SendAsync(request).Result;
+                String responseContent = response.Content.ReadAsStringAsync().Result;
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    Logging.Log.For(typeof(UmlsHelper)).Error(String.Format("API Key is not valid: {0}", apiKey));
+                    return false;
+                }
+
+                Logging.Log.For(typeof(UmlsHelper)).Info(String.Format("Validated API Key {0}", apiKey));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.For(typeof(UmlsHelper)).Error(String.Format("Error validating API Key: {0}", ex.Message));
+                return false;
+            }
         }
     }
 }
