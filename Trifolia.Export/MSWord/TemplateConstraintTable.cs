@@ -138,6 +138,9 @@ namespace Trifolia.Export.MSWord
                 string levelSpacing = string.Empty;
                 string confNumber = template.OwningImplementationGuideId + "-" + constraint.Number.ToString();
                 var isFhir = constraint.Template.ImplementationGuideType.SchemaURI == ImplementationGuideType.FHIR_NS;
+                
+                if (!string.IsNullOrEmpty(constraint.DisplayNumber))
+                    confNumber = constraint.DisplayNumber;
 
                 // Check if we're dealing with a FHIR constraint
                 if (isFhir && schemaObject != null)
